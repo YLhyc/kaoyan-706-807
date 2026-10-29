@@ -343,6 +343,23 @@ def detect_t2_block(txt):
         
     return False, ''
 
+connectors = ['具体表述到答题语句就是：', '具体表述到答题语句就是', '答题原句就是：', '答题原句就是', '答题原句：', '所以表述为：', '所以表述为']
+
+def format_quote_chunk(txt, is_first, keywords):
+    formatted = txt
+    if is_first:
+        for c in connectors:
+            if c in formatted:
+                parts = formatted.split(c, 1)
+                before = parts[0]
+                after = parts[1]
+                before_fmt = highlight_html(before, keywords)
+                after_fmt = highlight_html(after, keywords)
+                before_html = f'<span class="quote-prompt-lead">{before_fmt}</span>' if before else ''
+                badge_html = f'<span class="quote-connector-badge">{c}</span>'
+                return f'{before_html}{badge_html}<strong class="quote-gold-core">{after_fmt}</strong>'
+    return f'<strong class="quote-gold-core">{highlight_html(txt, keywords)}</strong>'
+
 def build_clean_track2_html(item, sents2, meta):
     q_type, score, time_est, words, keywords = meta
     
@@ -388,24 +405,45 @@ def build_clean_track2_html(item, sents2, meta):
         
     for b in blocks:
         block_items_html = []
-        for s in b['items']:
-            txt = s['text']
-            txt_fmt = highlight_html(txt, keywords)
-            sid = s['id']
-            sstart = s['start']
-            send = s['end']
+        items = b['items']
+        i = 0
+        while i < len(items):
+            s = items[i]
+            txt = s['text'].strip()
             
-            is_qa = any(txt.startswith(x) for x in ['1.', '2.', '3.', '4.', '一、这道题', '二、应该从', '三、从哪些', '四、这三个', '这道题到底', '应该从什么', '从哪些方面', '内在逻辑是'])
-            is_quote = '具体表述到答题语句就是：' in txt or '答题原句就是：' in txt or '具体表述到答题语句' in txt
+            is_quote = any(c in txt for c in connectors)
+            is_qa = any(txt.startswith(x) for x in ['1.', '2.', '3.', '4.', '一、这道题', '二、应该从', '三、从哪些', '四、这三个', '这道题到底', '应该从什么', '从哪些方面', '内在逻辑是', '问题一', '问题二', '问题三', '问题四'])
             
             if is_qa:
+                txt_fmt = highlight_html(s['text'], keywords)
+                sid = s['id']
+                sstart = s['start']
+                send = s['end']
                 block_items_html.append(f"""
                 <div class="framework-qa-card">
                   <div class="qa-badge">📌 审题指引与立意维度</div>
                   <span class="recite-sent" data-sent-id="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>
                 </div>
                 """)
+                i += 1
             elif is_quote:
+                quote_chunks = [s]
+                # Collect continuation chunks until sentence terminator (。！？)
+                while not any(p in items[i]['text'] for p in ['。', '！', '？']) and i + 1 < len(items):
+                    next_txt = items[i+1]['text'].strip()
+                    if any(c in next_txt for c in connectors) or next_txt.startswith('【') or '板块：' in next_txt:
+                        break
+                    i += 1
+                    quote_chunks.append(items[i])
+                    
+                quote_spans = []
+                for idx_qc, qc in enumerate(quote_chunks):
+                    qc_fmt = format_quote_chunk(qc['text'], idx_qc == 0, keywords)
+                    sid = qc['id']
+                    sstart = qc['start']
+                    send = qc['end']
+                    quote_spans.append(f'<span class="recite-sent gold-sent-active" data-sent-id="{sid}" data-start="{sstart}" data-end="{send}">{qc_fmt}</span>')
+                    
                 block_items_html.append(f"""
                 <div class="gold-quote-box">
                   <div class="gold-quote-header">
@@ -413,16 +451,22 @@ def build_clean_track2_html(item, sents2, meta):
                     <span class="gold-tip">黄金得分点 · 考场需一字不差记忆</span>
                   </div>
                   <div class="gold-quote-body">
-                    <span class="recite-sent gold-sent-active" data-sent-id="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>
+                    {"".join(quote_spans)}
                   </div>
                 </div>
                 """)
+                i += 1
             else:
+                txt_fmt = highlight_html(s['text'], keywords)
+                sid = s['id']
+                sstart = s['start']
+                send = s['end']
                 block_items_html.append(f"""
                 <div class="teacher-explain-row">
                   <span class="recite-sent" data-sent-id="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>
                 </div>
                 """)
+                i += 1
                 
         block_html = f"""
         <div class="logic-block-card">
@@ -484,7 +528,8 @@ for idx, item in enumerate(all_items):
     p_count = item["track1"]["html"].count("thesis-pill")
     sec_count = item["track1"]["html"].count("exam-section-card")
     t2_b_count = item["track2"]["html"].count("logic-block-card")
-    print(f"[{idx+1:02d}] {sub} {item['title'][:16]:<16} | T1 sections: {sec_count} | T1 thesis-pills: {p_count} | T2 blocks: {t2_b_count}")
+    t2_q_count = item["track2"]["html"].count("gold-quote-box")
+    print(f"[{idx+1:02d}] {sub} {item['title'][:16]:<16} | T1 sec: {sec_count} | T2 blocks: {t2_b_count} | T2 quotes: {t2_q_count}")
 
 # Save updated manifests
 manifest_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")

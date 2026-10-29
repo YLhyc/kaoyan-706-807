@@ -1144,9 +1144,40 @@ body, .paper-container, .recite-sent, .exam-section-card, .gold-sent-card, .teac
 
 .gold-quote-body {
   font-size: 17px;
-  font-weight: 600;
-  line-height: 1.85;
+  line-height: 1.9;
   color: var(--ink-primary);
+}
+
+.quote-prompt-lead {
+  font-size: 15px;
+  font-weight: normal;
+  color: var(--ink-secondary);
+  margin-right: 6px;
+}
+
+.quote-connector-badge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(166, 58, 36, 0.12);
+  color: var(--vermilion);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 3px;
+  margin-right: 6px;
+  vertical-align: 1px;
+}
+
+.quote-gold-core {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink-primary);
+  line-height: 1.9;
+}
+
+[data-theme="dark"] .quote-connector-badge {
+  background: rgba(255, 120, 96, 0.18);
+  color: #ff7860;
 }
 
 .teacher-explain-row {
