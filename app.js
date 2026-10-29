@@ -75,6 +75,7 @@
     el.fontIncBtn = document.getElementById('btn-font-inc');
     el.sidebar = document.getElementById('sidebar');
     el.mobileMenuBtn = document.getElementById('btn-mobile-menu');
+    el.backdrop = document.getElementById('sidebar-backdrop');
     el.tierPills = document.querySelectorAll('.filter-pill[data-tier]');
   }
 
@@ -194,6 +195,7 @@
         selectItem(item.id);
         if (window.innerWidth <= 900 && el.sidebar) {
           el.sidebar.classList.remove('open');
+          if (el.backdrop) el.backdrop.classList.remove('open');
         }
       });
 
@@ -564,7 +566,15 @@
 
     if (el.mobileMenuBtn && el.sidebar) {
       el.mobileMenuBtn.addEventListener('click', () => {
-        el.sidebar.classList.toggle('open');
+        const isOpen = el.sidebar.classList.toggle('open');
+        if (el.backdrop) el.backdrop.classList.toggle('open', isOpen);
+      });
+    }
+
+    if (el.backdrop && el.sidebar) {
+      el.backdrop.addEventListener('click', () => {
+        el.sidebar.classList.remove('open');
+        el.backdrop.classList.remove('open');
       });
     }
 
