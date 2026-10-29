@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#f5f2e9">
   <title>2027 考研专业课双轨随身背诵手卷 · 807与706独立专属研读平台</title>
-  <link rel="stylesheet" href="app.css?v=20261029_v2">
+  <link rel="stylesheet" href="app.css?v=1.1.0">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -21,9 +21,30 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css">
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=20261029_v2"></script>
+  <script src="data/kaoyan_data.js?v=1.1.0"></script>
 </head>
 <body>
+
+  <!-- 顶部新版本提醒浮动胶囊 -->
+  <aside id="updateBannerPill" class="update-banner-pill" style="display: none;" role="alert">
+    <div class="pill-body" id="updateBannerBody" title="点击立即升级并刷新">
+      <span class="pill-icon-spin">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+        </svg>
+      </span>
+      <span id="updateBannerText">发现新版本 · 点击立即更新</span>
+    </div>
+    <button type="button" class="pill-close-btn" id="updateBannerClose" title="暂不提醒">
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </aside>
+
+  <!-- 吐司提示容器 -->
+  <div id="toast-container" class="toast-container"></div>
 
   <!-- 顶部主导航栏 -->
   <header class="app-header">
@@ -147,6 +168,20 @@
       <!-- 考点卡片容器 -->
       <div id="item-list" class="item-list-container">
         <!-- JS 动态注入 -->
+      </div>
+
+      <!-- 侧边栏底部版本与强刷栏 -->
+      <div class="sidebar-footer">
+        <div class="app-version-badge" id="appVersionBadge" title="点击检查更新">
+          <span class="version-dot"></span>
+          <span id="versionText">版本 v1.1.0 · 双轨研读版</span>
+        </div>
+        <button id="btn-force-refresh" class="refresh-cache-btn" title="强制清除缓存并拉取最新版本">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+          <span>强刷更新</span>
+        </button>
       </div>
     </aside>
 
@@ -280,6 +315,6 @@
     </div>
   </footer>
 
-  <script src="app.js?v=20261029_v2"></script>
+  <script src="app.js?v=1.1.0"></script>
 </body>
 </html>

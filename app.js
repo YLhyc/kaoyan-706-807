@@ -623,6 +623,151 @@
   }
 
 
+  
+  // ==========================================
+  // 云端版本检测与一键强刷更新机制
+  // ==========================================
+  const APP_BUILD_ID = '1.1.0';
+  let latestUpdatePayload = null;
+
+  function showToast(msg, duration = 2500) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast-msg';
+    toast.textContent = msg;
+    container.appendChild(toast);
+    setTimeout(() => {
+      if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, duration);
+  }
+
+  function compareVersions(v1, v2) {
+    const p1 = (v1 || '').replace(/^v/, '').split('.').map(Number);
+    const p2 = (v2 || '').replace(/^v/, '').split('.').map(Number);
+    for (let i = 0; i < Math.max(p1.length, p2.length); i++) {
+      const n1 = p1[i] || 0;
+      const n2 = p2[i] || 0;
+      if (n1 > n2) return 1;
+      if (n1 < n2) return -1;
+    }
+    return 0;
+  }
+
+  async function checkAppUpdate(isManual = false) {
+    const badge = document.getElementById('appVersionBadge');
+    const versionText = document.getElementById('versionText');
+    const banner = document.getElementById('updateBannerPill');
+    const bannerText = document.getElementById('updateBannerText');
+
+    if (isManual) {
+      showToast('正在检查云端更新…');
+      if (versionText) versionText.textContent = '正在检查更新…';
+    }
+
+    try {
+      const res = await fetch(`version.json?t=${Date.now()}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error('fetch version.json failed');
+      const payload = await res.json();
+      latestUpdatePayload = payload;
+
+      const remoteVer = String(payload.version || '');
+      const isNewer = compareVersions(remoteVer, APP_BUILD_ID) > 0;
+      const isDismissed = sessionStorage.getItem('dismiss_update_v' + remoteVer) === '1';
+
+      if (isNewer) {
+        if (banner && bannerText && !isDismissed) {
+          bannerText.textContent = `发现新版本 v${remoteVer} · 点击立即更新`;
+          banner.style.display = 'flex';
+        }
+        if (versionText) {
+          versionText.textContent = `发现新版 v${remoteVer} · 点击更新`;
+        }
+        if (badge) {
+          badge.classList.add('has-update');
+        }
+        if (isManual) {
+          showToast(`发现新版本 v${remoteVer}，请点击升级！`);
+        }
+      } else {
+        if (banner) banner.style.display = 'none';
+        if (badge) badge.classList.remove('has-update');
+        if (versionText) {
+          versionText.textContent = `版本 v${APP_BUILD_ID} · 双轨研读版`;
+        }
+        if (isManual) {
+          showToast('已是最新版本 v' + APP_BUILD_ID);
+        }
+      }
+    } catch (err) {
+      console.warn('Update check failed:', err);
+      if (versionText) versionText.textContent = `版本 v${APP_BUILD_ID} · 双轨研读版`;
+      if (isManual) showToast('当前已是最新版本');
+    }
+  }
+
+  function applyAppUpdate() {
+    showToast('正在强制更新至最新版本…');
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        for (let reg of regs) {
+          reg.unregister();
+        }
+      }).catch(() => {});
+    }
+    if ('caches' in window) {
+      caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).catch(() => {});
+    }
+    setTimeout(() => {
+      window.location.replace(window.location.pathname + '?v=' + Date.now());
+    }, 400);
+  }
+
+  function setupVersionHandlers() {
+    const badge = document.getElementById('appVersionBadge');
+    const refreshBtn = document.getElementById('btn-force-refresh');
+    const bannerBody = document.getElementById('updateBannerBody');
+    const bannerClose = document.getElementById('updateBannerClose');
+    const banner = document.getElementById('updateBannerPill');
+
+    if (badge) {
+      badge.addEventListener('click', () => {
+        if (badge.classList.contains('has-update')) {
+          applyAppUpdate();
+        } else {
+          checkAppUpdate(true);
+        }
+      });
+    }
+
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', () => {
+        applyAppUpdate();
+      });
+    }
+
+    if (bannerBody) {
+      bannerBody.addEventListener('click', () => {
+        applyAppUpdate();
+      });
+    }
+
+    if (bannerClose && banner) {
+      bannerClose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        banner.style.display = 'none';
+        if (latestUpdatePayload && latestUpdatePayload.version) {
+          sessionStorage.setItem('dismiss_update_v' + latestUpdatePayload.version, '1');
+        }
+      });
+    }
+
+    // 页面加载 1.5 秒后静默检查云端版本
+    setTimeout(() => {
+      checkAppUpdate(false);
+    }, 1500);
+  }
+
   window.addEventListener('DOMContentLoaded', () => {
     initElements();
     setupAudioEngine();
@@ -635,5 +780,6 @@
 
     initFontSystem();
     loadManifestData();
+    setupVersionHandlers();
   });
 })();
