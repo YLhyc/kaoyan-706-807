@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2027 考研专业课双轨随身背诵手卷 · 桌面图标设计方案 (5套高保真纯SVG)</title>
+  <style>
+    :root {
+      --bg-main: #f5f3ef;
+      --bg-card: #ffffff;
+      --border-color: #e4decb;
+      --text-main: #2b241e;
+      --text-muted: #73675a;
+      --vermilion: #a63a24;
+      --amber: #b06917;
+      --pine: #2e664f;
+      --shadow-sm: 0 2px 8px rgba(43, 36, 30, 0.06);
+      --shadow-card: 0 10px 30px rgba(43, 36, 30, 0.08);
+      --radius-app: 48px; /* 标准 256px 应用图标 squircle 圆角比例 */
+    }
+
+    [data-theme="dark"] {
+      --bg-main: #141312;
+      --bg-card: #1f1d1b;
+      --border-color: #332f2a;
+      --text-main: #ede8df;
+      --text-muted: #9c9183;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 40px 24px 80px;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* 顶部导航与控制栏 */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1.5px solid var(--border-color);
+    }
+
+    .header-left h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-badge {
+      font-size: 12px;
+      background: var(--vermilion);
+      color: #fff;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .header-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      border-color: var(--vermilion);
+      color: var(--vermilion);
+    }
+
+    .action-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* 背景模拟切换器 */
+    .bg-simulator-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      padding: 12px 18px;
+      background: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+
+    .sim-tag-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .sim-tag {
+      padding: 4px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 12.5px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .sim-tag.active {
+      background: var(--text-main);
+      color: var(--bg-card);
+      border-color: var(--text-main);
+    }
+
+    /* 方案卡片网格 */
+    .schemes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 32px;
+    }
+
+    .scheme-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .scheme-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(43, 36, 30, 0.12);
+    }
+
+    /* 图标展示主舞台 */
+    .icon-stage-bg {
+      padding: 44px 24px 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #ece8df; /* 默认古朴暖灰底 */
+      border-bottom: 1px solid var(--border-color);
+      position: relative;
+      transition: background 0.3s ease;
+    }
+
+    .stage-canvas-mac {
+      background: radial-gradient(circle at 50% 30%, #3a4a5b 0%, #172230 100%) !important;
+    }
+    .stage-canvas-light {
+      background: #ffffff !important;
+    }
+    .stage-canvas-dark {
+      background: #111112 !important;
+    }
+    .stage-canvas-parchment {
+      background: #f4efe4 !important;
+    }
+
+    /* 256px 主图标容器 */
+    .icon-master-256 {
+      width: 200px;
+      height: 200px;
+      position: relative;
+      filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.22));
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .icon-master-256:hover {
+      transform: scale(1.05);
+    }
+
+    .icon-master-256 svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 44px; /* iOS/macOS Squircle */
+    }
+
+    /* 多尺寸自适应预览栏 (128, 64, 32) */
+    .icon-multi-scale {
+      display: flex;
+      align-items: flex-end;
+      gap: 20px;
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px dashed rgba(150, 140, 130, 0.3);
+    }
+
+    .scale-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .scale-preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.15));
+    }
+
+    .scale-128 { width: 64px; height: 64px; }
+    .scale-64 { width: 44px; height: 44px; }
+    .scale-32 { width: 28px; height: 28px; }
+
+    .scale-preview svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .scale-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* 方案信息与理念 */
+    .scheme-info {
+      padding: 24px 24px 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .scheme-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .scheme-num {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--vermilion);
+      letter-spacing: 1px;
+    }
+
+    .scheme-name {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .scheme-concept {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 18px;
+      flex: 1;
+    }
+
+    /* 色彩胶囊 */
+    .scheme-palettes {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .palette-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(0,0,0,0.04);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .palette-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    /* 方案操作栏 (复制与下载) */
+    .scheme-card-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .btn-copy, .btn-download {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-copy {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .btn-copy:hover {
+      background: rgba(0,0,0,0.03);
+      border-color: var(--text-main);
+    }
+
+    .btn-download {
+      background: var(--vermilion);
+      border: 1px solid var(--vermilion);
+      color: #ffffff;
+    }
+
+    .btn-download:hover {
+      background: #8f2f1c;
+      border-color: #8f2f1c;
+    }
+
+    /* 吐司弹窗 */
+    .toast-notice {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #2b241e;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      z-index: 9999;
+    }
+
+    .toast-notice.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast-notice svg {
+      width: 18px;
+      height: 18px;
+      color: #4ade80;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- 顶部主标题栏 -->
+    <header class="header-bar">
+      <div class="header-left">
+        <h1>
+          <span>考研专业课双轨手卷 · 桌面图标方案</span>
+          <span class="header-badge">5套高保真纯SVG方案</span>
+        </h1>
+        <div class="header-desc">
+          专为 706 古代文学 ＋ 807 现当代文学双轨背诵库定制 · 兼顾文史金石气韵与随身双轨听读科技感
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="action-btn" id="btn-theme-toggle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <span id="theme-btn-text">暗色夜间模式</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 背景模拟切换 -->
+    <div class="bg-simulator-wrap">
+      <span>模拟桌面背景：</span>
+      <div class="sim-tag-group">
+        <button class="sim-tag active" data-canvas="parchment">古雅羊皮底</button>
+        <button class="sim-tag" data-canvas="mac">macOS 极光蓝夜</button>
+        <button class="sim-tag" data-canvas="light">纯白无眩光</button>
+        <button class="sim-tag" data-canvas="dark">暗夜玄墨黑</button>
+      </div>
+    </div>
+
+    <!-- 方案展示网格 -->
+    <div class="schemes-grid">
+
+      <!-- ==========================================
+           方案一：金石朱印 · 卷轴回响
+           ========================================== -->
+      <div class="scheme-card">
+        <div class="icon-stage-bg stage-canvas-parchment">
+          <div class="icon-master-256" id="wrap-svg-1">
+            <!-- 方案一 SVG 源码 -->
+            <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="s1-bg" cx="50%" cy="35%" r="65%">
+                  <stop offset="0%" stop-color="#ab3c26"/>
+                  <stop offset="60%" stop-color="#7a2111"/>
+                  <stop offset="100%" stop-color="#4a1106"/>
+                </radialGradient>
+                <linearGradient id="s1-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffe6b0"/>
+                  <stop offset="50%" stop-color="#d49b4b"/>
+                  <stop offset="100%" stop-color="#99631b"/>
+                </linearGradient>
+                <linearGradient id="s1-scroll" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="100%" stop-color="#ebdcc8"/>
+                </linearGradient>
+                <filter id="s1-shadow" x="-10%" y="-10%" width="120%" height="120%">
+                  <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#2a0500" flood-opacity="0.45"/>
+                </filter>
+              </defs>
+              
+              <!-- 基础圆角底壳 -->
+              <rect width="512" height="512" rx="112" fill="url(#s1-bg)"/>
+              
+              <!-- 外围同心音波金纹 (双轨寓意) -->
+              <circle cx="256" cy="256" r="216" stroke="url(#s1-gold)" stroke-width="2.5" stroke-dasharray="14 12" opacity="0.35"/>
+              <circle cx="256" cy="256" r="192" stroke="url(#s1-gold)" stroke-width="3" opacity="0.6"/>
+              
+              <!-- 展开卷轴背景阴影 -->
+              <g filter="url(#s1-shadow)">
+                <!-- 展开的古书手卷绢帛 -->
+                <path d="M128 160 C180 148, 332 148, 384 160 C400 240, 400 300, 384 352 C332 340, 180 340, 128 352 Z" fill="url(#s1-scroll)"/>
+                
+                <!-- 卷轴左右金木轴首 -->
+                <rect x="114" y="140" width="16" height="232" rx="8" fill="url(#s1-gold)"/>
+                <rect x="382" y="140" width="16" height="232" rx="8" fill="url(#s1-gold)"/>
+                
+                <!-- 绢帛上的朱墨经纬与双轨声波 -->
+                <path d="M168 200 Q256 186 344 200" stroke="#7a2111" stroke-width="2.5" stroke-linecap="round" opacity="0.4"/>
+                <path d="M168 230 Q256 216 344 230" stroke="#7a2111" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+                
+                <!-- 中央动态双轨声波徽记 -->
+                <path d="M208 276 L208 284" stroke="url(#s1-gold)" stroke-width="5" stroke-linecap="round"/>
+                <path d="M224 266 L224 294" stroke="url(#s1-gold)" stroke-width="5" stroke-linecap="round"/>
+                <path d="M240 252 L240 308" stroke="url(#s1-gold)" stroke-width="5" stroke-linecap="round"/>
+                <path d="M256 242 L256 318" stroke="url(#s1-gold)" stroke-width="5" stroke-linecap="round"/>
+                <path d="M272 252 L272 308" stroke="url(#s1-gold)" stroke-width="5" stroke-linecap="round"/>
+                <path d="M288 266 L288 294" stroke="url(#s1-gold)" stroke-width="5" stroke-linecap="round"/>
+                <path d="M304 276 L304 284" stroke="url(#s1-gold)" stroke-width="5" stroke-linecap="round"/>
+              </g>
+
+              <!-- 右下角金石朱印印鉴 (706/807) -->
+              <g transform="translate(320, 290)">
+                <rect width="64" height="64" rx="10" fill="#a63a24" stroke="url(#s1-gold)" stroke-width="3"/>
+                <text x="32" y="42" fill="#ffe6b0" font-size="28" font-family="'Noto Serif SC', serif" font-weight="900" text-anchor="middle">卷</text>
+              </g>
+
+              <!-- 高光弧线 -->
+              <path d="M60 70 Q256 18 452 70" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.25"/>
+            </svg>
+          </div>
+
+          <!-- 缩放展示 -->
+          <div class="icon-multi-scale">
+            <div class="scale-item">
+              <div class="scale-preview scale-128" data-ref="1"></div>
+              <span class="scale-label">128px</span>
+            </div>
+            <div class="scale-item">
+              <div class="scale-preview scale-64" data-ref="1"></div>
+              <span class="scale-label">64px</span>
+            </div>
+            <div class="scale-item">
+              <div class="scale-preview scale-32" data-ref="1"></div>
+              <span class="scale-label">32px</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="scheme-info">
+          <div class="scheme-title-row">
+            <span class="scheme-num">SCHEME 01</span>
+            <h3 class="scheme-name">金石朱印 · 卷轴回响</h3>
+          </div>
+          <p class="scheme-concept">
+            以传统故宫朱砂红为底蕴，融合古法丝帛卷轴展开的优美弧线与双轨金纹声学波束，右下角配以“卷”字朱墨印章。庄重沉稳，极具文科专业课首屈一指的金石学术气派。
+          </p>
+          <div class="scheme-palettes">
+            <div class="palette-chip"><span class="palette-dot" style="background:#ab3c26;"></span>朱砂红</div>
+            <div class="palette-chip"><span class="palette-dot" style="background:#d49b4b;"></span>金石金</div>
+            <div class="palette-chip"><span class="palette-dot" style="background:#ebdcc8;"></span>绢帛白</div>
+          </div>
+          <div class="scheme-card-actions">
+            <button class="btn-copy" onclick="copySvgCode(1)">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              复制代码
+            </button>
+            <a class="btn-download" href="javascript:void(0)" onclick="downloadSvg(1, 'icon_scheme_01_seal_scroll.svg')">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              下载 SVG
+            </a>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ==========================================
+           方案二：文心双轨 · 典雅线装
+           ========================================== -->
+      <div class="scheme-card">
+        <div class="icon-stage-bg stage-canvas-parchment">
+          <div class="icon-master-256" id="wrap-svg-2">
+            <!-- 方案二 SVG 源码 -->
+            <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="s2-bg" cx="50%" cy="30%" r="70%">
+                  <stop offset="0%" stop-color="#1f2d3d"/>
+                  <stop offset="50%" stop-color="#111c29"/>
+                  <stop offset="100%" stop-color="#080e15"/>
+                </radialGradient>
+                <linearGradient id="s2-track1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ff7b54"/>
+                  <stop offset="100%" stop-color="#d9381e"/>
+                </linearGradient>
+                <linearGradient id="s2-track2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#48cae4"/>
+                  <stop offset="100%" stop-color="#0077b6"/>
+                </linearGradient>
+                <linearGradient id="s2-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffdf9e"/>
+                  <stop offset="100%" stop-color="#d4af37"/>
+                </linearGradient>
+              </defs>
+
+              <!-- 底盘 -->
+              <rect width="512" height="512" rx="112" fill="url(#s2-bg)"/>
+
+              <!-- 背景微弱文脉星阵 / 双科目 706 & 807 暗记 -->
+              <text x="256" y="96" fill="#ffffff" opacity="0.08" font-size="28" font-family="'Noto Serif SC', serif" font-weight="700" letter-spacing="12" text-anchor="middle">706 · 807</text>
+
+              <!-- 古籍线装书轮廓 (正面翻开书扉) -->
+              <g transform="translate(106, 136)">
+                <!-- 书页厚度基座 -->
+                <path d="M0 190 C60 170, 120 180, 150 200 C180 180, 240 170, 300 190 L300 210 C240 190, 180 200, 150 220 C120 200, 60 190, 0 210 Z" fill="#b0a595"/>
+                <!-- 左书页 (象牙质感) -->
+                <path d="M148 40 C110 32, 50 35, 6 60 L6 200 C50 175, 110 172, 148 180 Z" fill="#fcf9f2"/>
+                <!-- 右书页 -->
+                <path d="M152 40 C190 32, 250 35, 294 60 L294 200 C250 175, 190 172, 152 180 Z" fill="#f5ede0"/>
+                <!-- 书脊装订金色中线 -->
+                <line x1="150" y1="36" x2="150" y2="190" stroke="url(#s2-gold)" stroke-width="5" stroke-linecap="round"/>
+                
+                <!-- 从书页中跃出的双轨立体流光色带 (极其醒目) -->
+                <!-- 轨道一：考场答题 (热烈朱红流光) -->
+                <path d="M20 130 C70 50, 120 170, 200 80 C240 30, 270 90, 310 50" fill="none" stroke="url(#s2-track1)" stroke-width="12" stroke-linecap="round" opacity="0.95"/>
+                <!-- 轨道二：逻辑咬合精解 (睿智幽蓝流光) -->
+                <path d="M-10 100 C50 20, 130 140, 180 60 C230 -10, 280 60, 320 20" fill="none" stroke="url(#s2-track2)" stroke-width="8" stroke-linecap="round" opacity="0.85"/>
+              </g>
+
+              <!-- 精致耳机听读弧线，将传统图书与随身音频完美缝合 -->
+              <path d="M140 200 C140 100, 372 100, 372 200" fill="none" stroke="url(#s2-gold)" stroke-width="4" stroke-dasharray="8 6" opacity="0.6"/>
+
+              <!-- 顶部光晕修饰 -->
+              <circle cx="256" cy="20" r="140" fill="#ff7b54" opacity="0.12" filter="blur(40px)"/>
+            </svg>
+          </div>
+
+          <!-- 缩放展示 -->
+          <div class="icon-multi-scale">
+            <div class="scale-item">
+              <div class="scale-preview scale-128" data-ref="2"></div>
+              <span class="scale-label">128px</span>
+            </div>
+            <div class="scale-item">
+              <div class="scale-preview scale-64" data-ref="2"></div>
+              <span class="scale-label">64px</span>
+            </div>
+            <div class="scale-item">
+              <div class="scale-preview scale-32" data-ref="2"></div>
+              <span class="scale-label">32px</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="scheme-info">
+          <div class="scheme-title-row">
+            <span class="scheme-num">SCHEME 02</span>
+            <h3 class="scheme-name">文心双轨 · 典雅线装</h3>
+          </div>
+          <p class="scheme-concept">
+            深邃的普鲁士藏蓝夜色基底，翻开的象牙白线装古籍书扉中，腾跃出代表“考场直接答题”的朱红流光与代表“逻辑精解”的青蓝流光，将纸质古籍与数字音频融为一体。
+          </p>
+          <div class="scheme-palettes">
+            <div class="palette-chip"><span class="palette-dot" style="background:#111c29;"></span>藏青蓝</div>
+            <div class="palette-chip"><span class="palette-dot" style="background:#ff7b54;"></span>朱红轨</div>
+            <div class="palette-chip"><span class="palette-dot" style="background:#48cae4;"></span>幽蓝轨</div>
+          </div>
+          <div class="scheme-card-actions">
+            <button class="btn-copy" onclick="copySvgCode(2)">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              复制代码
+            </button>
+            <a class="btn-download" href="javascript:void(0)" onclick="downloadSvg(2, 'icon_scheme_02_thread_book_tracks.svg')">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              下载 SVG
+            </a>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ==========================================
+           方案三：朱墨金榜 · 研字玉鼎
+           ========================================== -->
+      <div class="scheme-card">
+        <div class="icon-stage-bg stage-canvas-parchment">
+          <div class="icon-master-256" id="wrap-svg-3">
+            <!-- 方案三 SVG 源码 -->
+            <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="s3-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#2c2825"/>
+                  <stop offset="100%" stop-color="#141211"/>
+                </linearGradient>
+                <linearGradient id="s3-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#fff2cc"/>
+                  <stop offset="35%" stop-color="#e6b85c"/>
+                  <stop offset="100%" stop-color="#9a7126"/>
+                </linearGradient>
+                <linearGradient id="s3-red" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#e74c3c"/>
+                  <stop offset="100%" stop-color="#962d22"/>
+                </linearGradient>
+              </defs>
+
+              <!-- 底座 -->
+              <rect width="512" height="512" rx="112" fill="url(#s3-bg)"/>
+              
+              <!-- 沉金倒角高光内线框 -->
+              <rect x="24" y="24" width="464" height="464" rx="90" fill="none" stroke="url(#s3-gold)" stroke-width="2" opacity="0.4"/>
+
+              <!-- 核心标志：由声频柱构成的大气“文”与“研”之字形结构 -->
+              <g id="s3-emblem" transform="translate(0, 10)">
+                <!-- 顶部一点 (以朱印为顶) -->
+                <circle cx="256" cy="144" r="24" fill="url(#s3-red)"/>
+                <circle cx="256" cy="144" r="30" stroke="url(#s3-gold)" stroke-width="2" opacity="0.6"/>
+
+                <!-- 一横 (书脊与音频长轴) -->
+                <path d="M128 206 L384 206" stroke="url(#s3-gold)" stroke-width="12" stroke-linecap="round"/>
+                <circle cx="128" cy="206" r="8" fill="url(#s3-gold)"/>
+                <circle cx="384" cy="206" r="8" fill="url(#s3-gold)"/>
+
+                <!-- 撇与捺：由双轨均衡器声波柱构成的动态书法笔意 -->
+                <!-- 左撇 (音频微元序列) -->
+                <rect x="238" y="236" width="12" height="48" rx="6" fill="url(#s3-gold)"/>
+                <rect x="214" y="272" width="12" height="64" rx="6" fill="url(#s3-gold)"/>
+                <rect x="188" y="318" width="12" height="72" rx="6" fill="url(#s3-gold)"/>
+                <rect x="160" y="364" width="12" height="56" rx="6" fill="url(#s3-gold)"/>
+
+                <!-- 右捺 (朱墨声学序列) -->
+                <rect x="264" y="236" width="12" height="52" rx="6" fill="url(#s3-red)"/>
+                <rect x="290" y="276" width="12" height="68" rx="6" fill="url(#s3-red)"/>
+                <rect x="318" y="322" width="12" height="76" rx="6" fill="url(#s3-red)"/>
+                <rect x="348" y="370" width="12" height="50" rx="6" fill="url(#s3-red)"/>
+
+                <!-- 底部居中印鉴“研”字 -->
+                <rect x="234" y="336" width="44" height="44" rx="8" fill="#141211" stroke="url(#s3-gold)" stroke-width="2.5"/>
+                <text x="256" y="366" fill="url(#s3-gold)" font-size="22" font-family="'Noto Serif SC', serif" font-weight="900" text-anchor="middle">研</text>
+              </g>
+
+              <!-- 边缘柔和外发光 -->
+              <path d="M70 70 L140 70" stroke="url(#s3-gold)" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+            </svg>
+          </div>
+
+          <!-- 缩放展示 -->
+          <div class="icon-multi-scale">
+            <div class="scale-item">
+              <div class="scale-preview scale-128" data-ref="3"></div>
+              <span class="scale-label">128px</span>
+            </div>
+            <div class="scale-item">
+              <div class="scale-preview scale-64" data-ref="3"></div>
+              <span class="scale-label">64px</span>
+            </div>
+            <div class="scale-item">
+              <div class="scale-preview scale-32" data-ref="3"></div>
+              <span class="scale-label">32px</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="scheme-info">
+          <div class="scheme-title-row">
+            <span class="scheme-num">SCHEME 03</span>
+            <h3 class="scheme-name">朱墨金榜 · 研字玉鼎</h3>
+          </div>
+          <p class="scheme-concept">
+            黑曜石哑光与赤金线框交相辉映，核心图形提炼书法“**文**”与“**研**”之形意，以朱金双色音频均衡器阶梯呈现“撇与捺”，底座定鼎考研金印，威严、利落、辨识度极高。
+          </p>
+          <div class="scheme-palettes">
+            <div class="palette-chip"><span class="palette-dot" style="background:#2c2825;"></span>黑曜石</div>
+            <div class="palette-chip"><span class="palette-dot" style="background:#e6b85c;"></span>赤金箔</div>
+            <div class="palette-chip"><span class="palette-dot" style="background:#e74c3c;"></span>金榜红</div>
+          </div>
+          <div class="scheme-card-actions">
+            <button class="btn-copy" onclick="copySvgCode(3)">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              复制代码
+            </button>
+            <a class="btn-download" href="javascript:void(0)" onclick="downloadSvg(3, 'icon_scheme_03_emblem_wen.svg')">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              下载 SVG
+            </a>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ==========================================
+           方案四：极简双轨声浪 · 乾坤卷
+           ========================================== -->
+      <div class="scheme-card">
+        <div class="icon-stage-bg stage-canvas-parchment">
+          <div class="icon-master-256" id="wrap-svg-4">
+            <!-- 方案四 SVG 源码 -->
+            <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="s4-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#252427"/>
+                  <stop offset="100%" stop-color="#141316"/>
+                </linearGradient>
+                <linearGradient id="s4-coral" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ff7e67"/>
+                  <stop offset="100%" stop-color="#e63946"/>
+                </linearGradient>
+                <linearGradient id="s4-teal" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#2ec4b6"/>
+                  <stop offset="100%" stop-color="#0f8b8d"/>
+                </linearGradient>
+              </defs>
+
+              <!-- 基础底壳 -->
+              <rect width="512" height="512" rx="112" fill="url(#s4-bg)"/>
+
+              <!-- 极简高雅微光外环 -->
+              <rect x="16" y="16" width="480" height="480" rx="98" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.12"/>
+
+              <!-- 莫比乌斯双环/书本切面抽象几何 -->
+              <g transform="translate(256, 256)">
+                <!-- 轨道二：青蓝声学莫比乌斯外环 (向后环绕) -->
+                <path d="M-130 30 C-130 -80, -20 -110, 40 -50 C100 10, 150 70, 90 100 C30 130, -70 90, -130 30 Z" fill="none" stroke="url(#s4-teal)" stroke-width="26" stroke-linecap="round" opacity="0.8"/>
+                
+                <!-- 轨道一：珊瑚朱红莫比乌斯内环 (向前回旋) -->
+                <path d="M130 -30 C130 80, 20 110, -40 50 C-100 -10, -150 -70, -90 -100 C-30 -130, 70 -90, 130 -30 Z" fill="none" stroke="url(#s4-coral)" stroke-width="26" stroke-linecap="round"/>
+
+                <!-- 两个立体交叉节点高光 -->
+                <circle cx="0" cy="0" r="14" fill="#ffffff" opacity="0.9"/>
+                <circle cx="0" cy="0" r="28" fill="#ff7e67" opacity="0.3"/>
+              </g>
+
+              <!-- 下方极简双轨声学发声微点 -->
+              <g transform="translate(196, 410)">
+                <circle cx="20" cy="0" r="5" fill="#ff7e67"/>
+                <circle cx="44" cy="0" r="5" fill="#ffffff" opacity="0.4"/>
+                <circle cx="68" cy="0" r="5" fill="#ffffff" opacity="0.4"/>
+                <circle cx="92" cy="0" r="5" fill="#2ec4b6"/>
+              </g>
+            </svg>
+          </div>
+
+          <!-- 缩放展示 -->
+          <div class="icon-multi-scale">
+            <div class="scale-item">
+              <div class="scale-preview scale-128" data-ref="4"></div>
+              <span class="scale-label">128px</span>
+            </div>
+            <div class="scale-item">
+              <div class="scale-preview scale-64" data-ref="4"></div>
+              <span class="scale-label">64px</span>
+            </div>
+            <div class="scale-item">
+              <div class="scale-preview scale-32" data-ref="4"></div>
+              <span class="scale-label">32px</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="scheme-info">
+          <div class="scheme-title-row">
+            <span class="scheme-num">SCHEME 04</span>
+            <h3 class="scheme-name">极简双轨 · 乾坤莫比乌斯</h3>
+          </div>
+          <p class="scheme-concept">
+            现代轻奢极简设计语言。以两条无缝咬合的珊瑚红与薄荷青三维光带交织成莫比乌斯环，暗喻“**单句三遍循环**”与“**双轨互构**”。小到 32px 仍具有无与伦比的视觉抓眼度。
+          </p>
+          <div class="scheme-palettes">
+            <div class="palette-chip"><span class="palette-dot" style="background:#141316;"></span>深空黑</div>
+            <div class="palette-chip"><span class="palette-dot" style="background:#ff7e67;"></span>珊瑚朱</div>
+            <div class="palette-chip"><span class="palette-dot" style="background:#2ec4b6;"></span>薄荷青</div>
+          </div>
+          <div class="scheme-card-actions">
+            <button class="btn-copy" onclick="copySvgCode(4)">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              复制代码
+            </button>
+            <a class="btn-download" href="javascript:void(0)" onclick="downloadSvg(4, 'icon_scheme_04_mobius_dual.svg')">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              下载 SVG
+            </a>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ==========================================
+           方案五：松柏青简 · 琅琅书声
+           ========================================== -->
+      <div class="scheme-card">
+        <div class="icon-stage-bg stage-canvas-parchment">
+          <div class="icon-master-256" id="wrap-svg-5">
+            <!-- 方案五 SVG 源码 -->
+            <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="s5-bg" cx="50%" cy="30%" r="75%">
+                  <stop offset="0%" stop-color="#245a44"/>
+                  <stop offset="60%" stop-color="#143729"/>
+                  <stop offset="100%" stop-color="#091b13"/>
+                </radialGradient>
+                <linearGradient id="s5-bamboo" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#fdfbf7"/>
+                  <stop offset="100%" stop-color="#e2d2ba"/>
+                </linearGradient>
+                <linearGradient id="s5-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffe8a3"/>
+                  <stop offset="100%" stop-color="#c99738"/>
+                </linearGradient>
+                <linearGradient id="s5-seal" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#e04a32"/>
+                  <stop offset="100%" stop-color="#a62c19"/>
+                </linearGradient>
+              </defs>
+
+              <!-- 底板 -->
+              <rect width="512" height="512" rx="112" fill="url(#s5-bg)"/>
+
+              <!-- 松柏青玉质感微光外轮廓 -->
+              <rect x="20" y="20" width="472" height="472" rx="94" fill="none" stroke="url(#s5-gold)" stroke-width="2" opacity="0.35"/>
+
+              <!-- 扇面展开的古典竹简排布 (象征古代文学 706) -->
+              <g id="s5-bamboo-group" transform="translate(256, 270)">
+                <!-- 五片竹简扇形散开 -->
+                <rect x="-140" y="-120" width="28" height="180" rx="8" fill="url(#s5-bamboo)" transform="rotate(-24 -126 -30)"/>
+                <rect x="-70" y="-135" width="28" height="190" rx="8" fill="url(#s5-bamboo)" transform="rotate(-12 -56 -40)"/>
+                <rect x="-14" y="-140" width="28" height="200" rx="8" fill="url(#s5-bamboo)"/>
+                <rect x="42" y="-135" width="28" height="190" rx="8" fill="url(#s5-bamboo)" transform="rotate(12 56 -40)"/>
+                <rect x="112" y="-120" width="28" height="180" rx="8" fill="url(#s5-bamboo)" transform="rotate(24 126 -30)"/>
+
+                <!-- 竹简穿连之红丝编绳 (双轨丝线) -->
+                <path d="M-150 -50 Q0 -65 150 -50" fill="none" stroke="#e04a32" stroke-width="4" stroke-linecap="round"/>
+                <path d="M-150 10 Q0 -5 150 10" fill="none" stroke="url(#s5-gold)" stroke-width="4" stroke-linecap="round"/>
+                
+                <!-- 琴弦回音波束 (象征随身听读通读音色) -->
+                <path d="M-90 -160 Q0 -195 90 -160" fill="none" stroke="url(#s5-gold)" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+                <path d="M-120 -185 Q0 -230 120 -185" fill="none" stroke="url(#s5-gold)" stroke-width="2.5" stroke-linecap="round" opacity="0.4"/>
+              </g>
+
+              <!-- 黄金压胜朱印 -->
+              <g transform="translate(224, 340)">
+                <rect width="64" height="64" rx="12" fill="url(#s5-seal)" stroke="url(#s5-gold)" stroke-width="2.5"/>
+                <text x="32" y="44" fill="#fff5ea" font-size="28" font-family="'Noto Serif SC', serif" font-weight="900" text-anchor="middle">文</text>
+              </g>
+            </svg>
+          </div>
+
+          <!-- 缩放展示 -->
+          <div class="icon-multi-scale">
+            <div class="scale-item">
+              <div class="scale-preview scale-128" data-ref="5"></div>
+              <span class="scale-label">128px</span>
+            </div>
+            <div class="scale-item">
+              <div class="scale-preview scale-64" data-ref="5"></div>
+              <span class="scale-label">64px</span>
+            </div>
+            <div class="scale-item">
+              <div class="scale-preview scale-32" data-ref="5"></div>
+              <span class="scale-label">32px</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="scheme-info">
+          <div class="scheme-title-row">
+            <span class="scheme-num">SCHEME 05</span>
+            <h3 class="scheme-name">松柏青简 · 琅琅书声</h3>
+          </div>
+          <p class="scheme-concept">
+            采用文史学界崇尚的“**松柏青**”为主色，五片温润玉竹简以扇面展开，并由朱金双色彩绳编连，顶部泛起金色书声琴弦音波，底衔“文”字朱印，清润高洁、书香氤氲。
+          </p>
+          <div class="scheme-palettes">
+            <div class="palette-chip"><span class="palette-dot" style="background:#143729;"></span>松柏青</div>
+            <div class="palette-chip"><span class="palette-dot" style="background:#e2d2ba;"></span>温润简</div>
+            <div class="palette-chip"><span class="palette-dot" style="background:#e04a32;"></span>琅琅赤</div>
+          </div>
+          <div class="scheme-card-actions">
+            <button class="btn-copy" onclick="copySvgCode(5)">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              复制代码
+            </button>
+            <a class="btn-download" href="javascript:void(0)" onclick="downloadSvg(5, 'icon_scheme_05_pine_bamboo.svg')">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              下载 SVG
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 吐司通知条 -->
+  <div class="toast-notice" id="toast">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <span id="toast-text">已成功复制该方案的完整纯 SVG 源码！</span>
+  </div>
+
+  <script>
+    // 1. 初始化多尺度预览克隆
+    document.addEventListener('DOMContentLoaded', () => {
+      for (let i = 1; i <= 5; i++) {
+        const sourceSvg = document.querySelector(`#wrap-svg-${i} svg`);
+        if (!sourceSvg) continue;
+        const targets = document.querySelectorAll(`.scale-preview[data-ref="${i}"]`);
+        targets.forEach(t => {
+          t.innerHTML = sourceSvg.outerHTML;
+        });
+      }
+    });
+
+    // 2. 模拟背景切换逻辑
+    const simTags = document.querySelectorAll('.sim-tag');
+    const stages = document.querySelectorAll('.icon-stage-bg');
+    simTags.forEach(btn => {
+      btn.addEventListener('click', () => {
+        simTags.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cType = btn.dataset.canvas;
+        stages.forEach(st => {
+          st.className = `icon-stage-bg stage-canvas-${cType}`;
+        });
+      });
+    });
+
+    // 3. 深色模式切换
+    const themeBtn = document.getElementById('btn-theme-toggle');
+    const themeBtnText = document.getElementById('theme-btn-text');
+    let isDark = false;
+    themeBtn.addEventListener('click', () => {
+      isDark = !isDark;
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      themeBtnText.textContent = isDark ? '日间温润模式' : '暗色夜间模式';
+    });
+
+    // 4. 复制 SVG 代码到剪贴板
+    function copySvgCode(schemeNum) {
+      const svgEl = document.querySelector(`#wrap-svg-${schemeNum} svg`);
+      if (!svgEl) return;
+      const code = svgEl.outerHTML;
+      navigator.clipboard.writeText(code).then(() => {
+        showToast(`方案 0${schemeNum} 的完整 SVG 源码已复制到剪贴板！`);
+      }).catch(() => {
+        showToast('复制失败，请手动右键查看源代码。');
+      });
+    }
+
+    // 5. 下载 SVG 文件
+    function downloadSvg(schemeNum, filename) {
+      const svgEl = document.querySelector(`#wrap-svg-${schemeNum} svg`);
+      if (!svgEl) return;
+      const code = '<?xml version="1.0" encoding="UTF-8"?>\n' + svgEl.outerHTML;
+      const blob = new Blob([code], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast(`已开始下载 ${filename} 矢量图标！`);
+    }
+
+    // 6. 吐司提示
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      const text = document.getElementById('toast-text');
+      text.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => {
+        t.classList.remove('show');
+      }, 2600);
+    }
+  </script>
+</body>
+</html>
