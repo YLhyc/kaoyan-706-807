@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f2e9">
+  <title>2027 考研专业课双轨随身背诵手卷 · 807与706独立专属研读平台</title>
+  <link rel="stylesheet" href="app.css">
+  <!-- 典雅宋体与霞鹜文楷在线字体库（有网时高保真呈现，离线时无缝回退系统字体） -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css">
+
+  <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
+  <script src="data/kaoyan_data.js"></script>
+</head>
+<body>
+
+  <!-- 顶部主导航栏 -->
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="brand-icon">
+        <!-- 卷轴/书籍矢量图 -->
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+        </svg>
+      </div>
+      <div class="brand-title-wrap">
+        <div class="brand-main-title">
+          <span>考研专业课双轨背诵手卷</span>
+          <span class="brand-sub-badge">独立专版</span>
+        </div>
+        <div class="brand-voice-info">
+          <span>通读音色：</span>
+          <span class="voice-badge">龙安朗 · 清爽利落全段通读</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 科目切换大药丸 -->
+    <div class="subject-pill-group">
+      <button id="btn-subject-807" class="subject-btn active">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+        </svg>
+        <span>807 现当代文学</span>
+        <span id="count-807" class="count-tag">20题</span>
+      </button>
+      <button id="btn-subject-706" class="subject-btn">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="8" y1="6" x2="21" y2="6"></line>
+          <line x1="8" y1="12" x2="21" y2="12"></line>
+          <line x1="8" y1="18" x2="21" y2="18"></line>
+          <line x1="3" y1="6" x2="3.01" y2="6"></line>
+          <line x1="3" y1="12" x2="3.01" y2="12"></line>
+          <line x1="3" y1="18" x2="3.01" y2="18"></line>
+        </svg>
+        <span>706 古代文学</span>
+        <span id="count-706" class="count-tag">16题</span>
+      </button>
+    </div>
+
+    <!-- 顶部辅助操作 -->
+    <div class="header-actions">
+      <button id="btn-font-dec" class="action-btn" title="减小正文字号">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>A-</span>
+      </button>
+      <button id="btn-font-inc" class="action-btn" title="增大正文字号">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>A+</span>
+      </button>
+
+            <button id="btn-font-switch" class="action-btn font-switch-btn" title="点击切换字体：文人雅宋 / 霞鹜温楷 / 现代精黑 / 典雅仿宋">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 20h16"></path>
+          <path d="M12 4v16"></path>
+          <path d="M7 8h10"></path>
+        </svg>
+        <span id="font-current-name">雅宋</span>
+      </button>
+      <button id="btn-theme-toggle" class="action-btn" title="切换暖杏羊皮纸 / 玄墨夜读">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <span>纸境</span>
+      </button>
+
+      <button id="btn-mobile-menu" class="action-btn mobile-menu-toggle" title="展开题库菜单">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- 主体工作区 -->
+  <main class="app-body">
+    <!-- 左侧考点索引列表 -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-search-box">
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input id="search-input" class="search-input" type="text" placeholder="检索考点名、作家、体裁或题眼..." autocomplete="off">
+        </div>
+
+        <div class="filter-pills">
+          <button class="filter-pill active" data-tier="all">全部考点</button>
+          <button class="filter-pill" data-tier="T0">T0 极高频必背</button>
+          <button class="filter-pill" data-tier="T1">T1 核心考点</button>
+          <button class="filter-pill" data-tier="T2">T2 重点拓展</button>
+        </div>
+      </div>
+
+      <!-- 考点卡片容器 -->
+      <div id="item-list" class="item-list-container">
+        <!-- JS 动态注入 -->
+      </div>
+    </aside>
+
+    <!-- 右侧沉浸研读舞台 -->
+    <section class="main-stage">
+      <div class="stage-wrapper">
+        <!-- 考题属性看板 -->
+        <div class="stage-header-card">
+          <div class="question-nav-breadcrumbs">
+            <span id="stage-subject" class="breadcrumb-item">807 专业课</span>
+            <span>/</span>
+            <span id="stage-topic" class="breadcrumb-item">名家专章</span>
+            <span>/</span>
+            <span id="stage-score" class="score-badge">30分论述</span>
+            <span id="stage-tier" class="tier-badge tier-T0">T0</span>
+          </div>
+
+          <h1 id="stage-title" class="stage-question-title">加载中...</h1>
+
+          <!-- 双轨切换栏 -->
+          <div class="track-switcher-wrap">
+            <div class="track-tabs">
+              <button id="tab-track-1" class="track-tab-btn active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <span>【轨道一】考场直接答题完整版</span>
+              </button>
+              <button id="tab-track-2" class="track-tab-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                  <polyline points="2 17 12 22 22 17"></polyline>
+                  <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+                <span>【轨道二】答题版内部逻辑精解版</span>
+              </button>
+            </div>
+
+            <div class="track-meta-tip">
+              <span class="track-voice-pill">龙安朗 · 通读</span>
+              <span>点击任意句立即跳转试听</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 正文沉浸纸卷 -->
+        <article class="paper-container">
+          <div id="paper-content">
+            <!-- JS 渲染段落与带时间戳的点读句子 -->
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- 底部常驻悬浮控制底座 (Audio Dock) -->
+  <footer class="player-dock">
+    <!-- 进度条轨道 -->
+    <div class="dock-progress-row">
+      <span id="time-current" class="progress-time">00:00</span>
+      <div id="progress-bar" class="progress-track-wrapper">
+        <div class="progress-bar-bg">
+          <div id="progress-fill" class="progress-bar-fill"></div>
+        </div>
+      </div>
+      <span id="time-total" class="progress-time">00:00</span>
+    </div>
+
+    <!-- 控制按键排 -->
+    <div class="dock-controls-row">
+      <div class="dock-left-info">
+        <span id="dock-title" class="dock-active-topic">未加载音频</span>
+        <span id="dock-track-pill" class="dock-active-track">轨道一</span>
+      </div>
+
+      <div class="dock-center-controls">
+        <button id="dock-prev-btn" class="dock-btn" title="上一考点">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="19 20 9 12 19 4 19 20"></polygon>
+            <line x1="5" y1="19" x2="5" y2="5"></line>
+          </svg>
+        </button>
+
+        <button id="dock-rewind-btn" class="dock-btn" title="快退 5 秒">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+        </button>
+
+        <button id="dock-play-btn" class="dock-btn dock-btn-play" title="播放音频">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="6 4 20 12 6 20 6 4"></polygon>
+          </svg>
+        </button>
+
+        <button id="dock-forward-btn" class="dock-btn" title="快进 5 秒">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
+        </button>
+
+        <button id="dock-next-btn" class="dock-btn" title="下一考点">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 4 15 12 5 20 5 4"></polygon>
+            <line x1="19" y1="5" x2="19" y2="19"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="dock-right-settings">
+        <button id="btn-loop-mode" class="pill-mode-btn" title="切换全篇顺读 / 单句三遍精背循环">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="17 1 21 5 17 9"></polyline>
+            <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+            <polyline points="7 23 3 19 7 15"></polyline>
+            <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+          </svg>
+          <span>全篇顺读</span>
+        </button>
+
+        <button id="btn-speed" class="pill-mode-btn" title="调整播放倍速">
+          <span>1.0x</span>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

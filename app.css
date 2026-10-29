@@ -1,0 +1,1267 @@
+/* 2027 考研专业课双轨随身背诵手卷 · 独立研读专版样式 */
+:root {
+  /* 方案一：羊皮暖杏专研学术纸感 (抗疲劳、无冷白眩光、金石朱墨) */
+  --bg-canvas: #f5f2e9;
+  --bg-sidebar: #eae5d7;
+  --bg-card: #fcfbfa;
+  --bg-card-hover: #ffffff;
+  --bg-card-active: #faf6ee;
+  --bg-dock: rgba(245, 242, 233, 0.94);
+  
+  --ink-primary: #2b241e;
+  --ink-secondary: #594c40;
+  --ink-muted: #8a7c6f;
+  --ink-subtle: #b3a598;
+  
+  --line-main: #dfd8ca;
+  --line-subtle: #eae4d8;
+  --line-strong: #c8bfae;
+  
+  /* 金石朱墨印记色 */
+  --vermilion: #a63a24;
+  --vermilion-soft: #f9edea;
+  --vermilion-border: #f0cfc8;
+  --vermilion-hover: #8f2f1c;
+  
+  /* 琥珀金与沉香茶 */
+  --amber: #b06917;
+  --amber-soft: #fcf5ec;
+  --wood: #6d5642;
+  --wood-soft: #f3ede4;
+  
+  /* 松柏青 (T1 核心) */
+  --pine: #2e664f;
+  --pine-soft: #eaf3ee;
+  
+  /* 重点聚光高亮 (Karaoke Spotlight) */
+  --spotlight-bg: #ffe4ba;
+  --spotlight-border: #f5b041;
+  --spotlight-glow: rgba(245, 176, 65, 0.22);
+  --spotlight-text: #201812;
+  
+  --font-base: 17px;
+  --sidebar-w: 380px;
+  --header-h: 64px;
+  --dock-h: 88px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(43, 36, 30, 0.05);
+  --shadow-md: 0 4px 12px rgba(43, 36, 30, 0.08);
+  --shadow-lg: 0 10px 25px rgba(43, 36, 30, 0.12);
+}
+
+[data-theme="dark"] {
+  --bg-canvas: #161514;
+  --bg-sidebar: #1e1c1a;
+  --bg-card: #23211e;
+  --bg-card-hover: #2a2723;
+  --bg-card-active: #2f2a24;
+  --bg-dock: rgba(22, 21, 20, 0.94);
+  
+  --ink-primary: #e6e2da;
+  --ink-secondary: #aba195;
+  --ink-muted: #7d7367;
+  --ink-subtle: #574f45;
+  
+  --line-main: #332f29;
+  --line-subtle: #292621;
+  --line-strong: #453f37;
+  
+  --vermilion: #d96248;
+  --vermilion-soft: #38211d;
+  --vermilion-border: #5a2e26;
+  --vermilion-hover: #eb745b;
+  
+  --amber: #dca03f;
+  --amber-soft: #382a17;
+  --wood: #a68c72;
+  --wood-soft: #2b251f;
+  
+  --pine: #4ca382;
+  --pine-soft: #182e25;
+  
+  --spotlight-bg: #4a3410;
+  --spotlight-border: #c48a29;
+  --spotlight-glow: rgba(196, 138, 41, 0.3);
+  --spotlight-text: #fff3db;
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  line-height: 1.7;
+  font-size: var(--font-base);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* 顶部主导航栏 */
+.app-header {
+  height: var(--header-h);
+  background-color: var(--bg-canvas);
+  border-bottom: 1px solid var(--line-main);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--vermilion);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brand-title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-main-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--ink-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-sub-badge {
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 10px;
+  background-color: var(--vermilion-soft);
+  color: var(--vermilion);
+  border: 1px solid var(--vermilion-border);
+  font-weight: 600;
+}
+
+.brand-voice-info {
+  font-size: 12px;
+  color: var(--ink-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.voice-badge {
+  color: var(--vermilion);
+  font-weight: 600;
+}
+
+/* 科目切换大药丸 */
+.subject-pill-group {
+  display: inline-flex;
+  background-color: var(--bg-sidebar);
+  border: 1px solid var(--line-main);
+  padding: 4px;
+  border-radius: 30px;
+  gap: 4px;
+}
+
+.subject-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 18px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.subject-btn .count-tag {
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.06);
+  color: var(--ink-muted);
+}
+
+.subject-btn.active {
+  background-color: var(--bg-card);
+  color: var(--vermilion);
+  box-shadow: var(--shadow-sm);
+}
+
+.subject-btn.active .count-tag {
+  background-color: var(--vermilion-soft);
+  color: var(--vermilion);
+}
+
+/* 顶部右侧控制区 */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.action-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--line-main);
+  color: var(--ink-secondary);
+  height: 36px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.action-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--ink-primary);
+  border-color: var(--line-strong);
+}
+
+.action-btn svg {
+  width: 17px;
+  height: 17px;
+  display: block;
+}
+
+.mobile-menu-toggle {
+  display: none;
+}
+
+/* 主内容双栏布局 */
+.app-body {
+  flex: 1;
+  display: flex;
+  height: calc(100vh - var(--header-h) - var(--dock-h));
+  overflow: hidden;
+  position: relative;
+}
+
+/* 左侧题库导航列表栏 */
+.sidebar {
+  width: var(--sidebar-w);
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--line-main);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.sidebar-search-box {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--line-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.search-input-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.search-input-wrap svg {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--ink-muted);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px 0 34px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line-main);
+  background: var(--bg-card);
+  color: var(--ink-primary);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: var(--vermilion);
+}
+
+.filter-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter-pill {
+  border: 1px solid var(--line-main);
+  background: var(--bg-card);
+  color: var(--ink-secondary);
+  padding: 3px 10px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.filter-pill:hover {
+  border-color: var(--vermilion);
+}
+
+.filter-pill.active {
+  background: var(--vermilion);
+  color: #fff;
+  border-color: var(--vermilion);
+}
+
+.item-list-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 考点卡片 */
+.question-card-item {
+  background: var(--bg-card);
+  border: 1px solid var(--line-main);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: all 0.18s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.question-card-item:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--line-strong);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.question-card-item.active {
+  background: var(--bg-card-active);
+  border-color: var(--vermilion);
+  box-shadow: var(--shadow-sm);
+}
+
+.question-card-item.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--vermilion);
+}
+
+.card-top-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.card-tag-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tier-badge {
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.tier-T0 {
+  background-color: var(--vermilion-soft);
+  color: var(--vermilion);
+  border: 1px solid var(--vermilion-border);
+}
+
+.tier-T1 {
+  background-color: var(--pine-soft);
+  color: var(--pine);
+  border: 1px solid rgba(46, 102, 79, 0.2);
+}
+
+.tier-T2 {
+  background-color: var(--wood-soft);
+  color: var(--wood);
+  border: 1px solid rgba(109, 86, 66, 0.2);
+}
+
+.score-badge {
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background-color: var(--amber-soft);
+  color: var(--amber);
+  border: 1px solid rgba(176, 105, 23, 0.2);
+  font-weight: 600;
+}
+
+.card-audio-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+
+.card-audio-status.has-audio {
+  color: var(--vermilion);
+  font-weight: 600;
+}
+
+.card-audio-status svg {
+  width: 14px;
+  height: 14px;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--ink-primary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-desc-meta {
+  font-size: 12px;
+  color: var(--ink-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 右侧核心研读与听读舞台 */
+.main-stage {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stage-wrapper {
+  width: 100%;
+  max-width: 820px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 顶部考题看板 */
+.stage-header-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-main);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.question-nav-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.breadcrumb-item {
+  color: var(--ink-secondary);
+  font-weight: 500;
+}
+
+.stage-question-title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--ink-primary);
+  letter-spacing: -0.3px;
+}
+
+/* 双轨切换控制栏 */
+.track-switcher-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--line-subtle);
+  padding-top: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.track-tabs {
+  display: inline-flex;
+  background-color: var(--bg-sidebar);
+  padding: 4px;
+  border-radius: 10px;
+  gap: 4px;
+}
+
+.track-tab-btn {
+  border: none;
+  background: transparent;
+  padding: 8px 16px;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.track-tab-btn.active {
+  background-color: var(--bg-card);
+  color: var(--vermilion);
+  box-shadow: var(--shadow-sm);
+}
+
+.track-tab-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.track-meta-tip {
+  font-size: 12px;
+  color: var(--ink-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.track-voice-pill {
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: var(--vermilion-soft);
+  color: var(--vermilion);
+  font-weight: 600;
+  font-size: 11px;
+}
+
+/* 正文渲染纸面 */
+.paper-container {
+  background-color: var(--bg-card);
+  border: 1px solid var(--line-main);
+  border-radius: var(--radius-lg);
+  padding: 36px 40px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.paper-section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 2px solid var(--vermilion);
+  padding-bottom: 8px;
+  margin-top: 10px;
+}
+
+.paper-section-title:first-child {
+  margin-top: 0;
+}
+
+.paper-paragraph {
+  font-size: var(--font-base);
+  line-height: 2.1;
+  color: var(--ink-primary);
+  text-align: justify;
+  letter-spacing: 0.3px;
+  margin-bottom: 12px;
+}
+
+/* 句子微元 (Sentences) 与聚光高亮 (Karaoke Spotlight) */
+.recite-sent {
+  padding: 2px 3px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+}
+
+.recite-sent:hover {
+  background-color: rgba(245, 176, 65, 0.15);
+}
+
+.recite-sent.active-spotlight {
+  background-color: var(--spotlight-bg);
+  color: var(--spotlight-text);
+  box-shadow: 0 0 0 2px var(--spotlight-border), 0 2px 8px var(--spotlight-glow);
+  font-weight: 500;
+}
+
+.recite-sent strong {
+  font-weight: 700;
+  color: var(--vermilion);
+  border-bottom: 1px solid rgba(166, 58, 36, 0.35);
+  padding-bottom: 1px;
+}
+
+.active-spotlight strong {
+  color: #801d0a;
+}
+
+/* 底部常驻悬浮控制底座 (Audio Dock) */
+.player-dock {
+  height: var(--dock-h);
+  background-color: var(--bg-dock);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line-main);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px 24px 12px;
+  flex-shrink: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-md);
+}
+
+/* 进度条轨道 */
+.dock-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.progress-time {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-muted);
+  width: 42px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.progress-track-wrapper {
+  flex: 1;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 5px;
+  background-color: var(--line-strong);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+  transition: height 0.15s ease;
+}
+
+.progress-track-wrapper:hover .progress-bar-bg {
+  height: 8px;
+}
+
+.progress-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  background: linear-gradient(90deg, #d4654e, var(--vermilion));
+  border-radius: 3px;
+  transition: width 0.08s linear;
+}
+
+/* 控制按键排 */
+.dock-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.dock-left-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 280px;
+  overflow: hidden;
+}
+
+.dock-active-topic {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dock-active-track {
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background-color: var(--vermilion-soft);
+  color: var(--vermilion);
+  white-space: nowrap;
+}
+
+.dock-center-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dock-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  transition: all 0.15s ease;
+}
+
+.dock-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--ink-primary);
+}
+
+.dock-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.dock-btn-play {
+  width: 48px;
+  height: 48px;
+  background-color: var(--vermilion);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(166, 58, 36, 0.35);
+}
+
+.dock-btn-play:hover {
+  background-color: var(--vermilion-hover);
+  color: #fff;
+  transform: scale(1.04);
+}
+
+.dock-btn-play svg {
+  width: 24px;
+  height: 24px;
+}
+
+.dock-right-settings {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 280px;
+  justify-content: flex-end;
+}
+
+/* 模式与倍速切换小胶囊 */
+.pill-mode-btn {
+  border: 1px solid var(--line-main);
+  background: var(--bg-card);
+  color: var(--ink-secondary);
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s;
+}
+
+.pill-mode-btn.active {
+  background: var(--amber-soft);
+  color: var(--amber);
+  border-color: var(--amber);
+}
+
+.pill-mode-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* 响应式断点 */
+@media (max-width: 900px) {
+  .sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 150;
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .mobile-menu-toggle {
+    display: inline-flex;
+  }
+  
+  .main-stage {
+    padding: 16px 14px 30px;
+  }
+  
+  .paper-container {
+    padding: 22px 18px;
+  }
+  
+  .dock-left-info, .dock-right-settings {
+    width: auto;
+  }
+  
+  .dock-left-info {
+    display: none;
+  }
+}
+
+
+/* ========================================================
+   2027 考研专业课双轨随身背诵手卷 · 字体体系与高保真研读排版系统
+   ======================================================== */
+
+/* 多样化研读字体体系（复用政治背诵手册同款学术字体） */
+:root {
+  --font-song: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSongti-SC-Regular", "SimSun", "STSong", serif;
+  --font-kai: "LXGW WenKai Screen", "LXGWWenKaiScreen", "Kaiti SC", "STKaiti", "KaiTi", serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "SF Pro Text", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+  --font-fangsong: "FangSong", "STFangsong", "仿宋", "Noto Serif SC", serif;
+
+  --font-current: var(--font-song);
+}
+
+[data-font="song"] { --font-current: var(--font-song); }
+[data-font="kai"] { --font-current: var(--font-kai); }
+[data-font="sans"] { --font-current: var(--font-sans); }
+[data-font="fangsong"] { --font-current: var(--font-fangsong); }
+
+body, .paper-container, .recite-sent, .exam-section-card, .gold-sent-card, .teacher-explain-card {
+  font-family: var(--font-current);
+}
+
+/* 顶部操作栏字体切换按钮 */
+.font-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--line-main);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.font-switch-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--vermilion);
+  border-color: var(--vermilion-border);
+}
+
+/* --- 考场规格顶部大条 --- */
+.exam-spec-banner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--line-main);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.spec-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.chip-type {
+  background: var(--vermilion-soft);
+  color: var(--vermilion);
+  border: 1px solid var(--vermilion-border);
+}
+
+.chip-score {
+  background: rgba(176, 105, 23, 0.1);
+  color: var(--amber);
+  border: 1px solid rgba(176, 105, 23, 0.25);
+}
+
+.chip-time {
+  background: var(--wood-soft, rgba(109, 86, 66, 0.1));
+  color: var(--wood);
+  border: 1px solid rgba(109, 86, 66, 0.2);
+}
+
+.chip-words {
+  background: var(--pine-soft, rgba(46, 102, 79, 0.1));
+  color: var(--pine);
+  border: 1px solid rgba(46, 102, 79, 0.25);
+}
+
+/* --- 大题标题区域 --- */
+.exam-title-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--line-main);
+}
+
+.title-seal {
+  background: var(--vermilion);
+  color: #ffffff;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.exam-title-h2 {
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--ink-primary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* --- 考场答题板块卡片 --- */
+.exam-section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-main);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 22px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.exam-section-card:hover {
+  border-color: var(--line-strong);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+.section-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--line-subtle);
+}
+
+.sec-badge {
+  font-size: 13.5px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+
+.badge-intro {
+  background: var(--vermilion-soft);
+  color: var(--vermilion);
+  border: 1px solid var(--vermilion-border);
+}
+
+.badge-point {
+  background: var(--amber-soft);
+  color: var(--amber);
+  border: 1px solid rgba(176, 105, 23, 0.25);
+}
+
+.badge-conclusion {
+  background: var(--pine-soft);
+  color: var(--pine);
+  border: 1px solid rgba(46, 102, 79, 0.25);
+}
+
+.sec-desc {
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+.section-card-content {
+  font-size: 17px;
+  line-height: 2.0;
+  color: var(--ink-primary);
+  text-align: justify;
+}
+
+/* --- 论述中心句高亮 --- */
+.thesis-statement {
+  display: inline;
+  background: rgba(166, 58, 36, 0.08);
+  border-bottom: 2px solid var(--vermilion);
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: 600;
+  color: var(--vermilion);
+}
+
+.thesis-pill {
+  display: inline-flex;
+  align-items: center;
+  background: var(--vermilion);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 3px;
+  margin-right: 6px;
+  vertical-align: middle;
+  line-height: 1.3;
+}
+
+/* --- 核心关键词标红粗体 --- */
+.kw-red {
+  color: var(--vermilion);
+  font-weight: 700;
+  border-bottom: 1.5px solid rgba(166, 58, 36, 0.35);
+  padding-bottom: 1px;
+}
+
+/* --- 轨道二：全局审题与立意建构卡片 --- */
+.global-framework-box {
+  background: var(--bg-card);
+  border: 1.5px solid var(--vermilion-border);
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(166, 58, 36, 0.04);
+}
+
+.framework-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--vermilion);
+  margin-bottom: 6px;
+}
+
+.framework-tip {
+  font-size: 12.5px;
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+
+.framework-qa-card {
+  background: rgba(176, 105, 23, 0.06);
+  border-left: 3.5px solid var(--amber);
+  padding: 10px 14px;
+  border-radius: 4px;
+  margin: 10px 0;
+}
+
+.qa-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--amber);
+  margin-bottom: 4px;
+}
+
+/* --- 轨道二：逻辑板块与金句卡片 --- */
+.logic-block-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-main);
+  border-radius: 8px;
+  padding: 20px 22px;
+  margin-bottom: 24px;
+}
+
+.logic-block-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1.5px solid var(--line-main);
+}
+
+.logic-sec-pill {
+  background: var(--wood);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+
+.logic-block-title h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink-primary);
+  margin: 0;
+}
+
+.gold-sent-card {
+  background: rgba(166, 58, 36, 0.05);
+  border: 1.5px solid var(--vermilion-border);
+  border-left: 4px solid var(--vermilion);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 14px 0 10px 0;
+}
+
+.gold-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.gold-badge {
+  background: var(--vermilion);
+  color: #ffffff;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+.gold-tip {
+  font-size: 11.5px;
+  color: var(--ink-muted);
+}
+
+.gold-content {
+  font-size: 17.5px;
+  font-weight: 600;
+  line-height: 1.85;
+  color: var(--ink-primary);
+}
+
+.teacher-explain-card {
+  background: var(--bg-canvas);
+  border: 1px solid var(--line-main);
+  border-radius: 6px;
+  padding: 12px 18px;
+  margin-bottom: 18px;
+}
+
+.explain-card-header {
+  margin-bottom: 6px;
+}
+
+.explain-badge {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+}
+
+.explain-content {
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--ink-secondary);
+}
+
+/* 暗色夜间模式适配 */
+[data-theme="dark"] .exam-spec-banner,
+[data-theme="dark"] .exam-section-card,
+[data-theme="dark"] .global-framework-box,
+[data-theme="dark"] .logic-block-card {
+  background: var(--bg-card);
+  border-color: var(--line-main);
+}
+
+[data-theme="dark"] .kw-red,
+[data-theme="dark"] .thesis-statement {
+  color: #ff7860;
+  border-bottom-color: rgba(255, 120, 96, 0.5);
+}
+
+[data-theme="dark"] .gold-sent-card {
+  background: rgba(255, 120, 96, 0.08);
+  border-color: rgba(255, 120, 96, 0.35);
+}
+
+[data-theme="dark"] .teacher-explain-card {
+  background: rgba(255, 255, 255, 0.03);
+}
