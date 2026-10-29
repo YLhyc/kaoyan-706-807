@@ -289,7 +289,9 @@
         s.addEventListener('click', () => {
           const sentId = parseInt(s.dataset.sentId, 10);
           const start = parseFloat(s.dataset.start);
-          seekToSentence(sentId, start);
+          if (!isNaN(start)) {
+            seekToSentence(sentId, start);
+          }
         });
       });
       return;
