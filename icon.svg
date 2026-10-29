@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="s2-bg" cx="50%" cy="30%" r="70%">
+                  <stop offset="0%" stop-color="#1f2d3d"/>
+                  <stop offset="50%" stop-color="#111c29"/>
+                  <stop offset="100%" stop-color="#080e15"/>
+                </radialGradient>
+                <linearGradient id="s2-track1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ff7b54"/>
+                  <stop offset="100%" stop-color="#d9381e"/>
+                </linearGradient>
+                <linearGradient id="s2-track2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#48cae4"/>
+                  <stop offset="100%" stop-color="#0077b6"/>
+                </linearGradient>
+                <linearGradient id="s2-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffdf9e"/>
+                  <stop offset="100%" stop-color="#d4af37"/>
+                </linearGradient>
+              </defs>
+
+              <!-- 底盘 -->
+              <rect width="512" height="512" rx="112" fill="url(#s2-bg)"/>
+
+              <!-- 背景微弱文脉星阵 / 双科目 706 & 807 暗记 -->
+              <text x="256" y="96" fill="#ffffff" opacity="0.08" font-size="28" font-family="'Noto Serif SC', serif" font-weight="700" letter-spacing="12" text-anchor="middle">706 · 807</text>
+
+              <!-- 古籍线装书轮廓 (正面翻开书扉) -->
+              <g transform="translate(106, 136)">
+                <!-- 书页厚度基座 -->
+                <path d="M0 190 C60 170, 120 180, 150 200 C180 180, 240 170, 300 190 L300 210 C240 190, 180 200, 150 220 C120 200, 60 190, 0 210 Z" fill="#b0a595"/>
+                <!-- 左书页 (象牙质感) -->
+                <path d="M148 40 C110 32, 50 35, 6 60 L6 200 C50 175, 110 172, 148 180 Z" fill="#fcf9f2"/>
+                <!-- 右书页 -->
+                <path d="M152 40 C190 32, 250 35, 294 60 L294 200 C250 175, 190 172, 152 180 Z" fill="#f5ede0"/>
+                <!-- 书脊装订金色中线 -->
+                <line x1="150" y1="36" x2="150" y2="190" stroke="url(#s2-gold)" stroke-width="5" stroke-linecap="round"/>
+                
+                <!-- 从书页中跃出的双轨立体流光色带 (极其醒目) -->
+                <!-- 轨道一：考场答题 (热烈朱红流光) -->
+                <path d="M20 130 C70 50, 120 170, 200 80 C240 30, 270 90, 310 50" fill="none" stroke="url(#s2-track1)" stroke-width="12" stroke-linecap="round" opacity="0.95"/>
+                <!-- 轨道二：逻辑咬合精解 (睿智幽蓝流光) -->
+                <path d="M-10 100 C50 20, 130 140, 180 60 C230 -10, 280 60, 320 20" fill="none" stroke="url(#s2-track2)" stroke-width="8" stroke-linecap="round" opacity="0.85"/>
+              </g>
+
+              <!-- 精致耳机听读弧线，将传统图书与随身音频完美缝合 -->
+              <path d="M140 200 C140 100, 372 100, 372 200" fill="none" stroke="url(#s2-gold)" stroke-width="4" stroke-dasharray="8 6" opacity="0.6"/>
+
+              <!-- 顶部光晕修饰 -->
+              <circle cx="256" cy="20" r="140" fill="#ff7b54" opacity="0.12" filter="blur(40px)"/>
+            </svg>

@@ -1,0 +1,26 @@
+{
+  "name": "2027 考研专业课双轨随身背诵手卷",
+  "short_name": "考研背诵手卷",
+  "description": "706 古代文学 ＋ 807 现当代文学双轨背诵手卷",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0d1b2a",
+  "theme_color": "#111c29",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
