@@ -1228,6 +1228,39 @@ body {
     font-size: 15px;
   }
 
+  .section-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+  }
+
+  .sec-badge {
+    font-size: 12px;
+    padding: 2px 8px;
+  }
+
+  .sec-desc {
+    font-size: 11.5px;
+    line-height: 1.4;
+  }
+
+  .exam-title-box {
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .title-seal {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+
+  .exam-title-h2 {
+    font-size: 17px;
+    line-height: 1.45;
+  }
+
   .section-thesis-box {
     padding: 9px 10px;
     margin-bottom: 10px;
