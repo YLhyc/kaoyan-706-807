@@ -2004,3 +2004,590 @@ body, .paper-container, .recite-sent, .exam-section-card, .gold-sent-card, .teac
   from { opacity: 1; }
   to { opacity: 0; }
 }
+
+
+/* ========================================================
+   底部常驻悬浮控制底座 (Audio Dock) · 7 键黄金对称居中布局
+   ======================================================== */
+.player-dock {
+  background-color: var(--bg-dock);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--line-main);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px 24px calc(10px + env(safe-area-inset-bottom, 0px));
+  flex-shrink: 0;
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+}
+
+.dock-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  margin-top: 4px;
+}
+
+.dock-left-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 240px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.dock-right-info-spacer {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+.dock-unified-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex: 1;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.dock-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dock-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--ink-primary);
+}
+
+.dock-btn:active {
+  transform: scale(0.92);
+}
+
+.dock-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.dock-btn-play {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #c44d34 0%, var(--vermilion) 100%);
+  color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 4px 14px rgba(166, 58, 36, 0.38);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dock-btn-play:hover {
+  background: linear-gradient(135deg, #b83d25 0%, var(--vermilion-hover) 100%);
+  transform: scale(1.04);
+}
+
+.dock-btn-play:active {
+  transform: scale(0.94) !important;
+  box-shadow: 0 2px 8px rgba(166, 58, 36, 0.3) !important;
+}
+
+.dock-btn-play svg {
+  width: 22px;
+  height: 22px;
+}
+
+.dock-tool-btn {
+  border: 1px solid var(--line-main);
+  background: var(--bg-card);
+  color: var(--ink-secondary);
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dock-tool-btn:hover {
+  border-color: var(--vermilion-border);
+  color: var(--vermilion);
+}
+
+.dock-tool-btn:active {
+  transform: scale(0.92);
+}
+
+.dock-tool-btn.active {
+  background: var(--amber-soft);
+  color: var(--amber);
+  border-color: var(--amber);
+}
+
+.speed-btn {
+  min-width: 42px;
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* 移动端 7 键绝对居中对称布局 (严格以播放/暂停为中心中轴) */
+@media (max-width: 768px) {
+  .player-dock {
+    padding: 6px 12px calc(12px + env(safe-area-inset-bottom, 12px)) !important;
+    box-shadow: 0 -3px 18px rgba(0, 0, 0, 0.06);
+  }
+
+  .dock-left-info,
+  .dock-right-info-spacer {
+    display: none !important;
+  }
+
+  .dock-controls-row {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  .dock-unified-controls {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr auto 1fr 1fr 1fr !important;
+    align-items: center !important;
+    justify-items: center !important;
+    width: 100% !important;
+    max-width: 440px !important;
+    margin: 0 auto !important;
+    gap: 0 !important;
+  }
+
+  .dock-btn {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .dock-btn svg {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  .dock-btn-play {
+    width: 48px !important;
+    height: 48px !important;
+    margin: 0 4px !important;
+    box-shadow: 0 4px 14px rgba(166, 58, 36, 0.42) !important;
+  }
+
+  .dock-btn-play svg {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  #btn-loop-mode {
+    width: 34px !important;
+    height: 34px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+  }
+
+  #btn-loop-mode span {
+    display: none !important;
+  }
+
+  #btn-speed {
+    width: 38px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    border-radius: 15px !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+  }
+}
+
+/* ========================================================
+   方案一：【金石朱墨 · 典雅文人学术纸境】权威定制样式表
+   - 东方古雅文人书卷视觉
+   - 暖杏道林纸微肌理
+   - 金石朱墨双线印章体系
+   - 朱丝栏垂直引导线
+   - 纯量化数学绝对居中 7 键底座
+   - 烛光暖晕跟读聚光灯 (Candlelight Spotlight)
+   ======================================================== */
+
+/* 1. 道林暖杏纸面微肌理与古雅底色 */
+:root {
+  --bg-canvas: #f5f2e9;
+  --bg-sidebar: #ece6d8;
+  --bg-card: #fdfbf7;
+  --bg-card-hover: #ffffff;
+  --bg-card-active: #f7f1e4;
+  --bg-dock: rgba(245, 242, 233, 0.96);
+  
+  --ink-primary: #2a221b;
+  --ink-secondary: #56483c;
+  --ink-muted: #857463;
+  --ink-subtle: #b2a392;
+  
+  --line-main: #dfd7c5;
+  --line-subtle: #eae4d6;
+  --line-strong: #c7bea8;
+  
+  --vermilion: #a63a24;
+  --vermilion-soft: #fbf1ef;
+  --vermilion-border: rgba(166, 58, 36, 0.22);
+  
+  --amber-gold: #c4732b;
+  --amber-soft: #fcf4eb;
+  
+  --pine-green: #2e664f;
+  --pine-soft: #eff6f2;
+}
+
+[data-theme="dark"] {
+  --bg-canvas: #191613;
+  --bg-sidebar: #221e1a;
+  --bg-card: #27221d;
+  --bg-card-hover: #2f2a24;
+  --bg-card-active: #362f28;
+  --bg-dock: rgba(25, 22, 19, 0.96);
+  
+  --ink-primary: #ede4d8;
+  --ink-secondary: #c5b8a6;
+  --ink-muted: #968877;
+  --ink-subtle: #685d50;
+  
+  --line-main: #3a332a;
+  --line-subtle: #2d2720;
+  --line-strong: #4f4538;
+  
+  --vermilion: #d9624c;
+  --vermilion-soft: rgba(217, 98, 76, 0.12);
+  --vermilion-border: rgba(217, 98, 76, 0.28);
+  
+  --amber-gold: #e59344;
+  --amber-soft: rgba(229, 147, 68, 0.12);
+  
+  --pine-green: #48a682;
+  --pine-soft: rgba(72, 166, 130, 0.12);
+}
+
+body {
+  background-color: var(--bg-canvas) !important;
+  background-image: radial-gradient(rgba(165, 145, 115, 0.18) 1px, transparent 1px) !important;
+  background-size: 20px 20px !important;
+  color: var(--ink-primary) !important;
+}
+
+/* 2. 纯 SVG 金石印章 Badge 体系 (严禁外部图标字体，全量双线印章质感) */
+.seal-badge, .tier-badge, .score-badge, .title-seal {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  padding: 2px 8px !important;
+  border: 1.5px solid var(--vermilion) !important;
+  color: var(--vermilion) !important;
+  background: var(--vermilion-soft) !important;
+  font-weight: 700 !important;
+  font-size: 11px !important;
+  border-radius: 4px !important;
+  box-shadow: inset 0 0 0 1px rgba(166, 58, 36, 0.14) !important;
+  letter-spacing: 0.5px !important;
+  font-family: var(--font-song), serif !important;
+}
+
+.tier-T0 {
+  border-color: #a63a24 !important;
+  color: #a63a24 !important;
+  background: rgba(166, 58, 36, 0.08) !important;
+}
+
+.tier-T1 {
+  border-color: var(--pine-green) !important;
+  color: var(--pine-green) !important;
+  background: var(--pine-soft) !important;
+  box-shadow: inset 0 0 0 1px rgba(46, 102, 79, 0.14) !important;
+}
+
+.tier-T2 {
+  border-color: #7d654c !important;
+  color: #7d654c !important;
+  background: rgba(125, 101, 76, 0.08) !important;
+  box-shadow: inset 0 0 0 1px rgba(125, 101, 76, 0.14) !important;
+}
+
+/* 3. 朱丝栏垂直引导线与典雅学术正文卡片 */
+.paper-container {
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--line-main) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 24px rgba(42, 34, 27, 0.05) !important;
+  padding: 24px 22px !important;
+}
+
+.stage-header-card {
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--line-main) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 2px 14px rgba(42, 34, 27, 0.04) !important;
+  padding: 18px 22px 16px !important;
+  margin-bottom: 18px !important;
+}
+
+.section-thesis-box {
+  border-left: 3.5px solid var(--vermilion) !important;
+  background: rgba(166, 58, 36, 0.04) !important;
+  border-radius: 0 8px 8px 0 !important;
+  padding: 12px 16px !important;
+  margin-bottom: 14px !important;
+}
+
+.thesis-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: var(--vermilion) !important;
+  margin-right: 6px !important;
+  font-family: var(--font-song), serif !important;
+}
+
+/* 审题指引与立意维度卡片 (纯 SVG 矢量图标引导) */
+.framework-qa-card {
+  border-left: 3.5px solid var(--amber-gold) !important;
+  background: #faf4ea !important;
+  border-top: 1px solid rgba(196, 115, 43, 0.16) !important;
+  border-right: 1px solid rgba(196, 115, 43, 0.16) !important;
+  border-bottom: 1px solid rgba(196, 115, 43, 0.16) !important;
+  border-radius: 0 10px 10px 0 !important;
+  padding: 12px 16px !important;
+  margin-bottom: 14px !important;
+}
+
+[data-theme="dark"] .framework-qa-card {
+  background: #2a2319 !important;
+  border-color: rgba(229, 147, 68, 0.22) !important;
+}
+
+.qa-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  color: #94551b !important;
+  font-weight: 700 !important;
+  font-size: 11.5px !important;
+  margin-bottom: 6px !important;
+  font-family: var(--font-sans), sans-serif !important;
+}
+
+[data-theme="dark"] .qa-badge {
+  color: #e59344 !important;
+}
+
+.qa-badge svg {
+  width: 13px !important;
+  height: 13px !important;
+  stroke: currentColor !important;
+}
+
+/* 考场原句黄金提取框 */
+.gold-quote-box {
+  border: 1px solid rgba(196, 115, 43, 0.28) !important;
+  background: #fdfbf7 !important;
+  border-radius: 12px !important;
+  padding: 12px 16px !important;
+  margin: 14px 0 !important;
+  box-shadow: 0 2px 12px rgba(184, 120, 30, 0.05) !important;
+}
+
+[data-theme="dark"] .gold-quote-box {
+  background: #28221b !important;
+  border-color: rgba(229, 147, 68, 0.3) !important;
+}
+
+.gold-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: var(--vermilion) !important;
+}
+
+.gold-badge svg {
+  width: 12px !important;
+  height: 12px !important;
+  stroke: var(--vermilion) !important;
+}
+
+.logic-sec-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  background: rgba(166, 58, 36, 0.08) !important;
+  color: var(--vermilion) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+.logic-sec-pill svg {
+  width: 12px !important;
+  height: 12px !important;
+  stroke: var(--vermilion) !important;
+}
+
+/* 4. 烛光暖晕聚光跟读高光 (Candlelight Active Spotlight) */
+.recite-sent {
+  transition: background-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease !important;
+}
+
+.recite-sent.active-spotlight {
+  background-color: #faeed0 !important;
+  color: #1a120b !important;
+  border-radius: 4px !important;
+  box-shadow: 0 0 0 3.5px #faeed0, 0 2px 16px rgba(184, 120, 30, 0.22) !important;
+  font-weight: 600 !important;
+  display: inline !important;
+}
+
+.active-spotlight strong,
+.active-spotlight .kw-red,
+.active-spotlight .quote-gold-core {
+  color: #872310 !important;
+}
+
+[data-theme="dark"] .recite-sent.active-spotlight {
+  background-color: #3f3018 !important;
+  color: #fff2db !important;
+  box-shadow: 0 0 0 3.5px #3f3018, 0 2px 18px rgba(229, 147, 68, 0.3) !important;
+}
+
+[data-theme="dark"] .active-spotlight strong,
+[data-theme="dark"] .active-spotlight .kw-red,
+[data-theme="dark"] .active-spotlight .quote-gold-core {
+  color: #ff9d85 !important;
+}
+
+/* 5. 底部播放 Dock：iPhone PWA 严格物理居中 7 键布局 */
+@media (max-width: 768px) {
+  .player-dock {
+    padding: 6px 10px calc(12px + env(safe-area-inset-bottom, 12px)) !important;
+    background: var(--bg-dock) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    box-shadow: 0 -4px 20px rgba(42, 34, 27, 0.08) !important;
+    border-top: 1px solid var(--line-main) !important;
+  }
+
+  .dock-left-info,
+  .dock-right-info-spacer {
+    display: none !important;
+  }
+
+  .dock-controls-row {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  .dock-unified-controls {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr auto 1fr 1fr 1fr !important;
+    align-items: center !important;
+    justify-items: center !important;
+    width: 100% !important;
+    max-width: 440px !important;
+    margin: 0 auto !important;
+    gap: 0 !important;
+  }
+
+  .dock-btn {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    color: var(--ink-secondary) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .dock-btn svg {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  /* 核心播放按键：在第 4 列 (严格 50% 物理中心轴) */
+  .dock-btn-play {
+    width: 50px !important;
+    height: 50px !important;
+    margin: 0 4px !important;
+    background: var(--vermilion) !important;
+    color: #ffffff !important;
+    border-radius: 50% !important;
+    box-shadow: 0 4px 16px rgba(166, 58, 36, 0.42) !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+  }
+
+  .dock-btn-play:active {
+    transform: scale(0.92) !important;
+  }
+
+  .dock-btn-play svg {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  #btn-loop-mode {
+    width: 34px !important;
+    height: 34px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  #btn-loop-mode span {
+    display: none !important;
+  }
+
+  #btn-loop-mode svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  #btn-speed {
+    width: 38px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    border-radius: 15px !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}

@@ -256,49 +256,16 @@
 
     <!-- 控制按键排 -->
     <div class="dock-controls-row">
+      <!-- 桌面端左侧曲目信息 -->
       <div class="dock-left-info">
         <span id="dock-title" class="dock-active-topic">未加载音频</span>
         <span id="dock-track-pill" class="dock-active-track">轨道一</span>
       </div>
 
-      <div class="dock-center-controls">
-        <button id="dock-prev-btn" class="dock-btn" title="上一考点">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="19 20 9 12 19 4 19 20"></polygon>
-            <line x1="5" y1="19" x2="5" y2="5"></line>
-          </svg>
-        </button>
-
-        <button id="dock-rewind-btn" class="dock-btn" title="快退 5 秒">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="1 4 1 10 7 10"></polyline>
-            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
-          </svg>
-        </button>
-
-        <button id="dock-play-btn" class="dock-btn dock-btn-play" title="播放音频">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <polygon points="6 4 20 12 6 20 6 4"></polygon>
-          </svg>
-        </button>
-
-        <button id="dock-forward-btn" class="dock-btn" title="快进 5 秒">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="23 4 23 10 17 10"></polyline>
-            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-          </svg>
-        </button>
-
-        <button id="dock-next-btn" class="dock-btn" title="下一考点">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="5 4 15 12 5 20 5 4"></polygon>
-            <line x1="19" y1="5" x2="19" y2="19"></line>
-          </svg>
-        </button>
-      </div>
-
-      <div class="dock-right-settings">
-        <button id="btn-loop-mode" class="pill-mode-btn" title="切换全篇顺读 / 单句三遍精背循环">
+      <!-- 核心控制组：7 键黄金对称居中布局 -->
+      <div class="dock-unified-controls">
+        <!-- 1. 播放模式 (全篇顺读 / 单句三遍精背) -->
+        <button id="btn-loop-mode" class="pill-mode-btn dock-tool-btn" title="切换全篇顺读 / 单句三遍精背循环">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="17 1 21 5 17 9"></polyline>
             <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
@@ -308,10 +275,53 @@
           <span>全篇顺读</span>
         </button>
 
-        <button id="btn-speed" class="pill-mode-btn" title="调整播放倍速">
+        <!-- 2. 上一考点 -->
+        <button id="dock-prev-btn" class="dock-btn" title="上一考点">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="19 20 9 12 19 4 19 20"></polygon>
+            <line x1="5" y1="19" x2="5" y2="5"></line>
+          </svg>
+        </button>
+
+        <!-- 3. 快退 5 秒 -->
+        <button id="dock-rewind-btn" class="dock-btn" title="快退 5 秒">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+        </button>
+
+        <!-- 4. 【核心视觉中心】播放/暂停主按键 (数学与视觉绝对居中) -->
+        <button id="dock-play-btn" class="dock-btn dock-btn-play" title="播放/暂停音频">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="6 4 20 12 6 20 6 4"></polygon>
+          </svg>
+        </button>
+
+        <!-- 5. 快进 5 秒 -->
+        <button id="dock-forward-btn" class="dock-btn" title="快进 5 秒">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
+        </button>
+
+        <!-- 6. 下一考点 -->
+        <button id="dock-next-btn" class="dock-btn" title="下一考点">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 4 15 12 5 20 5 4"></polygon>
+            <line x1="19" y1="5" x2="19" y2="19"></line>
+          </svg>
+        </button>
+
+        <!-- 7. 播放倍速 -->
+        <button id="btn-speed" class="pill-mode-btn dock-tool-btn speed-btn" title="调整播放倍速">
           <span>1.0x</span>
         </button>
       </div>
+
+      <!-- 桌面端右侧对齐占位 -->
+      <div class="dock-right-info-spacer"></div>
     </div>
   </footer>
 

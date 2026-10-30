@@ -106,7 +106,7 @@ def parse_track1_sections_from_md(md_path):
                 })
                 sections.append({
                     'badge': '【结语 · 总结升华】',
-                    'desc': '融汇全篇论据 · 提炼终极经典地位',
+                    'desc': '融汇全篇论据 · 提炼权威学术定评',
                     'type': 'conclusion',
                     'text': sub_parts[1].strip()
                 })
@@ -127,7 +127,7 @@ def parse_track1_sections_from_md(md_path):
                 stype = 'intro'
             elif i == len(paras) - 1:
                 badge = '【结语 · 总结升华】'
-                desc = '融汇全篇论据 · 提炼终极经典地位'
+                desc = '融汇全篇论据 · 提炼权威学术定评'
                 stype = 'conclusion'
             else:
                 badge = f'【本论 · 分论点{num_map.get(i, str(i))}】'
@@ -421,7 +421,10 @@ def build_clean_track2_html(item, sents2, meta):
                 send = s['end']
                 block_items_html.append(f"""
                 <div class="framework-qa-card">
-                  <div class="qa-badge">📌 审题指引与立意维度</div>
+                  <div class="qa-badge">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+                    <span>审题指引与立意维度</span>
+                  </div>
                   <span class="recite-sent" data-sent-id="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>
                 </div>
                 """)
@@ -447,7 +450,10 @@ def build_clean_track2_html(item, sents2, meta):
                 block_items_html.append(f"""
                 <div class="gold-quote-box">
                   <div class="gold-quote-header">
-                    <span class="gold-badge">考场对应答题原句</span>
+                    <span class="gold-badge">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                      <span>考场对应答题原句</span>
+                    </span>
                     <span class="gold-tip">黄金得分点 · 考场需一字不差记忆</span>
                   </div>
                   <div class="gold-quote-body">
@@ -471,7 +477,10 @@ def build_clean_track2_html(item, sents2, meta):
         block_html = f"""
         <div class="logic-block-card">
           <div class="logic-block-title">
-            <span class="logic-sec-pill">逻辑剖析</span>
+            <span class="logic-sec-pill">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              <span>逻辑剖析</span>
+            </span>
             <h3>{b['title']}</h3>
           </div>
           <div class="logic-block-body">
