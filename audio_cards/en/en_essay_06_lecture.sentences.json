@@ -1,0 +1,80 @@
+[
+  {
+    "id": "t2_intro",
+    "text": "下面进入小作文 06 · 告示 Notice：绿色校园“书香流转”旧书捐赠公益倡议答题骨架与变体精解。",
+    "start": "0.000",
+    "end": "9.744"
+  },
+  {
+    "id": "t2_p1_cn",
+    "text": "第一段：阐明倡议活动崇高宗旨与活动主题。",
+    "start": "10.644",
+    "end": "15.252"
+  },
+  {
+    "id": "t2_p1_en",
+    "text": "To advocate environmental sustainability and support rural basic education, our university is launching a campus-wide book donation campaign.",
+    "start": "15.752",
+    "end": "26.120"
+  },
+  {
+    "id": "t2_p1_tip_cn",
+    "text": "动词不定式引导目的状语开篇：To advocate..., our university is launching...",
+    "start": "26.620",
+    "end": "33.964"
+  },
+  {
+    "id": "t2_p1_tip_en",
+    "text": "launching a campus-wide book donation campaign",
+    "start": "34.464",
+    "end": "37.800"
+  },
+  {
+    "id": "t2_p2_cn",
+    "text": "第二段：交代捐赠范围、规范要求与现场展位时间。",
+    "start": "39.199",
+    "end": "44.623"
+  },
+  {
+    "id": "t2_p2_en",
+    "text": "We warmly welcome unused books, particularly academic references, and collection stations will be set up at the Central Library this coming weekend.",
+    "start": "45.123",
+    "end": "55.011"
+  },
+  {
+    "id": "t2_p2_tip_cn",
+    "text": "清晰事务交代句式：Collection stations will be set up at [Location] from [Time].",
+    "start": "55.511",
+    "end": "61.727"
+  },
+  {
+    "id": "t2_p2_tip_en",
+    "text": "Collection stations will be set up at the lobby of the Central Library.",
+    "start": "62.227",
+    "end": "66.355"
+  },
+  {
+    "id": "t2_p3_cn",
+    "text": "第三段：感召全校师生践行善举，共筑书香温情。",
+    "start": "67.755",
+    "end": "73.731"
+  },
+  {
+    "id": "t2_p3_en",
+    "text": "Every donated book delivers a ray of hope to children in need; let us join hands to share our wisdom and foster social harmony!",
+    "start": "74.230",
+    "end": "83.158"
+  },
+  {
+    "id": "t2_p3_tip_cn",
+    "text": "公益号召金句：Let us join hands to share our wisdom and foster social harmony!",
+    "start": "83.658",
+    "end": "89.802"
+  },
+  {
+    "id": "t2_p3_tip_en",
+    "text": "Let us join hands to share our wisdom and foster social harmony!",
+    "start": "90.302",
+    "end": "95.006"
+  }
+]

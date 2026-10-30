@@ -1,0 +1,80 @@
+[
+  {
+    "id": "t2_intro",
+    "text": "下面进入小作文 03 · 求职与自荐信：国际学术研讨会学生助理自荐答题骨架与变体精解。",
+    "start": "0.000",
+    "end": "9.264"
+  },
+  {
+    "id": "t2_p1_cn",
+    "text": "第一段：交待招聘信息来源与自荐岗位。",
+    "start": "10.164",
+    "end": "14.148"
+  },
+  {
+    "id": "t2_p1_en",
+    "text": "Learning that student assistants are wanted for the upcoming International Academic Symposium, I am writing to recommend myself with utmost enthusiasm.",
+    "start": "14.648",
+    "end": "24.296"
+  },
+  {
+    "id": "t2_p1_tip_cn",
+    "text": "分词短语作状语：Learning from... that..., I am writing to...",
+    "start": "24.796",
+    "end": "30.460"
+  },
+  {
+    "id": "t2_p1_tip_en",
+    "text": "I am writing to recommend myself with utmost enthusiasm.",
+    "start": "30.960",
+    "end": "34.704"
+  },
+  {
+    "id": "t2_p2_cn",
+    "text": "第二段：多角度论证个人优势（语言能力 + 会务经验 + 敬业态度）。",
+    "start": "36.103",
+    "end": "43.039"
+  },
+  {
+    "id": "t2_p2_en",
+    "text": "First of all, I have achieved excellent proficiency in English, which enables me to communicate fluently with foreign scholars.",
+    "start": "43.539",
+    "end": "51.435"
+  },
+  {
+    "id": "t2_p2_tip_cn",
+    "text": "分词作状语表达经验：Having served as a liaison officer, I possess sound organizational capabilities.",
+    "start": "51.935",
+    "end": "59.999"
+  },
+  {
+    "id": "t2_p2_tip_en",
+    "text": "Having served as a liaison officer, I possess sound organizational capabilities.",
+    "start": "60.499",
+    "end": "66.067"
+  },
+  {
+    "id": "t2_p3_cn",
+    "text": "第三段：提交履历材料并礼貌表达面试期盼。",
+    "start": "67.467",
+    "end": "71.763"
+  },
+  {
+    "id": "t2_p3_en",
+    "text": "Enclosed please find my curriculum vitae for your reference, and I would appreciate the opportunity to attend an interview at your convenience.",
+    "start": "72.262",
+    "end": "81.838"
+  },
+  {
+    "id": "t2_p3_tip_cn",
+    "text": "商务信函固定高分句：Enclosed please find my resume for your reference.",
+    "start": "82.338",
+    "end": "88.242"
+  },
+  {
+    "id": "t2_p3_tip_en",
+    "text": "Enclosed please find my curriculum vitae for your reference.",
+    "start": "88.742",
+    "end": "92.870"
+  }
+]

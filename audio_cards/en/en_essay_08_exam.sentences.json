@@ -1,0 +1,56 @@
+[
+  {
+    "id": "sent_p1_s1",
+    "text": "Dear Professor Williams,",
+    "start": "0.000",
+    "end": "1.824"
+  },
+  {
+    "id": "sent_p1_s2",
+    "text": "Having read your illuminating academic papers on artificial intelligence and cognitive linguistics with great admiration, I am writing to consult you regarding your graduate research projects and prospective student requirements.",
+    "start": "2.224",
+    "end": "16.288"
+  },
+  {
+    "id": "sent_p2_s1",
+    "text": "As a fourth-year undergraduate student planning to apply for your research team, I would be exceedingly grateful if you could spare a few minutes to clarify three specific concerns.",
+    "start": "17.588",
+    "end": "29.156"
+  },
+  {
+    "id": "sent_p2_s2",
+    "text": "In the first place, could you please provide some guidance on the primary academic prerequisites your laboratory prioritizes?",
+    "start": "29.556",
+    "end": "37.452"
+  },
+  {
+    "id": "sent_p2_s3",
+    "text": "In the second place, I wonder whether students from interdisciplinary backgrounds are encouraged to participate in your ongoing grants.",
+    "start": "37.852",
+    "end": "46.228"
+  },
+  {
+    "id": "sent_p2_s4",
+    "text": "Lastly, what foundational literature would you recommend reading before the upcoming interview?",
+    "start": "46.627",
+    "end": "52.531"
+  },
+  {
+    "id": "sent_p3_s1",
+    "text": "Thank you very much for your precious guidance.",
+    "start": "53.831",
+    "end": "56.447"
+  },
+  {
+    "id": "sent_p3_s2",
+    "text": "I look forward to your valuable insights.",
+    "start": "56.847",
+    "end": "59.463"
+  },
+  {
+    "id": "sent_p3_s3",
+    "text": "Yours sincerely, Li Ming",
+    "start": "59.863",
+    "end": "62.311"
+  }
+]

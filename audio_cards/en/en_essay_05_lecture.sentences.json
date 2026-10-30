@@ -1,0 +1,80 @@
+[
+  {
+    "id": "t2_intro",
+    "text": "下面进入小作文 05 · 告示 Notice：中外文化交流周学生志愿者招募答题骨架与变体精解。",
+    "start": "0.000",
+    "end": "9.576"
+  },
+  {
+    "id": "t2_p1_cn",
+    "text": "第一段：交代告示活动背景与明确招募名额。",
+    "start": "10.476",
+    "end": "15.084"
+  },
+  {
+    "id": "t2_p1_en",
+    "text": "In an effort to foster cross-cultural understanding on campus, this notice is issued for the purpose of recruiting 20 energetic and responsible student volunteers.",
+    "start": "15.584",
+    "end": "25.880"
+  },
+  {
+    "id": "t2_p1_tip_cn",
+    "text": "告示开篇标配：This notice is issued for the purpose of doing sth.。",
+    "start": "26.380",
+    "end": "31.876"
+  },
+  {
+    "id": "t2_p1_tip_en",
+    "text": "This notice is issued for the purpose of recruiting student volunteers.",
+    "start": "32.376",
+    "end": "36.912"
+  },
+  {
+    "id": "t2_p2_cn",
+    "text": "第二段：结构化列明应聘门槛与岗位职责。",
+    "start": "38.311",
+    "end": "42.295"
+  },
+  {
+    "id": "t2_p2_en",
+    "text": "Above all, applicants should demonstrate fluent oral English; in addition, the primary responsibilities entail guiding international guests and coordinating booths.",
+    "start": "42.795",
+    "end": "54.771"
+  },
+  {
+    "id": "t2_p2_tip_cn",
+    "text": "逻辑承接词三步法：Above all..., In addition..., The primary responsibilities entail...",
+    "start": "55.271",
+    "end": "62.375"
+  },
+  {
+    "id": "t2_p2_tip_en",
+    "text": "The primary responsibilities entail guiding international guests and coordinating booths.",
+    "start": "62.875",
+    "end": "68.923"
+  },
+  {
+    "id": "t2_p3_cn",
+    "text": "第三段：公布联系邮箱、报名截止时限与署名日期。",
+    "start": "70.323",
+    "end": "75.891"
+  },
+  {
+    "id": "t2_p3_en",
+    "text": "Those who are interested should submit an electronic application before November 20th, and we sincerely look forward to your active participation.",
+    "start": "76.390",
+    "end": "85.654"
+  },
+  {
+    "id": "t2_p3_tip_cn",
+    "text": "告示结语必背句：Those who are interested should do sth. before [Date].",
+    "start": "86.154",
+    "end": "91.482"
+  },
+  {
+    "id": "t2_p3_tip_en",
+    "text": "We sincerely look forward to your active participation.",
+    "start": "91.982",
+    "end": "95.150"
+  }
+]

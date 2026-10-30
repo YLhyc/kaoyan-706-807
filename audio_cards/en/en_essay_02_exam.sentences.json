@@ -1,0 +1,56 @@
+[
+  {
+    "id": "sent_p1_s1",
+    "text": "Dear Customer Service Manager,",
+    "start": "0.000",
+    "end": "2.136"
+  },
+  {
+    "id": "sent_p1_s2",
+    "text": "I am writing this letter to lodge a formal complaint concerning the substandard quality of the books I purchased from your store and the unprofessional attitude of your staff.",
+    "start": "2.536",
+    "end": "13.240"
+  },
+  {
+    "id": "sent_p2_s1",
+    "text": "On October 25th, I ordered a set of reference books with Order Number 89214.",
+    "start": "14.540",
+    "end": "21.956"
+  },
+  {
+    "id": "sent_p2_s2",
+    "text": "However, when the parcel arrived yesterday, I was shocked to find that the covers were torn and several key pages were missing.",
+    "start": "22.356",
+    "end": "30.492"
+  },
+  {
+    "id": "sent_p2_s3",
+    "text": "Even more frustrating was that when I contacted your online customer representative for a reasonable explanation, my request was met with total indifference.",
+    "start": "30.892",
+    "end": "41.428"
+  },
+  {
+    "id": "sent_p2_s4",
+    "text": "Such irresponsible conduct is completely unacceptable to long-term consumers.",
+    "start": "41.827",
+    "end": "47.083"
+  },
+  {
+    "id": "sent_p3_s1",
+    "text": "Therefore, I deem it imperative that an immediate replacement or a full refund be arranged promptly.",
+    "start": "48.383",
+    "end": "54.911"
+  },
+  {
+    "id": "sent_p3_s2",
+    "text": "Your swift attention and rectifying measures will be highly appreciated.",
+    "start": "55.311",
+    "end": "60.087"
+  },
+  {
+    "id": "sent_p3_s3",
+    "text": "Yours sincerely, Li Ming",
+    "start": "60.487",
+    "end": "62.935"
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "sent_p1_s1",
+    "text": "As is vividly depicted in the picture, a magnificent landscape shows barren hills transforming into luxuriant green forests, with fish swimming freely in clear streams.",
+    "start": "0.000",
+    "end": "12.048"
+  },
+  {
+    "id": "sent_p1_s2",
+    "text": "This contrast delivers an unmistakable message: ecological preservation and green development are vital prerequisites for the sustainable prosperity of human civilization.",
+    "start": "12.448",
+    "end": "24.592"
+  },
+  {
+    "id": "sent_p2_s1",
+    "text": "A multitude of compelling arguments substantiate the urgency of environmental protection.",
+    "start": "25.892",
+    "end": "32.108"
+  },
+  {
+    "id": "sent_p2_s2",
+    "text": "Chief among them is that reckless exploitation of natural resources and unrestrained pollution will inevitably disrupt the ecological equilibrium, ultimately inflicting irreversible damage upon human survival.",
+    "start": "32.508",
+    "end": "46.956"
+  },
+  {
+    "id": "sent_p2_s3",
+    "text": "As the prudent saying asserts, \"An ounce of prevention is worth a pound of cure.\"",
+    "start": "47.356",
+    "end": "52.780"
+  },
+  {
+    "id": "sent_p2_s4",
+    "text": "By contrast, investing in renewable energy and low-carbon lifestyles not only guards pristine biodiversity, but also stimulates sustainable economic growth for future generations.",
+    "start": "53.179",
+    "end": "66.115"
+  },
+  {
+    "id": "sent_p2_s5",
+    "text": "Economic advancement should never be pursued at the exorbitant expense of a devastated environment.",
+    "start": "66.515",
+    "end": "73.139"
+  },
+  {
+    "id": "sent_p3_s1",
+    "text": "To ensure the co-prosperity of humanity and nature, stringent legal frameworks must be enforced to punish polluting enterprises, while citizens are supposed to practice waste classification conscientiously.",
+    "start": "74.439",
+    "end": "89.055"
+  },
+  {
+    "id": "sent_p3_s2",
+    "text": "Only in harmony with nature can mankind secure a thriving and promising future.",
+    "start": "89.455",
+    "end": "95.359"
+  }
+]

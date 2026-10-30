@@ -1,0 +1,80 @@
+[
+  {
+    "id": "t2_intro",
+    "text": "下面进入小作文 04 · 邀请与感谢信：邀请外籍教授担任英语演讲比赛评委答题骨架与变体精解。",
+    "start": "0.000",
+    "end": "10.296"
+  },
+  {
+    "id": "t2_p1_cn",
+    "text": "第一段：代表组织发出正式而热情的邀请。",
+    "start": "11.196",
+    "end": "15.420"
+  },
+  {
+    "id": "t2_p1_en",
+    "text": "On behalf of the Student Union, I am honored to extend a cordial invitation to you to serve as an expert judge.",
+    "start": "15.920",
+    "end": "23.576"
+  },
+  {
+    "id": "t2_p1_tip_cn",
+    "text": "加分表达：extend a cordial invitation 替换 invite you warmly。",
+    "start": "24.076",
+    "end": "30.532"
+  },
+  {
+    "id": "t2_p1_tip_en",
+    "text": "extend a cordial invitation",
+    "start": "31.032",
+    "end": "33.408"
+  },
+  {
+    "id": "t2_p2_cn",
+    "text": "第二段：交待活动要素并对受邀者的学术声望给予崇高评价。",
+    "start": "34.807",
+    "end": "40.375"
+  },
+  {
+    "id": "t2_p2_en",
+    "text": "Considering your outstanding academic prestige and linguistic insight, your professional evaluation would undoubtedly inspire all contestants.",
+    "start": "40.875",
+    "end": "49.659"
+  },
+  {
+    "id": "t2_p2_tip_cn",
+    "text": "赞誉客套经典句：Considering your profound insight, your presence would elevate the caliber of this competition.",
+    "start": "50.159",
+    "end": "59.255"
+  },
+  {
+    "id": "t2_p2_tip_en",
+    "text": "Your commentary would elevate the academic caliber of this competition.",
+    "start": "59.755",
+    "end": "63.739"
+  },
+  {
+    "id": "t2_p3_cn",
+    "text": "第三段：礼貌致谢并提醒日程确认时限。",
+    "start": "65.139",
+    "end": "69.363"
+  },
+  {
+    "id": "t2_p3_en",
+    "text": "We would be deeply grateful if you could accept our invitation, and please kindly notify us of your availability before this Wednesday.",
+    "start": "69.862",
+    "end": "79.030"
+  },
+  {
+    "id": "t2_p3_tip_cn",
+    "text": "客气礼貌虚拟语气：We would be deeply grateful if you could accept our invitation.",
+    "start": "79.530",
+    "end": "85.338"
+  },
+  {
+    "id": "t2_p3_tip_en",
+    "text": "We would be deeply grateful if you could accept our invitation.",
+    "start": "85.838",
+    "end": "89.654"
+  }
+]

@@ -1,0 +1,80 @@
+[
+  {
+    "id": "t2_intro",
+    "text": "下面进入大作文 05 · 人与自然与生态保护：绿色低碳发展与资源可持续利用答题骨架与变体精解。",
+    "start": "0.000",
+    "end": "10.464"
+  },
+  {
+    "id": "t2_p1_cn",
+    "text": "第一段：绿水青山画卷描摹与人与自然和谐共生立意。",
+    "start": "11.364",
+    "end": "16.932"
+  },
+  {
+    "id": "t2_p1_en",
+    "text": "Barren hills transforming into luxuriant green forests; ecological preservation is a vital prerequisite for sustainable prosperity.",
+    "start": "17.432",
+    "end": "27.080"
+  },
+  {
+    "id": "t2_p1_tip_cn",
+    "text": "绿色生态黄金立意：vital prerequisites for the sustainable prosperity of human civilization.",
+    "start": "27.580",
+    "end": "34.516"
+  },
+  {
+    "id": "t2_p1_tip_en",
+    "text": "Ecological preservation is a vital prerequisite for sustainable prosperity.",
+    "start": "35.016",
+    "end": "40.344"
+  },
+  {
+    "id": "t2_p2_cn",
+    "text": "第二段：破坏生态反噬 vs 绿色发展红利对比，融入预防古谚。",
+    "start": "41.743",
+    "end": "48.199"
+  },
+  {
+    "id": "t2_p2_en",
+    "text": "Reckless exploitation of resources will disrupt ecological equilibrium; economic advancement should never be pursued at the expense of environment.",
+    "start": "48.699",
+    "end": "58.995"
+  },
+  {
+    "id": "t2_p2_tip_cn",
+    "text": "反向批判金句：Economic advancement should never be pursued at the exorbitant expense of a devastated environment.",
+    "start": "59.495",
+    "end": "67.631"
+  },
+  {
+    "id": "t2_p2_tip_en",
+    "text": "Economic advancement should never be pursued at the exorbitant expense of a devastated environment.",
+    "start": "68.131",
+    "end": "74.755"
+  },
+  {
+    "id": "t2_p3_cn",
+    "text": "第三段：法制严惩与公众垃圾分类两手抓，以天人合一倒装收尾。",
+    "start": "76.155",
+    "end": "82.371"
+  },
+  {
+    "id": "t2_p3_en",
+    "text": "Stringent legal frameworks must be enforced; only in harmony with nature can mankind secure a thriving and promising future.",
+    "start": "82.870",
+    "end": "91.414"
+  },
+  {
+    "id": "t2_p3_tip_cn",
+    "text": "人与自然和谐倒装结语：Only in harmony with nature can mankind secure a thriving future.",
+    "start": "91.914",
+    "end": "100.050"
+  },
+  {
+    "id": "t2_p3_tip_en",
+    "text": "Only in harmony with nature can mankind secure a thriving and promising future.",
+    "start": "100.550",
+    "end": "106.454"
+  }
+]

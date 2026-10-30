@@ -1,0 +1,80 @@
+[
+  {
+    "id": "t2_intro",
+    "text": "下面进入大作文 07 · 英二真题图表（动态变化）：全民健身运动参与率显著增长答题骨架与变体精解。",
+    "start": "0.000",
+    "end": "10.296"
+  },
+  {
+    "id": "t2_p1_cn",
+    "text": "第一段：图表题首句规范总述与动态增减数据精准表达。",
+    "start": "11.196",
+    "end": "17.412"
+  },
+  {
+    "id": "t2_p1_en",
+    "text": "The bar chart explicitly illustrates the dramatic variation; the percentage climbed remarkably from 28.5% to approximately 65.2%.",
+    "start": "17.912",
+    "end": "30.200"
+  },
+  {
+    "id": "t2_p1_tip_cn",
+    "text": "动态数据上升经典句：The percentage climbed remarkably from [A] to [B], reflecting an inspiring shift.",
+    "start": "30.700",
+    "end": "39.076"
+  },
+  {
+    "id": "t2_p1_tip_en",
+    "text": "The percentage climbed remarkably from 28.5% to approximately 65.2%.",
+    "start": "39.576",
+    "end": "47.880"
+  },
+  {
+    "id": "t2_p2_cn",
+    "text": "第二段：三维度因果推导（经济收入与健康观 + 政府市政设施红利 + 移动互联健身潮流）。",
+    "start": "49.279",
+    "end": "58.447"
+  },
+  {
+    "id": "t2_p2_en",
+    "text": "Citizens prioritize physical wellness; extensive government investments in sports infrastructure lowered the threshold; social media popularized workouts.",
+    "start": "58.947",
+    "end": "70.371"
+  },
+  {
+    "id": "t2_p2_tip_cn",
+    "text": "图表驱动诱因分析：A combination of powerful drivers accounts for this noticeable upsurge.",
+    "start": "70.871",
+    "end": "77.327"
+  },
+  {
+    "id": "t2_p2_tip_en",
+    "text": "Government investments in sports infrastructure have lowered the threshold for physical workout.",
+    "start": "77.827",
+    "end": "83.563"
+  },
+  {
+    "id": "t2_p3_cn",
+    "text": "第三段：宏观社会学高度评价与未来趋势乐观前瞻。",
+    "start": "84.963",
+    "end": "90.867"
+  },
+  {
+    "id": "t2_p3_en",
+    "text": "This encouraging trend mirrors societal progress; it is widely anticipated that physical exercise will gain greater momentum in forthcoming years.",
+    "start": "91.366",
+    "end": "101.494"
+  },
+  {
+    "id": "t2_p3_tip_cn",
+    "text": "图表题展望收官句：It is widely anticipated that this trend will gain greater momentum in the forthcoming years.",
+    "start": "101.994",
+    "end": "109.650"
+  },
+  {
+    "id": "t2_p3_tip_en",
+    "text": "It is widely anticipated that regular physical exercise will gain greater momentum in the forthcoming years.",
+    "start": "110.150",
+    "end": "117.638"
+  }
+]

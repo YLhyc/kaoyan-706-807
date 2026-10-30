@@ -1,0 +1,50 @@
+[
+  {
+    "id": "sent_p1_s1",
+    "text": "Notice: Charity Book Donation Campaign",
+    "start": "0.000",
+    "end": "3.504"
+  },
+  {
+    "id": "sent_p1_s2",
+    "text": "To advocate environmental sustainability and support basic education in impoverished rural areas, our university is launching a campus-wide book donation campaign titled Pass on the Light of Knowledge.",
+    "start": "3.904",
+    "end": "18.832"
+  },
+  {
+    "id": "sent_p2_s1",
+    "text": "We warmly welcome all students and faculty members to donate unused books, particularly academic references, literary classics, and popular science works.",
+    "start": "20.132",
+    "end": "30.836"
+  },
+  {
+    "id": "sent_p2_s2",
+    "text": "Please ensure that the books are clean and complete.",
+    "start": "31.236",
+    "end": "34.332"
+  },
+  {
+    "id": "sent_p2_s3",
+    "text": "Collection stations will be set up at the lobby of the Central Library and Student Activity Center from 9:00 a.m. to 6:00 p.m. this coming weekend.",
+    "start": "34.732",
+    "end": "44.956"
+  },
+  {
+    "id": "sent_p3_s1",
+    "text": "Every donated book delivers a ray of hope to children in need.",
+    "start": "46.255",
+    "end": "50.383"
+  },
+  {
+    "id": "sent_p3_s2",
+    "text": "Let us join hands to share our wisdom and foster social harmony!",
+    "start": "50.783",
+    "end": "55.559"
+  },
+  {
+    "id": "sent_p3_s3",
+    "text": "The Youth League Committee, October 30th",
+    "start": "55.959",
+    "end": "59.223"
+  }
+]

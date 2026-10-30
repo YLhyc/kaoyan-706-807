@@ -1,0 +1,80 @@
+[
+  {
+    "id": "t2_intro",
+    "text": "下面进入大作文 08 · 英二真题图表（静态占比）：大学毕业生月度消费支出结构分布答题骨架与变体精解。",
+    "start": "0.000",
+    "end": "9.504"
+  },
+  {
+    "id": "t2_p1_cn",
+    "text": "第一段：饼图总貌概括，使用精准短语描述排序与百分比。",
+    "start": "10.404",
+    "end": "16.308"
+  },
+  {
+    "id": "t2_p1_en",
+    "text": "The pie chart provides a clear breakdown; catering accounts for the largest proportion at 45.0%, closely followed by intellectual enrichment at 25.0%.",
+    "start": "16.808",
+    "end": "30.536"
+  },
+  {
+    "id": "t2_p1_tip_cn",
+    "text": "静态占比排序标配句式：accounts for the largest proportion at ..., closely followed by ... at ...",
+    "start": "31.036",
+    "end": "39.412"
+  },
+  {
+    "id": "t2_p1_tip_en",
+    "text": "Catering accounts for the largest proportion at 45.0%, closely followed by intellectual enrichment.",
+    "start": "39.912",
+    "end": "47.976"
+  },
+  {
+    "id": "t2_p2_cn",
+    "text": "第二段：深入解析各项开支背后的青年生存现状与自我提升追求。",
+    "start": "49.375",
+    "end": "55.831"
+  },
+  {
+    "id": "t2_p2_en",
+    "text": "Allocating the dominant share to catering is inevitable; educational investment demonstrates graduates' acute awareness of professional competitiveness.",
+    "start": "56.331",
+    "end": "65.979"
+  },
+  {
+    "id": "t2_p2_tip_cn",
+    "text": "主语从句高分句式：That educational investment occupies a quarter demonstrates graduates' acute awareness.",
+    "start": "66.479",
+    "end": "75.575"
+  },
+  {
+    "id": "t2_p2_tip_en",
+    "text": "Continuous skill refinement has become an essential stepping stone to career development.",
+    "start": "76.075",
+    "end": "81.499"
+  },
+  {
+    "id": "t2_p3_cn",
+    "text": "第三段：总结青年理性前瞻消费心态，提出稳健财务规划建议。",
+    "start": "82.899",
+    "end": "89.763"
+  },
+  {
+    "id": "t2_p3_en",
+    "text": "The spending pattern is rational and forward-looking; disciplined financial planning will assist youngsters in establishing a solid foundation.",
+    "start": "90.262",
+    "end": "99.358"
+  },
+  {
+    "id": "t2_p3_tip_cn",
+    "text": "理财启示结语：Cultivating disciplined financial planning will assist youngsters in establishing a solid foundation.",
+    "start": "99.858",
+    "end": "107.106"
+  },
+  {
+    "id": "t2_p3_tip_en",
+    "text": "Disciplined financial planning will assist youngsters in establishing a solid foundation.",
+    "start": "107.606",
+    "end": "113.030"
+  }
+]

@@ -1,0 +1,80 @@
+[
+  {
+    "id": "t2_intro",
+    "text": "下面进入小作文 08 · 询问与咨询信：考研报考意向与导师课题组要求咨询答题骨架与变体精解。",
+    "start": "0.000",
+    "end": "9.888"
+  },
+  {
+    "id": "t2_p1_cn",
+    "text": "第一段：表达对导师前沿学术成果的敬佩并阐明求学咨询目的。",
+    "start": "10.788",
+    "end": "17.172"
+  },
+  {
+    "id": "t2_p1_en",
+    "text": "Having read your illuminating academic papers with great admiration, I am writing to consult you regarding your graduate research projects.",
+    "start": "17.672",
+    "end": "26.528"
+  },
+  {
+    "id": "t2_p1_tip_cn",
+    "text": "学术咨询经典破题：Having read your illuminating papers with great admiration, I am writing to...",
+    "start": "27.028",
+    "end": "34.444"
+  },
+  {
+    "id": "t2_p1_tip_en",
+    "text": "I am writing to consult you regarding your graduate research projects.",
+    "start": "34.944",
+    "end": "39.168"
+  },
+  {
+    "id": "t2_p2_cn",
+    "text": "第二段：礼貌客气提出三个具有深度、体现求学诚意的专业问题。",
+    "start": "40.567",
+    "end": "47.335"
+  },
+  {
+    "id": "t2_p2_en",
+    "text": "In the first place, could you provide guidance on academic prerequisites? In the second place, are interdisciplinary students encouraged?",
+    "start": "47.835",
+    "end": "56.859"
+  },
+  {
+    "id": "t2_p2_tip_cn",
+    "text": "委婉提问句型：I would be exceedingly grateful if you could clarify... / I wonder whether...",
+    "start": "57.359",
+    "end": "64.535"
+  },
+  {
+    "id": "t2_p2_tip_en",
+    "text": "I wonder whether students from interdisciplinary backgrounds are encouraged.",
+    "start": "65.035",
+    "end": "69.499"
+  },
+  {
+    "id": "t2_p3_cn",
+    "text": "第三段：诚挚感激导师在百忙之中的点拨指导。",
+    "start": "70.899",
+    "end": "75.915"
+  },
+  {
+    "id": "t2_p3_en",
+    "text": "Thank you very much for your precious guidance, and I look forward to your valuable insights.",
+    "start": "76.414",
+    "end": "81.502"
+  },
+  {
+    "id": "t2_p3_tip_cn",
+    "text": "求学者谦逊敬意收束句：Thank you for your precious guidance and valuable insights.",
+    "start": "82.002",
+    "end": "89.010"
+  },
+  {
+    "id": "t2_p3_tip_en",
+    "text": "Thank you very much for your precious guidance.",
+    "start": "89.510",
+    "end": "92.126"
+  }
+]

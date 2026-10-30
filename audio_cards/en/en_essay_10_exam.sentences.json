@@ -1,0 +1,62 @@
+[
+  {
+    "id": "sent_p1_s1",
+    "text": "As is vividly delineated in the cartoon above, several family members are sitting around a lavish dinner table; ironically, instead of conversing warmly with one another, each person is staring fixatedly at their smartphone screen.",
+    "start": "0.000",
+    "end": "16.056"
+  },
+  {
+    "id": "sent_p1_s2",
+    "text": "Beneath the drawing, a thought-provoking caption highlights the invisible barrier erected by digital devices in contemporary society.",
+    "start": "16.456",
+    "end": "25.720"
+  },
+  {
+    "id": "sent_p2_s1",
+    "text": "This portrayal reflects an increasingly commonplace dilemma in the modern era.",
+    "start": "27.020",
+    "end": "31.868"
+  },
+  {
+    "id": "sent_p2_s2",
+    "text": "On the one hand, the phenomenal boom of mobile internet has delivered unprecedented convenience, enabling people to access voluminous information and entertainment instantaneously.",
+    "start": "32.268",
+    "end": "44.316"
+  },
+  {
+    "id": "sent_p2_s3",
+    "text": "On the other hand, excessive addiction to virtual networks has inexorably alienated authentic emotional ties between human beings.",
+    "start": "44.716",
+    "end": "54.052"
+  },
+  {
+    "id": "sent_p2_s4",
+    "text": "As people indulge in endless scrolling through short videos and algorithmic feeds, genuine interpersonal dialogue and deep contemplation are gradually supplanted by fragmented trivialities.",
+    "start": "54.451",
+    "end": "68.035"
+  },
+  {
+    "id": "sent_p2_s5",
+    "text": "As the old adage warns, \"All that glitters is not gold.\"",
+    "start": "68.435",
+    "end": "72.731"
+  },
+  {
+    "id": "sent_p2_s6",
+    "text": "Technology should enrich our existence rather than hijack our consciousness.",
+    "start": "73.131",
+    "end": "77.979"
+  },
+  {
+    "id": "sent_p3_s1",
+    "text": "In conclusion, it is high time that we adopted a balanced perspective toward digital innovations.",
+    "start": "79.279",
+    "end": "85.735"
+  },
+  {
+    "id": "sent_p3_s2",
+    "text": "Only by utilizing technology as an empowering servant rather than allowing it to become our tyrannical master can we preserve true warmth and mental autonomy in human relationships.",
+    "start": "86.135",
+    "end": "98.999"
+  }
+]

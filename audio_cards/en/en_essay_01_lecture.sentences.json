@@ -1,0 +1,80 @@
+[
+  {
+    "id": "t2_intro",
+    "text": "下面进入小作文 01 · 建议信：图书馆设施与自习服务优化答题骨架与变体精解。",
+    "start": "0.000",
+    "end": "7.824"
+  },
+  {
+    "id": "t2_p1_cn",
+    "text": "第一段：表明写信人身份与核心来意。",
+    "start": "8.724",
+    "end": "12.468"
+  },
+  {
+    "id": "t2_p1_en",
+    "text": "As a senior student at this university who spends considerable time reading in the library, I am writing this letter with the aim of putting forward some constructive suggestions to improve the current facilities and services.",
+    "start": "12.968",
+    "end": "26.696"
+  },
+  {
+    "id": "t2_p1_tip_cn",
+    "text": "加分替换词：putting forward suggestions 替换为 offering constructive proposals。",
+    "start": "27.196",
+    "end": "33.244"
+  },
+  {
+    "id": "t2_p1_tip_en",
+    "text": "offering constructive proposals",
+    "start": "33.744",
+    "end": "36.120"
+  },
+  {
+    "id": "t2_p2_cn",
+    "text": "第二段：提出三条具有针对性与可操作性的具体建议。",
+    "start": "37.519",
+    "end": "42.943"
+  },
+  {
+    "id": "t2_p2_en",
+    "text": "In the first place, it is exceedingly advisable that the administration prolong the opening hours during examination weeks to accommodate students' intense revision schedules.",
+    "start": "43.443",
+    "end": "54.771"
+  },
+  {
+    "id": "t2_p2_tip_cn",
+    "text": "核心句型：虚拟语气 It is exceedingly advisable that sb. (should) do sth.。",
+    "start": "55.271",
+    "end": "62.759"
+  },
+  {
+    "id": "t2_p2_tip_en",
+    "text": "It is exceedingly advisable that the administration prolong the opening hours.",
+    "start": "63.259",
+    "end": "67.867"
+  },
+  {
+    "id": "t2_p3_cn",
+    "text": "第三段：礼貌致谢并期待管理部门答复。",
+    "start": "69.267",
+    "end": "73.635"
+  },
+  {
+    "id": "t2_p3_en",
+    "text": "Thank you for your time and favorable consideration of my recommendations, and I am genuinely looking forward to your earliest reply at your convenience.",
+    "start": "74.134",
+    "end": "83.878"
+  },
+  {
+    "id": "t2_p3_tip_cn",
+    "text": "考场名言点睛：千里之行，始于足下。",
+    "start": "84.378",
+    "end": "88.914"
+  },
+  {
+    "id": "t2_p3_tip_en",
+    "text": "A journey of a thousand miles begins with a single step.",
+    "start": "89.414",
+    "end": "93.398"
+  }
+]

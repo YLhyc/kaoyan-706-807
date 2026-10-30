@@ -1,0 +1,80 @@
+[
+  {
+    "id": "t2_intro",
+    "text": "下面进入小作文 02 · 投诉与维权信：网购商品质量破损与售后服务冷漠答题骨架与变体精解。",
+    "start": "0.000",
+    "end": "10.368"
+  },
+  {
+    "id": "t2_p1_cn",
+    "text": "第一段：直入主题，表明正式投诉意向与事由。",
+    "start": "11.268",
+    "end": "16.524"
+  },
+  {
+    "id": "t2_p1_en",
+    "text": "I am writing this letter to lodge a formal complaint concerning the substandard quality of the books I purchased and the unprofessional attitude of your staff.",
+    "start": "17.024",
+    "end": "26.840"
+  },
+  {
+    "id": "t2_p1_tip_cn",
+    "text": "加分短语：lodge a formal complaint 替换简单的 complain about。",
+    "start": "27.340",
+    "end": "32.668"
+  },
+  {
+    "id": "t2_p1_tip_en",
+    "text": "lodge a formal complaint",
+    "start": "33.168",
+    "end": "35.304"
+  },
+  {
+    "id": "t2_p2_cn",
+    "text": "第二段：客观列举事实细节，指出商品缺陷与服务失职。",
+    "start": "36.703",
+    "end": "42.367"
+  },
+  {
+    "id": "t2_p2_en",
+    "text": "When the parcel arrived yesterday, I was shocked to find that the covers were torn and several key pages were missing.",
+    "start": "42.867",
+    "end": "50.043"
+  },
+  {
+    "id": "t2_p2_tip_cn",
+    "text": "表达不满情感句型：Even more frustrating was that...",
+    "start": "50.543",
+    "end": "54.599"
+  },
+  {
+    "id": "t2_p2_tip_en",
+    "text": "Even more frustrating was that my inquiry was met with total indifference.",
+    "start": "55.099",
+    "end": "60.187"
+  },
+  {
+    "id": "t2_p3_cn",
+    "text": "第三段：严肃督促整改，明确要求换货或全额退款。",
+    "start": "61.587",
+    "end": "67.563"
+  },
+  {
+    "id": "t2_p3_en",
+    "text": "Therefore, I deem it imperative that an immediate replacement or a full refund be arranged promptly.",
+    "start": "68.062",
+    "end": "74.590"
+  },
+  {
+    "id": "t2_p3_tip_cn",
+    "text": "高分虚拟语气句：I deem it imperative that sb. (should) do...",
+    "start": "75.090",
+    "end": "80.586"
+  },
+  {
+    "id": "t2_p3_tip_en",
+    "text": "I deem it imperative that effective rectifying measures be taken promptly.",
+    "start": "81.086",
+    "end": "86.030"
+  }
+]

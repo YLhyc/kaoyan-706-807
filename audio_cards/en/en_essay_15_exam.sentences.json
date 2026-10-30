@@ -1,0 +1,56 @@
+[
+  {
+    "id": "sent_p1_s1",
+    "text": "The bar chart explicitly illustrates the dramatic variation in the proportion of regular physical exercise participants in our nation between 2018 and 2025.",
+    "start": "0.000",
+    "end": "11.904"
+  },
+  {
+    "id": "sent_p1_s2",
+    "text": "During this period, the percentage climbed remarkably from 28.5% to approximately 65.2%, reflecting an inspiring shift toward healthier living across all demographics.",
+    "start": "12.304",
+    "end": "27.472"
+  },
+  {
+    "id": "sent_p2_s1",
+    "text": "A combination of powerful drivers accounts for this noticeable upsurge.",
+    "start": "28.772",
+    "end": "34.028"
+  },
+  {
+    "id": "sent_p2_s2",
+    "text": "Foremost among them is that accompanied by steady economic growth, Chinese citizens enjoy elevated disposable income and increasingly prioritize physical wellness over mere material acquisition.",
+    "start": "34.428",
+    "end": "48.564"
+  },
+  {
+    "id": "sent_p2_s3",
+    "text": "Furthermore, extensive government investments in public sports infrastructure—such as municipal jogging tracks and community fitness parks—have significantly lowered the threshold for physical workout.",
+    "start": "48.964",
+    "end": "61.900"
+  },
+  {
+    "id": "sent_p2_s4",
+    "text": "In addition, social media platforms and fitness applications have popularized active workouts as a trendy and invigorating lifestyle among youngsters.",
+    "start": "62.299",
+    "end": "72.523"
+  },
+  {
+    "id": "sent_p2_s5",
+    "text": "Health is rightfully recognized as the prerequisite for happiness.",
+    "start": "72.923",
+    "end": "77.051"
+  },
+  {
+    "id": "sent_p3_s1",
+    "text": "To summarize, this encouraging trend mirrors societal progress and heightened life quality.",
+    "start": "78.351",
+    "end": "85.215"
+  },
+  {
+    "id": "sent_p3_s2",
+    "text": "It is widely anticipated that regular physical exercise will gain greater momentum in the forthcoming years, ushering in a healthier nation.",
+    "start": "85.615",
+    "end": "95.911"
+  }
+]

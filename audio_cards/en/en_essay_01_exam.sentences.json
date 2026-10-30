@@ -1,0 +1,56 @@
+[
+  {
+    "id": "sent_p1_s1",
+    "text": "Dear Mr. President,",
+    "start": "0.000",
+    "end": "1.584"
+  },
+  {
+    "id": "sent_p1_s2",
+    "text": "As a senior student at this university who spends considerable time reading in the library, I am writing this letter with the aim of putting forward some constructive suggestions to improve the current facilities and services.",
+    "start": "1.984",
+    "end": "15.712"
+  },
+  {
+    "id": "sent_p2_s1",
+    "text": "Having observed the daily study environment, I would like to lay emphasis on the following aspects.",
+    "start": "17.012",
+    "end": "23.540"
+  },
+  {
+    "id": "sent_p2_s2",
+    "text": "In the first place, it is exceedingly advisable that the administration prolong the opening hours during examination weeks to accommodate students' intense revision schedules.",
+    "start": "23.940",
+    "end": "35.268"
+  },
+  {
+    "id": "sent_p2_s3",
+    "text": "In the second place, the library is expected to introduce more power outlets and create designated silent study cubicles.",
+    "start": "35.668",
+    "end": "44.524"
+  },
+  {
+    "id": "sent_p2_s4",
+    "text": "Lastly, regular maintenance of academic databases and book resources should be reinforced to ensure prompt access to references.",
+    "start": "44.923",
+    "end": "53.707"
+  },
+  {
+    "id": "sent_p3_s1",
+    "text": "Thank you for your time and favorable consideration of my recommendations.",
+    "start": "55.007",
+    "end": "59.303"
+  },
+  {
+    "id": "sent_p3_s2",
+    "text": "I am genuinely looking forward to your earliest reply at your convenience.",
+    "start": "59.703",
+    "end": "64.407"
+  },
+  {
+    "id": "sent_p3_s3",
+    "text": "Yours sincerely, Li Ming",
+    "start": "64.807",
+    "end": "67.255"
+  }
+]

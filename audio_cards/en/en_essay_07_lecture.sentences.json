@@ -1,0 +1,80 @@
+[
+  {
+    "id": "t2_intro",
+    "text": "下面进入小作文 07 · 道歉与说明信：因突发科研任务无法按期赴会答题骨架与变体精解。",
+    "start": "0.000",
+    "end": "9.888"
+  },
+  {
+    "id": "t2_p1_cn",
+    "text": "第一段：直接陈述失约事实并表达深切歉意。",
+    "start": "10.788",
+    "end": "15.564"
+  },
+  {
+    "id": "t2_p1_en",
+    "text": "I am writing this letter with sincere regret to apologize for being unable to attend tomorrow's symposium as previously scheduled.",
+    "start": "16.064",
+    "end": "24.680"
+  },
+  {
+    "id": "t2_p1_tip_cn",
+    "text": "道歉母句：I am writing with sincere regret to apologize for being unable to do sth.。",
+    "start": "25.180",
+    "end": "30.844"
+  },
+  {
+    "id": "t2_p1_tip_en",
+    "text": "I am writing with sincere regret to apologize for being unable to attend the symposium.",
+    "start": "31.344",
+    "end": "36.768"
+  },
+  {
+    "id": "t2_p2_cn",
+    "text": "第二段：解释合情合理、无可推卸的紧急客观事由（突发科研任务）。",
+    "start": "38.167",
+    "end": "44.791"
+  },
+  {
+    "id": "t2_p2_en",
+    "text": "Much to my distress, our laboratory has been assigned an emergency national research task, which prevents me from being absent.",
+    "start": "45.291",
+    "end": "53.835"
+  },
+  {
+    "id": "t2_p2_tip_cn",
+    "text": "情态副词状语短语：Much to my distress / Much to my regret, ...",
+    "start": "54.335",
+    "end": "59.831"
+  },
+  {
+    "id": "t2_p2_tip_en",
+    "text": "Much to my distress, our laboratory has been assigned an emergency research task.",
+    "start": "60.331",
+    "end": "65.587"
+  },
+  {
+    "id": "t2_p3_cn",
+    "text": "第三段：主动提供补救替代时间并重申歉意。",
+    "start": "66.987",
+    "end": "71.523"
+  },
+  {
+    "id": "t2_p3_en",
+    "text": "Would it be possible for us to reschedule our meeting for next Tuesday? Please accept my deepest apologies once again.",
+    "start": "72.022",
+    "end": "80.230"
+  },
+  {
+    "id": "t2_p3_tip_cn",
+    "text": "委婉改期商量句型：Would it be possible for us to reschedule our appointment for [Date]?",
+    "start": "80.730",
+    "end": "86.874"
+  },
+  {
+    "id": "t2_p3_tip_en",
+    "text": "Would it be possible for us to reschedule our meeting for next Tuesday?",
+    "start": "87.374",
+    "end": "91.598"
+  }
+]

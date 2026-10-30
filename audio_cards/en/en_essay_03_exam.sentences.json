@@ -1,0 +1,56 @@
+[
+  {
+    "id": "sent_p1_s1",
+    "text": "Dear Organizing Committee,",
+    "start": "0.000",
+    "end": "1.968"
+  },
+  {
+    "id": "sent_p1_s2",
+    "text": "Learning from the university website that enthusiastic student assistants are wanted for the upcoming International Academic Symposium, I am writing to recommend myself with utmost enthusiasm.",
+    "start": "2.368",
+    "end": "15.136"
+  },
+  {
+    "id": "sent_p2_s1",
+    "text": "As a senior majoring in English Literature, I am convinced that my qualifications match your requirements remarkably well.",
+    "start": "16.436",
+    "end": "24.500"
+  },
+  {
+    "id": "sent_p2_s2",
+    "text": "First of all, I have achieved excellent proficiency in both oral and written English, which enables me to communicate fluently with foreign scholars.",
+    "start": "24.900",
+    "end": "34.236"
+  },
+  {
+    "id": "sent_p2_s3",
+    "text": "Furthermore, having served as a liaison officer in previous university forums, I possess sound interpersonal skills and strong organizational capabilities.",
+    "start": "34.636",
+    "end": "46.132"
+  },
+  {
+    "id": "sent_p2_s4",
+    "text": "Most importantly, I am dependable and fully committed to fulfilling every designated assignment with diligence.",
+    "start": "46.531",
+    "end": "53.395"
+  },
+  {
+    "id": "sent_p3_s1",
+    "text": "Enclosed please find my curriculum vitae for your reference.",
+    "start": "54.695",
+    "end": "58.823"
+  },
+  {
+    "id": "sent_p3_s2",
+    "text": "I would appreciate the opportunity to attend an interview at your convenience.",
+    "start": "59.223",
+    "end": "63.687"
+  },
+  {
+    "id": "sent_p3_s3",
+    "text": "Yours sincerely, Li Ming",
+    "start": "64.087",
+    "end": "66.535"
+  }
+]

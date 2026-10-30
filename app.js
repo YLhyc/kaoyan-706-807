@@ -176,12 +176,11 @@
     
     if (state.currentSubject === 'en') {
       const pills = [
-        { id: 'all', label: '全部 (52)' },
-        { id: 'fn_letter', label: '小作文 (9)' },
-        { id: 'fn_argument', label: '说理论证 (12)' },
-        { id: 'fn_picture_chart', label: '图表图画 (8)' },
-        { id: 'proverb', label: '点睛谚语 (20)' },
-        { id: 'template', label: '冲刺模版 (3)' }
+        { id: 'all', label: '全部范文 (16)' },
+        { id: 'essay_letter', label: '高分书信 (6)' },
+        { id: 'essay_notice', label: '告示通知 (2)' },
+        { id: 'essay_picture', label: '真题图画 (6)' },
+        { id: 'essay_chart', label: '真题图表 (2)' }
       ];
       pills.forEach(p => {
         const btn = document.createElement('button');
@@ -222,12 +221,12 @@
   function updateSubjectUI(sub) {
     if (sub === 'en') {
       if (el.headerVoiceBadge) {
-        el.headerVoiceBadge.innerHTML = 'Emily（美音母语）+ 龙安立（中文点睛）';
+        el.headerVoiceBadge.innerHTML = 'Emily（纯正美音）+ 龙安立（中文导引）';
       }
-      if (el.tab1TextFull) el.tab1TextFull.textContent = '【轨道一】中英听读磨耳版';
-      if (el.tab1TextShort) el.tab1TextShort.textContent = '轨道一 · 听读磨耳';
-      if (el.tab2TextFull) el.tab2TextFull.textContent = '【轨道二】替换变体与仿写拓展';
-      if (el.tab2TextShort) el.tab2TextShort.textContent = '轨道二 · 仿写拓展';
+      if (el.tab1TextFull) el.tab1TextFull.textContent = '【轨道一】考场高分纯英文范文';
+      if (el.tab1TextShort) el.tab1TextShort.textContent = '轨道一 · 考场纯享';
+      if (el.tab2TextFull) el.tab2TextFull.textContent = '【轨道二】答题骨架与变体精解';
+      if (el.tab2TextShort) el.tab2TextShort.textContent = '轨道二 · 双轨精解';
       if (el.trackVoicePill) el.trackVoicePill.textContent = 'Emily + 龙安立';
     } else {
       if (el.headerVoiceBadge) {
@@ -286,7 +285,7 @@
                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
              </svg>
-             ${state.currentSubject === 'en' ? '磨耳' : '通读'}
+             ${state.currentSubject === 'en' ? '范文' : '通读'}
            </span>`
         : `<span class="card-audio-status" title="文本已就绪">
              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

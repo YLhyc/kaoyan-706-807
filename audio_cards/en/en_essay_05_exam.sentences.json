@@ -1,0 +1,62 @@
+[
+  {
+    "id": "sent_p1_s1",
+    "text": "Notice: Volunteers Wanted",
+    "start": "0.000",
+    "end": "2.544"
+  },
+  {
+    "id": "sent_p1_s2",
+    "text": "In an effort to foster cross-cultural understanding on campus, the International Cultural Exchange Week will be grandly hosted from December 1st to 7th.",
+    "start": "2.944",
+    "end": "12.928"
+  },
+  {
+    "id": "sent_p1_s3",
+    "text": "This notice is issued for the purpose of recruiting 20 energetic and responsible student volunteers.",
+    "start": "13.328",
+    "end": "20.264"
+  },
+  {
+    "id": "sent_p2_s1",
+    "text": "Prospective candidates are expected to fulfill the following qualifications.",
+    "start": "21.564",
+    "end": "26.580"
+  },
+  {
+    "id": "sent_p2_s2",
+    "text": "Above all, applicants should demonstrate fluent oral English communication skills and basic cultural sensitivity.",
+    "start": "26.980",
+    "end": "34.948"
+  },
+  {
+    "id": "sent_p2_s3",
+    "text": "In addition, prior volunteer experience and strong teamwork spirit will be viewed favorably.",
+    "start": "35.347",
+    "end": "42.043"
+  },
+  {
+    "id": "sent_p2_s4",
+    "text": "The primary responsibilities entail guiding international guests, coordinating exhibition booths, and facilitating cultural workshops.",
+    "start": "42.443",
+    "end": "52.019"
+  },
+  {
+    "id": "sent_p3_s1",
+    "text": "Those who are interested should submit an electronic application to volunteer_exchange@university.edu.cn before November 20th.",
+    "start": "53.319",
+    "end": "65.703"
+  },
+  {
+    "id": "sent_p3_s2",
+    "text": "We sincerely look forward to your active participation.",
+    "start": "66.103",
+    "end": "69.271"
+  },
+  {
+    "id": "sent_p3_s3",
+    "text": "The Organizing Committee, October 30th",
+    "start": "69.671",
+    "end": "72.935"
+  }
+]

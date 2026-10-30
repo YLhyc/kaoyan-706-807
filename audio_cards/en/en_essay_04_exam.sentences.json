@@ -1,0 +1,50 @@
+[
+  {
+    "id": "sent_p1_s1",
+    "text": "Dear Professor Green,",
+    "start": "0.000",
+    "end": "1.728"
+  },
+  {
+    "id": "sent_p1_s2",
+    "text": "On behalf of the Student Union, I am honored to extend a cordial invitation to you to serve as an expert judge for our upcoming 15th Campus English Speech Contest.",
+    "start": "2.128",
+    "end": "13.384"
+  },
+  {
+    "id": "sent_p2_s1",
+    "text": "The event is scheduled to be held in the Grand Auditorium from 2:00 p.m. to 5:00 p.m. next Friday, November 14th.",
+    "start": "14.684",
+    "end": "23.132"
+  },
+  {
+    "id": "sent_p2_s2",
+    "text": "The contest will feature fifteen distinguished finalists delivering speeches on the theme of Cultural Interconnection in the Modern Era.",
+    "start": "23.532",
+    "end": "31.908"
+  },
+  {
+    "id": "sent_p2_s3",
+    "text": "Considering your outstanding academic prestige and profound linguistic insight, your professional evaluation and commentary would undoubtedly inspire all contestants and elevate the academic caliber of this competition.",
+    "start": "32.308",
+    "end": "46.684"
+  },
+  {
+    "id": "sent_p3_s1",
+    "text": "We would be deeply grateful if you could accept our invitation.",
+    "start": "47.983",
+    "end": "51.799"
+  },
+  {
+    "id": "sent_p3_s2",
+    "text": "Please kindly notify us of your availability before this Wednesday.",
+    "start": "52.199",
+    "end": "56.423"
+  },
+  {
+    "id": "sent_p3_s3",
+    "text": "Yours sincerely, Li Ming",
+    "start": "56.823",
+    "end": "59.199"
+  }
+]

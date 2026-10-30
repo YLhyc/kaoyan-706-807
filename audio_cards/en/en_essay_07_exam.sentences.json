@@ -1,0 +1,50 @@
+[
+  {
+    "id": "sent_p1_s1",
+    "text": "Dear Professor Zhang,",
+    "start": "0.000",
+    "end": "1.656"
+  },
+  {
+    "id": "sent_p1_s2",
+    "text": "I am writing this letter with sincere regret to apologize for being unable to attend tomorrow's academic symposium on modern linguistics as previously scheduled.",
+    "start": "2.056",
+    "end": "12.664"
+  },
+  {
+    "id": "sent_p2_s1",
+    "text": "Much to my distress, our laboratory has just been assigned an emergency national research task, and I am designated to handle critical experimental data analysis under an extremely tight deadline.",
+    "start": "13.964",
+    "end": "27.380"
+  },
+  {
+    "id": "sent_p2_s2",
+    "text": "Because of this unanticipated circumstance, it is utterly impossible for me to be absent from the laboratory tomorrow.",
+    "start": "27.780",
+    "end": "35.196"
+  },
+  {
+    "id": "sent_p2_s3",
+    "text": "I fully realize the inconvenience and disappointment my unexpected absence may cause to you and the research group.",
+    "start": "35.596",
+    "end": "42.772"
+  },
+  {
+    "id": "sent_p3_s1",
+    "text": "Would it be possible for us to reschedule our meeting for next Tuesday?",
+    "start": "44.071",
+    "end": "48.295"
+  },
+  {
+    "id": "sent_p3_s2",
+    "text": "Please accept my deepest apologies once again for this regrettable situation.",
+    "start": "48.695",
+    "end": "53.879"
+  },
+  {
+    "id": "sent_p3_s3",
+    "text": "Yours sincerely, Li Ming",
+    "start": "54.279",
+    "end": "56.727"
+  }
+]
