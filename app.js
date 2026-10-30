@@ -627,7 +627,7 @@
   // ==========================================
   // 云端版本检测与一键强刷更新机制
   // ==========================================
-  const APP_BUILD_ID = '1.1.0';
+  const APP_BUILD_ID = '1.2.0';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -693,7 +693,7 @@
         if (banner) banner.style.display = 'none';
         if (badge) badge.classList.remove('has-update');
         if (versionText) {
-          versionText.textContent = `版本 v${APP_BUILD_ID} · 双轨研读版`;
+          versionText.textContent = `版本 v${APP_BUILD_ID} · 双轨全音频版`;
         }
         if (isManual) {
           showToast('已是最新版本 v' + APP_BUILD_ID);
@@ -701,7 +701,7 @@
       }
     } catch (err) {
       console.warn('Update check failed:', err);
-      if (versionText) versionText.textContent = `版本 v${APP_BUILD_ID} · 双轨研读版`;
+      if (versionText) versionText.textContent = `版本 v${APP_BUILD_ID} · 双轨全音频版`;
       if (isManual) showToast('当前已是最新版本');
     }
   }
