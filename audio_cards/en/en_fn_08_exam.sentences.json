@@ -1,0 +1,14 @@
+[
+  {
+    "id": "sent_cn_0",
+    "text": "功能句 8：值得去做 / 重点关注。中文意图：强调某事值得投入精力。",
+    "start": "0.000",
+    "end": "8.136"
+  },
+  {
+    "id": "sent_en_1",
+    "text": "This project is definitely worth our attention and widespread participation.",
+    "start": "8.836",
+    "end": "13.540"
+  }
+]

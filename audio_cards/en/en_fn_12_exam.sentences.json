@@ -1,0 +1,14 @@
+[
+  {
+    "id": "sent_cn_0",
+    "text": "功能句 12：典型特征引出结果（so... that 结构）。中文意图：程度深刻导致必然结果。",
+    "start": "0.000",
+    "end": "10.056"
+  },
+  {
+    "id": "sent_en_1",
+    "text": "Traditional culture is so culturally profound that it has exerted a lifelong impact on generations of youth.",
+    "start": "10.756",
+    "end": "18.172"
+  }
+]

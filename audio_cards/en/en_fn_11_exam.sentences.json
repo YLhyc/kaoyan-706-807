@@ -1,0 +1,14 @@
+[
+  {
+    "id": "sent_cn_0",
+    "text": "功能句 11：聚焦单一主要诱因。中文意图：重点强调某一主导因素。",
+    "start": "0.000",
+    "end": "8.688"
+  },
+  {
+    "id": "sent_en_1",
+    "text": "Chief among these factors is that the rapid evolution of information technology has thoroughly reshaped our lifestyle.",
+    "start": "9.388",
+    "end": "16.972"
+  }
+]

@@ -5,3 +5,5 @@ __pycache__/
 .idea/
 Thumbs.db
 .DS_Store
+*.py
+ui_schemes_showcase.html

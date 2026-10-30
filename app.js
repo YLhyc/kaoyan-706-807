@@ -1,6 +1,7 @@
 /**
- * 2027 考研专业课双轨随身背诵手卷 · 核心交互引擎 (独立专研版)
- * 支持纯本地离线 (ZERO-CORS) 瞬时加载与全量 72 音轨毫秒级点读对齐
+ * 2027 考研全科双轨随身背诵手卷 · 核心交互引擎 (全科金石朱墨专研版)
+ * 深度集成 807 专业课、706 专业课 与 考研英语写作听力磨耳库
+ * 支持纯本地离线 (ZERO-CORS) 瞬时加载与全量 176 音轨毫秒级点读对齐
  */
 
 (function () {
@@ -8,8 +9,8 @@
 
   const state = {
     allData: null,
-    currentSubject: '807',
-    currentTrack: 1, // 1: 考场直接答题完整版, 2: 答题版内部逻辑精解版
+    currentSubject: '807', // '807' | '706' | 'en'
+    currentTrack: 1, // 1: 考场直接答题/中英磨耳, 2: 答题版逻辑精解/替换仿写
     activeItemId: null,
     activeItem: null,
     activeSentences: [],
@@ -39,8 +40,15 @@
   function initElements() {
     el.subject807Btn = document.getElementById('btn-subject-807');
     el.subject706Btn = document.getElementById('btn-subject-706');
+    el.subjectEnBtn = document.getElementById('btn-subject-en');
+    
     el.count807 = document.getElementById('count-807');
     el.count706 = document.getElementById('count-706');
+    el.countEn = document.getElementById('count-en');
+    
+    el.headerVoiceBadge = document.getElementById('headerVoiceBadge');
+    el.filterPillsWrap = document.getElementById('filter-pills-wrap');
+    
     el.searchInput = document.getElementById('search-input');
     el.itemList = document.getElementById('item-list');
     
@@ -52,6 +60,12 @@
     
     el.tabTrack1 = document.getElementById('tab-track-1');
     el.tabTrack2 = document.getElementById('tab-track-2');
+    el.tab1TextFull = document.getElementById('tab1-text-full');
+    el.tab1TextShort = document.getElementById('tab1-text-short');
+    el.tab2TextFull = document.getElementById('tab2-text-full');
+    el.tab2TextShort = document.getElementById('tab2-text-short');
+    el.trackVoicePill = document.getElementById('trackVoicePill');
+    
     el.paperContent = document.getElementById('paper-content');
     
     el.playBtn = document.getElementById('dock-play-btn');
@@ -76,7 +90,6 @@
     el.sidebar = document.getElementById('sidebar');
     el.mobileMenuBtn = document.getElementById('btn-mobile-menu');
     el.backdrop = document.getElementById('sidebar-backdrop');
-    el.tierPills = document.querySelectorAll('.filter-pill[data-tier]');
   }
 
   // 加载数据包 (优先调用已嵌入的 window.KAOYAN_MANIFEST，彻底免疫 file:/// 下的 CORS 阻断)
@@ -102,6 +115,7 @@
     }
 
     updateBadgeCounts();
+    renderFilterPills();
     renderSidebarList();
     
     const defaultList = getCurrentItemsList();
@@ -112,11 +126,24 @@
 
   function getCurrentItemsList() {
     if (!state.allData) return [];
-    const rawList = state.currentSubject === '807' ? state.allData.items_807 : state.allData.items_706;
+    let rawList;
+    if (state.currentSubject === '807') {
+      rawList = state.allData.items_807;
+    } else if (state.currentSubject === '706') {
+      rawList = state.allData.items_706;
+    } else {
+      rawList = state.allData.items_en;
+    }
     if (!rawList) return [];
 
     return rawList.filter(item => {
-      if (state.tierFilter !== 'all' && item.level !== state.tierFilter) return false;
+      if (state.tierFilter !== 'all') {
+        if (state.currentSubject === 'en') {
+          if (item.category_id !== state.tierFilter) return false;
+        } else {
+          if (item.level !== state.tierFilter) return false;
+        }
+      }
       if (state.scoreFilter !== 'all') {
         if (state.scoreFilter === '30' && !item.score.includes('30')) return false;
         if (state.scoreFilter === '20' && !item.score.includes('20')) return false;
@@ -137,8 +164,101 @@
     if (!state.allData) return;
     const c807 = (state.allData.items_807 || []).length;
     const c706 = (state.allData.items_706 || []).length;
+    const cEn = (state.allData.items_en || []).length;
     if (el.count807) el.count807.textContent = `${c807}题`;
     if (el.count706) el.count706.textContent = `${c706}题`;
+    if (el.countEn) el.countEn.textContent = `${cEn}条`;
+  }
+
+  function renderFilterPills() {
+    if (!el.filterPillsWrap) return;
+    el.filterPillsWrap.innerHTML = '';
+    
+    if (state.currentSubject === 'en') {
+      const pills = [
+        { id: 'all', label: '全部 (52)' },
+        { id: 'fn_letter', label: '小作文 (9)' },
+        { id: 'fn_argument', label: '说理论证 (12)' },
+        { id: 'fn_picture_chart', label: '图表图画 (8)' },
+        { id: 'proverb', label: '点睛谚语 (20)' },
+        { id: 'template', label: '冲刺模版 (3)' }
+      ];
+      pills.forEach(p => {
+        const btn = document.createElement('button');
+        btn.className = `filter-pill ${state.tierFilter === p.id ? 'active' : ''}`;
+        btn.dataset.filter = p.id;
+        btn.textContent = p.label;
+        btn.addEventListener('click', () => {
+          state.tierFilter = p.id;
+          el.filterPillsWrap.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          renderSidebarList();
+        });
+        el.filterPillsWrap.appendChild(btn);
+      });
+    } else {
+      const pills = [
+        { id: 'all', label: '全部考点' },
+        { id: 'T0', label: 'T0 极高频必背' },
+        { id: 'T1', label: 'T1 核心考点' },
+        { id: 'T2', label: 'T2 重点拓展' }
+      ];
+      pills.forEach(p => {
+        const btn = document.createElement('button');
+        btn.className = `filter-pill ${state.tierFilter === p.id ? 'active' : ''}`;
+        btn.dataset.filter = p.id;
+        btn.textContent = p.label;
+        btn.addEventListener('click', () => {
+          state.tierFilter = p.id;
+          el.filterPillsWrap.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          renderSidebarList();
+        });
+        el.filterPillsWrap.appendChild(btn);
+      });
+    }
+  }
+
+  function updateSubjectUI(sub) {
+    if (sub === 'en') {
+      if (el.headerVoiceBadge) {
+        el.headerVoiceBadge.innerHTML = 'Emily（美音母语）+ 龙安立（中文点睛）';
+      }
+      if (el.tab1TextFull) el.tab1TextFull.textContent = '【轨道一】中英听读磨耳版';
+      if (el.tab1TextShort) el.tab1TextShort.textContent = '轨道一 · 听读磨耳';
+      if (el.tab2TextFull) el.tab2TextFull.textContent = '【轨道二】替换变体与仿写拓展';
+      if (el.tab2TextShort) el.tab2TextShort.textContent = '轨道二 · 仿写拓展';
+      if (el.trackVoicePill) el.trackVoicePill.textContent = 'Emily + 龙安立';
+    } else {
+      if (el.headerVoiceBadge) {
+        el.headerVoiceBadge.innerHTML = '龙安朗 · 清爽利落全段通读';
+      }
+      if (el.tab1TextFull) el.tab1TextFull.textContent = '【轨道一】考场直接答题完整版';
+      if (el.tab1TextShort) el.tab1TextShort.textContent = '轨道一 · 考场答题版';
+      if (el.tab2TextFull) el.tab2TextFull.textContent = '【轨道二】答题版内部逻辑精解版';
+      if (el.tab2TextShort) el.tab2TextShort.textContent = '轨道二 · 逻辑精解版';
+      if (el.trackVoicePill) el.trackVoicePill.textContent = '龙安朗 · 通读';
+    }
+  }
+
+  function switchSubject(sub) {
+    if (state.currentSubject === sub) return;
+    state.currentSubject = sub;
+    
+    el.subject807Btn.classList.toggle('active', sub === '807');
+    el.subject706Btn.classList.toggle('active', sub === '706');
+    if (el.subjectEnBtn) el.subjectEnBtn.classList.toggle('active', sub === 'en');
+    
+    updateSubjectUI(sub);
+    
+    state.tierFilter = 'all';
+    renderFilterPills();
+    
+    renderSidebarList();
+    const list = getCurrentItemsList();
+    if (list.length > 0) {
+      selectItem(list[0].id);
+    }
   }
 
   function renderSidebarList() {
@@ -161,12 +281,12 @@
 
       const hasAudio = item.track1 && item.track1.has_audio;
       const audioStatusHtml = hasAudio 
-        ? `<span class="card-audio-status has-audio" title="龙安朗全段通读已就绪">
+        ? `<span class="card-audio-status has-audio" title="通读音频已就绪">
              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
              </svg>
-             通读
+             ${state.currentSubject === 'en' ? '磨耳' : '通读'}
            </span>`
         : `<span class="card-audio-status" title="文本已就绪">
              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -218,14 +338,26 @@
     });
 
     el.questionTitle.textContent = item.title;
-    el.stageSubject.textContent = state.currentSubject === '807' ? '807 现当代文学' : '706 古代文学';
-    el.stageTopic.textContent = item.author ? `${item.author} 专章` : '核心考点';
+    if (state.currentSubject === '807') {
+      el.stageSubject.textContent = '807 现当代文学';
+    } else if (state.currentSubject === '706') {
+      el.stageSubject.textContent = '706 古代文学';
+    } else {
+      el.stageSubject.textContent = '考研英语写作';
+    }
+    el.stageTopic.textContent = item.topic || (item.author ? `${item.author} 专章` : '核心考点');
     el.stageScore.textContent = item.score;
     el.stageTier.textContent = item.level;
     el.stageTier.className = `tier-badge tier-${item.level}`;
 
     if (el.dockTitle) el.dockTitle.textContent = item.title;
-    if (el.dockTrackPill) el.dockTrackPill.textContent = state.currentTrack === 1 ? '考场直接答题完整版' : '答题版内部逻辑精解版';
+    if (el.dockTrackPill) {
+      if (state.currentSubject === 'en') {
+        el.dockTrackPill.textContent = state.currentTrack === 1 ? '中英听读磨耳版' : '替换变体与仿写拓展';
+      } else {
+        el.dockTrackPill.textContent = state.currentTrack === 1 ? '考场直接答题完整版' : '答题版内部逻辑精解版';
+      }
+    }
 
     await loadTrackData(state.currentTrack, autoPlay);
   }
@@ -237,7 +369,13 @@
 
     if (el.tabTrack1) el.tabTrack1.classList.toggle('active', trackNum === 1);
     if (el.tabTrack2) el.tabTrack2.classList.toggle('active', trackNum === 2);
-    if (el.dockTrackPill) el.dockTrackPill.textContent = trackNum === 1 ? '考场直接答题完整版' : '答题版内部逻辑精解版';
+    if (el.dockTrackPill) {
+      if (state.currentSubject === 'en') {
+        el.dockTrackPill.textContent = trackNum === 1 ? '中英听读磨耳版' : '替换变体与仿写拓展';
+      } else {
+        el.dockTrackPill.textContent = trackNum === 1 ? '考场直接答题完整版' : '答题版内部逻辑精解版';
+      }
+    }
 
     const item = state.activeItem;
     if (!item) return;
@@ -289,7 +427,7 @@
       const sents = el.paperContent.querySelectorAll('.recite-sent');
       sents.forEach(s => {
         s.addEventListener('click', () => {
-          const sentId = parseInt(s.dataset.sentId, 10);
+          const sentId = s.dataset.sentId;
           const start = parseFloat(s.dataset.start);
           if (!isNaN(start)) {
             seekToSentence(sentId, start);
@@ -320,7 +458,7 @@
   function highlightSentence(sentId) {
     const sents = document.querySelectorAll('.recite-sent');
     sents.forEach(s => {
-      const match = parseInt(s.dataset.sentId, 10) === sentId;
+      const match = String(s.dataset.sentId) === String(sentId);
       s.classList.toggle('active-spotlight', match);
       if (match) {
         const now = Date.now();
@@ -429,145 +567,180 @@
   }
 
   function setupEventListeners() {
-    el.subject807Btn.addEventListener('click', () => {
-      if (state.currentSubject === '807') return;
-      state.currentSubject = '807';
-      el.subject807Btn.classList.add('active');
-      el.subject706Btn.classList.remove('active');
-      renderSidebarList();
-      const list = getCurrentItemsList();
-      if (list.length > 0) selectItem(list[0].id);
-    });
+    if (el.subject807Btn) {
+      el.subject807Btn.addEventListener('click', () => switchSubject('807'));
+    }
 
-    el.subject706Btn.addEventListener('click', () => {
-      if (state.currentSubject === '706') return;
-      state.currentSubject = '706';
-      el.subject706Btn.classList.add('active');
-      el.subject807Btn.classList.remove('active');
-      renderSidebarList();
-      const list = getCurrentItemsList();
-      if (list.length > 0) selectItem(list[0].id);
-    });
+    if (el.subject706Btn) {
+      el.subject706Btn.addEventListener('click', () => switchSubject('706'));
+    }
 
-    el.searchInput.addEventListener('input', (e) => {
-      state.searchQuery = e.target.value.trim();
-      renderSidebarList();
-    });
+    if (el.subjectEnBtn) {
+      el.subjectEnBtn.addEventListener('click', () => switchSubject('en'));
+    }
 
-    el.tierPills.forEach(pill => {
-      pill.addEventListener('click', () => {
-        el.tierPills.forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-        state.tierFilter = pill.dataset.tier;
+    if (el.searchInput) {
+      el.searchInput.addEventListener('input', (e) => {
+        state.searchQuery = e.target.value.trim();
         renderSidebarList();
       });
-    });
+    }
 
-    el.tabTrack1.addEventListener('click', () => {
-      if (state.currentTrack === 1) return;
-      loadTrackData(1, state.isPlaying);
-    });
+    if (el.tabTrack1) {
+      el.tabTrack1.addEventListener('click', () => {
+        if (state.currentTrack === 1) return;
+        loadTrackData(1, state.isPlaying);
+      });
+    }
 
-    el.tabTrack2.addEventListener('click', () => {
-      if (state.currentTrack === 2) return;
-      loadTrackData(2, state.isPlaying);
-    });
+    if (el.tabTrack2) {
+      el.tabTrack2.addEventListener('click', () => {
+        if (state.currentTrack === 2) return;
+        loadTrackData(2, state.isPlaying);
+      });
+    }
 
-    el.playBtn.addEventListener('click', () => {
-      if (audio.paused) {
-        if (!audio.src) {
-          loadTrackData(state.currentTrack, true);
+    if (el.playBtn) {
+      el.playBtn.addEventListener('click', () => {
+        if (audio.paused) {
+          if (!audio.src) {
+            loadTrackData(state.currentTrack, true);
+          } else {
+            audio.play().catch(e => console.log('Play failed:', e));
+          }
         } else {
-          audio.play().catch(e => console.log(e));
-        }
-      } else {
-        audio.pause();
-      }
-    });
-
-    el.prevBtn.addEventListener('click', playPrevItem);
-    el.nextBtn.addEventListener('click', playNextItem);
-
-    el.rewindBtn.addEventListener('click', () => {
-      audio.currentTime = Math.max(0, audio.currentTime - 5);
-    });
-
-    el.forwardBtn.addEventListener('click', () => {
-      audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 5);
-    });
-
-    if (el.progressBar) {
-      el.progressBar.addEventListener('click', (e) => {
-        const rect = el.progressBar.getBoundingClientRect();
-        const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-        if (audio.duration) {
-          audio.currentTime = ratio * audio.duration;
+          audio.pause();
         }
       });
     }
 
-    const speeds = [0.85, 1.0, 1.15, 1.25, 1.5];
-    let speedIdx = 1;
-    el.speedBtn.addEventListener('click', () => {
-      speedIdx = (speedIdx + 1) % speeds.length;
-      state.speed = speeds[speedIdx];
-      audio.playbackRate = state.speed;
-      el.speedBtn.textContent = `${state.speed}x`;
-    });
+    if (el.prevBtn) {
+      el.prevBtn.addEventListener('click', () => playPrevItem());
+    }
 
-    el.loopModeBtn.addEventListener('click', () => {
-      if (state.reciteMode === 'normal') {
-        state.reciteMode = 'loop3';
-        state.loopCount = 0;
-        el.loopModeBtn.classList.add('active');
-        el.loopModeBtn.innerHTML = `
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="17 1 21 5 17 9"></polyline>
-            <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
-            <polyline points="7 23 3 19 7 15"></polyline>
-            <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
-          </svg>
-          三遍循环`;
-      } else {
-        state.reciteMode = 'normal';
-        state.loopCount = 0;
-        el.loopModeBtn.classList.remove('active');
-        el.loopModeBtn.innerHTML = `
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="17 1 21 5 17 9"></polyline>
-            <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
-            <polyline points="7 23 3 19 7 15"></polyline>
-            <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
-          </svg>
-          全篇顺读`;
-      }
-    });
+    if (el.nextBtn) {
+      el.nextBtn.addEventListener('click', () => playNextItem());
+    }
 
-    el.themeToggleBtn.addEventListener('click', () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      const newTheme = isDark ? 'parchment' : 'dark';
-      document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
-      localStorage.setItem('kaoyan_theme_pro', newTheme);
-    });
+    if (el.rewindBtn) {
+      el.rewindBtn.addEventListener('click', () => {
+        audio.currentTime = Math.max(0, audio.currentTime - 5);
+      });
+    }
 
-    el.fontIncBtn.addEventListener('click', () => {
-      if (state.fontSize < 24) {
-        state.fontSize += 1;
+    if (el.forwardBtn) {
+      el.forwardBtn.addEventListener('click', () => {
+        audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 5);
+      });
+    }
+
+    // 进度条拖拽与点击
+    if (el.progressBar) {
+      const handleSeek = (e) => {
+        const rect = el.progressBar.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const pos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        if (audio.duration) {
+          audio.currentTime = pos * audio.duration;
+        }
+      };
+
+      el.progressBar.addEventListener('click', handleSeek);
+    }
+
+    // 倍速调节
+    const speeds = [1.0, 1.2, 1.5, 0.8];
+    let speedIdx = 0;
+    if (el.speedBtn) {
+      el.speedBtn.addEventListener('click', () => {
+        speedIdx = (speedIdx + 1) % speeds.length;
+        state.speed = speeds[speedIdx];
+        audio.playbackRate = state.speed;
+        el.speedBtn.querySelector('span').textContent = `${state.speed.toFixed(1)}x`;
+      });
+    }
+
+    // 单句循环模式
+    if (el.loopModeBtn) {
+      el.loopModeBtn.addEventListener('click', () => {
+        if (state.reciteMode === 'normal') {
+          state.reciteMode = 'loop3';
+          state.loopCount = 0;
+          el.loopModeBtn.classList.add('active');
+          el.loopModeBtn.title = "当前：单句循环3遍（点击切回正常播放）";
+          el.loopModeBtn.querySelector('.mode-text').textContent = "句循3";
+        } else {
+          state.reciteMode = 'normal';
+          state.loopCount = 0;
+          el.loopModeBtn.classList.remove('active');
+          el.loopModeBtn.title = "当前：全篇顺序播放（点击开启单句循环3遍）";
+          el.loopModeBtn.querySelector('.mode-text').textContent = "单循";
+        }
+      });
+    }
+
+    // 主题切换
+    if (el.themeToggleBtn) {
+      el.themeToggleBtn.addEventListener('click', () => {
+        state.theme = state.theme === 'parchment' ? 'dark' : 'parchment';
+        document.documentElement.setAttribute('data-theme', state.theme);
+        localStorage.setItem('kaoyan_theme', state.theme);
+      });
+    }
+
+    // 字号调节
+    if (el.fontDecBtn) {
+      el.fontDecBtn.addEventListener('click', () => {
+        state.fontSize = Math.max(14, state.fontSize - 1);
         document.documentElement.style.setProperty('--font-base', `${state.fontSize}px`);
-      }
-    });
+        localStorage.setItem('kaoyan_font_size', state.fontSize);
+      });
+    }
 
-    el.fontDecBtn.addEventListener('click', () => {
-      if (state.fontSize > 14) {
-        state.fontSize -= 1;
+    if (el.fontIncBtn) {
+      el.fontIncBtn.addEventListener('click', () => {
+        state.fontSize = Math.min(24, state.fontSize + 1);
         document.documentElement.style.setProperty('--font-base', `${state.fontSize}px`);
-      }
-    });
+        localStorage.setItem('kaoyan_font_size', state.fontSize);
+      });
+    }
 
+    // 字体切换体系
+    const fontFamilies = [
+      { id: 'song', name: '雅宋', value: '"Noto Serif SC", "Source Han Serif SC", SimSun, serif' },
+      { id: 'kai', name: '温楷', value: '"LXGW WenKai Screen", "LXGW WenKai", "Kaiti SC", KaiTi, serif' },
+      { id: 'hei', name: '精黑', value: '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif' },
+      { id: 'fangsong', name: '仿宋', value: 'FangSong, "FangSong SC", "STFangsong", serif' }
+    ];
+    let fontIdx = 0;
+    const fontSwitchBtn = document.getElementById('btn-font-switch');
+    const fontNameLabel = document.getElementById('font-current-name');
+
+    const savedFont = localStorage.getItem('kaoyan_font_family');
+    if (savedFont) {
+      const idx = fontFamilies.findIndex(f => f.id === savedFont);
+      if (idx !== -1) {
+        fontIdx = idx;
+        document.documentElement.style.setProperty('--font-content', fontFamilies[fontIdx].value);
+        if (fontNameLabel) fontNameLabel.textContent = fontFamilies[fontIdx].name;
+      }
+    }
+
+    if (fontSwitchBtn) {
+      fontSwitchBtn.addEventListener('click', () => {
+        fontIdx = (fontIdx + 1) % fontFamilies.length;
+        const curFont = fontFamilies[fontIdx];
+        document.documentElement.style.setProperty('--font-content', curFont.value);
+        if (fontNameLabel) fontNameLabel.textContent = curFont.name;
+        localStorage.setItem('kaoyan_font_family', curFont.id);
+      });
+    }
+
+    // 移动端抽屉菜单
     if (el.mobileMenuBtn && el.sidebar) {
       el.mobileMenuBtn.addEventListener('click', () => {
-        const isOpen = el.sidebar.classList.toggle('open');
-        if (el.backdrop) el.backdrop.classList.toggle('open', isOpen);
+        el.sidebar.classList.toggle('open');
+        if (el.backdrop) el.backdrop.classList.toggle('open');
       });
     }
 
@@ -578,67 +751,45 @@
       });
     }
 
-    const stage = document.querySelector('.main-stage');
-    if (stage) {
-      stage.addEventListener('scroll', () => {
+    // 监听正文区域用户手动滚动，短时间内不强制打断滚动视图
+    if (el.paperContent) {
+      el.paperContent.addEventListener('scroll', () => {
         state.lastUserScrollTime = Date.now();
       }, { passive: true });
     }
-  }
 
-  
-  // 多样化字体切换体系
-  const FONT_OPTIONS = [
-    { id: 'song', name: '雅宋', title: '文人雅宋 (默认)' },
-    { id: 'kai', name: '温楷', title: '霞鹜温楷' },
-    { id: 'sans', name: '精黑', title: '现代精黑' },
-    { id: 'fangsong', name: '仿宋', title: '典雅仿宋' }
-  ];
-  let currentFontIdx = 0;
+    // 恢复本地存储配置
+    const savedTheme = localStorage.getItem('kaoyan_theme');
+    if (savedTheme) {
+      state.theme = savedTheme;
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
 
-  function initFontSystem() {
-    el.fontSwitchBtn = document.getElementById('btn-font-switch');
-    el.fontCurrentName = document.getElementById('font-current-name');
-    
-    const saved = localStorage.getItem('kaoyan_font_choice') || 'song';
-    const foundIdx = FONT_OPTIONS.findIndex(f => f.id === saved);
-    currentFontIdx = foundIdx >= 0 ? foundIdx : 0;
-    applyFont(FONT_OPTIONS[currentFontIdx].id);
-
-    if (el.fontSwitchBtn) {
-      el.fontSwitchBtn.addEventListener('click', () => {
-        currentFontIdx = (currentFontIdx + 1) % FONT_OPTIONS.length;
-        applyFont(FONT_OPTIONS[currentFontIdx].id);
-      });
+    const savedFontSize = localStorage.getItem('kaoyan_font_size');
+    if (savedFontSize) {
+      state.fontSize = parseInt(savedFontSize, 10);
+      document.documentElement.style.setProperty('--font-base', `${state.fontSize}px`);
     }
   }
 
-  function applyFont(fontId) {
-    document.documentElement.setAttribute('data-font', fontId);
-    localStorage.setItem('kaoyan_font_choice', fontId);
-    if (el.fontCurrentName) {
-      const opt = FONT_OPTIONS.find(f => f.id === fontId);
-      if (opt) el.fontCurrentName.textContent = opt.name;
-    }
-  }
-
-
-  
   // ==========================================
-  // 云端版本检测与一键强刷更新机制
+  // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '1.3.1';
+  const APP_BUILD_ID = '1.4.0';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
-    const container = document.getElementById('toast-container');
-    if (!container) return;
-    const toast = document.createElement('div');
-    toast.className = 'toast-msg';
-    toast.textContent = msg;
-    container.appendChild(toast);
+    let t = document.getElementById('toastPrompt');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'toastPrompt';
+      t.className = 'toast-prompt';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.classList.add('visible');
     setTimeout(() => {
-      if (toast.parentNode) toast.parentNode.removeChild(toast);
+      t.classList.remove('visible');
     }, duration);
   }
 
@@ -646,10 +797,10 @@
     const p1 = (v1 || '').replace(/^v/, '').split('.').map(Number);
     const p2 = (v2 || '').replace(/^v/, '').split('.').map(Number);
     for (let i = 0; i < Math.max(p1.length, p2.length); i++) {
-      const n1 = p1[i] || 0;
-      const n2 = p2[i] || 0;
-      if (n1 > n2) return 1;
-      if (n1 < n2) return -1;
+      const num1 = p1[i] || 0;
+      const num2 = p2[i] || 0;
+      if (num1 > num2) return 1;
+      if (num1 < num2) return -1;
     }
     return 0;
   }
@@ -661,8 +812,8 @@
     const bannerText = document.getElementById('updateBannerText');
 
     if (isManual) {
-      showToast('正在检查云端更新…');
-      if (versionText) versionText.textContent = '正在检查更新…';
+      showToast('正在检查云端更新...');
+      if (versionText) versionText.textContent = '检查中...';
     }
 
     try {
@@ -676,50 +827,53 @@
       const isDismissed = sessionStorage.getItem('dismiss_update_v' + remoteVer) === '1';
 
       if (isNewer) {
-        if (banner && bannerText && !isDismissed) {
-          bannerText.textContent = `发现新版本 v${remoteVer} · 点击立即更新`;
+        if (banner && !isDismissed) {
+          if (bannerText) bannerText.textContent = `发现新版本 v${remoteVer} · 点击立即更新`;
           banner.style.display = 'flex';
         }
         if (versionText) {
-          versionText.textContent = `发现新版 v${remoteVer} · 点击更新`;
+          versionText.textContent = `新版 v${remoteVer} 可升级`;
         }
         if (badge) {
           badge.classList.add('has-update');
         }
         if (isManual) {
-          showToast(`发现新版本 v${remoteVer}，请点击升级！`);
+          showToast(`发现新版本 v${remoteVer}！点击顶栏或强刷更新`);
         }
       } else {
         if (banner) banner.style.display = 'none';
         if (badge) badge.classList.remove('has-update');
         if (versionText) {
-          versionText.textContent = `版本 v${APP_BUILD_ID} · 双轨全音频版`;
+          versionText.textContent = `版本 v${APP_BUILD_ID} · 全科金石朱墨双轨版`;
         }
         if (isManual) {
-          showToast('已是最新版本 v' + APP_BUILD_ID);
+          showToast('当前已是最新版本 v' + APP_BUILD_ID);
         }
       }
     } catch (err) {
       console.warn('Update check failed:', err);
-      if (versionText) versionText.textContent = `版本 v${APP_BUILD_ID} · 双轨全音频版`;
-      if (isManual) showToast('当前已是最新版本');
+      if (versionText) versionText.textContent = `版本 v${APP_BUILD_ID} · 全科金石朱墨双轨版`;
+      if (isManual) showToast('网络未连接或已是最新版');
     }
   }
 
-  function applyAppUpdate() {
-    showToast('正在强制更新至最新版本…');
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(regs => {
-        for (let reg of regs) {
-          reg.unregister();
-        }
-      }).catch(() => {});
+  async function forceCleanAndReload() {
+    showToast('正在清除缓存并同步全量资源...', 3000);
+    try {
+      if ('caches' in window) {
+        const keys = await caches.keys();
+        await Promise.all(keys.map(k => caches.delete(k)));
+      }
+      if ('serviceWorker' in navigator) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(r => r.unregister()));
+      }
+    } catch (e) {
+      console.warn('Cache clear warning:', e);
     }
-    if ('caches' in window) {
-      caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).catch(() => {});
-    }
+    const cleanUrl = window.location.origin + window.location.pathname + '?reload=' + Date.now();
     setTimeout(() => {
-      window.location.replace(window.location.pathname + '?v=' + Date.now());
+      window.location.replace(cleanUrl);
     }, 400);
   }
 
@@ -733,7 +887,7 @@
     if (badge) {
       badge.addEventListener('click', () => {
         if (badge.classList.contains('has-update')) {
-          applyAppUpdate();
+          forceCleanAndReload();
         } else {
           checkAppUpdate(true);
         }
@@ -742,13 +896,13 @@
 
     if (refreshBtn) {
       refreshBtn.addEventListener('click', () => {
-        applyAppUpdate();
+        forceCleanAndReload();
       });
     }
 
     if (bannerBody) {
       bannerBody.addEventListener('click', () => {
-        applyAppUpdate();
+        forceCleanAndReload();
       });
     }
 
@@ -762,23 +916,22 @@
       });
     }
 
-    // 页面加载 1.5 秒后静默检查云端版本
     setTimeout(() => {
       checkAppUpdate(false);
     }, 1500);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        checkAppUpdate(false);
+      }
+    });
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
+  // 初始化入口
+  document.addEventListener('DOMContentLoaded', () => {
     initElements();
     setupAudioEngine();
     setupEventListeners();
-    
-    const savedTheme = localStorage.getItem('kaoyan_theme_pro');
-    if (savedTheme === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
-
-    initFontSystem();
     loadManifestData();
     setupVersionHandlers();
   });

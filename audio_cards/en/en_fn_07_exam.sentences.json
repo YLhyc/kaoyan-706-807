@@ -1,0 +1,14 @@
+[
+  {
+    "id": "sent_cn_0",
+    "text": "功能句 7：表达期待与期盼回信。中文意图：期待答复与进一步沟通。",
+    "start": "0.000",
+    "end": "7.896"
+  },
+  {
+    "id": "sent_en_1",
+    "text": "I am genuinely looking forward to your earliest reply at your convenience.",
+    "start": "8.596",
+    "end": "13.300"
+  }
+]

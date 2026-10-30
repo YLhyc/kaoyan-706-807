@@ -1,0 +1,14 @@
+[
+  {
+    "id": "sent_cn_0",
+    "text": "功能句 15：时代大背景铺垫（宏观视角）。中文意图：结合时代潮流与社会变迁。",
+    "start": "0.000",
+    "end": "8.616"
+  },
+  {
+    "id": "sent_en_1",
+    "text": "In an era characterized by fierce competition and rapid digitalization, lifelong learning has emerged as an indispensable trait.",
+    "start": "9.316",
+    "end": "18.724"
+  }
+]

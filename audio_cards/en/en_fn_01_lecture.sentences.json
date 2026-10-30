@@ -1,0 +1,14 @@
+[
+  {
+    "id": "sent_cn_0",
+    "text": "功能句1考场真题实战组装示范。",
+    "start": "0.000",
+    "end": "3.336"
+  },
+  {
+    "id": "sent_en_1",
+    "text": "I am Li Ming, an international student from China who is going to study in your university.",
+    "start": "3.936",
+    "end": "10.152"
+  }
+]

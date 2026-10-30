@@ -1,0 +1,14 @@
+[
+  {
+    "id": "sent_cn_0",
+    "text": "功能句 1：自我介绍（表明身份，建立联系）。中文意图：自我介绍与背景。",
+    "start": "0.000",
+    "end": "7.488"
+  },
+  {
+    "id": "sent_en_1",
+    "text": "As a senior at this university who is fond of reading in the library in the spare time, I am writing for the purpose of...",
+    "start": "8.188",
+    "end": "16.084"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "sent_cn_0",
+    "text": "功能句 19：图画细节描述（时间、地点、动作、伴随状态）。中文意图：多维度细节与神态描摹。",
+    "start": "0.000",
+    "end": "11.568"
+  },
+  {
+    "id": "sent_en_1",
+    "text": "Sitting comfortably in front of the screen, the boy is staring fixedly at the virtual game, with a delighted smile on his face.",
+    "start": "12.268",
+    "end": "20.812"
+  }
+]

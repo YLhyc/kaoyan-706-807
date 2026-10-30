@@ -1,0 +1,14 @@
+[
+  {
+    "id": "sent_cn_0",
+    "text": "功能句 26：普遍社会现象描述。中文意图：客观描述大众习惯与风气。",
+    "start": "0.000",
+    "end": "7.896"
+  },
+  {
+    "id": "sent_en_1",
+    "text": "It is an increasingly commonplace occurrence that modern citizens depend heavily on digital devices for daily communication.",
+    "start": "8.596",
+    "end": "16.492"
+  }
+]

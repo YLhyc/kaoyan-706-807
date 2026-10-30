@@ -1,0 +1,14 @@
+[
+  {
+    "id": "sent_cn_0",
+    "text": "功能句 6：表达期待或不满（投诉/督促改进）。中文意图：指出问题并严肃期待解决。",
+    "start": "0.000",
+    "end": "9.888"
+  },
+  {
+    "id": "sent_en_1",
+    "text": "I deem it imperative that effective measures be adopted promptly to address the poor quality of the goods.",
+    "start": "10.588",
+    "end": "16.876"
+  }
+]

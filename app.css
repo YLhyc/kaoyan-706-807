@@ -2617,3 +2617,100 @@ body {
     justify-content: center !important;
   }
 }
+
+
+/* ========================================================
+   全科拓展 · 考研英语写作与听力磨耳沉浸版样式体系
+   ======================================================== */
+.en-sentence-box {
+  padding: 16px 20px;
+  background: var(--bg-paper);
+  border-radius: var(--radius-md);
+  border-left: 3.5px solid var(--vermilion);
+  font-family: Georgia, "Times New Roman", -apple-system, BlinkMacSystemFont, "Segoe UI", serif;
+  font-size: 1.15em;
+  line-height: 1.8;
+  color: var(--ink-primary);
+  letter-spacing: 0.25px;
+  margin: 10px 0;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.en-quote-highlight {
+  color: var(--vermilion) !important;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.en-variant-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(160, 90, 44, 0.05);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  border: 1px solid rgba(160, 90, 44, 0.14);
+  font-size: 0.96em;
+  line-height: 1.65;
+}
+
+.en-variant-arrow {
+  color: #8A4B1A;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.en-variant-text {
+  color: var(--ink-primary);
+}
+
+.en-variant-text code {
+  background: rgba(160, 90, 44, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.92em;
+  color: #8A4B1A;
+  font-weight: 600;
+}
+
+.en-template-para-box {
+  padding: 14px 18px;
+  font-family: Georgia, "Times New Roman", -apple-system, BlinkMacSystemFont, "Segoe UI", serif;
+  font-size: 1.08em;
+  line-height: 1.85;
+  color: var(--ink-primary);
+  letter-spacing: 0.2px;
+}
+
+/* 英语写作专用标签徽章 */
+.tier-书信告示 {
+  background-color: rgba(46, 125, 50, 0.1) !important;
+  color: #2e7d32 !important;
+  border: 1px solid rgba(46, 125, 50, 0.25) !important;
+}
+
+.tier-图画图表 {
+  background-color: rgba(2, 119, 189, 0.1) !important;
+  color: #0277bd !important;
+  border: 1px solid rgba(2, 119, 189, 0.25) !important;
+}
+
+.tier-论辩说理 {
+  background-color: rgba(198, 40, 40, 0.1) !important;
+  color: #c62828 !important;
+  border: 1px solid rgba(198, 40, 40, 0.25) !important;
+}
+
+.tier-点睛谚语 {
+  background-color: rgba(184, 115, 51, 0.12) !important;
+  color: #8a4b1a !important;
+  border: 1px solid rgba(184, 115, 51, 0.3) !important;
+}
+
+.tier-冲刺模版 {
+  background-color: rgba(106, 27, 154, 0.1) !important;
+  color: #6a1b9a !important;
+  border: 1px solid rgba(106, 27, 154, 0.25) !important;
+}
