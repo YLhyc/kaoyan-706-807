@@ -1585,8 +1585,9 @@ body, .paper-container, .recite-sent, .exam-section-card, .gold-sent-card, .teac
 }
 
 .gold-badge {
-  background: var(--vermilion);
-  color: #ffffff;
+  background: rgba(166, 58, 36, 0.08);
+  color: var(--vermilion);
+  border: 1px solid var(--vermilion-border);
   font-size: 11px;
   font-weight: 700;
   padding: 2px 7px;
@@ -1743,8 +1744,9 @@ body, .paper-container, .recite-sent, .exam-section-card, .gold-sent-card, .teac
 }
 
 .gold-badge {
-  background: var(--vermilion);
-  color: #ffffff;
+  background: rgba(166, 58, 36, 0.08);
+  color: var(--vermilion);
+  border: 1px solid var(--vermilion-border);
   font-size: 11.5px;
   font-weight: 700;
   padding: 2px 8px;
@@ -2365,9 +2367,14 @@ body {
 .thesis-pill {
   display: inline-flex !important;
   align-items: center !important;
+  gap: 4px !important;
+  padding: 1px 7px !important;
+  border-radius: 4px !important;
+  background: rgba(166, 58, 36, 0.08) !important;
+  border: 1px solid var(--vermilion-border) !important;
+  color: var(--vermilion) !important;
   font-size: 11px !important;
   font-weight: 700 !important;
-  color: var(--vermilion) !important;
   margin-right: 6px !important;
   font-family: var(--font-song), serif !important;
 }
@@ -2429,14 +2436,33 @@ body {
   display: inline-flex !important;
   align-items: center !important;
   gap: 5px !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  background: rgba(166, 58, 36, 0.08) !important;
+  border: 1px solid var(--vermilion-border) !important;
+  box-shadow: inset 0 0 0 1px rgba(166, 58, 36, 0.12) !important;
+  color: var(--vermilion) !important;
   font-size: 11px !important;
   font-weight: 700 !important;
-  color: var(--vermilion) !important;
+  letter-spacing: 0.3px !important;
+  font-family: var(--font-song), serif !important;
 }
 
 .gold-badge svg {
   width: 12px !important;
   height: 12px !important;
+  stroke: var(--vermilion) !important;
+  fill: none !important;
+}
+
+[data-theme="dark"] .gold-badge {
+  background: rgba(217, 98, 76, 0.14) !important;
+  border-color: rgba(217, 98, 76, 0.3) !important;
+  box-shadow: inset 0 0 0 1px rgba(217, 98, 76, 0.2) !important;
+  color: var(--vermilion) !important;
+}
+
+[data-theme="dark"] .gold-badge svg {
   stroke: var(--vermilion) !important;
 }
 

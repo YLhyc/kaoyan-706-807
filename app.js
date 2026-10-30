@@ -627,7 +627,7 @@
   // ==========================================
   // 云端版本检测与一键强刷更新机制
   // ==========================================
-  const APP_BUILD_ID = '1.3.0';
+  const APP_BUILD_ID = '1.3.1';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
