@@ -774,7 +774,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '1.6.0';
+  const APP_BUILD_ID = '1.7.0';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -843,7 +843,7 @@
         if (banner) banner.style.display = 'none';
         if (badge) badge.classList.remove('has-update');
         if (versionText) {
-          versionText.textContent = `版本 v${APP_BUILD_ID} · 706/807全真题增容版`;
+          versionText.textContent = `版本 v${APP_BUILD_ID} · 82道全科考点版`;
         }
         if (isManual) {
           showToast('当前已是最新版本 v' + APP_BUILD_ID);
@@ -851,7 +851,7 @@
       }
     } catch (err) {
       console.warn('Update check failed:', err);
-      if (versionText) versionText.textContent = `版本 v${APP_BUILD_ID} · 706/807全真题增容版`;
+      if (versionText) versionText.textContent = `版本 v${APP_BUILD_ID} · 82道全科考点版`;
       if (isManual) showToast('网络未连接或已是最新版');
     }
   }
