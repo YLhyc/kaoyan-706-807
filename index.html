@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#f5f2e9">
   <title>2027 考研全科双轨随身背诵手卷 · 807/706/英语写作独立专属研读平台</title>
-  <link rel="stylesheet" href="app.css?v=1.7.0">
+  <link rel="stylesheet" href="app.css?v=1.7.1">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css">
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=1.7.0"></script>
+  <script src="data/kaoyan_data.js?v=1.7.1"></script>
 </head>
 <body>
 
@@ -252,6 +252,26 @@
 
   <!-- 底部常驻悬浮控制底座 (Audio Dock) -->
   <footer class="player-dock">
+    <!-- 顶部全息态感知栏 (Now-Playing HUD) -->
+    <div class="dock-hud-bar" id="dockHudBar">
+      <div class="hud-left-meta">
+        <button type="button" class="hud-track-badge track1-mode" id="hudTrackBadge" title="点击直接切换轨道一/轨道二">
+          <span class="hud-track-dot"></span>
+          <span id="hudTrackText">轨一 · 考场答题版</span>
+          <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 4v12m0 0l4-4m-4 4l-4-4"/></svg>
+        </button>
+        <span class="hud-title-text" id="hudTitleText">知识点加载中...</span>
+      </div>
+      <div class="hud-right-framework" id="hudFrameworkTrigger" title="点击展开答题思维骨架全貌">
+        <span class="hud-framework-pill">
+          <svg class="hud-framework-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h14"/></svg>
+          <span id="hudFrameworkText">框架 [1/4] · 破题立论</span>
+        </span>
+        <button type="button" class="hud-drawer-btn" id="btnOpenOutline" title="展开思维大纲">
+          <span>大纲</span>
+        </button>
+      </div>
+    </div>
     <!-- 进度条轨道 -->
     <div class="dock-progress-row">
       <span id="time-current" class="progress-time">00:00</span>
@@ -334,6 +354,33 @@
     </div>
   </footer>
 
-  <script src="app.js?v=1.7.0"></script>
+  <script src="app.js?v=1.7.1"></script>
+  <!-- 答题思维骨架抽屉 (Outline Drawer) -->
+  <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
+  <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
+    <div class="outline-drawer-handle-bar">
+      <div class="outline-drawer-handle"></div>
+    </div>
+    <div class="outline-drawer-header">
+      <div class="outline-drawer-title-row">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 6h16M4 12h16M4 18h12"/>
+        </svg>
+        <h3 class="outline-drawer-title">答题思维骨架全貌</h3>
+        <span class="outline-drawer-track-badge" id="drawerTrackBadge">轨道一 · 考场答题版</span>
+      </div>
+      <button type="button" class="outline-drawer-close" id="outlineDrawerClose" title="关闭大纲">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="outline-drawer-sub" id="drawerTopicSub">当前考题：加载中...</div>
+    <div class="outline-drawer-body" id="outlineDrawerBody">
+      <!-- 动态生成 3~5 个骨架大纲节点 -->
+    </div>
+  </aside>
+
 </body>
 </html>

@@ -90,6 +90,23 @@
     el.sidebar = document.getElementById('sidebar');
     el.mobileMenuBtn = document.getElementById('btn-mobile-menu');
     el.backdrop = document.getElementById('sidebar-backdrop');
+    
+    // 全息态感知条 (Now-Playing HUD)
+    el.dockHudBar = document.getElementById('dockHudBar');
+    el.hudTrackBadge = document.getElementById('hudTrackBadge');
+    el.hudTrackText = document.getElementById('hudTrackText');
+    el.hudTitleText = document.getElementById('hudTitleText');
+    el.hudFrameworkTrigger = document.getElementById('hudFrameworkTrigger');
+    el.hudFrameworkText = document.getElementById('hudFrameworkText');
+    el.btnOpenOutline = document.getElementById('btnOpenOutline');
+    
+    // 答题思维骨架抽屉 (Outline Drawer)
+    el.outlineDrawerBackdrop = document.getElementById('outlineDrawerBackdrop');
+    el.outlineDrawer = document.getElementById('outlineDrawer');
+    el.outlineDrawerClose = document.getElementById('outlineDrawerClose');
+    el.drawerTrackBadge = document.getElementById('drawerTrackBadge');
+    el.drawerTopicSub = document.getElementById('drawerTopicSub');
+    el.outlineDrawerBody = document.getElementById('outlineDrawerBody');
   }
 
   // 加载数据包 (优先调用已嵌入的 window.KAOYAN_MANIFEST，彻底免疫 file:/// 下的 CORS 阻断)
@@ -348,6 +365,11 @@
     el.stageScore.textContent = item.score;
     el.stageTier.textContent = item.level;
     el.stageTier.className = `tier-badge tier-${item.level}`;
+    
+    if (el.hudTitleText) {
+      const subjPrefix = state.currentSubject === '807' ? '807' : (state.currentSubject === '706' ? '706' : '英语');
+      el.hudTitleText.textContent = `${subjPrefix} · ${item.title}${item.score ? ' (' + item.score + ')' : ''}`;
+    }
 
     if (el.dockTitle) el.dockTitle.textContent = item.title;
     if (el.dockTrackPill) {
@@ -397,6 +419,7 @@
     state.activeSentences = sentences;
 
     renderPaperContent(trackObj, sentences);
+    buildFrameworkIndex();
 
     if (trackObj && trackObj.audio) {
       audio.src = trackObj.audio;
@@ -468,6 +491,279 @@
     });
   }
 
+
+  // ==========================================
+  // 全息感知条 (Now-Playing HUD) 与骨架大纲核心引擎
+  // ==========================================
+  let currentFrameworkSections = [];
+  let currentActiveSectionIndex = -1;
+
+  function buildFrameworkIndex() {
+    currentFrameworkSections = [];
+    currentActiveSectionIndex = -1;
+
+    if (!el.paperContent) return;
+
+    const cards = el.paperContent.querySelectorAll('.exam-section-card, .logic-block-card, section.exam-section-card');
+    
+    cards.forEach((card, idx) => {
+      const firstSent = card.querySelector('.recite-sent');
+      const start = firstSent ? parseFloat(firstSent.dataset.start || 0) : 0;
+      const sentId = firstSent ? firstSent.dataset.sentId : null;
+
+      let badge = '';
+      let desc = '';
+      
+      const secBadgeEl = card.querySelector('.sec-badge');
+      const secDescEl = card.querySelector('.sec-desc');
+      const logicTitleEl = card.querySelector('.logic-block-title h3, h3');
+      const qaBadgeEl = card.querySelector('.qa-badge');
+
+      if (secBadgeEl) {
+        badge = secBadgeEl.textContent.trim().replace(/^【|】$/g, '');
+        desc = secDescEl ? secDescEl.textContent.trim() : '';
+      } else if (logicTitleEl) {
+        badge = logicTitleEl.textContent.trim();
+        desc = qaBadgeEl ? qaBadgeEl.textContent.trim() : '';
+      } else {
+        badge = `第 ${idx + 1} 论述板块`;
+      }
+
+      const thesisSentEl = card.querySelector('.thesis-sent, .teacher-explain-row .recite-sent, .recite-sent');
+      const thesisText = thesisSentEl ? thesisSentEl.textContent.replace(/【[^】]+】/g, '').trim() : '';
+
+      currentFrameworkSections.push({
+        index: idx,
+        badge: badge,
+        desc: desc,
+        start: start,
+        sentId: sentId,
+        cardEl: card,
+        thesisSnippet: thesisText.slice(0, 65) + (thesisText.length > 65 ? '...' : '')
+      });
+    });
+
+    if (currentFrameworkSections.length === 0 && state.activeSentences && state.activeSentences.length > 0) {
+      currentFrameworkSections.push({
+        index: 0,
+        badge: '全文答题展开',
+        desc: '核心论述',
+        start: 0,
+        sentId: state.activeSentences[0].id,
+        cardEl: null,
+        thesisSnippet: state.activeSentences[0].text
+      });
+    }
+
+    updateHUDDisplay(audio.currentTime || 0);
+    renderOutlineDrawer();
+  }
+
+  function updateHUDDisplay(curTime = 0) {
+    if (!state.activeItem) return;
+    const item = state.activeItem;
+    const isT1 = state.currentTrack === 1;
+
+    // 1. 轨道徽章与可点击切换样式
+    if (el.hudTrackBadge && el.hudTrackText) {
+      el.hudTrackBadge.className = isT1 ? 'hud-track-badge track1-mode' : 'hud-track-badge track2-mode';
+      if (state.currentSubject === 'en') {
+        el.hudTrackText.textContent = isT1 ? '轨一 · 中英磨耳版' : '轨二 · 仿写拓展版';
+      } else {
+        el.hudTrackText.textContent = isT1 ? '轨一 · 考场答题版' : '轨二 · 逻辑精解版';
+      }
+    }
+
+    // 2. 考题标题与分值
+    if (el.hudTitleText) {
+      const subjPrefix = state.currentSubject === '807' ? '807' : (state.currentSubject === '706' ? '706' : '英语');
+      const scoreBadge = item.score ? ` (${item.score})` : '';
+      el.hudTitleText.textContent = `${subjPrefix} · ${item.title}${scoreBadge}`;
+    }
+
+    // 3. 动态框架层级与正文吸顶/高亮联动
+    if (currentFrameworkSections.length > 0) {
+      let activeSecIdx = 0;
+      for (let i = 0; i < currentFrameworkSections.length; i++) {
+        if (curTime >= currentFrameworkSections[i].start - 0.1) {
+          activeSecIdx = i;
+        } else {
+          break;
+        }
+      }
+
+      if (activeSecIdx !== currentActiveSectionIndex) {
+        currentActiveSectionIndex = activeSecIdx;
+        const sec = currentFrameworkSections[activeSecIdx];
+        const total = currentFrameworkSections.length;
+        
+        if (el.hudFrameworkText) {
+          el.hudFrameworkText.textContent = `框架 [${sec.index + 1}/${total}] · ${sec.badge}`;
+        }
+
+        // 联动正文卡片当前焦点光晕
+        currentFrameworkSections.forEach((s, idx) => {
+          if (s.cardEl) {
+            s.cardEl.classList.toggle('active-section-card', idx === activeSecIdx);
+          }
+        });
+
+        // 联动大纲抽屉当前激活项
+        updateOutlineDrawerActive(activeSecIdx);
+
+        // 同步系统锁屏/通知栏 MediaSession 元数据
+        updateSystemMediaSession(sec, total);
+      }
+    } else {
+      if (el.hudFrameworkText) el.hudFrameworkText.textContent = '整篇答题';
+    }
+  }
+
+  function updateSystemMediaSession(currentSec, totalSec) {
+    if (!('mediaSession' in navigator) || !state.activeItem) return;
+
+    const item = state.activeItem;
+    const isT1 = state.currentTrack === 1;
+    let trackLabel = isT1 ? '轨一·考场答题' : '轨二·逻辑精解';
+    if (state.currentSubject === 'en') {
+      trackLabel = isT1 ? '轨一·磨耳版' : '轨二·拓展版';
+    }
+
+    const secTitle = currentSec ? `[${currentSec.index + 1}/${totalSec} ${currentSec.badge}] ` : '';
+    const subjName = state.currentSubject === '807' ? '807 现代文学' : (state.currentSubject === '706' ? '706 古代文学' : '考研英语写作');
+
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: `[${trackLabel}] ${item.title}`,
+        artist: `${secTitle}${subjName} · ${item.score || ''}`,
+        album: '2027 考研全科双轨随身背诵手卷 (龙安立师资朗读)',
+        artwork: [
+          { src: 'icon-256.png', sizes: '256x256', type: 'image/png' },
+          { src: 'favicon.svg', sizes: 'any', type: 'image/svg+xml' }
+        ]
+      });
+    } catch (e) {
+      // Ignore mediaSession metadata errors in unsupported environments
+    }
+  }
+
+  function setupMediaSessionHandlers() {
+    if (!('mediaSession' in navigator)) return;
+
+    try {
+      navigator.mediaSession.setActionHandler('play', () => {
+        audio.play().catch(e => console.log(e));
+      });
+      navigator.mediaSession.setActionHandler('pause', () => {
+        audio.pause();
+      });
+      navigator.mediaSession.setActionHandler('previoustrack', () => {
+        playPrevItem();
+      });
+      navigator.mediaSession.setActionHandler('nexttrack', () => {
+        playNextItem();
+      });
+      navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+        audio.currentTime = Math.max(0, audio.currentTime - (details.seekOffset || 5));
+      });
+      navigator.mediaSession.setActionHandler('seekforward', (details) => {
+        audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + (details.seekOffset || 5));
+      });
+      navigator.mediaSession.setActionHandler('seekto', (details) => {
+        if (details.seekTime !== null && details.seekTime !== undefined) {
+          audio.currentTime = details.seekTime;
+        }
+      });
+    } catch (e) {
+      console.warn('MediaSession handler error:', e);
+    }
+  }
+
+  function renderOutlineDrawer() {
+    if (!el.outlineDrawerBody) return;
+    el.outlineDrawerBody.innerHTML = '';
+
+    if (el.drawerTrackBadge) {
+      const isT1 = state.currentTrack === 1;
+      el.drawerTrackBadge.className = isT1 ? 'outline-drawer-track-badge track1-mode' : 'outline-drawer-track-badge track2-mode';
+      el.drawerTrackBadge.textContent = isT1 ? '轨道一 · 考场答题版' : '轨道二 · 逻辑精解版';
+    }
+
+    if (el.drawerTopicSub && state.activeItem) {
+      const item = state.activeItem;
+      const subj = state.currentSubject === '807' ? '807 综合' : (state.currentSubject === '706' ? '706 综合' : '考研英语');
+      el.drawerTopicSub.textContent = `${subj} · ${item.title} (${item.score || ''})`;
+    }
+
+    if (!currentFrameworkSections || currentFrameworkSections.length === 0) {
+      el.outlineDrawerBody.innerHTML = '<div style="padding:24px;text-align:center;color:var(--ink-muted);font-size:13px;">暂无大纲节点</div>';
+      return;
+    }
+
+    const total = currentFrameworkSections.length;
+    currentFrameworkSections.forEach((sec, idx) => {
+      const itemEl = document.createElement('div');
+      itemEl.className = 'outline-node-item' + (idx === currentActiveSectionIndex ? ' active-node' : '');
+      itemEl.dataset.idx = idx;
+
+      itemEl.innerHTML = `
+        <div class="outline-node-num">[${idx + 1}/${total}]</div>
+        <div class="outline-node-info">
+          <div class="outline-node-header">
+            <span class="outline-node-badge">${sec.badge}</span>
+            ${sec.desc ? `<span class="outline-node-desc">${sec.desc}</span>` : ''}
+          </div>
+          ${sec.thesisSnippet ? `<div class="outline-node-snippet">${sec.thesisSnippet}</div>` : ''}
+        </div>
+        <div class="outline-node-action">
+          <span class="outline-node-time">${formatTime(sec.start)}</span>
+          <svg class="outline-jump-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </div>
+      `;
+
+      itemEl.addEventListener('click', () => {
+        if (sec.sentId !== null && !isNaN(sec.start)) {
+          seekToSentence(sec.sentId, sec.start);
+          if (sec.cardEl) {
+            sec.cardEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+        closeOutlineDrawer();
+      });
+
+      el.outlineDrawerBody.appendChild(itemEl);
+    });
+  }
+
+  function updateOutlineDrawerActive(activeIdx) {
+    if (!el.outlineDrawerBody) return;
+    const nodes = el.outlineDrawerBody.querySelectorAll('.outline-node-item');
+    nodes.forEach(n => {
+      n.classList.toggle('active-node', parseInt(n.dataset.idx, 10) === activeIdx);
+    });
+  }
+
+  function openOutlineDrawer() {
+    renderOutlineDrawer();
+    if (el.outlineDrawer) {
+      el.outlineDrawer.classList.add('open');
+      el.outlineDrawer.setAttribute('aria-hidden', 'false');
+    }
+    if (el.outlineDrawerBackdrop) {
+      el.outlineDrawerBackdrop.style.display = 'block';
+    }
+  }
+
+  function closeOutlineDrawer() {
+    if (el.outlineDrawer) {
+      el.outlineDrawer.classList.remove('open');
+      el.outlineDrawer.setAttribute('aria-hidden', 'true');
+    }
+    if (el.outlineDrawerBackdrop) {
+      el.outlineDrawerBackdrop.style.display = 'none';
+    }
+  }
+
   function setupAudioEngine() {
     audio.addEventListener('play', () => {
       state.isPlaying = true;
@@ -489,6 +785,7 @@
       }
       if (el.timeCurrent) el.timeCurrent.textContent = formatTime(cur);
       if (el.timeTotal && dur > 0) el.timeTotal.textContent = formatTime(dur);
+      updateHUDDisplay(cur);
 
       if (state.activeSentences && state.activeSentences.length > 0) {
         const activeIdx = state.activeSentences.findIndex(s => cur >= s.start && cur < s.end);
@@ -566,6 +863,39 @@
   }
 
   function setupEventListeners() {
+    // HUD 轨道点击快速切换
+    if (el.hudTrackBadge) {
+      el.hudTrackBadge.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const nextTrack = state.currentTrack === 1 ? 2 : 1;
+        loadTrackData(nextTrack, state.isPlaying);
+      });
+    }
+
+    // HUD 答题骨架点击展开大纲抽屉
+    if (el.hudFrameworkTrigger) {
+      el.hudFrameworkTrigger.addEventListener('click', openOutlineDrawer);
+    }
+    if (el.btnOpenOutline) {
+      el.btnOpenOutline.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openOutlineDrawer();
+      });
+    }
+    if (el.outlineDrawerClose) {
+      el.outlineDrawerClose.addEventListener('click', closeOutlineDrawer);
+    }
+    if (el.outlineDrawerBackdrop) {
+      el.outlineDrawerBackdrop.addEventListener('click', closeOutlineDrawer);
+    }
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && el.outlineDrawer && el.outlineDrawer.classList.contains('open')) {
+        closeOutlineDrawer();
+      }
+    });
+
+    setupMediaSessionHandlers();
+
     if (el.subject807Btn) {
       el.subject807Btn.addEventListener('click', () => switchSubject('807'));
     }
@@ -774,7 +1104,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '1.7.0';
+  const APP_BUILD_ID = '1.7.1';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
