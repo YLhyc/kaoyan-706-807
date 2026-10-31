@@ -774,7 +774,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '1.5.0';
+  const APP_BUILD_ID = '1.6.0';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -843,7 +843,7 @@
         if (banner) banner.style.display = 'none';
         if (badge) badge.classList.remove('has-update');
         if (versionText) {
-          versionText.textContent = `版本 v${APP_BUILD_ID} · 考场高分母题重构版`;
+          versionText.textContent = `版本 v${APP_BUILD_ID} · 706/807全真题增容版`;
         }
         if (isManual) {
           showToast('当前已是最新版本 v' + APP_BUILD_ID);
@@ -851,13 +851,14 @@
       }
     } catch (err) {
       console.warn('Update check failed:', err);
-      if (versionText) versionText.textContent = `版本 v${APP_BUILD_ID} · 考场高分母题重构版`;
+      if (versionText) versionText.textContent = `版本 v${APP_BUILD_ID} · 706/807全真题增容版`;
       if (isManual) showToast('网络未连接或已是最新版');
     }
   }
 
   async function forceCleanAndReload() {
-    showToast('正在清除缓存并同步最新 1.5.0 资源...', 3000);
+    const targetVer = (latestUpdatePayload && latestUpdatePayload.version) || APP_BUILD_ID;
+    showToast(`正在清除缓存并同步最新 v${targetVer} 资源...`, 3000);
     try {
       if ('caches' in window) {
         const keys = await caches.keys();
@@ -871,7 +872,7 @@
     } catch (e) {
       console.warn('Cache clear warning:', e);
     }
-    const cleanUrl = window.location.origin + window.location.pathname + '?v=1.5.0&t=' + Date.now();
+    const cleanUrl = window.location.origin + window.location.pathname + '?v=' + encodeURIComponent(targetVer) + '&t=' + Date.now();
     setTimeout(() => {
       window.location.href = cleanUrl;
     }, 300);
