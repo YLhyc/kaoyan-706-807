@@ -12,7 +12,7 @@
   <meta name="apple-mobile-web-app-title" content="考研背诵手卷">
   <meta name="application-name" content="考研背诵手卷">
   <title>2027 考研全科双轨随身背诵手卷 · 807/706/英语写作独立专属研读平台</title>
-  <link rel="stylesheet" href="app.css?v=1.7.4">
+  <link rel="stylesheet" href="app.css?v=1.7.5">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css">
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=1.7.4"></script>
+  <script src="data/kaoyan_data.js?v=1.7.5"></script>
 </head>
 <body>
 
@@ -298,14 +298,14 @@
       <!-- 核心控制组：7 键黄金对称居中布局 -->
       <div class="dock-unified-controls">
         <!-- 1. 播放模式 (全篇顺读 / 单句三遍精背) -->
-        <button id="btn-loop-mode" class="pill-mode-btn dock-tool-btn" title="播放模式：全部顺序（播完自动进入下一篇）">
+        <button id="btn-loop-mode" class="pill-mode-btn dock-tool-btn" title="听读背诵循环模式（点击打开模式列表）">
           <svg class="mode-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="17 1 21 5 17 9"></polyline>
             <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
             <polyline points="7 23 3 19 7 15"></polyline>
             <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
           </svg>
-          <span class="mode-text">全部</span>
+          <span class="mode-text">顺序</span>
         </button>
 
         <!-- 2. 上一考点 -->
@@ -358,7 +358,7 @@
     </div>
   </footer>
 
-  <script src="app.js?v=1.7.4"></script>
+  <script src="app.js?v=1.7.5"></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -386,5 +386,31 @@
     </div>
   </aside>
 
+  <!-- 听读背诵循环模式选择抽屉 (Play Mode Drawer) -->
+  <div id="playModeBackdrop" class="mode-drawer-backdrop" style="display: none;"></div>
+  <aside id="playModeDrawer" class="mode-drawer" aria-hidden="true">
+    <div class="mode-drawer-handle-bar">
+      <div class="mode-drawer-handle"></div>
+    </div>
+    <div class="mode-drawer-header">
+      <div class="mode-drawer-title-row">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="17 1 21 5 17 9"></polyline>
+          <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+          <polyline points="7 23 3 19 7 15"></polyline>
+          <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+        </svg>
+        <h3 class="mode-drawer-title">听读背诵循环模式</h3>
+      </div>
+      <button type="button" class="mode-drawer-close" id="playModeClose" title="关闭选择">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="mode-drawer-sub">选择适合当前背诵阶段的循环方式</div>
+    <div class="mode-drawer-body" id="playModeList"></div>
+  </aside>
 </body>
 </html>

@@ -265,13 +265,33 @@
       return;
     }
 
+    // 恢复上次背诵的科目与音轨
+    const savedSubject = localStorage.getItem('kaoyan_last_subject');
+    if (savedSubject && ['807', '706', 'en'].includes(savedSubject)) {
+      state.currentSubject = savedSubject;
+      if (el.subject807Btn) el.subject807Btn.classList.toggle('active', savedSubject === '807');
+      if (el.subject706Btn) el.subject706Btn.classList.toggle('active', savedSubject === '706');
+      if (el.subjectEnBtn) el.subjectEnBtn.classList.toggle('active', savedSubject === 'en');
+      updateSubjectUI(savedSubject);
+    }
+
+    const savedTrack = localStorage.getItem('kaoyan_last_track');
+    if (savedTrack && (savedTrack === '1' || savedTrack === '2')) {
+      state.currentTrack = parseInt(savedTrack, 10);
+      if (el.tabTrack1) el.tabTrack1.classList.toggle('active', state.currentTrack === 1);
+      if (el.tabTrack2) el.tabTrack2.classList.toggle('active', state.currentTrack === 2);
+    }
+
     updateBadgeCounts();
     renderFilterPills();
     renderSidebarList();
     
+    // 恢复上次听到的知识点，不再每次进入都回到最开始的第一题
     const defaultList = getCurrentItemsList();
-    if (defaultList.length > 0) {
-      selectItem(defaultList[0].id);
+    const savedItemId = localStorage.getItem(`kaoyan_last_item_${state.currentSubject}`) || localStorage.getItem('kaoyan_last_item_id');
+    const targetItem = (savedItemId && defaultList.find(x => x.id === savedItemId)) || defaultList[0];
+    if (targetItem) {
+      selectItem(targetItem.id, false);
     }
   }
 
@@ -404,10 +424,13 @@
     state.tierFilter = 'all';
     renderFilterPills();
     
+    localStorage.setItem('kaoyan_last_subject', sub);
     renderSidebarList();
     const list = getCurrentItemsList();
-    if (list.length > 0) {
-      selectItem(list[0].id);
+    const savedForSub = localStorage.getItem(`kaoyan_last_item_${sub}`);
+    const targetItem = (savedForSub && list.find(x => x.id === savedForSub)) || list[0];
+    if (targetItem) {
+      selectItem(targetItem.id, false);
     }
   }
 
@@ -1106,8 +1129,9 @@
       el.outlineDrawerBackdrop.addEventListener('click', closeOutlineDrawer);
     }
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && el.outlineDrawer && el.outlineDrawer.classList.contains('open')) {
-        closeOutlineDrawer();
+      if (e.key === 'Escape') {
+        if (el.outlineDrawer && el.outlineDrawer.classList.contains('open')) closeOutlineDrawer();
+        if (el.playModeDrawer && el.playModeDrawer.classList.contains('open')) closePlayModeDrawer();
       }
     });
 
@@ -1206,22 +1230,11 @@
       });
     }
 
-    // 单句循环模式
+    // 听读背诵循环模式选择抽屉
     if (el.loopModeBtn) {
-      el.loopModeBtn.addEventListener('click', () => {
-        if (state.reciteMode === 'normal') {
-          state.reciteMode = 'loop3';
-          state.loopCount = 0;
-          el.loopModeBtn.classList.add('active');
-          el.loopModeBtn.title = "当前：单句循环3遍（点击切回正常播放）";
-          el.loopModeBtn.querySelector('.mode-text').textContent = "句循3";
-        } else {
-          state.reciteMode = 'normal';
-          state.loopCount = 0;
-          el.loopModeBtn.classList.remove('active');
-          el.loopModeBtn.title = "当前：全篇顺序播放（点击开启单句循环3遍）";
-          el.loopModeBtn.querySelector('.mode-text').textContent = "单循";
-        }
+      el.loopModeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openPlayModeDrawer();
       });
     }
 
@@ -1316,12 +1329,18 @@
       state.fontSize = parseInt(savedFontSize, 10);
       document.documentElement.style.setProperty('--font-base', `${state.fontSize}px`);
     }
+
+    const savedPlayMode = localStorage.getItem('kaoyan_play_mode');
+    if (savedPlayMode && PLAY_MODES.some(m => m.id === savedPlayMode)) {
+      state.playMode = savedPlayMode;
+    }
+    updatePlayModeUI(false);
   }
 
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '1.7.4';
+  const APP_BUILD_ID = '1.7.5';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
