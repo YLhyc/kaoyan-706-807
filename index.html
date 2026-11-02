@@ -12,7 +12,7 @@
   <meta name="apple-mobile-web-app-title" content="考研背诵手卷">
   <meta name="application-name" content="考研背诵手卷">
   <title>2027 考研全科双轨随身背诵手卷 · 807/706/英语写作独立专属研读平台</title>
-  <link rel="stylesheet" href="app.css?v=1.7.5">
+  <link rel="stylesheet" href="app.css?v=1.7.6">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css">
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=1.7.5"></script>
+  <script src="data/kaoyan_data.js?v=1.7.6"></script>
 </head>
 <body>
 
@@ -121,7 +121,14 @@
         <span>A+</span>
       </button>
 
-            <button id="btn-font-switch" class="action-btn font-switch-btn" title="点击切换字体：文人雅宋 / 霞鹜温楷 / 现代精黑 / 典雅仿宋">
+      <button id="btn-cloze-mode" class="action-btn cloze-mode-btn" title="切换背诵自测遮罩：正常研读 / 采分词挖空 / 看纲默背">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        <span id="cloze-mode-name">自测</span>
+      </button>
+      <button id="btn-font-switch" class="action-btn font-switch-btn" title="点击切换字体：文人雅宋 / 霞鹜温楷 / 现代精黑 / 典雅仿宋">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M4 20h16"></path>
           <path d="M12 4v16"></path>
@@ -358,7 +365,7 @@
     </div>
   </footer>
 
-  <script src="app.js?v=1.7.5"></script>
+  <script src="app.js?v=1.7.6"></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">

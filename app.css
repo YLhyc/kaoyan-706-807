@@ -762,6 +762,18 @@ body {
   border-radius: 3px;
   transition: width 0.08s linear;
 }
+.progress-sec-tick {
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  width: 2px;
+  background: var(--gold-accent, #c89b40);
+  opacity: 0.75;
+  border-radius: 1px;
+  pointer-events: none;
+  z-index: 2;
+}
+
 
 /* 控制按键排 */
 .dock-controls-row {
@@ -3444,3 +3456,38 @@ body {
   background: rgba(176, 105, 23, 0.2);
   border-color: var(--amber);
 }
+
+/* 背诵自测遮罩模式 (Recitation Cloze Mode) */
+#paper-content.cloze-keyword .recite-sent:not(.active-spotlight) strong {
+  filter: blur(5px);
+  background: rgba(180, 140, 80, 0.18);
+  border-radius: 3px;
+  transition: filter 0.2s ease;
+  cursor: pointer;
+}
+#paper-content.cloze-keyword .recite-sent:not(.active-spotlight) strong:hover {
+  filter: none;
+}
+
+#paper-content.cloze-body .recite-sent:not(.thesis-sent):not(.active-spotlight) {
+  filter: blur(6px);
+  opacity: 0.65;
+  transition: filter 0.25s ease, opacity 0.25s ease;
+  cursor: pointer;
+}
+#paper-content.cloze-body .recite-sent:not(.thesis-sent):not(.active-spotlight):hover {
+  filter: none;
+  opacity: 1;
+}
+
+.action-btn.cloze-mode-btn.active {
+  background: var(--amber-soft);
+  color: var(--amber);
+  border-color: var(--amber);
+  font-weight: 600;
+}
+[data-theme="dark"] .action-btn.cloze-mode-btn.active {
+  background: rgba(176, 105, 23, 0.2);
+  color: #f5b041;
+  border-color: #f5b041;
+}
