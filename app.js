@@ -19,7 +19,8 @@
     // 播放状态
     isPlaying: false,
     speed: 1.0,
-    reciteMode: 'normal', // 'normal' 或 'loop3'
+    playMode: 'all', // 'all', 'sentence', 'section', 'loop3'
+    reciteMode: 'normal',
     loopCount: 0,
     fontSize: 17,
     theme: 'parchment',
@@ -36,6 +37,70 @@
   audio.preload = 'metadata';
 
   const el = {};
+
+  // ==========================================
+  // 听读背诵循环模式配置 (全部顺序 / 单句循环 / 单段循环 / 单句3遍)
+  // ==========================================
+  const PLAY_MODES = [
+    {
+      id: 'all',
+      label: '全部',
+      title: '播放模式：全部顺序（播完自动进入下一篇）',
+      toast: '已恢复【全部顺序】模式 · 顺畅通读全篇大题',
+      iconSvg: '<polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path>'
+    },
+    {
+      id: 'sentence',
+      label: '单句',
+      title: '播放模式：单句循环（无限循环当前句子，点击任意句子即可循环该句）',
+      toast: '已开启【单句循环】模式 · 点击任意句子即无限循环朗读',
+      iconSvg: '<polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path><text x="12" y="16" font-size="8" font-weight="900" text-anchor="middle" fill="currentColor">1</text>'
+    },
+    {
+      id: 'section',
+      label: '单段',
+      title: '播放模式：单段循环（无限循环当前板块/分论点）',
+      toast: '已开启【单段循环】模式 · 将在当前板块/分论点内无限循环背诵',
+      iconSvg: '<polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path><text x="12" y="15.5" font-size="7" font-weight="900" text-anchor="middle" fill="currentColor">段</text>'
+    },
+    {
+      id: 'loop3',
+      label: '3遍',
+      title: '播放模式：单句3遍（每句精读3遍后自动进行下一句）',
+      toast: '已开启【单句3遍】模式 · 每句朗读3遍后自动进行下一句',
+      iconSvg: '<polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path><text x="12" y="16" font-size="8" font-weight="900" text-anchor="middle" fill="currentColor">3</text>'
+    }
+  ];
+
+  function updatePlayModeUI(showToastNotice = false) {
+    if (!el.loopModeBtn) return;
+    const modeConfig = PLAY_MODES.find(m => m.id === state.playMode) || PLAY_MODES[0];
+    el.loopModeBtn.classList.toggle('active', modeConfig.id !== 'all');
+    el.loopModeBtn.title = modeConfig.title;
+
+    const iconEl = el.loopModeBtn.querySelector('svg');
+    if (iconEl) iconEl.innerHTML = modeConfig.iconSvg;
+    const textEl = el.loopModeBtn.querySelector('.mode-text') || el.loopModeBtn.querySelector('span');
+    if (textEl) textEl.textContent = modeConfig.label;
+
+    if (showToastNotice) {
+      showToast(modeConfig.toast, 2500);
+    }
+    updateHUDDisplay(audio.currentTime || 0);
+  }
+
+  function cyclePlayMode() {
+    const currIdx = PLAY_MODES.findIndex(m => m.id === state.playMode);
+    const nextIdx = (currIdx + 1) % PLAY_MODES.length;
+    state.playMode = PLAY_MODES[nextIdx].id;
+    state.loopCount = 0;
+    localStorage.setItem('kaoyan_play_mode', state.playMode);
+    updatePlayModeUI(true);
+    if (state.currentSentIndex !== -1 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
+      highlightSentence(state.activeSentences[state.currentSentIndex].id);
+    }
+  }
+
 
   function initElements() {
     el.subject807Btn = document.getElementById('btn-subject-807');
@@ -349,6 +414,11 @@
     state.currentSentIndex = -1;
     state.loopCount = 0;
 
+    localStorage.setItem(`kaoyan_last_item_${state.currentSubject}`, itemId);
+    localStorage.setItem('kaoyan_last_item_id', itemId);
+    localStorage.setItem('kaoyan_last_subject', state.currentSubject);
+    localStorage.setItem('kaoyan_last_track', String(state.currentTrack));
+
     document.querySelectorAll('.question-card-item').forEach(card => {
       card.classList.toggle('active', card.dataset.id === itemId);
     });
@@ -387,6 +457,7 @@
     state.currentTrack = trackNum;
     state.currentSentIndex = -1;
     state.loopCount = 0;
+    localStorage.setItem('kaoyan_last_track', String(trackNum));
 
     if (el.tabTrack1) el.tabTrack1.classList.toggle('active', trackNum === 1);
     if (el.tabTrack2) el.tabTrack2.classList.toggle('active', trackNum === 2);
@@ -474,7 +545,19 @@
     if (audio.paused) {
       audio.play().catch(e => console.log(e));
     }
+    const sentIdx = state.activeSentences.findIndex(s => String(s.id) === String(sentId));
+    if (sentIdx !== -1) {
+      state.currentSentIndex = sentIdx;
+      state.loopCount = 0;
+    }
+    if (currentFrameworkSections.length > 0) {
+      const matchedSecIdx = currentFrameworkSections.findIndex(s => startTime >= s.start - 0.1 && startTime <= s.end + 0.1);
+      if (matchedSecIdx !== -1) {
+        currentActiveSectionIndex = matchedSecIdx;
+      }
+    }
     highlightSentence(sentId);
+    updateHUDDisplay(startTime);
   }
 
   function highlightSentence(sentId) {
@@ -482,6 +565,7 @@
     sents.forEach(s => {
       const match = String(s.dataset.sentId) === String(sentId);
       s.classList.toggle('active-spotlight', match);
+      s.classList.toggle('loop-sent-active', match && state.playMode === 'sentence');
       if (match) {
         const now = Date.now();
         if (now - state.lastUserScrollTime > 2500) {
@@ -489,6 +573,14 @@
         }
       }
     });
+
+    if (currentFrameworkSections.length > 0 && currentActiveSectionIndex >= 0) {
+      currentFrameworkSections.forEach((s, idx) => {
+        if (s.cardEl) {
+          s.cardEl.classList.toggle('loop-sec-active', idx === currentActiveSectionIndex && state.playMode === 'section');
+        }
+      });
+    }
   }
 
 
@@ -792,16 +884,35 @@
         
         if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
           state.currentSentIndex = activeIdx;
+          state.loopCount = 0;
           const sent = state.activeSentences[activeIdx];
           highlightSentence(sent.id);
         }
 
-        if (state.reciteMode === 'loop3' && state.currentSentIndex !== -1) {
+        // 1. 单句循环模式
+        if (state.playMode === 'sentence' && state.currentSentIndex !== -1 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
+          const sent = state.activeSentences[state.currentSentIndex];
+          if (cur >= sent.end - 0.08) {
+            audio.currentTime = sent.start;
+            if (audio.paused) audio.play().catch(e => console.log(e));
+          }
+        }
+        // 2. 单段循环模式
+        else if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
+          const curSec = currentFrameworkSections[currentActiveSectionIndex];
+          if (cur >= curSec.end - 0.08) {
+            audio.currentTime = curSec.start;
+            if (audio.paused) audio.play().catch(e => console.log(e));
+          }
+        }
+        // 3. 单句3遍模式
+        else if (state.playMode === 'loop3' && state.currentSentIndex !== -1 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
           const sent = state.activeSentences[state.currentSentIndex];
           if (cur >= sent.end - 0.08) {
             if (state.loopCount < 2) {
               state.loopCount++;
               audio.currentTime = sent.start;
+              if (audio.paused) audio.play().catch(e => console.log(e));
             } else {
               state.loopCount = 0;
             }
@@ -811,6 +922,16 @@
     });
 
     audio.addEventListener('ended', () => {
+      if (state.playMode === 'sentence' && state.currentSentIndex !== -1 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
+        audio.currentTime = state.activeSentences[state.currentSentIndex].start;
+        audio.play().catch(e => console.log(e));
+        return;
+      }
+      if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
+        audio.currentTime = currentFrameworkSections[currentActiveSectionIndex].start;
+        audio.play().catch(e => console.log(e));
+        return;
+      }
       state.isPlaying = false;
       updatePlayBtnUI();
       playNextItem();
@@ -1104,7 +1225,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '1.7.2';
+  const APP_BUILD_ID = '1.7.3';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -1259,6 +1380,15 @@
   }
 
   // 初始化入口
+  // PWA Service Worker 隔离注册
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(err => {
+        console.warn('SW registration warning:', err);
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     initElements();
     setupAudioEngine();

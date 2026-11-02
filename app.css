@@ -1234,11 +1234,14 @@ body {
   }
 
   .section-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-    margin-bottom: 10px;
-    padding-bottom: 8px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    top: 0;
   }
 
   .sec-badge {
@@ -2928,11 +2931,17 @@ body {
 
 .section-card-header {
   position: sticky;
-  top: calc(var(--header-h) + 4px);
-  z-index: 5;
+  top: 0;
+  z-index: 20;
   background: var(--bg-card);
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding: 8px 12px;
+  margin: -4px -6px 12px -6px;
+  border-bottom: 1px solid var(--line-subtle);
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
 }
 
 /* 答题思维骨架抽屉 (Outline Drawer) */
@@ -3202,4 +3211,28 @@ body {
 
 [data-theme="dark"] .section-card-header {
   background: var(--bg-card);
+}
+
+/* 播放模式特效（单句循环、单段循环高光） */
+.recite-sent.active-spotlight.loop-sent-active {
+  background: rgba(176, 105, 23, 0.16) !important;
+  color: var(--amber) !important;
+  box-shadow: 0 0 0 1.5px var(--amber), 0 2px 8px rgba(176, 105, 23, 0.2) !important;
+  border-radius: 4px;
+}
+
+.exam-section-card.active-section-card.loop-sec-active {
+  border-left-width: 4px !important;
+  border-left-color: var(--amber) !important;
+  box-shadow: 0 4px 20px rgba(176, 105, 23, 0.12), 0 0 0 1.5px rgba(176, 105, 23, 0.4) !important;
+}
+
+.exam-section-card.active-section-card.loop-sec-active .section-card-header {
+  border-bottom-color: rgba(176, 105, 23, 0.35);
+}
+
+.pill-mode-btn.active {
+  background: var(--amber-soft) !important;
+  color: var(--amber) !important;
+  border-color: var(--amber) !important;
 }

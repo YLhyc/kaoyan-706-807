@@ -1,11 +1,12 @@
-// 考研政治背诵手卷 · 生产级 PWA Service Worker (v3.3.6)
-const CACHE_NAME = 'kaoyan-handbook-v172';
+// 考研背诵手卷 · 离线 PWA Service Worker (v1.7.3)
+const CACHE_NAME = 'kaoyan-handbook-v173';
 const ASSETS_TO_CACHE = [
-  './manifest.webmanifest',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  './icons/apple-touch-icon.png',
-  './icons/icon.svg'
+  './manifest.json',
+  './favicon.svg',
+  './icon-192.png',
+  './icon-256.png',
+  './icon-512.png',
+  './icon.svg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -39,7 +40,7 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(event.request.url);
 
-  // 0. 版本检测清单与 HTML 主入口：网络优先 (Network-First)，确保在线时永远秒呈最新部署，彻底根除陈旧缓存
+  // 0. 版本清单与主入口走 Network-First
   if (url.pathname.endsWith('version.json') || event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request, { cache: 'no-store' }).then((networkResponse) => {
@@ -51,14 +52,13 @@ self.addEventListener('fetch', (event) => {
         }
         return networkResponse;
       }).catch(() => {
-        // 离线状态回退缓存
         return caches.match(event.request).then((cached) => cached || caches.match('./index.html'));
       })
     );
     return;
   }
 
-  // 1. 静态资源（图标、字体、manifest 等）：Cache-First 快速响应
+  // 1. 静态资源 Cache-First
   event.respondWith(
     caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) {
