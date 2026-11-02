@@ -19,7 +19,7 @@
     // 播放状态
     isPlaying: false,
     speed: 1.0,
-    playMode: 'all', // 'all', 'sentence', 'section', 'loop3'
+    playMode: 'sequence', // 'all', 'sentence', 'section', 'loop3'
     reciteMode: 'normal',
     loopCount: 0,
     fontSize: 17,
@@ -39,44 +39,52 @@
   const el = {};
 
   // ==========================================
-  // 听读背诵循环模式配置 (全部顺序 / 单句循环 / 单段循环 / 单句3遍)
+  // 听读背诵循环模式配置 (按顺序依次播放 / 完全循环 / 单段循环 / 单句循环)
   // ==========================================
   const PLAY_MODES = [
     {
-      id: 'all',
-      label: '全部',
-      title: '播放模式：全部顺序（播完自动进入下一篇）',
-      toast: '已恢复【全部顺序】模式 · 顺畅通读全篇大题',
+      id: 'sequence',
+      label: '顺序',
+      name: '按顺序依次播放',
+      badge: '顺序播放',
+      desc: '顺序通读全篇大题，播完自动进入下一个知识点',
+      toast: '已设置为【按顺序依次播放】· 顺畅通读全篇大题',
       iconSvg: '<polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path>'
     },
     {
-      id: 'sentence',
-      label: '单句',
-      title: '播放模式：单句循环（无限循环当前句子，点击任意句子即可循环该句）',
-      toast: '已开启【单句循环】模式 · 点击任意句子即无限循环朗读',
-      iconSvg: '<polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path><text x="12" y="16" font-size="8" font-weight="900" text-anchor="middle" fill="currentColor">1</text>'
+      id: 'item',
+      label: '完全',
+      name: '完全循环（整个知识点循环）',
+      badge: '整题循环',
+      desc: '当前整道考题反复循环播放，播完自动从头重播',
+      toast: '已开启【完全循环】· 当前整道考题将反复循环朗读',
+      iconSvg: '<polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path><circle cx="12" cy="12" r="2.8" fill="currentColor"></circle>'
     },
     {
       id: 'section',
       label: '单段',
-      title: '播放模式：单段循环（无限循环当前板块/分论点）',
-      toast: '已开启【单段循环】模式 · 将在当前板块/分论点内无限循环背诵',
+      name: '单段循环',
+      badge: '分论点循环',
+      desc: '在当前分论点/板块内循环背诵，选哪段就循环哪段',
+      toast: '已开启【单段循环】· 将在当前板块内无限循环背诵',
       iconSvg: '<polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path><text x="12" y="15.5" font-size="7" font-weight="900" text-anchor="middle" fill="currentColor">段</text>'
     },
     {
-      id: 'loop3',
-      label: '3遍',
-      title: '播放模式：单句3遍（每句精读3遍后自动进行下一句）',
-      toast: '已开启【单句3遍】模式 · 每句朗读3遍后自动进行下一句',
-      iconSvg: '<polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path><text x="12" y="16" font-size="8" font-weight="900" text-anchor="middle" fill="currentColor">3</text>'
+      id: 'sentence',
+      label: '单句',
+      name: '单句循环',
+      badge: '逐句循环',
+      desc: '在当前单句内循环跟读背诵，点击任意句子即可循环该句',
+      toast: '已开启【单句循环】· 点击任意句子即无限循环朗读',
+      iconSvg: '<polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path><text x="12" y="16" font-size="8" font-weight="900" text-anchor="middle" fill="currentColor">1</text>'
     }
   ];
 
   function updatePlayModeUI(showToastNotice = false) {
     if (!el.loopModeBtn) return;
     const modeConfig = PLAY_MODES.find(m => m.id === state.playMode) || PLAY_MODES[0];
-    el.loopModeBtn.classList.toggle('active', modeConfig.id !== 'all');
-    el.loopModeBtn.title = modeConfig.title;
+    el.loopModeBtn.classList.toggle('active', modeConfig.id !== 'sequence');
+    el.loopModeBtn.title = `听读模式：${modeConfig.name}（点击打开选择列表）`;
 
     const iconEl = el.loopModeBtn.querySelector('svg');
     if (iconEl) iconEl.innerHTML = modeConfig.iconSvg;
@@ -89,17 +97,74 @@
     updateHUDDisplay(audio.currentTime || 0);
   }
 
-  function cyclePlayMode() {
-    const currIdx = PLAY_MODES.findIndex(m => m.id === state.playMode);
-    const nextIdx = (currIdx + 1) % PLAY_MODES.length;
-    state.playMode = PLAY_MODES[nextIdx].id;
+  function setPlayMode(modeId, showToastNotice = true) {
+    state.playMode = modeId;
     state.loopCount = 0;
-    localStorage.setItem('kaoyan_play_mode', state.playMode);
-    updatePlayModeUI(true);
+    localStorage.setItem('kaoyan_play_mode', modeId);
+    updatePlayModeUI(showToastNotice);
     if (state.currentSentIndex !== -1 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
       highlightSentence(state.activeSentences[state.currentSentIndex].id);
     }
   }
+
+  function openPlayModeDrawer() {
+    if (!el.playModeDrawer || !el.playModeList) return;
+    renderPlayModeList();
+    if (el.playModeBackdrop) el.playModeBackdrop.style.display = 'block';
+    setTimeout(() => {
+      el.playModeDrawer.classList.add('open');
+      el.playModeDrawer.setAttribute('aria-hidden', 'false');
+    }, 10);
+  }
+
+  function closePlayModeDrawer() {
+    if (!el.playModeDrawer) return;
+    el.playModeDrawer.classList.remove('open');
+    el.playModeDrawer.setAttribute('aria-hidden', 'true');
+    setTimeout(() => {
+      if (el.playModeBackdrop) el.playModeBackdrop.style.display = 'none';
+    }, 280);
+  }
+
+  function renderPlayModeList() {
+    if (!el.playModeList) return;
+    el.playModeList.innerHTML = '';
+
+    PLAY_MODES.forEach(m => {
+      const isCurrent = m.id === state.playMode;
+      const card = document.createElement('div');
+      card.className = `mode-option-card ${isCurrent ? 'active-mode-card' : ''}`;
+      card.innerHTML = `
+        <div class="mode-option-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            ${m.iconSvg}
+          </svg>
+        </div>
+        <div class="mode-option-info">
+          <div class="mode-option-title-row">
+            <span class="mode-option-name">${m.name}</span>
+            <span class="mode-option-badge">${m.badge}</span>
+          </div>
+          <div class="mode-option-desc">${m.desc}</div>
+        </div>
+        ${isCurrent ? `
+          <div class="mode-option-check">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+        ` : ''}
+      `;
+
+      card.addEventListener('click', () => {
+        setPlayMode(m.id, true);
+        closePlayModeDrawer();
+      });
+
+      el.playModeList.appendChild(card);
+    });
+  }
+
 
 
   function initElements() {
@@ -172,6 +237,10 @@
     el.drawerTrackBadge = document.getElementById('drawerTrackBadge');
     el.drawerTopicSub = document.getElementById('drawerTopicSub');
     el.outlineDrawerBody = document.getElementById('outlineDrawerBody');
+    el.playModeDrawer = document.getElementById('playModeDrawer');
+    el.playModeBackdrop = document.getElementById('playModeBackdrop');
+    el.playModeClose = document.getElementById('playModeClose');
+    el.playModeList = document.getElementById('playModeList');
   }
 
   // 加载数据包 (优先调用已嵌入的 window.KAOYAN_MANIFEST，彻底免疫 file:/// 下的 CORS 阻断)
@@ -841,6 +910,12 @@
       el.outlineDrawer.classList.add('open');
       el.outlineDrawer.setAttribute('aria-hidden', 'false');
     }
+        if (el.playModeClose) {
+      el.playModeClose.addEventListener('click', closePlayModeDrawer);
+    }
+    if (el.playModeBackdrop) {
+      el.playModeBackdrop.addEventListener('click', closePlayModeDrawer);
+    }
     if (el.outlineDrawerBackdrop) {
       el.outlineDrawerBackdrop.style.display = 'block';
     }
@@ -850,6 +925,12 @@
     if (el.outlineDrawer) {
       el.outlineDrawer.classList.remove('open');
       el.outlineDrawer.setAttribute('aria-hidden', 'true');
+    }
+        if (el.playModeClose) {
+      el.playModeClose.addEventListener('click', closePlayModeDrawer);
+    }
+    if (el.playModeBackdrop) {
+      el.playModeBackdrop.addEventListener('click', closePlayModeDrawer);
     }
     if (el.outlineDrawerBackdrop) {
       el.outlineDrawerBackdrop.style.display = 'none';
@@ -922,16 +1003,25 @@
     });
 
     audio.addEventListener('ended', () => {
+      // 1. 完全循环（整个知识点循环）
+      if (state.playMode === 'item') {
+        audio.currentTime = 0;
+        audio.play().catch(e => console.log(e));
+        return;
+      }
+      // 2. 单句循环
       if (state.playMode === 'sentence' && state.currentSentIndex !== -1 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
         audio.currentTime = state.activeSentences[state.currentSentIndex].start;
         audio.play().catch(e => console.log(e));
         return;
       }
+      // 3. 单段循环
       if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
         audio.currentTime = currentFrameworkSections[currentActiveSectionIndex].start;
         audio.play().catch(e => console.log(e));
         return;
       }
+      // 4. 按顺序依次播放
       state.isPlaying = false;
       updatePlayBtnUI();
       playNextItem();
@@ -1005,6 +1095,12 @@
     }
     if (el.outlineDrawerClose) {
       el.outlineDrawerClose.addEventListener('click', closeOutlineDrawer);
+    }
+        if (el.playModeClose) {
+      el.playModeClose.addEventListener('click', closePlayModeDrawer);
+    }
+    if (el.playModeBackdrop) {
+      el.playModeBackdrop.addEventListener('click', closePlayModeDrawer);
     }
     if (el.outlineDrawerBackdrop) {
       el.outlineDrawerBackdrop.addEventListener('click', closeOutlineDrawer);
@@ -1225,7 +1321,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '1.7.3';
+  const APP_BUILD_ID = '1.7.4';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
