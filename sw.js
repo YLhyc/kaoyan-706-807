@@ -1,5 +1,5 @@
-// 考研背诵手卷 · 离线 PWA Service Worker (v1.7.7)
-const CACHE_NAME = 'kaoyan-handbook-v177';
+// 考研背诵手卷 · 离线 PWA Service Worker (v1.7.8)
+const CACHE_NAME = 'kaoyan-handbook-v178';
 const ASSETS_TO_CACHE = [
   './manifest.json',
   './favicon.svg',
