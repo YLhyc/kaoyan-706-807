@@ -749,11 +749,22 @@
         badge = `第 ${idx + 1} 论述板块`;
       }
 
+      // 识别节点类型，全面支持审题定标规程、立论破题、论述分论点与结语升华
+      let secType = 'point';
+      if (/审题|规程/.test(badge)) {
+        secType = 'spec';
+      } else if (/引论|立论/.test(badge)) {
+        secType = 'intro';
+      } else if (/结语|总结/.test(badge)) {
+        secType = 'conclusion';
+      }
+
       const thesisSentEl = card.querySelector('.thesis-sent, .teacher-explain-row .recite-sent, .recite-sent');
       const thesisText = thesisSentEl ? thesisSentEl.textContent.replace(/【[^】]+】/g, '').trim() : '';
 
       currentFrameworkSections.push({
         index: idx,
+        type: secType,
         badge: badge,
         desc: desc,
         start: start,
@@ -965,7 +976,7 @@
         <div class="outline-node-num">[${idx + 1}/${total}]</div>
         <div class="outline-node-info">
           <div class="outline-node-header">
-            <span class="outline-node-badge">${sec.badge}</span>
+            <span class="outline-node-badge badge-type-${sec.type || 'point'}">${sec.badge}</span>
             ${sec.desc ? `<span class="outline-node-desc">${sec.desc}</span>` : ''}
           </div>
           ${sec.thesisSnippet ? `<div class="outline-node-snippet">${sec.thesisSnippet}</div>` : ''}
@@ -1510,7 +1521,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '1.7.6';
+  const APP_BUILD_ID = '1.7.7';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
