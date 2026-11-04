@@ -12,7 +12,7 @@
   <meta name="apple-mobile-web-app-title" content="考研背诵手卷">
   <meta name="application-name" content="考研背诵手卷">
   <title>2027 考研全科双轨随身背诵手卷 · 807/706/英语写作独立专属研读平台</title>
-  <link rel="stylesheet" href="app.css?v=1.9.0">
+  <link rel="stylesheet" href="app.css?v=1.9.1">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css">
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=1.9.0" defer></script>
+  <script src="data/kaoyan_data.js?v=1.9.1" defer></script>
 </head>
 <body>
 
@@ -165,12 +165,13 @@
         <span class="theme-text">纸境</span>
       </button>
 
-      <button id="btn-mobile-menu" class="action-btn mobile-menu-toggle" title="展开题库菜单">
+      <button id="btn-mobile-menu" class="action-btn mobile-menu-toggle" title="折叠/展开考点侧栏">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="3" y1="12" x2="21" y2="12"></line>
           <line x1="3" y1="6" x2="21" y2="6"></line>
           <line x1="3" y1="18" x2="21" y2="18"></line>
         </svg>
+        <span class="menu-btn-text">考点</span>
       </button>
     </div>
   </header>
@@ -182,6 +183,18 @@
 
     <!-- 左侧考点索引列表 -->
     <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header-row">
+        <div class="sidebar-title-tag">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          <span>考点目录</span>
+        </div>
+        <button id="btn-sidebar-collapse" class="sidebar-close-btn" title="收起/折叠考点侧栏">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          <span>收起</span>
+        </button>
+      </div>
       <div class="sidebar-search-box">
         <div class="search-input-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -218,7 +231,7 @@
       <div class="sidebar-footer">
         <div class="app-version-badge" id="appVersionBadge" title="点击检查更新">
           <span class="version-dot"></span>
-          <span id="versionText">版本 v1.9.0 · 金石朱墨研学看板全科版</span>
+          <span id="versionText">版本 v1.9.1 · 金石朱墨研学看板全科版</span>
         </div>
         <button id="btn-force-refresh" class="refresh-cache-btn" title="强制清除缓存并拉取最新版本">
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -395,7 +408,7 @@
     </div>
   </footer>
 
-  <script src="app.js?v=1.9.0" defer></script>
+  <script src="app.js?v=1.9.1" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">

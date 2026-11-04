@@ -285,7 +285,7 @@ body {
 }
 
 .mobile-menu-toggle {
-  display: none;
+  display: inline-flex;
 }
 
 /* 主内容双栏布局 */
@@ -305,7 +305,64 @@ body {
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  transition: transform 0.25s ease;
+  transition: margin-left 0.28s cubic-bezier(0.16, 1, 0.3, 1), transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), width 0.28s ease, opacity 0.2s ease;
+}
+
+.sidebar-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid var(--line-subtle);
+  background: var(--bg-sidebar);
+}
+
+.sidebar-title-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+}
+
+.sidebar-close-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--line-main);
+  background: var(--bg-card);
+  color: var(--ink-secondary);
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sidebar-close-btn:hover {
+  color: var(--vermilion);
+  border-color: var(--vermilion-border);
+  background: var(--vermilion-soft);
+}
+
+/* 大屏与 iPad 折叠侧边栏时主舞台全屏扩展 */
+@media (min-width: 769px) {
+  .app-body.sidebar-collapsed .sidebar {
+    margin-left: calc(-1 * var(--sidebar-w)) !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    border-right: none !important;
+    overflow: hidden !important;
+  }
+
+  .app-body.sidebar-collapsed .main-stage {
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+    transition: max-width 0.28s ease;
+  }
 }
 
 .sidebar-search-box {
@@ -974,8 +1031,8 @@ body {
   }
 }
 
-/* 2. 移动端平板竖屏与手机横屏 (<= 768px) */
-@media (max-width: 768px) {
+/* 1.5 中大平板与 iPad 横竖屏 (<= 1100px) 顶栏自适应与防遮挡排版 */
+@media (max-width: 1100px) {
   :root {
     --header-h: 96px;
   }
@@ -983,15 +1040,17 @@ body {
   .app-header {
     height: auto;
     min-height: var(--header-h);
-    padding: 8px 12px;
+    padding: 8px 14px max(8px, env(safe-area-inset-right));
     flex-wrap: wrap;
     align-items: center;
     row-gap: 8px;
+    box-sizing: border-box;
+    overflow: visible;
   }
 
   .brand-section {
     order: 1;
-    flex: 1;
+    flex: 1 1 auto;
     min-width: 0;
     gap: 8px;
   }
@@ -1025,12 +1084,54 @@ body {
     order: 2;
     flex-shrink: 0;
     gap: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: max(6px, env(safe-area-inset-right));
+  }
+
+  .header-actions .action-btn {
+    height: 32px;
+    padding: 0 8px;
+    font-size: 12px;
+    gap: 4px;
   }
 
   .subject-pill-group {
     order: 3;
     width: 100%;
     display: flex;
+    margin: 0;
+    padding: 3px;
+    border-radius: 20px;
+    background-color: var(--bg-sidebar);
+    box-sizing: border-box;
+  }
+
+  .subject-btn {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+    padding: 6px 4px;
+    font-size: 13px;
+    white-space: nowrap;
+    gap: 4px;
+  }
+
+  .subject-btn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  .subject-btn .count-tag {
+    font-size: 11px;
+    padding: 1px 5px;
+  }
+}
+
+/* 2. 移动端平板竖屏与手机横屏 (<= 768px) */
+@media (max-width: 768px) {
     margin: 0;
     padding: 3px;
     border-radius: 20px;
@@ -1190,9 +1291,18 @@ body {
   }
 }
 
-/* 3. iPhone 与紧凑手机竖屏 (<= 520px) */
+/* 3. iPhone 与紧凑手机竖屏 (<= 520px) 极简全功能布局 */
 @media (max-width: 520px) {
   .font-size-btn {
+    display: inline-flex !important;
+    padding: 0 5px !important;
+    height: 30px !important;
+    font-size: 11px !important;
+    min-width: 26px !important;
+    justify-content: center !important;
+  }
+
+  .font-size-btn svg {
     display: none !important;
   }
 
@@ -1200,21 +1310,48 @@ body {
     display: none !important;
   }
 
+  .menu-btn-text {
+    display: none !important;
+  }
+
+  .header-actions {
+    gap: 4px !important;
+    padding-right: max(4px, env(safe-area-inset-right)) !important;
+  }
+
   .action-btn {
-    height: 32px;
-    padding: 0 8px;
+    height: 30px !important;
+    padding: 0 6px !important;
+    font-size: 11.5px !important;
+  }
+
+  #btn-font-switch {
+    padding: 0 6px !important;
+    font-size: 11.5px !important;
+  }
+
+  #btn-study-dashboard span,
+  #btn-cloze-mode #cloze-mode-name {
+    display: none !important;
+  }
+
+  #btn-study-dashboard,
+  #btn-cloze-mode {
+    width: 30px !important;
+    padding: 0 !important;
+    justify-content: center !important;
   }
 
   #btn-theme-toggle {
-    width: 32px;
-    padding: 0;
-    justify-content: center;
+    width: 30px !important;
+    padding: 0 !important;
+    justify-content: center !important;
   }
 
   #btn-mobile-menu {
-    width: 32px;
-    padding: 0;
-    justify-content: center;
+    width: 30px !important;
+    padding: 0 !important;
+    justify-content: center !important;
   }
 
   .subject-name-full {
@@ -1381,23 +1518,41 @@ body {
    2027 考研专业课双轨随身背诵手卷 · 字体体系与高保真研读排版系统
    ======================================================== */
 
-/* 多样化研读字体体系（复用政治背诵手册同款学术字体） */
+/* 多样化研读字体体系（四大学术字系：文人雅宋 / 霞鹜温楷 / 现代精黑 / 典雅仿宋，针对 Apple iOS/iPadOS 原生中文字体深度映射） */
 :root {
-  --font-song: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSongti-SC-Regular", "SimSun", "STSong", serif;
-  --font-kai: "LXGW WenKai Screen", "LXGWWenKaiScreen", "Kaiti SC", "STKaiti", "KaiTi", serif;
-  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "SF Pro Text", "Helvetica Neue", "Microsoft YaHei", sans-serif;
-  --font-fangsong: "FangSong", "STFangsong", "仿宋", "Noto Serif SC", serif;
+  --font-song: "Songti SC", "STSongti-SC-Regular", "Noto Serif SC", "Source Han Serif SC", SimSun, serif;
+  --font-kai: "Kaiti SC", "STKaiti", "LXGW WenKai Screen", "LXGWWenKaiScreen", KaiTi, serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "SF Pro Text", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-fangsong: "STFangsong", "FangSong", "FangSong SC", "仿宋", "STSongti-SC-Regular", serif;
 
   --font-current: var(--font-song);
 }
 
 [data-font="song"] { --font-current: var(--font-song); }
 [data-font="kai"] { --font-current: var(--font-kai); }
-[data-font="sans"] { --font-current: var(--font-sans); }
+[data-font="sans"], [data-font="hei"] { --font-current: var(--font-sans); }
 [data-font="fangsong"] { --font-current: var(--font-fangsong); }
 
-body, .paper-container, .recite-sent, .exam-section-card, .gold-sent-card, .teacher-explain-card {
-  font-family: var(--font-current);
+body,
+.paper-container,
+.paper-card,
+.paper-content,
+.exam-section-card,
+.section-card-content,
+.section-thesis-box,
+.section-body-text,
+.logic-block-card,
+.logic-block-body,
+.framework-qa-card,
+.gold-quote-box,
+.gold-quote-body,
+.teacher-explain-row,
+.recite-sent,
+.thesis-sent,
+.gold-sent-active,
+.quote-gold-core,
+.paper-paragraph {
+  font-family: var(--font-current) !important;
 }
 
 /* 顶部操作栏字体切换按钮 */
@@ -1554,7 +1709,7 @@ body, .paper-container, .recite-sent, .exam-section-card, .gold-sent-card, .teac
 }
 
 .section-card-content {
-  font-size: 17px;
+  font-size: var(--font-base);
   line-height: 2.0;
   color: var(--ink-primary);
   text-align: justify;
@@ -1568,7 +1723,7 @@ body, .paper-container, .recite-sent, .exam-section-card, .gold-sent-card, .teac
   border-radius: 4px;
   margin-bottom: 14px;
   line-height: 1.9;
-  font-size: 17.5px;
+  font-size: calc(var(--font-base) + 0.5px);
 }
 
 .thesis-pill {
@@ -1592,7 +1747,7 @@ body, .paper-container, .recite-sent, .exam-section-card, .gold-sent-card, .teac
 }
 
 .section-body-text {
-  font-size: 17px;
+  font-size: var(--font-base);
   line-height: 2.05;
   color: var(--ink-primary);
   text-align: justify;
@@ -1631,13 +1786,13 @@ body, .paper-container, .recite-sent, .exam-section-card, .gold-sent-card, .teac
 }
 
 .gold-quote-body {
-  font-size: 17px;
+  font-size: var(--font-base);
   line-height: 1.9;
   color: var(--ink-primary);
 }
 
 .quote-prompt-lead {
-  font-size: 15px;
+  font-size: calc(var(--font-base) - 2px);
   font-weight: normal;
   color: var(--ink-secondary);
   margin-right: 6px;
@@ -1657,7 +1812,7 @@ body, .paper-container, .recite-sent, .exam-section-card, .gold-sent-card, .teac
 }
 
 .quote-gold-core {
-  font-size: 17px;
+  font-size: var(--font-base);
   font-weight: 600;
   color: var(--ink-primary);
   line-height: 1.9;
@@ -1669,7 +1824,7 @@ body, .paper-container, .recite-sent, .exam-section-card, .gold-sent-card, .teac
 }
 
 .teacher-explain-row {
-  font-size: 16px;
+  font-size: calc(var(--font-base) - 1px);
   line-height: 1.9;
   color: var(--ink-secondary);
   padding: 6px 0;
@@ -2348,7 +2503,7 @@ body {
   border-radius: 4px !important;
   box-shadow: inset 0 0 0 1px rgba(166, 58, 36, 0.14) !important;
   letter-spacing: 0.5px !important;
-  font-family: var(--font-song), serif !important;
+  font-family: var(--font-current) !important;
 }
 
 .tier-T0 {
@@ -2410,7 +2565,7 @@ body {
   font-size: 11px !important;
   font-weight: 700 !important;
   margin-right: 6px !important;
-  font-family: var(--font-song), serif !important;
+  font-family: var(--font-current) !important;
 }
 
 /* 审题指引与立意维度卡片 (纯 SVG 矢量图标引导) */
@@ -2479,7 +2634,7 @@ body {
   font-size: 11px !important;
   font-weight: 700 !important;
   letter-spacing: 0.3px !important;
-  font-family: var(--font-song), serif !important;
+  font-family: var(--font-current) !important;
 }
 
 .gold-badge svg {
@@ -3564,7 +3719,7 @@ body {
 
 
 /* ========================================================
-   金石朱墨 · 考题掌握状态 & 研学看板模块 (v1.9.0)
+   金石朱墨 · 考题掌握状态 & 研学看板模块 (v1.9.1)
    ======================================================== */
 
 /* 顶部研学看板按钮 */

@@ -401,14 +401,15 @@
     const m706 = i706.filter(x => getMasteryStatus(x.id) === 'mastered').length;
     const mEn = iEn.filter(x => getMasteryStatus(x.id) === 'mastered').length;
 
+    const checkIconSvg = '<svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block;vertical-align:-1px;margin-right:2px;"><polyline points="20 6 9 17 4 12"></polyline></svg>';
     if (el.count807) {
-      el.count807.innerHTML = `${i807.length}题${m807 > 0 ? ` · <span style="color:var(--vermilion);font-weight:700;">✓${m807}</span>` : ''}`;
+      el.count807.innerHTML = `${i807.length}题${m807 > 0 ? ` · <span style="color:var(--vermilion);font-weight:700;">${checkIconSvg}${m807}</span>` : ''}`;
     }
     if (el.count706) {
-      el.count706.innerHTML = `${i706.length}题${m706 > 0 ? ` · <span style="color:var(--vermilion);font-weight:700;">✓${m706}</span>` : ''}`;
+      el.count706.innerHTML = `${i706.length}题${m706 > 0 ? ` · <span style="color:var(--vermilion);font-weight:700;">${checkIconSvg}${m706}</span>` : ''}`;
     }
     if (el.countEn) {
-      el.countEn.innerHTML = `${iEn.length}篇${mEn > 0 ? ` · <span style="color:var(--vermilion);font-weight:700;">✓${mEn}</span>` : ''}`;
+      el.countEn.innerHTML = `${iEn.length}篇${mEn > 0 ? ` · <span style="color:var(--vermilion);font-weight:700;">${checkIconSvg}${mEn}</span>` : ''}`;
     }
   }
 
@@ -1894,42 +1895,76 @@
       });
     }
 
-    // 字体切换体系
+    // 字体切换体系 (四大学术字系全面覆盖，iOS原生高清字族精准映射)
     const fontFamilies = [
-      { id: 'song', name: '雅宋', value: '"Noto Serif SC", "Source Han Serif SC", SimSun, serif' },
-      { id: 'kai', name: '温楷', value: '"LXGW WenKai Screen", "LXGW WenKai", "Kaiti SC", KaiTi, serif' },
-      { id: 'hei', name: '精黑', value: '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif' },
-      { id: 'fangsong', name: '仿宋', value: 'FangSong, "FangSong SC", "STFangsong", serif' }
+      { id: 'song', name: '雅宋', value: '"Songti SC", "STSongti-SC-Regular", "Noto Serif SC", "Source Han Serif SC", SimSun, serif' },
+      { id: 'kai', name: '温楷', value: '"Kaiti SC", "STKaiti", "LXGW WenKai Screen", "LXGWWenKaiScreen", KaiTi, serif' },
+      { id: 'sans', name: '精黑', value: '-apple-system, BlinkMacSystemFont, "PingFang SC", "SF Pro Text", "Hiragino Sans GB", "Microsoft YaHei", sans-serif' },
+      { id: 'fangsong', name: '仿宋', value: '"STFangsong", "FangSong", "FangSong SC", "仿宋", "STSongti-SC-Regular", serif' }
     ];
     let fontIdx = 0;
     const fontSwitchBtn = document.getElementById('btn-font-switch');
     const fontNameLabel = document.getElementById('font-current-name');
 
+    function applyFont(fontObj) {
+      document.documentElement.setAttribute('data-font', fontObj.id);
+      document.documentElement.style.setProperty('--font-current', fontObj.value);
+      document.documentElement.style.setProperty('--font-content', fontObj.value);
+      if (fontNameLabel) fontNameLabel.textContent = fontObj.name;
+    }
+
     const savedFont = localStorage.getItem('kaoyan_font_family');
     if (savedFont) {
-      const idx = fontFamilies.findIndex(f => f.id === savedFont);
+      const idx = fontFamilies.findIndex(f => f.id === savedFont || (savedFont === 'hei' && f.id === 'sans'));
       if (idx !== -1) {
         fontIdx = idx;
-        document.documentElement.style.setProperty('--font-content', fontFamilies[fontIdx].value);
-        if (fontNameLabel) fontNameLabel.textContent = fontFamilies[fontIdx].name;
       }
     }
+    applyFont(fontFamilies[fontIdx]);
 
     if (fontSwitchBtn) {
       fontSwitchBtn.addEventListener('click', () => {
         fontIdx = (fontIdx + 1) % fontFamilies.length;
         const curFont = fontFamilies[fontIdx];
-        document.documentElement.style.setProperty('--font-content', curFont.value);
-        if (fontNameLabel) fontNameLabel.textContent = curFont.name;
+        applyFont(curFont);
         localStorage.setItem('kaoyan_font_family', curFont.id);
       });
     }
 
-    // 移动端抽屉菜单
+    // 侧边栏折叠 (iPad & 桌面) 与移动端抽屉
+    const appBody = document.querySelector('.app-body');
+    const sidebarCollapseBtn = document.getElementById('btn-sidebar-collapse');
+
+    // 恢复本地存储的侧边栏折叠状态 (大屏/iPad)
+    if (window.innerWidth > 768 && localStorage.getItem('kaoyan_sidebar_collapsed') === '1') {
+      if (appBody) appBody.classList.add('sidebar-collapsed');
+    }
+
     if (el.mobileMenuBtn && el.sidebar) {
       el.mobileMenuBtn.addEventListener('click', () => {
-        el.sidebar.classList.toggle('open');
-        if (el.backdrop) el.backdrop.classList.toggle('open');
+        if (window.innerWidth > 768) {
+          if (appBody) {
+            const isCollapsed = appBody.classList.toggle('sidebar-collapsed');
+            localStorage.setItem('kaoyan_sidebar_collapsed', isCollapsed ? '1' : '0');
+          }
+        } else {
+          el.sidebar.classList.toggle('open');
+          if (el.backdrop) el.backdrop.classList.toggle('open');
+        }
+      });
+    }
+
+    if (sidebarCollapseBtn) {
+      sidebarCollapseBtn.addEventListener('click', () => {
+        if (window.innerWidth > 768) {
+          if (appBody) {
+            appBody.classList.add('sidebar-collapsed');
+            localStorage.setItem('kaoyan_sidebar_collapsed', '1');
+          }
+        } else {
+          el.sidebar.classList.remove('open');
+          if (el.backdrop) el.backdrop.classList.remove('open');
+        }
       });
     }
 

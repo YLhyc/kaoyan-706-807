@@ -86,6 +86,7 @@ def parse_track1_sections_from_md(md_path):
     if headers and len(headers) >= 2:
         parts = re.split(r'####\s*[^\n]+', t1_text)
         intro_text = '\n'.join([l for l in parts[0].strip().splitlines() if not l.startswith('>') and not l.startswith('#') and not l.startswith('---')]).strip()
+        intro_text = re.sub(r'\*{1,2}', '', intro_text)
         sections.append({
             'badge': '【引论 · 立论破题】',
             'desc': '确立宏观文学史定位 · 凝练论述核心立论',
@@ -93,7 +94,7 @@ def parse_track1_sections_from_md(md_path):
             'text': intro_text
         })
         for h, part in zip(headers, parts[1:]):
-            p_clean = part.strip()
+            p_clean = re.sub(r'\*{1,2}', '', part.strip())
             h_clean = h.strip()
             h_title = h_clean.split('：')[0].strip() if '：' in h_clean else h_clean[:6].strip()
             if '综上所述' in p_clean:
@@ -118,7 +119,7 @@ def parse_track1_sections_from_md(md_path):
                     'text': p_clean
                 })
     else:
-        paras = [p.strip() for p in t1_text.split('\n\n') if p.strip() and not p.strip().startswith('>') and not p.strip().startswith('#') and not p.strip().startswith('---')]
+        paras = [re.sub(r'\*{1,2}', '', p.strip()) for p in t1_text.split('\n\n') if p.strip() and not p.strip().startswith('>') and not p.strip().startswith('#') and not p.strip().startswith('---')]
         num_map = {1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 7: '七'}
         for i, p in enumerate(paras):
             if i == 0:
@@ -344,6 +345,27 @@ def detect_t2_block(txt):
     return False, ''
 
 connectors = ['具体表述到答题语句就是：', '具体表述到答题语句就是', '答题原句就是：', '答题原句就是', '答题原句：', '所以表述为：', '所以表述为']
+fake_pattern = re.compile(r'(?:第[一二三四五六七八九十]+句|[首次末尾][句段]|句严格界定|句阐明|句总结|句概括|句剖析|句指出|句引入|句展开|句推导|句进一步|句收束|句宣告|句调取|句直接|思路总结|完整版为|答题思路|论证推演|采分点|到底要回答|应该从什么)')
+
+def is_fake_quote(txt):
+    for c in connectors:
+        if c in txt:
+            after = txt.split(c, 1)[1].strip()
+            if fake_pattern.search(after):
+                return True
+            if len(after) == 0:
+                return True
+    return False
+
+def should_stop_quote(txt):
+    t = txt.strip()
+    if any(c in t for c in connectors):
+        return True
+    if any(t.startswith(x) for x in ['【', '一、', '二、', '三、', '四、', '五、', '六、', '板块：', '板块:', '论证推演逻辑', '审题指引', '本段纯净完整答题版本', '纯净完整答题版本']):
+        return True
+    if any(p in t for p in ['论证推演逻辑', '采分点为', '到底要回答什么', '应该从什么方向']):
+        return True
+    return False
 
 def format_quote_chunk(txt, is_first, keywords):
     formatted = txt
@@ -360,7 +382,7 @@ def format_quote_chunk(txt, is_first, keywords):
                 return f'{before_html}{badge_html}<strong class="quote-gold-core">{after_fmt}</strong>'
     return f'<strong class="quote-gold-core">{highlight_html(txt, keywords)}</strong>'
 
-def build_clean_track2_html(item, sents2, meta):
+def build_clean_track2_html(item, sents2, meta, md_path=None, t1_sections=None):
     q_type, score, time_est, words, keywords = meta
     
     html_parts = []
@@ -384,6 +406,17 @@ def build_clean_track2_html(item, sents2, meta):
     </div>
     """)
     
+    # Check total real quotes in sents2
+    total_real_quotes = 0
+    for s in sents2:
+        txt = s['text'].strip()
+        if any(c in txt for c in connectors) and not is_fake_quote(txt):
+            total_real_quotes += 1
+            
+    needs_t1_linking = (total_real_quotes == 0)
+    if needs_t1_linking and not t1_sections and md_path:
+        t1_sections = parse_track1_sections_from_md(md_path)
+    
     blocks = []
     current_block = {
         'title': '全题宏观破题与立论逻辑',
@@ -403,15 +436,17 @@ def build_clean_track2_html(item, sents2, meta):
     if current_block['items']:
         blocks.append(current_block)
         
-    for b in blocks:
+    for b_idx, b in enumerate(blocks):
         block_items_html = []
         items = b['items']
         i = 0
+        has_real_quote = False
+        
         while i < len(items):
             s = items[i]
             txt = s['text'].strip()
             
-            is_quote = any(c in txt for c in connectors)
+            is_quote = any(c in txt for c in connectors) and not is_fake_quote(txt)
             is_qa = any(txt.startswith(x) for x in ['1.', '2.', '3.', '4.', '一、这道题', '二、应该从', '三、从哪些', '四、这三个', '这道题到底', '应该从什么', '从哪些方面', '内在逻辑是', '问题一', '问题二', '问题三', '问题四'])
             
             if is_qa:
@@ -430,11 +465,16 @@ def build_clean_track2_html(item, sents2, meta):
                 """)
                 i += 1
             elif is_quote:
+                has_real_quote = True
                 quote_chunks = [s]
-                # Collect continuation chunks until sentence terminator (。！？)
-                while not any(p in items[i]['text'] for p in ['。', '！', '？']) and i + 1 < len(items):
-                    next_txt = items[i+1]['text'].strip()
-                    if any(c in next_txt for c in connectors) or next_txt.startswith('【') or '板块：' in next_txt:
+                # Collect continuation chunks of this entire answer paragraph
+                while i + 1 < len(items):
+                    next_s = items[i+1]
+                    next_txt = next_s['text'].strip()
+                    if should_stop_quote(next_txt):
+                        break
+                    # Avoid duplicate paragraph loops
+                    if any(clean_txt(next_txt) == clean_txt(qc['text']) for qc in quote_chunks if len(clean_txt(qc['text'])) > 8):
                         break
                     i += 1
                     quote_chunks.append(items[i])
@@ -467,12 +507,57 @@ def build_clean_track2_html(item, sents2, meta):
                 sid = s['id']
                 sstart = s['start']
                 send = s['end']
+                row_cls = "teacher-explain-row"
+                if any(c in txt for c in connectors) and is_fake_quote(txt):
+                    row_cls += " teacher-guidance-lead"
                 block_items_html.append(f"""
-                <div class="teacher-explain-row">
+                <div class="{row_cls}">
                   <span class="recite-sent" data-sent-id="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>
                 </div>
                 """)
                 i += 1
+                
+        # If this block had NO real quotes extracted and item needs T1 linking (e.g. 706屈原, 庄子等数据源缺失原句),
+        # automatically link the pristine answer sentences from Track 1!
+        if needs_t1_linking and t1_sections:
+            target_sec = None
+            if b_idx == 0:
+                target_sec = t1_sections[0]
+            elif b_idx >= len(blocks) - 1:
+                target_sec = t1_sections[-1]
+            else:
+                point_secs = [s for s in t1_sections if s['type'] == 'point']
+                if point_secs:
+                    pt_idx = min(b_idx - 1, len(point_secs) - 1)
+                    target_sec = point_secs[pt_idx]
+                elif b_idx < len(t1_sections):
+                    target_sec = t1_sections[b_idx]
+                    
+            if target_sec and target_sec.get('text'):
+                s_list = split_sentences_proper(target_sec['text'])
+                t1_spans = []
+                for idx_s, st in enumerate(s_list):
+                    st_clean = re.sub(r'^[、\-\*•\s]+', '', st).replace('**', '').replace('*', '').strip()
+                    if not st_clean:
+                        continue
+                    st_fmt = highlight_html(st_clean, keywords)
+                    pill = f'<span class="thesis-pill">{target_sec["badge"]}</span>' if idx_s == 0 else ''
+                    t1_spans.append(f'<span class="recite-sent gold-sent-active t1-linked-sent">{pill}<strong class="quote-gold-core">{st_fmt}</strong></span>')
+                    
+                block_items_html.append(f"""
+                <div class="gold-quote-box linked-t1-quote">
+                  <div class="gold-quote-header">
+                    <span class="gold-badge">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                      <span>考场对应正式答题原句 · {target_sec['badge']}</span>
+                    </span>
+                    <span class="gold-tip">联动 Track 1 高分卷面 · 考场一字不差背诵</span>
+                  </div>
+                  <div class="gold-quote-body">
+                    {"".join(t1_spans)}
+                  </div>
+                </div>
+                """)
                 
         block_html = f"""
         <div class="logic-block-card">
@@ -492,89 +577,98 @@ def build_clean_track2_html(item, sents2, meta):
         
     return f"""<div class="paper-track2-wrap">{"".join(html_parts)}</div>"""
 
-# Batch processing all 36 items
-all_items = data.get("items_807", []) + data.get("items_706", [])
-print(f"Starting processing {len(all_items)} items...")
+if __name__ == '__main__':
+    if hasattr(sys.stdout, 'reconfigure'):
+        try:
+            sys.stdout.reconfigure(encoding='utf-8')
+            sys.stderr.reconfigure(encoding='utf-8')
+        except Exception:
+            pass
 
-all_sentences_map = {}
+    # Batch processing all 36 items
+    all_items = data.get("items_807", []) + data.get("items_706", [])
+    print(f"Starting processing {len(all_items)} items...")
 
-for idx, item in enumerate(all_items):
-    sub = item.get("subject", "807")
-    src_dir = src_807 if sub == "807" else src_706
-    
-    clean_id = item["id"].replace("807_", "").replace("706_", "")
-    md_matches = list(src_dir.glob(f"{clean_id}*.md"))
-    if not md_matches:
-        parts = clean_id.split("_")
-        if len(parts) >= 3:
-            md_matches = list(src_dir.glob(f"*{parts[2]}*.md"))
+    all_sentences_map = {}
+
+    for idx, item in enumerate(all_items):
+        sub = item.get("subject", "807")
+        src_dir = src_807 if sub == "807" else src_706
+        
+        clean_id = item["id"].replace("807_", "").replace("706_", "")
+        md_matches = list(src_dir.glob(f"{clean_id}*.md"))
         if not md_matches:
-            md_matches = list(src_dir.glob(f"*{item['title'][:4]}*.md"))
+            parts = clean_id.split("_")
+            if len(parts) >= 3:
+                md_matches = list(src_dir.glob(f"*{parts[2]}*.md"))
+            if not md_matches:
+                md_matches = list(src_dir.glob(f"*{item['title'][:4]}*.md"))
+                
+        md_path = md_matches[0] if md_matches else None
+        if not md_path:
+            print(f"[{idx+1:02d}] ERROR: Cannot find md for {item['id']}")
+            continue
             
-    md_path = md_matches[0] if md_matches else None
-    if not md_path:
-        print(f"[{idx+1:02d}] ERROR: Cannot find md for {item['id']}")
-        continue
+        meta = extract_meta_and_keywords(md_path)
+        t1_sections = parse_track1_sections_from_md(md_path)
         
-    meta = extract_meta_and_keywords(md_path)
-    
-    # Track 1
-    t1_sfile = item["track1"]["sentences_file"]
-    t1_path = work_dir / t1_sfile
-    if t1_path.exists():
-        t1_sents = json.loads(t1_path.read_text(encoding="utf-8"))
-        all_sentences_map[t1_sfile.replace("\\", "/")] = t1_sents
-        item["track1"]["html"] = build_clean_track1_html(item, t1_sents, meta, md_path)
-        
-    # Track 2
-    t2_sfile = item["track2"]["sentences_file"]
-    t2_path = work_dir / t2_sfile
-    if t2_path.exists():
-        t2_sents = json.loads(t2_path.read_text(encoding="utf-8"))
-        all_sentences_map[t2_sfile.replace("\\", "/")] = t2_sents
-        item["track2"]["html"] = build_clean_track2_html(item, t2_sents, meta)
-        
-    p_count = item["track1"]["html"].count("thesis-pill")
-    sec_count = item["track1"]["html"].count("exam-section-card")
-    t2_b_count = item["track2"]["html"].count("logic-block-card")
-    t2_q_count = item["track2"]["html"].count("gold-quote-box")
-    print(f"[{idx+1:02d}] {sub} {item['title'][:16]:<16} | T1 sec: {sec_count} | T2 blocks: {t2_b_count} | T2 quotes: {t2_q_count}")
+        # Track 1
+        t1_sfile = item["track1"]["sentences_file"]
+        t1_path = work_dir / t1_sfile
+        if t1_path.exists():
+            t1_sents = json.loads(t1_path.read_text(encoding="utf-8"))
+            all_sentences_map[t1_sfile.replace("\\", "/")] = t1_sents
+            item["track1"]["html"] = build_clean_track1_html(item, t1_sents, meta, md_path)
+            
+        # Track 2
+        t2_sfile = item["track2"]["sentences_file"]
+        t2_path = work_dir / t2_sfile
+        if t2_path.exists():
+            t2_sents = json.loads(t2_path.read_text(encoding="utf-8"))
+            all_sentences_map[t2_sfile.replace("\\", "/")] = t2_sents
+            item["track2"]["html"] = build_clean_track2_html(item, t2_sents, meta, md_path, t1_sections)
+            
+        p_count = item["track1"]["html"].count("thesis-pill")
+        sec_count = item["track1"]["html"].count("exam-section-card")
+        t2_b_count = item["track2"]["html"].count("logic-block-card")
+        t2_q_count = item["track2"]["html"].count("gold-quote-box")
+        print(f"[{idx+1:02d}] {sub} {item['title'][:16]:<16} | T1 sec: {sec_count} | T2 blocks: {t2_b_count} | T2 quotes: {t2_q_count}")
 
-# Save updated manifests
-manifest_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    # Save updated manifests
+    manifest_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
-m807_path = work_dir / "data" / "kaoyan_807_manifest.json"
-m706_path = work_dir / "data" / "kaoyan_706_manifest.json"
-m807_path.write_text(json.dumps(data.get("items_807", []), ensure_ascii=False, indent=2), encoding="utf-8")
-m706_path.write_text(json.dumps(data.get("items_706", []), ensure_ascii=False, indent=2), encoding="utf-8")
-print("Saved all manifests!")
+    m807_path = work_dir / "data" / "kaoyan_807_manifest.json"
+    m706_path = work_dir / "data" / "kaoyan_706_manifest.json"
+    m807_path.write_text(json.dumps(data.get("items_807", []), ensure_ascii=False, indent=2), encoding="utf-8")
+    m706_path.write_text(json.dumps(data.get("items_706", []), ensure_ascii=False, indent=2), encoding="utf-8")
+    print("Saved all manifests!")
 
-# Generate data/kaoyan_data.js
-js_bundle_path = work_dir / "data" / "kaoyan_data.js"
-js_content = f"""// 2027 考研专业课双轨随身背诵手卷 · 离线全量数据与高保真研读包
+    # Generate data/kaoyan_data.js
+    js_bundle_path = work_dir / "data" / "kaoyan_data.js"
+    js_content = f"""// 2027 考研专业课双轨随身背诵手卷 · 离线全量数据与高保真研读包
 // 彻底免疫浏览器 file:/// 下的 CORS 限制，双击即可秒开
 window.KAOYAN_MANIFEST = {json.dumps(data, ensure_ascii=False)};
 
 window.KAOYAN_SENTENCES = {json.dumps(all_sentences_map, ensure_ascii=False)};
 """
-js_bundle_path.write_text(js_content, encoding="utf-8")
-print(f"Generated data/kaoyan_data.js successfully! Size: {js_bundle_path.stat().st_size / (1024*1024):.2f} MB")
+    js_bundle_path.write_text(js_content, encoding="utf-8")
+    print(f"Generated data/kaoyan_data.js successfully! Size: {js_bundle_path.stat().st_size / (1024*1024):.2f} MB")
 
-# Node --check 编译期静态语法防白屏门禁
-import subprocess
+    # Node --check 编译期静态语法防白屏门禁
+    import subprocess
 
-print("\n[Gate] Running node --check static syntax verification...")
-checks = [
-    ("data/kaoyan_data.js", js_bundle_path),
-    ("app.js", work_dir / "app.js"),
-    ("sw.js", work_dir / "sw.js")
-]
+    print("\n[Gate] Running node --check static syntax verification...")
+    checks = [
+        ("data/kaoyan_data.js", js_bundle_path),
+        ("app.js", work_dir / "app.js"),
+        ("sw.js", work_dir / "sw.js")
+    ]
 
-for label, file_path in checks:
-    if file_path.exists():
-        res = subprocess.run(["node", "--check", str(file_path)], capture_output=True, text=True)
-        if res.returncode != 0:
-            print(f"❌ [GATE FAIL] Syntax check failed on {label}:\n{res.stderr}", file=sys.stderr)
-            sys.exit(1)
-        print(f"  ✓ {label}: syntax check passed")
-print("✅ [GATE PASS] All JavaScript bundles verified with zero syntax errors!\n")
+    for label, file_path in checks:
+        if file_path.exists():
+            res = subprocess.run(["node", "--check", str(file_path)], capture_output=True, text=True)
+            if res.returncode != 0:
+                print(f"[GATE FAIL] Syntax check failed on {label}:\n{res.stderr}", file=sys.stderr)
+                sys.exit(1)
+            print(f"  [PASS] {label}: syntax check passed")
+    print("[GATE PASS] All JavaScript bundles verified with zero syntax errors!\n")
