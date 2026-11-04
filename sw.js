@@ -1,5 +1,5 @@
-// 考研背诵手卷 · 离线 PWA Service Worker (v1.8.0)
-const CACHE_NAME = 'kaoyan-handbook-v180';
+// 考研背诵手卷 · 离线 PWA Service Worker (v1.9.0)
+const CACHE_NAME = 'kaoyan-handbook-v190';
 const ASSETS_TO_CACHE = [
   './manifest.json',
   './favicon.svg',
@@ -39,6 +39,13 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
+
+  // 显式排除音视频大文件和 Range 请求（iOS Safari 依赖 206 Partial Content 进行拖动缓冲，Service Worker 缓存 206 会破坏断点续传）
+  const isMedia = url.pathname.endsWith('.mp3') || url.pathname.endsWith('.wav') || url.pathname.endsWith('.m4a');
+  const isRange = event.request.headers.has('range');
+  if (isMedia || isRange) {
+    return; // 直接由浏览器原生网络引擎处理，绝不拦截与缓存
+  }
 
   // 0. 版本清单与主入口走 Network-First
   if (url.pathname.endsWith('version.json') || event.request.mode === 'navigate') {

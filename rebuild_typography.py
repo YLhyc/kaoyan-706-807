@@ -559,3 +559,22 @@ window.KAOYAN_SENTENCES = {json.dumps(all_sentences_map, ensure_ascii=False)};
 """
 js_bundle_path.write_text(js_content, encoding="utf-8")
 print(f"Generated data/kaoyan_data.js successfully! Size: {js_bundle_path.stat().st_size / (1024*1024):.2f} MB")
+
+# Node --check 编译期静态语法防白屏门禁
+import subprocess
+
+print("\n[Gate] Running node --check static syntax verification...")
+checks = [
+    ("data/kaoyan_data.js", js_bundle_path),
+    ("app.js", work_dir / "app.js"),
+    ("sw.js", work_dir / "sw.js")
+]
+
+for label, file_path in checks:
+    if file_path.exists():
+        res = subprocess.run(["node", "--check", str(file_path)], capture_output=True, text=True)
+        if res.returncode != 0:
+            print(f"❌ [GATE FAIL] Syntax check failed on {label}:\n{res.stderr}", file=sys.stderr)
+            sys.exit(1)
+        print(f"  ✓ {label}: syntax check passed")
+print("✅ [GATE PASS] All JavaScript bundles verified with zero syntax errors!\n")

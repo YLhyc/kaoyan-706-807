@@ -12,7 +12,7 @@
   <meta name="apple-mobile-web-app-title" content="考研背诵手卷">
   <meta name="application-name" content="考研背诵手卷">
   <title>2027 考研全科双轨随身背诵手卷 · 807/706/英语写作独立专属研读平台</title>
-  <link rel="stylesheet" href="app.css?v=1.8.0">
+  <link rel="stylesheet" href="app.css?v=1.9.0">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css">
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=1.8.0"></script>
+  <script src="data/kaoyan_data.js?v=1.9.0" defer></script>
 </head>
 <body>
 
@@ -121,6 +121,20 @@
         <span>A+</span>
       </button>
 
+      <!-- 研学打卡统计看板 -->
+      <button id="btn-study-dashboard" class="action-btn study-dashboard-btn" title="金石朱墨 · 研学进度看板">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+          <line x1="8" y1="12" x2="8" y2="17"></line>
+          <line x1="12" y1="8" x2="12" y2="17"></line>
+          <line x1="16" y1="5" x2="16" y2="17"></line>
+          <circle cx="8" cy="12" r="1" fill="currentColor"></circle>
+          <circle cx="12" cy="8" r="1" fill="currentColor"></circle>
+          <circle cx="16" cy="5" r="1" fill="currentColor"></circle>
+        </svg>
+        <span>看板</span>
+      </button>
+
       <button id="btn-cloze-mode" class="action-btn cloze-mode-btn" title="切换背诵自测遮罩：正常研读 / 采分词挖空 / 看纲默背">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -183,6 +197,16 @@
           <button class="filter-pill" data-tier="T1">T1 核心考点</button>
           <button class="filter-pill" data-tier="T2">T2 重点拓展</button>
         </div>
+
+        <div class="filter-pills filter-pills-mastery" id="mastery-pills-wrap">
+          <button class="filter-pill active" data-mastery="all">全部进度</button>
+          <button class="filter-pill" data-mastery="unlearned">待攻克</button>
+          <button class="filter-pill" data-mastery="familiar">磨耳中</button>
+          <button class="filter-pill" data-mastery="mastered">
+            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>已掌握</span>
+          </button>
+        </div>
       </div>
 
       <!-- 考点卡片容器 -->
@@ -194,7 +218,7 @@
       <div class="sidebar-footer">
         <div class="app-version-badge" id="appVersionBadge" title="点击检查更新">
           <span class="version-dot"></span>
-          <span id="versionText">版本 v1.5.0 · 考场高分母题重构版</span>
+          <span id="versionText">版本 v1.9.0 · 金石朱墨研学看板全科版</span>
         </div>
         <button id="btn-force-refresh" class="refresh-cache-btn" title="强制清除缓存并拉取最新版本">
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -217,6 +241,12 @@
             <span>/</span>
             <span id="stage-score" class="score-badge">30分论述</span>
             <span id="stage-tier" class="tier-badge tier-T0">T0</span>
+            <button type="button" class="mastery-toggle-btn status-unlearned" id="btn-mastery-toggle" title="点击切换背诵掌握状态（未背诵 / 磨耳中 / 已背熟掌握朱砂印）">
+              <span class="mastery-btn-icon" id="masteryBtnIcon">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"></circle></svg>
+              </span>
+              <span class="mastery-btn-text" id="masteryBtnText">未背诵</span>
+            </button>
           </div>
 
           <h1 id="stage-title" class="stage-question-title">加载中...</h1>
@@ -365,7 +395,7 @@
     </div>
   </footer>
 
-  <script src="app.js?v=1.8.0"></script>
+  <script src="app.js?v=1.9.0" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -418,6 +448,159 @@
     </div>
     <div class="mode-drawer-sub">选择适合当前背诵阶段的循环方式</div>
     <div class="mode-drawer-body" id="playModeList"></div>
+  </aside>
+
+  <!-- 金石朱墨·研学打卡统计看板抽屉 (Study Dashboard Drawer) -->
+  <div id="studyDashboardBackdrop" class="dashboard-drawer-backdrop" style="display: none;"></div>
+  <aside id="studyDashboardDrawer" class="dashboard-drawer" aria-hidden="true">
+    <div class="dashboard-drawer-handle-bar">
+      <div class="dashboard-drawer-handle"></div>
+    </div>
+    <div class="dashboard-drawer-header">
+      <div class="dashboard-drawer-title-row">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--vermilion)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+          <path d="M9 9h6v6H9z"></path>
+          <path d="M12 3v3m0 12v3M3 12h3m12 0h3"></path>
+        </svg>
+        <h3 class="dashboard-drawer-title">金石朱墨 · 研学进度看板</h3>
+        <span class="dashboard-seal-pill">文人纸境</span>
+      </div>
+      <button type="button" class="dashboard-drawer-close" id="studyDashboardClose" title="关闭研学看板">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="dashboard-drawer-sub">持志如心痛 · 晨昏磨耳日有所进 · 全科考题攻克全貌</div>
+
+    <div class="dashboard-drawer-body" id="studyDashboardBody">
+      <!-- 1. 连续学习打卡与全科总进度卡片 -->
+      <div class="dash-hero-card">
+        <div class="dash-streak-row">
+          <div class="dash-streak-left">
+            <div class="streak-icon-wrap">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2c0 4.5-3.5 6.5-3.5 10a3.5 3.5 0 0 0 7 0c0-3.5-3.5-5.5-3.5-10z"></path>
+                <path d="M12 14a1.5 1.5 0 0 0 0 3 1.5 1.5 0 0 0 0-3z"></path>
+              </svg>
+            </div>
+            <div class="streak-text-wrap">
+              <div class="streak-days-val"><span id="dashStreakCount">1</span> <span class="streak-unit">天</span></div>
+              <div class="streak-label">连续研学打卡</div>
+            </div>
+          </div>
+          <button type="button" class="dash-punch-btn" id="btnDashPunchToday">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span id="dashPunchBtnText">今日已打卡</span>
+          </button>
+        </div>
+
+        <div class="dash-total-progress-wrap">
+          <div class="dash-progress-meta">
+            <span class="dash-meta-title">全科考题攻克总进度</span>
+            <span class="dash-meta-numbers" id="dashTotalScoreText">已攻克 0 / 82 题 (0%)</span>
+          </div>
+          <div class="dash-progress-track">
+            <div class="dash-progress-bar-mastered" id="dashTotalBarMastered" style="width: 0%;"></div>
+            <div class="dash-progress-bar-familiar" id="dashTotalBarFamiliar" style="width: 0%;"></div>
+          </div>
+          <div class="dash-legend-row">
+            <span class="legend-item"><span class="legend-dot dot-mastered"></span>已掌握 (<span id="dashTotalMasteredNum">0</span>)</span>
+            <span class="legend-item"><span class="legend-dot dot-familiar"></span>磨耳中 (<span id="dashTotalFamiliarNum">0</span>)</span>
+            <span class="legend-item"><span class="legend-dot dot-unlearned"></span>待攻克 (<span id="dashTotalUnlearnedNum">82</span>)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. 三大科目各自的分项攻克卡片 -->
+      <div class="dash-section-title">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        <span>分科背诵掌握矩阵</span>
+      </div>
+      <div class="dash-subject-cards-grid">
+        <!-- 807 现当代文学 -->
+        <div class="dash-sub-card">
+          <div class="dash-sub-header">
+            <span class="dash-sub-tag sub-807">807 现当代文学</span>
+            <span class="dash-sub-ratio" id="dashRatio807">0 / 37 题 · 0%</span>
+          </div>
+          <div class="dash-progress-track compact">
+            <div class="dash-progress-bar-mastered" id="dashBar807Mastered" style="width: 0%;"></div>
+            <div class="dash-progress-bar-familiar" id="dashBar807Familiar" style="width: 0%;"></div>
+          </div>
+          <div class="dash-sub-details" id="dashDetail807">已掌握 0 · 磨耳 0 · 待背 37</div>
+        </div>
+
+        <!-- 706 古代文学 -->
+        <div class="dash-sub-card">
+          <div class="dash-sub-header">
+            <span class="dash-sub-tag sub-706">706 古代文学</span>
+            <span class="dash-sub-ratio" id="dashRatio706">0 / 29 题 · 0%</span>
+          </div>
+          <div class="dash-progress-track compact">
+            <div class="dash-progress-bar-mastered" id="dashBar706Mastered" style="width: 0%;"></div>
+            <div class="dash-progress-bar-familiar" id="dashBar706Familiar" style="width: 0%;"></div>
+          </div>
+          <div class="dash-sub-details" id="dashDetail706">已掌握 0 · 磨耳 0 · 待背 29</div>
+        </div>
+
+        <!-- 考研英语 -->
+        <div class="dash-sub-card">
+          <div class="dash-sub-header">
+            <span class="dash-sub-tag sub-en">考研英语写作</span>
+            <span class="dash-sub-ratio" id="dashRatioEn">0 / 16 篇 · 0%</span>
+          </div>
+          <div class="dash-progress-track compact">
+            <div class="dash-progress-bar-mastered" id="dashBarEnMastered" style="width: 0%;"></div>
+            <div class="dash-progress-bar-familiar" id="dashBarEnFamiliar" style="width: 0%;"></div>
+          </div>
+          <div class="dash-sub-details" id="dashDetailEn">已掌握 0 · 磨耳 0 · 待背 16</div>
+        </div>
+      </div>
+
+      <!-- 3. T0 & T1 核心考点攻克率统计 -->
+      <div class="dash-section-title">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        <span>核心高频考点攻克率 (T0/T1)</span>
+      </div>
+      <div class="dash-tier-grid">
+        <div class="dash-tier-card">
+          <div class="dash-tier-header">
+            <span class="tier-badge tier-T0">T0 极高频必背</span>
+            <span class="tier-val" id="dashT0Percent">0%</span>
+          </div>
+          <div class="dash-progress-track compact">
+            <div class="dash-progress-bar-mastered" id="dashBarT0Mastered" style="width: 0%;"></div>
+          </div>
+          <div class="dash-tier-desc" id="dashT0Ratio">已背熟 0 / 0 题</div>
+        </div>
+        <div class="dash-tier-card">
+          <div class="dash-tier-header">
+            <span class="tier-badge tier-T1">T1 核心必背</span>
+            <span class="tier-val" id="dashT1Percent">0%</span>
+          </div>
+          <div class="dash-progress-track compact">
+            <div class="dash-progress-bar-mastered" id="dashBarT1Mastered" style="width: 0%;"></div>
+          </div>
+          <div class="dash-tier-desc" id="dashT1Ratio">已背熟 0 / 0 题</div>
+        </div>
+      </div>
+
+      <!-- 4. 随机抽查快捷操作 -->
+      <div class="dash-action-box">
+        <button type="button" class="dash-random-pick-btn" id="btnDashRandomPick" title="随机抽选一道未掌握的重点大题立即开始磨耳背诵">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="4"></rect>
+            <circle cx="8" cy="8" r="1.5" fill="currentColor"></circle>
+            <circle cx="16" cy="16" r="1.5" fill="currentColor"></circle>
+            <circle cx="12" cy="12" r="1.5" fill="currentColor"></circle>
+          </svg>
+          <span>随机抽查一道【未掌握的 T0/T1 考题】磨耳背诵</span>
+        </button>
+      </div>
+    </div>
   </aside>
 </body>
 </html>

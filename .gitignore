@@ -1,9 +1,15 @@
 __pycache__/
-*.py[cod]
+*.py
+!rebuild_typography.py
+!build_rich_app.py
+!verify_project.py[cod]
 *$py.class
 .vscode/
 .idea/
 Thumbs.db
 .DS_Store
 *.py
+!rebuild_typography.py
+!build_rich_app.py
+!verify_project.py
 ui_schemes_showcase.html

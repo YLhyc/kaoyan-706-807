@@ -28,9 +28,14 @@
     
     // 筛选条件
     tierFilter: 'all',
+    masteryFilter: 'all', // 'all' | 'unlearned' | 'familiar' | 'mastered'
     scoreFilter: 'all',
     searchQuery: '',
     
+    // 研学掌握度与打卡数据 (localStorage 持久化)
+    masteryState: {}, // itemId -> 'unlearned' | 'familiar' | 'mastered'
+    studyLogs: { dates: [], totalCardsCompleted: 0 },
+
     lastUserScrollTime: 0
   };
 
@@ -244,10 +249,58 @@
     el.playModeList = document.getElementById('playModeList');
     el.clozeModeBtn = document.getElementById('btn-cloze-mode');
     el.clozeModeName = document.getElementById('cloze-mode-name');
+
+    // 掌握度与研学进度看板元素
+    el.masteryPillsWrap = document.getElementById('mastery-pills-wrap');
+    el.btnMasteryToggle = document.getElementById('btn-mastery-toggle');
+    el.masteryBtnIcon = document.getElementById('masteryBtnIcon');
+    el.masteryBtnText = document.getElementById('masteryBtnText');
+    
+    el.btnStudyDashboard = document.getElementById('btn-study-dashboard');
+    el.studyDashboardBackdrop = document.getElementById('studyDashboardBackdrop');
+    el.studyDashboardDrawer = document.getElementById('studyDashboardDrawer');
+    el.studyDashboardClose = document.getElementById('studyDashboardClose');
+    el.studyDashboardBody = document.getElementById('studyDashboardBody');
+    
+    el.dashStreakCount = document.getElementById('dashStreakCount');
+    el.btnDashPunchToday = document.getElementById('btnDashPunchToday');
+    el.dashPunchBtnText = document.getElementById('dashPunchBtnText');
+    el.dashTotalScoreText = document.getElementById('dashTotalScoreText');
+    el.dashTotalBarMastered = document.getElementById('dashTotalBarMastered');
+    el.dashTotalBarFamiliar = document.getElementById('dashTotalBarFamiliar');
+    el.dashTotalMasteredNum = document.getElementById('dashTotalMasteredNum');
+    el.dashTotalFamiliarNum = document.getElementById('dashTotalFamiliarNum');
+    el.dashTotalUnlearnedNum = document.getElementById('dashTotalUnlearnedNum');
+    
+    el.dashRatio807 = document.getElementById('dashRatio807');
+    el.dashBar807Mastered = document.getElementById('dashBar807Mastered');
+    el.dashBar807Familiar = document.getElementById('dashBar807Familiar');
+    el.dashDetail807 = document.getElementById('dashDetail807');
+    
+    el.dashRatio706 = document.getElementById('dashRatio706');
+    el.dashBar706Mastered = document.getElementById('dashBar706Mastered');
+    el.dashBar706Familiar = document.getElementById('dashBar706Familiar');
+    el.dashDetail706 = document.getElementById('dashDetail706');
+    
+    el.dashRatioEn = document.getElementById('dashRatioEn');
+    el.dashBarEnMastered = document.getElementById('dashBarEnMastered');
+    el.dashBarEnFamiliar = document.getElementById('dashBarEnFamiliar');
+    el.dashDetailEn = document.getElementById('dashDetailEn');
+    
+    el.dashT0Percent = document.getElementById('dashT0Percent');
+    el.dashBarT0Mastered = document.getElementById('dashBarT0Mastered');
+    el.dashT0Ratio = document.getElementById('dashT0Ratio');
+    
+    el.dashT1Percent = document.getElementById('dashT1Percent');
+    el.dashBarT1Mastered = document.getElementById('dashBarT1Mastered');
+    el.dashT1Ratio = document.getElementById('dashT1Ratio');
+    
+    el.btnDashRandomPick = document.getElementById('btnDashRandomPick');
   }
 
   // 加载数据包 (优先调用已嵌入的 window.KAOYAN_MANIFEST，彻底免疫 file:/// 下的 CORS 阻断)
   async function loadManifestData() {
+    loadMasteryData();
     if (window.KAOYAN_MANIFEST) {
       state.allData = window.KAOYAN_MANIFEST;
     } else {
@@ -318,6 +371,10 @@
           if (item.level !== state.tierFilter) return false;
         }
       }
+      if (state.masteryFilter !== 'all') {
+        const mStatus = getMasteryStatus(item.id);
+        if (state.masteryFilter !== mStatus) return false;
+      }
       if (state.scoreFilter !== 'all') {
         if (state.scoreFilter === '30' && !item.score.includes('30')) return false;
         if (state.scoreFilter === '20' && !item.score.includes('20')) return false;
@@ -336,12 +393,23 @@
 
   function updateBadgeCounts() {
     if (!state.allData) return;
-    const c807 = (state.allData.items_807 || []).length;
-    const c706 = (state.allData.items_706 || []).length;
-    const cEn = (state.allData.items_en || []).length;
-    if (el.count807) el.count807.textContent = `${c807}题`;
-    if (el.count706) el.count706.textContent = `${c706}题`;
-    if (el.countEn) el.countEn.textContent = `${cEn}条`;
+    const i807 = state.allData.items_807 || [];
+    const i706 = state.allData.items_706 || [];
+    const iEn = state.allData.items_en || [];
+
+    const m807 = i807.filter(x => getMasteryStatus(x.id) === 'mastered').length;
+    const m706 = i706.filter(x => getMasteryStatus(x.id) === 'mastered').length;
+    const mEn = iEn.filter(x => getMasteryStatus(x.id) === 'mastered').length;
+
+    if (el.count807) {
+      el.count807.innerHTML = `${i807.length}题${m807 > 0 ? ` · <span style="color:var(--vermilion);font-weight:700;">✓${m807}</span>` : ''}`;
+    }
+    if (el.count706) {
+      el.count706.innerHTML = `${i706.length}题${m706 > 0 ? ` · <span style="color:var(--vermilion);font-weight:700;">✓${m706}</span>` : ''}`;
+    }
+    if (el.countEn) {
+      el.countEn.innerHTML = `${iEn.length}篇${mEn > 0 ? ` · <span style="color:var(--vermilion);font-weight:700;">✓${mEn}</span>` : ''}`;
+    }
   }
 
   function renderFilterPills() {
@@ -455,6 +523,16 @@
       card.className = `question-card-item ${item.id === state.activeItemId ? 'active' : ''}`;
       card.dataset.id = item.id;
 
+      const mStatus = getMasteryStatus(item.id);
+      let masteryBadgeHtml = '';
+      if (mStatus === 'mastered') {
+        masteryBadgeHtml = `<span class="card-mastery-badge seal-mastered" title="已背熟掌握（朱砂印）"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>已掌握</span>`;
+      } else if (mStatus === 'familiar') {
+        masteryBadgeHtml = `<span class="card-mastery-badge badge-familiar" title="磨耳熟悉中"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg>磨耳</span>`;
+      } else {
+        masteryBadgeHtml = `<span class="card-mastery-badge badge-unlearned" title="未背诵待攻克">待攻克</span>`;
+      }
+
       const hasAudio = item.track1 && item.track1.has_audio;
       const audioStatusHtml = hasAudio 
         ? `<span class="card-audio-status has-audio" title="通读音频已就绪">
@@ -477,6 +555,7 @@
           <div class="card-tag-group">
             <span class="tier-badge tier-${item.level}">${item.level}</span>
             <span class="score-badge">${item.score}</span>
+            ${masteryBadgeHtml}
           </div>
           ${audioStatusHtml}
         </div>
@@ -499,7 +578,321 @@
     });
   }
 
-  async function selectItem(itemId, autoPlay = false, restoreTime = false) {
+  // ==========================================
+  // 考题掌握状态与研学打卡系统 (Mastery & Study Dashboard)
+  // ==========================================
+  function loadMasteryData() {
+    try {
+      const savedMastery = localStorage.getItem('kaoyan_mastery_state');
+      if (savedMastery) state.masteryState = JSON.parse(savedMastery);
+    } catch (e) {
+      console.warn('Failed to parse kaoyan_mastery_state:', e);
+      state.masteryState = {};
+    }
+
+    try {
+      const savedLogs = localStorage.getItem('kaoyan_study_logs');
+      if (savedLogs) {
+        state.studyLogs = JSON.parse(savedLogs);
+        if (!Array.isArray(state.studyLogs.dates)) state.studyLogs.dates = [];
+      } else {
+        state.studyLogs = { dates: [], totalCardsCompleted: 0 };
+      }
+    } catch (e) {
+      console.warn('Failed to parse kaoyan_study_logs:', e);
+      state.studyLogs = { dates: [], totalCardsCompleted: 0 };
+    }
+  }
+
+  function saveMasteryData() {
+    try {
+      localStorage.setItem('kaoyan_mastery_state', JSON.stringify(state.masteryState));
+    } catch (e) {
+      console.warn('Failed to save kaoyan_mastery_state:', e);
+    }
+  }
+
+  function saveStudyLogs() {
+    try {
+      localStorage.setItem('kaoyan_study_logs', JSON.stringify(state.studyLogs));
+    } catch (e) {
+      console.warn('Failed to save kaoyan_study_logs:', e);
+    }
+  }
+
+  function getTodayDateStr() {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  function recordStudyPunch(itemId = null) {
+    const today = getTodayDateStr();
+    if (!state.studyLogs.dates.includes(today)) {
+      state.studyLogs.dates.push(today);
+    }
+    state.studyLogs.dates.sort();
+    if (itemId) {
+      state.studyLogs.totalCardsCompleted = (state.studyLogs.totalCardsCompleted || 0) + 1;
+    }
+    saveStudyLogs();
+    updateStudyDashboardUI();
+  }
+
+  function calcContinuousStreak() {
+    const dates = state.studyLogs.dates || [];
+    if (dates.length === 0) return 0;
+
+    const todayStr = getTodayDateStr();
+    const dateSet = new Set(dates);
+
+    let checkDate = new Date();
+    let curStr = getTodayDateStr();
+    if (!dateSet.has(curStr)) {
+      checkDate.setDate(checkDate.getDate() - 1);
+      const y = checkDate.getFullYear();
+      const m = String(checkDate.getMonth() + 1).padStart(2, '0');
+      const d = String(checkDate.getDate()).padStart(2, '0');
+      curStr = `${y}-${m}-${d}`;
+      if (!dateSet.has(curStr)) {
+        return 0;
+      }
+    }
+
+    let streak = 0;
+    while (true) {
+      const y = checkDate.getFullYear();
+      const m = String(checkDate.getMonth() + 1).padStart(2, '0');
+      const d = String(checkDate.getDate()).padStart(2, '0');
+      const ds = `${y}-${m}-${d}`;
+      if (dateSet.has(ds)) {
+        streak++;
+        checkDate.setDate(checkDate.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+    return Math.max(1, streak);
+  }
+
+  function getMasteryStatus(itemId) {
+    if (!itemId) return 'unlearned';
+    return state.masteryState[itemId] || 'unlearned';
+  }
+
+  function setMasteryStatus(itemId, newStatus) {
+    if (!itemId) return;
+    state.masteryState[itemId] = newStatus;
+    saveMasteryData();
+
+    if (newStatus === 'mastered') {
+      recordStudyPunch(itemId);
+      showToast('恭贺功不唐捐！已盖印【已背熟掌握】朱砂印章，今日研学打卡成功！', 2500);
+    } else if (newStatus === 'familiar') {
+      showToast('已标记为【磨耳熟悉中】· 坚持晨昏听读，必定水到渠成', 2000);
+    } else {
+      showToast('已重置为【未背诵·待攻克】', 1800);
+    }
+
+    updateHeaderMasteryUI();
+    renderSidebarList();
+    updateBadgeCounts();
+    if (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) {
+      updateStudyDashboardUI();
+    }
+  }
+
+  function cycleCurrentItemMastery() {
+    if (!state.activeItemId) return;
+    const cur = getMasteryStatus(state.activeItemId);
+    const next = cur === 'unlearned' ? 'familiar' : (cur === 'familiar' ? 'mastered' : 'unlearned');
+    setMasteryStatus(state.activeItemId, next);
+  }
+
+  function updateHeaderMasteryUI() {
+    if (!el.btnMasteryToggle || !state.activeItemId) return;
+    const status = getMasteryStatus(state.activeItemId);
+
+    el.btnMasteryToggle.className = `mastery-toggle-btn status-${status}`;
+    if (status === 'mastered') {
+      if (el.masteryBtnIcon) {
+        el.masteryBtnIcon.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+      }
+      if (el.masteryBtnText) el.masteryBtnText.textContent = '已背熟掌握';
+      el.btnMasteryToggle.title = '当前考题：已背熟掌握（朱砂印章）· 点击可切换状态';
+    } else if (status === 'familiar') {
+      if (el.masteryBtnIcon) {
+        el.masteryBtnIcon.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
+      }
+      if (el.masteryBtnText) el.masteryBtnText.textContent = '磨耳熟悉中';
+      el.btnMasteryToggle.title = '当前考题：磨耳熟悉中 · 点击切换为已背熟掌握';
+    } else {
+      if (el.masteryBtnIcon) {
+        el.masteryBtnIcon.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"></circle></svg>`;
+      }
+      if (el.masteryBtnText) el.masteryBtnText.textContent = '未背诵';
+      el.btnMasteryToggle.title = '当前考题：未背诵 · 点击切换为磨耳熟悉中';
+    }
+  }
+
+  function openStudyDashboard() {
+    if (!el.studyDashboardDrawer) return;
+    updateStudyDashboardUI();
+    el.studyDashboardDrawer.classList.add('open');
+    if (el.studyDashboardBackdrop) el.studyDashboardBackdrop.style.display = 'block';
+  }
+
+  function closeStudyDashboard() {
+    if (!el.studyDashboardDrawer) return;
+    el.studyDashboardDrawer.classList.remove('open');
+    if (el.studyDashboardBackdrop) el.studyDashboardBackdrop.style.display = 'none';
+  }
+
+  function updateStudyDashboardUI() {
+    if (!state.allData) return;
+
+    // 1. 连续打卡与今日打卡状态
+    const streak = calcContinuousStreak();
+    if (el.dashStreakCount) el.dashStreakCount.textContent = streak;
+
+    const todayStr = getTodayDateStr();
+    const hasPunchedToday = (state.studyLogs.dates || []).includes(todayStr);
+    if (el.btnDashPunchToday) {
+      el.btnDashPunchToday.classList.toggle('punched', hasPunchedToday);
+      if (el.dashPunchBtnText) {
+        el.dashPunchBtnText.textContent = hasPunchedToday ? '今日已打卡' : '完成今日打卡';
+      }
+    }
+
+    // 2. 统计各科目与全科题数
+    const items807 = state.allData.items_807 || [];
+    const items706 = state.allData.items_706 || [];
+    const itemsEn = state.allData.items_en || [];
+    const allItems = [...items807, ...items706, ...itemsEn];
+
+    function calcStats(list) {
+      let m = 0, f = 0, u = 0;
+      list.forEach(item => {
+        const s = getMasteryStatus(item.id);
+        if (s === 'mastered') m++;
+        else if (s === 'familiar') f++;
+        else u++;
+      });
+      return { total: list.length, m, f, u, percent: list.length ? Math.round((m / list.length) * 100) : 0 };
+    }
+
+    const totalStats = calcStats(allItems);
+    const s807 = calcStats(items807);
+    const s706 = calcStats(items706);
+    const sEn = calcStats(itemsEn);
+
+    // 全科总攻克进度
+    if (el.dashTotalScoreText) {
+      el.dashTotalScoreText.textContent = `已攻克 ${totalStats.m} / ${totalStats.total} 题 (${totalStats.percent}%)`;
+    }
+    if (el.dashTotalBarMastered) {
+      el.dashTotalBarMastered.style.width = `${totalStats.percent}%`;
+    }
+    if (el.dashTotalBarFamiliar) {
+      const famPercent = totalStats.total ? (totalStats.f / totalStats.total) * 100 : 0;
+      el.dashTotalBarFamiliar.style.width = `${famPercent}%`;
+    }
+    if (el.dashTotalMasteredNum) el.dashTotalMasteredNum.textContent = totalStats.m;
+    if (el.dashTotalFamiliarNum) el.dashTotalFamiliarNum.textContent = totalStats.f;
+    if (el.dashTotalUnlearnedNum) el.dashTotalUnlearnedNum.textContent = totalStats.u;
+
+    // 807
+    if (el.dashRatio807) el.dashRatio807.textContent = `${s807.m} / ${s807.total} 题 · ${s807.percent}%`;
+    if (el.dashBar807Mastered) el.dashBar807Mastered.style.width = `${s807.percent}%`;
+    if (el.dashBar807Familiar) el.dashBar807Familiar.style.width = `${s807.total ? (s807.f / s807.total) * 100 : 0}%`;
+    if (el.dashDetail807) el.dashDetail807.textContent = `已掌握 ${s807.m} · 磨耳 ${s807.f} · 待背 ${s807.u}`;
+
+    // 706
+    if (el.dashRatio706) el.dashRatio706.textContent = `${s706.m} / ${s706.total} 题 · ${s706.percent}%`;
+    if (el.dashBar706Mastered) el.dashBar706Mastered.style.width = `${s706.percent}%`;
+    if (el.dashBar706Familiar) el.dashBar706Familiar.style.width = `${s706.total ? (s706.f / s706.total) * 100 : 0}%`;
+    if (el.dashDetail706) el.dashDetail706.textContent = `已掌握 ${s706.m} · 磨耳 ${s706.f} · 待背 ${s706.u}`;
+
+    // 英语
+    if (el.dashRatioEn) el.dashRatioEn.textContent = `${sEn.m} / ${sEn.total} 篇 · ${sEn.percent}%`;
+    if (el.dashBarEnMastered) el.dashBarEnMastered.style.width = `${sEn.percent}%`;
+    if (el.dashBarEnFamiliar) el.dashBarEnFamiliar.style.width = `${sEn.total ? (sEn.f / sEn.total) * 100 : 0}%`;
+    if (el.dashDetailEn) el.dashDetailEn.textContent = `已掌握 ${sEn.m} · 磨耳 ${sEn.f} · 待背 ${sEn.u}`;
+
+    // 3. T0 & T1 核心攻克率
+    const t0Items = allItems.filter(x => x.level === 'T0' || (x.category_id && !x.level && (x.title.includes('书信') || x.title.includes('图画'))));
+    const t1Items = allItems.filter(x => x.level === 'T1' || (x.category_id && !x.level && !t0Items.includes(x)));
+
+    const t0Mastered = t0Items.filter(x => getMasteryStatus(x.id) === 'mastered').length;
+    const t0Pct = t0Items.length ? Math.round((t0Mastered / t0Items.length) * 100) : 0;
+    if (el.dashT0Percent) el.dashT0Percent.textContent = `${t0Pct}%`;
+    if (el.dashBarT0Mastered) el.dashBarT0Mastered.style.width = `${t0Pct}%`;
+    if (el.dashT0Ratio) el.dashT0Ratio.textContent = `已背熟 ${t0Mastered} / ${t0Items.length} 题`;
+
+    const t1Mastered = t1Items.filter(x => getMasteryStatus(x.id) === 'mastered').length;
+    const t1Pct = t1Items.length ? Math.round((t1Mastered / t1Items.length) * 100) : 0;
+    if (el.dashT1Percent) el.dashT1Percent.textContent = `${t1Pct}%`;
+    if (el.dashBarT1Mastered) el.dashBarT1Mastered.style.width = `${t1Pct}%`;
+    if (el.dashT1Ratio) el.dashT1Ratio.textContent = `已背熟 ${t1Mastered} / ${t1Items.length} 题`;
+  }
+
+  function randomPickUnmasteredT0T1() {
+    if (!state.allData) return;
+    const items807 = state.allData.items_807 || [];
+    const items706 = state.allData.items_706 || [];
+    const itemsEn = state.allData.items_en || [];
+    const allItems = [
+      ...items807.map(it => ({ ...it, subj: '807' })),
+      ...items706.map(it => ({ ...it, subj: '706' })),
+      ...itemsEn.map(it => ({ ...it, subj: 'en' }))
+    ];
+
+    let candidates = allItems.filter(x => {
+      const isHighPriority = x.level === 'T0' || x.level === 'T1' || x.category_id;
+      const isNotMastered = getMasteryStatus(x.id) !== 'mastered';
+      return isHighPriority && isNotMastered;
+    });
+
+    if (candidates.length === 0) {
+      candidates = allItems.filter(x => getMasteryStatus(x.id) !== 'mastered');
+    }
+
+    if (candidates.length === 0) {
+      showToast('大圆满！全科 82 道考题已全部背熟掌握！正在随机抽查一道进行复习...', 2500);
+      candidates = allItems;
+    }
+
+    const picked = candidates[Math.floor(Math.random() * candidates.length)];
+    closeStudyDashboard();
+
+    if (state.currentSubject !== picked.subj) {
+      switchSubject(picked.subj);
+    }
+    selectItem(picked.id, true);
+    showToast(`已为你抽查【${picked.level || '必背'}】${picked.title}，立即开始磨耳背诵！`, 3000);
+  }
+
+  // DOM 兜底解析机制：离线或 file:/// 协议无 JSON 缓存时，从当前 DOM 提取
+  function extractSentencesFromDOM() {
+    if (!el.paperContent) return [];
+    const nodes = el.paperContent.querySelectorAll('.recite-sent[data-start][data-end]');
+    const list = [];
+    nodes.forEach((node, idx) => {
+      const start = parseFloat(node.dataset.start);
+      const end = parseFloat(node.dataset.end);
+      if (!isNaN(start) && !isNaN(end)) {
+        const id = node.dataset.sentId || node.dataset.id || node.id || `sent_${idx}`;
+        const text = (node.innerText || node.textContent || '').trim();
+        list.push({ id, start, end, text });
+      }
+    });
+    list.sort((a, b) => a.start - b.start);
+    return list;
+  }
+
+  function selectItem(itemId, autoPlay = false, restoreTime = false) {
     const list = getCurrentItemsList();
     const item = list.find(x => x.id === itemId);
     if (!item) return;
@@ -545,10 +938,11 @@
       }
     }
 
-    await loadTrackData(state.currentTrack, autoPlay, restoreTime);
+    updateHeaderMasteryUI();
+    loadTrackData(state.currentTrack, autoPlay, restoreTime);
   }
 
-  async function loadTrackData(trackNum, autoPlay = false, restoreTime = false) {
+  function loadTrackData(trackNum, autoPlay = false, restoreTime = false) {
     state.currentTrack = trackNum;
     state.currentSentIndex = -1;
     state.loopCount = 0;
@@ -569,24 +963,7 @@
 
     const trackObj = trackNum === 1 ? item.track1 : item.track2;
 
-    // 优先读取内嵌时间戳包，彻底免 fetch 零报错
-    let sentences = [];
-    const sFile = trackObj ? trackObj.sentences_file.replace(/\\/g, '/') : '';
-    if (window.KAOYAN_SENTENCES && window.KAOYAN_SENTENCES[sFile]) {
-      sentences = window.KAOYAN_SENTENCES[sFile];
-    } else if (sFile) {
-      try {
-        const res = await fetch(sFile + '?t=' + Date.now());
-        if (res.ok) sentences = await res.json();
-      } catch (e) {
-        console.warn('Sentence timestamps fallback failed:', e);
-      }
-    }
-    state.activeSentences = sentences;
-
-    renderPaperContent(trackObj, sentences);
-    buildFrameworkIndex();
-
+    // 1. 同步第一时间挂载音频并处理自动播放（保护 iOS Safari WebKit 用户手势与后台连播上下文）
     if (trackObj && trackObj.audio) {
       audio.src = trackObj.audio;
       audio.load();
@@ -621,13 +998,54 @@
       }
 
       if (autoPlay) {
-        audio.play().catch(e => console.log('Autoplay prevented:', e));
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(e => console.log('Autoplay prevented:', e));
+        }
       }
     } else {
       audio.src = '';
     }
-
     updatePlayBtnUI();
+
+    // 2. 同步渲染正文 HTML（使得 DOM 节点到位）
+    renderPaperContent(trackObj, []);
+
+    // 3. 异步并行加载/DOM兜底解析打点数据并绑定
+    const sFile = trackObj ? (trackObj.sentences_file || '').replace(/\\/g, '/') : '';
+    
+    // 优先同步读取内嵌全量打点包
+    let sentences = [];
+    if (window.KAOYAN_SENTENCES && window.KAOYAN_SENTENCES[sFile]) {
+      sentences = window.KAOYAN_SENTENCES[sFile];
+    }
+
+    // 若未命中，优先通过 DOM 兜底解析（确保在离线、file:/// 协议或未缓存 json 时即刻可用）
+    if (!sentences || sentences.length === 0) {
+      sentences = extractSentencesFromDOM();
+    }
+
+    state.activeSentences = sentences || [];
+    buildFrameworkIndex();
+
+    // 若未命中内置包且有 sFile，发起异步非阻塞 fetch 进行补充校准
+    if (sFile && (!window.KAOYAN_SENTENCES || !window.KAOYAN_SENTENCES[sFile])) {
+      fetch(sFile + '?t=' + Date.now())
+        .then(res => res.ok ? res.json() : null)
+        .then(fetchedSents => {
+          if (fetchedSents && fetchedSents.length > 0 && state.currentTrack === trackNum && state.activeItemId === item.id) {
+            state.activeSentences = fetchedSents;
+            buildFrameworkIndex();
+          }
+        })
+        .catch(e => {
+          console.warn('Sentence timestamps fallback failed:', e);
+          if (!state.activeSentences || state.activeSentences.length === 0) {
+            state.activeSentences = extractSentencesFromDOM();
+            buildFrameworkIndex();
+          }
+        });
+    }
   }
 
   function renderPaperContent(trackObj, sentences) {
@@ -1234,8 +1652,49 @@
       if (e.key === 'Escape') {
         if (el.outlineDrawer && el.outlineDrawer.classList.contains('open')) closeOutlineDrawer();
         if (el.playModeDrawer && el.playModeDrawer.classList.contains('open')) closePlayModeDrawer();
+        if (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) closeStudyDashboard();
       }
     });
+
+    // 掌握度印章切换与研学看板
+    if (el.btnMasteryToggle) {
+      el.btnMasteryToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        cycleCurrentItemMastery();
+      });
+    }
+
+    if (el.masteryPillsWrap) {
+      const mPills = el.masteryPillsWrap.querySelectorAll('.filter-pill');
+      mPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          state.masteryFilter = pill.dataset.mastery || 'all';
+          mPills.forEach(p => p.classList.toggle('active', p === pill));
+          renderSidebarList();
+        });
+      });
+    }
+
+    if (el.btnStudyDashboard) {
+      el.btnStudyDashboard.addEventListener('click', openStudyDashboard);
+    }
+    if (el.studyDashboardClose) {
+      el.studyDashboardClose.addEventListener('click', closeStudyDashboard);
+    }
+    if (el.studyDashboardBackdrop) {
+      el.studyDashboardBackdrop.addEventListener('click', closeStudyDashboard);
+    }
+    if (el.btnDashPunchToday) {
+      el.btnDashPunchToday.addEventListener('click', () => {
+        recordStudyPunch();
+        showToast('今日研学打卡成功！日拱一卒，功不唐捐！', 2500);
+      });
+    }
+    if (el.btnDashRandomPick) {
+      el.btnDashRandomPick.addEventListener('click', () => {
+        randomPickUnmasteredT0T1();
+      });
+    }
 
     setupMediaSessionHandlers();
 
@@ -1685,11 +2144,17 @@
     });
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  function startApp() {
     initElements();
     setupAudioEngine();
     setupEventListeners();
     loadManifestData();
     setupVersionHandlers();
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startApp);
+  } else {
+    startApp();
+  }
 })();
