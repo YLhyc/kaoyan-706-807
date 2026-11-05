@@ -5169,3 +5169,315 @@ body.dock-expanded .dock-fab-play {
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+/* ==========================================================================
+   方案 C：播放控制坞与底部 5-Tab 导航栏互斥吸附替换机制 (v1.9.6)
+   ========================================================================== */
+
+/* 动态 SVG 矢量图标基础样式与微交互动效 */
+.svg-tab-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+  overflow: visible;
+  transition: transform 0.25s cubic-bezier(0.2, 1, 0.3, 1), stroke 0.2s ease;
+}
+
+/* 1. 题库动效：考点纸张滑出 */
+.svg-folder .folder-paper,
+.svg-folder .folder-line {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), fill-opacity 0.25s ease;
+}
+
+.nav-tab-item.active .svg-folder .folder-paper,
+.nav-tab-item:active .svg-folder .folder-paper,
+.nav-tab-item:hover .svg-folder .folder-paper {
+  transform: translateY(-3.5px);
+  fill-opacity: 0.45;
+}
+
+.nav-tab-item.active .svg-folder .folder-line,
+.nav-tab-item:active .svg-folder .folder-line,
+.nav-tab-item:hover .svg-folder .folder-line {
+  transform: translateY(-3.5px);
+}
+
+/* 2. 自测动效：瞳孔放大聚焦与眨眼微动效 */
+.svg-eye .eye-pupil {
+  transform-origin: 12px 12px;
+  transition: transform 0.25s cubic-bezier(0.2, 1, 0.3, 1), fill 0.2s ease;
+}
+
+.svg-eye .eye-contour {
+  transform-origin: 12px 12px;
+  transition: transform 0.18s ease;
+}
+
+.nav-tab-item.active .svg-eye .eye-pupil {
+  transform: scale(1.35);
+  fill: var(--vermilion, #b8332a);
+}
+
+.nav-tab-item:active .svg-eye .eye-contour {
+  transform: scaleY(0.25);
+}
+
+/* 3. 看板动效：三根柱状生长 */
+.svg-chart .chart-bar {
+  transform-origin: bottom;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-tab-item.active .svg-chart .bar-1 {
+  transform: scaleY(1.3);
+  transform-origin: 6px 20px;
+}
+
+.nav-tab-item.active .svg-chart .bar-2 {
+  transform: scaleY(1.15);
+  transform-origin: 12px 20px;
+}
+
+.nav-tab-item.active .svg-chart .bar-3 {
+  transform: scaleY(1.4);
+  transform-origin: 18px 20px;
+}
+
+/* 4. 设置动效：齿轮顺时针平滑旋转 60度 */
+.svg-gear {
+  transform-origin: 12px 12px;
+  transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.nav-tab-item.active .svg-gear,
+.nav-tab-item:hover .svg-gear,
+.nav-tab-item:active .svg-gear {
+  transform: rotate(60deg);
+}
+
+/* 全新【功能与研读设置中心】抽屉 (Settings Sheet) */
+.settings-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1190;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+
+.settings-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.settings-drawer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1200;
+  background: var(--bg-canvas);
+  border-top: 1px solid var(--line-main);
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.18);
+  transform: translateY(105%);
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.settings-drawer.open {
+  transform: translateY(0);
+}
+
+@media (min-width: 769px) {
+  .settings-drawer {
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    top: 50% !important;
+    transform: translate(-50%, -46%) scale(0.96) !important;
+    width: 480px !important;
+    max-width: 90vw !important;
+    border-radius: 16px !important;
+    border: 1px solid var(--line-main) !important;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .settings-drawer.open {
+    transform: translate(-50%, -50%) scale(1) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+}
+
+.settings-handle-bar {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 4px;
+}
+
+.settings-handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-light, rgba(0,0,0,0.15));
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 18px 12px;
+  border-bottom: 1px solid var(--line-subtle);
+}
+
+.settings-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.settings-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink-primary);
+  margin: 0;
+}
+
+.settings-sub {
+  font-size: 11px;
+  color: var(--ink-secondary);
+}
+
+.settings-close {
+  background: none;
+  border: none;
+  padding: 6px;
+  border-radius: 50%;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-body {
+  padding: 16px 18px calc(16px + env(safe-area-inset-bottom, 8px));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-sec-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.settings-sec-desc {
+  font-size: 11px;
+  color: var(--ink-muted, #7c7267);
+  font-weight: 400;
+}
+
+.settings-info-box {
+  line-height: 1.6;
+  font-size: 12px;
+  color: var(--ink-secondary);
+  background: var(--bg-card);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line-subtle);
+}
+
+/* 方案 C 移动端 (<= 768px) 核心互斥吸附替换机制 */
+@media (max-width: 768px) {
+  .app-bottom-nav {
+    display: block !important;
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    height: calc(52px + env(safe-area-inset-bottom, 8px)) !important;
+    padding-bottom: env(safe-area-inset-bottom, 8px) !important;
+    background: var(--bg-dock) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-top: 1px solid var(--line-main) !important;
+    z-index: 1000 !important;
+    box-shadow: 0 -2px 14px rgba(42, 34, 27, 0.05) !important;
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
+  }
+
+  .player-dock {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 1000 !important;
+    padding: 6px 12px calc(10px + env(safe-area-inset-bottom, 12px)) !important;
+    background: var(--bg-dock) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-top: 1px solid var(--line-main) !important;
+    box-shadow: 0 -4px 20px rgba(42, 34, 27, 0.08) !important;
+    transform: translateY(120%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
+  }
+
+  /* 播放展开时：播放坞吸附到底部，底栏下沉隐入，彻底消除双播放键！ */
+  body.dock-expanded .player-dock {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  body.dock-expanded .app-bottom-nav {
+    transform: translateY(120%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* 当抽屉展开时：播放坞与底栏全部退下 */
+  .player-dock.dock-receded,
+  .app-bottom-nav.dock-receded {
+    transform: translateY(140%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  .main-stage {
+    padding-bottom: calc(90px + env(safe-area-inset-bottom, 8px)) !important;
+  }
+
+  body.dock-expanded .main-stage {
+    padding-bottom: calc(160px + env(safe-area-inset-bottom, 12px)) !important;
+  }
+}

@@ -12,7 +12,7 @@
   <meta name="apple-mobile-web-app-title" content="考研背诵手卷">
   <meta name="application-name" content="考研背诵手卷">
   <title>2027 考研全科双轨随身背诵手卷 · 807/706/英语写作独立专属研读平台</title>
-  <link rel="stylesheet" href="app.css?v=1.9.5">
+  <link rel="stylesheet" href="app.css?v=1.9.6">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -28,9 +28,9 @@
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
   <!-- 动态微交互矢量图标引擎 (Kubai Icons · 金石朱墨主题) -->
-  <script src="kubai_icons.js?v=1.9.5" defer></script>
+  <script src="kubai_icons.js?v=1.9.6" defer></script>
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=1.9.5" defer></script>
+  <script src="data/kaoyan_data.js?v=1.9.6" defer></script>
 </head>
 <body>
 
@@ -418,24 +418,36 @@
   
 
 
-  <!-- 移动端原生 App 底部浮动导航栏 (题库 | 自测 | 播放 | 看板 | 设置) -->
+  <!-- 移动端原生 App 底部浮动导航栏 (方案 C：与播放控制坞互斥吸附替换) -->
   <nav id="app-bottom-nav" class="app-bottom-nav" aria-label="底栏主导航">
     <div class="nav-bottom-inner">
-      <!-- 1. 题库 -->
+      <!-- 1. 题库 (动态 SVG 考卷滑出动效) -->
       <button type="button" class="nav-tab-item" id="nav-tab-syllabus" data-tab="syllabus" title="考点题库大纲">
-        <span class="nav-tab-icon" id="icon-tab-syllabus"></span>
+        <span class="nav-tab-icon nav-icon-syllabus" id="icon-tab-syllabus">
+          <svg viewBox="0 0 24 24" class="svg-tab-icon svg-folder" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path class="folder-body" d="M4 19h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2z"/>
+            <path class="folder-paper" d="M8 9h8v7H8z" fill="currentColor" fill-opacity="0.2" stroke-width="1.2"/>
+            <line class="folder-line" x1="10" y1="12" x2="14" y2="12" stroke-width="1.2"/>
+          </svg>
+        </span>
         <span class="nav-tab-label">题库</span>
         <span class="nav-tab-dot"></span>
       </button>
 
-      <!-- 2. 自测 -->
+      <!-- 2. 自测 (动态 SVG 瞳孔眨眼聚焦动效) -->
       <button type="button" class="nav-tab-item" id="nav-tab-test" data-tab="test" title="自测挖空背诵">
-        <span class="nav-tab-icon" id="icon-tab-test"></span>
+        <span class="nav-tab-icon nav-icon-test" id="icon-tab-test">
+          <svg viewBox="0 0 24 24" class="svg-tab-icon svg-eye" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path class="eye-contour" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle class="eye-pupil" cx="12" cy="12" r="3" fill="currentColor"/>
+            <circle class="eye-sparkle" cx="13.2" cy="10.8" r="0.9" fill="#fff"/>
+          </svg>
+        </span>
         <span class="nav-tab-label" id="label-tab-test">自测</span>
         <span class="nav-tab-dot"></span>
       </button>
 
-      <!-- 3. 【核心中枢】常驻底栏正中播放主按键 (点击播放并平滑展开完整播放坞) -->
+      <!-- 3. 【核心中枢】底栏常驻正中主播放按键 (未播放时待命，点击平滑展开完整播放坞吸附底栏) -->
       <button type="button" class="nav-tab-item nav-tab-center-play" id="nav-tab-center-play" title="播放 / 展开控制坞">
         <div class="center-play-circle" id="centerPlayCircle">
           <svg class="center-play-svg icon-play-state" id="centerIconPlay" viewBox="0 0 24 24" fill="currentColor">
@@ -449,16 +461,27 @@
         <span class="nav-tab-label" id="centerPlayLabel">播放</span>
       </button>
 
-      <!-- 4. 看板 -->
+      <!-- 4. 看板 (动态 SVG 柱状统计生长动效) -->
       <button type="button" class="nav-tab-item" id="nav-tab-dashboard" data-tab="dashboard" title="背诵进度看板">
-        <span class="nav-tab-icon" id="icon-tab-dashboard"></span>
+        <span class="nav-tab-icon nav-icon-dashboard" id="icon-tab-dashboard">
+          <svg viewBox="0 0 24 24" class="svg-tab-icon svg-chart" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <line class="chart-bar bar-1" x1="6" y1="20" x2="6" y2="13" stroke-width="2.6"/>
+            <line class="chart-bar bar-2" x1="12" y1="20" x2="12" y2="5" stroke-width="2.6"/>
+            <line class="chart-bar bar-3" x1="18" y1="20" x2="18" y2="9" stroke-width="2.6"/>
+          </svg>
+        </span>
         <span class="nav-tab-label">看板</span>
         <span class="nav-tab-dot"></span>
       </button>
 
-      <!-- 5. 设置 (功能中心) -->
+      <!-- 5. 设置 (动态 SVG 齿轮 90度精准旋转动效) -->
       <button type="button" class="nav-tab-item" id="nav-tab-settings" data-tab="settings" title="功能与设置中心">
-        <span class="nav-tab-icon" id="icon-tab-settings"></span>
+        <span class="nav-tab-icon nav-icon-settings" id="icon-tab-settings">
+          <svg viewBox="0 0 24 24" class="svg-tab-icon svg-gear" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path class="gear-teeth" d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </span>
         <span class="nav-tab-label">设置</span>
         <span class="nav-tab-dot"></span>
       </button>
@@ -466,7 +489,7 @@
   </nav>
 
 
-  <script src="app.js?v=1.9.5" defer></script>
+  <script src="app.js?v=1.9.6" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -673,5 +696,125 @@
       </div>
     </div>
   </aside>
+  <!-- 全新【功能与研读设置中心】抽屉 (Settings Sheet) -->
+  <div id="settingsModalBackdrop" class="settings-backdrop" style="display: none;"></div>
+  <aside id="settingsDrawer" class="settings-drawer" aria-hidden="true">
+    <div class="settings-handle-bar">
+      <div class="settings-handle"></div>
+    </div>
+    <div class="settings-header">
+      <div class="settings-title-row">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--vermilion, #b8332a)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        <div class="settings-title-group">
+          <h3 class="settings-title">功能与研读设置</h3>
+          <span class="settings-sub">字系排版 · 主题底色 · 朗读偏好</span>
+        </div>
+      </div>
+      <button type="button" class="settings-close" id="settingsClose" title="关闭设置">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="settings-body">
+      <!-- 1. 阅读底色 -->
+      <div class="settings-section">
+        <div class="settings-sec-title">
+          <span>阅读底色</span>
+          <span class="settings-sec-desc">宣纸护眼 / 玄墨深邃</span>
+        </div>
+        <div class="theme-options-grid">
+          <button type="button" class="theme-card-btn active" id="sheetThemeParchment" data-theme-val="parchment">
+            <span class="theme-preview-box parchment-preview"></span>
+            <span class="theme-card-text">
+              <strong>宣纸暖杏</strong>
+              <small>典籍护眼温白</small>
+            </span>
+          </button>
+          <button type="button" class="theme-card-btn" id="sheetThemeDark" data-theme-val="dark">
+            <span class="theme-preview-box dark-preview"></span>
+            <span class="theme-card-text">
+              <strong>玄墨夜读</strong>
+              <small>深邃温润夜览</small>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. 典籍正文字体 -->
+      <div class="settings-section">
+        <div class="settings-sec-title">
+          <span>正文字体</span>
+          <span class="settings-sec-desc">国学古籍学术字系</span>
+        </div>
+        <div class="font-options-grid">
+          <button type="button" class="font-card-btn active" data-font-id="song">
+            <span class="font-card-glyph font-yasong">宋</span>
+            <span class="font-card-meta">
+              <strong>文心雅宋</strong>
+              <small>思源宋体 / 原生宋体</small>
+            </span>
+          </button>
+          <button type="button" class="font-card-btn" data-font-id="kai">
+            <span class="font-card-glyph font-kaiti">楷</span>
+            <span class="font-card-meta">
+              <strong>霞鹜文楷</strong>
+              <small>笔意温润 / 抒情温婉</small>
+            </span>
+          </button>
+          <button type="button" class="font-card-btn" data-font-id="fangsong">
+            <span class="font-card-glyph font-fangsong">仿</span>
+            <span class="font-card-meta">
+              <strong>清标仿宋</strong>
+              <small>骨力劲拔 / 公文准绳</small>
+            </span>
+          </button>
+          <button type="button" class="font-card-btn" data-font-id="sans">
+            <span class="font-card-glyph font-system">黑</span>
+            <span class="font-card-meta">
+              <strong>苹方黑体</strong>
+              <small>现代无衬线 / 极简清晰</small>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. 字号比例调节 -->
+      <div class="settings-section">
+        <div class="settings-sec-title">
+          <span>阅读字号</span>
+          <span class="settings-sec-desc" id="sheetFontSizeVal">100% (标准 17px)</span>
+        </div>
+        <div class="font-stepper-wrap">
+          <button type="button" class="stepper-btn" id="sheetFontDec" title="缩小字号">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span>缩小 (A-)</span>
+          </button>
+          <button type="button" class="stepper-reset" id="sheetFontReset" title="恢复标准字号 100%">重置</button>
+          <button type="button" class="stepper-btn" id="sheetFontInc" title="放大字号">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span>放大 (A+)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4. 朗读偏好与全息提示 -->
+      <div class="settings-section">
+        <div class="settings-sec-title">
+          <span>朗读音色与通读</span>
+          <span class="settings-sec-desc">龙安朗 · 清爽利落全段通读</span>
+        </div>
+        <div class="settings-info-box">
+          已支持全科 88 篇考题毫秒级句读对齐。点击正文中任意段落语句，即可瞬间跳播试听，双轨逻辑无缝切换。
+        </div>
+      </div>
+    </div>
+  </aside>
+
 </body>
 </html>

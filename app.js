@@ -2068,9 +2068,48 @@
   }
 
 
+
   // ==========================================
-  // 全新 App 导航栏与 Kubai 动态微交互图标体系 (v1.9.4)
+  // 方案 C：播放控制坞与底部 5-Tab 导航栏互斥吸附替换机制 (v1.9.6)
   // ==========================================
+  state.dockExpanded = false;
+
+  function expandPlayerDock() {
+    state.dockExpanded = true;
+    document.body.classList.add('dock-expanded');
+    const dock = document.querySelector('.player-dock');
+    if (dock) dock.classList.remove('dock-collapsed');
+    setBottomNavActiveTab('');
+  }
+
+  function collapsePlayerDock() {
+    state.dockExpanded = false;
+    document.body.classList.remove('dock-expanded');
+    const dock = document.querySelector('.player-dock');
+    if (dock) dock.classList.add('dock-collapsed');
+  }
+
+  // 抽屉展开时，播放坞与底栏全部自动平滑滑出退下
+  function setPlayerDockReceded(receded) {
+    const dock = document.querySelector('.player-dock');
+    const nav = document.getElementById('app-bottom-nav');
+    if (receded) {
+      if (dock) dock.classList.add('dock-receded');
+      if (nav) nav.classList.add('dock-receded');
+    } else {
+      const hasOpenDrawer = (
+        (el.sidebar && el.sidebar.classList.contains('open') && window.innerWidth <= 768) ||
+        (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) ||
+        (document.getElementById('settingsDrawer') && document.getElementById('settingsDrawer').classList.contains('open')) ||
+        (document.getElementById('outlineDrawer') && document.getElementById('outlineDrawer').classList.contains('open'))
+      );
+      if (!hasOpenDrawer) {
+        if (dock) dock.classList.remove('dock-receded');
+        if (nav) nav.classList.remove('dock-receded');
+      }
+    }
+  }
+
   const fontFamilies = [
     { id: 'song', name: '雅宋', value: '"Songti SC", "STSongti-SC-Regular", "Noto Serif SC", "Source Han Serif SC", SimSun, serif' },
     { id: 'kai', name: '温楷', value: '"Kaiti SC", "STKaiti", "LXGW WenKai Screen", "LXGWWenKaiScreen", KaiTi, serif' },
@@ -2087,109 +2126,51 @@
     if (fontNameLabel) fontNameLabel.textContent = fontObj.name;
   }
 
-  
-  // 播放坞与圆形驻留键动态形态控制 (v1.9.4)
-  state.dockExpanded = false;
-
-  function expandPlayerDock() {
-    state.dockExpanded = true;
-    document.body.classList.add('dock-expanded');
-    const dock = document.querySelector('.player-dock');
-    if (dock) dock.classList.remove('dock-collapsed');
-  }
-
-  function collapsePlayerDock() {
-    state.dockExpanded = false;
-    document.body.classList.remove('dock-expanded');
-    const dock = document.querySelector('.player-dock');
-    if (dock) dock.classList.add('dock-collapsed');
-  }
-
-  // 播放栏动态避让与退下机制 (当侧边栏、看板、手卷等抽屉展开时，播放栏与圆键均自动平滑退下)
-  function setPlayerDockReceded(receded) {
-    const dock = document.querySelector('.player-dock');
-    const fab = document.getElementById('dock-fab-play');
-    if (receded) {
-      if (dock) dock.classList.add('dock-receded');
-      if (fab) fab.classList.add('dock-receded');
-    } else {
-      const hasOpenDrawer = (
-        (el.sidebar && el.sidebar.classList.contains('open') && window.innerWidth <= 768) ||
-        (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) ||
-        (document.getElementById('appearanceDrawer') && document.getElementById('appearanceDrawer').classList.contains('open')) ||
-        (document.getElementById('outlineDrawer') && document.getElementById('outlineDrawer').classList.contains('open'))
-      );
-      if (!hasOpenDrawer) {
-        if (dock) dock.classList.remove('dock-receded');
-        if (fab) fab.classList.remove('dock-receded');
-      }
-    }
-  }
-
-  function setupKubaiNavigation() {
-    // 1. 挂载 Kubai 微交互动态矢量图标
-    if (window.KubaiIcons && typeof window.KubaiIcons.mount === 'function') {
-      try {
-        const mount = window.KubaiIcons.mount;
-        mount(document.getElementById('icon-tab-study'), '书本', { size: 21 });
-        mount(document.getElementById('icon-tab-syllabus'), '文件夹', { size: 21 });
-        mount(document.getElementById('icon-tab-test'), '眼睛', { size: 21 });
-        mount(document.getElementById('icon-tab-dashboard'), '图表', { size: 21 });
-        mount(document.getElementById('icon-tab-appearance'), '外观', { size: 21 });
-        const sheetIconBox = document.getElementById('sheetAppearanceIcon');
-        if (sheetIconBox) mount(sheetIconBox, '外观', { size: 22 });
-      } catch (err) {
-        console.warn('KubaiIcons mount error:', err);
-      }
-    }
-
-    // 2. 底栏标签与视图激活状态管理
+  function setBottomNavActiveTab(activeName) {
     const tabs = {
-      study: document.getElementById('nav-tab-study'),
       syllabus: document.getElementById('nav-tab-syllabus'),
       test: document.getElementById('nav-tab-test'),
       dashboard: document.getElementById('nav-tab-dashboard'),
-      appearance: document.getElementById('nav-tab-appearance')
+      settings: document.getElementById('nav-tab-settings')
     };
+    Object.keys(tabs).forEach(name => {
+      const btn = tabs[name];
+      if (btn) btn.classList.toggle('active', name === activeName);
+    });
+  }
 
-    function setBottomNavActiveTab(activeName) {
-      Object.keys(tabs).forEach(name => {
-        const btn = tabs[name];
-        if (btn) btn.classList.toggle('active', name === activeName);
-      });
-    }
+  function setupKubaiNavigation() {
+    // 设置中心抽屉元素
+    const settingsDrawer = document.getElementById('settingsDrawer');
+    const settingsBackdrop = document.getElementById('settingsModalBackdrop');
+    const settingsClose = document.getElementById('settingsClose');
 
-    // 手卷设置抽屉元素
-    const drawer = document.getElementById('appearanceDrawer');
-    const backdrop = document.getElementById('appearanceModalBackdrop');
-    const closeBtn = document.getElementById('appearanceClose');
-
-    function openAppearanceDrawer() {
+    function openSettings() {
+      if (!settingsDrawer) return;
+      settingsDrawer.classList.add('open');
       setPlayerDockReceded(true);
-      if (!drawer) return;
-      drawer.classList.add('open');
-      if (backdrop) {
-        backdrop.style.display = 'block';
-        setTimeout(() => backdrop.classList.add('open'), 10);
+      if (settingsBackdrop) {
+        settingsBackdrop.style.display = 'block';
+        setTimeout(() => settingsBackdrop.classList.add('open'), 10);
       }
-      updateAppearanceUI();
-      setBottomNavActiveTab('appearance');
+      updateSettingsSheetUI();
+      setBottomNavActiveTab('settings');
     }
 
-    function closeAppearanceDrawer() {
-      setPlayerDockReceded(false);
-      if (!drawer) return;
-      drawer.classList.remove('open');
-      if (backdrop) {
-        backdrop.classList.remove('open');
+    function closeSettings() {
+      if (!settingsDrawer) return;
+      settingsDrawer.classList.remove('open');
+      if (settingsBackdrop) {
+        settingsBackdrop.classList.remove('open');
         setTimeout(() => {
-          if (!drawer.classList.contains('open')) backdrop.style.display = 'none';
+          if (!settingsDrawer.classList.contains('open')) settingsBackdrop.style.display = 'none';
         }, 280);
       }
-      setBottomNavActiveTab('study');
+      setPlayerDockReceded(false);
+      setBottomNavActiveTab('');
     }
 
-    function updateAppearanceUI() {
+    function updateSettingsSheetUI() {
       const themeP = document.getElementById('sheetThemeParchment');
       const themeD = document.getElementById('sheetThemeDark');
       if (themeP && themeD) {
@@ -2207,8 +2188,8 @@
       }
     }
 
-    if (closeBtn) closeBtn.addEventListener('click', closeAppearanceDrawer);
-    if (backdrop) backdrop.addEventListener('click', closeAppearanceDrawer);
+    if (settingsClose) settingsClose.addEventListener('click', closeSettings);
+    if (settingsBackdrop) settingsBackdrop.addEventListener('click', closeSettings);
 
     // 主题切换卡片
     const themeP = document.getElementById('sheetThemeParchment');
@@ -2218,7 +2199,7 @@
         state.theme = 'parchment';
         document.documentElement.setAttribute('data-theme', 'parchment');
         localStorage.setItem('kaoyan_theme', 'parchment');
-        updateAppearanceUI();
+        updateSettingsSheetUI();
       });
     }
     if (themeD) {
@@ -2226,7 +2207,7 @@
         state.theme = 'dark';
         document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('kaoyan_theme', 'dark');
-        updateAppearanceUI();
+        updateSettingsSheetUI();
       });
     }
 
@@ -2238,7 +2219,7 @@
         if (fontObj) {
           applyFontGlobal(fontObj);
           localStorage.setItem('kaoyan_font_family', fontObj.id);
-          updateAppearanceUI();
+          updateSettingsSheetUI();
         }
       });
     });
@@ -2253,7 +2234,7 @@
         state.fontSize = Math.max(14, state.fontSize - 1);
         document.documentElement.style.setProperty('--font-base', `${state.fontSize}px`);
         localStorage.setItem('kaoyan_font_size', state.fontSize);
-        updateAppearanceUI();
+        updateSettingsSheetUI();
       });
     }
     if (incBtn) {
@@ -2261,7 +2242,7 @@
         state.fontSize = Math.min(24, state.fontSize + 1);
         document.documentElement.style.setProperty('--font-base', `${state.fontSize}px`);
         localStorage.setItem('kaoyan_font_size', state.fontSize);
-        updateAppearanceUI();
+        updateSettingsSheetUI();
       });
     }
     if (resetBtn) {
@@ -2269,82 +2250,87 @@
         state.fontSize = 17;
         document.documentElement.style.setProperty('--font-base', '17px');
         localStorage.setItem('kaoyan_font_size', 17);
-        updateAppearanceUI();
+        updateSettingsSheetUI();
       });
     }
 
-    // Tab 1: 研读 (关闭弹窗，滚动至顶部)
-    if (tabs.study) {
-      tabs.study.addEventListener('click', () => {
-        if (drawer && drawer.classList.contains('open')) closeAppearanceDrawer();
-        if (el.sidebar && el.sidebar.classList.contains('open')) {
-          el.sidebar.classList.remove('open');
-          setPlayerDockReceded(false);
-          if (el.backdrop) el.backdrop.classList.remove('open');
-        }
-        if (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) {
-          closeStudyDashboard();
-        }
-        setBottomNavActiveTab('study');
-        const mainStage = document.querySelector('.main-stage');
-        if (mainStage) {
-          mainStage.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      });
-    }
-
-    // Tab 2: 题库 (侧边栏抽屉开关，彻底解决移动端无法点选切换题目的痛点)
-    if (tabs.syllabus) {
-      tabs.syllabus.addEventListener('click', () => {
-        if (drawer && drawer.classList.contains('open')) closeAppearanceDrawer();
+    // 1. 题库 Tab (考题目录抽屉)
+    const tabSyllabus = document.getElementById('nav-tab-syllabus');
+    if (tabSyllabus) {
+      tabSyllabus.addEventListener('click', () => {
+        if (settingsDrawer && settingsDrawer.classList.contains('open')) closeSettings();
         if (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) closeStudyDashboard();
 
         if (window.innerWidth <= 768) {
           if (el.sidebar) {
             const willOpen = !el.sidebar.classList.contains('open');
             el.sidebar.classList.toggle('open', willOpen);
-            setPlayerDockReceded(willOpen);
             if (el.backdrop) el.backdrop.classList.toggle('open', willOpen);
-            setBottomNavActiveTab(willOpen ? 'syllabus' : 'study');
+            setPlayerDockReceded(willOpen);
+            setBottomNavActiveTab(willOpen ? 'syllabus' : '');
           }
         } else {
           const appBody = document.querySelector('.app-body');
           if (appBody) {
             const isCollapsed = appBody.classList.toggle('sidebar-collapsed');
             localStorage.setItem('kaoyan_sidebar_collapsed', isCollapsed ? '1' : '0');
-            setBottomNavActiveTab(isCollapsed ? 'study' : 'syllabus');
+            setBottomNavActiveTab(isCollapsed ? '' : 'syllabus');
           }
         }
       });
     }
 
-    // Tab 3: 自测 (循环切换 正常 -> 挖空 -> 默背)
-    if (tabs.test) {
-      tabs.test.addEventListener('click', () => {
+    // 2. 自测 Tab (循环切换 正常 -> 挖空 -> 默背)
+    const tabTest = document.getElementById('nav-tab-test');
+    if (tabTest) {
+      tabTest.addEventListener('click', () => {
         if (el.clozeModeBtn) {
           el.clozeModeBtn.click();
           const label = document.getElementById('label-tab-test');
           if (label) {
             label.textContent = state.clozeMode === 'off' ? '自测' : (state.clozeMode === 'keyword' ? '挖空' : '默背');
           }
-          tabs.test.classList.toggle('active', state.clozeMode !== 'off');
+          tabTest.classList.toggle('active', state.clozeMode !== 'off');
         }
       });
     }
 
-    // Tab 4: 看板 (打开研学看板)
-    if (tabs.dashboard) {
-      tabs.dashboard.addEventListener('click', () => {
-        if (drawer && drawer.classList.contains('open')) closeAppearanceDrawer();
+    // 3. 【方案 C 核心中枢】底栏正中播放主按键
+    const centerPlayBtn = document.getElementById('nav-tab-center-play');
+    if (centerPlayBtn) {
+      centerPlayBtn.addEventListener('click', () => {
+        expandPlayerDock();
+        if (audio.paused) {
+          if (!audio.src) {
+            loadTrackData(state.currentTrack, true);
+          } else {
+            audio.play().catch(e => console.log(e));
+          }
+        }
+      });
+    }
+
+    // 4. 播放坞收起键 (滑下播放坞，无缝恢复 5-Tab 底栏)
+    const collapseDockBtn = document.getElementById('btnCollapseDock');
+    if (collapseDockBtn) {
+      collapseDockBtn.addEventListener('click', () => {
+        collapsePlayerDock();
+      });
+    }
+
+    // 5. 看板 Tab (研学进度看板)
+    const tabDashboard = document.getElementById('nav-tab-dashboard');
+    if (tabDashboard) {
+      tabDashboard.addEventListener('click', () => {
+        if (settingsDrawer && settingsDrawer.classList.contains('open')) closeSettings();
         if (el.sidebar && el.sidebar.classList.contains('open')) {
           el.sidebar.classList.remove('open');
-          setPlayerDockReceded(false);
           if (el.backdrop) el.backdrop.classList.remove('open');
         }
         if (el.studyDashboardDrawer) {
           if (el.studyDashboardDrawer.classList.contains('open')) {
             closeStudyDashboard();
-            setBottomNavActiveTab('study');
+            setBottomNavActiveTab('');
           } else {
             openStudyDashboard();
             setBottomNavActiveTab('dashboard');
@@ -2353,36 +2339,32 @@
       });
     }
 
-    // Tab 5: 手卷 (打开视觉与排版设置)
-    if (tabs.appearance) {
-      tabs.appearance.addEventListener('click', () => {
+    // 6. 设置 Tab (打开功能与设置中心)
+    const tabSettings = document.getElementById('nav-tab-settings');
+    if (tabSettings) {
+      tabSettings.addEventListener('click', () => {
         if (el.sidebar && el.sidebar.classList.contains('open')) {
           el.sidebar.classList.remove('open');
-          setPlayerDockReceded(false);
           if (el.backdrop) el.backdrop.classList.remove('open');
         }
         if (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) closeStudyDashboard();
 
-        if (drawer && drawer.classList.contains('open')) {
-          closeAppearanceDrawer();
+        if (settingsDrawer && settingsDrawer.classList.contains('open')) {
+          closeSettings();
         } else {
-          openAppearanceDrawer();
+          openSettings();
         }
       });
     }
 
-    // 联动重设：侧边栏关闭时恢复 study tab
-    if (el.backdrop) {
-      el.backdrop.addEventListener('click', () => {
-        setBottomNavActiveTab('study');
-      });
-    }
+    // 默认收起播放坞，呈现 5-Tab 底栏
+    collapsePlayerDock();
   }
 
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '1.9.5';
+  const APP_BUILD_ID = '1.9.6';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
