@@ -12,7 +12,7 @@
   <meta name="apple-mobile-web-app-title" content="考研背诵手卷">
   <meta name="application-name" content="考研背诵手卷">
   <title>2027 考研全科双轨随身背诵手卷 · 807/706/英语写作独立专属研读平台</title>
-  <link rel="stylesheet" href="app.css?v=1.9.6">
+  <link rel="stylesheet" href="app.css?v=1.9.8">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -28,7 +28,7 @@
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
   <!-- 动态微交互矢量图标引擎 (Kubai Icons · 金石朱墨主题) -->
-  <script src="kubai_icons.js?v=1.9.6" defer></script>
+  <script src="kubai_icons.js?v=1.9.8" defer></script>
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
   <script src="data/kaoyan_data.js?v=1.9.6" defer></script>
 </head>
@@ -308,7 +308,7 @@
     </section>
   </main>
 
-  <!-- 底部常驻悬浮控制底座 (Audio Dock · 方案 C 吸附全功能精简版) -->
+    <!-- 底部常驻悬浮控制底座 (Audio Dock · 方案 B 极简互斥分层版) -->
   <footer class="player-dock" id="playerDock">
     <!-- 1. 顶部手势收起条与状态感知栏 (全宽触控收起 + 考题/双轨/大纲感知) -->
     <div class="dock-top-bar" id="dockTopBar">
@@ -317,25 +317,41 @@
       </div>
 
       <div class="dock-meta-row">
-        <!-- 左侧：当前考题标题 -->
-        <div class="dock-meta-title-box" id="dockMetaTitleBox">
-          <span class="hud-title-text" id="hudTitleText">曹禺《雷雨》· 繁漪复杂性格剖析与悲剧成因</span>
-        </div>
-
-        <!-- 右侧：双轨切换 + 框架大纲 + 大号收起按键 -->
-        <div class="dock-meta-actions">
+        <!-- 左侧：轨道切换 + 当前考题标题 -->
+        <div class="dock-meta-left">
           <button type="button" class="hud-track-badge track1-mode" id="hudTrackBadge" title="点击切换轨道一/轨道二">
             <span class="hud-track-dot"></span>
             <span id="hudTrackText">轨一</span>
           </button>
+          <span class="hud-title-text" id="hudTitleText">曹禺《雷雨》· 繁漪复杂性格剖析与悲剧成因</span>
+        </div>
 
-          <button type="button" class="hud-drawer-btn hud-outline-pill-btn" id="btnOpenOutline" title="展开答题思维骨架全貌">
+        <!-- 右侧：大纲 + 循环 + 倍速 + 大号高亮收起按键 -->
+        <div class="dock-meta-right">
+          <button type="button" class="hud-drawer-btn hud-outline-pill-btn" id="btnOpenOutline" title="展开答题框架大纲">
             <svg class="hud-framework-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6h16M4 12h10M4 18h14"/></svg>
-            <span id="hudFrameworkText">骨架 [1/4]</span>
+            <span id="hudFrameworkText">大纲 [1/4]</span>
           </button>
 
-          <button type="button" class="dock-collapse-close-btn" id="btnCollapseDock" title="收起播放坞，恢复底栏">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <!-- 辅助工具：循环模式 (顺序 / 完全 / 单段 / 单句) -->
+          <button id="btn-loop-mode" class="pill-mode-btn dock-tool-btn dock-tool-loop" title="背诵循环模式">
+            <svg class="mode-icon-svg" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="17 1 21 5 17 9"></polyline>
+              <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+              <polyline points="7 23 3 19 7 15"></polyline>
+              <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+            </svg>
+            <span class="mode-text">顺序</span>
+          </button>
+
+          <!-- 辅助工具：播放倍速 -->
+          <button id="btn-speed" class="pill-mode-btn dock-tool-btn speed-btn dock-tool-speed" title="调整播放倍速">
+            <span>1.0x</span>
+          </button>
+
+          <!-- 大号高亮收起按钮：带向下箭头，点击秒收起恢复底栏 -->
+          <button type="button" class="dock-collapse-close-btn" id="btnCollapseDock" title="收起播放控制坞，恢复底部导航栏">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
             <span>收起</span>
@@ -355,71 +371,51 @@
       <span id="time-total" class="progress-time">00:00</span>
     </div>
 
-    <!-- 3. 极简清晰播控行：核心 5 大键居中舒展 + 左右两端功能键辅助 -->
+    <!-- 3. 核心 5 大键居中舒展排布 (保留全部功能，盲按防误触) -->
     <div class="dock-controls-row">
-      <!-- 桌面端标题占位 (小屏隐藏) -->
       <div class="dock-left-info" style="display:none;">
         <span id="dock-title" class="dock-active-topic">知识点</span>
         <span id="dock-track-pill" class="dock-active-track">轨道一</span>
       </div>
 
-      <div class="dock-unified-controls clean-layout">
-        <!-- 辅助工具：循环模式 (顺序 / 单篇 / 单句 / 3遍) -->
-        <button id="btn-loop-mode" class="pill-mode-btn dock-tool-btn dock-tool-loop" title="背诵循环模式">
-          <svg class="mode-icon-svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="17 1 21 5 17 9"></polyline>
-            <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
-            <polyline points="7 23 3 19 7 15"></polyline>
-            <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+      <div class="dock-core-transport">
+        <!-- 上一考点 -->
+        <button id="dock-prev-btn" class="dock-btn" title="上一考点">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="19 20 9 12 19 4 19 20"></polygon>
+            <line x1="5" y1="19" x2="5" y2="5"></line>
           </svg>
-          <span class="mode-text">顺序</span>
         </button>
 
-        <!-- 核心控制组 5 键 (舒展大按键) -->
-        <div class="dock-core-transport">
-          <!-- 上一考点 -->
-          <button id="dock-prev-btn" class="dock-btn" title="上一考点">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="19 20 9 12 19 4 19 20"></polygon>
-              <line x1="5" y1="19" x2="5" y2="5"></line>
-            </svg>
-          </button>
+        <!-- 快退 5 秒 -->
+        <button id="dock-rewind-btn" class="dock-btn" title="快退 5 秒">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+        </button>
 
-          <!-- 快退 5 秒 -->
-          <button id="dock-rewind-btn" class="dock-btn" title="快退 5 秒">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="1 4 1 10 7 10"></polyline>
-              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
-            </svg>
-          </button>
+        <!-- 【唯一核心大圆键】播放 / 暂停 -->
+        <button id="dock-play-btn" class="dock-btn dock-btn-play" title="播放/暂停音频">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="6 4 20 12 6 20 6 4"></polygon>
+          </svg>
+        </button>
 
-          <!-- 【唯一核心大圆键】播放 / 暂停 -->
-          <button id="dock-play-btn" class="dock-btn dock-btn-play" title="播放/暂停音频">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <polygon points="6 4 20 12 6 20 6 4"></polygon>
-            </svg>
-          </button>
+        <!-- 快进 5 秒 -->
+        <button id="dock-forward-btn" class="dock-btn" title="快进 5 秒">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
+        </button>
 
-          <!-- 快进 5 秒 -->
-          <button id="dock-forward-btn" class="dock-btn" title="快进 5 秒">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="23 4 23 10 17 10"></polyline>
-              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-            </svg>
-          </button>
-
-          <!-- 下一考点 -->
-          <button id="dock-next-btn" class="dock-btn" title="下一考点">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="5 4 15 12 5 20 5 4"></polygon>
-              <line x1="19" y1="5" x2="19" y2="19"></line>
-            </svg>
-          </button>
-        </div>
-
-        <!-- 辅助工具：播放倍速 -->
-        <button id="btn-speed" class="pill-mode-btn dock-tool-btn speed-btn dock-tool-speed" title="调整播放倍速">
-          <span>1.0x</span>
+        <!-- 下一考点 -->
+        <button id="dock-next-btn" class="dock-btn" title="下一考点">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 4 15 12 5 20 5 4"></polygon>
+            <line x1="19" y1="5" x2="19" y2="19"></line>
+          </svg>
         </button>
       </div>
     </div>
@@ -499,7 +495,7 @@
   </nav>
 
 
-  <script src="app.js?v=1.9.6" defer></script>
+  <script src="app.js?v=1.9.8" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">

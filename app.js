@@ -1279,7 +1279,7 @@
       else if (state.playMode === 'item') modePrefix = '[完全循环] ';
 
       if (el.hudFrameworkText) {
-        el.hudFrameworkText.textContent = `${modePrefix}框架 [${sec.index + 1}/${total}] · ${sec.badge}`;
+        el.hudFrameworkText.textContent = `大纲 [${sec.index + 1}/${total}]`;
       }
 
       currentFrameworkSections.forEach((s, idx) => {
@@ -1310,7 +1310,7 @@
         if (state.playMode === 'section') modePrefix = '[单段循环] ';
         else if (state.playMode === 'sentence') modePrefix = '[单句循环] ';
         else if (state.playMode === 'item') modePrefix = '[完全循环] ';
-        el.hudFrameworkText.textContent = `${modePrefix}整篇答题`;
+        el.hudFrameworkText.textContent = `大纲`;
       }
     }
   }
@@ -2426,7 +2426,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '1.9.6';
+  const APP_BUILD_ID = '1.9.8';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -2581,12 +2581,36 @@
   }
 
   // 初始化入口
-  // PWA Service Worker 隔离注册
+  // PWA Service Worker 隔离注册与热重载
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(err => {
+      navigator.serviceWorker.register('./sw.js', { scope: './' }).then((reg) => {
+        setInterval(() => {
+          reg.update().catch(() => {});
+        }, 60 * 1000);
+
+        reg.onupdatefound = () => {
+          const installingWorker = reg.installing;
+          if (installingWorker) {
+            installingWorker.onstatechange = () => {
+              if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('[PWA] 发现并激活新版本 v1.9.8，自动极速重载...');
+                window.location.reload();
+              }
+            };
+          }
+        };
+      }).catch(err => {
         console.warn('SW registration warning:', err);
       });
+    });
+
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!refreshing) {
+        refreshing = true;
+        window.location.reload();
+      }
     });
   }
 
