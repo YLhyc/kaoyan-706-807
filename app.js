@@ -2021,7 +2021,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '1.9.2';
+  const APP_BUILD_ID = '1.9.3';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
