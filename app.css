@@ -1,54 +1,59 @@
 /* 2027 考研专业课双轨随身背诵手卷 · 独立研读专版样式 */
 :root {
-  /* 方案一：羊皮暖杏专研学术纸感 (抗疲劳、无冷白眩光、金石朱墨) */
-  --bg-canvas: #f5f2e9;
-  --bg-sidebar: #eae5d7;
-  --bg-card: #fcfbfa;
-  --bg-card-hover: #ffffff;
-  --bg-card-active: #faf6ee;
-  --bg-dock: rgba(245, 242, 233, 0.94);
+  /* Claude UI & Master Spec · Palette B: Warm Parchment (典籍暖纸色系) */
+  --bg-canvas: #faf9f5;
+  --bg-sidebar: #f3f1ea;
+  --bg-card: #f3f1ea;
+  --bg-card-hover: #ebe7dc;
+  --bg-card-active: #e3ded1;
+  --bg-dock: rgba(243, 241, 234, 0.96);
   
-  --ink-primary: #2b241e;
-  --ink-secondary: #594c40;
-  --ink-muted: #8a7c6f;
-  --ink-subtle: #b3a598;
+  --ink-primary: #141413;
+  --ink-secondary: #5c5a53;
+  --ink-muted: #8c887e;
+  --ink-subtle: #a6a298;
   
-  --line-main: #dfd8ca;
-  --line-subtle: #eae4d8;
-  --line-strong: #c8bfae;
+  --line-main: #e4e1d6;
+  --line-subtle: #eae7dc;
+  --line-strong: #cfcab8;
   
-  /* 金石朱墨印记色 */
-  --vermilion: #a63a24;
-  --vermilion-soft: #f9edea;
-  --vermilion-border: #f0cfc8;
-  --vermilion-hover: #8f2f1c;
+  /* Claude Signature Terracotta (陶土红金主色) */
+  --vermilion: #d97757;
+  --vermilion-soft: rgba(217, 119, 87, 0.08);
+  --vermilion-border: rgba(217, 119, 87, 0.28);
+  --vermilion-hover: #c46545;
   
-  /* 琥珀金与沉香茶 */
-  --amber: #b06917;
-  --amber-soft: #fcf5ec;
-  --wood: #6d5642;
-  --wood-soft: #f3ede4;
+  /* Claude Signature Accents: Slate & Botanical */
+  --amber: #c46b16;
+  --amber-soft: rgba(196, 107, 22, 0.08);
+  --pine: #2f7d4a;
+  --pine-soft: rgba(47, 125, 74, 0.08);
+  --accent-slate: #4a7c9b;
+  --accent-slate-soft: rgba(74, 124, 155, 0.08);
   
-  /* 松柏青 (T1 核心) */
-  --pine: #2e664f;
-  --pine-soft: #eaf3ee;
+  /* 朗读高亮聚焦 (Karaoke Spotlight: Warm Terracotta Underline & Subtle Highlight) */
+  --spotlight-bg: rgba(217, 119, 87, 0.12);
+  --spotlight-border: #d97757;
+  --spotlight-glow: rgba(217, 119, 87, 0.18);
+  --spotlight-text: #141413;
   
-  /* 重点聚光高亮 (Karaoke Spotlight) */
-  --spotlight-bg: #ffe4ba;
-  --spotlight-border: #f5b041;
-  --spotlight-glow: rgba(245, 176, 65, 0.22);
-  --spotlight-text: #201812;
+  /* Typography Stacks */
+  --font-serif: Georgia, "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   
   --font-base: 17px;
-  --sidebar-w: 380px;
-  --header-h: 64px;
+  --sidebar-w: 360px;
+  --header-h: 60px;
   --dock-h: 88px;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --shadow-sm: 0 1px 3px rgba(43, 36, 30, 0.05);
-  --shadow-md: 0 4px 12px rgba(43, 36, 30, 0.08);
-  --shadow-lg: 0 10px 25px rgba(43, 36, 30, 0.12);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  
+  /* Pure-Flat Architecture: Zero Shadows Everywhere */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
 }
 
 [data-theme="dark"] {
@@ -687,15 +692,12 @@ body {
 
 /* 正文渲染纸面 */
 .paper-container {
-  background-color: var(--bg-card);
-  border: 1px solid var(--line-main);
-  border-radius: var(--radius-lg);
-  padding: 36px 40px;
-  margin-bottom: 28px;
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  max-width: 68ch !important;
+  margin: 0 auto !important;
+  line-height: 1.85 !important;
+  font-family: var(--font-serif) !important;
+  padding: 24px 20px 80px !important;
+  box-sizing: border-box !important;
 }
 
 .paper-section-title {
@@ -1106,8 +1108,13 @@ body {
   }
   
   .paper-container {
-    padding: 20px 16px;
-  }
+  max-width: 68ch !important;
+  margin: 0 auto !important;
+  line-height: 1.85 !important;
+  font-family: var(--font-serif) !important;
+  padding: 24px 20px 80px !important;
+  box-sizing: border-box !important;
+}
   
   /* cleaned up legacy 1024px dock grid */
 }
@@ -1315,10 +1322,13 @@ body {
   }
 
   .paper-container {
-    padding: 16px 12px;
-    gap: 14px;
-    border-radius: 12px;
-  }
+  max-width: 68ch !important;
+  margin: 0 auto !important;
+  line-height: 1.85 !important;
+  font-family: var(--font-serif) !important;
+  padding: 24px 20px 80px !important;
+  box-sizing: border-box !important;
+}
 
   /* 底部播放器移动端紧凑排布与安全防遮挡 */
   .player-dock {
@@ -1500,8 +1510,13 @@ body {
   }
 
   .paper-container {
-    padding: 14px 10px;
-  }
+  max-width: 68ch !important;
+  margin: 0 auto !important;
+  line-height: 1.85 !important;
+  font-family: var(--font-serif) !important;
+  padding: 24px 20px 80px !important;
+  box-sizing: border-box !important;
+}
 
   .exam-spec-banner {
     flex-wrap: wrap;
@@ -2597,12 +2612,12 @@ body {
 
 /* 3. 朱丝栏垂直引导线与典雅学术正文卡片 */
 .paper-container {
-  background-color: var(--bg-card) !important;
-  border: 1px solid var(--line-main) !important;
-  border-radius: 16px !important;
-  box-shadow: 0 4px 24px rgba(42, 34, 27, 0.05) !important;
-  padding: 24px 22px !important;
-  margin-bottom: 28px !important;
+  max-width: 68ch !important;
+  margin: 0 auto !important;
+  line-height: 1.85 !important;
+  font-family: var(--font-serif) !important;
+  padding: 24px 20px 80px !important;
+  box-sizing: border-box !important;
 }
 
 .stage-header-card {
@@ -5618,4 +5633,39 @@ body.dock-expanded .dock-fab-play {
   max-width: 400px !important;
   margin: 0 auto !important;
   padding: 0 4px !important;
+}
+
+
+/* ==========================================================================
+   Claude UI Engineering Integration (Typography & Pure-Flat 0.5px Details)
+   ========================================================================== */
+.progress-time,
+.dock-time,
+.pill-mode-btn,
+.speed-btn,
+.item-badge-pill,
+.item-score-pill,
+.dash-metric-number,
+.dash-streak-number {
+  font-family: var(--font-mono) !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+/* Three-Color Semantic Highlights (Terracotta + Slate Blue + Botanical Green) */
+.quote-gold-core,
+.quote-highlight {
+  color: var(--accent-slate) !important;
+  font-weight: 600 !important;
+}
+
+.kw-red,
+.keyword-highlight {
+  color: var(--vermilion) !important;
+  font-weight: 600 !important;
+}
+
+.timeline-period,
+.era-highlight {
+  color: var(--pine) !important;
+  font-weight: 600 !important;
 }
