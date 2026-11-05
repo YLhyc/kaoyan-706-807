@@ -2569,7 +2569,7 @@ body,
 body {
   background-color: var(--bg-canvas) !important;
   background-image: radial-gradient(rgba(165, 145, 115, 0.18) 1px, transparent 1px) !important;
-  background-size: 20px 20px !important;
+  
   color: var(--ink-primary) !important;
 }
 
@@ -5668,4 +5668,47 @@ body.dock-expanded .dock-fab-play {
 .era-highlight {
   color: var(--pine) !important;
   font-weight: 600 !important;
+}
+
+
+/* ==========================================================================
+   Claude UI Anti-Slop: 彻底移除首屏高度重复的累赘卡片，直接畅读正文
+   ========================================================================== */
+.exam-spec-banner {
+  display: none !important; /* 顶层已有大题属性徽章，绝不再重复堆叠第二层 */
+}
+
+.exam-title-box {
+  display: none !important; /* 顶层已有大标题，绝不再重复第 3 次显示大框 */
+}
+
+/* 顶层属性看板纯平化与克制留白 */
+.stage-header-card {
+  background-color: var(--bg-card) !important;
+  border: 0.5px solid var(--line-main) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  padding: 16px 18px 14px !important;
+  margin-bottom: 14px !important;
+}
+
+.stage-question-title {
+  font-family: var(--font-serif) !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  color: var(--ink-primary) !important;
+  letter-spacing: -0.015em !important;
+  line-height: 1.35 !important;
+  margin: 8px 0 12px !important;
+}
+
+/* 规范正文卡片纯平美学 */
+.structure-card,
+.exam-section-card,
+.logic-block-card,
+.global-framework-box {
+  border: 0.5px solid var(--line-main) !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  background: var(--bg-card) !important;
 }
