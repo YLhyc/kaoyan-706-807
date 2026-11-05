@@ -2027,6 +2027,37 @@
       });
     }
 
+
+    // 播放坞下滑手势与全宽收起控制 (随时轻松收起)
+    const playerDockEl = document.getElementById('playerDock') || document.querySelector('.player-dock');
+    if (playerDockEl) {
+      let touchStartY = 0;
+      let touchStartX = 0;
+      playerDockEl.addEventListener('touchstart', (e) => {
+        if (e.touches && e.touches.length === 1) {
+          touchStartY = e.touches[0].clientY;
+          touchStartX = e.touches[0].clientX;
+        }
+      }, { passive: true });
+
+      playerDockEl.addEventListener('touchend', (e) => {
+        if (e.changedTouches && e.changedTouches.length === 1) {
+          const deltaY = e.changedTouches[0].clientY - touchStartY;
+          const deltaX = Math.abs(e.changedTouches[0].clientX - touchStartX);
+          if (deltaY > 32 && deltaY > deltaX) {
+            collapsePlayerDock();
+          }
+        }
+      }, { passive: true });
+    }
+
+    const dragHandle = document.getElementById('dockDragHandle');
+    if (dragHandle) {
+      dragHandle.addEventListener('click', () => {
+        collapsePlayerDock();
+      });
+    }
+
     const collapseDockBtn = document.getElementById('btnCollapseDock');
     if (collapseDockBtn) {
       collapseDockBtn.addEventListener('click', () => {
@@ -2311,6 +2342,37 @@
     }
 
     // 4. 播放坞收起键 (滑下播放坞，无缝恢复 5-Tab 底栏)
+
+    // 播放坞下滑手势与全宽收起控制 (随时轻松收起)
+    const playerDockEl = document.getElementById('playerDock') || document.querySelector('.player-dock');
+    if (playerDockEl) {
+      let touchStartY = 0;
+      let touchStartX = 0;
+      playerDockEl.addEventListener('touchstart', (e) => {
+        if (e.touches && e.touches.length === 1) {
+          touchStartY = e.touches[0].clientY;
+          touchStartX = e.touches[0].clientX;
+        }
+      }, { passive: true });
+
+      playerDockEl.addEventListener('touchend', (e) => {
+        if (e.changedTouches && e.changedTouches.length === 1) {
+          const deltaY = e.changedTouches[0].clientY - touchStartY;
+          const deltaX = Math.abs(e.changedTouches[0].clientX - touchStartX);
+          if (deltaY > 32 && deltaY > deltaX) {
+            collapsePlayerDock();
+          }
+        }
+      }, { passive: true });
+    }
+
+    const dragHandle = document.getElementById('dockDragHandle');
+    if (dragHandle) {
+      dragHandle.addEventListener('click', () => {
+        collapsePlayerDock();
+      });
+    }
+
     const collapseDockBtn = document.getElementById('btnCollapseDock');
     if (collapseDockBtn) {
       collapseDockBtn.addEventListener('click', () => {

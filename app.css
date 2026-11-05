@@ -5481,3 +5481,172 @@ body.dock-expanded .dock-fab-play {
     padding-bottom: calc(160px + env(safe-area-inset-bottom, 12px)) !important;
   }
 }
+
+/* ==========================================================================
+   极简清晰播放控制坞 (Clean & Roomy Audio Dock · 方案 C)
+   ========================================================================== */
+.dock-top-bar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.dock-drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 18px;
+  cursor: pointer;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.handle-bar-pill {
+  width: 38px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--ink-secondary);
+  opacity: 0.35;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.dock-drag-handle:active .handle-bar-pill {
+  opacity: 0.75;
+  transform: scaleY(1.3);
+}
+
+.dock-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+  padding: 0 2px;
+  box-sizing: border-box;
+}
+
+.dock-meta-title-box {
+  flex: 1;
+  min-width: 0;
+}
+
+.dock-meta-title-box .hud-title-text {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: var(--ink-primary) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: block;
+}
+
+.dock-meta-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.hud-outline-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--bg-sidebar);
+  border: 1px solid var(--line-subtle);
+  color: var(--ink-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hud-outline-pill-btn:hover {
+  border-color: var(--vermilion, #b8332a);
+  color: var(--vermilion, #b8332a);
+}
+
+.dock-collapse-close-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(184, 51, 42, 0.08);
+  color: var(--vermilion, #b8332a);
+  border: 1px solid rgba(184, 51, 42, 0.25);
+  border-radius: 13px;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dock-collapse-close-btn:hover,
+.dock-collapse-close-btn:active {
+  background: var(--vermilion, #b8332a);
+  color: #ffffff;
+}
+
+/* 核心播控按键排 */
+.dock-unified-controls.clean-layout {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  max-width: 440px !important;
+  margin: 0 auto !important;
+  padding: 2px 0 0 !important;
+}
+
+.dock-core-transport {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.dock-tool-loop,
+.dock-tool-speed {
+  min-width: 44px !important;
+  padding: 4px 8px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  border-radius: 14px !important;
+  flex-shrink: 0;
+}
+
+.dock-btn {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  border: none !important;
+  color: var(--ink-primary) !important;
+  cursor: pointer !important;
+  transition: transform 0.15s ease, background 0.15s ease !important;
+}
+
+.dock-btn:active {
+  transform: scale(0.9) !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.dock-btn-play {
+  width: 48px !important;
+  height: 48px !important;
+  background: linear-gradient(135deg, #c53a30, #9f2a22) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(184, 51, 42, 0.4) !important;
+  margin: 0 4px !important;
+}
+
+.dock-btn-play:active {
+  transform: scale(0.92) !important;
+}
