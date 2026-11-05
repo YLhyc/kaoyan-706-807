@@ -920,7 +920,13 @@
     } else {
       el.stageSubject.textContent = '考研英语写作';
     }
-    el.stageTopic.textContent = item.topic || (item.author ? `${item.author} 专章` : '核心考点');
+    let breadcrumbTopic = item.topic || (item.author ? `${item.author} 专章` : '核心考点');
+    if (breadcrumbTopic.length > 12 && item.author) {
+      breadcrumbTopic = `${item.author} 专章`;
+    } else if (breadcrumbTopic.length > 15) {
+      breadcrumbTopic = breadcrumbTopic.slice(0, 14) + '...';
+    }
+    el.stageTopic.textContent = breadcrumbTopic;
     el.stageScore.textContent = item.score;
     el.stageTier.textContent = item.level;
     el.stageTier.className = `tier-badge tier-${item.level}`;
@@ -2015,7 +2021,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '1.8.0';
+  const APP_BUILD_ID = '1.9.2';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
