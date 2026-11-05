@@ -116,6 +116,7 @@
   function openPlayModeDrawer() {
     if (!el.playModeDrawer || !el.playModeList) return;
     renderPlayModeList();
+    setPlayerDockReceded(true);
     if (el.playModeBackdrop) el.playModeBackdrop.style.display = 'block';
     setTimeout(() => {
       el.playModeDrawer.classList.add('open');
@@ -130,6 +131,7 @@
     setTimeout(() => {
       if (el.playModeBackdrop) el.playModeBackdrop.style.display = 'none';
     }, 280);
+    setPlayerDockReceded(false);
   }
 
   function renderPlayModeList() {
@@ -1496,6 +1498,7 @@
     audio.addEventListener('pause', () => {
       state.isPlaying = false;
       updatePlayBtnUI();
+      collapsePlayerDock(); // 暂停即自动收起为底栏
     });
 
     audio.addEventListener('timeupdate', () => {
@@ -2426,7 +2429,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '1.9.8';
+  const APP_BUILD_ID = '1.9.9';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
