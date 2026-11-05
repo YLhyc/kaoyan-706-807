@@ -464,6 +464,7 @@
   }
 
   function updateSubjectUI(sub) {
+    document.body.setAttribute('data-subject', sub);
     if (sub === 'en') {
       if (el.headerVoiceBadge) {
         el.headerVoiceBadge.innerHTML = 'Emily（纯正美音）+ 龙安立（中文导引）';
@@ -2429,7 +2430,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '2.0.1';
+  const APP_BUILD_ID = '2.0.2';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
