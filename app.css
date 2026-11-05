@@ -4971,3 +4971,32 @@ body {
     display: inline !important;
   }
 }
+
+/* Kubai 矢量图标自适应尺寸与平滑渲染 */
+.kubai-icon-svg {
+  display: block;
+  width: 22px;
+  height: 20px;
+  overflow: visible;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-tab-item:hover .kubai-icon-svg {
+  transform: translateY(-1px);
+}
+
+.nav-tab-item:active .kubai-icon-svg {
+  transform: scale(0.92);
+}
+
+/* 播放栏平滑退下/隐藏类 */
+.player-dock.dock-receded {
+  transform: translateY(140%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
+}
+
+.player-dock {
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
+}

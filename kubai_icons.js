@@ -8,7 +8,7 @@
 
   // ---------- 1. Color Math & Tint System ----------
   const REF = [83, 147, 255];
-  const hex = (c) => '#' + c.map((v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).toUpperCase();
+  const hex = (c) => '#' + c.map((v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join('').toUpperCase();
   const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
   function tint(src, sel) {
     const s = rgb(src);
@@ -444,7 +444,13 @@
   let iconIdCounter = 0;
   const mountedInstances = [];
 
-  function mount(name, container, options = {}) {
+  function mount(arg1, arg2, options = {}) {
+    let name = arg1;
+    let container = arg2;
+    if (typeof arg1 !== 'string' && typeof arg2 === 'string') {
+      container = arg1;
+      name = arg2;
+    }
     if (!container) return null;
     const icon = ICONS.find((it) => it.name === name);
     if (!icon) {
@@ -455,7 +461,8 @@
     const k = 'kb' + idx;
     const u = makeU(k);
     const body = icon.svg(u);
-    container.innerHTML = `<svg viewBox="${ICON_VIEWBOX}" fill="none" class="kubai-icon-svg" aria-hidden="true">${defs(k, u.grads)}${body}</svg>`;
+    const sz = options.size || 22;
+    container.innerHTML = `<svg viewBox="${ICON_VIEWBOX}" fill="none" class="kubai-icon-svg" style="width:${sz}px;height:${Math.round(sz*29/31)}px;" aria-hidden="true">${defs(k, u.grads)}${body}</svg>`;
     const svg = container.querySelector('svg');
     const E = {};
     svg.querySelectorAll('[data-n]').forEach((el) => { E[el.dataset.n] = el; });

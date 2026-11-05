@@ -573,6 +573,7 @@
         if (studyTab) studyTab.click();
         if (window.innerWidth <= 900 && el.sidebar) {
           el.sidebar.classList.remove('open');
+          setPlayerDockReceded(false);
           if (el.backdrop) el.backdrop.classList.remove('open');
         }
       });
@@ -744,12 +745,14 @@
     if (!el.studyDashboardDrawer) return;
     updateStudyDashboardUI();
     el.studyDashboardDrawer.classList.add('open');
+    setPlayerDockReceded(true);
     if (el.studyDashboardBackdrop) el.studyDashboardBackdrop.style.display = 'block';
   }
 
   function closeStudyDashboard() {
     if (!el.studyDashboardDrawer) return;
     el.studyDashboardDrawer.classList.remove('open');
+    setPlayerDockReceded(false);
     if (el.studyDashboardBackdrop) el.studyDashboardBackdrop.style.display = 'none';
   }
 
@@ -1440,6 +1443,7 @@
     renderOutlineDrawer();
     if (el.outlineDrawer) {
       el.outlineDrawer.classList.add('open');
+    setPlayerDockReceded(true);
       el.outlineDrawer.setAttribute('aria-hidden', 'false');
     }
     if (el.outlineDrawerBackdrop) {
@@ -1450,6 +1454,7 @@
   function closeOutlineDrawer() {
     if (el.outlineDrawer) {
       el.outlineDrawer.classList.remove('open');
+    setPlayerDockReceded(false);
       el.outlineDrawer.setAttribute('aria-hidden', 'true');
     }
     if (el.outlineDrawerBackdrop) {
@@ -1971,6 +1976,7 @@
           }
         } else {
           el.sidebar.classList.remove('open');
+          setPlayerDockReceded(false);
           if (el.backdrop) el.backdrop.classList.remove('open');
         }
       });
@@ -1979,6 +1985,7 @@
     if (el.backdrop && el.sidebar) {
       el.backdrop.addEventListener('click', () => {
         el.sidebar.classList.remove('open');
+          setPlayerDockReceded(false);
         el.backdrop.classList.remove('open');
       });
     }
@@ -2040,6 +2047,27 @@
     if (fontNameLabel) fontNameLabel.textContent = fontObj.name;
   }
 
+  
+  // 播放栏动态避让与退下机制 (当侧边栏、看板、手卷等抽屉展开时，播放栏自动平滑滑出退下)
+  function setPlayerDockReceded(receded) {
+    const dock = document.querySelector('.player-dock');
+    if (!dock) return;
+    if (receded) {
+      dock.classList.add('dock-receded');
+    } else {
+      // 仅在无任何抽屉打开时恢复
+      const hasOpenDrawer = (
+        (el.sidebar && el.sidebar.classList.contains('open') && window.innerWidth <= 768) ||
+        (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) ||
+        (document.getElementById('appearanceDrawer') && document.getElementById('appearanceDrawer').classList.contains('open')) ||
+        (document.getElementById('outlineDrawer') && document.getElementById('outlineDrawer').classList.contains('open'))
+      );
+      if (!hasOpenDrawer) {
+        dock.classList.remove('dock-receded');
+      }
+    }
+  }
+
   function setupKubaiNavigation() {
     // 1. 挂载 Kubai 微交互动态矢量图标
     if (window.KubaiIcons && typeof window.KubaiIcons.mount === 'function') {
@@ -2079,6 +2107,7 @@
     const closeBtn = document.getElementById('appearanceClose');
 
     function openAppearanceDrawer() {
+      setPlayerDockReceded(true);
       if (!drawer) return;
       drawer.classList.add('open');
       if (backdrop) {
@@ -2090,6 +2119,7 @@
     }
 
     function closeAppearanceDrawer() {
+      setPlayerDockReceded(false);
       if (!drawer) return;
       drawer.classList.remove('open');
       if (backdrop) {
@@ -2191,6 +2221,7 @@
         if (drawer && drawer.classList.contains('open')) closeAppearanceDrawer();
         if (el.sidebar && el.sidebar.classList.contains('open')) {
           el.sidebar.classList.remove('open');
+          setPlayerDockReceded(false);
           if (el.backdrop) el.backdrop.classList.remove('open');
         }
         if (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) {
@@ -2214,6 +2245,7 @@
           if (el.sidebar) {
             const willOpen = !el.sidebar.classList.contains('open');
             el.sidebar.classList.toggle('open', willOpen);
+            setPlayerDockReceded(willOpen);
             if (el.backdrop) el.backdrop.classList.toggle('open', willOpen);
             setBottomNavActiveTab(willOpen ? 'syllabus' : 'study');
           }
@@ -2248,6 +2280,7 @@
         if (drawer && drawer.classList.contains('open')) closeAppearanceDrawer();
         if (el.sidebar && el.sidebar.classList.contains('open')) {
           el.sidebar.classList.remove('open');
+          setPlayerDockReceded(false);
           if (el.backdrop) el.backdrop.classList.remove('open');
         }
         if (el.studyDashboardDrawer) {
@@ -2267,6 +2300,7 @@
       tabs.appearance.addEventListener('click', () => {
         if (el.sidebar && el.sidebar.classList.contains('open')) {
           el.sidebar.classList.remove('open');
+          setPlayerDockReceded(false);
           if (el.backdrop) el.backdrop.classList.remove('open');
         }
         if (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) closeStudyDashboard();
