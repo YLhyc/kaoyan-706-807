@@ -4468,3 +4468,506 @@ body {
 [data-theme="dark"] .dash-random-pick-btn {
   background: linear-gradient(135deg, #d1563d, #aa3922);
 }
+
+
+/* ==========================================================================
+   全新移动端原生 App 底部浮动导航栏 (Bottom Tab Bar) & 手卷排版抽屉 (v1.9.4)
+   ========================================================================== */
+.app-bottom-nav {
+  display: none; /* 桌面端/大屏默认不显示，完全交由顶栏操作 */
+}
+
+/* 手卷排版视觉设置抽屉 (Appearance Sheet) */
+.appearance-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1190;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+
+.appearance-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.appearance-drawer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1200;
+  background: var(--bg-canvas);
+  border-top: 1px solid var(--line-main);
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.18);
+  transform: translateY(105%);
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+@media (min-width: 769px) {
+  /* 桌面端将手卷设置居中展示为精美卡片 */
+  .appearance-drawer {
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    top: 50% !important;
+    transform: translate(-50%, -46%) scale(0.96) !important;
+    width: 480px !important;
+    max-width: 90vw !important;
+    border-radius: 16px !important;
+    border: 1px solid var(--line-main) !important;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .appearance-drawer.open {
+    transform: translate(-50%, -50%) scale(1) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+}
+
+.appearance-drawer.open {
+  transform: translateY(0);
+}
+
+.appearance-handle-bar {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 4px;
+}
+
+.appearance-handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-light, rgba(0,0,0,0.15));
+}
+
+.appearance-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 18px 12px;
+  border-bottom: 1px solid var(--line-subtle);
+}
+
+.appearance-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.appearance-header-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.appearance-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink-primary);
+  margin: 0;
+}
+
+.appearance-sub {
+  font-size: 11px;
+  color: var(--ink-secondary);
+}
+
+.appearance-close {
+  background: none;
+  border: none;
+  padding: 6px;
+  border-radius: 50%;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.appearance-body {
+  padding: 16px 18px calc(16px + env(safe-area-inset-bottom, 8px));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.appearance-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.appearance-sec-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.appearance-sec-desc {
+  font-size: 11px;
+  color: var(--ink-muted, #7c7267);
+  font-weight: 400;
+}
+
+.theme-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.theme-card-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1.5px solid var(--line-main);
+  background: var(--bg-card);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.theme-card-btn.active {
+  border-color: var(--vermilion, #b8332a);
+  background: rgba(184, 51, 42, 0.05);
+}
+
+.theme-preview-box {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--line-main);
+  flex-shrink: 0;
+}
+
+.parchment-preview {
+  background: #f5f2e9;
+}
+
+.dark-preview {
+  background: #1c1b18;
+}
+
+.theme-card-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.theme-card-text strong {
+  font-size: 13px;
+  color: var(--ink-primary);
+}
+
+.theme-card-text small {
+  font-size: 11px;
+  color: var(--ink-secondary);
+}
+
+.font-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.font-card-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1.5px solid var(--line-main);
+  background: var(--bg-card);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.font-card-btn.active {
+  border-color: var(--vermilion, #b8332a);
+  background: rgba(184, 51, 42, 0.05);
+}
+
+.font-card-glyph {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: var(--bg-sidebar);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--vermilion, #b8332a);
+  flex-shrink: 0;
+}
+
+.font-card-glyph.font-yasong { font-family: "Songti SC", "Noto Serif SC", serif; }
+.font-card-glyph.font-kaiti { font-family: "Kaiti SC", "LXGW WenKai Screen", serif; }
+.font-card-glyph.font-fangsong { font-family: "STFangsong", "FangSong", serif; }
+.font-card-glyph.font-system { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; }
+
+.font-card-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.font-card-meta strong {
+  font-size: 13px;
+  color: var(--ink-primary);
+}
+
+.font-card-meta small {
+  font-size: 10px;
+  color: var(--ink-secondary);
+}
+
+.font-stepper-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--bg-card);
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line-main);
+}
+
+.stepper-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-sidebar);
+  border: 1px solid var(--line-subtle);
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-primary);
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+
+.stepper-btn:active {
+  background: var(--line-main);
+}
+
+.stepper-reset {
+  background: none;
+  border: none;
+  font-size: 12px;
+  color: var(--ink-muted, #7c7267);
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+/* 核心移动端 (<= 768px) 排版优化与 App 规范 */
+@media (max-width: 768px) {
+  .app-bottom-nav {
+    display: block !important;
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    height: calc(52px + env(safe-area-inset-bottom, 8px)) !important;
+    padding-bottom: env(safe-area-inset-bottom, 8px) !important;
+    background: var(--bg-dock) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-top: 1px solid var(--line-main) !important;
+    z-index: 1000 !important;
+    box-shadow: 0 -2px 14px rgba(42, 34, 27, 0.05) !important;
+  }
+
+  .nav-bottom-inner {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+    height: 52px !important;
+    max-width: 460px !important;
+    margin: 0 auto !important;
+    padding: 0 6px !important;
+  }
+
+  .nav-tab-item {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: none !important;
+    border: none !important;
+    outline: none !important;
+    cursor: pointer !important;
+    padding: 3px 0 !important;
+    color: var(--ink-muted, #7c7267) !important;
+    transition: color 0.22s ease, transform 0.18s ease !important;
+    position: relative !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+  }
+
+  .nav-tab-item:active {
+    transform: scale(0.92) !important;
+  }
+
+  .nav-tab-icon {
+    width: 24px !important;
+    height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    pointer-events: none !important;
+  }
+
+  .nav-tab-label {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    line-height: 1.1 !important;
+    margin-top: 2px !important;
+    letter-spacing: -0.2px !important;
+  }
+
+  .nav-tab-dot {
+    width: 4px !important;
+    height: 4px !important;
+    border-radius: 50% !important;
+    background-color: var(--vermilion, #b8332a) !important;
+    margin-top: 2px !important;
+    opacity: 0 !important;
+    transform: scale(0) !important;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .nav-tab-item.active {
+    color: var(--vermilion, #b8332a) !important;
+  }
+
+  .nav-tab-item.active .nav-tab-dot {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+  }
+
+  /* 移动端播放坞浮动在底部导航栏正上方 */
+  .player-dock {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: calc(52px + env(safe-area-inset-bottom, 8px)) !important;
+    z-index: 990 !important;
+    padding: 5px 10px 6px !important;
+    border-top: 1px solid var(--line-subtle) !important;
+    box-shadow: 0 -3px 12px rgba(42, 34, 27, 0.06) !important;
+  }
+
+  /* 主舞台留足呼吸边距，彻底杜绝内容被播放坞遮挡 */
+  .main-stage {
+    padding-bottom: calc(230px + env(safe-area-inset-bottom, 12px)) !important;
+  }
+
+  /* 移动端顶栏精炼化：隐藏 cramped 的 6 键辅助操作行与旧汉堡按钮 */
+  .header-actions {
+    display: none !important;
+  }
+
+  #btn-mobile-menu {
+    display: none !important;
+  }
+
+  .app-header {
+    height: auto !important;
+    min-height: unset !important;
+    padding: 8px 12px 6px !important;
+    row-gap: 6px !important;
+  }
+
+  .brand-voice-info {
+    display: none !important; /* 节省移动端竖向空间 */
+  }
+
+  .brand-main-title {
+    font-size: 15px !important;
+  }
+
+  .subject-pill-group {
+    width: 100% !important;
+    justify-content: space-between !important;
+    gap: 4px !important;
+  }
+
+  .subject-btn {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    padding: 5px 3px !important;
+    justify-content: center !important;
+    font-size: 11.5px !important;
+  }
+
+  .subject-btn .count-tag {
+    display: none !important; /* 移动端药丸只保留科目名，去除挤占空间的计数标签 */
+  }
+
+  /* 修复双轨按钮溢出重叠 Bug */
+  .track-switcher-wrap {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    gap: 6px !important;
+  }
+
+  .track-tabs {
+    width: 100% !important;
+    display: flex !important;
+    box-sizing: border-box !important;
+  }
+
+  .track-tab-btn {
+    flex: 1 1 50% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    padding: 7px 4px !important;
+    justify-content: center !important;
+  }
+
+  .track-tab-btn span {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .track-tab-full {
+    display: none !important;
+  }
+
+  .track-tab-short {
+    display: inline !important;
+  }
+}

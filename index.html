@@ -12,7 +12,7 @@
   <meta name="apple-mobile-web-app-title" content="考研背诵手卷">
   <meta name="application-name" content="考研背诵手卷">
   <title>2027 考研全科双轨随身背诵手卷 · 807/706/英语写作独立专属研读平台</title>
-  <link rel="stylesheet" href="app.css?v=1.9.3">
+  <link rel="stylesheet" href="app.css?v=1.9.4">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -25,7 +25,10 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css">
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=1.9.3" defer></script>
+  <!-- 动态微交互矢量图标引擎 (Kubai Icons · 金石朱墨主题) -->
+  <script src="kubai_icons.js?v=1.9.4" defer></script>
+  <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
+  <script src="data/kaoyan_data.js?v=1.9.4" defer></script>
 </head>
 <body>
 
@@ -407,7 +410,43 @@
     </div>
   </footer>
 
-  <script src="app.js?v=1.9.3" defer></script>
+  <!-- 移动端原生 App 底部浮动导航栏 (iPhone/iPad/PC 全自适应) -->
+  <nav id="app-bottom-nav" class="app-bottom-nav" aria-label="底栏主导航">
+    <div class="nav-bottom-inner">
+      <button type="button" class="nav-tab-item active" id="nav-tab-study" data-tab="study" title="当前背诵研读">
+        <span class="nav-tab-icon" id="icon-tab-study"></span>
+        <span class="nav-tab-label">研读</span>
+        <span class="nav-tab-dot"></span>
+      </button>
+
+      <button type="button" class="nav-tab-item" id="nav-tab-syllabus" data-tab="syllabus" title="考点题库大纲">
+        <span class="nav-tab-icon" id="icon-tab-syllabus"></span>
+        <span class="nav-tab-label">题库</span>
+        <span class="nav-tab-dot"></span>
+      </button>
+
+      <button type="button" class="nav-tab-item" id="nav-tab-test" data-tab="test" title="自测挖空背诵">
+        <span class="nav-tab-icon" id="icon-tab-test"></span>
+        <span class="nav-tab-label" id="label-tab-test">自测</span>
+        <span class="nav-tab-dot"></span>
+      </button>
+
+      <button type="button" class="nav-tab-item" id="nav-tab-dashboard" data-tab="dashboard" title="背诵进度看板">
+        <span class="nav-tab-icon" id="icon-tab-dashboard"></span>
+        <span class="nav-tab-label">看板</span>
+        <span class="nav-tab-dot"></span>
+      </button>
+
+      <button type="button" class="nav-tab-item" id="nav-tab-appearance" data-tab="appearance" title="手卷视觉与排版设置">
+        <span class="nav-tab-icon" id="icon-tab-appearance"></span>
+        <span class="nav-tab-label">手卷</span>
+        <span class="nav-tab-dot"></span>
+      </button>
+    </div>
+  </nav>
+
+
+  <script src="app.js?v=1.9.4" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
