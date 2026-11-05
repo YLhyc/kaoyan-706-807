@@ -1,13 +1,18 @@
 // 考研背诵手卷 · 离线 PWA Service Worker (v1.9.2)
-const CACHE_NAME = 'kaoyan-handbook-v194';
+const CACHE_NAME = 'kaoyan-handbook-v195';
 const ASSETS_TO_CACHE = [
+  './',
+  './index.html',
+  './app.css?v=1.9.5',
+  './app.js?v=1.9.5',
+  './kubai_icons.js?v=1.9.5',
+  './version.json',
   './manifest.json',
   './favicon.svg',
   './icon-192.png',
   './icon-256.png',
   './icon-512.png',
-  './icon.svg',
-  './kubai_icons.js'
+  './icon.svg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -48,19 +53,29 @@ self.addEventListener('fetch', (event) => {
     return; // 直接由浏览器原生网络引擎处理，绝不拦截与缓存
   }
 
-  // 0. 版本清单与主入口走 Network-First
-  if (url.pathname.endsWith('version.json') || event.request.mode === 'navigate') {
+  // 0. 版本清单走实时 Network-First
+  if (url.pathname.endsWith('version.json')) {
     event.respondWith(
-      fetch(event.request, { cache: 'no-store' }).then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200) {
-          const responseClone = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseClone);
-          });
-        }
-        return networkResponse;
-      }).catch(() => {
-        return caches.match(event.request).then((cached) => cached || caches.match('./index.html'));
+      fetch(event.request, { cache: 'no-store' }).catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // 1. PWA 页面主入口导航：Stale-While-Revalidate (彻底解决 iPhone PWA 白屏时间长，毫秒级秒开)
+  if (event.request.mode === 'navigate' || url.pathname.endsWith('/index.html') || url.pathname === '/' || url.pathname.endsWith('/')) {
+    event.respondWith(
+      caches.match('./index.html').then((cached) => {
+        const netFetch = fetch(event.request).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', clone));
+          }
+          return networkResponse;
+        }).catch(() => null);
+
+        // 如果已有离线缓存，0ms 立即展示页面 (消除白屏)，后台静默更新缓存
+        if (cached) return cached;
+        return netFetch.then((res) => res || caches.match('./index.html'));
       })
     );
     return;

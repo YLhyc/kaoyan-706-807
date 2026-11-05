@@ -1,269 +1,351 @@
-/**
- * Kubai Icons · 考研全科双轨背诵手卷专属动态微交互矢量引擎 (v1.9.4)
- * 基于 Kubai087 动态形变算法，专为金石朱墨与宣纸质感定制。
- * 支持平滑微交互、贝塞尔缓动形变、暗黑夜光自适应与主题联动。
- */
-(function(window) {
-  'use strict';
+// ==================== 1. ENGINE.JS ====================
+// Copyright (c) 2026 Kubai087. Licensed under the Kubai Icons License; see LICENSE.
+// Kubai Icons: colour derivation, motion, geometry, gradients and filters, and the
+// runtime that mounts, paints and animates an icon. Loaded before icons.js and app.js.
 
-  // ---------- 1. Color Math & Tint System ----------
-  const REF = [83, 147, 255];
-  const hex = (c) => '#' + c.map((v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join('').toUpperCase();
-  const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
-  function tint(src, sel) {
-    const s = rgb(src);
-    return hex([0, 1, 2].map((i) => {
-      const amt = i === 2 ? (s[0] - REF[0]) / (255 - REF[0]) : (s[i] - REF[i]) / (255 - REF[i]);
-      return amt >= 0 ? sel[i] + (255 - sel[i]) * amt : sel[i] * (1 + amt);
-    }));
-  }
+// ---------- Color: the same tint rule as Lumno's tintFolderColor ----------
+const REF = [83, 147, 255];
+const hex = (c) => '#' + c.map((v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join('').toUpperCase();
+const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+function tint(src, sel) {
+  const s = rgb(src);
+  return hex([0, 1, 2].map((i) => {
+    const amt = i === 2 ? (s[0] - REF[0]) / (255 - REF[0]) : (s[i] - REF[i]) / (255 - REF[i]);
+    return amt >= 0 ? sel[i] + (255 - sel[i]) * amt : sel[i] * (1 + amt);
+  }));
+}
 
-  // ---------- 2. Motion Easing (460ms, bezier(.22, 1, .36, 1)) ----------
-  function bezier(x1, y1, x2, y2) {
-    const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
-    const cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
-    const sx = (t) => ((ax * t + bx) * t + cx) * t;
-    const sy = (t) => ((ay * t + by) * t + cy) * t;
-    const dx = (t) => (3 * ax * t + 2 * bx) * t + cx;
-    return (x) => {
-      if (x <= 0) return 0;
-      if (x >= 1) return 1;
-      let t = x;
-      for (let i = 0; i < 8; i++) {
-        const e = sx(t) - x;
-        if (Math.abs(e) < 1e-5) break;
-        const d = dx(t);
-        if (Math.abs(d) < 1e-6) break;
-        t -= e / d;
-      }
-      return sy(t);
-    };
-  }
-  const EASE = bezier(0.22, 1, 0.36, 1);
-  const DUR = 460;
-  let REDUCED = false;
-  try { REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
-
-  function interp(a, b, t) {
-    if (typeof b === 'number') return typeof a === 'number' ? a + (b - a) * t : b;
-    if (Array.isArray(b)) return b.map((v, i) => interp(a ? a[i] : v, v, t));
-    if (b && typeof b === 'object') {
-      const o = {};
-      for (const k in b) o[k] = interp(a ? a[k] : undefined, b[k], t);
-      return o;
+// ---------- Motion: 460ms, cubic-bezier(.22,1,.36,1), number by number ----------
+function bezier(x1, y1, x2, y2) {
+  const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
+  const cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+  const sx = (t) => ((ax * t + bx) * t + cx) * t;
+  const sy = (t) => ((ay * t + by) * t + cy) * t;
+  const dx = (t) => (3 * ax * t + 2 * bx) * t + cx;
+  return (x) => {
+    if (x <= 0) return 0;
+    if (x >= 1) return 1;
+    let t = x;
+    for (let i = 0; i < 8; i++) {
+      const e = sx(t) - x;
+      if (Math.abs(e) < 1e-5) break;
+      const d = dx(t);
+      if (Math.abs(d) < 1e-6) break;
+      t -= e / d;
     }
-    return b;
-  }
-
-  // ---------- 3. Geometry (Canvas 31×29) ----------
-  const KR = 2.2, CR = 1.2;
-  const f = (n) => +n.toFixed(3);
-  const R = (x, y, w, h) => [[x, y], [x + w, y], [x + w, y + h], [x, y + h]];
-  function rp(pts, r, full) {
-    const n = pts.length;
-    let d = '';
-    for (let i = 0; i < n; i++) {
-      const v = pts[i], a = pts[(i + n - 1) % n], b = pts[(i + 1) % n];
-      const ri = Array.isArray(r) ? r[i] : r;
-      const la = Math.hypot(a[0] - v[0], a[1] - v[1]) || 1e-6;
-      const lb = Math.hypot(b[0] - v[0], b[1] - v[1]) || 1e-6;
-      const lim = full ? 1 : 0.5;
-      const k1 = Math.min(ri, la * lim) / la, k2 = Math.min(ri, lb * lim) / lb;
-      d += (i ? 'L' : 'M') + f(v[0] + (a[0] - v[0]) * k1) + ' ' + f(v[1] + (a[1] - v[1]) * k1)
-        + 'Q' + f(v[0]) + ' ' + f(v[1]) + ' ' + f(v[0] + (b[0] - v[0]) * k2) + ' ' + f(v[1] + (b[1] - v[1]) * k2);
-    }
-    return d + 'Z';
-  }
-  const rr = (x, y, w, h, r) => rp(R(x, y, w, h), r);
-  const circ = (cx, cy, r) => `M${f(cx - r)} ${f(cy)}A${f(r)} ${f(r)} 0 1 0 ${f(cx + r)} ${f(cy)}A${f(r)} ${f(r)} 0 1 0 ${f(cx - r)} ${f(cy)}Z`;
-  const lines = (x, y, widths) => widths.map((w, i) => `M${f(x)} ${f(y + i * 3)}H${f(x + w)}`).join('');
-  function star(r1, r2) {
-    const pts = [];
-    for (let i = 0; i < 10; i++) {
-      const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? r2 : r1;
-      pts.push([Math.cos(a) * r, Math.sin(a) * r]);
-    }
-    return rp(pts, 0.2);
-  }
-  function gear(teeth, rOut, rIn) {
-    const pts = [], step = 360 / teeth, rad = (d) => d * Math.PI / 180;
-    for (let i = 0; i < teeth; i++) {
-      const a = i * step;
-      [[rIn, a - step * 0.3], [rOut, a - step * 0.17], [rOut, a + step * 0.17], [rIn, a + step * 0.3]].forEach(([r, d]) => {
-        pts.push([15.5 + r * Math.sin(rad(d)), 12.5 - r * Math.cos(rad(d))]);
-      });
-    }
-    return rp(pts, 0.8);
-  }
-  function frontPiece(A, B, c, rc) {
-    const xl = A[0] - Math.sqrt(A[2] ** 2 - (c - A[1]) ** 2), xr = B[0] + Math.sqrt(B[2] ** 2 - (c - B[1]) ** 2);
-    const aL = Math.atan2(c - A[1], xl - A[0]) - rc / A[2];
-    const aR = Math.atan2(c - B[1], xr - B[0]) + rc / B[2];
-    const bL = [A[0] + A[2] * Math.cos(aL), A[1] + A[2] * Math.sin(aL)];
-    const bR = [B[0] + B[2] * Math.cos(aR), B[1] + B[2] * Math.sin(aR)];
-    return `M${f(xl + rc)} ${f(c)}Q${f(xl)} ${f(c)} ${f(bL[0])} ${f(bL[1])}`
-      + `A${f(A[2])} ${f(A[2])} 0 0 0 ${f(A[0])} ${f(A[1] + A[2])}L${f(B[0])} ${f(B[1] + B[2])}`
-      + `A${f(B[2])} ${f(B[2])} 0 0 0 ${f(bR[0])} ${f(bR[1])}Q${f(xr)} ${f(c)} ${f(xr - rc)} ${f(c)}Z`;
-  }
-
-  // ---------- 4. Gradients and Filter IDs ----------
-  function makeU(k) {
-    const grads = [];
-    const gid = (type, h, s, d) => {
-      const id = `${type}-${k}-${grads.length}`;
-      grads.push({ id, type, h, s, d });
-      return `url(#${id})`;
-    };
-    return {
-      lo: (h) => gid('lo', h, false, false),
-      loS: gid('lo', 21, true, false),
-      up: (h) => gid('up', h, false, false),
-      upS: gid('up', 21, true, false),
-      sh: `url(#sh-${k})`,
-      hi: `url(#hi-${k})`,
-      id: (n) => `${n}-${k}`,
-      grads
-    };
-  }
-
-  function defs(k, grads) {
-    const lines = [
-      `<filter id="sh-${k}" x="-30%" y="-30%" width="160%" height="170%">`,
-      '  <feDropShadow dx="0" dy="1.4" stdDeviation="1.1" flood-color="#000" flood-opacity="0"/>',
-      '  <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.22 0"/>',
-      '</filter>',
-      `<filter id="hi-${k}" x="-20%" y="-20%" width="140%" height="140%">`,
-      '  <feDropShadow dx="0" dy="0.6" stdDeviation="0.4" flood-color="#fff" flood-opacity="0.35"/>',
-      '</filter>'
-    ];
-    for (const g of grads) {
-      if (g.type === 'lo') {
-        lines.push(`<linearGradient id="${g.id}" x1="0" y1="0" x2="0" y2="100%">`,
-          '  <stop offset="0%" data-src="#A6C8FF"/>',
-          '  <stop offset="100%" data-src="#4080F4"/>',
-          '</linearGradient>');
-      } else {
-        lines.push(`<linearGradient id="${g.id}" x1="0" y1="0" x2="0" y2="100%">`,
-          '  <stop offset="0%" data-src="#BFE0FF"/>',
-          '  <stop offset="100%" data-src="#6BA6FF"/>',
-          '</linearGradient>');
-      }
-    }
-    return `<defs>${lines.join('')}</defs>`;
-  }
-
-  const soften = (h, k) => hex(rgb(h).map((v) => v + (255 - v) * k));
-  const mute = (h, sat, dark) => {
-    const c = rgb(h), g = 0.3 * c[0] + 0.59 * c[1] + 0.11 * c[2];
-    return hex(c.map((v) => (v + (g - v) * sat) * (1 - dark)));
+    return sy(t);
   };
-
-  const clearTone = (name, base, n) => ({
-    name,
-    colors: Array(n).fill(soften(base, 0.1)),
-    edges: Array(n).fill(mute(base, 0, 0.16)),
-    deepMarks: true
-  });
-
-  const flatTone = (name, base, n) => ({
-    name,
-    colors: Array(n).fill(base),
-    edges: Array(n).fill(base),
-    deepMarks: false
-  });
-
-  // ---------- 5. Palettes for App Themes ----------
-  // 经典金石朱墨 (默认)
-  const PAL_ZHUSHA = clearTone('金石朱墨', '#B8332A', 30);
-  // 暗黑夜光模式
-  const PAL_DARK = clearTone('暗夜珊瑚', '#FF7860', 30);
-  // 沉香宣纸模式
-  const PAL_PAPER = clearTone('沉香赭墨', '#8A4B1A', 30);
-
-  const runtime = { palette: PAL_ZHUSHA };
-
-  // ---------- 6. Runtime Paint & Morph System ----------
-  const SVG_NS = 'http://www.w3.org/2000/svg';
-  const ICON_VIEWBOX = '0 -2 31 29';
-  const at = (el, attrs) => { for (const k in attrs) el.setAttribute(k, attrs[k]); };
-
-  function render(inst) {
-    const cur = inst.cur;
-    if (inst.icon.draw) inst.icon.draw(cur, inst.E);
-    for (const [ol, shape] of inst.clips) {
-      const d = ol.getAttribute('d');
-      if (d && shape.getAttribute('d') !== d) shape.setAttribute('d', d);
-    }
-    const deep = Boolean(runtime.palette.deepMarks);
-    const c = rgb(runtime.palette.colors[0] || '#B8332A');
-    const e = rgb(runtime.palette.edges[0] || '#8B1E17');
-    const key = hex(c) + hex(e) + deep;
-    if (inst.painted === key) return;
-    inst.painted = key;
-
-    const pick = (src) => (rgb(src)[0] <= REF[0] ? e : c);
-    for (const [el, attr, src] of inst.tints) {
-      el.setAttribute(attr, tint(src, el.tagName !== 'stop' ? pick(src) : c));
-    }
-    for (const el of inst.whites) {
-      el.setAttribute(el.dataset.w, deep ? tint('#2F6FE0', e) : '#fff');
-    }
-    for (const stop of inst.pures) {
-      const base = tint(stop.dataset.src, pick(stop.dataset.src));
-      stop.setAttribute('stop-color', deep && stop.dataset.pure === '0' ? soften(base, 0.72) : base);
-    }
-    if (inst.shadow) {
-      const sh = rgb(tint('#8AB6FF', c));
-      inst.shadow.setAttribute('values', `0 0 0 0 ${f(sh[0] / 255)} 0 0 0 0 ${f(sh[1] / 255)} 0 0 0 0 ${f(sh[2] / 255)} 0 0 0 0.22 0`);
-    }
+}
+const EASE = bezier(0.22, 1, 0.36, 1);
+const DUR = 460;
+let REDUCED = false;
+try { REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+function interp(a, b, t) {
+  if (typeof b === 'number') return typeof a === 'number' ? a + (b - a) * t : b;
+  if (Array.isArray(b)) return b.map((v, i) => interp(a ? a[i] : v, v, t));
+  if (b && typeof b === 'object') {
+    const o = {};
+    for (const k in b) o[k] = interp(a ? a[k] : undefined, b[k], t);
+    return o;
   }
+  return b;
+}
 
-  function go(inst) {
-    const to = inst.icon.target(inst.hover);
-    if (!inst.cur) { inst.cur = to; render(inst); return; }
-    if (inst.raf) cancelAnimationFrame(inst.raf);
-    if (REDUCED) { inst.cur = to; render(inst); return; }
-    const from = inst.cur, t0 = performance.now();
-    const tick = (now) => {
-      const t = Math.min(1, (now - t0) / DUR);
-      inst.cur = interp(from, to, EASE(t));
-      render(inst);
-      if (t < 1) inst.raf = requestAnimationFrame(tick);
-    };
-    inst.raf = requestAnimationFrame(tick);
+// ---------- Geometry. Canvas 31×29, live area x 4–27 / y 2–23, baseline y=23. ----------
+// Fill radii. Outside strokes add 1, so the corner you see is 3.2, the folder's.
+const KR = 2.2, CR = 1.2;
+const f = (n) => +n.toFixed(3);
+const R = (x, y, w, h) => [[x, y], [x + w, y], [x + w, y + h], [x, y + h]];
+// `full` lets a corner use a whole edge when its neighbour on that edge is small.
+function rp(pts, r, full) {
+  const n = pts.length;
+  let d = '';
+  for (let i = 0; i < n; i++) {
+    const v = pts[i], a = pts[(i + n - 1) % n], b = pts[(i + 1) % n];
+    const ri = Array.isArray(r) ? r[i] : r;
+    const la = Math.hypot(a[0] - v[0], a[1] - v[1]) || 1e-6;
+    const lb = Math.hypot(b[0] - v[0], b[1] - v[1]) || 1e-6;
+    const lim = full ? 1 : 0.5;
+    const k1 = Math.min(ri, la * lim) / la, k2 = Math.min(ri, lb * lim) / lb;
+    d += (i ? 'L' : 'M') + f(v[0] + (a[0] - v[0]) * k1) + ' ' + f(v[1] + (a[1] - v[1]) * k1)
+      + 'Q' + f(v[0]) + ' ' + f(v[1]) + ' ' + f(v[0] + (b[0] - v[0]) * k2) + ' ' + f(v[1] + (b[1] - v[1]) * k2);
   }
+  return d + 'Z';
+}
+const rr = (x, y, w, h, r) => rp(R(x, y, w, h), r);
+// Counter-clockwise, while R() runs clockwise: overlapping the two in one path punches a hole.
+const circ = (cx, cy, r) => `M${f(cx - r)} ${f(cy)}A${f(r)} ${f(r)} 0 1 0 ${f(cx + r)} ${f(cy)}A${f(r)} ${f(r)} 0 1 0 ${f(cx - r)} ${f(cy)}Z`;
+const poly = (pts) => 'M' + pts.map((p) => f(p[0]) + ' ' + f(p[1])).join('L');
+// Content lines, 3 apart: few and thick so they still read at 24px.
+const lines = (x, y, widths) => widths.map((w, i) => `M${f(x)} ${f(y + i * 3)}H${f(x + w)}`).join('');
+function star(r1, r2) {
+  const pts = [];
+  for (let i = 0; i < 10; i++) {
+    const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? r2 : r1;
+    pts.push([Math.cos(a) * r, Math.sin(a) * r]);
+  }
+  return rp(pts, 0.2);
+}
+function gear(teeth, rOut, rIn) {
+  const pts = [], step = 360 / teeth, rad = (d) => d * Math.PI / 180;
+  for (let i = 0; i < teeth; i++) {
+    const a = i * step;
+    [[rIn, a - step * 0.3], [rOut, a - step * 0.17], [rOut, a + step * 0.17], [rIn, a + step * 0.3]].forEach(([r, d]) => {
+      pts.push([15.5 + r * Math.sin(rad(d)), 12.5 - r * Math.cos(rad(d))]);
+    });
+  }
+  return rp(pts, 0.8);
+}
+function cross(a, b) {
+  const dx = b[0] - a[0], dy = b[1] - a[1], d = Math.hypot(dx, dy);
+  const l = (a[2] * a[2] - b[2] * b[2] + d * d) / (2 * d);
+  const h = Math.sqrt(Math.max(0, a[2] * a[2] - l * l));
+  const mx = a[0] + dx * l / d, my = a[1] + dy * l / d;
+  const p1 = [mx + h * dy / d, my - h * dx / d], p2 = [mx - h * dy / d, my + h * dx / d];
+  return p1[1] < p2[1] ? p1 : p2;
+}
+function arc(c, from, to) {
+  let dl = Math.atan2(to[1] - c[1], to[0] - c[0]) - Math.atan2(from[1] - c[1], from[0] - c[0]);
+  while (dl < 0) dl += Math.PI * 2;
+  return `A${f(c[2])} ${f(c[2])} 0 ${dl > Math.PI ? 1 : 0} 1 ${f(to[0])} ${f(to[1])}`;
+}
+function cloud(L, T, Rc) {
+  const s = [L[0], L[1] + L[2]], i1 = cross(L, T), i2 = cross(T, Rc), e = [Rc[0], Rc[1] + Rc[2]];
+  return `M${f(s[0])} ${f(s[1])}${arc(L, s, i1)}${arc(T, i1, i2)}${arc(Rc, i2, e)}Z`;
+}
+// The part of a round shape below y=c: left side on circle A, right side on circle B,
+// flat bottom between their lowest points. Its top corners are rounded by rc, like the
+// folder's front panel, so the back shows at the corners.
+function frontPiece(A, B, c, rc) {
+  const xl = A[0] - Math.sqrt(A[2] ** 2 - (c - A[1]) ** 2), xr = B[0] + Math.sqrt(B[2] ** 2 - (c - B[1]) ** 2);
+  const aL = Math.atan2(c - A[1], xl - A[0]) - rc / A[2];
+  const aR = Math.atan2(c - B[1], xr - B[0]) + rc / B[2];
+  const bL = [A[0] + A[2] * Math.cos(aL), A[1] + A[2] * Math.sin(aL)];
+  const bR = [B[0] + B[2] * Math.cos(aR), B[1] + B[2] * Math.sin(aR)];
+  return `M${f(xl + rc)} ${f(c)}Q${f(xl)} ${f(c)} ${f(bL[0])} ${f(bL[1])}`
+    + `A${f(A[2])} ${f(A[2])} 0 0 0 ${f(A[0])} ${f(A[1] + A[2])}L${f(B[0])} ${f(B[1] + B[2])}`
+    + `A${f(B[2])} ${f(B[2])} 0 0 0 ${f(bR[0])} ${f(bR[1])}Q${f(xr)} ${f(c)} ${f(xr - rc)} ${f(c)}Z`;
+}
+const sector = (base, sw, r) => {
+  const p = (a) => [15.5 + r * Math.sin(a * Math.PI / 180), 12.5 - r * Math.cos(a * Math.PI / 180)];
+  const a = p(base), b = p(base + sw);
+  return `M15.5 12.5L${f(a[0])} ${f(a[1])}A${r} ${r} 0 ${sw > 180 ? 1 : 0} 1 ${f(b[0])} ${f(b[1])}Z`;
+};
+const at = (el, o) => { if (el) for (const k in o) el.setAttribute(k, o[k]); };
+// The clock rests at 10:08, the pose that reads as a clock at any size.
+const CLOCK_MINUTES = 10 * 60 + 8;
 
-  // ---------- 7. 11 款核心 Kubai 动态图标定义 ----------
-  const OL = 'class="ol" data-t="stroke:#5393FF"';
-  const LINE = 'class="ln" data-t="stroke:#D3E2FC"';
-  const ACC = 'class="ln" data-t="stroke:#5393FF"';
-  const DEEP = 'data-t="fill:#2F6FE0"';
-  const DEEPS = 'data-t="stroke:#2F6FE0"';
-  const FOLDER_BACK_R = [KR, 1.4, 1.4, KR, KR, KR];
-  const GEAR = gear(6, 11.4, 9);
-  const today = new Date();
-  const tomorrow = new Date(today.getTime() + 86400000);
 
-  const ICONS = [
-    {
-    name: '书本',
-    // A closed book whose cover swings open on hover.
-    svg: (u) => {
-      const back = rr(6.3, 1.5, 18.4, 22, KR), cover = rr(6.3, 1.5, 18.4, 19.4, KR);
-      return `<g filter="${u.sh}"><path d="${back}" fill="${u.loS}"/></g><path d="${back}" ${OL}/>
-        <path d="${rr(7.8, 3, 15.6, 19.4, CR)}" fill="#fff"/>
-        <path d="${lines(11.4, 8.4, [9.2, 6.6])}" ${ACC}/>
-        <g data-n="cv"><g filter="${u.hi}"><path d="${cover}" fill="${u.loS}"/></g><path data-n="sh" d="${cover}" ${DEEP} opacity="0"/><path d="${cover}" ${OL}/>
-          <path d="${lines(10.4, 7.6, [10.2])}" class="ln" stroke="#fff" data-w="stroke"/></g>`;
-    },
-    target: (h) => ({ o: h ? 1 : 0 }),
-    draw(p, E) {
-      const o = Math.max(0, Math.min(1, p.o));
-      at(E.cv, { transform: `translate(6.3 0) scale(${f(Math.max(0.001, 1 - 0.72 * o))} 1) translate(-6.3 0)` });
-      at(E.sh, { opacity: f(0.35 * o) });
+// ---------- Instances ----------
+const BAND = 1.2;
+const grad = (id, stops) => `<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">${stops.map(([o, c]) => `<stop offset="${o}" stop-color="${c}" data-t="stop-color:${c}"/>`).join('')}</linearGradient>`;
+// Gradient fills for one icon; banded ones are made per shape height so the band stays 1.2 units.
+function makeU(k) {
+  const grads = new Map();
+  grads.set(`loS-${k}`, [[0, '#93BBFF'], [1, '#7FAEFF']]);
+  grads.set(`upS-${k}`, [[0, '#CCDFFF'], [1, '#ADCBFF']]);
+  const banded = (kind, h) => {
+    const o = f(Math.max(0.5, 1 - BAND / h));
+    const id = `${kind}-${k}-${Math.round(o * 1000)}`;
+    if (!grads.has(id)) {
+      grads.set(id, kind === 'lo'
+        ? [[0, '#93BBFF'], [o, '#81B0FF'], [f(o + 0.0001), '#4389FF'], [1, '#97BEFF']]
+        : [[0, '#CCDFFF'], [o, '#B2CEFF'], [f(o + 0.0001), '#89B5FF'], [1, '#97BEFF']]);
     }
-  },
-    {
+    return `url(#${id})`;
+  };
+  // A solid fill that a soft palette turns into a white-to-colour gradient.
+  const pure = (src) => {
+    const id = `pure-${k}-${src.slice(1)}`;
+    if (!grads.has(id)) grads.set(id, { pure: src });
+    return `url(#${id})`;
+  };
+  return {
+    grads, pure,
+    lo: (h) => banded('lo', h), up: (h) => banded('up', h),
+    loS: `url(#loS-${k})`, upS: `url(#upS-${k})`,
+    sh: `url(#sh-${k})`, hi: `url(#hi-${k})`, id: (n) => `${n}-${k}`
+  };
+}
+const defs = (k, grads) => `<defs>${[...grads].map(([id, stops]) => stops.pure
+  ? `<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" data-pure="0" data-src="${stops.pure}"/><stop offset="1" data-pure="1" data-src="${stops.pure}"/></linearGradient>`
+  : grad(id, stops)).join('')}
+  <filter id="sh-${k}" x="-40%" y="-40%" width="180%" height="190%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="2"/><feOffset dy="2" result="o"/>
+    <feColorMatrix in="o" type="matrix" data-sh values="0 0 0 0 0.54 0 0 0 0 0.71 0 0 0 0 1 0 0 0 0.21 0"/>
+    <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="hi-${k}" x="-10%" y="-10%" width="120%" height="130%" color-interpolation-filters="sRGB">
+    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="a"/>
+    <feOffset in="a" dy="0.7"/><feGaussianBlur stdDeviation="0.35"/>
+    <feComposite in2="a" operator="arithmetic" k2="-1" k3="1"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0"/>
+    <feBlend in2="SourceGraphic" mode="overlay"/>
+  </filter></defs>`;
+
+
+// ---------- Palettes ----------
+const soften = (h, k) => hex(rgb(h).map((v) => v + (255 - v) * k));
+// Pulls a colour toward its own grey by `sat`, then darkens it by `dark`.
+const mute = (h, sat, dark) => {
+  const c = rgb(h), g = 0.3 * c[0] + 0.59 * c[1] + 0.11 * c[2];
+  return hex(c.map((v) => (v + (g - v) * sat) * (1 - dark)));
+};
+// One colour for every icon.
+const flatTone = (name, base, n) => ({ name, colors: Array(n).fill(base) });
+// A clear tone from one base colour: fills lifted a little toward white, outlines and deep
+// marks a step deeper, and white marks turned deep so they stay legible on the light body.
+// Another base gives the same treatment in another hue.
+const clearTone = (name, base, n) => ({
+  name,
+  colors: Array(n).fill(soften(base, 0.1)),
+  edges: Array(n).fill(mute(base, 0, 0.16)),
+  deepMarks: true
+});
+
+// ---------- Runtime ----------
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const ICON_VIEWBOX = '0 -2 31 29';
+const runtime = { palette: null };
+
+// Builds one icon inside `host` and returns its live instance.
+function mountIcon(icon, i, host) {
+  const k = 'i' + i;
+  const u = makeU(k);
+  const body = icon.svg(u);
+  host.innerHTML = `<svg viewBox="${ICON_VIEWBOX}" fill="none" aria-hidden="true">${defs(k, u.grads)}${body}</svg>`;
+  const svg = host.querySelector('svg');
+  const E = {};
+  svg.querySelectorAll('[data-n]').forEach((el) => { E[el.dataset.n] = el; });
+  const tints = [...svg.querySelectorAll('[data-t]')].map((el) => { const [attr, src] = el.dataset.t.split(':'); return [el, attr, src]; });
+  // Outside strokes: each 2-unit outline is masked by its own shape, so only the outer
+  // 1 unit shows and the fill keeps its full size.
+  const defsEl = svg.querySelector('defs');
+  const clips = [...svg.querySelectorAll('.ol')].map((el, j) => {
+    const mask = document.createElementNS(SVG_NS, 'mask');
+    mask.id = `ol-${k}-${j}`;
+    at(mask, { maskUnits: 'userSpaceOnUse', x: -40, y: -40, width: 111, height: 109 });
+    mask.innerHTML = '<rect x="-40" y="-40" width="111" height="109" fill="#fff"/>';
+    const shape = document.createElementNS(SVG_NS, 'path');
+    shape.setAttribute('fill', '#000');
+    shape.setAttribute('fill-rule', el.getAttribute('fill-rule') || 'nonzero');
+    mask.appendChild(shape);
+    defsEl.appendChild(mask);
+    el.setAttribute('mask', `url(#${mask.id})`);
+    return [el, shape];
+  });
+  const inst = {
+    icon, i, E, tints, clips,
+    whites: [...svg.querySelectorAll('[data-w]')],
+    pures: [...svg.querySelectorAll('[data-pure]')],
+    shadow: svg.querySelector('[data-sh]'),
+    s: {}, raf: 0, painted: '', hover: 0
+  };
+  inst.cur = targetOf(inst);
+  render(inst);
+  return inst;
+}
+
+function targetOf(inst) {
+  const pal = runtime.palette;
+  const h = Boolean(inst.hover > 0 || inst.pin || inst.demo);
+  const t = inst.icon.target(h, inst.s);
+  t.c = rgb(pal.colors[inst.i]);
+  t.e = rgb((pal.edges || pal.colors)[inst.i]);
+  return t;
+}
+
+function render(inst) {
+  const p = inst.cur;
+  inst.icon.draw(p, inst.E, inst);
+  for (const [el, shape] of inst.clips) {
+    const d = el.getAttribute('d');
+    if (d && shape.getAttribute('d') !== d) shape.setAttribute('d', d);
+  }
+  const deep = Boolean(runtime.palette.deepMarks);
+  const key = hex(p.c) + hex(p.e) + deep;
+  if (inst.painted === key) return;
+  inst.painted = key;
+  // Gradients and light marks follow the fill colour; outlines and deep marks follow the
+  // edge colour, which stays strong when the fill is lifted.
+  const pick = (src) => (rgb(src)[0] <= REF[0] ? p.e : p.c);
+  for (const [el, attr, src] of inst.tints) el.setAttribute(attr, tint(src, el.tagName !== 'stop' ? pick(src) : p.c));
+  // White marks sit on mid-tone bodies; on a light body they turn deep to stay legible.
+  for (const el of inst.whites) el.setAttribute(el.dataset.w, deep ? tint('#2F6FE0', p.e) : '#fff');
+  // Large solid fills: solid normally; a light palette fades them from near-white at the top.
+  for (const stop of inst.pures) {
+    const base = tint(stop.dataset.src, pick(stop.dataset.src));
+    stop.setAttribute('stop-color', deep && stop.dataset.pure === '0' ? soften(base, 0.72) : base);
+  }
+  const sh = rgb(tint('#8AB6FF', p.c));
+  inst.shadow.setAttribute('values', `0 0 0 0 ${f(sh[0] / 255)} 0 0 0 0 ${f(sh[1] / 255)} 0 0 0 0 ${f(sh[2] / 255)} 0 0 0 0.21 0`);
+}
+
+// Starts from what is on screen, so reversing mid-way carries on smoothly.
+function go(inst) {
+  const to = targetOf(inst);
+  cancelAnimationFrame(inst.raf);
+  if (REDUCED) { inst.cur = to; render(inst); return; }
+  const from = inst.cur, t0 = performance.now();
+  const tick = (now) => {
+    const t = Math.min(1, (now - t0) / DUR);
+    inst.cur = interp(from, to, EASE(t));
+    render(inst);
+    if (t < 1) inst.raf = requestAnimationFrame(tick);
+  };
+  inst.raf = requestAnimationFrame(tick);
+}
+
+// ==================== 2. ICONS.JS ====================
+// Copyright (c) 2026 Kubai087. Licensed under the Kubai Icons License; see LICENSE.
+// The icon set. Each entry: svg(u) builds the layers, target(hover, state) returns the
+// numbers for rest or hover, draw(p, E) writes the interpolated numbers back. A contributed
+// icon also names its designer's GitHub handle in `by`.
+
+// ---------- Icons ----------
+// Fills: u.lo(h) / u.up(h) carry the thin bottom band. Use them only on a flat-bottomed
+// rectangle of height h whose bottom is clear: nothing within about 3 units of the edge
+// and the piece itself not short. Everything else, and curved shapes, use u.loS / u.upS.
+// Marks: on a mid-tone (back) body they are white; on a light (front) body or white
+// content they take the deep tint; a supporting object laid over the subject (the
+// lens) is deep so it reads as separate. Weights: content lines 1.6, glyphs 2.2.
+const OL = 'class="ol" data-t="stroke:#5393FF"';
+const LINE = 'class="ln" data-t="stroke:#D3E2FC"';
+const ACC = 'class="ln" data-t="stroke:#5393FF"';
+const DEEP = 'data-t="fill:#2F6FE0"';
+const DEEPS = 'data-t="stroke:#2F6FE0"';
+const FOLDER_BACK_R = [KR, 1.4, 1.4, KR, KR, KR];
+// Keylines (fills; outside strokes add 1 all round), all centred on (15.5, 12.5) and scaled from the folder's 23-wide body
+// (Material's 20 / 18 / 20×16 grid × 1.15): circle Ø23, square 20.6, landscape 23×18.4,
+// portrait 18.4×23. Outlines sit 1 unit outside a shape; a coloured band around white
+// content keeps 2+ units or is dropped so the content meets the edge.
+const TRASH_LID = rp([[5.4, 6.6], [5.4, 4], [12.4, 4], [12.4, 1.6], [18.6, 1.6], [18.6, 4], [25.6, 4], [25.6, 6.6]], [1, 1, 0.5, 0.8, 0.8, 0.5, 1, 1]);
+const GEAR = gear(6, 11.4, 9);
+  const MAIL_T = 3.3;
+const today = new Date();
+const tomorrow = new Date(today.getTime() + 86400000);
+
+// A capsule ring centred on the origin: outer w×h, wall t (fill-rule evenodd).
+const capsuleRing = (w, h, t) => rr(-w / 2, -h / 2, w, h, h / 2) + rr(-w / 2 + t, -h / 2 + t, w - 2 * t, h - 2 * t, (h - 2 * t) / 2);
+const LINK_RING = capsuleRing(15.6, 9.6, 2.8);
+// An arc of radius r round the origin from angle a0 to a1 (degrees, clockwise), and a
+// solid arrowhead whose base covers the arc's end. Strokes never overlap one another,
+// so the head stays crisp instead of clotting where strokes would cross.
+function arcArrow(a0, a1, r) {
+  const rad = (d) => d * Math.PI / 180;
+  const pt = (a) => [r * Math.cos(rad(a)), r * Math.sin(rad(a))];
+  const s = pt(a0), e = pt(a1);
+  const t = [-Math.sin(rad(a1)), Math.cos(rad(a1))], n = [Math.cos(rad(a1)), Math.sin(rad(a1))];
+  const tip = [e[0] + t[0] * 3, e[1] + t[1] * 3];
+  const head = rp([[e[0] + n[0] * 2.5, e[1] + n[1] * 2.5], tip, [e[0] - n[0] * 2.5, e[1] - n[1] * 2.5]], 0.5);
+  return { arc: `M${f(s[0])} ${f(s[1])}A${r} ${r} 0 0 1 ${f(e[0])} ${f(e[1])}`, head };
+}
+// Each arrow's tip stops well short of the other arc's tail.
+const SYNC_A = arcArrow(215, 300, 4.4), SYNC_B = arcArrow(35, 120, 4.4);
+const SHORTCUT_TILES = [[7.2, 4.2], [16.5, 4.2], [7.2, 13.5], [16.5, 13.5]];
+
+const ICONS = [
+  {
     name: '文件夹',
     svg: (u) => `
       <g filter="${u.sh}"><path data-n="back" fill="${u.lo(21)}"/></g>
@@ -284,66 +366,7 @@
       at(E.front, { d: fr }); at(E.frontO, { d: fr });
     }
   },
-    {
-    name: '图表',
-    // A bar chart whose bars rise and fall to new values on hover.
-    svg: (u) => `<g filter="${u.sh}"><g filter="${u.hi}"><path d="${rr(5.2, 2.2, 20.6, 20.6, KR)}" fill="${u.loS}"/></g></g>
-      <path d="${rr(5.2, 2.2, 20.6, 20.6, KR)}" ${OL}/>
-      <path data-n="b1" fill="#fff"/><path data-n="b2" fill="#fff"/><path data-n="b3" fill="#fff"/>`,
-    target: (h) => ({ hgt: h ? [10, 5.4, 13.4] : [5.4, 10.6, 7.6] }),
-    draw(p, E) {
-      [8.4, 13.7, 19].forEach((x, i) => {
-        const hh = p.hgt[i];
-        at(E['b' + (i + 1)], { d: rp(R(x, 20 - hh, 3.6, hh), [1, 1, 0.4, 0.4]) });
-      });
-    }
-  },
-    {
-    name: '眼睛',
-    // An eye that glances to the side on hover.
-    svg: (u) => {
-      const eye = 'M3.6 12.5C7 6.6 11 4.2 15.5 4.2C20 4.2 24 6.6 27.4 12.5C24 18.4 20 20.8 15.5 20.8C11 20.8 7 18.4 3.6 12.5Z';
-      return `<clipPath id="${u.id('eye')}"><path d="${eye}"/></clipPath>
-        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${eye}" fill="${u.loS}"/></g></g>
-        <g clip-path="url(#${u.id('eye')})"><g data-n="iris"><g filter="${u.hi}"><path d="${circ(0, 0, 5.4)}" fill="${u.upS}"/></g><path d="${circ(0, 0, 5.4)}" ${OL}/>
-          <circle data-n="pup" ${DEEP}/></g></g>
-        <path d="${eye}" ${OL}/>`;
-    },
-    target: (h) => ({ x: h ? 2.6 : 0, pup: h ? 2.9 : 2.3 }),
-    draw(p, E) { at(E.iris, { transform: `translate(${f(15.5 + p.x)} 12.5)` }); at(E.pup, { r: f(p.pup) }); }
-  },
-    {
-    name: '外观',
-    // Light and dark halves of one disc; hover turns the light half across.
-    svg: (u) => {
-      const disc = [15.5, 12.5, 11.5], half = frontPiece(disc, disc, 12.5, 2);
-      return `
-      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${circ(15.5, 12.5, 11.5)}" fill="${u.loS}"/></g></g>
-      <path d="${circ(15.5, 12.5, 11.5)}" ${OL}/>
-      <g filter="${u.hi}"><g data-n="half"><path d="${half}" fill="${u.upS}"/></g></g>
-      <g data-n="halfO"><path d="${half}" ${OL}/></g>`;
-    },
-    target: (h) => ({ rot: h ? 90 : -90 }),
-    draw(p, E) {
-      const t = `rotate(${f(p.rot)} 15.5 12.5)`;
-      at(E.half, { transform: t }); at(E.halfO, { transform: t });
-    }
-  },
-    {
-    name: '设置',
-    svg: (u) => `
-      <g filter="${u.sh}"><g filter="${u.hi}"><g data-n="gear"><path d="${GEAR}" fill="${u.loS}"/></g></g></g><g data-n="gearO"><path d="${GEAR}" ${OL}/></g>
-      <path d="${circ(15.5, 12.5, 5.8)}" fill="#fff"/>
-      <g filter="${u.hi}"><path data-n="hub" fill="${u.upS}"/></g>
-      <path data-n="hubO" ${OL}/>`,
-    target: (h) => ({ rot: h ? 60 : 0, hub: h ? 2.9 : 3.5 }),
-    draw(p, E) {
-      at(E.gear, { transform: `rotate(${f(p.rot)} 15.5 12.5)` }); at(E.gearO, { transform: `rotate(${f(p.rot)} 15.5 12.5)` });
-      const d = circ(15.5, 12.5, p.hub);
-      at(E.hub, { d }); at(E.hubO, { d });
-    }
-  },
-    {
+  {
     name: '搜索',
     // The page is the subject; the lens is a supporting mark on its corner, a solid
     // ring with no inner outline so it never leaves a thin band.
@@ -365,51 +388,47 @@
       at(E.lens, { transform: `translate(${f(x)} ${f(y)}) scale(${f(s)})` });
     }
   },
-    {
-    name: '星标',
-    // A star with a lighter star inset; it turns one point on hover.
+  {
+    name: '邮件',
     svg: (u) => {
-      const big = star(11.6, 5.4), small = star(5.6, 2.6);
-      return `<g filter="${u.sh}"><g filter="${u.hi}"><g data-n="r1"><path d="${big}" fill="${u.loS}"/></g></g></g>
-        <g data-n="r1o"><path d="${big}" ${OL}/></g>
-        <g filter="${u.hi}"><g data-n="r2"><path d="${small}" fill="${u.upS}"/></g></g>
-        <g data-n="r2o"><path d="${small}" ${OL}/></g>`;
+      const T = MAIL_T;
+      const body = rr(4, T, 23, 18.4, KR);
+      const pocket = rp([[4, T + 3.8], [15.5, T + 10.4], [27, T + 3.8], [27, T + 18.4], [4, T + 18.4]], [0.6, 2.4, 0.6, KR, KR]);
+      const B = T + 18.4;
+      return `
+      <g filter="${u.sh}"><path d="${body}" fill="${u.lo(18.4)}"/></g>
+      <path d="${body}" ${OL}/>
+      <g data-n="inG"><path data-n="inF" fill="${u.loS}"/><path data-n="inO" ${OL}/></g>
+      <g data-n="letter"><path d="${rr(7, 0, 17, 12, CR)}" fill="#fff"/><path d="${lines(9.8, 3.6, [7])}" ${ACC}/><path d="${lines(9.8, 6.8, [11.4])}" ${LINE}/></g>
+      <path d="${pocket}" fill="${u.up(15.6)}"/>
+      <g data-n="outG"><g filter="${u.hi}"><path data-n="outF" fill="${u.loS}"/></g><path data-n="outO" ${OL}/></g>`;
     },
-    target: (h) => ({ rot: h ? 72 : 0, s: h ? 1.05 : 1 }),
+    target: (h) => ({ o: h ? 1 : 0 }),
     draw(p, E) {
-      const t = `translate(15.5 13.4) rotate(${f(p.rot)}) scale(${f(p.s)})`;
-      ['r1', 'r1o', 'r2', 'r2o'].forEach((n) => at(E[n], { transform: t }));
+      // The flap is the back sheet folded over, so it takes the back's mid tone; the pocket
+      // is the lighter front. The flap shares the body's top corners and its lower edges lie on the pocket's V;
+      // turning it scales its height about the top edge from 1 to -0.7. The letter rises after.
+      const T = MAIL_T;
+      const o = Math.max(0, Math.min(1, p.o));
+      const k = 1 + (-0.7 - 1) * Math.min(1, o / 0.55);
+      const rise = Math.max(0, Math.min(1, (o - 0.35) / 0.65));
+      // Closed it is a pentagon sharing the body's top corners. Open, its fold drops to where
+      // the body's sides turn straight and its base corners square off, so the body's side
+      // outline runs straight up into the flap's and the body's rounded top hides behind it.
+      let d;
+      if (k >= 0) {
+        d = rp([[4, T], [27, T], [27, T + 3.8 * k], [15.5, T + 10.4 * k], [4, T + 3.8 * k]], [KR, KR, 0.6, 2.4, 0.6], true);
+      } else {
+        const q = Math.min(1, -k / 0.3), fold = T + KR * q, cr = KR * (1 - q);
+        d = rp([[4, fold], [27, fold], [27, T], [15.5, T + 10.4 * k], [4, T]], [cr, cr, 0.8, 2.4, 0.8], true);
+      }
+      const down = k >= 0;
+      at(E.outF, { d }); at(E.outO, { d }); at(E.outG, { opacity: down ? 1 : 0 });
+      at(E.inF, { d }); at(E.inO, { d }); at(E.inG, { opacity: down ? 0 : 1 });
+      at(E.letter, { transform: `translate(0 ${f(T + 5 + (-6.5) * rise)})` });
     }
   },
-    {
-    name: '播放',
-    // A play button that turns into pause on hover.
-    svg: (u) => `<g filter="${u.sh}"><g filter="${u.hi}"><path d="${circ(15.5, 12.5, 11.5)}" fill="${u.loS}"/></g></g>
-      <path d="${circ(15.5, 12.5, 11.5)}" ${OL}/>
-      <path data-n="l" fill="#fff" data-w="fill"/><path data-n="r" fill="#fff" data-w="fill"/>`,
-    target: (h) => ({
-      l: h ? [[11, 7.2], [14.2, 7.2], [14.2, 17.8], [11, 17.8]] : [[12.2, 7.2], [16.4, 9.6], [16.4, 15.4], [12.2, 17.8]],
-      r: h ? [[16.8, 7.2], [20, 7.2], [20, 17.8], [16.8, 17.8]] : [[16, 9.4], [21.4, 12.5], [21.4, 12.5], [16, 15.6]]
-    }),
-    draw(p, E) { at(E.l, { d: rp(p.l, 0.8) }); at(E.r, { d: rp(p.r, 0.8) }); }
-  },
-    {
-    name: '耳机',
-    // Headphones whose cups press in on hover.
-    svg: (u) => {
-      const band = 'M4.4 14.4A11.1 11.1 0 0 1 26.6 14.4H24A8.5 8.5 0 0 0 7 14.4Z';
-      const cup = rr(0, 0, 6.8, 10.6, 3);
-      return `<g filter="${u.sh}"><g filter="${u.hi}"><path d="${band}" fill="${u.loS}"/></g></g><path d="${band}" ${OL}/>
-        <g data-n="l"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${cup}" fill="${u.upS}"/></g></g><path d="${cup}" ${OL}/></g>
-        <g data-n="r"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${cup}" fill="${u.upS}"/></g></g><path d="${cup}" ${OL}/></g>`;
-    },
-    target: (h) => ({ d: h ? 0.8 : 0 }),
-    draw(p, E) {
-      at(E.l, { transform: `translate(${f(3.6 + p.d)} 12.6)` });
-      at(E.r, { transform: `translate(${f(20.6 - p.d)} 12.6)` });
-    }
-  },
-    {
+  {
     name: '日历',
     svg: (u) => {
       const body = rr(5.2, 3.4, 20.6, 19.4, KR);
@@ -439,10 +458,1090 @@
       at(E.rings, { transform: `translate(0 ${f(p.rings)})` });
     }
   },
-  ];
+  {
+    name: '照片',
+    // Two prints, one behind the other: on hover the back one fans out to the left and
+    // the front one tilts, like leafing through an album.
+    svg: (u) => {
+      const frame = rr(4, 5.6, 23, 16.1, KR), back = rr(6, 3.3, 19, 15, KR);
+      return `
+      <g data-n="back"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${back}" fill="${u.lo(15)}"/></g></g><path d="${back}" ${OL}/></g>
+      <g data-n="front">
+        <clipPath id="${u.id('sky')}"><path d="${frame}"/></clipPath>
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${frame}" fill="${u.upS}"/></g></g>
+        <g clip-path="url(#${u.id('sky')})">
+          <circle cx="20.4" cy="9.8" r="2.5" fill="#fff"/>
+          <path d="${rp([[-1, 23], [-1, 20.2], [10.6, 10.8], [23, 20.8], [23, 23]], [0, 0, 1.8, 0, 0])}" fill="${u.loS}"/>
+          <path d="${rp([[8, 23], [8, 21.4], [19.8, 13.2], [32, 20.8], [32, 23]], [0, 0, 1.8, 0, 0])}" fill="${u.pure('#5393FF')}"/>
+        </g>
+        <path d="${frame}" ${OL}/>
+      </g>`;
+    },
+    target: (h) => ({ back: h ? [-1.4, -1.2, -9] : [0, 0, 0], front: h ? [0.6, 0.2, 4] : [0, 0, 0] }),
+    draw(p, E) {
+      at(E.back, { transform: `translate(${f(p.back[0])} ${f(p.back[1])}) rotate(${f(p.back[2])} 15.5 21.7)` });
+      at(E.front, { transform: `translate(${f(p.front[0])} ${f(p.front[1])}) rotate(${f(p.front[2])} 15.5 21.7)` });
+    }
+  },
+  {
+    name: '上传',
+    // Back: the cloud. Front: a lighter section cut from its lower part, like the
+    // folder's front panel. The arrow sits clear above the front and lifts on hover.
+    svg: (u) => `
+      <g filter="${u.sh}"><g filter="${u.hi}"><path data-n="cloud" fill="${u.loS}"/></g></g>
+      <path data-n="cloudO" ${OL}/>
+      <path data-n="arrow" fill="none" stroke="#fff" data-w="stroke" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <g filter="${u.hi}"><path data-n="front" fill="${u.upS}"/></g>
+      <path data-n="frontO" ${OL}/>`,
+    target: (h) => ({
+      L: [9.2, 15.8, h ? 6.3 : 6], T: [15.8, 9.6, h ? 8.4 : 8], Rc: [22.2, 16.2, h ? 5.9 : 5.6],
+      tip: h ? 4.8 : 6.4,
+      chord: h ? 17.6 : 16.8
+    }),
+    draw(p, E) {
+      const d = cloud(p.L, p.T, p.Rc);
+      at(E.cloud, { d }); at(E.cloudO, { d });
+      const t = p.tip;
+      at(E.arrow, { d: `M15.5 ${f(t + 7.6)}V${f(t)}M12.1 ${f(t + 3.4)}L15.5 ${f(t)}L18.9 ${f(t + 3.4)}` });
+      const fr = frontPiece(p.L, p.Rc, p.chord, 2);
+      at(E.front, { d: fr }); at(E.frontO, { d: fr });
+    }
+  },
+  {
+    name: '下载',
+    // Back: the disc. Front: a lighter lower segment. The arrow follows the front down
+    // on hover and always stays clear of it.
+    svg: (u) => {
+      const r = 11.5;
+      return `
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${circ(15.5, 12.5, r)}" fill="${u.loS}"/></g></g>
+      <path d="${circ(15.5, 12.5, r)}" ${OL}/>
+      <path data-n="arrow" fill="none" stroke="#fff" data-w="stroke" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <g filter="${u.hi}"><path data-n="seg" fill="${u.upS}"/></g>
+      <path data-n="segO" ${OL}/>`;
+    },
+    target: (h) => ({ tip: h ? 13.4 : 12.4, chord: h ? 16.6 : 15.6 }),
+    draw(p, E) {
+      const t = p.tip;
+      at(E.arrow, { d: `M15.5 ${f(t - 9.4)}V${f(t)}M11.9 ${f(t - 3.6)}L15.5 ${f(t)}L19.1 ${f(t - 3.6)}` });
+      const disc = [15.5, 12.5, 11.5];
+      const seg = frontPiece(disc, disc, p.chord, 2);
+      at(E.seg, { d: seg }); at(E.segO, { d: seg });
+    }
+  },
+  {
+    name: '书签',
+    tap: true,
+    // A coloured card with a white ribbon, as the folder carries its white file;
+    // saving turns the ribbon deep and adds a star.
+    svg: (u) => `
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${rr(6.3, 1.5, 18.4, 22, KR)}" fill="${u.lo(22)}"/></g></g>
+      <path d="${rr(6.3, 1.5, 18.4, 22, KR)}" ${OL}/>
+      <path data-n="rib" fill="#fff"/>
+      <path data-n="ribF" fill="${u.pure('#2F6FE0')}"/>
+      <path data-n="star" d="${star(2.3, 1.05)}" fill="#fff"/>
+      <g filter="${u.hi}"><path d="${rp(R(6.3, 17.4, 18.4, 6.1), [1.6, 1.6, KR, KR])}" fill="${u.upS}"/></g>
+      <path d="${rp(R(6.3, 17.4, 18.4, 6.1), [1.6, 1.6, KR, KR])}" ${OL}/>`,
+    target: (h, s) => ({ yb: s.saved ? (h ? 16.2 : 15.2) : (h ? 14.2 : 12.2), fo: s.saved ? 1 : 0 }),
+    draw(p, E) {
+      const y = p.yb, d = rp([[10.2, 1.5], [17.6, 1.5], [17.6, y], [13.9, y - 2.8], [10.2, y]], [0, 0, 0.6, 0.7, 0.6]);
+      at(E.rib, { d }); at(E.ribF, { d, opacity: f(p.fo) });
+      at(E.star, { transform: `translate(13.9 ${f(1.5 + (y - 4.3) * 0.5)}) scale(${f(Math.max(0.001, p.fo))})` });
+    }
+  },
+  {
+    name: '时钟',
+    svg: (u) => `
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${circ(15.5, 12.5, 11.5)}" fill="${u.loS}"/></g></g>
+      <path d="${circ(15.5, 12.5, 11.5)}" ${OL}/>
+      <path d="${circ(15.5, 12.5, 8.2)}" fill="#fff"/>
+      <g filter="${u.hi}"><path data-n="sweep" fill="${u.upS}"/></g>
+      <path data-n="hh" d="M15.5 12.5V8.3" stroke-width="2.6" stroke-linecap="round" data-t="stroke:#89B5FF"/>
+      <path data-n="mh" d="M15.5 12.5V6.2" stroke-width="2" stroke-linecap="round" data-t="stroke:#2F6FE0"/>
+      <circle cx="15.5" cy="12.5" r="1.7" data-t="fill:#2F6FE0"/>`,
+    target: (h) => {
+      // Time moves on: the hands run 25 minutes forward (10:08 to 10:33, still well apart)
+      // and the face marks the stretch passed.
+      const m = CLOCK_MINUTES, sw = h ? 150 : 0;
+      return { base: m * 6, sw, mA: m * 6 + sw, hA: m / 2 + sw / 12 };
+    },
+    draw(p, E) {
+      at(E.sweep, { d: sector(p.base, Math.max(0, p.sw), 7) });
+      at(E.mh, { transform: `rotate(${f(p.mA)} 15.5 12.5)` });
+      at(E.hh, { transform: `rotate(${f(p.hA)} 15.5 12.5)` });
+    }
+  },
+  {
+    name: '锁',
+    svg: (u) => `
+      <g data-n="shackle" filter="${u.sh}">
+        <path d="M10.5 12V7.6A5 5 0 0 1 20.5 7.6V12" fill="none" stroke-width="3.2" stroke-linecap="round" data-t="stroke:#81B0FF"/>
+        <path d="M10.5 12V7.6A5 5 0 0 1 20.5 7.6V12" fill="none" stroke-width="1" stroke-linecap="round" stroke="#fff" stroke-opacity=".45"/>
+      </g>
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${rr(5.6, 11, 19.8, 12.6, KR)}" fill="${u.upS}"/></g></g>
+      <path d="${rr(5.6, 11, 19.8, 12.6, KR)}" ${OL}/>
+      <g data-n="key" data-t="fill:#2F6FE0"><circle cx="15.5" cy="16.2" r="2.5"/><path d="${rr(14.6, 16.6, 1.8, 4.6, 0.9)}"/></g>`,
+    target: (h) => ({ sh: h ? [-2.4, 20] : [0, 0], key: h ? -90 : 0 }),
+    draw(p, E) {
+      at(E.shackle, { transform: `translate(0 ${f(p.sh[0])}) rotate(${f(p.sh[1])} 20.5 12)` });
+      at(E.key, { transform: `rotate(${f(p.key)} 15.5 16.2)` });
+    }
+  },
+  {
+    name: '设置',
+    svg: (u) => `
+      <g filter="${u.sh}"><g filter="${u.hi}"><g data-n="gear"><path d="${GEAR}" fill="${u.loS}"/></g></g></g><g data-n="gearO"><path d="${GEAR}" ${OL}/></g>
+      <path d="${circ(15.5, 12.5, 5.8)}" fill="#fff"/>
+      <g filter="${u.hi}"><path data-n="hub" fill="${u.upS}"/></g>
+      <path data-n="hubO" ${OL}/>`,
+    target: (h) => ({ rot: h ? 60 : 0, hub: h ? 2.9 : 3.5 }),
+    draw(p, E) {
+      at(E.gear, { transform: `rotate(${f(p.rot)} 15.5 12.5)` }); at(E.gearO, { transform: `rotate(${f(p.rot)} 15.5 12.5)` });
+      const d = circ(15.5, 12.5, p.hub);
+      at(E.hub, { d }); at(E.hubO, { d });
+    }
+  },
+  {
+    name: '回收站',
+    svg: (u) => `
+      <g filter="${u.sh}"><path data-n="back" fill="${u.lo(18.6)}"/></g>
+      <g data-n="card" filter="${u.sh}"><path d="${rr(0, 0, 10.4, 7.6, CR)}" fill="${u.upS}"/><circle cx="3" cy="3" r="1.4" fill="#fff"/></g>
+      <g filter="${u.hi}"><path data-n="front" fill="${u.up(17.4)}"/></g>
+      <path data-n="frontO" ${OL}/>
+      <path data-n="ribs" fill="none" stroke-width="1.6" stroke-linecap="round" data-t="stroke:#5393FF" stroke-opacity=".6"/>
+      <g data-n="lid"><g filter="${u.hi}"><path d="${TRASH_LID}" fill="${u.upS}"/></g><path d="${TRASH_LID}" ${OL}/></g>`,
+    target: (h) => ({
+      back: [[7.4, 4.8], [23.6, 4.8], [22.4, 23.4], [8.6, 23.4]],
+      front: h ? [[6.6, 6], [24.4, 6], [22.6, 23.4], [8.4, 23.4]] : [[6.8, 6], [24.2, 6], [22.6, 23.4], [8.4, 23.4]],
+      card: h ? [10.3, 2.4, -8] : [10.3, 12, 0],
+      lid: h ? [0, -5.8, -6] : [0, 0, 0]
+    }),
+    draw(p, E) {
+      at(E.back, { d: rp(p.back, [0.6, 0.6, 2.8, 2.8]) });
+      const fr = rp(p.front, [1.2, 1.2, 2.8, 2.8]);
+      at(E.front, { d: fr }); at(E.frontO, { d: fr });
+      const F = p.front, top = F[0][1] + 3.4;
+      at(E.ribs, { d: [0.36, 0.64].map((k) => `M${f(F[0][0] + (F[1][0] - F[0][0]) * k)} ${f(top)}L${f(F[3][0] + (F[2][0] - F[3][0]) * k)} 20.2`).join('') });
+      at(E.card, { transform: `translate(${f(p.card[0])} ${f(p.card[1])}) rotate(${f(p.card[2])} 5.2 3.8)` });
+      at(E.lid, { transform: `translate(${f(p.lid[0])} ${f(p.lid[1])}) rotate(${f(p.lid[2])} 15.5 5.3)` });
+    }
+  },
+  {
+    name: '分屏',
+    // A window whose single page splits into two on hover; the new page carries the
+    // opened result's line.
+    svg: (u) => {
+      const body = rr(4, 3.3, 23, 18.4, KR), head = rp(R(4, 3.3, 23, 4.6), [KR, KR, 0, 0]);
+      return `
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${body}" fill="${u.loS}"/></g></g>
+      <path d="${body}" ${OL}/>
+      <path data-n="L" fill="#fff"/>
+      <g data-n="Rg"><path data-n="Rp" fill="#fff"/><path data-n="Ra" ${ACC}/></g>
+      <g filter="${u.hi}"><path d="${head}" fill="${u.upS}"/></g>
+      <path d="${head}" ${OL}/>`;
+    },
+    target: (h) => ({ L: h ? [6, 9.9, 8.9, 9.8] : [6, 9.9, 19, 9.8], Rr: h ? [16.1, 9.9, 8.9, 9.8, 1] : [25, 9.9, 0, 9.8, 0] }),
+    draw(p, E) {
+      const [x, y, w, hh] = p.L;
+      at(E.L, { d: rr(x, y, w, hh, CR) });
+      const [rx, ry, rw, rh, op] = p.Rr;
+      at(E.Rp, { d: rr(rx, ry, rw, rh, CR) });
+      at(E.Ra, { d: lines(rx + 1.8, ry + 2.6, [Math.max(0, rw - 3.6)]) });
+      at(E.Rg, { opacity: f(op) });
+    }
+  },
+  {
+    name: '标签组',
+    // Two tabs of one group; hover spreads them apart.
+    svg: (u) => {
+      const card = rr(0, 0, 18, 13.6, KR);
+      return `
+      <g data-n="b"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${card}" fill="${u.lo(13.6)}"/></g></g><path d="${card}" ${OL}/></g>
+      <g data-n="fr"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${card}" fill="${u.up(13.6)}"/></g></g><path d="${card}" ${OL}/>
+        <path d="${rr(2.4, 2.6, 6.4, 2.4, 1.2)}" data-t="fill:#2F6FE0"/>
+        <path d="${lines(2.4, 8.4, [11.6])}" class="ln" data-t="stroke:#2F6FE0" stroke-opacity=".45"/></g>`;
+    },
+    target: (h) => ({ b: h ? [9, 1.4, 6] : [8.4, 3.3, 0], fr: h ? [3.4, 8.8, -4] : [4.6, 8.1, 0] }),
+    draw(p, E) {
+      at(E.b, { transform: `translate(${f(p.b[0])} ${f(p.b[1])}) rotate(${f(p.b[2])} 9 6.8)` });
+      at(E.fr, { transform: `translate(${f(p.fr[0])} ${f(p.fr[1])}) rotate(${f(p.fr[2])} 9 6.8)` });
+    }
+  },
+  {
+    name: '画中画',
+    // A small player floats in the corner of the page and pops out of the window on hover.
+    svg: (u) => {
+      const body = rr(4, 3.3, 23, 18.4, KR), mini = rr(0, 0, 9.6, 7, 1.6);
+      return `
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${body}" fill="${u.loS}"/></g></g>
+      <path d="${body}" ${OL}/>
+      <path d="${rr(6, 5.3, 19, 14.4, CR)}" fill="#fff"/>
+      <g data-n="mini"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${mini}" fill="${u.upS}"/></g></g><path d="${mini}" ${OL}/>
+        <path d="M3.8 1.8L6.6 3.5L3.8 5.2Z" stroke-width="1" stroke-linejoin="round" data-t="fill:#2F6FE0" data-ck="c"/></g>`;
+    },
+    target: (h) => ({ mini: h ? [17.2, 12.8, 1.1] : [14, 10.6, 1] }),
+    draw(p, E) {
+      at(E.mini, { transform: `translate(${f(p.mini[0])} ${f(p.mini[1])}) scale(${f(p.mini[2])})` });
+    }
+  },
+  {
+    name: '链接',
+    // Two links of a chain; hover draws them tighter.
+    svg: (u) => `
+      <g data-n="g">
+        <g data-n="a"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${LINK_RING}" fill-rule="evenodd" fill="${u.loS}"/></g></g><path d="${LINK_RING}" fill-rule="evenodd" ${OL}/></g>
+        <g data-n="bb"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${LINK_RING}" fill-rule="evenodd" fill="${u.upS}"/></g></g><path d="${LINK_RING}" fill-rule="evenodd" ${OL}/></g>
+      </g>`,
+    target: (h) => ({ gap: h ? 3.5 : 4.2, rot: h ? -40 : -45 }),
+    draw(p, E) {
+      at(E.g, { transform: `rotate(${f(p.rot)} 15.5 12.5)` });
+      at(E.a, { transform: `translate(${f(15.5 - p.gap)} 12.5)` });
+      at(E.bb, { transform: `translate(${f(15.5 + p.gap)} 12.5)` });
+    }
+  },
+  {
+    name: '同步',
+    // A dial with two chasing arrows that turn half a revolution on hover.
+    svg: (u) => `
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${circ(15.5, 12.5, 11.5)}" fill="${u.loS}"/></g></g>
+      <path d="${circ(15.5, 12.5, 11.5)}" ${OL}/>
+      <g filter="${u.hi}"><path d="${circ(15.5, 12.5, 8)}" fill="${u.upS}"/></g>
+      <path d="${circ(15.5, 12.5, 8)}" ${OL}/>
+      <g data-n="arr"><path d="${SYNC_A.arc}${SYNC_B.arc}" fill="none" stroke-width="2.2" stroke-linecap="round" data-t="stroke:#2F6FE0"/><path d="${SYNC_A.head}${SYNC_B.head}" data-t="fill:#2F6FE0"/></g>`,
+    target: (h) => ({ rot: h ? 180 : 0 }),
+    draw(p, E) {
+      at(E.arr, { transform: `translate(15.5 12.5) rotate(${f(p.rot)})` });
+    }
+  },
+  {
+    name: '快捷方式',
+    // A grid of sites; on hover one tile lifts out, ready to open.
+    svg: (u) => `
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${rr(5.2, 2.2, 20.6, 20.6, KR)}" fill="${u.loS}"/></g></g>
+      <path d="${rr(5.2, 2.2, 20.6, 20.6, KR)}" ${OL}/>
+      ${SHORTCUT_TILES.filter((t, i) => i !== 1).map(([x, y]) => `<path d="${rr(x, y, 7.3, 7.3, CR)}" fill="#fff"/>`).join('')}
+      <g data-n="lift"><g filter="${u.sh}"><path d="${rr(0, 0, 7.3, 7.3, CR)}" fill="#fff"/></g><circle cx="3.65" cy="3.65" r="1.7" data-t="fill:#5393FF"/></g>`,
+    target: (h) => ({ lift: h ? [16.9, 2.6, 1.14] : [16.5, 4.2, 1] }),
+    draw(p, E) {
+      const [x, y, s] = p.lift;
+      at(E.lift, { transform: `translate(${f(x)} ${f(y)}) translate(3.65 3.65) scale(${f(s)}) translate(-3.65 -3.65)` });
+    }
+  },
+  {
+    name: '外观',
+    // Light and dark halves of one disc; hover turns the light half across.
+    svg: (u) => {
+      const disc = [15.5, 12.5, 11.5], half = frontPiece(disc, disc, 12.5, 2);
+      return `
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${circ(15.5, 12.5, 11.5)}" fill="${u.loS}"/></g></g>
+      <path d="${circ(15.5, 12.5, 11.5)}" ${OL}/>
+      <g filter="${u.hi}"><g data-n="half"><path d="${half}" fill="${u.upS}"/></g></g>
+      <g data-n="halfO"><path d="${half}" ${OL}/></g>`;
+    },
+    target: (h) => ({ rot: h ? 90 : -90 }),
+    draw(p, E) {
+      const t = `rotate(${f(p.rot)} 15.5 12.5)`;
+      at(E.half, { transform: t }); at(E.halfO, { transform: t });
+    }
+  },
+  {
+    name: '主页',
+    // The new-tab home: a house whose door swings open on hover.
+    svg: (u) => {
+      const roof = rp([[3.6, 12.6], [15.5, 2.4], [27.4, 12.6]], [1.4, 2.2, 1.4]);
+      const door = rp(R(13.2, 15.6, 4.6, 7.4), [1.2, 1.2, 0, 0]);
+      return `
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${rr(7.4, 10.6, 16.2, 12.4, KR)}" fill="${u.loS}"/></g></g>
+      <path d="${rr(7.4, 10.6, 16.2, 12.4, KR)}" ${OL}/>
+      <path d="${door}" fill="${u.pure('#2F6FE0')}"/>
+      <g data-n="door"><path d="${door}" fill="#fff"/></g>
+      <g filter="${u.hi}"><path d="${roof}" fill="${u.upS}"/></g>
+      <path d="${roof}" ${OL}/>`;
+    },
+    target: (h) => ({ door: h ? 0.3 : 1 }),
+    draw(p, E) {
+      at(E.door, { transform: `translate(13.2 0) scale(${f(Math.max(0.001, p.door))} 1) translate(-13.2 0)` });
+    }
+  },
+  {
+    name: '通知',
+    // A bell that swings from its knob; the clapper lags behind.
+    svg: (u) => {
+      const bell = 'M7.8 18.4C9 17 9.3 15 9.3 12C9.3 8 12 5.2 15.5 5.2C19 5.2 21.7 8 21.7 12C21.7 15 22 17 23.2 18.4Z';
+      const rim = rr(5.6, 17.4, 19.8, 3.8, 1.9);
+      return `<g data-n="bell">
+        <circle cx="15.5" cy="4.4" r="1.8" ${DEEP}/>
+        <circle data-n="clap" cx="15.5" cy="21.4" r="2.3" ${DEEP}/>
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${bell}" fill="${u.loS}"/></g></g><path d="${bell}" ${OL}/>
+        <g filter="${u.hi}"><path d="${rim}" fill="${u.upS}"/></g><path d="${rim}" ${OL}/>
+      </g>`;
+    },
+    target: (h) => ({ swing: h ? 14 : 0, clap: h ? -1.6 : 0 }),
+    draw(p, E) {
+      at(E.bell, { transform: `rotate(${f(p.swing)} 15.5 4.4)` });
+      at(E.clap, { cx: f(15.5 + p.clap) });
+    }
+  },
+  {
+    name: '用户',
+    // An avatar in a round frame; on hover the person looks up.
+    svg: (u) => {
+      const disc = circ(15.5, 12.5, 11.5);
+      return `<clipPath id="${u.id('av')}"><path d="${disc}"/></clipPath>
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${disc}" fill="${u.loS}"/></g></g>
+        <g clip-path="url(#${u.id('av')})">
+          <path data-n="body" d="${rp([[5, 27], [5, 22], [10.4, 17.4], [20.6, 17.4], [26, 22], [26, 27]], [0, 0, 4, 4, 0, 0])}" fill="#fff"/>
+        </g>
+        <circle data-n="head" cx="15.5" cy="10.4" r="4.4" fill="#fff"/>
+        <path d="${disc}" ${OL}/>`;
+    },
+    target: (h) => ({ lift: h ? -1.2 : 0 }),
+    draw(p, E) {
+      at(E.head, { cy: f(10.4 + p.lift) });
+      at(E.body, { transform: `translate(0 ${f(p.lift * 0.4)})` });
+    }
+  },
+  {
+    name: '聊天',
+    // Two speech bubbles; the reply in front starts typing on hover.
+    svg: (u) => {
+      const back = rr(4, 3.3, 16, 11.6, KR);
+      const front = rp([[10.2, 8.8], [27, 8.8], [27, 19], [17.4, 19], [13.8, 22.6], [13.8, 19], [10.2, 19]], [KR, KR, KR, 0.5, 0.6, 0.5, KR]);
+      return `<g data-n="b"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${back}" fill="${u.loS}"/></g></g><path d="${back}" ${OL}/>
+          <path d="${lines(7, 6.8, [6.4])}" class="ln" stroke="#fff" data-w="stroke"/></g>
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${front}" fill="${u.upS}"/></g></g><path d="${front}" ${OL}/>
+        <circle data-n="d1" cx="14.6" r="1.4" ${DEEP}/><circle data-n="d2" cx="18.6" r="1.4" ${DEEP}/><circle data-n="d3" cx="22.6" r="1.4" ${DEEP}/>`;
+    },
+    target: (h) => ({ d: h ? [-0.6, -1.5, -0.6] : [0, 0, 0], b: h ? -0.8 : 0 }),
+    draw(p, E) {
+      at(E.d1, { cy: f(13.9 + p.d[0]) }); at(E.d2, { cy: f(13.9 + p.d[1]) }); at(E.d3, { cy: f(13.9 + p.d[2]) });
+      at(E.b, { transform: `translate(${f(p.b)} ${f(p.b)})` });
+    }
+  },
+  {
+    name: '手机',
+    // A phone whose notification card slides in on hover.
+    svg: (u) => {
+      const body = rr(7.3, 1, 16.4, 23, 3.4), card = rr(0, 0, 10.4, 4.4, 1.4);
+      return `<g data-n="ph">
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${body}" fill="${u.loS}"/></g></g><path d="${body}" ${OL}/>
+        <path d="${rr(9.4, 3.4, 12.2, 16.6, CR)}" fill="#fff"/>
+        <g data-n="card"><g filter="${u.hi}"><path d="${card}" fill="${u.upS}"/></g><path d="${card}" ${OL}/><path d="${lines(1.8, 2, [4.4])}" class="ln" ${DEEPS}/></g>
+      </g>`;
+    },
+    target: (h) => ({ card: h ? [10.3, 6.2, 1] : [10.3, 3.4, 0], tilt: h ? -5 : 0 }),
+    draw(p, E) {
+      at(E.card, { transform: `translate(${f(p.card[0])} ${f(p.card[1])})`, opacity: f(p.card[2]) });
+      at(E.ph, { transform: `rotate(${f(p.tilt)} 15.5 12.5)` });
+    }
+  },
+  {
+    name: '相机',
+    // A camera body with a lens in front; the aperture closes on hover like a shutter.
+    svg: (u) => {
+      const body = rr(4, 6.6, 23, 15.1, KR), top = rp(R(9.6, 3.6, 7.4, 4), [1.6, 1.6, 0, 0]);
+      return `<g filter="${u.sh}"><path d="${top}" fill="${u.loS}"/></g><path d="${top}" ${OL}/>
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${body}" fill="${u.loS}"/></g></g><path d="${body}" ${OL}/>
+        <g filter="${u.hi}"><path d="${circ(15.5, 14.2, 5.4)}" fill="${u.upS}"/></g><path d="${circ(15.5, 14.2, 5.4)}" ${OL}/>
+        <circle data-n="iris" cx="15.5" cy="14.2" ${DEEP}/>`;
+    },
+    target: (h) => ({ iris: h ? 1.2 : 2.8 }),
+    draw(p, E) { at(E.iris, { r: f(p.iris) }); }
+  },
+  {
+    name: '音乐',
+    // Two beamed notes that bounce on hover.
+    svg: (u) => {
+      const stems = rp([[12.4, 5], [25, 2.4], [25, 17.2], [22.8, 17.2], [22.8, 6.6], [14.6, 8.4], [14.6, 19.2], [12.4, 19.2]], [0.8, 0.8, 0.6, 0.6, 0.3, 0.3, 0.6, 0.6]);
+      const head = (cx, cy) => `M${f(cx - 3.6)} ${f(cy)}A3.6 2.7 0 1 0 ${f(cx + 3.6)} ${f(cy)}A3.6 2.7 0 1 0 ${f(cx - 3.6)} ${f(cy)}Z`;
+      const heads = head(10.8, 19.4) + head(21, 17.4);
+      return `<g data-n="g">
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${stems}" fill="${u.loS}"/></g></g><path d="${stems}" ${OL}/>
+        <g transform="rotate(-18 15.9 18.4)"><g filter="${u.hi}"><path d="${heads}" fill="${u.upS}"/></g><path d="${heads}" ${OL}/></g>
+      </g>`;
+    },
+    target: (h) => ({ y: h ? -1.4 : 0, a: h ? -6 : 0 }),
+    draw(p, E) { at(E.g, { transform: `translate(0 ${f(p.y)}) rotate(${f(p.a)} 15.5 12.5)` }); }
+  },
+  {
+    name: '视频',
+    // A video camera; its lens opens wider and the record light grows on hover.
+    svg: (u) => {
+      const body = rr(4, 6, 15.8, 13, KR);
+      return `<g filter="${u.sh}"><g filter="${u.hi}"><path d="${body}" fill="${u.loS}"/></g></g><path d="${body}" ${OL}/>
+        <g filter="${u.hi}"><path data-n="lens" fill="${u.upS}"/></g><path data-n="lensO" ${OL}/>
+        <circle data-n="dot" cx="8.8" cy="10.4" fill="#fff" data-w="fill"/>`;
+    },
+    target: (h) => ({ w: h ? [8.6, 6.2] : [7.6, 4.8], dot: h ? 2.3 : 1.8 }),
+    draw(p, E) {
+      const [wx, wy] = p.w;
+      const d = rp([[18.6, 9.6], [18.6 + wx, 12.5 - wy], [18.6 + wx, 12.5 + wy], [18.6, 15.4]], [0.6, 1.4, 1.4, 0.6]);
+      at(E.lens, { d }); at(E.lensO, { d });
+      at(E.dot, { r: f(p.dot) });
+    }
+  },
+  {
+    name: '麦克风',
+    // A microphone on its stand; sound waves appear on either side on hover.
+    svg: (u) => {
+      const cap = rr(10.6, 1.2, 9.8, 14.2, 4.9);
+      return `<path d="M7.6 11.6C7.6 16.6 11.2 19.8 15.5 19.8C19.8 19.8 23.4 16.6 23.4 11.6M15.5 19.8V22.8M11.4 23.4H19.6" fill="none" stroke-width="2.2" stroke-linecap="round" ${DEEPS}/>
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${cap}" fill="${u.upS}"/></g></g><path d="${cap}" ${OL}/>
+        <path data-n="wv" d="M4.4 4.4Q1.8 8.6 4.4 12.8M26.6 4.4Q29.2 8.6 26.6 12.8" fill="none" stroke-width="2.2" stroke-linecap="round" ${DEEPS}/>`;
+    },
+    target: (h) => ({ wv: h ? 1 : 0 }),
+    draw(p, E) { at(E.wv, { opacity: f(p.wv) }); }
+  },
+  {
+    name: '定位',
+    // A map pin that hops up on hover while its shadow on the ground shrinks.
+    svg: (u) => {
+      const pin = 'M15.5 22.4C12.2 18.8 7.6 14.8 7.6 9.6A7.9 7.9 0 0 1 23.4 9.6C23.4 14.8 18.8 18.8 15.5 22.4Z';
+      return `<path data-n="shade" d="M11.5 23.6A4 1.1 0 1 0 19.5 23.6A4 1.1 0 1 0 11.5 23.6Z" data-t="fill:#B2CEFF"/>
+        <g data-n="pin"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${pin}" fill="${u.loS}"/></g></g><path d="${pin}" ${OL}/>
+          <circle cx="15.5" cy="9.6" r="3.2" fill="#fff"/></g>`;
+    },
+    target: (h) => ({ lift: h ? -2.4 : 0, sh: h ? 0.6 : 1 }),
+    draw(p, E) {
+      at(E.pin, { transform: `translate(0 ${f(p.lift)})` });
+      at(E.shade, { transform: `translate(15.5 23.6) scale(${f(p.sh)} 1) translate(-15.5 -23.6)` });
+    }
+  },
+  {
+    name: '地球',
+    // A globe whose meridian swings round as if it turns.
+    svg: (u) => {
+      const disc = circ(15.5, 12.5, 11.5);
+      return `<clipPath id="${u.id('gl')}"><path d="${disc}"/></clipPath>
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${disc}" fill="${u.loS}"/></g></g>
+        <g clip-path="url(#${u.id('gl')})" fill="none" stroke-width="1.6" stroke="#fff" data-w="stroke">
+          <path d="M3 12.5H28"/><path data-n="mer"/>
+        </g>
+        <path d="${disc}" ${OL}/>`;
+    },
+    target: (h) => ({ rx: h ? 8.6 : 4.6 }),
+    draw(p, E) {
+      const rx = p.rx;
+      at(E.mer, { d: `M${f(15.5 - rx)} 12.5A${f(rx)} 11.5 0 1 0 ${f(15.5 + rx)} 12.5A${f(rx)} 11.5 0 1 0 ${f(15.5 - rx)} 12.5Z` });
+    }
+  },
+  {
+    name: '购物车',
+    // A cart; on hover a parcel drops into its basket.
+    svg: (u) => {
+      const basket = rp([[7, 7], [26.8, 7], [24.6, 16.8], [9.4, 16.8]], [1.4, 1.4, 1.8, 1.8]);
+      const box = rr(0, 0, 7.4, 6, 1.2);
+      return `<path d="M3.4 3.6H6L9.2 16.8H23" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" ${DEEPS}/>
+        <g data-n="box"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${box}" fill="${u.upS}"/></g></g><path d="${box}" ${OL}/></g>
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${basket}" fill="${u.loS}"/></g></g><path d="${basket}" ${OL}/>
+        <circle cx="11.4" cy="20.8" r="2" ${DEEP}/><circle cx="21.6" cy="20.8" r="2" ${DEEP}/>`;
+    },
+    target: (h) => ({ box: h ? [13.6, 3.2, 1] : [13.6, -1.2, 0] }),
+    draw(p, E) { at(E.box, { transform: `translate(${f(p.box[0])} ${f(p.box[1])})`, opacity: f(p.box[2]) }); }
+  },
+  {
+    name: '礼物',
+    // A gift box whose lid lifts off on hover.
+    svg: (u) => {
+      const box = rr(6.6, 11, 17.8, 11.8, KR), lid = rr(5.2, 7.2, 20.6, 4.6, 1.6);
+      return `<g filter="${u.sh}"><g filter="${u.hi}"><path d="${box}" fill="${u.loS}"/></g></g><path d="${box}" ${OL}/>
+        <path d="${rr(14.2, 11, 2.6, 11.8, 0)}" fill="#fff"/>
+        <g data-n="lid">
+          <path d="${circ(12.8, 5.6, 2.4) + circ(18.2, 5.6, 2.4)}" fill="${u.loS}"/><path d="${circ(12.8, 5.6, 2.4) + circ(18.2, 5.6, 2.4)}" ${OL}/>
+          <g filter="${u.sh}"><g filter="${u.hi}"><path d="${lid}" fill="${u.upS}"/></g></g><path d="${lid}" ${OL}/>
+          <path d="${rr(14.2, 7.2, 2.6, 4.6, 0)}" ${DEEP}/>
+        </g>`;
+    },
+    target: (h) => ({ lid: h ? [-0.6, -3, -8] : [0, 0, 0] }),
+    draw(p, E) { at(E.lid, { transform: `translate(${f(p.lid[0])} ${f(p.lid[1])}) rotate(${f(p.lid[2])} 15.5 9.5)` }); }
+  },
+  {
+    name: '星标',
+    // A star with a lighter star inset; it turns one point on hover.
+    svg: (u) => {
+      const big = star(11.6, 5.4), small = star(5.6, 2.6);
+      return `<g filter="${u.sh}"><g filter="${u.hi}"><g data-n="r1"><path d="${big}" fill="${u.loS}"/></g></g></g>
+        <g data-n="r1o"><path d="${big}" ${OL}/></g>
+        <g filter="${u.hi}"><g data-n="r2"><path d="${small}" fill="${u.upS}"/></g></g>
+        <g data-n="r2o"><path d="${small}" ${OL}/></g>`;
+    },
+    target: (h) => ({ rot: h ? 72 : 0, s: h ? 1.05 : 1 }),
+    draw(p, E) {
+      const t = `translate(15.5 13.4) rotate(${f(p.rot)}) scale(${f(p.s)})`;
+      ['r1', 'r1o', 'r2', 'r2o'].forEach((n) => at(E[n], { transform: t }));
+    }
+  },
+  {
+    name: '喜欢',
+    // A heart with a lighter heart inside; it beats on hover.
+    svg: (u) => {
+      const heart = 'M0 9.6C-5.5 5.6 -10.9 1.4 -10.9 -3.6C-10.9 -7 -8.3 -9.6 -5.1 -9.6C-2.9 -9.6 -1.1 -8.4 0 -6.6C1.1 -8.4 2.9 -9.6 5.1 -9.6C8.3 -9.6 10.9 -7 10.9 -3.6C10.9 1.4 5.5 5.6 0 9.6Z';
+      return `<g data-n="g">
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${heart}" fill="${u.loS}"/></g></g><path d="${heart}" ${OL}/>
+        <g transform="translate(0 -0.6) scale(0.5)"><g filter="${u.hi}"><path d="${heart}" fill="${u.upS}"/></g></g>
+      </g>`;
+    },
+    target: (h) => ({ s: h ? 1.12 : 1 }),
+    draw(p, E) { at(E.g, { transform: `translate(15.5 13.2) scale(${f(p.s)})` }); }
+  },
+  {
+    name: '编辑',
+    // A pencil that writes a line on hover.
+    svg: (u) => {
+      const body = rr(7.1, 9.6, 15, 6.8, 0.8), tip = rp([[22.1, 9.6], [28.4, 13], [22.1, 16.4]], [0.3, 0.9, 0.3]), cap = rr(2.8, 9.6, 4.7, 6.8, 2);
+      return `<path data-n="ink" fill="none" stroke-width="2.2" stroke-linecap="round" ${DEEPS}/>
+        <g filter="${u.sh}"><g filter="${u.hi}"><g data-n="pen"><path d="${body}" fill="${u.loS}"/><path d="${tip}" fill="${u.upS}"/><path d="${cap}" fill="${u.upS}"/></g></g></g>
+        <g data-n="penO"><path d="${body}" ${OL}/><path d="${tip}" ${OL}/><path d="${cap}" ${OL}/></g>`;
+    },
+    target: (h) => ({ push: h ? 1.6 : 0, ink: h ? 9 : 0 }),
+    draw(p, E) {
+      const t = `rotate(135 15.5 13) translate(${f(p.push)} 0)`;
+      at(E.pen, { transform: t }); at(E.penO, { transform: t });
+      at(E.ink, { d: `M6.4 23.6H${f(6.4 + p.ink)}`, opacity: p.ink > 0.2 ? 1 : 0 });
+    }
+  },
+  {
+    name: '便签',
+    // A sticky note whose folded corner peels further on hover.
+    svg: (u) => `<g filter="${u.sh}"><g filter="${u.hi}"><path data-n="note" fill="${u.loS}"/></g></g><path data-n="noteO" ${OL}/>
+      <path d="${lines(8.6, 7.4, [13.8, 9.4])}" class="ln" stroke="#fff" data-w="stroke"/>
+      <g filter="${u.hi}"><path data-n="fold" fill="${u.upS}"/></g><path data-n="foldO" ${OL}/>`,
+    target: (h) => ({ cut: h ? 9 : 6.4 }),
+    draw(p, E) {
+      const c = p.cut;
+      const note = rp([[5.2, 2.2], [25.8, 2.2], [25.8, 22.8 - c], [25.8 - c, 22.8], [5.2, 22.8]], [KR, KR, 0.6, 0.6, KR]);
+      const fold = rp([[25.8, 22.8 - c], [25.8 - c, 22.8], [25.8 - c, 22.8 - c]], [0.5, 0.5, 1.2]);
+      at(E.note, { d: note }); at(E.noteO, { d: note }); at(E.fold, { d: fold }); at(E.foldO, { d: fold });
+    }
+  },
+  {
+    name: '剪贴板',
+    // A clipboard; a check gets ticked on its sheet on hover.
+    svg: (u) => {
+      const board = rr(6.3, 2.6, 18.4, 21.2, KR), clip = rp(R(11, 0.8, 9, 4.6), [1.6, 1.6, 1.2, 1.2]);
+      return `<g filter="${u.sh}"><g filter="${u.hi}"><path d="${board}" fill="${u.loS}"/></g></g><path d="${board}" ${OL}/>
+        <path d="${rr(8.6, 6.6, 13.8, 15, CR)}" fill="#fff"/>
+        <path d="${lines(11, 10.2, [9])}" ${LINE}/>
+        <path data-n="chk" d="M12.2 16.2L14.6 18.6L19 14" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" ${DEEPS}/>
+        <g filter="${u.hi}"><path d="${clip}" fill="${u.upS}"/></g><path d="${clip}" ${OL}/>`;
+    },
+    target: (h) => ({ chk: h ? 1 : 0 }),
+    draw(p, E) {
+      const L = 9.8;
+      at(E.chk, { 'stroke-dasharray': L, 'stroke-dashoffset': f(L * (1 - Math.max(0, Math.min(1, p.chk)))) });
+    }
+  },
+  {
+    name: '复制',
+    // Two sheets; the copy slides out from the original on hover.
+    svg: (u) => {
+      const sheet = rr(0, 0, 13.6, 15.6, KR);
+      return `<g data-n="b"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${sheet}" fill="${u.loS}"/></g></g><path d="${sheet}" ${OL}/></g>
+        <g data-n="fr"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${sheet}" fill="${u.up(15.6)}"/></g></g><path d="${sheet}" ${OL}/>
+          <path d="${lines(2.6, 4.2, [8.4, 5.6])}" class="ln" ${DEEPS} stroke-opacity=".55"/></g>`;
+    },
+    target: (h) => ({ b: h ? [4.6, 1.6] : [5.2, 2.2], fr: h ? [12.8, 7.8] : [12.2, 7.2] }),
+    draw(p, E) {
+      at(E.b, { transform: `translate(${f(p.b[0])} ${f(p.b[1])})` });
+      at(E.fr, { transform: `translate(${f(p.fr[0])} ${f(p.fr[1])})` });
+    }
+  },
+  {
+    name: '打印',
+    // A printer that feeds a printed page out of its slot on hover.
+    svg: (u) => {
+      const tray = rp(R(8.4, 3.3, 14.2, 6.4), [1.4, 1.4, 0, 0]), body = rr(4, 8.4, 23, 9.4, KR), page = rr(0, 0, 13, 10, CR);
+      return `<g filter="${u.hi}"><path d="${tray}" fill="${u.upS}"/></g><path d="${tray}" ${OL}/>
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${body}" fill="${u.loS}"/></g></g><path d="${body}" ${OL}/>
+        <clipPath id="${u.id('out')}"><rect x="0" y="15" width="31" height="12"/></clipPath>
+        <g clip-path="url(#${u.id('out')})"><g data-n="page"><g filter="${u.hi}"><path d="${page}" fill="${u.upS}"/></g><path d="${page}" ${OL}/>
+          <path d="${lines(2.2, 6, [8.6])}" class="ln" ${DEEPS} stroke-opacity=".55"/></g></g>
+        <path d="M7 15H24" fill="none" stroke-width="2" stroke-linecap="round" ${DEEPS}/>`;
+    },
+    target: (h) => ({ y: h ? 11.6 : 8.4 }),
+    draw(p, E) { at(E.page, { transform: `translate(9 ${f(p.y)})` }); }
+  },
+  {
+    name: '天气',
+    // The sun behind a cloud comes out on hover.
+    svg: (u) => `<g data-n="sun"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${circ(10.6, 10, 6)}" fill="${u.loS}"/></g></g><path d="${circ(10.6, 10, 6)}" ${OL}/></g>
+      <g data-n="cl"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${cloud([12.6, 16.6, 4.4], [18.2, 12.6, 5.8], [23, 17, 4])}" fill="${u.upS}"/></g></g>
+        <path d="${cloud([12.6, 16.6, 4.4], [18.2, 12.6, 5.8], [23, 17, 4])}" ${OL}/></g>`,
+    target: (h) => ({ sun: h ? [-1, -1.6] : [0, 0], cl: h ? 1.2 : 0 }),
+    draw(p, E) {
+      at(E.sun, { transform: `translate(${f(p.sun[0])} ${f(p.sun[1])})` });
+      at(E.cl, { transform: `translate(${f(p.cl)} 0)` });
+    }
+  },
+  {
+    name: '电池',
+    // A battery that charges from low to nearly full on hover.
+    svg: (u) => {
+      const body = rr(3.6, 6.4, 21.6, 12.2, KR), nub = rp(R(24.6, 10, 2.8, 5), [0, 1.2, 1.2, 0]);
+      return `<g filter="${u.sh}"><path d="${nub}" fill="${u.loS}"/></g><path d="${nub}" ${OL}/>
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${body}" fill="${u.loS}"/></g></g><path d="${body}" ${OL}/>
+        <path d="${rr(5.8, 8.6, 17.2, 7.8, 1.2)}" fill="#fff"/>
+        <path data-n="lvl" ${DEEP}/>`;
+    },
+    target: (h) => ({ w: h ? 14.4 : 5.4 }),
+    draw(p, E) { at(E.lvl, { d: rr(7.2, 10, p.w, 5, 0.8) }); }
+  },
+  {
+    name: 'Wi-Fi',
+    // Signal arcs that fill up from the inside out on hover.
+    svg: () => `<circle cx="15.5" cy="20.6" r="2" ${DEEP}/>
+      <path data-n="a1" d="M11.6 16.7A5.5 5.5 0 0 1 19.4 16.7" fill="none" stroke-width="2.8" stroke-linecap="round" ${DEEPS}/>
+      <path data-n="a2" d="M8 13.1A10.6 10.6 0 0 1 23 13.1" fill="none" stroke-width="2.8" stroke-linecap="round" ${DEEPS}/>
+      <path data-n="a3" d="M4.4 9.5A15.7 15.7 0 0 1 26.6 9.5" fill="none" stroke-width="2.8" stroke-linecap="round" ${DEEPS}/>`,
+    target: (h) => ({ s: h ? 1 : 0 }),
+    draw(p, E) {
+      const lit = (i) => f(0.28 + 0.72 * Math.max(0, Math.min(1, p.s * 2 - (i - 1) * 0.8)));
+      at(E.a2, { opacity: lit(1) }); at(E.a3, { opacity: lit(2) });
+    }
+  },
+  {
+    name: '灯泡',
+    // A bulb that lights up on hover.
+    svg: (u) => {
+      const glass = 'M11 15.6C8.8 14 7.4 11.6 7.4 9A8.1 8.1 0 0 1 23.6 9C23.6 11.6 22.2 14 20 15.6V17.6H11Z';
+      const base = rr(10.8, 16.8, 9.4, 6.4, 2);
+      return `<g filter="${u.sh}"><g filter="${u.hi}"><path d="${glass}" fill="${u.upS}"/></g></g><path d="${glass}" ${OL}/>
+        <circle data-n="glow" cx="15.5" cy="9.4" r="5" fill="#fff"/>
+        <path d="M12.8 12.6L14.2 9.8L15.5 11.8L16.8 9.8L18.2 12.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" ${DEEPS}/>
+        <g filter="${u.hi}"><path d="${base}" fill="${u.loS}"/></g><path d="${base}" ${OL}/>
+        <path d="${lines(12.8, 20, [5.4])}" class="ln" stroke="#fff" data-w="stroke"/>`;
+    },
+    target: (h) => ({ glow: h ? 0.85 : 0 }),
+    draw(p, E) { at(E.glow, { opacity: f(p.glow) }); }
+  },
+  {
+    name: '钥匙',
+    // A key that turns over on hover, its teeth flipping to the other side.
+    svg: (u) => {
+      const shaft = rp([[13.6, 10.9], [28.2, 10.9], [28.2, 17.6], [25.4, 17.6], [25.4, 14.1], [23.6, 14.1], [23.6, 18.6], [20.8, 18.6], [20.8, 14.1], [13.6, 14.1]], [0.4, 0.9, 0.7, 0.7, 0.3, 0.3, 0.7, 0.7, 0.3, 0.4]);
+      const head = circ(9.4, 12.5, 7) + circ(9.4, 12.5, 2.6);
+      return `<g filter="${u.sh}"><g filter="${u.hi}"><g data-n="k"><path d="${shaft}" fill="${u.loS}"/><path d="${head}" fill-rule="evenodd" fill="${u.upS}"/></g></g></g>
+        <g data-n="ko"><path d="${shaft}" ${OL}/><path d="${head}" fill-rule="evenodd" ${OL}/></g>`;
+    },
+    target: (h) => ({ o: h ? 1 : 0 }),
+    draw(p, E) {
+      const sy = Math.cos(Math.max(0, Math.min(1, p.o)) * Math.PI);
+      const t = `translate(0 12.5) scale(1 ${f(Math.abs(sy) < 0.001 ? 0.001 : sy)}) translate(0 -12.5)`;
+      at(E.k, { transform: t }); at(E.ko, { transform: t });
+    }
+  },
+  {
+    name: '盾牌',
+    // A shield with a lit half; it steps forward on hover.
+    svg: (u) => {
+      const sh = 'M15.5 1.4L24.2 4.8V11.4C24.2 17.2 20.6 21.6 15.5 23.8C10.4 21.6 6.8 17.2 6.8 11.4V4.8Z';
+      return `<g data-n="g">
+        <clipPath id="${u.id('half')}"><rect x="15.5" y="-2" width="16" height="30"/></clipPath>
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${sh}" fill="${u.loS}"/></g></g>
+        <g clip-path="url(#${u.id('half')})"><g filter="${u.hi}"><path d="${sh}" fill="${u.upS}"/></g></g>
+        <path d="${sh}" ${OL}/>
+        <path d="M11.4 12.2L14.4 15.2L19.8 9.6" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" ${DEEPS}/>
+      </g>`;
+    },
+    target: (h) => ({ y: h ? -1 : 0, s: h ? 1.06 : 1 }),
+    draw(p, E) { at(E.g, { transform: `translate(15.5 ${f(12.6 + p.y)}) scale(${f(p.s)}) translate(-15.5 -12.6)` }); }
+  },
+  {
+    name: '眼睛',
+    // An eye that glances to the side on hover.
+    svg: (u) => {
+      const eye = 'M3.6 12.5C7 6.6 11 4.2 15.5 4.2C20 4.2 24 6.6 27.4 12.5C24 18.4 20 20.8 15.5 20.8C11 20.8 7 18.4 3.6 12.5Z';
+      return `<clipPath id="${u.id('eye')}"><path d="${eye}"/></clipPath>
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${eye}" fill="${u.loS}"/></g></g>
+        <g clip-path="url(#${u.id('eye')})"><g data-n="iris"><g filter="${u.hi}"><path d="${circ(0, 0, 5.4)}" fill="${u.upS}"/></g><path d="${circ(0, 0, 5.4)}" ${OL}/>
+          <circle data-n="pup" ${DEEP}/></g></g>
+        <path d="${eye}" ${OL}/>`;
+    },
+    target: (h) => ({ x: h ? 2.6 : 0, pup: h ? 2.9 : 2.3 }),
+    draw(p, E) { at(E.iris, { transform: `translate(${f(15.5 + p.x)} 12.5)` }); at(E.pup, { r: f(p.pup) }); }
+  },
+  {
+    name: '筛选',
+    // A funnel whose lines narrow on hover as the filter tightens.
+    svg: (u) => {
+      const top = rp([[5.2, 2.6], [25.8, 2.6], [18.2, 12.8], [12.8, 12.8]], [1.6, 1.6, 0.8, 0.8]);
+      const spout = rp([[12.8, 12], [18.2, 12], [18.2, 21.4], [12.8, 24]], [0.4, 0.4, 1, 1]);
+      return `<g filter="${u.sh}"><g filter="${u.hi}"><path d="${top}" fill="${u.loS}"/></g></g><path d="${top}" ${OL}/>
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${spout}" fill="${u.upS}"/></g></g><path d="${spout}" ${OL}/>
+        <path data-n="ln" class="ln" stroke="#fff" data-w="stroke"/>`;
+    },
+    target: (h) => ({ w: h ? [8.4, 3.4] : [12.4, 6.6] }),
+    draw(p, E) {
+      const [a, b] = p.w;
+      at(E.ln, { d: `M${f(15.5 - a / 2)} 5.8H${f(15.5 + a / 2)}M${f(15.5 - b / 2)} 8.8H${f(15.5 + b / 2)}` });
+    }
+  },
+  {
+    name: '图表',
+    // A bar chart whose bars rise and fall to new values on hover.
+    svg: (u) => `<g filter="${u.sh}"><g filter="${u.hi}"><path d="${rr(5.2, 2.2, 20.6, 20.6, KR)}" fill="${u.loS}"/></g></g>
+      <path d="${rr(5.2, 2.2, 20.6, 20.6, KR)}" ${OL}/>
+      <path data-n="b1" fill="#fff"/><path data-n="b2" fill="#fff"/><path data-n="b3" fill="#fff"/>`,
+    target: (h) => ({ hgt: h ? [10, 5.4, 13.4] : [5.4, 10.6, 7.6] }),
+    draw(p, E) {
+      [8.4, 13.7, 19].forEach((x, i) => {
+        const hh = p.hgt[i];
+        at(E['b' + (i + 1)], { d: rp(R(x, 20 - hh, 3.6, hh), [1, 1, 0.4, 0.4]) });
+      });
+    }
+  },
+  {
+    name: '文档',
+    // A page whose folded corner opens a little more on hover.
+    svg: (u) => `<g filter="${u.sh}"><g filter="${u.hi}"><path data-n="pg" fill="${u.loS}"/></g></g><path data-n="pgO" ${OL}/>
+      <path d="${lines(9.6, 13.4, [11.8, 8.2])}" class="ln" stroke="#fff" data-w="stroke"/>
+      <g filter="${u.hi}"><path data-n="fold" fill="${u.upS}"/></g><path data-n="foldO" ${OL}/>`,
+    target: (h) => ({ fold: h ? 8 : 6 }),
+    draw(p, E) {
+      const c = p.fold;
+      const pg = rp([[6.3, 1.5], [24.7 - c, 1.5], [24.7, 1.5 + c], [24.7, 23.5], [6.3, 23.5]], [KR, 0.5, 0.5, KR, KR]);
+      const fold = rp([[24.7 - c, 1.5], [24.7, 1.5 + c], [24.7 - c, 1.5 + c]], [0.4, 0.4, 1.2]);
+      at(E.pg, { d: pg }); at(E.pgO, { d: pg }); at(E.fold, { d: fold }); at(E.foldO, { d: fold });
+    }
+  },
+  {
+    name: '包裹',
+    // A parcel whose two top flaps fold open on hover.
+    svg: (u) => {
+      const box = rr(5.2, 8.6, 20.6, 14.2, KR);
+      return `<g filter="${u.sh}"><g filter="${u.hi}"><path d="${box}" fill="${u.lo(14.2)}"/></g></g><path d="${box}" ${OL}/>
+        <path d="${rr(14.2, 8.6, 2.6, 4.6, 0.6)}" fill="#fff"/>
+        <g filter="${u.hi}"><path data-n="fl" fill="${u.upS}"/></g><path data-n="flO" ${OL}/>
+        <g filter="${u.hi}"><path data-n="fr" fill="${u.upS}"/></g><path data-n="frO" ${OL}/>`;
+    },
+    target: (h) => ({ o: h ? 1 : 0 }),
+    draw(p, E) {
+      const o = Math.max(0, Math.min(1, p.o));
+      const l = rp([[5.2, 8.6], [15.4, 8.6], [15.4 - 2.6 * o, 6.2 - 2.8 * o], [5.2 - 2.8 * o, 6.2 - 1.6 * o]], [0.6, 0.6, 1, 1]);
+      const r = rp([[15.6, 8.6], [25.8, 8.6], [25.8 + 2.8 * o, 6.2 - 1.6 * o], [15.6 + 2.6 * o, 6.2 - 2.8 * o]], [0.6, 0.6, 1, 1]);
+      at(E.fl, { d: l }); at(E.flO, { d: l }); at(E.fr, { d: r }); at(E.frO, { d: r });
+    }
+  },
+  {
+    name: '钱包',
+    // A wallet; the card tucked in it rises on hover.
+    svg: (u) => {
+      const body = rr(4, 5.6, 23, 16.1, KR), pocket = rp(R(4, 11, 23, 10.7), [1.6, 1.6, KR, KR]), card = rr(0, 0, 15, 9, 1.4);
+      return `<g filter="${u.sh}"><g filter="${u.hi}"><path d="${body}" fill="${u.loS}"/></g></g><path d="${body}" ${OL}/>
+        <g data-n="card"><g filter="${u.hi}"><path d="${card}" fill="${u.upS}"/></g><path d="${card}" ${OL}/><path d="${lines(2.2, 2.6, [5.6])}" class="ln" ${DEEPS}/></g>
+        <g filter="${u.hi}"><path d="${pocket}" fill="${u.up(10.7)}"/></g><path d="${pocket}" ${OL}/>
+        <path d="${rr(19.4, 13.6, 7.6, 4.8, 2.4)}" fill="${u.loS}"/><path d="${rr(19.4, 13.6, 7.6, 4.8, 2.4)}" ${OL}/>`;
+    },
+    target: (h) => ({ y: h ? 2.4 : 4.6 }),
+    draw(p, E) { at(E.card, { transform: `translate(6.6 ${f(p.y)})` }); }
+  },
+  {
+    name: '银行卡',
+    // A card in front of another; on hover they fan apart as if being drawn out.
+    svg: (u) => {
+      const card = rr(0, 0, 20.4, 13.4, KR);
+      return `<g data-n="b"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${card}" fill="${u.upS}"/></g></g><path d="${card}" ${OL}/></g>
+        <g data-n="fr"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${card}" fill="${u.loS}"/></g></g><path d="${card}" ${OL}/>
+          <path d="${rr(2.8, 3.6, 4.6, 3.6, 1)}" fill="#fff"/>
+          <path d="${lines(2.8, 10, [7.4])}" class="ln" stroke="#fff" data-w="stroke"/></g>`;
+    },
+    target: (h) => ({ b: h ? [7.4, 2.2, 6] : [6.6, 3.3, 0], fr: h ? [3.4, 8.8, -3] : [4, 8.3, 0] }),
+    draw(p, E) {
+      at(E.b, { transform: `translate(${f(p.b[0])} ${f(p.b[1])}) rotate(${f(p.b[2])} 10.2 6.7)` });
+      at(E.fr, { transform: `translate(${f(p.fr[0])} ${f(p.fr[1])}) rotate(${f(p.fr[2])} 10.2 6.7)` });
+    }
+  },
+  {
+    name: '旗帜',
+    // A flag that ripples on hover.
+    svg: (u) => `<path d="M8.2 2.4V23.6" fill="none" stroke-width="2.2" stroke-linecap="round" ${DEEPS}/>
+      <g filter="${u.sh}"><g filter="${u.hi}"><path data-n="cl" fill="${u.loS}"/></g></g><path data-n="clO" ${OL}/>`,
+    target: (h) => ({ a: h ? -2 : 2 }),
+    draw(p, E) {
+      const a = p.a;
+      const d = `M9.2 3.4C13.6 ${f(3.4 - a)} 18 ${f(3.4 + a)} 25 3.4V15.2C18 ${f(15.2 + a)} 13.6 ${f(15.2 - a)} 9.2 15.2Z`;
+      at(E.cl, { d }); at(E.clO, { d });
+    }
+  },
+  {
+    name: '标签',
+    // A hanging tag that swings on hover.
+    svg: (u) => {
+      const tag = rp([[4.4, 12.5], [11, 5.2], [26, 5.2], [26, 19.8], [11, 19.8]], [1.6, 1.6, KR, KR, 1.6]);
+      return `<g filter="${u.sh}"><g filter="${u.hi}"><g data-n="t"><path d="${tag}" fill="${u.loS}"/><circle cx="11.6" cy="12.5" r="2.2" fill="#fff"/></g></g></g>
+        <g data-n="tO"><path d="${tag}" ${OL}/></g>`;
+    },
+    target: (h) => ({ a: h ? -22 : -34 }),
+    draw(p, E) {
+      const t = `rotate(${f(p.a)} 15.5 12.5)`;
+      at(E.t, { transform: t }); at(E.tO, { transform: t });
+    }
+  },
+  {
+    name: '分享',
+    // Three connected nodes; the shared ones spread out on hover.
+    svg: (u) => `<path data-n="ln" fill="none" stroke-width="2.2" stroke-linecap="round" ${DEEPS}/>
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${circ(9.4, 12.5, 4.4)}" fill="${u.loS}"/></g></g><path d="${circ(9.4, 12.5, 4.4)}" ${OL}/>
+      <g data-n="n1"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${circ(0, 0, 4)}" fill="${u.upS}"/></g></g><path d="${circ(0, 0, 4)}" ${OL}/></g>
+      <g data-n="n2"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${circ(0, 0, 4)}" fill="${u.upS}"/></g></g><path d="${circ(0, 0, 4)}" ${OL}/></g>`,
+    target: (h) => ({ d: h ? 1.2 : 0 }),
+    draw(p, E) {
+      const a = [21.8 + p.d, 6.4 - p.d * 0.6], b = [21.8 + p.d, 18.6 + p.d * 0.6];
+      at(E.n1, { transform: `translate(${f(a[0])} ${f(a[1])})` });
+      at(E.n2, { transform: `translate(${f(b[0])} ${f(b[1])})` });
+      at(E.ln, { d: `M9.4 12.5L${f(a[0])} ${f(a[1])}M9.4 12.5L${f(b[0])} ${f(b[1])}` });
+    }
+  },
+  {
+    name: '播放',
+    // A play button that turns into pause on hover.
+    svg: (u) => `<g filter="${u.sh}"><g filter="${u.hi}"><path d="${circ(15.5, 12.5, 11.5)}" fill="${u.loS}"/></g></g>
+      <path d="${circ(15.5, 12.5, 11.5)}" ${OL}/>
+      <path data-n="l" fill="#fff" data-w="fill"/><path data-n="r" fill="#fff" data-w="fill"/>`,
+    target: (h) => ({
+      l: h ? [[11, 7.2], [14.2, 7.2], [14.2, 17.8], [11, 17.8]] : [[12.2, 7.2], [16.4, 9.6], [16.4, 15.4], [12.2, 17.8]],
+      r: h ? [[16.8, 7.2], [20, 7.2], [20, 17.8], [16.8, 17.8]] : [[16, 9.4], [21.4, 12.5], [21.4, 12.5], [16, 15.6]]
+    }),
+    draw(p, E) { at(E.l, { d: rp(p.l, 0.8) }); at(E.r, { d: rp(p.r, 0.8) }); }
+  },
+  {
+    name: '音量',
+    // A speaker whose sound waves grow louder on hover.
+    svg: (u) => {
+      const box = rr(4.4, 9, 6, 7, 1.4), cone = rp([[9.6, 9], [16, 4.2], [16, 20.8], [9.6, 16]], [0.6, 1.2, 1.2, 0.6]);
+      return `<g filter="${u.sh}"><g filter="${u.hi}"><path d="${box}" fill="${u.loS}"/></g></g><path d="${box}" ${OL}/>
+        <g filter="${u.sh}"><g filter="${u.hi}"><path d="${cone}" fill="${u.upS}"/></g></g><path d="${cone}" ${OL}/>
+        <path data-n="w1" fill="none" stroke-width="2.2" stroke-linecap="round" ${DEEPS}/>
+        <path data-n="w2" fill="none" stroke-width="2.2" stroke-linecap="round" ${DEEPS}/>`;
+    },
+    target: (h) => ({ r: h ? [5.4, 9.8] : [4.6, 8.6], o: h ? 1 : 0.3 }),
+    draw(p, E) {
+      const w = (r) => { const a = 50 * Math.PI / 180; return `M${f(16.4 + r * Math.cos(a))} ${f(12.5 - r * Math.sin(a))}A${f(r)} ${f(r)} 0 0 1 ${f(16.4 + r * Math.cos(a))} ${f(12.5 + r * Math.sin(a))}`; };
+      at(E.w1, { d: w(p.r[0]) }); at(E.w2, { d: w(p.r[1]), opacity: f(p.o) });
+    }
+  },
+  {
+    name: '耳机',
+    // Headphones whose cups press in on hover.
+    svg: (u) => {
+      const band = 'M4.4 14.4A11.1 11.1 0 0 1 26.6 14.4H24A8.5 8.5 0 0 0 7 14.4Z';
+      const cup = rr(0, 0, 6.8, 10.6, 3);
+      return `<g filter="${u.sh}"><g filter="${u.hi}"><path d="${band}" fill="${u.loS}"/></g></g><path d="${band}" ${OL}/>
+        <g data-n="l"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${cup}" fill="${u.upS}"/></g></g><path d="${cup}" ${OL}/></g>
+        <g data-n="r"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${cup}" fill="${u.upS}"/></g></g><path d="${cup}" ${OL}/></g>`;
+    },
+    target: (h) => ({ d: h ? 0.8 : 0 }),
+    draw(p, E) {
+      at(E.l, { transform: `translate(${f(3.6 + p.d)} 12.6)` });
+      at(E.r, { transform: `translate(${f(20.6 - p.d)} 12.6)` });
+    }
+  },
+  {
+    name: '书本',
+    // A closed book whose cover swings open on hover.
+    svg: (u) => {
+      const back = rr(6.3, 1.5, 18.4, 22, KR), cover = rr(6.3, 1.5, 18.4, 19.4, KR);
+      return `<g filter="${u.sh}"><path d="${back}" fill="${u.loS}"/></g><path d="${back}" ${OL}/>
+        <path d="${rr(7.8, 3, 15.6, 19.4, CR)}" fill="#fff"/>
+        <path d="${lines(11.4, 8.4, [9.2, 6.6])}" ${ACC}/>
+        <g data-n="cv"><g filter="${u.hi}"><path d="${cover}" fill="${u.loS}"/></g><path data-n="sh" d="${cover}" ${DEEP} opacity="0"/><path d="${cover}" ${OL}/>
+          <path d="${lines(10.4, 7.6, [10.2])}" class="ln" stroke="#fff" data-w="stroke"/></g>`;
+    },
+    target: (h) => ({ o: h ? 1 : 0 }),
+    draw(p, E) {
+      const o = Math.max(0, Math.min(1, p.o));
+      at(E.cv, { transform: `translate(6.3 0) scale(${f(Math.max(0.001, 1 - 0.72 * o))} 1) translate(-6.3 0)` });
+      at(E.sh, { opacity: f(0.35 * o) });
+    }
+  },
+  {
+    name: '帮助',
+    // A help badge whose question mark bobs on hover.
+    svg: (u) => `<g filter="${u.sh}"><g filter="${u.hi}"><path d="${circ(15.5, 12.5, 11.5)}" fill="${u.loS}"/></g></g>
+      <path d="${circ(15.5, 12.5, 11.5)}" ${OL}/>
+      <g data-n="q"><text x="15.5" y="18.4" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" data-w="fill">?</text></g>`,
+    target: (h) => ({ y: h ? -1 : 0, a: h ? 10 : 0 }),
+    draw(p, E) { at(E.q, { transform: `translate(0 ${f(p.y)}) rotate(${f(p.a)} 15.5 12.5)` }); }
+  },
+  {
+    name: '闹钟',
+    // An alarm clock with twin bells on two feet. On hover it rings: it rocks on its feet,
+    // the swings die away and it comes to rest upright again.
+    svg: (u) => {
+      const body = circ(15.5, 13.4, 9.8), bells = circ(8.7, 6.6, 4.2) + circ(22.3, 6.6, 4.2);
+      return `
+      <g data-n="r0"><path d="M11.2 20.4L8.4 23.4M19.8 20.4L22.6 23.4" fill="none" stroke-width="2.2" stroke-linecap="round" ${DEEPS}/></g>
+      <g filter="${u.sh}"><g filter="${u.hi}"><g data-n="r1"><path d="${bells}" fill="${u.upS}"/></g></g></g>
+      <g data-n="r2"><path d="${bells}" ${OL}/></g>
+      <g filter="${u.sh}"><g filter="${u.hi}"><g data-n="r3"><path d="${body}" fill="${u.loS}"/></g></g></g>
+      <g data-n="r4"><path d="${body}" ${OL}/>
+        <path d="${circ(15.5, 13.4, 7.4)}" fill="#fff"/>
+        <path d="M15.5 13.4V9.6" transform="rotate(${CLOCK_MINUTES / 2} 15.5 13.4)" stroke-width="2.6" stroke-linecap="round" data-t="stroke:#89B5FF"/>
+        <path d="M15.5 13.4V7.8" transform="rotate(${(CLOCK_MINUTES * 6) % 360} 15.5 13.4)" stroke-width="2" stroke-linecap="round" ${DEEPS}/>
+        <circle cx="15.5" cy="13.4" r="1.7" ${DEEP}/></g>`;
+    },
+    target: (h) => ({ o: h ? 1 : 0 }),
+    draw(p, E) {
+      // One 0→1 progress drives a damped rattle that starts and ends upright.
+      const o = Math.max(0, Math.min(1, p.o));
+      const a = 12 * (1 - o) * Math.sin(5 * Math.PI * o);
+      const t = `rotate(${f(a)} 15.5 23.4)`;
+      ['r0', 'r1', 'r2', 'r3', 'r4'].forEach((n) => at(E[n], { transform: t }));
+    }
+  },
+  {
+    name: '笔记本',
+    // A spiral notebook. On hover the cover turns over on its rings and folds away behind,
+    // leaving the lined first page.
+    svg: (u) => {
+      const back = rr(6.3, 1, 18.4, 23, KR);
+      const rings = [5.5, 10.2, 14.8, 19.5].map((y) => rr(3.8, y - 1.2, 7.4, 2.4, 1.2)).join('');
+      return `
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${back}" fill="${u.loS}"/></g></g>
+      <path d="${back}" ${OL}/>
+      <path d="${rr(9.4, 3, 13.3, 19, CR)}" fill="#fff"/>
+      <path d="${lines(13.4, 8.4, [7.4, 5])}" ${ACC}/>
+      <g data-n="cvG"><g filter="${u.hi}"><path data-n="cv" fill="${u.upS}"/></g>
+        <path data-n="shade" ${DEEP} opacity="0"/>
+        <path data-n="cvO" ${OL}/>
+        <g data-n="label"><path d="${lines(13.4, 7.4, [7])}" class="ln" ${DEEPS} stroke-opacity=".55"/></g></g>
+      <path d="${rings}" ${DEEP}/>`;
+    },
+    target: (h) => ({ o: h ? 1 : 0 }),
+    draw(p, E) {
+      // The cover's width shrinks to its hinge on the rings, darkening as it faces away; at
+      // the end it has gone round behind the back.
+      const o = Math.max(0, Math.min(1, p.o));
+      const s = Math.cos(o * Math.PI / 2), w = 15.3 * s;
+      const d = rp(R(9.4, 1, w, 23), [1.6, KR, KR, 1.6]);
+      at(E.cv, { d }); at(E.cvO, { d }); at(E.shade, { d, opacity: f(0.4 * Math.sin(o * Math.PI / 2)) });
+      at(E.label, { transform: `translate(9.4 0) scale(${f(Math.max(0.001, s))} 1) translate(-9.4 0)` });
+      at(E.cvG, { opacity: o > 0.985 ? 0 : 1 });
+    }
+  },
+  {
+    name: '扫码',
+    // A QR code on a card with a scan bar lying across it. On hover the bar sweeps down
+    // over the code and back up past the middle, then settles where it began.
+    svg: (u) => {
+      const card = rr(5.2, 2.2, 20.6, 20.6, KR), bar = rr(3.6, -1.2, 23.8, 2.4, 1.2);
+      const finder = (x, y) => rr(x, y, 5.9, 5.9, 1.4) + rr(x + 1.6, y + 1.6, 2.7, 2.7, 0.6);
+      const code = finder(7.4, 4.4) + finder(17.7, 4.4) + finder(7.4, 14.7) + rr(17.7, 14.7, 2.4, 2.4, 0.5) + rr(21.2, 18.2, 2.4, 2.4, 0.5);
+      return `
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${card}" fill="${u.loS}"/></g></g>
+      <path d="${card}" ${OL}/>
+      <path d="${code}" fill-rule="evenodd" fill="#fff" data-w="fill"/>
+      <g data-n="bar"><g filter="${u.sh}"><g filter="${u.hi}"><path d="${bar}" fill="${u.upS}"/></g></g><path d="${bar}" ${OL}/></g>`;
+    },
+    // At rest and at the end the bar's outline meets both rows of the code exactly.
+    target: (h) => ({ o: h ? 1 : 0 }),
+    draw(p, E) {
+      const o = Math.max(0, Math.min(1, p.o));
+      at(E.bar, { transform: `translate(0 ${f(12.5 + 7.6 * Math.sin(2 * Math.PI * o) * (1 - 0.35 * o))})` });
+    }
+  },
+  {
+    name: '退出',
+    // A door with an arrow beside it. On hover the door swings open on its left hinge to
+    // the bright outside and the arrow heads on out.
+    svg: (u) => {
+      const frame = rr(4, 1, 12.2, 23, KR), way = rp(R(7, 4, 6.2, 20), [1.6, 1.6, 0, 0]);
+      return `
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${frame}" fill="${u.loS}"/></g></g>
+      <path d="${frame}" ${OL}/>
+      <path d="${way}" fill="#fff"/>
+      <g filter="${u.hi}"><path data-n="leaf" fill="${u.upS}"/></g>
+      <path data-n="leafO" ${OL}/>
+      <circle data-n="knob" cy="14" r="1.2" ${DEEP}/>
+      <g data-n="arrow"><path d="M20.3 12.5H24" fill="none" stroke-width="2.2" stroke-linecap="round" ${DEEPS}/>
+        <path d="${rp([[23.6, 9.9], [27, 12.5], [23.6, 15.1]], 0.5)}" ${DEEP}/></g>`;
+    },
+    target: (h) => ({ s: h ? 0.5 : 1, x: h ? 1.4 : 0 }),
+    draw(p, E) {
+      const w = 6.2 * p.s, d = rp(R(7, 4, w, 20), [1.6, 1.6, 0, 0]);
+      at(E.leaf, { d }); at(E.leafO, { d });
+      // The knob keeps to the free edge and never leaves the narrowing leaf.
+      at(E.knob, { cx: f(7 + w * (0.29 + 0.42 * p.s)) });
+      at(E.arrow, { transform: `translate(${f(p.x)} 0)` });
+    }
+  },
+  {
+    name: '计算器',
+    // A calculator with a display and four operator keys. On hover the equals key is
+    // pressed, lights up, and the display fills with the result.
+    svg: (u) => {
+      const body = rr(6.3, 1, 18.4, 23, KR), eq = rr(16.5, 16.8, 6.2, 5.2, CR);
+      const eqMark = 'M18.3 18.1H20.9M18.3 20.7H20.9';
+      return `
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${body}" fill="${u.loS}"/></g></g>
+      <path d="${body}" ${OL}/>
+      <path d="${rr(8.3, 3, 14.4, 4.6, CR)}" fill="#fff"/>
+      <path data-n="read" class="ln" ${DEEPS}/>
+      <path d="${rr(8.3, 9.6, 6.2, 5.2, CR) + rr(16.5, 9.6, 6.2, 5.2, CR) + rr(8.3, 16.8, 6.2, 5.2, CR)}" fill="#fff"/>
+      <path d="M10.1 12.2H12.7M11.4 10.9V13.5M18.3 12.2H20.9M10.4 18.4L12.4 20.4M12.4 18.4L10.4 20.4" class="ln" ${DEEPS}/>
+      <g data-n="eq"><path d="${eq}" fill="#fff"/><path data-n="lit" d="${eq}" fill="${u.pure('#2F6FE0')}"/>
+        <path data-n="eqD" d="${eqMark}" class="ln" ${DEEPS}/><path data-n="eqW" d="${eqMark}" class="ln" stroke="#fff" data-w="stroke"/></g>`;
+    },
+    target: (h) => ({ o: h ? 1 : 0, s: h ? 0.9 : 1, n: h ? 9.6 : 3.4 }),
+    draw(p, E) {
+      const o = Math.max(0, Math.min(1, p.o));
+      at(E.eq, { transform: `translate(19.6 19.4) scale(${f(p.s)}) translate(-19.6 -19.4)` });
+      at(E.lit, { opacity: f(o) }); at(E.eqW, { opacity: f(o) }); at(E.eqD, { opacity: f(1 - o) });
+      at(E.read, { d: `M${f(20.9 - p.n)} 5.3H20.9` });
+    }
+  },
+  {
+    name: '指南针',
+    // A compass resting a little off north. On hover the needle swings past north and back,
+    // each swing smaller, and settles pointing north.
+    svg: (u) => `
+      <g filter="${u.sh}"><g filter="${u.hi}"><path d="${circ(15.5, 12.5, 11.5)}" fill="${u.loS}"/></g></g>
+      <path d="${circ(15.5, 12.5, 11.5)}" ${OL}/>
+      <path d="${circ(15.5, 12.5, 8.6)}" fill="#fff"/>
+      <g data-n="needle">
+        <path d="${rp([[13.1, 12.5], [15.5, 5.9], [17.9, 12.5]], [0, 0.6, 0])}" ${DEEP}/>
+        <path d="${rp([[17.9, 12.5], [15.5, 19.1], [13.1, 12.5]], [0, 0.6, 0])}" data-t="fill:#89B5FF"/>
+        <circle cx="15.5" cy="12.5" r="1.3" fill="#fff"/>
+      </g>`,
+    target: (h) => ({ o: h ? 1 : 0 }),
+    draw(p, E) {
+      const o = Math.max(0, Math.min(1, p.o));
+      at(E.needle, { transform: `rotate(${f(40 * (1 - o) * Math.cos(3 * Math.PI * o))} 15.5 12.5)` });
+    }
+  }
+];
 
-  let iconIdCounter = 0;
+
+// ==================== EXPORT TO WINDOW (KUBAI ICONS ENGINE) ====================
+(function(window) {
+  'use strict';
+
+  const BY_NAME = Object.fromEntries(ICONS.map((icon, idx) => [icon.name, { icon, idx }]));
+
+  // 经典金石朱墨 Palette & 暗夜夜读 Palette
+  const PAL_ZHUSHA = clearTone('金石朱墨', '#B8332A', 75);
+  const PAL_DARK = clearTone('暗夜珊瑚', '#FF7860', 75);
+
+  function getActivePalette() {
+    if (typeof document !== 'undefined' && document.documentElement) {
+      return document.documentElement.getAttribute('data-theme') === 'dark' ? PAL_DARK : PAL_ZHUSHA;
+    }
+    return PAL_ZHUSHA;
+  }
+  runtime.palette = getActivePalette();
+
   const mountedInstances = [];
+
+  // 主题观察者 (安全降级)
+  if (typeof MutationObserver !== 'undefined' && typeof document !== 'undefined') {
+    try {
+      const observer = new MutationObserver(() => {
+        runtime.palette = getActivePalette();
+        mountedInstances.forEach((inst) => go(inst));
+      });
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    } catch (e) {}
+  }
 
   function mount(arg1, arg2, options = {}) {
     let name = arg1;
@@ -452,127 +1551,52 @@
       name = arg2;
     }
     if (!container) return null;
-    const icon = ICONS.find((it) => it.name === name);
-    if (!icon) {
+    const entry = BY_NAME[name];
+    if (!entry) {
       console.warn(`[Kubai] Icon not found: ${name}`);
       return null;
     }
-    const idx = ++iconIdCounter;
-    const k = 'kb' + idx;
-    const u = makeU(k);
-    const body = icon.svg(u);
-    const sz = options.size || 22;
-    container.innerHTML = `<svg viewBox="${ICON_VIEWBOX}" fill="none" class="kubai-icon-svg" style="width:${sz}px;height:${Math.round(sz*29/31)}px;" aria-hidden="true">${defs(k, u.grads)}${body}</svg>`;
+    const inst = mountIcon(entry.icon, entry.idx, container);
+    inst.options = options;
     const svg = container.querySelector('svg');
-    const E = {};
-    svg.querySelectorAll('[data-n]').forEach((el) => { E[el.dataset.n] = el; });
-    const tints = [...svg.querySelectorAll('[data-t]')].map((el) => {
-      const [attr, src] = el.dataset.t.split(':');
-      return [el, attr, src];
-    });
-
-    const defsEl = svg.querySelector('defs');
-    const clips = [...svg.querySelectorAll('.ol')].map((el, j) => {
-      const mask = document.createElementNS(SVG_NS, 'mask');
-      mask.id = `ol-${k}-${j}`;
-      at(mask, { maskUnits: 'userSpaceOnUse', x: -40, y: -40, width: 111, height: 109 });
-      mask.innerHTML = '<rect x="-40" y="-40" width="111" height="109" fill="#fff"/>';
-      const shape = document.createElementNS(SVG_NS, 'path');
-      shape.setAttribute('fill', '#000');
-      shape.setAttribute('fill-rule', el.getAttribute('fill-rule') || 'nonzero');
-      mask.appendChild(shape);
-      defsEl.appendChild(mask);
-      el.setAttribute('mask', `url(#${mask.id})`);
-      return [el, shape];
-    });
-
-    const inst = {
-      icon, idx, E, tints, clips,
-      whites: [...svg.querySelectorAll('[data-w]')],
-      pures: [...svg.querySelectorAll('[data-pure]')],
-      shadow: svg.querySelector(`feColorMatrix`),
-      hover: Boolean(options.hover),
-      cur: null,
-      painted: '',
-      raf: null
-    };
-
-    inst.cur = icon.target(inst.hover);
-    render(inst);
-    mountedInstances.push(inst);
-
-    // Event binding
-    if (options.interactive !== false) {
-      container.addEventListener('mouseenter', () => {
-        inst.hover = true;
-        go(inst);
-      });
-      container.addEventListener('mouseleave', () => {
-        if (!options.stayActive || !container.classList.contains('active')) {
-          inst.hover = false;
-          go(inst);
-        }
-      });
-      container.addEventListener('touchstart', () => {
-        inst.hover = true;
-        go(inst);
-      }, { passive: true });
-      container.addEventListener('touchend', () => {
-        setTimeout(() => {
-          if (!options.stayActive || !container.classList.contains('active')) {
-            inst.hover = false;
-            go(inst);
-          }
-        }, 300);
-      }, { passive: true });
+    if (svg) {
+      const sz = options.size || 22;
+      svg.style.width = sz + 'px';
+      svg.style.height = Math.round(sz * 29 / 31) + 'px';
+      svg.style.display = 'block';
+      svg.classList.add('kubai-icon-svg');
     }
 
-    return {
-      inst,
-      setHover(isHover) {
-        inst.hover = Boolean(isHover);
-        go(inst);
-      },
-      toggle() {
-        inst.hover = !inst.hover;
+    container.addEventListener('pointerenter', (e) => {
+      if (e.pointerType === 'mouse') {
+        inst.hover++;
         go(inst);
       }
-    };
-  }
-
-  function setPalette(theme) {
-    if (theme === 'dark') {
-      runtime.palette = PAL_DARK;
-    } else if (theme === 'paper') {
-      runtime.palette = PAL_PAPER;
-    } else {
-      runtime.palette = PAL_ZHUSHA;
-    }
-    for (const inst of mountedInstances) {
-      inst.painted = '';
-      render(inst);
-    }
-  }
-
-  // Theme auto observer
-  try {
-    const observer = new MutationObserver(() => {
-      const docTheme = document.documentElement.getAttribute('data-theme') || 'light';
-      setPalette(docTheme);
     });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-    const initialTheme = document.documentElement.getAttribute('data-theme') || 'light';
-    setPalette(initialTheme);
-  } catch (e) {}
+    container.addEventListener('pointerleave', (e) => {
+      if (e.pointerType === 'mouse') {
+        inst.hover = Math.max(0, inst.hover - 1);
+        go(inst);
+      }
+    });
+    container.addEventListener('click', () => {
+      inst.hover++;
+      go(inst);
+      setTimeout(() => {
+        inst.hover = Math.max(0, inst.hover - 1);
+        go(inst);
+      }, 550);
+    });
 
-  // Export API
+    mountedInstances.push(inst);
+    return inst;
+  }
+
   window.KubaiIcons = {
     mount,
-    setPalette,
-    clearTone,
-    flatTone,
+    go,
     ICONS,
+    BY_NAME,
     runtime
   };
-
-})(typeof window !== 'undefined' ? window : this);
+})(typeof window !== 'undefined' ? window : globalThis);

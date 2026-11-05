@@ -1591,6 +1591,19 @@
   }
 
   function updatePlayBtnUI() {
+    const centerPlaySvg = document.getElementById('centerIconPlay');
+    const centerPauseSvg = document.getElementById('centerIconPause');
+    const centerPlayLabel = document.getElementById('centerPlayLabel');
+    if (state.isPlaying) {
+      if (centerPlaySvg) centerPlaySvg.style.display = 'none';
+      if (centerPauseSvg) centerPauseSvg.style.display = 'block';
+      if (centerPlayLabel) centerPlayLabel.textContent = '暂停';
+    } else {
+      if (centerPlaySvg) centerPlaySvg.style.display = 'block';
+      if (centerPauseSvg) centerPauseSvg.style.display = 'none';
+      if (centerPlayLabel) centerPlayLabel.textContent = '播放';
+    }
+
     if (!el.playBtn) return;
     if (state.isPlaying) {
       el.playBtn.innerHTML = `
@@ -2369,7 +2382,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '1.9.4';
+  const APP_BUILD_ID = '1.9.5';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {

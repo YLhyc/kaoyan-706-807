@@ -5099,3 +5099,73 @@ body.dock-expanded .dock-fab-play {
     height: 52px;
   }
 }
+
+/* ==========================================================================
+   底栏正中突出播放主按键 & 全新 5 Tab 结构 (v1.9.5)
+   ========================================================================== */
+.nav-tab-center-play {
+  flex: 1.15 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  margin-top: -14px !important;
+  cursor: pointer !important;
+  background: none !important;
+  border: none !important;
+  outline: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  z-index: 1010 !important;
+}
+
+.center-play-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c53a30, #9f2a22);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(184, 51, 42, 0.42), 0 2px 5px rgba(0, 0, 0, 0.12);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease;
+}
+
+.nav-tab-center-play:active .center-play-circle {
+  transform: scale(0.92);
+}
+
+.center-play-svg {
+  width: 19px;
+  height: 19px;
+  margin-left: 2px;
+}
+
+.center-pause-svg {
+  width: 18px;
+  height: 18px;
+}
+
+.nav-tab-center-play .nav-tab-label {
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
+  color: var(--vermilion, #b8332a) !important;
+  margin-top: 2px !important;
+}
+
+/* 播放坞折叠与展开状态 */
+.player-dock.dock-collapsed {
+  transform: translateY(140%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
+}
+
+/* 播放坞退下状态（遇到侧边栏、看板、设置等抽屉） */
+.player-dock.dock-receded {
+  transform: translateY(140%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
