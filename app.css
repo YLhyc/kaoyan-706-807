@@ -5000,3 +5000,102 @@ body {
 .player-dock {
   transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
 }
+
+/* ==========================================================================
+   未播放时驻留的精致圆形播放键 (FAB) & 播放时平滑弹出胶囊 (v1.9.4)
+   ========================================================================== */
+.dock-fab-play {
+  position: fixed;
+  right: 18px;
+  bottom: calc(64px + env(safe-area-inset-bottom, 8px));
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c53a30, #9f2a22);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  z-index: 950;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(184, 51, 42, 0.42), 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: all 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: fabGlow 3s infinite;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@keyframes fabGlow {
+  0% { box-shadow: 0 0 0 0 rgba(184, 51, 42, 0.45), 0 6px 18px rgba(184, 51, 42, 0.35); }
+  70% { box-shadow: 0 0 0 9px rgba(184, 51, 42, 0), 0 6px 18px rgba(184, 51, 42, 0.35); }
+  100% { box-shadow: 0 0 0 0 rgba(184, 51, 42, 0), 0 6px 18px rgba(184, 51, 42, 0.35); }
+}
+
+.dock-fab-play:hover {
+  transform: scale(1.08);
+}
+
+.dock-fab-play:active {
+  transform: scale(0.92);
+}
+
+.fab-play-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2px;
+}
+
+.fab-play-tooltip {
+  display: none;
+}
+
+/* 当播放坞收起时 */
+.player-dock.dock-collapsed {
+  transform: translateY(140%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* 当播放坞展开时隐藏圆键 */
+body.dock-expanded .dock-fab-play {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: scale(0.4) !important;
+}
+
+/* 当抽屉展开时，圆键也彻底退下 */
+.dock-fab-play.dock-receded {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(60px) scale(0.5) !important;
+}
+
+.hud-collapse-dock-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--line-subtle);
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-size: 11px;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  transition: all 0.2s ease;
+}
+
+.hud-collapse-dock-btn:hover {
+  background: var(--line-main);
+  color: var(--ink-primary);
+}
+
+@media (min-width: 769px) {
+  .dock-fab-play {
+    bottom: 24px;
+    right: 28px;
+    width: 52px;
+    height: 52px;
+  }
+}

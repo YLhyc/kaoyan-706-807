@@ -1490,6 +1490,7 @@
       state.isPlaying = true;
       audio.playbackRate = state.speed;
       updatePlayBtnUI();
+      expandPlayerDock();
     });
 
     audio.addEventListener('pause', () => {
@@ -1997,6 +1998,32 @@
       }, { passive: true });
     }
 
+
+    // 浮动圆形播放驻留键与收起按钮
+    const fabPlayBtn = document.getElementById('dock-fab-play');
+    if (fabPlayBtn) {
+      fabPlayBtn.addEventListener('click', () => {
+        expandPlayerDock();
+        if (audio.paused) {
+          if (!audio.src) {
+            loadTrackData(state.currentTrack, true);
+          } else {
+            audio.play().catch(e => console.log('Play failed:', e));
+          }
+        }
+      });
+    }
+
+    const collapseDockBtn = document.getElementById('btnCollapseDock');
+    if (collapseDockBtn) {
+      collapseDockBtn.addEventListener('click', () => {
+        collapsePlayerDock();
+      });
+    }
+
+    // 默认未播放时收起播放坞，仅驻留精致圆形播放键
+    collapsePlayerDock();
+
     // 恢复本地存储配置
     const savedTheme = localStorage.getItem('kaoyan_theme');
     if (savedTheme) {
@@ -2048,14 +2075,31 @@
   }
 
   
-  // 播放栏动态避让与退下机制 (当侧边栏、看板、手卷等抽屉展开时，播放栏自动平滑滑出退下)
+  // 播放坞与圆形驻留键动态形态控制 (v1.9.4)
+  state.dockExpanded = false;
+
+  function expandPlayerDock() {
+    state.dockExpanded = true;
+    document.body.classList.add('dock-expanded');
+    const dock = document.querySelector('.player-dock');
+    if (dock) dock.classList.remove('dock-collapsed');
+  }
+
+  function collapsePlayerDock() {
+    state.dockExpanded = false;
+    document.body.classList.remove('dock-expanded');
+    const dock = document.querySelector('.player-dock');
+    if (dock) dock.classList.add('dock-collapsed');
+  }
+
+  // 播放栏动态避让与退下机制 (当侧边栏、看板、手卷等抽屉展开时，播放栏与圆键均自动平滑退下)
   function setPlayerDockReceded(receded) {
     const dock = document.querySelector('.player-dock');
-    if (!dock) return;
+    const fab = document.getElementById('dock-fab-play');
     if (receded) {
-      dock.classList.add('dock-receded');
+      if (dock) dock.classList.add('dock-receded');
+      if (fab) fab.classList.add('dock-receded');
     } else {
-      // 仅在无任何抽屉打开时恢复
       const hasOpenDrawer = (
         (el.sidebar && el.sidebar.classList.contains('open') && window.innerWidth <= 768) ||
         (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) ||
@@ -2063,7 +2107,8 @@
         (document.getElementById('outlineDrawer') && document.getElementById('outlineDrawer').classList.contains('open'))
       );
       if (!hasOpenDrawer) {
-        dock.classList.remove('dock-receded');
+        if (dock) dock.classList.remove('dock-receded');
+        if (fab) fab.classList.remove('dock-receded');
       }
     }
   }

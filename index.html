@@ -326,6 +326,9 @@
         <button type="button" class="hud-drawer-btn" id="btnOpenOutline" title="展开思维大纲">
           <span>大纲</span>
         </button>
+        <button type="button" class="hud-drawer-btn hud-collapse-dock-btn" id="btnCollapseDock" title="收起播放坞为微型圆键">
+          <span>收起</span>
+        </button>
       </div>
     </div>
     <!-- 进度条轨道 -->
@@ -409,6 +412,17 @@
       <div class="dock-right-info-spacer"></div>
     </div>
   </footer>
+
+  <!-- 未播放时驻留的精致圆形播放键 (FAB) -->
+  <button id="dock-fab-play" class="dock-fab-play" title="点击展开听诵" aria-label="开始听诵">
+    <div class="fab-play-icon" id="icon-fab-play">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+        <polygon points="7 4 19 12 7 20 7 4"></polygon>
+      </svg>
+    </div>
+    <span class="fab-play-tooltip">听诵</span>
+  </button>
+
 
   <!-- 移动端原生 App 底部浮动导航栏 (iPhone/iPad/PC 全自适应) -->
   <nav id="app-bottom-nav" class="app-bottom-nav" aria-label="底栏主导航">
