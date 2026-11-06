@@ -2107,7 +2107,7 @@
   // ==========================================
   // 方案 C：播放控制坞与底部 5-Tab 导航栏互斥吸附替换机制 (v1.9.6)
   // ==========================================
-  state.dockExpanded = false;
+  state.dockExpanded = true;
 
   function expandPlayerDock() {
     state.dockExpanded = true;
@@ -2118,7 +2118,7 @@
   }
 
   function collapsePlayerDock() {
-    state.dockExpanded = false;
+    state.dockExpanded = true;
     document.body.classList.remove('dock-expanded');
     const dock = document.querySelector('.player-dock');
     if (dock) dock.classList.add('dock-collapsed');
@@ -2430,7 +2430,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '2.0.4';
+  const APP_BUILD_ID = '2.0.5';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {

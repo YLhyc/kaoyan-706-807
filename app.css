@@ -36,6 +36,33 @@
   --spotlight-border: #d97757;
   --spotlight-glow: rgba(217, 119, 87, 0.18);
   --spotlight-text: #141413;
+
+  /* Liquid Glass 光学材质变量系统 (Lumno × VisionOS) */
+  --glass-dock-bg: radial-gradient(110% 80% at 20% 0%, rgba(255, 255, 255, 0.76) 0%, rgba(246, 243, 236, 0.6) 60%, rgba(243, 239, 230, 0.78) 100%);
+  --glass-dock-blur: blur(20px) saturate(210%) contrast(104%) brightness(1.02);
+  --glass-dock-border: rgba(255, 255, 255, 0.65);
+  --glass-dock-shadow: 
+    inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.95),
+    inset 1px 1.5px 2.5px 0 rgba(199, 210, 254, 0.3),
+    inset 0 -1.5px 2px 0 rgba(254, 215, 170, 0.22),
+    0 -8px 28px -6px rgba(45, 36, 28, 0.08),
+    0 -1px 3px 0 rgba(0, 0, 0, 0.02);
+
+  --glass-trough-bg: rgba(0, 0, 0, 0.035);
+  --glass-trough-border: rgba(0, 0, 0, 0.06);
+
+  --glass-crystal-card: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.48) 50%, rgba(255, 255, 255, 0.72) 100%);
+  --glass-crystal-border: rgba(255, 255, 255, 0.75);
+  --glass-crystal-shadow: 
+    inset 0 1px 0.8px 0 rgba(255, 255, 255, 0.95),
+    inset 1px 1px 2px 0 rgba(199, 210, 254, 0.35),
+    0 4px 14px -3px rgba(45, 36, 28, 0.1);
+
+  --glass-btn-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0.45) 100%);
+  --glass-btn-hover: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.38) 50%, rgba(255, 255, 255, 0.65) 100%);
+  --glass-btn-border: rgba(255, 255, 255, 0.6);
+  --glass-btn-shadow: inset 0 0.8px 0.5px 0 rgba(255, 255, 255, 0.85), 0 2px 6px -1px rgba(0,0,0,0.06);
+
   
   /* Typography Stacks */
   --font-serif: Georgia, "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", serif;
@@ -90,6 +117,33 @@
   --spotlight-border: #c48a29;
   --spotlight-glow: rgba(196, 138, 41, 0.3);
   --spotlight-text: #fff3db;
+
+  /* Liquid Glass 光学材质变量系统 - 黑曜石夜间模式 (Dark) */
+  --glass-dock-bg: radial-gradient(110% 80% at 20% 0%, rgba(38, 35, 32, 0.82) 0%, rgba(24, 22, 21, 0.72) 60%, rgba(20, 18, 17, 0.88) 100%);
+  --glass-dock-blur: blur(24px) saturate(220%) contrast(106%) brightness(1.12);
+  --glass-dock-border: rgba(255, 255, 255, 0.12);
+  --glass-dock-shadow: 
+    inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.28),
+    inset 1px 1px 2px 0 rgba(147, 197, 253, 0.12),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.45),
+    0 -10px 36px -4px rgba(0, 0, 0, 0.55),
+    0 -1px 3px 0 rgba(0, 0, 0, 0.3);
+
+  --glass-trough-bg: rgba(255, 255, 255, 0.04);
+  --glass-trough-border: rgba(255, 255, 255, 0.08);
+
+  --glass-crystal-card: linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.04) 50%, rgba(255, 255, 255, 0.09) 100%);
+  --glass-crystal-border: rgba(255, 255, 255, 0.22);
+  --glass-crystal-shadow: 
+    inset 0 1px 0.8px 0 rgba(255, 255, 255, 0.35),
+    inset 1px 1px 2px 0 rgba(147, 197, 253, 0.15),
+    0 6px 18px -4px rgba(0, 0, 0, 0.4);
+
+  --glass-btn-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 50%, rgba(255, 255, 255, 0.08) 100%);
+  --glass-btn-hover: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.07) 50%, rgba(255, 255, 255, 0.14) 100%);
+  --glass-btn-border: rgba(255, 255, 255, 0.16);
+  --glass-btn-shadow: inset 0 0.8px 0.5px 0 rgba(255, 255, 255, 0.3), 0 2px 6px -1px rgba(0,0,0,0.25);
+
   
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
@@ -696,7 +750,7 @@ body {
   margin: 0 auto !important;
   line-height: 1.85 !important;
   font-family: var(--font-serif) !important;
-  padding: 24px 20px 80px !important;
+  padding: 24px 20px 140px !important;
   box-sizing: border-box !important;
 }
 
@@ -1112,7 +1166,7 @@ body {
   margin: 0 auto !important;
   line-height: 1.85 !important;
   font-family: var(--font-serif) !important;
-  padding: 24px 20px 80px !important;
+  padding: 24px 20px 140px !important;
   box-sizing: border-box !important;
 }
   
@@ -1326,7 +1380,7 @@ body {
   margin: 0 auto !important;
   line-height: 1.85 !important;
   font-family: var(--font-serif) !important;
-  padding: 24px 20px 80px !important;
+  padding: 24px 20px 140px !important;
   box-sizing: border-box !important;
 }
 
@@ -1514,7 +1568,7 @@ body {
   margin: 0 auto !important;
   line-height: 1.85 !important;
   font-family: var(--font-serif) !important;
-  padding: 24px 20px 80px !important;
+  padding: 24px 20px 140px !important;
   box-sizing: border-box !important;
 }
 
@@ -2616,7 +2670,7 @@ body {
   margin: 0 auto !important;
   line-height: 1.85 !important;
   font-family: var(--font-serif) !important;
-  padding: 24px 20px 80px !important;
+  padding: 24px 20px 140px !important;
   box-sizing: border-box !important;
 }
 
@@ -5832,4 +5886,239 @@ body.dock-expanded .dock-fab-play {
   border-radius: 8px !important;
   box-shadow: none !important;
   background: var(--bg-card) !important;
+}
+
+
+
+
+
+/* ==============================================================
+   Liquid Glass (液态玻璃) 光学材质系统 · Lumno × VisionOS (v2.0.5)
+   ============================================================== */
+
+/* 1. 核心悬浮播放坞 (Lumno 物理透镜大底座 · 悬浮居中) */
+.player-dock {
+  position: fixed !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  bottom: 24px !important;
+  width: calc(100% - 48px) !important;
+  max-width: 860px !important;
+  border-radius: 32px !important;
+  border: 1px solid var(--glass-dock-border) !important;
+  padding: 12px 22px 14px !important;
+  background: var(--glass-dock-bg) !important;
+  backdrop-filter: var(--glass-dock-blur) !important;
+  -webkit-backdrop-filter: var(--glass-dock-blur) !important;
+  box-shadow: var(--glass-dock-shadow) !important;
+  z-index: 990 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  overflow: hidden !important;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
+}
+
+/* 顶部微弧纳米高光刃口 */
+.player-dock::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 8% !important;
+  right: 8% !important;
+  height: 1px !important;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.95) 50%, transparent 100%) !important;
+  pointer-events: none !important;
+}
+[data-theme="dark"] .player-dock::before {
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.35) 50%, transparent 100%) !important;
+}
+
+/* 抽屉打开时平滑滑下退隐 */
+.player-dock.dock-receded,
+.player-dock.dock-collapsed {
+  transform: translate(-50%, calc(100% + 40px)) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* 2. 播放/暂停大宝石按键 (VisionOS Specular Play Hub) */
+.dock-btn-play {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #e98668 0%, var(--vermilion) 55%, #b65234 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 
+    inset 0 1.2px 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 0 14px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -2px 3px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px -2px rgba(217, 119, 87, 0.48),
+    0 2px 6px 0 rgba(0, 0, 0, 0.08) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.dock-btn-play:hover {
+  transform: scale(1.06) translateY(-1px) !important;
+  filter: brightness(1.08) !important;
+  box-shadow: 
+    inset 0 1.5px 1.2px 0 rgba(255, 255, 255, 0.95),
+    inset 0 0 18px 0 rgba(255, 255, 255, 0.35),
+    0 10px 26px -2px rgba(217, 119, 87, 0.58) !important;
+}
+
+.dock-btn-play:active {
+  transform: scale(0.95) !important;
+}
+
+/* 3. 辅助控制按键 (VisionOS 纯水晶圆按钮) */
+.dock-btn:not(.dock-btn-play) {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  background: var(--glass-btn-bg) !important;
+  border: 1px solid var(--glass-btn-border) !important;
+  backdrop-filter: blur(12px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
+  box-shadow: var(--glass-btn-shadow) !important;
+  color: var(--ink-secondary) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.dock-btn:not(.dock-btn-play):hover {
+  background: var(--glass-btn-hover) !important;
+  color: var(--ink-primary) !important;
+  transform: translateY(-1.5px) scale(1.04) !important;
+  box-shadow: inset 0 1px 0.8px 0 rgba(255, 255, 255, 0.9), 0 4px 10px -2px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dock-btn:not(.dock-btn-play):active {
+  transform: scale(0.94) !important;
+}
+
+/* 4. 倍速与循环模式小胶囊 (VisionOS Capsule Pills) */
+.pill-mode-btn, .dock-btn-tool {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 5px 12px !important;
+  border-radius: 20px !important;
+  background: var(--glass-btn-bg) !important;
+  border: 1px solid var(--glass-btn-border) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: var(--glass-btn-shadow) !important;
+  color: var(--ink-secondary) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.pill-mode-btn:hover, .dock-btn-tool:hover {
+  background: var(--glass-btn-hover) !important;
+  color: var(--ink-primary) !important;
+  transform: translateY(-1px) !important;
+}
+
+.pill-mode-btn.active, .dock-btn-tool.active {
+  background: var(--vermilion-soft) !important;
+  color: var(--vermilion) !important;
+  border-color: rgba(217, 119, 87, 0.3) !important;
+}
+
+/* 5. 双轨切换槽 (VisionOS Track Tabs) */
+.track-tabs {
+  display: inline-flex !important;
+  background: var(--glass-trough-bg) !important;
+  border: 1px solid var(--glass-trough-border) !important;
+  border-radius: 14px !important;
+  padding: 4px !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  backdrop-filter: blur(16px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
+  gap: 6px !important;
+}
+
+.track-tab-btn {
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
+  padding: 9px 18px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: var(--ink-secondary) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.track-tab-btn.active {
+  background: var(--glass-crystal-card) !important;
+  border: 1px solid var(--glass-crystal-border) !important;
+  box-shadow: var(--glass-crystal-shadow) !important;
+  color: var(--vermilion) !important;
+  font-weight: 700 !important;
+}
+
+/* 6. 科目分段切换胶囊槽 (VisionOS Segmented Control) */
+.subject-pill-group {
+  display: inline-flex !important;
+  background: var(--glass-trough-bg) !important;
+  border: 1px solid var(--glass-trough-border) !important;
+  border-radius: 36px !important;
+  padding: 4px !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  backdrop-filter: blur(16px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
+  gap: 4px !important;
+}
+
+.subject-btn {
+  border: 1px solid transparent !important;
+  border-radius: 30px !important;
+  padding: 7px 18px !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  color: var(--ink-secondary) !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.subject-btn.active {
+  background: var(--glass-crystal-card) !important;
+  border: 1px solid var(--glass-crystal-border) !important;
+  box-shadow: var(--glass-crystal-shadow) !important;
+  color: var(--vermilion) !important;
+}
+
+.subject-btn.active .count-tag {
+  background: var(--vermilion-soft) !important;
+  color: var(--vermilion) !important;
+}
+
+/* 7. 顶部主导航栏 (Lumno Glass Header) */
+.app-header {
+  background: var(--glass-dock-bg) !important;
+  backdrop-filter: var(--glass-dock-blur) !important;
+  -webkit-backdrop-filter: var(--glass-dock-blur) !important;
+  border-bottom: 1px solid var(--glass-dock-border) !important;
+  box-shadow: 0 4px 16px -2px rgba(45, 36, 28, 0.04) !important;
+}
+
+/* 8. 移动端自适应 */
+@media (max-width: 768px) {
+  .player-dock {
+    bottom: calc(58px + env(safe-area-inset-bottom, 8px)) !important;
+    width: calc(100% - 20px) !important;
+    border-radius: 24px !important;
+    padding: 10px 14px 12px !important;
+  }
 }

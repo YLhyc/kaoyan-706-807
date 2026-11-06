@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Liquid Glass 液态玻璃光学材质设计系统 · 双轨背诵手卷预览</title>
+  <style>
+    /* ==============================================================
+       1. 设计系统色彩与度量衡 (Claude UI 暖纸色系 + 黑曜石暗色)
+       ============================================================== */
+    :root {
+      --bg-canvas: #faf9f5;
+      --bg-paged-canvas: #f3efe6;
+      --ink-primary: #141413;
+      --ink-secondary: #5c5a53;
+      --ink-muted: #8c887e;
+      --line-subtle: #eae7dc;
+      --line-main: #e2ddd0;
+
+      /* Claude Signature Terracotta 陶土红金 */
+      --vermilion: #d97757;
+      --vermilion-soft: rgba(217, 119, 87, 0.09);
+      --vermilion-hover: #c46545;
+      --vermilion-glow: rgba(217, 119, 87, 0.35);
+
+      /* Liquid Glass 光学变量 - 典籍暖纸 (Light) */
+      --glass-dock-bg: radial-gradient(110% 80% at 20% 0%, rgba(255, 255, 255, 0.72) 0%, rgba(246, 243, 236, 0.55) 60%, rgba(243, 239, 230, 0.75) 100%);
+      --glass-dock-blur: blur(20px) saturate(210%) contrast(104%) brightness(1.02);
+      --glass-dock-border: rgba(255, 255, 255, 0.55);
+      --glass-dock-shadow: 
+        inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.95),
+        inset 1px 1.5px 2.5px 0 rgba(199, 210, 254, 0.32),
+        inset 0 -1.5px 2px 0 rgba(254, 215, 170, 0.24),
+        0 -8px 28px -6px rgba(45, 36, 28, 0.08),
+        0 -1px 3px 0 rgba(0, 0, 0, 0.02);
+
+      --glass-trough-bg: rgba(0, 0, 0, 0.035);
+      --glass-trough-border: rgba(0, 0, 0, 0.05);
+
+      --glass-crystal-card: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.45) 50%, rgba(255, 255, 255, 0.7) 100%);
+      --glass-crystal-border: rgba(255, 255, 255, 0.65);
+      --glass-crystal-shadow: 
+        inset 0 1px 0.8px 0 rgba(255, 255, 255, 0.95),
+        inset 1px 1px 2px 0 rgba(199, 210, 254, 0.35),
+        0 4px 14px -3px rgba(45, 36, 28, 0.1);
+
+      --glass-btn-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0.45) 100%);
+      --glass-btn-hover: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.38) 50%, rgba(255, 255, 255, 0.65) 100%);
+      --glass-btn-border: rgba(255, 255, 255, 0.55);
+      --glass-btn-shadow: inset 0 0.8px 0.5px 0 rgba(255, 255, 255, 0.85), 0 2px 6px -1px rgba(0,0,0,0.06);
+
+      --font-serif: Georgia, "Noto Serif SC", "Source Han Serif SC", SimSun, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+      --font-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    /* 黑曜石暗色 (Dark Mode) */
+    [data-theme="dark"] {
+      --bg-canvas: #161514;
+      --bg-paged-canvas: #1d1b19;
+      --ink-primary: #ede8df;
+      --ink-secondary: #aba195;
+      --ink-muted: #7d7367;
+      --line-subtle: #272420;
+      --line-main: #332f29;
+
+      --vermilion: #d96248;
+      --vermilion-soft: rgba(217, 98, 72, 0.15);
+      --vermilion-hover: #eb745b;
+      --vermilion-glow: rgba(217, 98, 72, 0.45);
+
+      --glass-dock-bg: radial-gradient(110% 80% at 20% 0%, rgba(38, 35, 32, 0.82) 0%, rgba(24, 22, 21, 0.72) 60%, rgba(20, 18, 17, 0.88) 100%);
+      --glass-dock-blur: blur(24px) saturate(220%) contrast(106%) brightness(1.12);
+      --glass-dock-border: rgba(255, 255, 255, 0.12);
+      --glass-dock-shadow: 
+        inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.28),
+        inset 1px 1px 2px 0 rgba(147, 197, 253, 0.12),
+        inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.45),
+        0 -10px 36px -4px rgba(0, 0, 0, 0.55),
+        0 -1px 3px 0 rgba(0, 0, 0, 0.3);
+
+      --glass-trough-bg: rgba(255, 255, 255, 0.04);
+      --glass-trough-border: rgba(255, 255, 255, 0.08);
+
+      --glass-crystal-card: linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.04) 50%, rgba(255, 255, 255, 0.09) 100%);
+      --glass-crystal-border: rgba(255, 255, 255, 0.22);
+      --glass-crystal-shadow: 
+        inset 0 1px 0.8px 0 rgba(255, 255, 255, 0.35),
+        inset 1px 1px 2px 0 rgba(147, 197, 253, 0.15),
+        0 6px 18px -4px rgba(0, 0, 0, 0.4);
+
+      --glass-btn-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 50%, rgba(255, 255, 255, 0.08) 100%);
+      --glass-btn-hover: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.07) 50%, rgba(255, 255, 255, 0.14) 100%);
+      --glass-btn-border: rgba(255, 255, 255, 0.16);
+      --glass-btn-shadow: inset 0 0.8px 0.5px 0 rgba(255, 255, 255, 0.3), 0 2px 6px -1px rgba(0,0,0,0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 20px 140px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(217, 119, 87, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(74, 124, 155, 0.05) 0%, transparent 45%);
+    }
+
+    /* 顶部 Showcase 控制栏 */
+    .showcase-header {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line-subtle);
+    }
+
+    .badge-capsule {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: var(--vermilion-soft);
+      color: var(--vermilion);
+      border: 1px solid rgba(217, 119, 87, 0.2);
+    }
+
+    .theme-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      border-radius: 20px;
+      background: var(--glass-btn-bg);
+      border: 1px solid var(--glass-btn-border);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--glass-btn-shadow);
+      color: var(--ink-primary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .theme-toggle-btn:hover {
+      background: var(--glass-btn-hover);
+      transform: translateY(-1px);
+    }
+
+    /* 材质解剖看板 */
+    .specs-grid {
+      width: 100%;
+      max-width: 900px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .spec-card {
+      padding: 16px 20px;
+      border-radius: 18px;
+      background: var(--glass-crystal-card);
+      border: 1px solid var(--glass-crystal-border);
+      backdrop-filter: blur(16px) saturate(190%);
+      box-shadow: var(--glass-crystal-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .spec-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--vermilion);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .spec-card-desc {
+      font-size: 12px;
+      color: var(--ink-secondary);
+      line-height: 1.5;
+    }
+
+    /* 模拟主舞台容器 */
+    .mock-stage-card {
+      width: 100%;
+      max-width: 900px;
+      background: var(--bg-paged-canvas);
+      border-radius: 24px;
+      border: 1px solid var(--line-main);
+      padding: 28px 24px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    .stage-section-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    /* 1. 科目切换透镜槽 (VisionOS Segmented Control) */
+    .subject-pill-group-glass {
+      display: inline-flex;
+      background: var(--glass-trough-bg);
+      border: 1px solid var(--glass-trough-border);
+      padding: 4px;
+      border-radius: 40px;
+      gap: 4px;
+      backdrop-filter: blur(16px);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+      margin-bottom: 24px;
+    }
+
+    .subject-btn-glass {
+      border: none;
+      background: transparent;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .subject-btn-glass .count-tag {
+      font-size: 11px;
+      padding: 1px 7px;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.06);
+      color: var(--ink-muted);
+      font-family: var(--font-mono);
+    }
+
+    .subject-btn-glass.active {
+      background: var(--glass-crystal-card);
+      border: 1px solid var(--glass-crystal-border);
+      color: var(--vermilion);
+      box-shadow: var(--glass-crystal-shadow);
+    }
+
+    .subject-btn-glass.active .count-tag {
+      background: var(--vermilion-soft);
+      color: var(--vermilion);
+    }
+
+    /* 2. 双轨切换槽 (VisionOS Track Tabs) */
+    .track-tabs-glass {
+      display: inline-flex;
+      background: var(--glass-trough-bg);
+      border: 1px solid var(--glass-trough-border);
+      padding: 4px;
+      border-radius: 14px;
+      gap: 6px;
+      backdrop-filter: blur(16px);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+      margin-bottom: 20px;
+    }
+
+    .track-tab-glass-btn {
+      border: 1px solid transparent;
+      background: transparent;
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .track-tab-glass-btn.active {
+      background: var(--glass-crystal-card);
+      border-color: var(--glass-crystal-border);
+      color: var(--vermilion);
+      box-shadow: var(--glass-crystal-shadow);
+      font-weight: 700;
+    }
+
+    .mock-reading-text {
+      font-family: var(--font-serif);
+      font-size: 17px;
+      line-height: 1.85;
+      color: var(--ink-primary);
+      margin-top: 16px;
+      padding: 16px;
+      background: var(--bg-canvas);
+      border-radius: 12px;
+      border: 1px solid var(--line-subtle);
+    }
+
+    .mock-reading-highlight {
+      background: rgba(217, 119, 87, 0.15);
+      border-bottom: 2px solid var(--vermilion);
+      border-radius: 2px;
+      padding: 1px 2px;
+    }
+
+    /* ==============================================================
+       3. 核心大重头：底部播放坞 (Lumno × VisionOS 复合液态玻璃)
+       ============================================================== */
+    .player-dock-glass-wrap {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 40px);
+      max-width: 860px;
+      z-index: 999;
+    }
+
+    .player-dock-glass {
+      position: relative;
+      background: var(--glass-dock-bg);
+      backdrop-filter: var(--glass-dock-blur);
+      -webkit-backdrop-filter: var(--glass-dock-blur);
+      border: 1px solid var(--glass-dock-border);
+      border-radius: 32px;
+      box-shadow: var(--glass-dock-shadow);
+      padding: 12px 20px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* 顶部微弧高光刃口 */
+    .player-dock-glass::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.95) 50%, transparent 100%);
+      pointer-events: none;
+    }
+
+    /* 播放坞内部行布局 */
+    .dock-glass-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .dock-glass-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .dock-glass-pill {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: var(--vermilion-soft);
+      color: var(--vermilion);
+      font-weight: 700;
+      border: 1px solid rgba(217, 119, 87, 0.2);
+    }
+
+    .dock-glass-progress-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .dock-glass-time {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--ink-muted);
+      width: 44px;
+      text-align: center;
+    }
+
+    .dock-glass-bar-bg {
+      flex: 1;
+      height: 6px;
+      background: rgba(0, 0, 0, 0.06);
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+    }
+    [data-theme="dark"] .dock-glass-bar-bg {
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .dock-glass-bar-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 38%;
+      background: linear-gradient(90deg, #e58263 0%, var(--vermilion) 100%);
+      border-radius: 10px;
+      box-shadow: 0 0 10px var(--vermilion-glow);
+    }
+
+    /* 播放控制按钮栏 */
+    .dock-glass-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding-top: 2px;
+    }
+
+    .dock-glass-side-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 150px;
+    }
+    .dock-glass-side-group.right {
+      justify-content: flex-end;
+    }
+
+    .dock-glass-center-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* VisionOS 圆形触控水晶按键 */
+    .glass-btn-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--glass-btn-bg);
+      border: 1px solid var(--glass-btn-border);
+      backdrop-filter: blur(12px) saturate(180%);
+      box-shadow: var(--glass-btn-shadow);
+      color: var(--ink-secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-btn-circle:hover {
+      background: var(--glass-btn-hover);
+      color: var(--ink-primary);
+      transform: translateY(-1.5px) scale(1.04);
+      box-shadow: inset 0 1px 0.8px 0 rgba(255, 255, 255, 0.9), 0 4px 10px -2px rgba(0, 0, 0, 0.1);
+    }
+    .glass-btn-circle:active {
+      transform: scale(0.94);
+    }
+
+    /* 核心播放中枢大宝石 (Specular Crystal Play Hub) */
+    .glass-btn-play-hub {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e98668 0%, var(--vermilion) 55%, #b65234 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 
+        inset 0 1.2px 1px 0 rgba(255, 255, 255, 0.85),
+        inset 0 0 14px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -2px 3px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px -2px rgba(217, 119, 87, 0.48),
+        0 2px 6px 0 rgba(0, 0, 0, 0.08);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-btn-play-hub:hover {
+      transform: scale(1.06) translateY(-1px);
+      filter: brightness(1.08);
+      box-shadow: 
+        inset 0 1.5px 1.2px 0 rgba(255, 255, 255, 0.95),
+        inset 0 0 18px 0 rgba(255, 255, 255, 0.35),
+        0 10px 26px -2px rgba(217, 119, 87, 0.58);
+    }
+    .glass-btn-play-hub:active {
+      transform: scale(0.95);
+    }
+
+    /* VisionOS 水晶药丸小胶囊 (Capsule Pills) */
+    .glass-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 11px;
+      border-radius: 20px;
+      background: var(--glass-btn-bg);
+      border: 1px solid var(--glass-btn-border);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--glass-btn-shadow);
+      color: var(--ink-secondary);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-pill-btn:hover {
+      background: var(--glass-btn-hover);
+      color: var(--ink-primary);
+      transform: translateY(-1px);
+    }
+    .glass-pill-btn.active {
+      background: var(--vermilion-soft);
+      color: var(--vermilion);
+      border-color: rgba(217, 119, 87, 0.3);
+    }
+
+    /* 移动端极简紧凑自适应 */
+    @media (max-width: 600px) {
+      .player-dock-glass-wrap {
+        bottom: 12px;
+        width: calc(100% - 20px);
+      }
+      .player-dock-glass {
+        padding: 10px 14px 12px;
+        border-radius: 24px;
+      }
+      .dock-glass-side-group {
+        display: none;
+      }
+      .dock-glass-controls {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 顶部设计标尺与昼夜切换 -->
+  <header class="showcase-header">
+    <div>
+      <span class="badge-capsule">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="m4.93 4.93 4.24 4.24"></path>
+          <path d="m14.83 9.17 4.24-4.24"></path>
+          <path d="m14.83 14.83 4.24 4.24"></path>
+          <path d="m9.17 14.83-4.24 4.24"></path>
+        </svg>
+        Lumno × VisionOS Hybrid Glass
+      </span>
+      <h2 style="font-size: 20px; font-weight: 700; margin-top: 8px;">液态玻璃光学材质设计系统 · 交互落地预览</h2>
+    </div>
+
+    <button id="themeToggleBtn" class="theme-toggle-btn" title="点击在典籍暖纸与黑曜石夜间模式之间切换">
+      <svg id="themeIconSun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+      <span id="themeToggleText">当前：典籍暖纸 (Light)</span>
+    </button>
+  </header>
+
+  <!-- 规范指标与光学参数看板 -->
+  <section class="specs-grid">
+    <div class="spec-card">
+      <div class="spec-card-title">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+          <polyline points="2 17 12 22 22 17"></polyline>
+          <polyline points="2 12 12 17 22 12"></polyline>
+        </svg>
+        Lumno 物理透镜大底座
+      </div>
+      <div class="spec-card-desc">
+        中心极低浓度微白（拒绝白雾塑料感）+ 顶部 0.8px 纳米切向受光刃口 + 底部微暗全反射倒角 + 真实透光焦散阴影。
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-card-title">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"></path>
+        </svg>
+        VisionOS 纯水晶触控控键
+      </div>
+      <div class="spec-card-desc">
+        双层模糊 + 210% 饱和提拉 + 0.5px 精细微光渐变描边。文字与 SVG 图标 100% 锐利高保真，零畸变，微浮动光敏反馈。
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-card-title">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        红线守则：排版层绝对解耦
+      </div>
+      <div class="spec-card-desc">
+        玻璃仅限定于外壳容器与控制层！正文阅读区坚守暖纸典籍纯平与 CJK 衬线排版，确保数万字长篇背诵眼睛极其舒适。
+      </div>
+    </div>
+  </section>
+
+  <!-- 模拟主舞台卡片 -->
+  <main class="mock-stage-card">
+    <div class="stage-section-label">1. 科目分段切换槽 (VisionOS Segmented Control)</div>
+    <div class="subject-pill-group-glass">
+      <button class="subject-btn-glass active" onclick="selectSubject(this, '706')">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+        </svg>
+        <span>706 古代文学</span>
+        <span class="count-tag">37题</span>
+      </button>
+
+      <button class="subject-btn-glass" onclick="selectSubject(this, '807')">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+        </svg>
+        <span>807 现当代文学</span>
+        <span class="count-tag">35题</span>
+      </button>
+
+      <button class="subject-btn-glass" onclick="selectSubject(this, 'en')">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        <span>英语真题写作</span>
+        <span class="count-tag">16篇</span>
+      </button>
+    </div>
+
+    <div class="stage-section-label">2. 双轨切换槽 (VisionOS Track Tabs)</div>
+    <div class="track-tabs-glass">
+      <button id="track1Btn" class="track-tab-glass-btn active" onclick="switchTrack(1)">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
+        <span>【轨道一】考场直接答题完整版</span>
+      </button>
+
+      <button id="track2Btn" class="track-tab-glass-btn" onclick="switchTrack(2)">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+          <polyline points="2 17 12 22 22 17"></polyline>
+          <polyline points="2 12 12 17 22 12"></polyline>
+        </svg>
+        <span>【轨道二】答题版内部逻辑精解版</span>
+      </button>
+    </div>
+
+    <div class="stage-section-label">3. 沉浸式典籍正文阅读面 (绝对解耦纯平保证视力)</div>
+    <div class="mock-reading-text" id="mockReadingContent">
+      《史记》是中国古代第一部<span class="mock-reading-highlight">纪传体通史，也是中国古典传记文学的最高峰</span>。面对汉武帝大一统时期的专制之重与时代巨变，司马迁秉持实录精神，“究天人之际，通古今之变，成一家之言”，突破以往史官系统对人性的拘囿，开创性地以“人”为历史叙述的核心。
+    </div>
+  </main>
+
+  <!-- ==============================================================
+       4. 复合液态玻璃播放坞 (Lumno × VisionOS 实体展示)
+       ============================================================== -->
+  <div class="player-dock-glass-wrap">
+    <div class="player-dock-glass">
+      
+      <!-- 考题信息元数据 -->
+      <div class="dock-glass-meta">
+        <div class="dock-glass-title-wrap">
+          <span id="dockTopicTitle">01_T0_03 · 史记人物塑造艺术与实录精神</span>
+          <span id="dockTrackTag" class="dock-glass-pill">轨道一 · 考场答题版</span>
+        </div>
+        <div style="font-size: 11px; color: var(--ink-muted); font-family: var(--font-mono);">
+          Yunyang 48kHz 母带
+        </div>
+      </div>
+
+      <!-- 进度条 -->
+      <div class="dock-glass-progress-row">
+        <span class="dock-glass-time" id="timeCurrent">01:42</span>
+        <div class="dock-glass-bar-bg" onclick="seekProgress(event)">
+          <div class="dock-glass-bar-fill" id="progressBarFill"></div>
+        </div>
+        <span class="dock-glass-time" id="timeTotal">04:30</span>
+      </div>
+
+      <!-- 核心控件栏 -->
+      <div class="dock-glass-controls">
+        <!-- 左侧辅助功能 -->
+        <div class="dock-glass-side-group">
+          <button class="glass-pill-btn active" id="btnLoopMode" onclick="toggleLoop()">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="17 1 21 5 17 9"></polyline>
+              <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+              <polyline points="7 23 3 19 7 15"></polyline>
+              <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+            </svg>
+            <span id="loopModeText">单题循环</span>
+          </button>
+        </div>
+
+        <!-- 中间五键播放群 (VisionOS 纯水晶) -->
+        <div class="dock-glass-center-group">
+          <!-- 上一题 -->
+          <button class="glass-btn-circle" title="上一考点" onclick="toast('上一考点')">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="19 20 9 12 19 4 19 20"></polygon>
+              <line x1="5" y1="19" x2="5" y2="5"></line>
+            </svg>
+          </button>
+
+          <!-- 快退 5 秒 -->
+          <button class="glass-btn-circle" title="快退 5 秒" onclick="toast('快退 5 秒')">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 4v6h6"></path>
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+            </svg>
+          </button>
+
+          <!-- 播放/暂停大宝石按键 -->
+          <button class="glass-btn-play-hub" id="mainPlayBtn" title="播放 / 暂停" onclick="togglePlay()">
+            <svg id="playIconSvg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+              <polygon points="6 4 20 12 6 20 6 4"></polygon>
+            </svg>
+          </button>
+
+          <!-- 快进 5 秒 -->
+          <button class="glass-btn-circle" title="快进 5 秒" onclick="toast('快进 5 秒')">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 4v6h-6"></path>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+          </button>
+
+          <!-- 下一题 -->
+          <button class="glass-btn-circle" title="下一考点" onclick="toast('下一考点')">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 4 15 12 5 20 5 4"></polygon>
+              <line x1="19" y1="5" x2="19" y2="19"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- 右侧倍速等 -->
+        <div class="dock-glass-side-group right">
+          <button class="glass-pill-btn" id="speedBtn" onclick="toggleSpeed()">
+            <span id="speedText">1.0x</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // 1. 昼夜模式切换
+    let isDark = false;
+    const themeBtn = document.getElementById('themeToggleBtn');
+    const themeText = document.getElementById('themeToggleText');
+
+    themeBtn.addEventListener('click', () => {
+      isDark = !isDark;
+      if (isDark) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeText.innerText = '当前：黑曜石 (Dark)';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        themeText.innerText = '当前：典籍暖纸 (Light)';
+      }
+    });
+
+    // 2. 播放/暂停状态交互
+    let isPlaying = false;
+    const playBtn = document.getElementById('mainPlayBtn');
+    const playIcon = document.getElementById('playIconSvg');
+
+    function togglePlay() {
+      isPlaying = !isPlaying;
+      if (isPlaying) {
+        playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+      } else {
+        playIcon.innerHTML = '<polygon points="6 4 20 12 6 20 6 4"></polygon>';
+      }
+    }
+
+    // 3. 科目切换
+    function selectSubject(btn, subject) {
+      document.querySelectorAll('.subject-btn-glass').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // 4. 双轨切换
+    function switchTrack(track) {
+      const t1 = document.getElementById('track1Btn');
+      const t2 = document.getElementById('track2Btn');
+      const tag = document.getElementById('dockTrackTag');
+      const content = document.getElementById('mockReadingContent');
+
+      if (track === 1) {
+        t1.classList.add('active');
+        t2.classList.remove('active');
+        tag.innerText = '轨道一 · 考场答题版';
+        content.innerHTML = '《史记》是中国古代第一部<span class="mock-reading-highlight">纪传体通史，也是中国古典传记文学的最高峰</span>。面对汉武帝大一统时期的专制之重与时代巨变，司马迁秉持实录精神，“究天人之际，通古今之变，成一家之言”，突破以往史官系统对人性的拘囿，开创性地以“人”为历史叙述的核心。';
+      } else {
+        t2.classList.add('active');
+        t1.classList.remove('active');
+        tag.innerText = '轨道二 · 逻辑精解版';
+        content.innerHTML = '【立论总脉络深度拆解】<br>司马迁在《报任安书》中明确指出其著述旨趣。<span class="mock-reading-highlight">本题在考场作答时，务必从“实录精神的哲学内涵”与“纪传体文学叙事范式”双向切入</span>，切忌单纯罗列史料，要突出其对后世中国叙事文学传统的深远奠基意义。';
+      }
+    }
+
+    // 5. 倍速轮动
+    const speeds = ['1.0x', '1.25x', '1.5x', '0.85x'];
+    let speedIdx = 0;
+    function toggleSpeed() {
+      speedIdx = (speedIdx + 1) % speeds.length;
+      document.getElementById('speedText').innerText = speeds[speedIdx];
+    }
+
+    // 6. 循环模式
+    const loops = ['单题循环', '全科轮播', '高频精听'];
+    let loopIdx = 0;
+    function toggleLoop() {
+      loopIdx = (loopIdx + 1) % loops.length;
+      document.getElementById('loopModeText').innerText = loops[loopIdx];
+    }
+
+    // 7. 进度条点击模拟
+    function seekProgress(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const pct = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+      document.getElementById('progressBarFill').style.width = pct + '%';
+    }
+
+    function toast(msg) {
+      // 简单触感提示
+    }
+  </script>
+</body>
+</html>
