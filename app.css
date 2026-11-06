@@ -5892,24 +5892,20 @@ body.dock-expanded .dock-fab-play {
 
 
 
+
+
 /* ==============================================================
-   Liquid Glass (液态玻璃) 光学材质系统 · Lumno × VisionOS (v2.0.5)
+   Liquid Glass (液态玻璃) 光学材质系统 · 旗舰增强全套 (v2.0.6)
    ============================================================== */
 
-/* 1. 核心悬浮播放坞 (Lumno 物理透镜大底座 · 悬浮居中) */
+/* --------------------------------------------------------------
+   1. 底部随身视听播放坞 (修复 iPhone 飘飞截断 + 桌面端优雅悬浮)
+   -------------------------------------------------------------- */
 .player-dock {
-  position: fixed !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  bottom: 24px !important;
-  width: calc(100% - 48px) !important;
-  max-width: 860px !important;
-  border-radius: 32px !important;
-  border: 1px solid var(--glass-dock-border) !important;
-  padding: 12px 22px 14px !important;
   background: var(--glass-dock-bg) !important;
   backdrop-filter: var(--glass-dock-blur) !important;
   -webkit-backdrop-filter: var(--glass-dock-blur) !important;
+  border: 1px solid var(--glass-dock-border) !important;
   box-shadow: var(--glass-dock-shadow) !important;
   z-index: 990 !important;
   display: flex !important;
@@ -5936,12 +5932,53 @@ body.dock-expanded .dock-fab-play {
   background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.35) 50%, transparent 100%) !important;
 }
 
-/* 抽屉打开时平滑滑下退隐 */
-.player-dock.dock-receded,
-.player-dock.dock-collapsed {
-  transform: translate(-50%, calc(100% + 40px)) !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
+/* 桌面端 (>= 769px)：居中悬浮胶囊托盘 */
+@media (min-width: 769px) {
+  .player-dock {
+    position: fixed !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    bottom: 24px !important;
+    width: calc(100% - 48px) !important;
+    max-width: 860px !important;
+    border-radius: 32px !important;
+    padding: 12px 22px 14px !important;
+  }
+  .player-dock.dock-receded,
+  .player-dock.dock-collapsed {
+    transform: translate(-50%, calc(100% + 40px)) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
+/* 移动端 (<= 768px · 彻底根治 iPhone 飘飞截断)：
+   双向绝对锁定 left: 12px / right: 12px，取消 translateX(-50%) 避免覆盖冲突 */
+@media (max-width: 768px) {
+  .player-dock {
+    position: fixed !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+    max-width: none !important;
+    transform: none !important;
+    bottom: calc(16px + env(safe-area-inset-bottom, 8px)) !important;
+    border-radius: 24px !important;
+    padding: 10px 14px 12px !important;
+    box-sizing: border-box !important;
+  }
+  body.dock-expanded .player-dock {
+    transform: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+  .player-dock.dock-receded,
+  .player-dock.dock-collapsed {
+    transform: translateY(calc(100% + 30px)) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
 }
 
 /* 2. 播放/暂停大宝石按键 (VisionOS Specular Play Hub) */
@@ -6007,7 +6044,7 @@ body.dock-expanded .dock-fab-play {
   transform: scale(0.94) !important;
 }
 
-/* 4. 倍速与循环模式小胶囊 (VisionOS Capsule Pills) */
+/* 4. 倍速与循环模式小胶囊 */
 .pill-mode-btn, .dock-btn-tool {
   display: inline-flex !important;
   align-items: center !important;
@@ -6113,12 +6150,214 @@ body.dock-expanded .dock-fab-play {
   box-shadow: 0 4px 16px -2px rgba(45, 36, 28, 0.04) !important;
 }
 
-/* 8. 移动端自适应 */
+/* --------------------------------------------------------------
+   8. 考点目录侧滑抽屉 (图2) 全套 Liquid Glass 玻璃材质升级
+   -------------------------------------------------------------- */
+
+/* 侧滑抽屉底座 */
+.sidebar {
+  background: var(--glass-dock-bg) !important;
+  backdrop-filter: var(--glass-dock-blur) !important;
+  -webkit-backdrop-filter: var(--glass-dock-blur) !important;
+  border-right: 1px solid var(--glass-dock-border) !important;
+  box-shadow: 4px 0 28px rgba(45, 36, 28, 0.08) !important;
+}
+
+/* 侧栏顶栏与收起按钮 */
+.sidebar-header-row {
+  border-bottom: 1px solid var(--glass-trough-border) !important;
+}
+.sidebar-close-btn {
+  background: var(--glass-btn-bg) !important;
+  border: 1px solid var(--glass-btn-border) !important;
+  border-radius: 20px !important;
+  padding: 4px 12px !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: var(--glass-btn-shadow) !important;
+  color: var(--ink-secondary) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.sidebar-close-btn:hover {
+  background: var(--glass-btn-hover) !important;
+  color: var(--ink-primary) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* 搜索框 (VisionOS 凹槽水晶) */
+.sidebar-search-box {
+  border-bottom: 1px solid var(--glass-trough-border) !important;
+}
+.search-input-wrap {
+  background: var(--glass-trough-bg) !important;
+  border: 1px solid var(--glass-trough-border) !important;
+  border-radius: 16px !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.search-input-wrap:focus-within {
+  background: var(--glass-crystal-card) !important;
+  border-color: var(--vermilion-border) !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03), 0 0 12px var(--vermilion-soft) !important;
+}
+
+/* 筛选胶囊群 (VisionOS 纯水晶小药丸) */
+.filter-pills {
+  gap: 6px !important;
+}
+.filter-pill {
+  border-radius: 20px !important;
+  background: var(--glass-btn-bg) !important;
+  border: 1px solid var(--glass-btn-border) !important;
+  color: var(--ink-secondary) !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: var(--glass-btn-shadow) !important;
+  padding: 5px 12px !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.filter-pill:hover {
+  background: var(--glass-btn-hover) !important;
+  color: var(--ink-primary) !important;
+  transform: translateY(-1px) !important;
+}
+.filter-pill.active {
+  background: var(--vermilion-soft) !important;
+  color: var(--vermilion) !important;
+  border-color: rgba(217, 119, 87, 0.35) !important;
+  box-shadow: inset 0 1px 0.8px rgba(255, 255, 255, 0.85), 0 2px 8px rgba(217, 119, 87, 0.2) !important;
+}
+
+/* 考点列表卡片 (Tactile Optical Glass 拟真实体晶体卡片) */
+.question-card-item {
+  position: relative !important;
+  border-radius: 18px !important;
+  background: var(--glass-crystal-card) !important;
+  border: 1px solid var(--glass-crystal-border) !important;
+  backdrop-filter: blur(14px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(190%) !important;
+  box-shadow: 
+    inset 0 0.8px 0.5px 0 rgba(255, 255, 255, 0.85),
+    inset 1px 1px 2px 0 rgba(199, 210, 254, 0.25),
+    0 3px 10px -2px rgba(45, 36, 28, 0.06) !important;
+  margin-bottom: 10px !important;
+  padding: 14px 16px !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.question-card-item:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 
+    inset 0 1px 0.8px 0 rgba(255, 255, 255, 0.95),
+    inset 1.5px 1.5px 3px 0 rgba(199, 210, 254, 0.35),
+    0 8px 20px -3px rgba(45, 36, 28, 0.1) !important;
+}
+.question-card-item.active {
+  border-color: rgba(217, 119, 87, 0.45) !important;
+  box-shadow: 
+    inset 0 1px 0.8px 0 rgba(255, 255, 255, 0.95),
+    inset 3px 0 0 0 var(--vermilion),
+    0 6px 18px -2px rgba(217, 119, 87, 0.2) !important;
+}
+
+/* 考点卡片内部小微晶胶囊 */
+.tier-badge, .score-badge, .card-mastery-badge, .card-audio-status {
+  border-radius: 12px !important;
+  padding: 2px 8px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  backdrop-filter: blur(6px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+[data-theme="dark"] .tier-badge, 
+[data-theme="dark"] .score-badge, 
+[data-theme="dark"] .card-mastery-badge, 
+[data-theme="dark"] .card-audio-status {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* 侧边栏底部 */
+.sidebar-footer {
+  background: var(--glass-trough-bg) !important;
+  border-top: 1px solid var(--glass-trough-border) !important;
+  backdrop-filter: blur(12px) !important;
+}
+.app-version-badge, .btn-force-refresh {
+  border-radius: 20px !important;
+}
+
+/* --------------------------------------------------------------
+   9. 正文多板块平滑 R 角 (Squircle) 与优雅胶囊
+   -------------------------------------------------------------- */
+
+/* 顶部考题规格 Chip 栏全量胶囊化 */
+.exam-spec-banner {
+  gap: 8px !important;
+  margin-bottom: 20px !important;
+}
+.spec-chip {
+  border-radius: 20px !important;
+  padding: 6px 14px !important;
+  background: var(--glass-crystal-card) !important;
+  border: 1px solid var(--glass-crystal-border) !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: var(--glass-crystal-shadow) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+/* 正文各分论点卡片 (Apple 级平滑大圆角 22px) */
+.exam-section-card {
+  border-radius: 22px !important;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--line-main) !important;
+  box-shadow: 0 4px 20px -3px rgba(45, 36, 28, 0.04) !important;
+  padding: 22px 24px !important;
+  margin-bottom: 22px !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.exam-section-card:hover {
+  box-shadow: 0 8px 24px -4px rgba(45, 36, 28, 0.07) !important;
+}
+
+/* 卡片标题大胶囊徽章 (【引论 · 立论破题】等) */
+.sec-badge {
+  border-radius: 30px !important;
+  padding: 5px 16px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  border: 1px solid rgba(217, 119, 87, 0.25) !important;
+  box-shadow: inset 0 1px 0.8px rgba(255, 255, 255, 0.6) !important;
+}
+
+/* 立论破题句与论证引语卡片平滑圆角 16px */
+.section-thesis-box {
+  border-radius: 16px !important;
+  padding: 14px 18px !important;
+  border: 1px solid var(--vermilion-border) !important;
+  background: linear-gradient(135deg, rgba(217, 119, 87, 0.06) 0%, rgba(217, 119, 87, 0.02) 100%) !important;
+  margin-bottom: 16px !important;
+}
+
+/* 【立论破题句】微晶小胶囊 */
+.thesis-pill {
+  border-radius: 20px !important;
+  padding: 3px 10px !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  background: var(--vermilion-soft) !important;
+  color: var(--vermilion) !important;
+  border: 1px solid rgba(217, 119, 87, 0.25) !important;
+  margin-right: 6px !important;
+}
+
+/* 沉浸式阅读底板内衬留白避让 */
+.paper-container {
+  padding-bottom: 140px !important;
+}
 @media (max-width: 768px) {
-  .player-dock {
-    bottom: calc(58px + env(safe-area-inset-bottom, 8px)) !important;
-    width: calc(100% - 20px) !important;
-    border-radius: 24px !important;
-    padding: 10px 14px 12px !important;
+  .paper-container {
+    padding-bottom: 160px !important;
   }
 }
