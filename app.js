@@ -7,6 +7,15 @@
 (function () {
   'use strict';
 
+  // 安全前置初始化同步补偿量 (防御性读取 localStorage)
+  let initialSyncOffset = 0.95;
+  try {
+    const savedSync = parseFloat(localStorage.getItem('kaoyan_sync_offset'));
+    if (!isNaN(savedSync)) initialSyncOffset = savedSync;
+  } catch (e) {
+    initialSyncOffset = 0.95;
+  }
+
   const state = {
     allData: null,
     currentSubject: '807', // '807' | '706' | 'en'
@@ -2486,7 +2495,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '2.4.2';
+  const APP_BUILD_ID = '2.4.3';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
