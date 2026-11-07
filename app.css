@@ -6605,3 +6605,153 @@ body.dock-expanded .dock-fab-play {
     padding: 10px 14px;
   }
 }
+
+
+/* ==========================================================================
+   播放倍速选择小弹窗样式 (Speed Modal · 金石朱墨宣纸风)
+   ========================================================================== */
+.speed-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 2400;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.speed-modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.speed-modal {
+  position: fixed;
+  left: 50%;
+  bottom: 84px;
+  transform: translate(-50%, 16px) scale(0.96);
+  width: 330px;
+  max-width: 92vw;
+  background: var(--bg-card, #ffffff);
+  border: 1px solid var(--line-main, rgba(0, 0, 0, 0.1));
+  border-radius: 18px;
+  box-shadow: 0 12px 36px rgba(42, 34, 27, 0.2);
+  z-index: 2500;
+  padding: 16px;
+  box-sizing: border-box;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1), transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.speed-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0) scale(1);
+}
+
+[data-theme="dark"] .speed-modal {
+  background: var(--bg-card, #23211e);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+}
+
+.speed-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.speed-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.speed-modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-canvas, rgba(0, 0, 0, 0.04));
+  color: var(--ink-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.speed-modal-close:active {
+  transform: scale(0.92);
+}
+
+.speed-modal-sub {
+  font-size: 11px;
+  color: var(--ink-secondary);
+  margin-bottom: 14px;
+}
+
+.speed-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.speed-option-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--bg-canvas, #faf7f0);
+  border: 1px solid var(--line-main, rgba(0, 0, 0, 0.08));
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 4px 2px;
+  box-sizing: border-box;
+}
+
+[data-theme="dark"] .speed-option-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.speed-option-btn:active {
+  transform: scale(0.93);
+}
+
+.speed-option-btn .speed-opt-val {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink-primary);
+  letter-spacing: -0.2px;
+}
+
+.speed-option-btn .speed-opt-tag {
+  font-size: 9.5px;
+  color: var(--ink-muted);
+  margin-top: 1px;
+  line-height: 1;
+}
+
+.speed-option-btn.active {
+  background: var(--vermilion, #d97757) !important;
+  border-color: var(--vermilion, #d97757) !important;
+  box-shadow: 0 3px 10px rgba(217, 119, 87, 0.38) !important;
+}
+
+.speed-option-btn.active .speed-opt-val,
+.speed-option-btn.active .speed-opt-tag {
+  color: #ffffff !important;
+}

@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app.css?v=2.4.1">
+  <link rel="stylesheet" href="app.css?v=2.4.2">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -32,9 +32,9 @@
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
   <!-- 动态微交互矢量图标引擎 (Kubai Icons · 金石朱墨主题) -->
-  <script src="kubai_icons.js?v=2.4.1" defer></script>
+  <script src="kubai_icons.js?v=2.4.2" defer></script>
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=2.4.1" defer></script>
+  <script src="data/kaoyan_data.js?v=2.4.2" defer></script>
 </head>
 <body>
 
@@ -490,7 +490,7 @@
   </nav>
 
 
-  <script src="app.js?v=2.4.1" defer></script>
+  <script src="app.js?v=2.4.2" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -697,6 +697,28 @@
       </div>
     </div>
   </aside>
+    <!-- 播放倍速微型选择弹窗 (Speed Picker Popover) -->
+  <div id="speedModalBackdrop" class="speed-modal-backdrop" style="display: none;"></div>
+  <aside id="speedModal" class="speed-modal" aria-hidden="true" style="display: none;">
+    <div class="speed-modal-header">
+      <div class="speed-modal-title">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--vermilion, #d97757)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span>调节朗读倍速</span>
+      </div>
+      <button type="button" class="speed-modal-close" id="speedModalClose" title="关闭倍速选择">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="speed-modal-sub">选择适合当前复习强度的朗读语速</div>
+    <div class="speed-modal-grid" id="speedModalGrid"></div>
+  </aside>
+
   <!-- 全新【功能与研读设置中心】抽屉 (Settings Sheet) -->
   <div id="settingsModalBackdrop" class="settings-backdrop" style="display: none;"></div>
   <aside id="settingsDrawer" class="settings-drawer" aria-hidden="true">

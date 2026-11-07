@@ -2126,9 +2126,8 @@
     updatePlayModeUI(false);
 
     const savedSpeed = parseFloat(localStorage.getItem('kaoyan_speed'));
-    if (!isNaN(savedSpeed) && speeds.includes(savedSpeed)) {
+    if (!isNaN(savedSpeed) && SPEED_OPTIONS.includes(savedSpeed)) {
       state.speed = savedSpeed;
-      speedIdx = speeds.indexOf(savedSpeed);
       audio.playbackRate = state.speed;
       if (el.speedBtn && el.speedBtn.querySelector('span')) {
         el.speedBtn.querySelector('span').textContent = `${state.speed.toFixed(1)}x`;
@@ -2487,7 +2486,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '2.4.1';
+  const APP_BUILD_ID = '2.4.2';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {

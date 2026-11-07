@@ -20,7 +20,7 @@ if hasattr(sys.stdout, 'reconfigure'):
 def main():
     root = Path(__file__).resolve().parent
     print("=" * 65)
-    print(" 考研专业课双轨背诵手卷 · 项目工程自检与防白屏门禁 (v2.4.1)")
+    print(" 考研专业课双轨背诵手卷 · 项目工程自检与防白屏门禁 (v2.4.2)")
     print("=" * 65)
 
     errors = []
@@ -54,8 +54,8 @@ def main():
     else:
         v_data = json.loads(version_file.read_text(encoding="utf-8"))
         ver = v_data.get("version")
-        if ver != "2.4.1":
-            errors.append(f"version.json 版本号预期 2.4.1，实际为 {ver}")
+        if ver != "2.4.2":
+            errors.append(f"version.json 版本号预期 2.4.2，实际为 {ver}")
             print(f"  ❌ version.json: 当前版本为 {ver}")
         else:
             print(f"  ✓ version.json: 版本号为 {ver}")
@@ -63,11 +63,11 @@ def main():
     sw_file = root / "sw.js"
     if sw_file.exists():
         sw_text = sw_file.read_text(encoding="utf-8")
-        if "kaoyan-handbook-v241" not in sw_text:
-            errors.append("sw.js 缓存名未升级为 kaoyan-handbook-v241")
+        if "kaoyan-handbook-v242" not in sw_text:
+            errors.append("sw.js 缓存名未升级为 kaoyan-handbook-v242")
             print("  ❌ sw.js 缓存键未更新为 v196")
         else:
-            print("  ✓ sw.js 缓存标识已升级至 kaoyan-handbook-v241")
+            print("  ✓ sw.js 缓存标识已升级至 kaoyan-handbook-v242")
         if "Range" not in sw_text and "range" not in sw_text:
             errors.append("sw.js 未显式排除 Range 请求")
             print("  ❌ sw.js 缺失 Range 排除保护")
