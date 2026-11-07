@@ -36,7 +36,8 @@
     masteryState: {}, // itemId -> 'unlearned' | 'familiar' | 'mastered'
     studyLogs: { dates: [], totalCardsCompleted: 0 },
 
-    lastUserScrollTime: 0
+    lastUserScrollTime: 0,
+    syncOffset: initialSyncOffset
   };
 
   const audio = new Audio();
@@ -1099,7 +1100,8 @@
   }
 
   function seekToSentence(sentId, startTime) {
-    audio.currentTime = startTime;
+    // 提前 0.35s 起音缓冲，避免首字被吞音
+    audio.currentTime = Math.max(0, startTime - 0.35);
     if (audio.paused) {
       audio.play().catch(e => console.log(e));
     }
@@ -1489,15 +1491,44 @@
   let lastTimeSaveTs = 0;
 
   function setupAudioEngine() {
+    let syncRafId = null;
+
+    // 60fps 高频毫秒级聚光同步引擎 (彻底消除 timeupdate 的 300ms 滞后与 1s 句子迟滞)
+    function runSyncLoop() {
+      if (state.isPlaying && !audio.paused && state.activeSentences && state.activeSentences.length > 0) {
+        const cur = audio.currentTime;
+        const offset = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.95;
+        const syncCur = cur + offset;
+
+        const activeIdx = state.activeSentences.findIndex(s => syncCur >= s.start && syncCur < s.end);
+        if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
+          state.currentSentIndex = activeIdx;
+          state.loopCount = 0;
+          const sent = state.activeSentences[activeIdx];
+          highlightSentence(sent.id);
+          updateHUDDisplay(syncCur);
+        }
+      }
+      if (state.isPlaying) {
+        syncRafId = requestAnimationFrame(runSyncLoop);
+      }
+    }
+
     audio.addEventListener('play', () => {
       state.isPlaying = true;
       audio.playbackRate = state.speed;
       updatePlayBtnUI();
       expandPlayerDock();
+      if (syncRafId) cancelAnimationFrame(syncRafId);
+      syncRafId = requestAnimationFrame(runSyncLoop);
     });
 
     audio.addEventListener('pause', () => {
       state.isPlaying = false;
+      if (syncRafId) {
+        cancelAnimationFrame(syncRafId);
+        syncRafId = null;
+      }
       updatePlayBtnUI();
       collapsePlayerDock(); // 暂停即自动收起为底栏
     });
@@ -1518,11 +1549,14 @@
       }
       if (el.timeCurrent) el.timeCurrent.textContent = formatTime(cur);
       if (el.timeTotal && dur > 0) el.timeTotal.textContent = formatTime(dur);
-      updateHUDDisplay(cur);
+
+      const offset = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.95;
+      const syncCur = cur + offset;
+      updateHUDDisplay(syncCur);
 
       if (state.activeSentences && state.activeSentences.length > 0) {
-        const activeIdx = state.activeSentences.findIndex(s => cur >= s.start && cur < s.end);
-        
+        // 作为保底检查
+        const activeIdx = state.activeSentences.findIndex(s => syncCur >= s.start && syncCur < s.end);
         if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
           state.currentSentIndex = activeIdx;
           state.loopCount = 0;
@@ -1534,7 +1568,7 @@
         if (state.playMode === 'sentence' && state.currentSentIndex !== -1 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
           const sent = state.activeSentences[state.currentSentIndex];
           if (cur >= sent.end - 0.08) {
-            audio.currentTime = sent.start;
+            audio.currentTime = Math.max(0, sent.start - 0.25);
             if (audio.paused) audio.play().catch(e => console.log(e));
           }
         }
@@ -1552,7 +1586,7 @@
           if (cur >= sent.end - 0.08) {
             if (state.loopCount < 2) {
               state.loopCount++;
-              audio.currentTime = sent.start;
+              audio.currentTime = Math.max(0, sent.start - 0.25);
               if (audio.paused) audio.play().catch(e => console.log(e));
             } else {
               state.loopCount = 0;
@@ -2221,6 +2255,16 @@
         const percent = Math.round((state.fontSize / 17) * 100);
         sizeValLabel.textContent = `${percent}% (字号 ${state.fontSize}px)`;
       }
+      const syncValLabel = document.getElementById('sheetSyncVal');
+      if (syncValLabel) {
+        const curOff = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.95;
+        syncValLabel.textContent = curOff === 0 ? '原生对齐 (0.00s)' : `提前 +${curOff.toFixed(2)}s (${curOff >= 0.9 ? '黄金推荐' : '轻度模式'})`;
+      }
+      document.querySelectorAll('.sync-card-btn').forEach(b => {
+        const val = parseFloat(b.dataset.offset);
+        const curOff = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.95;
+        b.classList.toggle('active', Math.abs(val - curOff) < 0.05);
+      });
     }
 
     if (settingsClose) settingsClose.addEventListener('click', closeSettings);
@@ -2255,6 +2299,19 @@
           applyFontGlobal(fontObj);
           localStorage.setItem('kaoyan_font_family', fontObj.id);
           updateSettingsSheetUI();
+        }
+      });
+    });
+
+    // 跟读聚光同频校准调节
+    document.querySelectorAll('.sync-card-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const offset = parseFloat(btn.dataset.offset);
+        if (!isNaN(offset)) {
+          state.syncOffset = offset;
+          localStorage.setItem('kaoyan_sync_offset', String(offset));
+          updateSettingsSheetUI();
+          showToast(`跟读聚光同频已校准为 ${offset > 0 ? '+' : ''}${offset.toFixed(2)}s`);
         }
       });
     });
@@ -2430,7 +2487,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '2.4.0';
+  const APP_BUILD_ID = '2.4.1';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {

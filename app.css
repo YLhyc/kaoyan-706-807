@@ -6544,3 +6544,64 @@ body.dock-expanded .dock-fab-play {
     box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.4) !important;
   }
 }
+
+
+/* 跟读聚光同频校准选择器 (金石朱墨宣纸风) */
+.sync-options-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.sync-card-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 6px;
+  border-radius: 12px;
+  background: var(--bg-card, #ffffff);
+  border: 1.5px solid var(--line-main, rgba(0, 0, 0, 0.08));
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+}
+
+.sync-card-btn:active {
+  transform: scale(0.96);
+}
+
+.sync-card-btn .sync-card-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-primary);
+  margin-bottom: 2px;
+}
+
+.sync-card-btn .sync-card-sub {
+  font-size: 10px;
+  color: var(--ink-secondary);
+}
+
+.sync-card-btn.active {
+  border-color: var(--vermilion, #d97757);
+  background: var(--vermilion-soft, rgba(217, 119, 87, 0.08));
+  box-shadow: inset 0 0 0 1px var(--vermilion, #d97757);
+}
+
+.sync-card-btn.active .sync-card-title {
+  color: var(--vermilion, #d97757);
+}
+
+@media (max-width: 480px) {
+  .sync-options-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .sync-card-btn {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 14px;
+  }
+}

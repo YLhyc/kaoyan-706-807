@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app.css?v=2.4.0">
+  <link rel="stylesheet" href="app.css?v=2.4.1">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -32,9 +32,9 @@
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
   <!-- 动态微交互矢量图标引擎 (Kubai Icons · 金石朱墨主题) -->
-  <script src="kubai_icons.js?v=2.4.0" defer></script>
+  <script src="kubai_icons.js?v=2.4.1" defer></script>
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=2.4.0" defer></script>
+  <script src="data/kaoyan_data.js?v=2.4.1" defer></script>
 </head>
 <body>
 
@@ -490,7 +490,7 @@
   </nav>
 
 
-  <script src="app.js?v=2.4.0" defer></script>
+  <script src="app.js?v=2.4.1" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -800,6 +800,28 @@
           <button type="button" class="stepper-btn" id="sheetFontInc" title="放大字号">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             <span>放大 (A+)</span>
+          </button>
+        </div>
+      </div>
+
+            <!-- 4. 跟读聚光同频校准 (消除约1s滞后) -->
+      <div class="settings-section">
+        <div class="settings-sec-title">
+          <span>跟读聚光同频校准</span>
+          <span class="settings-sec-desc" id="sheetSyncVal">提前 +0.95s (黄金推荐)</span>
+        </div>
+        <div class="sync-options-grid">
+          <button type="button" class="sync-card-btn active" data-offset="0.95">
+            <span class="sync-card-title">极速提前 (+0.95s)</span>
+            <small class="sync-card-sub">消除约1s滞后 · 黄金同频</small>
+          </button>
+          <button type="button" class="sync-card-btn" data-offset="0.60">
+            <span class="sync-card-title">轻度提前 (+0.60s)</span>
+            <small class="sync-card-sub">平衡模式 · 适度跟读</small>
+          </button>
+          <button type="button" class="sync-card-btn" data-offset="0.00">
+            <span class="sync-card-title">原生对齐 (0.00s)</span>
+            <small class="sync-card-sub">不加前置 · 原始时间戳</small>
           </button>
         </div>
       </div>
