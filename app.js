@@ -1889,7 +1889,7 @@
       });
     }
 
-    // 8 档精准倍速选项：0.8、0.9、1.0、1.1、1.2、1.4、1.5、2.0
+    // 8档倍速选项：0.8、0.9、1.0、1.1、1.2、1.4、1.5、2.0
     const SPEED_OPTIONS = [0.8, 0.9, 1.0, 1.1, 1.2, 1.4, 1.5, 2.0];
 
     function openSpeedModal() {
@@ -1920,7 +1920,7 @@
                 el.speedBtn.querySelector('span').textContent = `${state.speed.toFixed(1)}x`;
               }
               closeSpeedModal();
-              showToast(`已切换朗读倍速为 ${spd.toFixed(1)}x`, 1200);
+              showToast(`切换语速为 ${spd.toFixed(1)}x`, 1200);
             }
           });
         });
@@ -1949,7 +1949,7 @@
       }, 240);
     }
 
-    // 倍速按钮点击：不直接升倍速，弹出选择弹窗
+    // 倍速按钮点击：唤起精美倍速直选弹窗
     if (el.speedBtn) {
       el.speedBtn.addEventListener('click', (e) => {
         e.stopPropagation();
