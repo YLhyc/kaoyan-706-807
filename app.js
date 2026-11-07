@@ -8,19 +8,19 @@
   'use strict';
 
   // 安全前置初始化同步补偿量 (防御性读取 localStorage)
-  let initialSyncOffset = 1.20;
-try {
-  const savedSync = parseFloat(localStorage.getItem('kaoyan_sync_offset'));
-  // 彻底纠偏历史版本过小或过大的旧值，默认采用黄金补偿 1.20s
-  if (!isNaN(savedSync) && savedSync >= 0.5 && savedSync <= 2.5) {
-    initialSyncOffset = savedSync;
-  } else {
-    initialSyncOffset = 1.20;
-    localStorage.setItem('kaoyan_sync_offset', '1.20');
+  let initialSyncOffset = 0.08;
+  try {
+    const savedSync = parseFloat(localStorage.getItem('kaoyan_sync_offset'));
+    // 物理声学精准打点下，纠偏历史版本过大的旧值，默认采用推荐微调 0.08s
+    if (!isNaN(savedSync) && savedSync >= -0.15 && savedSync <= 0.35) {
+      initialSyncOffset = savedSync;
+    } else {
+      initialSyncOffset = 0.08;
+      localStorage.setItem('kaoyan_sync_offset', '0.08');
+    }
+  } catch (e) {
+    initialSyncOffset = 0.08;
   }
-} catch (e) {
-  initialSyncOffset = 1.20;
-}
 
   const state = {
     allData: null,
@@ -1141,17 +1141,17 @@ try {
   // 工业级启发式时间轴匹配引擎 (消除静音空隙与跳跃，第一性原理纠偏)
   function findActiveSentenceIndex(currentTime) {
     if (!state.activeSentences || state.activeSentences.length === 0) return -1;
-    const offset = (typeof state.syncOffset === 'number') ? state.syncOffset : 1.20;
+    const offset = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.08;
     const t = currentTime + offset;
 
-    // 倒序寻找最后一句满足 start <= t 的句子
+    // 基于无缝物理声学时间戳进行倒序匹配
     for (let i = state.activeSentences.length - 1; i >= 0; i--) {
       const s = state.activeSentences[i];
       if (t >= s.start) {
         return i;
       }
     }
-    return 0; // 首句前置聚光
+    return 0;
   }
 
   function highlightSentence(sentId) {
@@ -2374,15 +2374,15 @@ try {
       }
       const syncValLabel = document.getElementById('sheetSyncVal');
       if (syncValLabel) {
-                        const curOff = (typeof state.syncOffset === 'number') ? state.syncOffset : 1.20;
-        if (curOff === 0) {
-          syncValLabel.textContent = '原速对齐 (0.00s)';
-        } else if (Math.abs(curOff - 1.20) < 0.05) {
-          syncValLabel.textContent = '标准前置 (+1.20s · 推荐合拍)';
-        } else if (curOff > 1.3) {
-          syncValLabel.textContent = `激进前置 (+${curOff.toFixed(2)}s)`;
+        const curOff = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.08;
+        if (Math.abs(curOff) < 0.01) {
+          syncValLabel.textContent = '原速直读 (0.00s · 原生声学)';
+        } else if (Math.abs(curOff - 0.08) < 0.02) {
+          syncValLabel.textContent = '智能微调 (+0.08s · 推荐合拍)';
+        } else if (curOff > 0) {
+          syncValLabel.textContent = `灵敏前置 (+${curOff.toFixed(2)}s)`;
         } else {
-          syncValLabel.textContent = `轻度前置 (+${curOff.toFixed(2)}s)`;
+          syncValLabel.textContent = `舒缓微调 (${curOff.toFixed(2)}s)`;
         }
       }
       document.querySelectorAll('.sync-card-btn').forEach(b => {
@@ -2612,7 +2612,7 @@ try {
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '2.4.7';
+  const APP_BUILD_ID = '2.4.8';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {

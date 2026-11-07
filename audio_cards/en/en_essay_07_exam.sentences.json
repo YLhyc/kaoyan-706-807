@@ -3,48 +3,56 @@
     "id": "sent_p1_s1",
     "text": "Dear Professor Zhang,",
     "start": "0.000",
-    "end": "1.656"
+    "end": "2.207",
+    "duration": "2.207"
   },
   {
     "id": "sent_p1_s2",
     "text": "I am writing this letter with sincere regret to apologize for being unable to attend tomorrow's academic symposium on modern linguistics as previously scheduled.",
-    "start": "2.056",
-    "end": "12.664"
+    "start": "2.207",
+    "end": "14.115",
+    "duration": "11.908"
   },
   {
     "id": "sent_p2_s1",
     "text": "Much to my distress, our laboratory has just been assigned an emergency national research task, and I am designated to handle critical experimental data analysis under an extremely tight deadline.",
-    "start": "13.964",
-    "end": "27.380"
+    "start": "14.115",
+    "end": "27.940",
+    "duration": "13.825"
   },
   {
     "id": "sent_p2_s2",
     "text": "Because of this unanticipated circumstance, it is utterly impossible for me to be absent from the laboratory tomorrow.",
-    "start": "27.780",
-    "end": "35.196"
+    "start": "27.940",
+    "end": "35.744",
+    "duration": "7.804"
   },
   {
     "id": "sent_p2_s3",
     "text": "I fully realize the inconvenience and disappointment my unexpected absence may cause to you and the research group.",
-    "start": "35.596",
-    "end": "42.772"
+    "start": "35.744",
+    "end": "44.220",
+    "duration": "8.476"
   },
   {
     "id": "sent_p3_s1",
     "text": "Would it be possible for us to reschedule our meeting for next Tuesday?",
-    "start": "44.071",
-    "end": "48.295"
+    "start": "44.220",
+    "end": "48.850",
+    "duration": "4.630"
   },
   {
     "id": "sent_p3_s2",
     "text": "Please accept my deepest apologies once again for this regrettable situation.",
-    "start": "48.695",
-    "end": "53.879"
+    "start": "48.850",
+    "end": "54.429",
+    "duration": "5.579"
   },
   {
     "id": "sent_p3_s3",
     "text": "Yours sincerely, Li Ming",
-    "start": "54.279",
-    "end": "56.727"
+    "start": "54.429",
+    "end": "56.491",
+    "duration": "2.062"
   }
 ]

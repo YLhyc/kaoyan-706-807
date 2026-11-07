@@ -3,54 +3,63 @@
     "id": "sent_p1_s1",
     "text": "Dear Mr. President,",
     "start": "0.000",
-    "end": "1.584"
+    "end": "2.133",
+    "duration": "2.133"
   },
   {
     "id": "sent_p1_s2",
     "text": "As a senior student at this university who spends considerable time reading in the library, I am writing this letter with the aim of putting forward some constructive suggestions to improve the current facilities and services.",
-    "start": "1.984",
-    "end": "15.712"
+    "start": "2.133",
+    "end": "17.152",
+    "duration": "15.019"
   },
   {
     "id": "sent_p2_s1",
     "text": "Having observed the daily study environment, I would like to lay emphasis on the following aspects.",
-    "start": "17.012",
-    "end": "23.540"
+    "start": "17.152",
+    "end": "23.986",
+    "duration": "6.834"
   },
   {
     "id": "sent_p2_s2",
     "text": "In the first place, it is exceedingly advisable that the administration prolong the opening hours during examination weeks to accommodate students' intense revision schedules.",
-    "start": "23.940",
-    "end": "35.268"
+    "start": "23.986",
+    "end": "35.820",
+    "duration": "11.834"
   },
   {
     "id": "sent_p2_s3",
     "text": "In the second place, the library is expected to introduce more power outlets and create designated silent study cubicles.",
-    "start": "35.668",
-    "end": "44.524"
+    "start": "35.820",
+    "end": "45.074",
+    "duration": "9.254"
   },
   {
     "id": "sent_p2_s4",
     "text": "Lastly, regular maintenance of academic databases and book resources should be reinforced to ensure prompt access to references.",
-    "start": "44.923",
-    "end": "53.707"
+    "start": "45.074",
+    "end": "55.143",
+    "duration": "10.069"
   },
   {
     "id": "sent_p3_s1",
     "text": "Thank you for your time and favorable consideration of my recommendations.",
-    "start": "55.007",
-    "end": "59.303"
+    "start": "55.143",
+    "end": "59.852",
+    "duration": "4.709"
   },
   {
     "id": "sent_p3_s2",
     "text": "I am genuinely looking forward to your earliest reply at your convenience.",
-    "start": "59.703",
-    "end": "64.407"
+    "start": "59.852",
+    "end": "64.957",
+    "duration": "5.105"
   },
   {
     "id": "sent_p3_s3",
     "text": "Yours sincerely, Li Ming",
-    "start": "64.807",
-    "end": "67.255"
+    "start": "64.957",
+    "end": "67.019",
+    "duration": "2.062"
   }
 ]

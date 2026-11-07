@@ -3,60 +3,70 @@
     "id": "sent_p1_s1",
     "text": "The pie chart provides a clear breakdown of the monthly expenditure distribution among fresh college graduates in 2025.",
     "start": "0.000",
-    "end": "8.304"
+    "end": "8.853",
+    "duration": "8.853"
   },
   {
     "id": "sent_p1_s2",
     "text": "As is visibly indicated, basic food and catering accounts for the largest proportion at 45.0%, closely followed by intellectual enrichment and skill training at 25.0%.",
-    "start": "8.704",
-    "end": "24.112"
+    "start": "8.853",
+    "end": "25.686",
+    "duration": "16.833"
   },
   {
     "id": "sent_p1_s3",
     "text": "Meanwhile, social entertainment and savings represent 18.0% and 12.0% respectively.",
-    "start": "24.512",
-    "end": "33.776"
+    "start": "25.686",
+    "end": "35.224",
+    "duration": "9.538"
   },
   {
     "id": "sent_p2_s1",
     "text": "A thorough examination reveals several understandable reasons behind this budgetary allocation.",
-    "start": "35.076",
-    "end": "41.364"
+    "start": "35.224",
+    "end": "41.909",
+    "duration": "6.685"
   },
   {
     "id": "sent_p2_s2",
     "text": "To begin with, since food and daily sustenance remain basic survival necessities for recent graduates entering the job market, allocating the dominant share to catering is inevitable.",
-    "start": "41.764",
-    "end": "54.148"
+    "start": "41.909",
+    "end": "54.696",
+    "duration": "12.787"
   },
   {
     "id": "sent_p2_s3",
     "text": "More importantly, that educational investment occupies a remarkable quarter of the total expenditure demonstrates graduates' acute awareness of professional competitiveness.",
-    "start": "54.547",
-    "end": "65.083"
+    "start": "54.696",
+    "end": "65.635",
+    "duration": "10.939"
   },
   {
     "id": "sent_p2_s4",
     "text": "In an era marked by rapid industrial upgrading, continuous skill refinement has become an essential stepping stone to career development.",
-    "start": "65.483",
-    "end": "75.059"
+    "start": "65.635",
+    "end": "75.599",
+    "duration": "9.964"
   },
   {
     "id": "sent_p2_s5",
     "text": "Finally, allocating a sensible quota to savings reflects a mature financial attitude.",
-    "start": "75.459",
-    "end": "82.323"
+    "start": "75.599",
+    "end": "83.773",
+    "duration": "8.174"
   },
   {
     "id": "sent_p3_s1",
     "text": "Overall, the spending pattern of contemporary college graduates is rational and forward-looking.",
-    "start": "83.623",
-    "end": "90.151"
+    "start": "83.773",
+    "end": "90.706",
+    "duration": "6.933"
   },
   {
     "id": "sent_p3_s2",
     "text": "Cultivating disciplined financial planning will undoubtedly assist youngsters in establishing a solid foundation for future endeavors.",
-    "start": "90.551",
-    "end": "99.095"
+    "start": "90.706",
+    "end": "98.808",
+    "duration": "8.102"
   }
 ]

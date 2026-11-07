@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app.css?v=2.4.7">
+  <link rel="stylesheet" href="app.css?v=2.4.8">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -32,9 +32,9 @@
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
   <!-- 动态微交互矢量图标引擎 (Kubai Icons · 金石朱墨主题) -->
-  <script src="kubai_icons.js?v=2.4.4" defer></script>
+  <script src="kubai_icons.js?v=2.4.8" defer></script>
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=2.4.4" defer></script>
+  <script src="data/kaoyan_data.js?v=2.4.8" defer></script>
 </head>
 <body>
 
@@ -490,7 +490,7 @@
   </nav>
 
 
-  <script src="app.js?v=2.4.7" defer></script>
+  <script src="app.js?v=2.4.8" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -830,24 +830,24 @@
       <div class="settings-section">
         <div class="settings-sec-title">
           <span>跟读聚光同频校准</span>
-          <span class="settings-sec-desc" id="sheetSyncVal">标准前置 (+1.20s · 推荐合拍)</span>
+          <span class="settings-sec-desc" id="sheetSyncVal">智能微调 (+0.08s · 推荐合拍)</span>
         </div>
         <div class="sync-options-grid">
-          <button type="button" class="sync-card-btn active" data-offset="1.20">
-            <span class="sync-card-title">标准前置 (+1.20s)</span>
-            <small class="sync-card-sub">精准对齐 · 推荐声画合拍</small>
-          </button>
-          <button type="button" class="sync-card-btn" data-offset="1.60">
-            <span class="sync-card-title">激进前置 (+1.60s)</span>
-            <small class="sync-card-sub">极速追光 · 适合高倍速</small>
-          </button>
-          <button type="button" class="sync-card-btn" data-offset="0.70">
-            <span class="sync-card-title">轻度前置 (+0.70s)</span>
-            <small class="sync-card-sub">舒缓微调 · 较慢语速</small>
+          <button type="button" class="sync-card-btn active" data-offset="0.08">
+            <span class="sync-card-title">智能微调 (+0.08s)</span>
+            <small class="sync-card-sub">微调80ms · 推荐合拍</small>
           </button>
           <button type="button" class="sync-card-btn" data-offset="0.00">
-            <span class="sync-card-title">原速 (0.00s)</span>
-            <small class="sync-card-sub">不加补偿 · 原时间戳</small>
+            <span class="sync-card-title">原速直读 (0.00s)</span>
+            <small class="sync-card-sub">物理声学 · 原生时间戳</small>
+          </button>
+          <button type="button" class="sync-card-btn" data-offset="0.18">
+            <span class="sync-card-title">灵敏前置 (+0.18s)</span>
+            <small class="sync-card-sub">抢先一步 · 适合高倍速</small>
+          </button>
+          <button type="button" class="sync-card-btn" data-offset="-0.05">
+            <span class="sync-card-title">舒缓微调 (-0.05s)</span>
+            <small class="sync-card-sub">声音先行 · 沉浸听读</small>
           </button>
         </div>
       </div>

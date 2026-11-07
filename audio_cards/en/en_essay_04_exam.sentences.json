@@ -3,48 +3,56 @@
     "id": "sent_p1_s1",
     "text": "Dear Professor Green,",
     "start": "0.000",
-    "end": "1.728"
+    "end": "2.279",
+    "duration": "2.279"
   },
   {
     "id": "sent_p1_s2",
     "text": "On behalf of the Student Union, I am honored to extend a cordial invitation to you to serve as an expert judge for our upcoming 15th Campus English Speech Contest.",
-    "start": "2.128",
-    "end": "13.384"
+    "start": "2.279",
+    "end": "14.834",
+    "duration": "12.555"
   },
   {
     "id": "sent_p2_s1",
     "text": "The event is scheduled to be held in the Grand Auditorium from 2:00 p.m. to 5:00 p.m. next Friday, November 14th.",
-    "start": "14.684",
-    "end": "23.132"
+    "start": "14.834",
+    "end": "23.676",
+    "duration": "8.842"
   },
   {
     "id": "sent_p2_s2",
     "text": "The contest will feature fifteen distinguished finalists delivering speeches on the theme of Cultural Interconnection in the Modern Era.",
-    "start": "23.532",
-    "end": "31.908"
+    "start": "23.676",
+    "end": "32.459",
+    "duration": "8.783"
   },
   {
     "id": "sent_p2_s3",
     "text": "Considering your outstanding academic prestige and profound linguistic insight, your professional evaluation and commentary would undoubtedly inspire all contestants and elevate the academic caliber of this competition.",
-    "start": "32.308",
-    "end": "46.684"
+    "start": "32.459",
+    "end": "48.134",
+    "duration": "15.675"
   },
   {
     "id": "sent_p3_s1",
     "text": "We would be deeply grateful if you could accept our invitation.",
-    "start": "47.983",
-    "end": "51.799"
+    "start": "48.134",
+    "end": "52.355",
+    "duration": "4.221"
   },
   {
     "id": "sent_p3_s2",
     "text": "Please kindly notify us of your availability before this Wednesday.",
-    "start": "52.199",
-    "end": "56.423"
+    "start": "52.355",
+    "end": "56.973",
+    "duration": "4.618"
   },
   {
     "id": "sent_p3_s3",
     "text": "Yours sincerely, Li Ming",
-    "start": "56.823",
-    "end": "59.199"
+    "start": "56.973",
+    "end": "58.994",
+    "duration": "2.021"
   }
 ]

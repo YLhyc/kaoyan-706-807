@@ -3,48 +3,56 @@
     "id": "sent_p1_s1",
     "text": "Notice: Charity Book Donation Campaign",
     "start": "0.000",
-    "end": "3.504"
+    "end": "4.050",
+    "duration": "4.050"
   },
   {
     "id": "sent_p1_s2",
     "text": "To advocate environmental sustainability and support basic education in impoverished rural areas, our university is launching a campus-wide book donation campaign titled Pass on the Light of Knowledge.",
-    "start": "3.904",
-    "end": "18.832"
+    "start": "4.050",
+    "end": "16.878",
+    "duration": "12.828"
   },
   {
     "id": "sent_p2_s1",
     "text": "We warmly welcome all students and faculty members to donate unused books, particularly academic references, literary classics, and popular science works.",
-    "start": "20.132",
-    "end": "30.836"
+    "start": "16.878",
+    "end": "27.703",
+    "duration": "10.825"
   },
   {
     "id": "sent_p2_s2",
     "text": "Please ensure that the books are clean and complete.",
-    "start": "31.236",
-    "end": "34.332"
+    "start": "27.703",
+    "end": "31.390",
+    "duration": "3.687"
   },
   {
     "id": "sent_p2_s3",
     "text": "Collection stations will be set up at the lobby of the Central Library and Student Activity Center from 9:00 a.m. to 6:00 p.m. this coming weekend.",
-    "start": "34.732",
-    "end": "44.956"
+    "start": "31.390",
+    "end": "43.498",
+    "duration": "12.108"
   },
   {
     "id": "sent_p3_s1",
     "text": "Every donated book delivers a ray of hope to children in need.",
-    "start": "46.255",
-    "end": "50.383"
+    "start": "43.498",
+    "end": "50.935",
+    "duration": "7.437"
   },
   {
     "id": "sent_p3_s2",
     "text": "Let us join hands to share our wisdom and foster social harmony!",
-    "start": "50.783",
-    "end": "55.559"
+    "start": "50.935",
+    "end": "56.107",
+    "duration": "5.172"
   },
   {
     "id": "sent_p3_s3",
     "text": "The Youth League Committee, October 30th",
-    "start": "55.959",
-    "end": "59.223"
+    "start": "56.107",
+    "end": "58.951",
+    "duration": "2.844"
   }
 ]
