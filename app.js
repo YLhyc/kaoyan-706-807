@@ -1889,18 +1889,89 @@
       });
     }
 
-    // 倍速调节
-    const speeds = [1.0, 1.2, 1.5, 0.8];
-    let speedIdx = 0;
-    if (el.speedBtn) {
-      el.speedBtn.addEventListener('click', () => {
-        speedIdx = (speedIdx + 1) % speeds.length;
-        state.speed = speeds[speedIdx];
-        localStorage.setItem('kaoyan_speed', String(state.speed));
-        audio.playbackRate = state.speed;
-        el.speedBtn.querySelector('span').textContent = `${state.speed.toFixed(1)}x`;
+    // 8 档精准倍速选项：0.8、0.9、1.0、1.1、1.2、1.4、1.5、2.0
+    const SPEED_OPTIONS = [0.8, 0.9, 1.0, 1.1, 1.2, 1.4, 1.5, 2.0];
+
+    function openSpeedModal() {
+      const modal = document.getElementById('speedModal');
+      const backdrop = document.getElementById('speedModalBackdrop');
+      if (!modal || !backdrop) return;
+
+      const grid = document.getElementById('speedModalGrid');
+      if (grid) {
+        grid.innerHTML = SPEED_OPTIONS.map(spd => {
+          const isActive = Math.abs(state.speed - spd) < 0.01;
+          const isNormal = Math.abs(spd - 1.0) < 0.01;
+          return `<button type="button" class="speed-option-btn ${isActive ? 'active' : ''}" data-speed="${spd}">
+            <span class="speed-opt-val">${spd.toFixed(1)}x</span>
+            ${isNormal ? '<span class="speed-opt-tag">原速</span>' : ''}
+          </button>`;
+        }).join('');
+
+        grid.querySelectorAll('.speed-option-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const spd = parseFloat(btn.dataset.speed);
+            if (!isNaN(spd)) {
+              state.speed = spd;
+              audio.playbackRate = state.speed;
+              localStorage.setItem('kaoyan_speed', String(state.speed));
+              if (el.speedBtn && el.speedBtn.querySelector('span')) {
+                el.speedBtn.querySelector('span').textContent = `${state.speed.toFixed(1)}x`;
+              }
+              closeSpeedModal();
+              showToast(`已切换朗读倍速为 ${spd.toFixed(1)}x`, 1200);
+            }
+          });
+        });
+      }
+
+      backdrop.style.display = 'block';
+      modal.style.display = 'block';
+      requestAnimationFrame(() => {
+        backdrop.classList.add('open');
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
       });
     }
+
+    function closeSpeedModal() {
+      const modal = document.getElementById('speedModal');
+      const backdrop = document.getElementById('speedModalBackdrop');
+      if (!modal || !backdrop) return;
+
+      backdrop.classList.remove('open');
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      setTimeout(() => {
+        backdrop.style.display = 'none';
+        modal.style.display = 'none';
+      }, 240);
+    }
+
+    // 倍速按钮点击：不直接升倍速，弹出选择弹窗
+    if (el.speedBtn) {
+      el.speedBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openSpeedModal();
+      });
+    }
+
+    const speedCloseBtn = document.getElementById('speedModalClose');
+    if (speedCloseBtn) {
+      speedCloseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeSpeedModal();
+      });
+    }
+    const speedBackdropEl = document.getElementById('speedModalBackdrop');
+    if (speedBackdropEl) {
+      speedBackdropEl.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeSpeedModal();
+      });
+    }
+
 
     // 背诵遮罩自测模式 (正常研读 / 采分词挖空 / 看纲默背)
     if (el.clozeModeBtn) {
@@ -2495,7 +2566,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '2.4.3';
+  const APP_BUILD_ID = '2.4.4';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
