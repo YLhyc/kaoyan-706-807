@@ -13,3 +13,6 @@ Thumbs.db
 !build_rich_app.py
 !verify_project.py
 ui_schemes_showcase.html
+
+node_modules/
+bun.lock

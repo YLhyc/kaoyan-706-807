@@ -1,0 +1,15 @@
+{
+  "name": "706_807专业课背诵手卷",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^7"
+  },
+  "dependencies": {
+    "@onlymoein/liquidglass": "0.11.1",
+    "react": "19",
+    "react-dom": "19"
+  }
+}

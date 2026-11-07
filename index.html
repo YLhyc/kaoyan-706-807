@@ -16,7 +16,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app.css?v=2.1.0">
+  <link rel="stylesheet" href="assets/liquidglass_styles.css?v=2.2.0">
+  <link rel="stylesheet" href="app.css?v=2.2.0">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -32,13 +33,20 @@
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
   <!-- 动态微交互矢量图标引擎 (Kubai Icons · 金石朱墨主题) -->
-  <script src="kubai_icons.js?v=2.1.0" defer></script>
+  <script src="kubai_icons.js?v=2.2.0" defer></script>
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=2.1.0" defer></script>
+  <script src="data/kaoyan_data.js?v=2.2.0" defer></script>
 </head>
-<body data-liquidglass-backdrop>
+<body>
 
-  <!-- 顶部新版本提醒浮动胶囊 -->
+  <!-- iOS 27 Liquid Glass 静止光学折射光斑 (skill 规范要求) -->
+  <div class="liquid-backdrop-glows" aria-hidden="true">
+    <div class="glow-orb-primary"></div>
+    <div class="glow-orb-cyan"></div>
+    <div class="glow-orb-amber"></div>
+  </div>
+
+<!-- 顶部新版本提醒浮动胶囊 -->
   <aside id="updateBannerPill" class="update-banner-pill" style="display: none;" role="alert">
     <div class="pill-body" id="updateBannerBody" title="点击立即升级并刷新">
       <span class="pill-icon-spin">
@@ -490,7 +498,8 @@
   </nav>
 
 
-  <script src="app.js?v=2.1.0" defer></script>
+  <script src="assets/liquidglass_components.js?v=2.2.0" defer></script>
+  <script src="app.js?v=2.2.0" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">

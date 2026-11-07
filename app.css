@@ -6754,3 +6754,207 @@ body[data-liquidglass-backdrop] {
   z-index: 2500 !important;
   box-shadow: 8px 0 32px rgba(0, 0, 0, 0.28) !important;
 }
+
+
+/* === Liquid-Glass Skill Official Integration === */
+
+/* -------------------------------------------------------------------------
+   1. 官方规范参数重载 (严格执行 skill 准则)
+   ------------------------------------------------------------------------- */
+:root, [data-theme="light"] {
+  --lg-transparency: 0.5 !important;
+  --lg-shine: 1 !important;
+  --lg-fill: #d97757 !important;
+  --lg-on: #34c759 !important;
+
+  /* 大面积浅色玻璃把亮度设为 1.1，对比设为 0.85，消除纯白冲刷板 (skill 核心铁律) */
+  --lg-brightness: 1.1 !important;
+  --lg-contrast: 0.85 !important;
+  --lg-contrast-small: 0.85 !important;
+  --lg-brightness-small: 1.1 !important;
+}
+
+[data-theme="dark"] {
+  --lg-transparency: 0.5 !important;
+  --lg-shine: 1 !important;
+  --lg-fill: #d97757 !important;
+  --lg-brightness: 0.9 !important;
+  --lg-contrast: 0.6 !important;
+}
+
+/* -------------------------------------------------------------------------
+   2. 页面背景层：静止饱满光斑 (skill 铁律：必须静止 animation:none)
+   ------------------------------------------------------------------------- */
+.liquid-backdrop-glows {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  transform: translateZ(0); /* 独立合成层，滚动不反复栅格化 */
+  animation: none !important;
+  overflow: hidden;
+}
+
+.glow-orb-primary {
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90vw;
+  height: 50vh;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(217, 119, 87, 0.16) 0%, rgba(217, 119, 87, 0.04) 50%, transparent 75%);
+  filter: blur(40px);
+}
+
+.glow-orb-cyan {
+  /* skill 铁律：主要内容区域背后另外补一团饱和的蓝青光斑，为浅色提供折射源 */
+  position: absolute;
+  top: 25%;
+  left: -15%;
+  width: 70vw;
+  height: 60vh;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(76, 163, 130, 0.14) 0%, rgba(56, 189, 248, 0.08) 45%, transparent 70%);
+  filter: blur(50px);
+}
+
+.glow-orb-amber {
+  position: absolute;
+  bottom: 10%;
+  right: -10%;
+  width: 75vw;
+  height: 65vh;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, rgba(217, 119, 87, 0.05) 50%, transparent 70%);
+  filter: blur(50px);
+}
+
+[data-theme="dark"] .glow-orb-primary {
+  background: radial-gradient(circle, rgba(217, 98, 72, 0.22) 0%, transparent 70%);
+}
+[data-theme="dark"] .glow-orb-cyan {
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+}
+[data-theme="dark"] .glow-orb-amber {
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+}
+
+/* -------------------------------------------------------------------------
+   3. 顶部液态玻璃悬浮长条胶囊 (LiquidHeader)
+   ------------------------------------------------------------------------- */
+.liquid-floating-header {
+  position: sticky !important;
+  top: 10px !important;
+  z-index: 1000 !important;
+  margin: 8px auto 14px auto !important;
+  width: calc(100% - 24px) !important;
+  max-width: 900px !important;
+  display: flex !important;
+  justify-content: center !important;
+  overflow: visible !important;
+}
+
+.liquid-header-pill {
+  width: 100% !important;
+  height: 48px !important;
+  border-radius: 9999px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 8px !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+}
+
+.liquid-nav-btn {
+  height: 32px !important;
+  border-radius: 9999px !important;
+  padding: 0 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.liquid-subject-segmented-wrap {
+  flex: 1 1 auto !important;
+  max-width: 380px !important;
+  margin: 0 6px !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+/* -------------------------------------------------------------------------
+   4. 底部动态物理透镜 TabBar (LiquidTabBar)
+   ------------------------------------------------------------------------- */
+.liquid-tabbar-container {
+  position: fixed !important;
+  left: 14px !important;
+  right: 14px !important;
+  bottom: 12px !important;
+  max-width: 520px !important;
+  margin: 0 auto !important;
+  z-index: 950 !important;
+  display: flex !important;
+  justify-content: center !important;
+  pointer-events: none !important;
+}
+
+.liquid-tabbar-container > * {
+  pointer-events: auto !important;
+}
+
+/* skill 核心铁律：TabBar 在静止时也保持可见和可点击 */
+[data-liquidglass-tabbar],
+[data-liquidglass-tabbar] > * {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/* -------------------------------------------------------------------------
+   5. 卡片圆角规范 (大卡片 34px，中卡片 30px，小卡片 26px) & 性能优化
+   ------------------------------------------------------------------------- */
+.exam-section-card {
+  border-radius: 34px !important; /* skill 铁律 */
+  overflow: visible !important;   /* skill 铁律：不要给玻璃卡片加 overflow:hidden */
+  content-visibility: auto;       /* skill 铁律：让浏览器跳过离屏大卡渲染 */
+  contain-intrinsic-size: 1px 400px;
+}
+
+.section-thesis-box {
+  border-radius: 26px !important; /* skill 铁律：小卡片 26px */
+  overflow: visible !important;
+}
+
+/* -------------------------------------------------------------------------
+   6. 手机端适配 (skill 铁律：手机宽度下把玻璃模糊压到 8px 上限)
+   ------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  :root {
+    --lg-blur: 8px !important;
+  }
+  .liquid-floating-header {
+    height: 46px !important;
+    margin: 6px 12px 10px 12px !important;
+  }
+  .liquid-header-pill {
+    height: 46px !important;
+    padding: 0 6px !important;
+  }
+  .liquid-nav-btn {
+    height: 30px !important;
+    padding: 0 8px !important;
+    font-size: 11.5px !important;
+  }
+  .liquid-theme-btn {
+    width: 30px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+  }
+}
