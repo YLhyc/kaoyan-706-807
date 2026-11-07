@@ -8,13 +8,17 @@
   'use strict';
 
   // 安全前置初始化同步补偿量 (防御性读取 localStorage)
-  let initialSyncOffset = 0.95;
-  try {
-    const savedSync = parseFloat(localStorage.getItem('kaoyan_sync_offset'));
-    if (!isNaN(savedSync)) initialSyncOffset = savedSync;
-  } catch (e) {
-    initialSyncOffset = 0.95;
+  let initialSyncOffset = 0.08;
+try {
+  const savedSync = parseFloat(localStorage.getItem('kaoyan_sync_offset'));
+  if (!isNaN(savedSync)) {
+    // 彻底纠偏历史版本过大的 0.95 错误值
+    initialSyncOffset = (savedSync > 0.35) ? 0.08 : savedSync;
+    localStorage.setItem('kaoyan_sync_offset', String(initialSyncOffset));
   }
+} catch (e) {
+  initialSyncOffset = 0.08;
+}
 
   const state = {
     allData: null,
@@ -1129,19 +1133,62 @@
     updateHUDDisplay(startTime);
   }
 
+    let lastSpotlightEl = null;
+  let lastScrollTs = 0;
+
+  // 工业级启发式时间轴匹配引擎 (消除静音空隙与跳跃)
+  function findActiveSentenceIndex(currentTime) {
+    if (!state.activeSentences || state.activeSentences.length === 0) return -1;
+    const offset = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.08;
+    const t = currentTime + offset;
+
+    // 倒序寻找最后一句满足 start <= t 的句子
+    for (let i = state.activeSentences.length - 1; i >= 0; i--) {
+      const s = state.activeSentences[i];
+      if (t >= s.start - 0.03) {
+        // 如果已超出该句 end 超过 1.8 秒且无后继句，视为语音自然落幅停顿
+        if (s.end && t > s.end + 1.8) {
+          return -1;
+        }
+        return i;
+      }
+    }
+    return -1;
+  }
+
   function highlightSentence(sentId) {
-    const sents = document.querySelectorAll('.recite-sent');
-    sents.forEach(s => {
-      const match = String(s.dataset.sentId) === String(sentId);
-      s.classList.toggle('active-spotlight', match);
-      s.classList.toggle('loop-sent-active', match && state.playMode === 'sentence');
-      if (match) {
-        const now = Date.now();
-        if (now - state.lastUserScrollTime > 2500) {
-          s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (lastSpotlightEl && String(lastSpotlightEl.dataset.sentId) === String(sentId)) {
+      return;
+    }
+
+    if (lastSpotlightEl) {
+      lastSpotlightEl.classList.remove('active-spotlight');
+      lastSpotlightEl.classList.remove('loop-sent-active');
+    }
+
+    const targetEl = document.querySelector(`.recite-sent[data-sent-id="${sentId}"]`);
+    if (targetEl) {
+      targetEl.classList.add('active-spotlight');
+      if (state.playMode === 'sentence') {
+        targetEl.classList.add('loop-sent-active');
+      }
+      lastSpotlightEl = targetEl;
+
+      // 智能视口可见性避让 (避免每秒调用 smooth 滚动造成高倍速下的掉帧与滞后)
+      const now = Date.now();
+      if (now - state.lastUserScrollTime > 2000 && now - lastScrollTs > 800) {
+        const rect = targetEl.getBoundingClientRect();
+        const vh = window.innerHeight || 800;
+        // 安全视线区：顶部留出 110px 避开顶栏，底部留出 180px 避开底栏
+        const outOfSafeZone = rect.top < 110 || rect.bottom > (vh - 180);
+        if (outOfSafeZone) {
+          lastScrollTs = now;
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       }
-    });
+    } else {
+      lastSpotlightEl = null;
+    }
 
     if (currentFrameworkSections.length > 0 && currentActiveSectionIndex >= 0) {
       currentFrameworkSections.forEach((s, idx) => {
@@ -1152,9 +1199,8 @@
     }
   }
 
-
   // ==========================================
-  // 全息感知条 (Now-Playing HUD) 与骨架大纲核心引擎
+  // 全息感知 (Now-Playing HUD)) 与骨架大纲核心引擎
   // ==========================================
   let currentFrameworkSections = [];
   let currentActiveSectionIndex = -1;
@@ -1506,16 +1552,13 @@
     function runSyncLoop() {
       if (state.isPlaying && !audio.paused && state.activeSentences && state.activeSentences.length > 0) {
         const cur = audio.currentTime;
-        const offset = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.95;
-        const syncCur = cur + offset;
-
-        const activeIdx = state.activeSentences.findIndex(s => syncCur >= s.start && syncCur < s.end);
+                const activeIdx = findActiveSentenceIndex(cur);
         if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
           state.currentSentIndex = activeIdx;
           state.loopCount = 0;
           const sent = state.activeSentences[activeIdx];
           highlightSentence(sent.id);
-          updateHUDDisplay(syncCur);
+          updateHUDDisplay(cur);
         }
       }
       if (state.isPlaying) {
@@ -1559,13 +1602,10 @@
       if (el.timeCurrent) el.timeCurrent.textContent = formatTime(cur);
       if (el.timeTotal && dur > 0) el.timeTotal.textContent = formatTime(dur);
 
-      const offset = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.95;
-      const syncCur = cur + offset;
-      updateHUDDisplay(syncCur);
+            updateHUDDisplay(cur);
 
       if (state.activeSentences && state.activeSentences.length > 0) {
-        // 作为保底检查
-        const activeIdx = state.activeSentences.findIndex(s => syncCur >= s.start && syncCur < s.end);
+        const activeIdx = findActiveSentenceIndex(cur);
         if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
           state.currentSentIndex = activeIdx;
           state.loopCount = 0;
@@ -2336,8 +2376,14 @@
       }
       const syncValLabel = document.getElementById('sheetSyncVal');
       if (syncValLabel) {
-        const curOff = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.95;
-        syncValLabel.textContent = curOff === 0 ? '原生对齐 (0.00s)' : `提前 +${curOff.toFixed(2)}s (${curOff >= 0.9 ? '黄金推荐' : '轻度模式'})`;
+                const curOff = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.08;
+        if (curOff === 0) {
+          syncValLabel.textContent = '原速对齐 (0.00s)';
+        } else if (Math.abs(curOff - 0.08) < 0.03) {
+          syncValLabel.textContent = '智能微调 (+0.08s · 推荐)';
+        } else {
+          syncValLabel.textContent = `抢先补偿 (+${curOff.toFixed(2)}s)`;
+        }
       }
       document.querySelectorAll('.sync-card-btn').forEach(b => {
         const val = parseFloat(b.dataset.offset);
@@ -2566,7 +2612,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '2.4.4';
+  const APP_BUILD_ID = '2.4.6';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -2596,6 +2642,91 @@
     return 0;
   }
 
+    // 全流程可视化更新引擎 (Visual Progress Flow)
+  let isUpdatingApp = false;
+
+  async function performVisualUpdateFlow(targetVer) {
+    if (isUpdatingApp) return;
+    isUpdatingApp = true;
+
+    const banner = document.getElementById('updateBannerPill');
+    if (banner) banner.style.display = 'none';
+
+    const backdrop = document.getElementById('updateModalBackdrop');
+    const modal = document.getElementById('updateModal');
+    const oldVerEl = document.getElementById('updateModalOldVer');
+    const newVerEl = document.getElementById('updateModalNewVer');
+    const statusEl = document.getElementById('updateModalStatus');
+    const fillEl = document.getElementById('updateProgressFill');
+    const stepEl = document.getElementById('updateStepLabel');
+    const pctEl = document.getElementById('updatePercentVal');
+
+    if (oldVerEl) oldVerEl.textContent = `v${APP_BUILD_ID}`;
+    if (newVerEl) newVerEl.textContent = `v${targetVer || '最新'}`;
+
+    const setStep = (pct, stepText, statusText) => {
+      if (fillEl) fillEl.style.width = pct + '%';
+      if (pctEl) pctEl.textContent = pct + '%';
+      if (stepEl) stepEl.textContent = stepText;
+      if (statusEl) statusEl.textContent = statusText;
+    };
+
+    if (backdrop && modal) {
+      backdrop.style.display = 'block';
+      modal.style.display = 'block';
+      requestAnimationFrame(() => {
+        backdrop.classList.add('open');
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+      });
+    }
+
+    const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+    try {
+      // 步骤 1: 建立连接并校验清单 (20%)
+      setStep(20, '步骤 1/4 · 节点握手', '正在与 GitHub Pages 边缘节点建立安全校验...');
+      await sleep(350);
+
+      // 步骤 2: 清理历史离线缓存 (50%)
+      setStep(50, '步骤 2/4 · 净化缓存', '正在清理过期离线数据并重置 Service Worker...');
+      if ('caches' in window) {
+        const keys = await caches.keys();
+        await Promise.all(keys.map(k => caches.delete(k)));
+      }
+      if ('serviceWorker' in navigator) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(r => r.unregister()));
+      }
+      sessionStorage.clear();
+      await sleep(400);
+
+      // 步骤 3: 预载最新核心资产 (85%)
+      setStep(85, '步骤 3/4 · 载入新版', '正在全量预加载最新全科背诵数据与核心组件...');
+      try {
+        await Promise.all([
+          fetch(`version.json?_t=${Date.now()}`, { cache: 'no-store' }),
+          fetch(`app.js?v=${targetVer}&_t=${Date.now()}`, { cache: 'no-store' }),
+          fetch(`app.css?v=${targetVer}&_t=${Date.now()}`, { cache: 'no-store' })
+        ]);
+      } catch (e) {
+        console.warn('Preload partial error:', e);
+      }
+      await sleep(350);
+
+      // 步骤 4: 完成并重载 (100%)
+      setStep(100, '步骤 4/4 · 同步就绪', '同步完成！背诵手卷正在重新启封...');
+      await sleep(380);
+
+      const cleanUrl = window.location.origin + window.location.pathname + '?v=' + encodeURIComponent(targetVer) + '&t=' + Date.now();
+      window.location.replace(cleanUrl);
+    } catch (err) {
+      console.error('Update flow error:', err);
+      setStep(100, '完成', '正在刷新页面...');
+      window.location.reload();
+    }
+  }
+
   async function checkAppUpdate(isManual = false) {
     const badge = document.getElementById('appVersionBadge');
     const versionText = document.getElementById('versionText');
@@ -2603,12 +2734,12 @@
     const bannerText = document.getElementById('updateBannerText');
 
     if (isManual) {
-      showToast('正在检查云端更新...');
+      showToast('正在检查云端最新版本...', 1500);
       if (versionText) versionText.textContent = '检查中...';
     }
 
     try {
-      const res = await fetch(`version.json?t=${Date.now()}`, { cache: 'no-store' });
+      const res = await fetch(`version.json?_t=${Date.now()}`, { cache: 'no-store' });
       if (!res.ok) throw new Error('fetch version.json failed');
       const payload = await res.json();
       latestUpdatePayload = payload;
@@ -2619,55 +2750,35 @@
 
       if (isNewer) {
         if (banner && !isDismissed) {
-          if (bannerText) bannerText.textContent = `发现新版本 v${remoteVer} · 点击立即更新`;
+          if (bannerText) bannerText.textContent = `发现新版本 v${remoteVer} · 点击同步更新`;
           banner.style.display = 'flex';
         }
         if (versionText) {
-          versionText.textContent = `新版 v${remoteVer} 可升级`;
+          versionText.textContent = `有新版 v${remoteVer} · 点击同步`;
         }
         if (badge) {
           badge.classList.add('has-update');
         }
         if (isManual) {
-          showToast(`发现新版本 v${remoteVer}！点击顶栏或强刷更新`);
+          showToast(`发现新版本 v${remoteVer}，准备同步`, 2000);
+          performVisualUpdateFlow(remoteVer);
         }
       } else {
+        // 当前已是最新版本，彻底消除横幅与红点
         if (banner) banner.style.display = 'none';
         if (badge) badge.classList.remove('has-update');
         if (versionText) {
-          versionText.textContent = `版本 v${APP_BUILD_ID} · 88道全科考点版`;
+          versionText.textContent = `已是最新版 v${APP_BUILD_ID} · 88题全科纯享`;
         }
         if (isManual) {
-          showToast('当前已是最新版本 v' + APP_BUILD_ID);
+          showToast(`当前已是最新版本 v${APP_BUILD_ID}`, 2000);
         }
       }
     } catch (err) {
       console.warn('Update check failed:', err);
-      if (versionText) versionText.textContent = `版本 v${APP_BUILD_ID} · 88道全科考点版`;
-      if (isManual) showToast('网络未连接或已是最新版');
+      if (versionText) versionText.textContent = `手卷版本 v${APP_BUILD_ID}`;
+      if (isManual) showToast('网络连接超时，未发现云端新版', 2000);
     }
-  }
-
-  async function forceCleanAndReload() {
-    const targetVer = (latestUpdatePayload && latestUpdatePayload.version) || APP_BUILD_ID;
-    showToast(`正在清除缓存并同步最新 v${targetVer} 资源...`, 3000);
-    try {
-      if ('caches' in window) {
-        const keys = await caches.keys();
-        await Promise.all(keys.map(k => caches.delete(k)));
-      }
-      if ('serviceWorker' in navigator) {
-        const regs = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(regs.map(r => r.unregister()));
-      }
-      sessionStorage.clear();
-    } catch (e) {
-      console.warn('Cache clear warning:', e);
-    }
-    const cleanUrl = window.location.origin + window.location.pathname + '?v=' + encodeURIComponent(targetVer) + '&t=' + Date.now();
-    setTimeout(() => {
-      window.location.href = cleanUrl;
-    }, 300);
   }
 
   function setupVersionHandlers() {
@@ -2680,7 +2791,7 @@
     if (badge) {
       badge.addEventListener('click', () => {
         if (badge.classList.contains('has-update')) {
-          forceCleanAndReload();
+          performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '2.4.6');
         } else {
           checkAppUpdate(true);
         }
@@ -2689,13 +2800,13 @@
 
     if (refreshBtn) {
       refreshBtn.addEventListener('click', () => {
-        forceCleanAndReload();
+        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '2.4.6');
       });
     }
 
     if (bannerBody) {
       bannerBody.addEventListener('click', () => {
-        forceCleanAndReload();
+        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '2.4.6');
       });
     }
 

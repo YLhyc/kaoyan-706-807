@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app.css?v=2.4.5">
+  <link rel="stylesheet" href="app.css?v=2.4.6">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -490,7 +490,7 @@
   </nav>
 
 
-  <script src="app.js?v=2.4.5" defer></script>
+  <script src="app.js?v=2.4.6" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -830,20 +830,20 @@
       <div class="settings-section">
         <div class="settings-sec-title">
           <span>跟读聚光同频校准</span>
-          <span class="settings-sec-desc" id="sheetSyncVal">提前 +0.95s (黄金推荐)</span>
+          <span class="settings-sec-desc" id="sheetSyncVal">智能微调 (+0.08s · 推荐)</span>
         </div>
         <div class="sync-options-grid">
-          <button type="button" class="sync-card-btn active" data-offset="0.95">
-            <span class="sync-card-title">极速提前 (+0.95s)</span>
-            <small class="sync-card-sub">消除约1s滞后 · 黄金同频</small>
-          </button>
-          <button type="button" class="sync-card-btn" data-offset="0.60">
-            <span class="sync-card-title">轻度提前 (+0.60s)</span>
-            <small class="sync-card-sub">平衡模式 · 适度跟读</small>
+          <button type="button" class="sync-card-btn active" data-offset="0.08">
+            <span class="sync-card-title">智能微调 (+0.08s)</span>
+            <small class="sync-card-sub">微调80ms · 推荐声画合拍</small>
           </button>
           <button type="button" class="sync-card-btn" data-offset="0.00">
-            <span class="sync-card-title">原生对齐 (0.00s)</span>
-            <small class="sync-card-sub">不加前置 · 原始时间戳</small>
+            <span class="sync-card-title">原速对齐 (0.00s)</span>
+            <small class="sync-card-sub">严格对准 · 原生时间戳</small>
+          </button>
+          <button type="button" class="sync-card-btn" data-offset="0.18">
+            <span class="sync-card-title">灵敏前置 (+0.18s)</span>
+            <small class="sync-card-sub">抢先一步 · 适合高倍速</small>
           </button>
         </div>
       </div>
@@ -857,6 +857,35 @@
         <div class="settings-info-box">
           已支持全科 88 篇考题毫秒级句读对齐。点击正文中任意段落语句，即可瞬间跳播试听，双轨逻辑无缝切换。
         </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 全局可视化版本更新进度弹窗 (Visual Update Progress Modal) -->
+  <div id="updateModalBackdrop" class="update-modal-backdrop" style="display: none;"></div>
+  <aside id="updateModal" class="update-modal" aria-hidden="true" style="display: none;">
+    <div class="update-modal-icon-wrap">
+      <div class="update-modal-spin-ring"></div>
+      <svg class="update-modal-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+      </svg>
+    </div>
+    <h3 class="update-modal-title">正在同步云端新版本</h3>
+    <div class="update-modal-badges">
+      <span class="update-badge-old" id="updateModalOldVer">v2.4.5</span>
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+      <span class="update-badge-new" id="updateModalNewVer">v2.4.6</span>
+    </div>
+    <p class="update-modal-status" id="updateModalStatus">正在连接云端节点并校验资源清单...</p>
+    <div class="update-progress-container">
+      <div class="update-progress-track">
+        <div class="update-progress-fill" id="updateProgressFill" style="width: 15%;"></div>
+      </div>
+      <div class="update-progress-info">
+        <span class="update-step-label" id="updateStepLabel">步骤 1/4 · 建立安全握手</span>
+        <span class="update-percent-val" id="updatePercentVal">15%</span>
       </div>
     </div>
   </aside>

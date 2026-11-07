@@ -1,10 +1,10 @@
 // 考研背诵手卷 · 离线 PWA Service Worker (v1.9.2)
-const CACHE_NAME = 'kaoyan-handbook-v245';
+const CACHE_NAME = 'kaoyan-handbook-v246';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
-  './app.css?v=2.4.5',
-  './app.js?v=2.4.5',
+  './app.css?v=2.4.6',
+  './app.js?v=2.4.6',
   './kubai_icons.js?v=2.0.1',
   './version.json',
   './manifest.json',
