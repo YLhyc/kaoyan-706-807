@@ -3,15 +3,15 @@
     "id": "sent_p1_s1",
     "text": "As is vividly delineated in the cartoon above, several family members are sitting around a lavish dinner table; ironically, instead of conversing warmly with one another, each person is staring fixatedly at their smartphone screen.",
     "start": "0.000",
-    "end": "16.612",
-    "duration": "16.612"
+    "end": "17.856",
+    "duration": "17.856"
   },
   {
     "id": "sent_p1_s2",
     "text": "Beneath the drawing, a thought-provoking caption highlights the invisible barrier erected by digital devices in contemporary society.",
-    "start": "16.612",
+    "start": "17.856",
     "end": "27.174",
-    "duration": "10.562"
+    "duration": "9.318"
   },
   {
     "id": "sent_p2_s1",
@@ -66,7 +66,7 @@
     "id": "sent_p3_s2",
     "text": "Only by utilizing technology as an empowering servant rather than allowing it to become our tyrannical master can we preserve true warmth and mental autonomy in human relationships.",
     "start": "86.285",
-    "end": "98.727",
-    "duration": "12.442"
+    "end": "100.299",
+    "duration": "14.014"
   }
 ]

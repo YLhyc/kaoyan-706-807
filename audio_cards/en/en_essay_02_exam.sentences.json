@@ -10,29 +10,29 @@
     "id": "sent_p1_s2",
     "text": "I am writing this letter to lodge a formal complaint concerning the substandard quality of the books I purchased from your store and the unprofessional attitude of your staff.",
     "start": "2.686",
-    "end": "14.695",
-    "duration": "12.009"
+    "end": "16.456",
+    "duration": "13.770"
   },
   {
     "id": "sent_p2_s1",
     "text": "On October 25th, I ordered a set of reference books with Order Number 89214.",
-    "start": "14.695",
+    "start": "16.456",
     "end": "22.491",
-    "duration": "7.796"
+    "duration": "6.035"
   },
   {
     "id": "sent_p2_s2",
     "text": "However, when the parcel arrived yesterday, I was shocked to find that the covers were torn and several key pages were missing.",
     "start": "22.491",
-    "end": "31.042",
-    "duration": "8.551"
+    "end": "32.657",
+    "duration": "10.166"
   },
   {
     "id": "sent_p2_s3",
     "text": "Even more frustrating was that when I contacted your online customer representative for a reasonable explanation, my request was met with total indifference.",
-    "start": "31.042",
+    "start": "32.657",
     "end": "41.999",
-    "duration": "10.957"
+    "duration": "9.342"
   },
   {
     "id": "sent_p2_s4",
@@ -45,21 +45,21 @@
     "id": "sent_p3_s1",
     "text": "Therefore, I deem it imperative that an immediate replacement or a full refund be arranged promptly.",
     "start": "48.535",
-    "end": "55.456",
-    "duration": "6.921"
+    "end": "58.285",
+    "duration": "9.750"
   },
   {
     "id": "sent_p3_s2",
     "text": "Your swift attention and rectifying measures will be highly appreciated.",
-    "start": "55.456",
-    "end": "60.637",
-    "duration": "5.181"
+    "start": "58.285",
+    "end": "62.044",
+    "duration": "3.759"
   },
   {
     "id": "sent_p3_s3",
     "text": "Yours sincerely, Li Ming",
-    "start": "60.637",
-    "end": "62.699",
-    "duration": "2.062"
+    "start": "62.044",
+    "end": "64.235",
+    "duration": "2.191"
   }
 ]

@@ -17,77 +17,77 @@
     "id": "t2_p1_en",
     "text": "To advocate environmental sustainability and support rural basic education, our university is launching a campus-wide book donation campaign.",
     "start": "10.772",
-    "end": "26.763",
-    "duration": "15.991"
+    "end": "21.734",
+    "duration": "10.962"
   },
   {
     "id": "t2_p1_tip_cn",
     "text": "动词不定式引导目的状语开篇：To advocate..., our university is launching...",
+    "start": "21.734",
+    "end": "26.763",
+    "duration": "5.029"
+  },
+  {
+    "id": "t2_p1_tip_en",
+    "text": "launching a campus-wide book donation campaign",
     "start": "26.763",
     "end": "29.966",
     "duration": "3.203"
   },
   {
-    "id": "t2_p1_tip_en",
-    "text": "launching a campus-wide book donation campaign",
+    "id": "t2_p2_cn",
+    "text": "第二段：交代捐赠范围、规范要求与现场展位时间。",
     "start": "29.966",
     "end": "34.612",
     "duration": "4.646"
   },
   {
-    "id": "t2_p2_cn",
-    "text": "第二段：交代捐赠范围、规范要求与现场展位时间。",
-    "start": "34.612",
-    "end": "40.239",
-    "duration": "5.627"
-  },
-  {
     "id": "t2_p2_en",
     "text": "We warmly welcome unused books, particularly academic references, and collection stations will be set up at the Central Library this coming weekend.",
-    "start": "40.239",
-    "end": "51.497",
-    "duration": "11.258"
+    "start": "34.612",
+    "end": "47.659",
+    "duration": "13.047"
   },
   {
     "id": "t2_p2_tip_cn",
     "text": "清晰事务交代句式：Collection stations will be set up at [Location] from [Time].",
-    "start": "51.497",
-    "end": "57.579",
-    "duration": "6.082"
+    "start": "47.659",
+    "end": "55.640",
+    "duration": "7.981"
   },
   {
     "id": "t2_p2_tip_en",
     "text": "Collection stations will be set up at the lobby of the Central Library.",
-    "start": "57.579",
-    "end": "67.891",
-    "duration": "10.312"
+    "start": "55.640",
+    "end": "60.816",
+    "duration": "5.176"
   },
   {
     "id": "t2_p3_cn",
     "text": "第三段：感召全校师生践行善举，共筑书香温情。",
-    "start": "67.891",
-    "end": "71.912",
-    "duration": "4.021"
+    "start": "60.816",
+    "end": "69.081",
+    "duration": "8.265"
   },
   {
     "id": "t2_p3_en",
     "text": "Every donated book delivers a ray of hope to children in need; let us join hands to share our wisdom and foster social harmony!",
-    "start": "71.912",
-    "end": "81.189",
-    "duration": "9.277"
+    "start": "69.081",
+    "end": "83.799",
+    "duration": "14.718"
   },
   {
     "id": "t2_p3_tip_cn",
     "text": "公益号召金句：Let us join hands to share our wisdom and foster social harmony!",
-    "start": "81.189",
-    "end": "87.986",
-    "duration": "6.797"
+    "start": "83.799",
+    "end": "90.454",
+    "duration": "6.655"
   },
   {
     "id": "t2_p3_tip_en",
     "text": "Let us join hands to share our wisdom and foster social harmony!",
-    "start": "87.986",
-    "end": "94.776",
-    "duration": "6.790"
+    "start": "90.454",
+    "end": "96.406",
+    "duration": "5.952"
   }
 ]

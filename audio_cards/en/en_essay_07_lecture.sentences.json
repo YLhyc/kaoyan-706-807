@@ -3,43 +3,43 @@
     "id": "t2_intro",
     "text": "下面进入小作文 07 · 道歉与说明信：因突发科研任务无法按期赴会答题骨架与变体精解。",
     "start": "0.000",
-    "end": "4.766",
-    "duration": "4.766"
+    "end": "2.080",
+    "duration": "2.080"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：直接陈述失约事实并表达深切歉意。",
-    "start": "4.766",
-    "end": "10.917",
-    "duration": "6.151"
+    "start": "2.080",
+    "end": "8.672",
+    "duration": "6.592"
   },
   {
     "id": "t2_p1_en",
     "text": "I am writing this letter with sincere regret to apologize for being unable to attend tomorrow's symposium as previously scheduled.",
-    "start": "10.917",
-    "end": "23.025",
-    "duration": "12.108"
+    "start": "8.672",
+    "end": "19.932",
+    "duration": "11.260"
   },
   {
     "id": "t2_p1_tip_cn",
     "text": "道歉母句：I am writing with sincere regret to apologize for being unable to do sth.。",
-    "start": "23.025",
-    "end": "31.494",
-    "duration": "8.469"
+    "start": "19.932",
+    "end": "25.310",
+    "duration": "5.378"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "I am writing with sincere regret to apologize for being unable to attend the symposium.",
-    "start": "31.494",
-    "end": "39.111",
-    "duration": "7.617"
+    "start": "25.310",
+    "end": "31.494",
+    "duration": "6.184"
   },
   {
     "id": "t2_p2_cn",
     "text": "第二段：解释合情合理、无可推卸的紧急客观事由（突发科研任务）。",
-    "start": "39.111",
+    "start": "31.494",
     "end": "43.463",
-    "duration": "4.352"
+    "duration": "11.969"
   },
   {
     "id": "t2_p2_en",
@@ -66,28 +66,28 @@
     "id": "t2_p3_cn",
     "text": "第三段：主动提供补救替代时间并重申歉意。",
     "start": "61.909",
-    "end": "67.117",
-    "duration": "5.208"
+    "end": "72.170",
+    "duration": "10.261"
   },
   {
     "id": "t2_p3_en",
     "text": "Would it be possible for us to reschedule our meeting for next Tuesday? Please accept my deepest apologies once again.",
-    "start": "67.117",
-    "end": "76.747",
-    "duration": "9.630"
+    "start": "72.170",
+    "end": "80.869",
+    "duration": "8.699"
   },
   {
     "id": "t2_p3_tip_cn",
     "text": "委婉改期商量句型：Would it be possible for us to reschedule our appointment for [Date]?",
-    "start": "76.747",
-    "end": "83.033",
-    "duration": "6.286"
+    "start": "80.869",
+    "end": "87.523",
+    "duration": "6.654"
   },
   {
     "id": "t2_p3_tip_en",
     "text": "Would it be possible for us to reschedule our meeting for next Tuesday?",
-    "start": "83.033",
-    "end": "91.310",
-    "duration": "8.277"
+    "start": "87.523",
+    "end": "92.998",
+    "duration": "5.475"
   }
 ]

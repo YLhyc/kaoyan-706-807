@@ -3,15 +3,15 @@
     "id": "t2_intro",
     "text": "下面进入小作文 05 · 告示 Notice：中外文化交流周学生志愿者招募答题骨架与变体精解。",
     "start": "0.000",
-    "end": "4.497",
-    "duration": "4.497"
+    "end": "3.505",
+    "duration": "3.505"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：交代告示活动背景与明确招募名额。",
-    "start": "4.497",
+    "start": "3.505",
     "end": "10.602",
-    "duration": "6.105"
+    "duration": "7.097"
   },
   {
     "id": "t2_p1_en",
@@ -24,22 +24,22 @@
     "id": "t2_p1_tip_cn",
     "text": "告示开篇标配：This notice is issued for the purpose of doing sth.。",
     "start": "26.532",
-    "end": "32.526",
-    "duration": "5.994"
+    "end": "28.319",
+    "duration": "1.787"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "This notice is issued for the purpose of recruiting student volunteers.",
-    "start": "32.526",
-    "end": "39.264",
-    "duration": "6.738"
+    "start": "28.319",
+    "end": "38.449",
+    "duration": "10.130"
   },
   {
     "id": "t2_p2_cn",
     "text": "第二段：结构化列明应聘门槛与岗位职责。",
-    "start": "39.264",
+    "start": "38.449",
     "end": "42.948",
-    "duration": "3.684"
+    "duration": "4.499"
   },
   {
     "id": "t2_p2_en",
@@ -87,7 +87,7 @@
     "id": "t2_p3_tip_en",
     "text": "We sincerely look forward to your active participation.",
     "start": "92.130",
-    "end": "94.912",
-    "duration": "2.782"
+    "end": "96.550",
+    "duration": "4.420"
   }
 ]

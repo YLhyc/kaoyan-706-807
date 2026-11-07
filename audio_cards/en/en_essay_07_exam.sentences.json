@@ -3,22 +3,22 @@
     "id": "sent_p1_s1",
     "text": "Dear Professor Zhang,",
     "start": "0.000",
-    "end": "2.207",
-    "duration": "2.207"
+    "end": "4.993",
+    "duration": "4.993"
   },
   {
     "id": "sent_p1_s2",
     "text": "I am writing this letter with sincere regret to apologize for being unable to attend tomorrow's academic symposium on modern linguistics as previously scheduled.",
-    "start": "2.207",
-    "end": "14.115",
-    "duration": "11.908"
+    "start": "4.993",
+    "end": "15.668",
+    "duration": "10.675"
   },
   {
     "id": "sent_p2_s1",
     "text": "Much to my distress, our laboratory has just been assigned an emergency national research task, and I am designated to handle critical experimental data analysis under an extremely tight deadline.",
-    "start": "14.115",
+    "start": "15.668",
     "end": "27.940",
-    "duration": "13.825"
+    "duration": "12.272"
   },
   {
     "id": "sent_p2_s2",
@@ -45,14 +45,14 @@
     "id": "sent_p3_s2",
     "text": "Please accept my deepest apologies once again for this regrettable situation.",
     "start": "48.850",
-    "end": "54.429",
-    "duration": "5.579"
+    "end": "55.836",
+    "duration": "6.986"
   },
   {
     "id": "sent_p3_s3",
     "text": "Yours sincerely, Li Ming",
-    "start": "54.429",
-    "end": "56.491",
-    "duration": "2.062"
+    "start": "55.836",
+    "end": "58.027",
+    "duration": "2.191"
   }
 ]

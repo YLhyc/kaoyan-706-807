@@ -11,8 +11,8 @@
   let initialSyncOffset = 0.08;
   try {
     const savedSync = parseFloat(localStorage.getItem('kaoyan_sync_offset'));
-    // 物理声学精准打点下，纠偏历史版本过大的旧值，默认采用推荐微调 0.08s
-    if (!isNaN(savedSync) && savedSync >= -0.15 && savedSync <= 0.35) {
+    // PA-PAT 真实物理声学打点下，历史版本过大偏移自动重置为 0.08s 推荐合拍
+    if (!isNaN(savedSync) && savedSync >= -0.2 && savedSync <= 0.35) {
       initialSyncOffset = savedSync;
     } else {
       initialSyncOffset = 0.08;
@@ -1144,7 +1144,7 @@
     const offset = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.08;
     const t = currentTime + offset;
 
-    // 基于无缝物理声学时间戳进行倒序匹配
+    // 基于严格单调递增的 PA-PAT 物理声学时间戳匹配
     for (let i = state.activeSentences.length - 1; i >= 0; i--) {
       const s = state.activeSentences[i];
       if (t >= s.start) {
@@ -2612,7 +2612,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '2.4.8';
+  const APP_BUILD_ID = '2.4.9';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {

@@ -3,71 +3,71 @@
     "id": "t2_intro",
     "text": "下面进入大作文 02 · 科技与现代生活母题：智能手机与数字化依赖的双刃剑答题骨架与变体精解。",
     "start": "0.000",
-    "end": "4.962",
-    "duration": "4.962"
+    "end": "2.740",
+    "duration": "2.740"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：极富画面感的细节描摹与文字说明点题。",
-    "start": "4.962",
+    "start": "2.740",
     "end": "11.252",
-    "duration": "6.290"
+    "duration": "8.512"
   },
   {
     "id": "t2_p1_en",
     "text": "Instead of conversing warmly with one another, each person is staring fixatedly at their smartphone screen; a thought-provoking caption highlights the invisible barrier.",
     "start": "11.252",
-    "end": "27.661",
-    "duration": "16.409"
+    "end": "23.484",
+    "duration": "12.232"
   },
   {
     "id": "t2_p1_tip_cn",
     "text": "讽刺画面对比破题法：Ironically, instead of doing A, people are doing B fixatedly.",
-    "start": "27.661",
-    "end": "33.805",
-    "duration": "6.144"
+    "start": "23.484",
+    "end": "30.013",
+    "duration": "6.529"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "A thought-provoking caption highlights the invisible barrier erected by digital devices.",
-    "start": "33.805",
-    "end": "42.949",
-    "duration": "9.144"
+    "start": "30.013",
+    "end": "35.527",
+    "duration": "5.514"
   },
   {
     "id": "t2_p2_cn",
     "text": "第二段：双刃剑利弊对比分析，揭示精神异化危机。",
-    "start": "42.949",
-    "end": "48.730",
-    "duration": "5.781"
+    "start": "35.527",
+    "end": "44.541",
+    "duration": "9.014"
   },
   {
     "id": "t2_p2_en",
     "text": "On the one hand, the boom of internet delivered convenience; on the other hand, excessive addiction has alienated authentic emotional ties between human beings.",
-    "start": "48.730",
-    "end": "60.242",
-    "duration": "11.512"
+    "start": "44.541",
+    "end": "55.341",
+    "duration": "10.800"
   },
   {
     "id": "t2_p2_tip_cn",
     "text": "辩证论述框架：On the one hand, ... on the other hand, excessive addiction has inexorably alienated...",
-    "start": "60.242",
-    "end": "68.709",
-    "duration": "8.467"
+    "start": "55.341",
+    "end": "64.689",
+    "duration": "9.348"
   },
   {
     "id": "t2_p2_tip_en",
     "text": "Genuine dialogue and deep contemplation are gradually supplanted by fragmented trivialities.",
-    "start": "68.709",
-    "end": "77.831",
-    "duration": "9.122"
+    "start": "64.689",
+    "end": "71.642",
+    "duration": "6.953"
   },
   {
     "id": "t2_p3_cn",
     "text": "第三段：总结提出理性驾驭原则与警示倒装句式。",
-    "start": "77.831",
+    "start": "71.642",
     "end": "82.637",
-    "duration": "4.806"
+    "duration": "10.995"
   },
   {
     "id": "t2_p3_en",
@@ -80,14 +80,14 @@
     "id": "t2_p3_tip_cn",
     "text": "科技伦理主仆比喻倒装金句：Only by utilizing technology as a servant rather than a master can we...",
     "start": "92.921",
-    "end": "98.723",
-    "duration": "5.802"
+    "end": "101.183",
+    "duration": "8.262"
   },
   {
     "id": "t2_p3_tip_en",
     "text": "Only by utilizing technology as a servant rather than a tyrannical master can we preserve warmth.",
-    "start": "98.723",
-    "end": "107.600",
-    "duration": "8.877"
+    "start": "101.183",
+    "end": "109.366",
+    "duration": "8.183"
   }
 ]
