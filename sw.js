@@ -1,5 +1,5 @@
 // 考研背诵手卷 · 离线 PWA Service Worker (v1.9.2)
-const CACHE_NAME = 'kaoyan-handbook-v207';
+const CACHE_NAME = 'kaoyan-handbook-v208';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -53,7 +53,26 @@ self.addEventListener('fetch', (event) => {
     return; // 直接由浏览器原生网络引擎处理，绝不拦截与缓存
   }
 
-  // 0. 版本清单走实时 Network-First
+  
+  // 0. 版本清单与核心样式/脚本走 Network-First (确保用户立即感知最新 UI，绝不被旧缓存阻断)
+  const isCoreAsset = url.pathname.endsWith('version.json') || 
+                      url.pathname.endsWith('app.css') || 
+                      url.pathname.endsWith('app.js') || 
+                      url.pathname.endsWith('kaoyan_data.js');
+
+  if (isCoreAsset) {
+    event.respondWith(
+      fetch(event.request, { cache: 'no-store' }).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const clone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        }
+        return networkResponse;
+      }).catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
   if (url.pathname.endsWith('version.json')) {
     event.respondWith(
       fetch(event.request, { cache: 'no-store' }).catch(() => caches.match(event.request))
