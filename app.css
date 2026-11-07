@@ -6362,206 +6362,103 @@ body.dock-expanded .dock-fab-play {
   }
 }
 
-/* === 考研手卷专属：iOS 27 液态玻璃材质与物理透镜交互系统 === */
 
-/* -------------------------------------------------------------------------
-   1. 核心物理光学变量系统 (严格对齐 liquid-glass skill 核心铁律)
-   ------------------------------------------------------------------------- */
-:root {
-  --lg-transparency: 0.5;
-  --lg-shine: 1;
-  --lg-fill: #d97757;
-  --lg-on: #34c759;
-  --lg-brightness: 1.1;
-  --lg-contrast: 0.85;
 
-  /* 顶栏微晶悬浮液态玻璃 */
-  --lg-header-bg: radial-gradient(120% 100% at 30% 0%, rgba(255, 255, 255, 0.85) 0%, rgba(250, 247, 240, 0.65) 60%, rgba(243, 239, 230, 0.78) 100%);
-  --lg-header-border: rgba(255, 255, 255, 0.85);
-  --lg-header-shadow: 
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.98),
-    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.03),
-    0 4px 20px -2px rgba(45, 36, 28, 0.08);
+/* ==========================================================================
+   方案 A 经典复原与地毯式 Bug 修复加固 (v2.4.0 稳定版)
+   ========================================================================== */
 
-  /* 底栏 92% 高遮光率微晶宣纸白毛玻璃 (彻底杜绝文字穿透打架) */
-  --lg-dock-bg: radial-gradient(110% 80% at 20% 0%, rgba(255, 255, 255, 0.94) 0%, rgba(250, 247, 240, 0.91) 60%, rgba(246, 242, 234, 0.93) 100%);
-  --lg-dock-border: rgba(255, 255, 255, 0.88);
-  --lg-dock-shadow: 
-    inset 0 1px 0.8px 0 rgba(255, 255, 255, 0.98),
-    0 -4px 22px rgba(45, 36, 28, 0.07);
-}
-
-[data-theme="dark"] {
-  --lg-transparency: 0.5;
-  --lg-shine: 1;
-  --lg-fill: #d97757;
-  --lg-brightness: 0.9;
-  --lg-contrast: 0.6;
-
-  --lg-header-bg: radial-gradient(120% 100% at 30% 0%, rgba(38, 35, 32, 0.82) 0%, rgba(26, 24, 22, 0.65) 60%, rgba(20, 18, 16, 0.78) 100%);
-  --lg-header-border: rgba(255, 255, 255, 0.16);
-  --lg-header-shadow: 
-    inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.28),
-    0 6px 24px -2px rgba(0, 0, 0, 0.6);
-
-  --lg-dock-bg: radial-gradient(110% 80% at 20% 0%, rgba(32, 30, 28, 0.94) 0%, rgba(24, 22, 20, 0.92) 100%);
-  --lg-dock-border: rgba(255, 255, 255, 0.12);
-  --lg-dock-shadow: 
-    inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.22),
-    0 -4px 24px rgba(0, 0, 0, 0.5);
-}
-
-/* -------------------------------------------------------------------------
-   2. 顶部导航栏 (.app-header)：iOS 27 悬浮长条微晶液态胶囊
-   ------------------------------------------------------------------------- */
-.app-header {
-  position: sticky !important;
-  top: 8px !important;
-  z-index: 1000 !important;
-  margin: 8px auto 14px auto !important;
-  width: calc(100% - 24px) !important;
-  max-width: 960px !important;
-  height: 48px !important;
-  min-height: 48px !important;
-  border-radius: 9999px !important;
-  padding: 0 10px !important;
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  box-sizing: border-box !important;
-
-  /* 物理微晶光学材质 */
-  background: var(--lg-header-bg) !important;
-  backdrop-filter: blur(16px) saturate(180%) brightness(var(--lg-brightness)) contrast(var(--lg-contrast)) !important;
-  -webkit-backdrop-filter: blur(16px) saturate(180%) brightness(var(--lg-brightness)) contrast(var(--lg-contrast)) !important;
-  border: 1px solid var(--lg-header-border) !important;
-  box-shadow: var(--lg-header-shadow) !important;
-  overflow: visible !important;
-  transition: all 0.25s ease !important;
-}
-
-/* -------------------------------------------------------------------------
-   3. 科目切换大药丸：动态液态物理透镜 (Segmented Liquid Lens)
-   ------------------------------------------------------------------------- */
-.subject-pill-group {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: rgba(0, 0, 0, 0.03) !important;
-  border: 1px solid rgba(255, 255, 255, 0.6) !important;
-  border-radius: 9999px !important;
-  padding: 2.5px 3px !important;
-  margin: 0 !important;
-  gap: 3px !important;
-  box-shadow: inset 0 1px 1.5px rgba(0, 0, 0, 0.05) !important;
-  position: relative !important;
-}
-
-[data-theme="dark"] .subject-pill-group {
-  background: rgba(0, 0, 0, 0.25) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-}
-
-.subject-btn {
-  height: 32px !important;
-  padding: 0 11px !important;
-  border-radius: 9999px !important;
-  border: 1px solid transparent !important;
-  background: transparent !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  color: var(--ink-secondary) !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 4px !important;
-  position: relative !important;
-  z-index: 1 !important;
-  cursor: pointer !important;
-}
-
-.subject-btn:active {
-  transform: scale(0.94) !important;
-}
-
-/* 选中的科目药丸：真·液态玻璃高光物理透镜 */
-.subject-btn.active {
-  background: linear-gradient(135deg, var(--lg-fill) 0%, #b84c30 100%) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.45) !important;
-  box-shadow: 
-    inset 0 1px 0.8px rgba(255, 255, 255, 0.75),
-    inset 0 -1px 1px rgba(0, 0, 0, 0.15),
-    0 3px 10px -1px rgba(217, 119, 87, 0.48) !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18) !important;
-}
-
-/* -------------------------------------------------------------------------
-   4. 移动端顶栏极简长条悬浮排版 (彻底消灭右侧溢出方块)
-   ------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+   Bug 修复 1：移动端顶部导航栏溢出破损 (彻底消灭右侧眼睛方块截断)
+   -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
   .app-header {
-    height: 46px !important;
-    min-height: 46px !important;
-    margin: 6px 12px 10px 12px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    margin: 8px 12px 10px 12px !important;
     width: calc(100% - 24px) !important;
-    padding: 0 6px 0 8px !important;
+    padding: 0 8px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
+    border-radius: 9999px !important;
+    background: var(--bg-card, #ffffff) !important;
+    border: 1px solid var(--line-main, rgba(0, 0, 0, 0.08)) !important;
+    box-shadow: 0 2px 10px rgba(45, 36, 28, 0.05) !important;
+  }
+
+  [data-theme="dark"] .app-header {
+    background: var(--bg-card, #23211e) !important;
+    border: 1px solid var(--line-main, rgba(255, 255, 255, 0.08)) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
   }
 
   .brand-title-wrap, .brand-voice-info, .brand-icon {
     display: none !important;
   }
 
-  /* 左侧：微晶【目录】按钮 */
+  /* 左侧：精美紧凑的【目录】按钮 */
   .brand-section {
     display: flex !important;
     order: 1 !important;
     flex: 0 0 auto !important;
     margin: 0 !important;
   }
+
   .brand-section .mobile-menu-toggle {
     display: inline-flex !important;
     align-items: center !important;
     gap: 3px !important;
     height: 32px !important;
-    padding: 0 8px !important;
+    padding: 0 9px !important;
     border-radius: 9999px !important;
-    background: rgba(255, 255, 255, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.85) !important;
-    box-shadow: inset 0 1px 0.8px rgba(255, 255, 255, 0.9) !important;
+    background: var(--bg-canvas, #faf7f0) !important;
+    border: 1px solid var(--line-main, rgba(0, 0, 0, 0.1)) !important;
     font-size: 11.5px !important;
     font-weight: 600 !important;
-    color: var(--ink-primary) !important;
-    transition: transform 0.16s ease !important;
-  }
-  .brand-section .mobile-menu-toggle:active {
-    transform: scale(0.93) !important;
-  }
-  [data-theme="dark"] .brand-section .mobile-menu-toggle {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: var(--ink-primary, #2c2723) !important;
   }
 
-  /* 中间：三科切换 */
+  /* 中间：紧凑三科切换 */
   .subject-pill-group {
     order: 2 !important;
     flex: 1 1 auto !important;
-    gap: 2px !important;
-    margin: 0 4px !important;
-    padding: 2px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    gap: 3px !important;
+    margin: 0 3px !important;
+    padding: 0 !important;
   }
+
   .subject-btn {
-    height: 30px !important;
-    padding: 0 7px !important;
+    height: 32px !important;
+    padding: 0 8px !important;
+    border-radius: 9999px !important;
     font-size: 11.5px !important;
+    font-weight: 600 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    border: 1px solid transparent !important;
   }
+
   .subject-btn .count-tag {
     display: none !important;
   }
 
-  /* 彻底隐藏造成右侧溢出的字号/自测/看板按钮 */
+  .subject-btn.active {
+    background: var(--vermilion, #d97757) !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 6px rgba(217, 119, 87, 0.35) !important;
+  }
+
+  /* 彻底隐藏导致右侧溢出切断的 5 个重复按钮 (自测/看板/字号已由底栏承担) */
   .header-actions {
     display: flex !important;
     order: 3 !important;
@@ -6570,6 +6467,7 @@ body.dock-expanded .dock-fab-play {
     margin: 0 !important;
     padding: 0 !important;
   }
+
   .header-actions #btn-font-dec,
   .header-actions #btn-font-inc,
   .header-actions #btn-study-dashboard,
@@ -6578,7 +6476,7 @@ body.dock-expanded .dock-fab-play {
     display: none !important;
   }
 
-  /* 右侧仅保留深浅色切换微晶球 */
+  /* 右侧仅保留深浅色切换按钮 */
   .header-actions #btn-theme-toggle {
     width: 32px !important;
     height: 32px !important;
@@ -6588,26 +6486,41 @@ body.dock-expanded .dock-fab-play {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background: rgba(255, 255, 255, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.85) !important;
-    box-shadow: inset 0 1px 0.8px rgba(255, 255, 255, 0.9) !important;
-    transition: transform 0.16s ease !important;
+    background: var(--bg-canvas, #faf7f0) !important;
+    border: 1px solid var(--line-main, rgba(0, 0, 0, 0.1)) !important;
   }
-  .header-actions #btn-theme-toggle:active {
-    transform: scale(0.92) !important;
-  }
-  [data-theme="dark"] .header-actions #btn-theme-toggle {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  }
+
   .header-actions .theme-text {
     display: none !important;
   }
 }
 
-/* -------------------------------------------------------------------------
-   5. 底部导航栏 (.app-bottom-nav)：真·液态微晶 TabBar (Liquid TabBar)
-   ------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+   Bug 修复 2：抽屉与遮罩层级穿透修复 (确保抽屉全屏最顶层)
+   -------------------------------------------------------------------------- */
+.sidebar-backdrop, .appearance-backdrop, .outline-drawer-backdrop {
+  z-index: 2400 !important;
+}
+
+.sidebar, .appearance-drawer, .outline-drawer {
+  z-index: 2500 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Bug 修复 3：底部安全避让留白 (保证正文滑到底部绝不被底栏遮盖)
+   -------------------------------------------------------------------------- */
+.paper-container {
+  padding-bottom: 140px !important;
+}
+@media (max-width: 768px) {
+  .paper-container {
+    padding-bottom: 160px !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   移动端原生底部导航栏优化 (清晰端庄、遮光率 95%、文字绝不穿透打架)
+   -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
   .app-bottom-nav {
     display: block !important;
@@ -6617,41 +6530,17 @@ body.dock-expanded .dock-fab-play {
     bottom: 0 !important;
     height: calc(52px + env(safe-area-inset-bottom, 8px)) !important;
     padding-bottom: env(safe-area-inset-bottom, 8px) !important;
+    background: var(--bg-card, #ffffff) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-top: 1px solid var(--line-main, rgba(0, 0, 0, 0.08)) !important;
     z-index: 1000 !important;
-
-    /* 92% 高遮光率微晶宣纸白毛玻璃底板 */
-    background: var(--lg-dock-bg) !important;
-    backdrop-filter: blur(20px) saturate(180%) brightness(var(--lg-brightness)) contrast(var(--lg-contrast)) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) brightness(var(--lg-brightness)) contrast(var(--lg-contrast)) !important;
-    border-top: 1px solid var(--lg-dock-border) !important;
-    box-shadow: var(--lg-dock-shadow) !important;
-    transition: background 0.25s ease !important;
+    box-shadow: 0 -2px 14px rgba(42, 34, 27, 0.06) !important;
   }
 
-  /* Tab 项交互反馈：触控微弹动 */
-  .nav-tab-item {
-    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  }
-  .nav-tab-item:active {
-    transform: scale(0.91) !important;
-  }
-
-  /* 中央主播放圆形按钮：朱墨微晶液态红宝石透镜 */
-  .center-play-circle {
-    background: linear-gradient(135deg, #e36a4b 0%, #b84c30 100%) !important;
-    border: 1.5px solid rgba(255, 255, 255, 0.65) !important;
-    box-shadow: 
-      inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.85),
-      inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.28),
-      0 4px 16px rgba(217, 119, 87, 0.45) !important;
-    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  }
-  .nav-tab-center-play:active .center-play-circle {
-    transform: scale(0.90) !important;
-  }
-
-  /* 沉浸式正文安全避让垫：确保文字滑到底部稳稳停在底栏上方，绝无穿透重叠 */
-  .paper-container {
-    padding-bottom: 160px !important;
+  [data-theme="dark"] .app-bottom-nav {
+    background: var(--bg-card, #23211e) !important;
+    border-top: 1px solid var(--line-main, rgba(255, 255, 255, 0.08)) !important;
+    box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.4) !important;
   }
 }

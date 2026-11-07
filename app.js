@@ -2430,7 +2430,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '2.3.2';
+  const APP_BUILD_ID = '2.4.0';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
