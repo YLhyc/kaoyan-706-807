@@ -38,26 +38,6 @@
   --spotlight-text: #141413;
 
   /* Liquid Glass 光学材质变量系统 (Lumno × VisionOS) */
-  /* =========================================================================
-     iOS 27 Liquid Glass 物理光学复合系统 (@onlymoein/liquidglass 规范)
-     ========================================================================= */
-  --lg-transparency: 0.52;      /* 纯净透光度：0 完全着色，0.52 物理清透玻璃，1 极清透光 */
-  --lg-shine: 1;                /* 棱镜折射高光强度 (0~1) */
-  --lg-fill: var(--vermilion);  /* 强调填充色 (考研朱墨 #d97757) */
-  --lg-on: var(--pine);         /* 状态激活色 (松柏绿 #2f7d4a) */
-  --lg-blur: 24px;              /* 核心高斯模糊半径 */
-  --lg-saturate: 200%;          /* 颜色饱和透射增益 */
-
-  /* 顶栏悬浮长条胶囊专用液态玻璃材质 (Floating Liquid Pill Bar) */
-  --lg-pill-bg: radial-gradient(120% 100% at 30% 0%, rgba(255, 255, 255, 0.82) 0%, rgba(250, 247, 240, 0.55) 60%, rgba(243, 239, 230, 0.76) 100%);
-  --lg-pill-border: rgba(255, 255, 255, 0.82);
-  --lg-pill-shadow: 
-    inset 0 1px 0.8px 0 rgba(255, 255, 255, 0.98),
-    inset 1px 1.5px 3px 0 rgba(199, 210, 254, 0.28),
-    inset 0 -1.5px 2px 0 rgba(254, 215, 170, 0.22),
-    0 10px 32px -4px rgba(45, 36, 28, 0.08),
-    0 2px 6px 0 rgba(0, 0, 0, 0.02);
-
   --glass-dock-bg: radial-gradient(110% 80% at 20% 0%, rgba(255, 255, 255, 0.76) 0%, rgba(246, 243, 236, 0.6) 60%, rgba(243, 239, 230, 0.78) 100%);
   --glass-dock-blur: blur(20px) saturate(210%) contrast(104%) brightness(1.02);
   --glass-dock-border: rgba(255, 255, 255, 0.65);
@@ -104,15 +84,6 @@
 }
 
 [data-theme="dark"] {
-  /* iOS 27 Liquid Glass 深色模式物理变量 */
-  --lg-transparency: 0.55;
-  --lg-pill-bg: radial-gradient(120% 100% at 30% 0%, rgba(38, 35, 32, 0.82) 0%, rgba(26, 24, 22, 0.6) 60%, rgba(20, 18, 16, 0.78) 100%);
-  --lg-pill-border: rgba(255, 255, 255, 0.16);
-  --lg-pill-shadow: 
-    inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.3),
-    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.5),
-    0 12px 36px -4px rgba(0, 0, 0, 0.5);
-
   --bg-canvas: #161514;
   --bg-sidebar: #1e1c1a;
   --bg-card: #23211e;
@@ -207,54 +178,34 @@ body {
 }
 
 /* 顶部主导航栏 */
-/* =========================================================================
-   顶部导航栏：iOS 27 悬浮长条胶囊液态玻璃 (Floating Liquid Pill Bar)
-   ========================================================================= */
 .app-header {
-  height: 56px;
-  margin: 12px auto 10px auto;
-  width: calc(100% - 32px);
-  max-width: 1360px;
-  border-radius: 9999px;
+  height: var(--header-h);
+  background-color: var(--bg-canvas);
+  border-bottom: 1px solid var(--line-main);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 0 20px;
   flex-shrink: 0;
-  box-sizing: border-box;
   z-index: 100;
-  position: relative;
-
-  /* 物理光线双层折射与微晶透光 */
-  background: var(--lg-pill-bg);
-  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) contrast(102%) brightness(1.02);
-  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) contrast(102%) brightness(1.02);
-
-  /* 双棱镜边缘高光反射 (Edge Shine) */
-  border: 1px solid var(--lg-pill-border);
-  box-shadow: var(--lg-pill-shadow);
-  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .brand-section {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .brand-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--vermilion) 0%, #b84c30 100%);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--vermilion);
   color: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 
-    inset 0 1px 0.5px rgba(255, 255, 255, 0.4),
-    0 2px 6px rgba(217, 119, 87, 0.35);
 }
 
 .brand-title-wrap {
@@ -264,9 +215,9 @@ body {
 }
 
 .brand-main-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
   color: var(--ink-primary);
   display: flex;
   align-items: center;
@@ -275,160 +226,128 @@ body {
 }
 
 .brand-sub-badge {
-  font-size: 10px;
-  padding: 1.5px 7px;
-  border-radius: 9999px;
-  background: var(--vermilion-soft);
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 10px;
+  background-color: var(--vermilion-soft);
   color: var(--vermilion);
   border: 1px solid var(--vermilion-border);
   font-weight: 600;
-  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .brand-voice-info {
+  font-size: 12px;
+  color: var(--ink-muted);
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  color: var(--ink-muted);
-  margin-top: 1px;
+  gap: 6px;
+  white-space: nowrap;
 }
 
 .voice-badge {
-  font-family: var(--font-mono);
-  color: var(--ink-secondary);
+  color: var(--vermilion);
   font-weight: 600;
 }
 
-/* 目录抽屉展开按钮 (微晶胶囊) */
-.mobile-menu-toggle {
-  height: 34px;
-  padding: 0 13px;
-  border-radius: 9999px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.38) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.95), 0 2px 6px rgba(0, 0, 0, 0.04);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--ink-primary);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.mobile-menu-toggle:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.52) 100%);
-  transform: translateY(-0.5px);
-}
-[data-theme="dark"] .mobile-menu-toggle {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: var(--ink-primary);
-  box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.15), 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-/* 科目切换药丸组 (GlassGroup 物理透镜槽) */
+/* 科目切换大药丸 */
 .subject-pill-group {
   display: inline-flex;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.045);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 9999px;
-  padding: 3px;
-  gap: 3px;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-[data-theme="dark"] .subject-pill-group {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  background-color: var(--bg-sidebar);
+  border: 1px solid var(--line-main);
+  padding: 4px;
+  border-radius: 30px;
+  gap: 4px;
 }
 
 .subject-btn {
-  height: 34px;
-  padding: 0 14px;
-  border-radius: 9999px;
-  border: 1px solid transparent;
-  font-size: 13px;
+  border: none;
+  background: transparent;
+  padding: 6px 18px;
+  border-radius: 24px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--ink-secondary);
-  background: transparent;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  cursor: pointer;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.subject-btn:hover {
-  background: rgba(255, 255, 255, 0.55);
-  color: var(--ink-primary);
-}
-[data-theme="dark"] .subject-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-.subject-btn.active {
-  background: linear-gradient(135deg, #df6b4d 0%, #c45b3e 100%);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  box-shadow: 
-    inset 0 1px 0.5px rgba(255, 255, 255, 0.65),
-    0 3px 10px -2px rgba(217, 119, 87, 0.45);
+  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.count-tag {
+.subject-name-mobile {
+  display: none;
+}
+
+.track-tab-short {
+  display: none;
+}
+
+.sidebar-backdrop {
+  display: none;
+}
+
+.subject-btn .count-tag {
   font-size: 11px;
   padding: 1px 6px;
-  border-radius: 9999px;
-  background: rgba(0, 0, 0, 0.06);
-  color: inherit;
-  font-weight: 600;
-  margin-left: 2px;
-}
-.subject-btn.active .count-tag {
-  background: rgba(255, 255, 255, 0.25);
-  color: #fff;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.06);
+  color: var(--ink-muted);
 }
 
-/* 右侧工具操作组 (液态水晶小药丸) */
+.subject-btn.active {
+  background-color: var(--bg-card);
+  color: var(--vermilion);
+  box-shadow: var(--shadow-sm);
+}
+
+.subject-btn.active .count-tag {
+  background-color: var(--vermilion-soft);
+  color: var(--vermilion);
+}
+
+/* 顶部右侧控制区 */
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
 }
-.header-actions .action-btn {
-  height: 34px;
-  padding: 0 11px;
-  border-radius: 9999px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.68) 0%, rgba(255, 255, 255, 0.32) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.78);
-  box-shadow: inset 0 0.8px 0.5px rgba(255, 255, 255, 0.95), 0 2px 6px rgba(0, 0, 0, 0.03);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+
+.action-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--line-main);
   color: var(--ink-secondary);
-  font-size: 13px;
-  font-weight: 600;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 6px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.header-actions .action-btn:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.48) 100%);
-  color: var(--ink-primary);
-  transform: translateY(-0.5px);
-}
-[data-theme="dark"] .header-actions .action-btn {
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: var(--ink-primary);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s ease;
 }
 
+.action-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--ink-primary);
+  border-color: var(--line-strong);
+}
 
+.action-btn svg {
+  width: 17px;
+  height: 17px;
+  display: block;
+}
+
+.mobile-menu-toggle {
+  display: inline-flex;
+}
+
+/* 主内容双栏布局 */
 .app-body {
   flex: 1;
   min-height: 0;
@@ -1103,46 +1022,36 @@ body {
 
   .app-header {
     height: auto;
-    min-height: unset;
-    margin: 8px 10px 6px 10px;
-    width: calc(100% - 20px);
-    max-width: 100%;
-    border-radius: 22px;
-    padding: 10px 12px 10px 12px;
-    display: flex;
+    min-height: var(--header-h);
+    padding: 8px 14px max(8px, env(safe-area-inset-right));
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
     row-gap: 8px;
     box-sizing: border-box;
-    box-shadow: 
-      inset 0 1px 0.8px 0 rgba(255, 255, 255, 0.95),
-      0 8px 24px -4px rgba(45, 36, 28, 0.1);
+    overflow: visible;
   }
 
   .brand-section {
     order: 1;
     display: flex;
     align-items: center;
-    gap: 8px;
     flex: 1 1 auto;
     min-width: 0;
+    gap: 8px;
   }
 
   .brand-icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
+    width: 32px;
+    height: 32px;
   }
 
   .brand-icon svg {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
   }
 
   .brand-main-title {
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 15px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1155,43 +1064,33 @@ body {
 
   .header-actions {
     order: 2;
+    flex-shrink: 0;
+    gap: 6px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 4px;
-    flex: 0 0 auto;
-    margin-left: auto;
-    padding-right: max(4px, env(safe-area-inset-right));
+    padding-right: max(6px, env(safe-area-inset-right));
   }
 
   .header-actions .action-btn {
-    height: 30px;
-    padding: 0 7px;
+    height: 32px;
+    padding: 0 8px;
     font-size: 12px;
-    border-radius: 9999px;
     gap: 4px;
   }
 
   .subject-pill-group {
     order: 3;
     width: 100%;
-    flex: 1 1 100%;
     display: flex;
-    margin: 2px 0 0 0;
-    padding: 2.5px;
-    border-radius: 9999px;
+    margin: 0;
+    padding: 3px;
+    border-radius: 20px;
+    background-color: var(--bg-sidebar);
     box-sizing: border-box;
-    gap: 3px;
   }
 
   .subject-btn {
-    flex: 1 1 33.333%;
-    height: 30px;
-    padding: 0 6px;
-    font-size: 12px;
-    justify-content: center;
-    border-radius: 9999px;
-  }  .subject-btn {
     flex: 1;
     min-width: 0;
     justify-content: center;
@@ -5009,7 +4908,9 @@ body {
     display: none !important;
   }
 
-  /* #btn-mobile-menu visible */
+  #btn-mobile-menu {
+    display: none !important;
+  }
 
   .app-header {
     height: auto !important;
@@ -6461,124 +6362,23 @@ body.dock-expanded .dock-fab-play {
   }
 }
 
-/* === Liquid-Glass Skill Official Integration === */
+
+/* === 精准液态玻璃：仅顶栏底栏材质交互，正文排版与圆角零改动 === */
 
 /* -------------------------------------------------------------------------
-   1. liquid-glass skill 核心官方规范变量 (:root)
-   ------------------------------------------------------------------------- */
-:root, [data-theme="light"] {
-  --lg-transparency: 0.5 !important;
-  --lg-shine: 1 !important;
-  --lg-fill: #d97757 !important;
-  --lg-on: #34c759 !important;
-
-  /* 大面积浅色玻璃把亮度设为 1.1，对比设为 0.85，消除纯白冲刷板 (skill 核心铁律) */
-  --lg-brightness: 1.1 !important;
-  --lg-contrast: 0.85 !important;
-  --lg-contrast-small: 0.85 !important;
-  --lg-brightness-small: 1.1 !important;
-
-  /* 通透液态玻璃物理基底 */
-  --lg-glass-surface: rgba(255, 255, 255, 0.48);
-  --lg-glass-border: rgba(255, 255, 255, 0.72);
-  --lg-glass-blur: 16px;
-  --lg-glass-shadow: 
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.95),
-    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.03),
-    0 8px 24px -4px rgba(45, 36, 28, 0.08);
-}
-
-[data-theme="dark"] {
-  --lg-transparency: 0.5 !important;
-  --lg-shine: 1 !important;
-  --lg-fill: #d97757 !important;
-  --lg-brightness: 0.9 !important;
-  --lg-contrast: 0.6 !important;
-
-  --lg-glass-surface: rgba(28, 26, 24, 0.55);
-  --lg-glass-border: rgba(255, 255, 255, 0.12);
-  --lg-glass-blur: 16px;
-  --lg-glass-shadow: 
-    inset 0 1px 0.8px 0 rgba(255, 255, 255, 0.25),
-    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.5),
-    0 12px 32px -4px rgba(0, 0, 0, 0.6);
-}
-
-/* -------------------------------------------------------------------------
-   2. 页面背景层：静止饱满光斑 (skill 铁律：必须静止 animation:none)
-   ------------------------------------------------------------------------- */
-.liquid-backdrop-glows {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 0;
-  transform: translateZ(0); /* 独立合成层，滚动不反复栅格化 */
-  animation: none !important;
-  overflow: hidden;
-}
-
-.glow-orb-primary {
-  position: absolute;
-  top: -10%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90vw;
-  height: 50vh;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(217, 119, 87, 0.18) 0%, rgba(217, 119, 87, 0.04) 50%, transparent 75%);
-  filter: blur(40px);
-}
-
-.glow-orb-cyan {
-  /* skill 铁律：主要内容区域背后另外补一团饱和的蓝青光斑，为浅色提供折射源 */
-  position: absolute;
-  top: 25%;
-  left: -15%;
-  width: 70vw;
-  height: 60vh;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(76, 163, 130, 0.16) 0%, rgba(56, 189, 248, 0.09) 45%, transparent 70%);
-  filter: blur(50px);
-}
-
-.glow-orb-amber {
-  position: absolute;
-  bottom: 10%;
-  right: -10%;
-  width: 75vw;
-  height: 65vh;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.14) 0%, rgba(217, 119, 87, 0.05) 50%, transparent 70%);
-  filter: blur(50px);
-}
-
-[data-theme="dark"] .glow-orb-primary {
-  background: radial-gradient(circle, rgba(217, 98, 72, 0.22) 0%, transparent 70%);
-}
-[data-theme="dark"] .glow-orb-cyan {
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
-}
-[data-theme="dark"] .glow-orb-amber {
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
-}
-
-/* -------------------------------------------------------------------------
-   3. 原生顶部导航栏 (.app-header)：纯正单行长条悬浮液态胶囊
+   1. 顶部导航栏 (.app-header)：单行长条悬浮微晶液态胶囊
    ------------------------------------------------------------------------- */
 .app-header {
   position: sticky !important;
-  top: 10px !important;
+  top: 8px !important;
   z-index: 1000 !important;
   margin: 8px auto 14px auto !important;
   width: calc(100% - 24px) !important;
-  max-width: 900px !important;
+  max-width: 960px !important;
   height: 48px !important;
   min-height: 48px !important;
   border-radius: 9999px !important;
-  padding: 0 8px 0 10px !important;
+  padding: 0 10px !important;
   display: flex !important;
   flex-direction: row !important;
   flex-wrap: nowrap !important;
@@ -6586,16 +6386,27 @@ body.dock-expanded .dock-fab-play {
   justify-content: space-between !important;
   box-sizing: border-box !important;
 
-  /* 通透液态玻璃材质 */
-  background: var(--lg-glass-surface) !important;
-  backdrop-filter: blur(var(--lg-glass-blur)) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(var(--lg-glass-blur)) saturate(190%) !important;
-  border: 1px solid var(--lg-glass-border) !important;
-  box-shadow: var(--lg-glass-shadow) !important;
-  overflow: visible !important; /* 严禁 overflow:hidden，防止 Safari 关闭 backdrop */
+  /* 液态玻璃物理材质：高通透微晶 + 边缘高光折射 */
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.03),
+    0 4px 18px -2px rgba(45, 36, 28, 0.08) !important;
+  transition: all 0.25s ease !important;
 }
 
-/* 消除嵌套厚重感：科目药丸组直接融入顶栏大胶囊 */
+[data-theme="dark"] .app-header {
+  background: rgba(30, 28, 26, 0.72) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 
+    inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.25),
+    0 6px 22px -3px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 顶栏内按钮交互：物理微弹动与高光 */
 .subject-pill-group {
   display: inline-flex !important;
   align-items: center !important;
@@ -6624,9 +6435,12 @@ body.dock-expanded .dock-fab-play {
   gap: 4px !important;
 }
 
-/* 选中的科目药丸：规范 var(--lg-fill) 强调色透镜高光 */
+.subject-btn:active {
+  transform: scale(0.95) !important;
+}
+
 .subject-btn.active {
-  background: linear-gradient(135deg, var(--lg-fill) 0%, #b84c30 100%) !important;
+  background: linear-gradient(135deg, var(--vermilion, #d97757) 0%, #b84c30 100%) !important;
   color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.45) !important;
   box-shadow: 
@@ -6634,7 +6448,7 @@ body.dock-expanded .dock-fab-play {
     0 2px 8px -1px rgba(217, 119, 87, 0.5) !important;
 }
 
-/* 移动端排版：绝对保证单行、无溢出、无截断、无两行堆叠 */
+/* 移动端排版适配：极简单行、无溢出、无截断 */
 @media (max-width: 768px) {
   .app-header {
     height: 46px !important;
@@ -6644,17 +6458,16 @@ body.dock-expanded .dock-fab-play {
     padding: 0 6px 0 8px !important;
   }
 
-  /* 隐藏大标题文本与通读音色说明 */
   .brand-title-wrap, .brand-voice-info, .brand-icon {
     display: none !important;
   }
 
-  /* 左侧：精美微晶【目录】药丸按钮 */
+  /* 左侧目录微晶药丸 */
   .brand-section {
     display: flex !important;
     order: 1 !important;
     flex: 0 0 auto !important;
-    margin: 0 2px 0 0 !important;
+    margin: 0 !important;
   }
   .brand-section .mobile-menu-toggle {
     display: inline-flex !important;
@@ -6663,24 +6476,28 @@ body.dock-expanded .dock-fab-play {
     height: 32px !important;
     padding: 0 8px !important;
     border-radius: 9999px !important;
-    background: rgba(255, 255, 255, 0.5) !important;
-    border: 1px solid rgba(255, 255, 255, 0.7) !important;
+    background: rgba(255, 255, 255, 0.55) !important;
+    border: 1px solid rgba(255, 255, 255, 0.75) !important;
     box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.8) !important;
     font-size: 11.5px !important;
     font-weight: 600 !important;
     color: var(--ink-primary) !important;
+    transition: transform 0.15s ease !important;
+  }
+  .brand-section .mobile-menu-toggle:active {
+    transform: scale(0.94) !important;
   }
   [data-theme="dark"] .brand-section .mobile-menu-toggle {
     background: rgba(255, 255, 255, 0.08) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
   }
 
-  /* 中间：紧凑科目切换 */
+  /* 中间科目切换 */
   .subject-pill-group {
     order: 2 !important;
     flex: 1 1 auto !important;
     gap: 2px !important;
-    margin: 0 2px !important;
+    margin: 0 3px !important;
   }
   .subject-btn {
     height: 30px !important;
@@ -6691,7 +6508,7 @@ body.dock-expanded .dock-fab-play {
     display: none !important;
   }
 
-  /* 彻底消灭导致右侧溢出切断的 5 个冗余按钮 (自测/看板/字号) */
+  /* 彻底消灭右侧溢出方块 (自测/看板/字号已由底栏承担) */
   .header-actions {
     display: flex !important;
     order: 3 !important;
@@ -6705,10 +6522,10 @@ body.dock-expanded .dock-fab-play {
   .header-actions #btn-study-dashboard,
   .header-actions #btn-cloze-mode,
   .header-actions #btn-font-switch {
-    display: none !important; /* 彻底根除右侧破损方块 */
+    display: none !important;
   }
 
-  /* 右侧仅保留一个高质感小圆球：夜间模式切换 */
+  /* 右侧仅保留深浅色切换小圆球 */
   .header-actions #btn-theme-toggle {
     width: 32px !important;
     height: 32px !important;
@@ -6718,9 +6535,13 @@ body.dock-expanded .dock-fab-play {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background: rgba(255, 255, 255, 0.5) !important;
-    border: 1px solid rgba(255, 255, 255, 0.7) !important;
+    background: rgba(255, 255, 255, 0.55) !important;
+    border: 1px solid rgba(255, 255, 255, 0.75) !important;
     box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.8) !important;
+    transition: transform 0.15s ease !important;
+  }
+  .header-actions #btn-theme-toggle:active {
+    transform: scale(0.92) !important;
   }
   [data-theme="dark"] .header-actions #btn-theme-toggle {
     background: rgba(255, 255, 255, 0.08) !important;
@@ -6732,85 +6553,44 @@ body.dock-expanded .dock-fab-play {
 }
 
 /* -------------------------------------------------------------------------
-   4. 原生底部导航栏 (#app-bottom-nav)：规范长条液态胶囊
+   2. 底部导航栏 (.app-bottom-nav)：92% 高遮光微晶毛玻璃 (彻底杜绝文字穿透打架)
    ------------------------------------------------------------------------- */
-.app-bottom-nav {
-  position: fixed !important;
-  left: 14px !important;
-  right: 14px !important;
-  bottom: 12px !important;
-  width: auto !important;
-  max-width: 520px !important;
-  margin: 0 auto !important;
-  border-radius: 9999px !important;
-  height: 58px !important;
-  z-index: 950 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-around !important;
+@media (max-width: 768px) {
+  .app-bottom-nav {
+    display: block !important;
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    height: calc(52px + env(safe-area-inset-bottom, 8px)) !important;
+    padding-bottom: env(safe-area-inset-bottom, 8px) !important;
+    z-index: 1000 !important;
 
-  /* 规范液态玻璃材质 */
-  background: var(--lg-glass-surface) !important;
-  backdrop-filter: blur(var(--lg-glass-blur)) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(var(--lg-glass-blur)) saturate(190%) !important;
-  border: 1px solid var(--lg-glass-border) !important;
-  box-shadow: var(--lg-glass-shadow) !important;
-  overflow: visible !important;
-}
+    /* 92% 高遮光率微晶宣纸白底：既有高级毛玻璃物理层，又形成坚实遮挡，文字绝不穿透！ */
+    background: rgba(250, 247, 240, 0.92) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.8) !important;
+    box-shadow: 
+      inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.95),
+      0 -4px 20px rgba(45, 36, 28, 0.08) !important;
+  }
 
-/* 中间播放大按钮微晶透镜化 */
-.center-play-circle {
-  box-shadow: 
-    inset 0 1px 1px rgba(255, 255, 255, 0.7),
-    0 4px 14px rgba(217, 119, 87, 0.45) !important;
-}
+  [data-theme="dark"] .app-bottom-nav {
+    background: rgba(26, 24, 22, 0.92) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 
+      inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.2),
+      0 -4px 20px rgba(0, 0, 0, 0.4) !important;
+  }
 
-/* -------------------------------------------------------------------------
-   5. 正文大卡片：严格落地 skill 要求的 34px 大圆角与通透微晶
-   ------------------------------------------------------------------------- */
-.exam-section-card {
-  border-radius: 34px !important; /* skill 核心铁律：大卡片 34px */
-  background: rgba(255, 255, 255, 0.58) !important;
-  backdrop-filter: blur(14px) saturate(160%) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(160%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.75) !important;
-  box-shadow: 
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.8),
-    0 6px 20px -3px rgba(45, 36, 28, 0.05) !important;
-  padding: 22px 24px !important;
-  margin-bottom: 22px !important;
-  overflow: visible !important;   /* skill 铁律：不要给玻璃卡片加 overflow:hidden */
-  content-visibility: auto;       /* skill 铁律：跳过离屏大卡渲染 */
-  contain-intrinsic-size: 1px 400px;
-}
+  /* 交互反馈：点击轻微收缩回弹 */
+  .nav-tab-item:active {
+    transform: scale(0.92) !important;
+  }
 
-[data-theme="dark"] .exam-section-card {
-  background: rgba(255, 255, 255, 0.05) !important; /* 官方规范原代码 */
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* 小破题金句盒子：落地 26px 圆角 */
-.section-thesis-box {
-  border-radius: 26px !important; /* skill 铁律：小卡片 26px */
-  padding: 14px 18px !important;
-  background: linear-gradient(135deg, rgba(217, 119, 87, 0.08) 0%, rgba(255, 255, 255, 0.5) 100%) !important;
-  border: 1px solid rgba(217, 119, 87, 0.25) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  box-shadow: inset 0 1px 0.8px rgba(255, 255, 255, 0.9), 0 3px 12px -2px rgba(217, 119, 87, 0.06) !important;
-  margin-bottom: 16px !important;
-  overflow: visible !important;
-}
-
-/* -------------------------------------------------------------------------
-   6. 抽屉层级修复：确保抽屉展开时在全屏最顶层
-   ------------------------------------------------------------------------- */
-.sidebar-backdrop {
-  z-index: 2400 !important;
-}
-.sidebar {
-  z-index: 2500 !important;
-  box-shadow: 8px 0 32px rgba(0, 0, 0, 0.28) !important;
+  /* 彻底确保正文底部有 160px 足够安全留白，文字滑到底部稳稳停在底栏上方 */
+  .paper-container {
+    padding-bottom: 160px !important;
+  }
 }
