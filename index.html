@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app.css?v=3.0.0">
+  <link rel="stylesheet" href="app.css?v=3.0.2">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -279,6 +279,22 @@
       <div class="stage-wrapper">
         <!-- 考题属性看板 -->
         <div class="stage-header-card">
+          <!-- 考研政治主舞台专属子模块与五大学科快捷切换栏 -->
+          <div id="stage-pol-nav" class="stage-pol-nav" style="display: none;">
+            <div class="pol-submode-bar" id="stage-pol-submode-bar">
+              <button type="button" class="pol-submode-btn active" data-pol-submode="recite47">📖 47章背诵</button>
+              <button type="button" class="pol-submode-btn" data-pol-submode="xutao16">🎧 徐涛16天</button>
+              <button type="button" class="pol-submode-btn" data-pol-submode="tuijie11">🔥 腿姐11天</button>
+            </div>
+            <div class="pol-category-pills stage-pol-cats" id="stage-pol-category-pills">
+              <button type="button" class="filter-pill active" data-pol-cat="all">全部 (47)</button>
+              <button type="button" class="filter-pill" data-pol-cat="mayuan">马原 (10)</button>
+              <button type="button" class="filter-pill" data-pol-cat="maozhongte">毛中特 (5)</button>
+              <button type="button" class="filter-pill" data-pol-cat="xinsixiang">新思想 (17)</button>
+              <button type="button" class="filter-pill" data-pol-cat="shigang">史纲 (9)</button>
+              <button type="button" class="filter-pill" data-pol-cat="sixiu">思修 (6)</button>
+            </div>
+          </div>
           <div class="question-nav-breadcrumbs">
             <span id="stage-subject" class="breadcrumb-item">807 专业课</span>
             <span>/</span>
@@ -520,7 +536,7 @@
   </nav>
 
 
-  <script src="app.js?v=3.0.0" defer></script>
+  <script src="app.js?v=3.0.2" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -910,7 +926,7 @@
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5 12h14M12 5l7 7-7 7"/>
       </svg>
-      <span class="update-badge-new" id="updateModalNewVer">v3.0.0</span>
+      <span class="update-badge-new" id="updateModalNewVer">v3.0.2</span>
     </div>
     <p class="update-modal-status" id="updateModalStatus">正在连接云端节点并校验资源清单...</p>
     <div class="update-progress-container">

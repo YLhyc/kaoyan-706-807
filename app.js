@@ -252,6 +252,9 @@
     el.subjectPolBtn = document.getElementById('btn-subject-pol');
     el.polSubmodeBar = document.getElementById('pol-submode-bar');
     el.polCategoryPills = document.getElementById('pol-category-pills');
+    el.stagePolNav = document.getElementById('stage-pol-nav');
+    el.stagePolSubmodeBar = document.getElementById('stage-pol-submode-bar');
+    el.stagePolCategoryPills = document.getElementById('stage-pol-category-pills');
     el.backdrop = document.getElementById('sidebar-backdrop');
     
     // 全息态感知条 (Now-Playing HUD)
@@ -384,10 +387,15 @@
 
     // 恢复上次背诵的科目与音轨
     const savedSubject = localStorage.getItem('kaoyan_last_subject');
-    if (savedSubject && ['807', '706', 'en'].includes(savedSubject)) {
+    if (savedSubject && ['807', '706', 'en', 'pol'].includes(savedSubject)) {
+      if (savedSubject === 'pol') {
+        switchSubject('pol');
+        return;
+      }
       state.currentSubject = savedSubject;
       if (el.subject807Btn) el.subject807Btn.classList.toggle('active', savedSubject === '807');
       if (el.subject706Btn) el.subject706Btn.classList.toggle('active', savedSubject === '706');
+      if (el.subjectPolBtn) el.subjectPolBtn.classList.toggle('active', savedSubject === 'pol');
       if (el.subjectEnBtn) el.subjectEnBtn.classList.toggle('active', savedSubject === 'en');
       updateSubjectUI(savedSubject);
     }
@@ -579,6 +587,8 @@
     if (sub === 'pol') {
       if (el.polSubmodeBar) el.polSubmodeBar.style.display = 'flex';
       if (el.polCategoryPills) el.polCategoryPills.style.display = state.polSubMode === 'recite47' ? 'flex' : 'none';
+      if (el.stagePolNav) el.stagePolNav.style.display = 'block';
+      if (el.stagePolCategoryPills) el.stagePolCategoryPills.style.display = state.polSubMode === 'recite47' ? 'flex' : 'none';
       if (el.filterPillsWrap) el.filterPillsWrap.style.display = 'none';
       if (el.scoreFilterWrap) el.scoreFilterWrap.style.display = 'none';
 
@@ -596,6 +606,8 @@
     } else {
       if (el.polSubmodeBar) el.polSubmodeBar.style.display = 'none';
       if (el.polCategoryPills) el.polCategoryPills.style.display = 'none';
+      if (el.stagePolNav) el.stagePolNav.style.display = 'none';
+      if (el.stagePolCategoryPills) el.stagePolCategoryPills.style.display = 'none';
       if (el.filterPillsWrap) el.filterPillsWrap.style.display = 'flex';
       if (el.scoreFilterWrap) el.scoreFilterWrap.style.display = (sub === 'en' ? 'none' : '');
       if (el.trackTabs) el.trackTabs.style.display = '';
@@ -1512,7 +1524,7 @@
 
     // 2. 考题标题与分值
     if (el.hudTitleText) {
-      const subjPrefix = state.currentSubject === '807' ? '807' : (state.currentSubject === '706' ? '706' : '英语');
+      const subjPrefix = state.currentSubject === 'pol' ? '政治' : (state.currentSubject === '807' ? '807' : (state.currentSubject === '706' ? '706' : '英语'));
       const scoreBadge = item.score ? ` (${item.score})` : '';
       el.hudTitleText.textContent = `${subjPrefix} · ${item.title}${scoreBadge}`;
     }
@@ -1747,6 +1759,20 @@
 
   let lastTimeSaveTs = 0;
 
+  function toggleAudioPlayback() {
+    expandPlayerDock();
+    if (audio.paused) {
+      if (!audio.src) {
+        loadTrackData(state.currentTrack, true);
+      } else {
+        audio.play().catch(e => console.log('Play failed:', e));
+      }
+    } else {
+      audio.pause();
+    }
+  }
+  const togglePlay = toggleAudioPlayback;
+
   function setupAudioEngine() {
     let syncRafId = null;
 
@@ -1893,6 +1919,23 @@
       if (centerPlayLabel) centerPlayLabel.textContent = '播放';
     }
 
+    if (el.paperContent) {
+      el.paperContent.querySelectorAll('.recite-chapter-play-btn').forEach(btn => {
+        btn.classList.toggle('playing', state.isPlaying);
+        const textEl = btn.querySelector('.play-btn-text');
+        if (textEl) {
+          textEl.textContent = state.isPlaying ? '暂停背诵' : '整章背诵音频';
+        }
+      });
+      el.paperContent.querySelectorAll('.card-audio-btn').forEach(btn => {
+        btn.classList.toggle('playing', state.isPlaying);
+        const textEl = btn.querySelector('.audio-btn-text');
+        if (textEl) {
+          textEl.textContent = state.isPlaying ? '暂停伴读' : '试听伴读';
+        }
+      });
+    }
+
     if (!el.playBtn) return;
     if (state.isPlaying) {
       el.playBtn.innerHTML = `
@@ -2031,42 +2074,40 @@
       el.subjectPolBtn.addEventListener('click', () => switchSubject('pol'));
     }
 
-    // 政治子模块切换事件
-    if (el.polSubmodeBar) {
-      const modeBtns = el.polSubmodeBar.querySelectorAll('.pol-submode-btn');
-      modeBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const mode = btn.dataset.polSubmode;
-          if (mode && mode !== state.polSubMode) {
-            state.polSubMode = mode;
-            modeBtns.forEach(b => b.classList.toggle('active', b === btn));
-            if (el.polCategoryPills) {
-              el.polCategoryPills.style.display = mode === 'recite47' ? 'flex' : 'none';
-            }
-            renderSidebarList();
-            const list = getCurrentItemsList();
-            if (list.length > 0) selectItem(list[0].id, false);
-          }
-        });
+    // 政治子模块切换事件（主舞台与侧边栏全域双向同步）
+    document.querySelectorAll('.pol-submode-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mode = btn.dataset.polSubmode;
+        if (mode && mode !== state.polSubMode) {
+          state.polSubMode = mode;
+          document.querySelectorAll('.pol-submode-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.polSubmode === mode);
+          });
+          const showCats = mode === 'recite47' ? 'flex' : 'none';
+          if (el.polCategoryPills) el.polCategoryPills.style.display = showCats;
+          if (el.stagePolCategoryPills) el.stagePolCategoryPills.style.display = showCats;
+          renderSidebarList();
+          const list = getCurrentItemsList();
+          if (list.length > 0) selectItem(list[0].id, false);
+        }
       });
-    }
+    });
 
-    // 政治五大分类胶囊事件
-    if (el.polCategoryPills) {
-      const catBtns = el.polCategoryPills.querySelectorAll('.filter-pill');
-      catBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const cat = btn.dataset.polCat;
-          if (cat) {
-            state.polCategory = cat;
-            catBtns.forEach(b => b.classList.toggle('active', b === btn));
-            renderSidebarList();
-            const list = getCurrentItemsList();
-            if (list.length > 0) selectItem(list[0].id, false);
-          }
-        });
+    // 政治五大分类胶囊事件（主舞台与侧边栏全域双向同步）
+    document.querySelectorAll('[data-pol-cat]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.dataset.polCat;
+        if (cat) {
+          state.polCategory = cat;
+          document.querySelectorAll('[data-pol-cat]').forEach(b => {
+            b.classList.toggle('active', b.dataset.polCat === cat);
+          });
+          renderSidebarList();
+          const list = getCurrentItemsList();
+          if (list.length > 0) selectItem(list[0].id, false);
+        }
       });
-    }
+    });
 
     if (el.searchInput) {
       el.searchInput.addEventListener('input', (e) => {
@@ -2091,15 +2132,7 @@
 
     if (el.playBtn) {
       el.playBtn.addEventListener('click', () => {
-        if (audio.paused) {
-          if (!audio.src) {
-            loadTrackData(state.currentTrack, true);
-          } else {
-            audio.play().catch(e => console.log('Play failed:', e));
-          }
-        } else {
-          audio.pause();
-        }
+        toggleAudioPlayback();
       });
     }
 
@@ -2409,14 +2442,7 @@
     const fabPlayBtn = document.getElementById('dock-fab-play');
     if (fabPlayBtn) {
       fabPlayBtn.addEventListener('click', () => {
-        expandPlayerDock();
-        if (audio.paused) {
-          if (!audio.src) {
-            loadTrackData(state.currentTrack, true);
-          } else {
-            audio.play().catch(e => console.log('Play failed:', e));
-          }
-        }
+        toggleAudioPlayback();
       });
     }
 
@@ -2753,14 +2779,7 @@
     const centerPlayBtn = document.getElementById('nav-tab-center-play');
     if (centerPlayBtn) {
       centerPlayBtn.addEventListener('click', () => {
-        expandPlayerDock();
-        if (audio.paused) {
-          if (!audio.src) {
-            loadTrackData(state.currentTrack, true);
-          } else {
-            audio.play().catch(e => console.log(e));
-          }
-        }
+        toggleAudioPlayback();
       });
     }
 
@@ -2849,7 +2868,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.0.0';
+  const APP_BUILD_ID = '3.0.2';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -3269,6 +3288,7 @@
 
     const mode = state.polSubMode || 'recite47';
     if (mode === 'recite47') {
+      if (el.trackTabs) el.trackTabs.style.display = '';
       if (el.tab1TextFull) el.tab1TextFull.textContent = '【轨道一】原书背诵与理解';
       if (el.tab1TextShort) el.tab1TextShort.textContent = '轨道一 · 原书背诵';
       const subCardsCount = (state.activeItem.track2 && state.activeItem.track2.subCards) ? state.activeItem.track2.subCards.length : 0;
@@ -3432,6 +3452,12 @@
 
     const bodyEl = document.getElementById('polSubcardBody');
     if (bodyEl) {
+      bodyEl.querySelectorAll('.card-audio-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleAudioPlayback();
+        });
+      });
       bodyEl.querySelectorAll('[data-sent-idx]').forEach(span => {
         span.addEventListener('click', (e) => {
           if (e.target.closest('.cloze') || e.target.closest('.kw-red')) return;
@@ -3722,8 +3748,13 @@
   window.seekReciteSentence = function(cardId, start, idx) {
     seekToSentence(idx !== undefined ? idx : cardId, start);
   };
-  window.togglePlayCardAudio = function(cardId, title, chId) {
-    togglePlay();
+  window.toggleChapterReciteAudio = function(chId, ev) {
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+    toggleAudioPlayback();
+  };
+  window.togglePlayCardAudio = function(cardId, title, chId, ev) {
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+    toggleAudioPlayback();
   };
 
 })();

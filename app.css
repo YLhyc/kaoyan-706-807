@@ -746,12 +746,15 @@ body {
 
 /* 正文渲染纸面 */
 .paper-container {
-  max-width: 68ch !important;
+  width: 100% !important;
+  max-width: min(68ch, 100%) !important;
+  min-width: 0 !important;
   margin: 0 auto !important;
   line-height: 1.85 !important;
   font-family: var(--font-serif) !important;
   padding: 24px 20px 140px !important;
   box-sizing: border-box !important;
+  overflow-x: hidden !important;
 }
 
 .paper-section-title {
@@ -1177,12 +1180,15 @@ body {
   }
   
   .paper-container {
-  max-width: 68ch !important;
+  width: 100% !important;
+  max-width: min(68ch, 100%) !important;
+  min-width: 0 !important;
   margin: 0 auto !important;
   line-height: 1.85 !important;
   font-family: var(--font-serif) !important;
   padding: 24px 20px 140px !important;
   box-sizing: border-box !important;
+  overflow-x: hidden !important;
 }
   
   /* cleaned up legacy 1024px dock grid */
@@ -1391,12 +1397,15 @@ body {
   }
 
   .paper-container {
-  max-width: 68ch !important;
+  width: 100% !important;
+  max-width: min(68ch, 100%) !important;
+  min-width: 0 !important;
   margin: 0 auto !important;
   line-height: 1.85 !important;
   font-family: var(--font-serif) !important;
   padding: 24px 20px 140px !important;
   box-sizing: border-box !important;
+  overflow-x: hidden !important;
 }
 
   /* 底部播放器移动端紧凑排布与安全防遮挡 */
@@ -1579,12 +1588,15 @@ body {
   }
 
   .paper-container {
-  max-width: 68ch !important;
+  width: 100% !important;
+  max-width: min(68ch, 100%) !important;
+  min-width: 0 !important;
   margin: 0 auto !important;
   line-height: 1.85 !important;
   font-family: var(--font-serif) !important;
   padding: 24px 20px 140px !important;
   box-sizing: border-box !important;
+  overflow-x: hidden !important;
 }
 
   .exam-spec-banner {
@@ -2681,12 +2693,15 @@ body {
 
 /* 3. 朱丝栏垂直引导线与典雅学术正文卡片 */
 .paper-container {
-  max-width: 68ch !important;
+  width: 100% !important;
+  max-width: min(68ch, 100%) !important;
+  min-width: 0 !important;
   margin: 0 auto !important;
   line-height: 1.85 !important;
   font-family: var(--font-serif) !important;
   padding: 24px 20px 140px !important;
   box-sizing: border-box !important;
+  overflow-x: hidden !important;
 }
 
 .stage-header-card {
@@ -6382,9 +6397,10 @@ body.dock-expanded .dock-fab-play {
   .app-header {
     height: 48px !important;
     min-height: 48px !important;
-    margin: 8px 12px 10px 12px !important;
-    width: calc(100% - 24px) !important;
-    padding: 0 8px !important;
+    margin: 6px 8px 8px 8px !important;
+    width: calc(100% - 16px) !important;
+    padding: 0 5px !important;
+    overflow: hidden !important;
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
@@ -6407,52 +6423,44 @@ body.dock-expanded .dock-fab-play {
     display: none !important;
   }
 
-  /* 左侧：精美紧凑的【目录】按钮 */
+  /* 彻底隐藏 brand-section，避免在 <=768px 下挤压学科按钮 */
   .brand-section {
-    display: flex !important;
-    order: 1 !important;
-    flex: 0 0 auto !important;
-    margin: 0 !important;
+    display: none !important;
   }
 
   .brand-section .mobile-menu-toggle {
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 3px !important;
-    height: 32px !important;
-    padding: 0 9px !important;
-    border-radius: 9999px !important;
-    background: var(--bg-canvas, #faf7f0) !important;
-    border: 1px solid var(--line-main, rgba(0, 0, 0, 0.1)) !important;
-    font-size: 11.5px !important;
-    font-weight: 600 !important;
-    color: var(--ink-primary, #2c2723) !important;
+    display: none !important;
   }
 
-  /* 中间：紧凑三科切换 */
+  /* 中间：学科切换 */
   .subject-pill-group {
     order: 2 !important;
     flex: 1 1 auto !important;
+    min-width: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     background: transparent !important;
     border: none !important;
-    gap: 3px !important;
-    margin: 0 3px !important;
+    gap: 2px !important;
+    margin: 0 4px 0 0 !important;
     padding: 0 !important;
   }
 
   .subject-btn {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
     height: 32px !important;
-    padding: 0 8px !important;
+    padding: 0 4px !important;
     border-radius: 9999px !important;
     font-size: 11.5px !important;
     font-weight: 600 !important;
     display: inline-flex !important;
     align-items: center !important;
-    gap: 3px !important;
+    justify-content: center !important;
+    gap: 2px !important;
     border: 1px solid transparent !important;
+    white-space: nowrap !important;
   }
 
   .subject-btn .count-tag {
@@ -6465,7 +6473,7 @@ body.dock-expanded .dock-fab-play {
     box-shadow: 0 2px 6px rgba(217, 119, 87, 0.35) !important;
   }
 
-  /* 彻底隐藏导致右侧溢出切断的 5 个重复按钮 (自测/看板/字号已由底栏承担) */
+  /* 隐藏桌面端功能按钮 */
   .header-actions {
     display: flex !important;
     order: 3 !important;
@@ -6483,11 +6491,11 @@ body.dock-expanded .dock-fab-play {
     display: none !important;
   }
 
-  /* 右侧仅保留深浅色切换按钮 */
+  /* 右侧浅色/深色切换按钮 */
   .header-actions #btn-theme-toggle {
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
     border-radius: 9999px !important;
     padding: 0 !important;
     display: inline-flex !important;
@@ -6498,6 +6506,12 @@ body.dock-expanded .dock-fab-play {
   }
 
   .header-actions .theme-text {
+    display: none !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .subject-pill-group .subject-btn svg {
     display: none !important;
   }
 }
@@ -6934,6 +6948,167 @@ body.dock-expanded .dock-fab-play {
 
 
 /* ==========================================================================
+   全局与政治专属 SVG 矢量图标规范 (Bug 1 Fix)
+   ========================================================================== */
+.ui-svg {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+}
+.ui-svg.xs { width: 13px !important; height: 13px !important; }
+.ui-svg.sm { width: 16px !important; height: 16px !important; }
+.ui-svg.md { width: 20px !important; height: 20px !important; }
+.pol-scope svg {
+  max-width: 18px;
+  max-height: 18px;
+  flex-shrink: 0;
+}
+/* 隐藏徽章和标签内的多余小图标，保持视界干净清爽 */
+.pol-scope .xt-part-badge svg,
+.pol-scope .stream-card-label svg,
+.pol-scope .card-audio-btn svg,
+.pol-scope .playlist-chip-btn svg {
+  display: none !important;
+}
+/* 章节播放/暂停按键图标显隐联动 */
+.pol-scope .recite-chapter-play-btn .icon-pause { display: none !important; }
+.pol-scope .recite-chapter-play-btn.playing .icon-play { display: none !important; }
+.pol-scope .recite-chapter-play-btn.playing .icon-pause { display: inline-block !important; }
+
+/* ==========================================================================
+   全局与政治主舞台严格宽度包含与防移动端横向溢出 (Bug 2 Fix)
+   ========================================================================== */
+.main-stage,
+.stage-wrapper,
+.stage-header-card {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 820px;
+  box-sizing: border-box !important;
+}
+.paper-container {
+  width: 100% !important;
+  max-width: min(68ch, 100%) !important;
+  min-width: 0 !important;
+  margin: 0 auto !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+}
+#paper-content,
+.pol-scope,
+.pol-subcard-body,
+.pol-scope .lecture-structured-wrap,
+.pol-scope .stream-card,
+.pol-scope .xt-part-box,
+.pol-scope .xt-day-point-card,
+.pol-scope .tj-handbook-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+}
+@media (max-width: 768px) {
+  .paper-container {
+    padding: 12px 4px 160px !important;
+  }
+}
+
+/* ==========================================================================
+   主舞台考研政治切换栏 (.stage-pol-nav) 与移动端横向滚动 (Bug 5 Fix)
+   ========================================================================== */
+.stage-pol-nav {
+  margin-bottom: 6px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--line-subtle, rgba(0, 0, 0, 0.08));
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .stage-pol-cats {
+    display: flex;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .stage-pol-cats::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   政治专属 48 类正文卡片与导读组件体系 (Bug 4 Fix)
+   ========================================================================== */
+/* 1. Part Box & Headers */
+.pol-scope .xt-part-box.xt-part-recite { border-left: 4px solid var(--vermilion, #b91c1c); }
+.pol-scope .xt-part-box.xt-part-understand { border-left: 4px solid #2e5b88; }
+.pol-scope .xt-part-badge-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px dashed var(--line-main, rgba(0,0,0,0.1)); }
+.pol-scope .xt-part-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 13.5px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+.pol-scope .xt-part-badge.recite { background: rgba(185, 28, 28, 0.1); color: var(--vermilion, #b91c1c); }
+.pol-scope .xt-part-badge.understand { background: rgba(46, 91, 136, 0.12); color: #2e5b88; }
+[data-theme="dark"] .pol-scope .xt-part-badge.understand { background: rgba(78, 134, 184, 0.2); color: #7eccf5; }
+.pol-scope .xt-part-hint { font-size: 12px; color: var(--ink-muted, #78716c); }
+
+/* 2. Recite Audio Bar (.recite-audio-bar) */
+.pol-scope .recite-audio-bar { margin: 10px 0 14px 0; padding: 10px 12px; background: var(--bg-sidebar, rgba(0,0,0,0.025)); border: 1px solid var(--line-main, rgba(0,0,0,0.08)); border-left: 3.5px solid var(--vermilion, #b91c1c); border-radius: 10px; }
+.pol-scope .recite-bar-main { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.pol-scope .recite-bar-info { display: flex; align-items: center; gap: 6px; min-width: 0; flex: 1 1 180px; }
+.pol-scope .recite-bar-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background: rgba(185, 28, 28, 0.1); color: var(--vermilion, #b91c1c); border-radius: 999px; font-size: 11px; font-weight: 700; white-space: nowrap; flex-shrink: 0; }
+.pol-scope .recite-bar-title { font-size: 13px; font-weight: 700; color: var(--ink-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.pol-scope .recite-bar-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.pol-scope .recite-chapter-play-btn { display: inline-flex; align-items: center; gap: 5px; height: 30px; padding: 0 12px; background: var(--bg-card, #fff); border: 1px solid var(--vermilion, #b91c1c); border-radius: 999px; color: var(--vermilion, #b91c1c); font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.18s ease; }
+.pol-scope .recite-chapter-play-btn.playing { background: var(--vermilion, #b91c1c); color: #fff; }
+[data-theme="dark"] .pol-scope .recite-chapter-play-btn { background: var(--bg-card, #23211e); }
+[data-theme="dark"] .pol-scope .recite-chapter-play-btn.playing { background: var(--vermilion, #b91c1c); color: #fff; }
+
+/* 3. Section Titles, Numbered Rows & Paragraphs (.xt-sec-title, .xt-item-row, .xt-text-para, etc.) */
+.pol-scope .xt-sec-title { display: flex; align-items: baseline; gap: 8px; font-size: 15.5px; font-weight: 700; color: var(--ink-primary); margin: 16px 0 8px 0; padding-bottom: 5px; border-bottom: 1px solid var(--line-subtle); }
+.pol-scope .xt-title-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--vermilion, #b91c1c); display: inline-block; flex-shrink: 0; transform: translateY(-1px); }
+.pol-scope .xt-item-row { display: flex; align-items: flex-start; gap: 6px; margin: 7px 0; line-height: 1.8; font-size: var(--font-base, 16px); color: var(--ink-primary); }
+.pol-scope .xt-num-badge { flex-shrink: 0; font-weight: 700; color: var(--vermilion, #b91c1c); min-width: 18px; }
+.pol-scope .xt-num-badge.sub-bullet { color: var(--ink-muted); }
+.pol-scope .xt-item-content { flex: 1; min-width: 0; }
+.pol-scope .xt-example-lead { font-size: 14px; font-weight: 700; color: #2e5b88; margin: 10px 0 4px 0; }
+[data-theme="dark"] .pol-scope .xt-example-lead { color: #7eccf5; }
+.pol-scope .xt-text-para { margin: 7px 0; line-height: 1.8; font-size: var(--font-base, 16px); color: var(--ink-primary); }
+.pol-scope .xt-keyword { color: var(--vermilion, #b91c1c); font-weight: 700; }
+[data-theme="dark"] .pol-scope .xt-keyword { color: #f87171; }
+.pol-scope .xt-trap-body { font-size: 14px; line-height: 1.7; }
+
+/* 4. Track 2 Subcard Header & 4-Part Stream Cards (.sub-card-audio-ctrl, .stream-card-*) */
+.pol-scope .sub-card-audio-ctrl { background: var(--bg-card, #fff); border: 1px solid var(--line-main); border-radius: 10px; padding: 10px 12px; margin-bottom: 12px; }
+[data-theme="dark"] .pol-scope .sub-card-audio-ctrl { background: var(--bg-card, #1c1917); border-color: rgba(255,255,255,0.08); }
+.pol-scope .sub-card-title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; flex-wrap: wrap; }
+.pol-scope .sub-card-badge { font-size: 11px; font-weight: 700; color: var(--vermilion, #b91c1c); background: rgba(185, 28, 28, 0.1); padding: 2px 7px; border-radius: 999px; flex-shrink: 0; }
+.pol-scope .sub-card-title { font-size: 15px; font-weight: 700; color: var(--ink-primary); margin: 0; flex: 1; min-width: 140px; line-height: 1.35; }
+.pol-scope .card-audio-btn { display: inline-flex; align-items: center; gap: 4px; background: rgba(185, 28, 28, 0.1); border: 1px solid rgba(185, 28, 28, 0.25); color: var(--vermilion, #b91c1c); border-radius: 999px; padding: 4px 11px; font-size: 11.5px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
+.pol-scope .card-audio-btn.playing { background: var(--vermilion, #b91c1c); color: #fff; border-color: var(--vermilion, #b91c1c); }
+.pol-scope .stream-intro-row, .pol-scope .stream-outline-intro, .pol-scope .stream-lecture-intro { font-size: 13.5px; color: var(--ink-secondary); margin-bottom: 6px; line-height: 1.7; }
+.pol-scope .stream-outline-content { display: flex; flex-direction: column; gap: 7px; }
+.pol-scope .stream-outline-row { padding: 7px 10px; background: var(--bg-canvas, rgba(0,0,0,0.02)); border-radius: 6px; border: 1px solid var(--line-subtle); line-height: 1.85; }
+.pol-scope .stream-card-lecture { border-left: 4px solid #059669; }
+.pol-scope .stream-card-lecture .stream-card-label { color: #059669; }
+[data-theme="dark"] .pol-scope .stream-card-lecture .stream-card-label { color: #34d399; }
+.pol-scope .stream-takeaway-box { margin-top: 8px; padding: 8px 11px; background: rgba(5, 150, 105, 0.08); border-radius: 6px; border-left: 3px solid #059669; }
+.pol-scope .stream-takeaway-tag { font-size: 11.5px; font-weight: 700; color: #059669; margin-bottom: 3px; }
+[data-theme="dark"] .pol-scope .stream-takeaway-tag { color: #34d399; }
+.pol-scope .stream-takeaway-text { font-weight: 600; color: var(--ink-primary); line-height: 1.8; font-size: 14.5px; }
+.pol-scope .stream-card-tips { display: flex; flex-direction: column; gap: 8px; border: none !important; padding: 0 !important; background: transparent !important; box-shadow: none !important; }
+.pol-scope .stream-tip-box { padding: 10px 12px; border-radius: 8px; line-height: 1.8; font-size: 14.5px; }
+.pol-scope .stream-tip-box.xt { background: rgba(185, 28, 28, 0.05); border-left: 3.5px solid var(--vermilion, #b91c1c); }
+.pol-scope .stream-tip-badge.xt { display: inline-block; font-size: 12px; font-weight: 700; color: var(--vermilion, #b91c1c); margin-bottom: 3px; }
+.pol-scope .stream-tip-box.xiao { background: rgba(217, 119, 6, 0.08); border-left: 3.5px solid #d97706; }
+.pol-scope .stream-tip-badge.xiao { display: inline-block; font-size: 12px; font-weight: 700; color: #b45309; margin-bottom: 3px; }
+[data-theme="dark"] .pol-scope .stream-tip-badge.xiao { color: #fbbf24; }
+.pol-scope .recite-sent-item, .pol-scope .recite-sentence { cursor: pointer; border-radius: 4px; transition: background-color 0.15s ease; }
+
+/* ==========================================================================
    考研政治专属组件样式 (.pol-scope) & 全科首字弱提示 (Ghost Hint) 系统
    V2.0 终极整合架构师规范定稿 · 包含完整深浅色主题自适应与移动端横向平滑滚动
    ========================================================================== */
@@ -7196,10 +7371,14 @@ body.dock-expanded .dock-fab-play {
 
 /* ---------------- 5. 轨道二章内微考点胶囊与四段式伴读卡 ---------------- */
 .pol-subcard-pills {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
   display: flex;
   align-items: center;
   gap: 8px;
-  overflow-x: auto;
+  overflow-x: auto !important;
   -webkit-overflow-scrolling: touch;
   padding: 8px 2px 14px 2px;
   margin-bottom: 16px;
