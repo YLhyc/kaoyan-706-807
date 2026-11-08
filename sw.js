@@ -1,11 +1,12 @@
-// 考研背诵手卷 · 离线 PWA Service Worker (v1.9.2)
-const CACHE_NAME = 'kaoyan-handbook-v249';
+// 考研背诵手卷 · 离线 PWA Service Worker (v2.5.0)
+const CACHE_NAME = 'kaoyan-handbook-v250';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
-  './app.css?v=2.4.9',
-  './app.js?v=2.4.9',
-  './kubai_icons.js?v=2.0.1',
+  './app.css?v=2.5.0',
+  './app.js?v=2.5.0',
+  './kubai_icons.js?v=2.5.0',
+  './data/kaoyan_data.js?v=2.5.0',
   './version.json',
   './manifest.json',
   './favicon.svg',
@@ -53,14 +54,28 @@ self.addEventListener('fetch', (event) => {
     return; // 直接由浏览器原生网络引擎处理，绝不拦截与缓存
   }
 
-  
-  // 0. 版本清单与核心样式/脚本走 Network-First (确保用户立即感知最新 UI，绝不被旧缓存阻断)
-  const isCoreAsset = url.pathname.endsWith('version.json') || 
-                      url.pathname.endsWith('app.css') || 
-                      url.pathname.endsWith('app.js') || 
-                      url.pathname.endsWith('kaoyan_data.js');
+  // 0. 核心数据包 (4MB+ 离线全量数据)：优先命中缓存秒级直开，彻底杜绝外网阻塞与移动端“加载中...”白屏假死
+  if (url.pathname.endsWith('kaoyan_data.js') || url.pathname.endsWith('kaoyan_all_manifest.json')) {
+    event.respondWith(
+      caches.match(event.request).then((cached) => {
+        if (cached) return cached;
+        return fetch(event.request).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return networkResponse;
+        }).catch(() => {
+          // 弱网或离线时，即使带 query 参数也宽容回退到已有缓存
+          return caches.match(event.request, { ignoreSearch: true });
+        });
+      })
+    );
+    return;
+  }
 
-  if (isCoreAsset) {
+  // 1. 版本检测清单走实时 Network-First (确保用户立即感知最新发布)
+  if (url.pathname.endsWith('version.json')) {
     event.respondWith(
       fetch(event.request, { cache: 'no-store' }).then((networkResponse) => {
         if (networkResponse && networkResponse.status === 200) {
@@ -73,14 +88,28 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  if (url.pathname.endsWith('version.json')) {
+  // 2. 核心样式与脚本（自带版本指纹，Cache-First 快速响应）
+  const isStaticCode = url.pathname.endsWith('app.css') || 
+                       url.pathname.endsWith('app.js') || 
+                       url.pathname.endsWith('kubai_icons.js');
+
+  if (isStaticCode) {
     event.respondWith(
-      fetch(event.request, { cache: 'no-store' }).catch(() => caches.match(event.request))
+      caches.match(event.request).then((cached) => {
+        if (cached) return cached;
+        return fetch(event.request).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return networkResponse;
+        }).catch(() => caches.match(event.request, { ignoreSearch: true }));
+      })
     );
     return;
   }
 
-  // 1. PWA 页面主入口导航：Stale-While-Revalidate (彻底解决 iPhone PWA 白屏时间长，毫秒级秒开)
+  // 3. PWA 页面主入口导航：Stale-While-Revalidate (彻底解决 iPhone PWA 白屏时间长，毫秒级秒开)
   if (event.request.mode === 'navigate' || url.pathname.endsWith('/index.html') || url.pathname === '/' || url.pathname.endsWith('/')) {
     event.respondWith(
       caches.match('./index.html').then((cached) => {
@@ -100,7 +129,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 1. 静态资源 Cache-First
+  // 4. 其他静态资源 Cache-First
   event.respondWith(
     caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) {

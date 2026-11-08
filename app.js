@@ -319,6 +319,14 @@
   // 加载数据包 (优先调用已嵌入的 window.KAOYAN_MANIFEST，彻底免疫 file:/// 下的 CORS 阻断)
   async function loadManifestData() {
     loadMasteryData();
+
+    // 1. 等待 window.KAOYAN_MANIFEST 就绪（防移动端大脚本异步解析微竞态）
+    let waitLoops = 0;
+    while (!window.KAOYAN_MANIFEST && waitLoops < 15) {
+      await new Promise(r => setTimeout(r, 100));
+      waitLoops++;
+    }
+
     if (window.KAOYAN_MANIFEST) {
       state.allData = window.KAOYAN_MANIFEST;
     } else {
@@ -333,8 +341,34 @@
     }
 
     if (!state.allData) {
+      if (el.questionTitle) el.questionTitle.textContent = '手卷装载提醒';
       if (el.itemList) {
-        el.itemList.innerHTML = `<div style="padding:40px 16px;text-align:center;color:red;font-size:13px;">数据加载失败，请检查 kaoyan_data.js 是否就绪</div>`;
+        el.itemList.innerHTML = `<div style="padding:40px 16px;text-align:center;color:var(--accent-red);font-size:13px;">数据装载受阻，请点击主界面重试</div>`;
+      }
+      if (el.paperContent) {
+        el.paperContent.innerHTML = `
+          <div style="padding:40px 20px;text-align:center;max-width:440px;margin:32px auto;background:var(--bg-card);border-radius:18px;border:1px solid var(--border-soft);box-shadow:0 6px 24px rgba(0,0,0,0.06);">
+            <div style="width:54px;height:54px;margin:0 auto 16px;border-radius:50%;background:rgba(184,51,42,0.1);display:inline-flex;align-items:center;justify-content:center;color:var(--accent-red);">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <h3 style="font-size:17px;font-weight:600;margin-bottom:8px;color:var(--ink-dark);">离线题库数据装载未完成</h3>
+            <p style="font-size:13px;line-height:1.6;color:var(--ink-muted);margin-bottom:24px;">网络波动可能中断了首屏离线数据包初始化。请点击下方按钮重新装载，或一键清除离线缓存。</p>
+            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+              <button type="button" onclick="window.location.reload()" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:99px;background:var(--accent-red);color:#fff;font-size:14px;font-weight:500;border:none;cursor:pointer;">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                <span>立即刷新重试</span>
+              </button>
+              <button type="button" onclick="if('caches' in window){caches.keys().then(k=>Promise.all(k.map(c=>caches.delete(c)))).then(()=>window.location.reload());}else{window.location.reload();}" style="display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:99px;background:transparent;color:var(--ink-muted);font-size:13px;border:1px solid var(--border-soft);cursor:pointer;">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                <span>重置离线缓存</span>
+              </button>
+            </div>
+          </div>
+        `;
       }
       return;
     }
@@ -2612,7 +2646,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '2.4.9';
+  const APP_BUILD_ID = '2.5.0';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
