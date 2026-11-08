@@ -237,7 +237,7 @@ print("\n[Check 8] 校验 sw.js 音频与 Range 绝对直通防崩溃...")
 with open(os.path.join(BASE_DIR, "sw.js"), "r", encoding="utf-8") as f:
     sw_text = f.read()
 
-has_sw_v3 = ("kaoyan-all-in-one-v3.0.1" in sw_text) or ("kaoyan-all-in-one-v3.0.0" in sw_text)
+has_sw_v3 = ("kaoyan-all-in-one-v3.0.3" in sw_text) or ("kaoyan-all-in-one-v3.0.2" in sw_text) or ("kaoyan-all-in-one-v3.0.1" in sw_text)
 has_range_bypass = "event.request.headers.has('range')" in sw_text
 has_mp3_bypass = "url.pathname.endsWith('.mp3')" in sw_text
 

@@ -3863,24 +3863,29 @@ body {
 
 
 
-#paper-content.cloze-body .recite-sent:not(.thesis-sent):not(.active-spotlight) {
-
+#paper-content.cloze-body .recite-sent:not(.thesis-sent):not(.active-spotlight):not(.cloze-revealed),
+#paper-content.cloze-body .recite-sent-item:not(.active-spotlight):not(.cloze-revealed),
+#paper-content.cloze-body .recite-sentence:not(.active-spotlight):not(.cloze-revealed),
+#paper-content.cloze-body .xt-day-point-card:not(.active-spotlight):not(.cloze-revealed) .xt-point-content,
+#paper-content.cloze-body .tj-point-row:not(.active-spotlight):not(.cloze-revealed) .tj-point-text {
   filter: blur(6px);
-
   opacity: 0.65;
-
   transition: filter 0.25s ease, opacity 0.25s ease;
-
   cursor: pointer;
-
 }
 
-#paper-content.cloze-body .recite-sent:not(.thesis-sent):not(.active-spotlight):hover {
-
+#paper-content.cloze-body .recite-sent:not(.thesis-sent):not(.active-spotlight):hover,
+#paper-content.cloze-body .recite-sent.cloze-revealed,
+#paper-content.cloze-body .recite-sent-item:not(.active-spotlight):hover,
+#paper-content.cloze-body .recite-sent-item.cloze-revealed,
+#paper-content.cloze-body .recite-sentence:not(.active-spotlight):hover,
+#paper-content.cloze-body .recite-sentence.cloze-revealed,
+#paper-content.cloze-body .xt-day-point-card:not(.active-spotlight):hover .xt-point-content,
+#paper-content.cloze-body .xt-day-point-card.cloze-revealed .xt-point-content,
+#paper-content.cloze-body .tj-point-row:not(.active-spotlight):hover .tj-point-text,
+#paper-content.cloze-body .tj-point-row.cloze-revealed .tj-point-text {
   filter: none;
-
   opacity: 1;
-
 }
 
 
@@ -4361,7 +4366,7 @@ body {
 /* 分科攻克卡片栅格 */
 .dash-subject-cards-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
@@ -6570,7 +6575,7 @@ body.dock-expanded .dock-fab-play {
 /* 跟读聚光同频校准选择器 (金石朱墨宣纸风) */
 .sync-options-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 8px;
   margin-top: 8px;
 }
@@ -6965,12 +6970,22 @@ body.dock-expanded .dock-fab-play {
   max-height: 18px;
   flex-shrink: 0;
 }
-/* 隐藏徽章和标签内的多余小图标，保持视界干净清爽 */
+/* 政治模块纯矢量 SVG 图标高保真规范 */
 .pol-scope .xt-part-badge svg,
 .pol-scope .stream-card-label svg,
 .pol-scope .card-audio-btn svg,
-.pol-scope .playlist-chip-btn svg {
-  display: none !important;
+.pol-scope .playlist-chip-btn svg,
+.pol-submode-btn svg,
+.xt-voice-btn svg,
+.pol-btn-svg {
+  display: inline-block !important;
+  width: 13px !important;
+  height: 13px !important;
+  min-width: 13px;
+  max-width: 13px;
+  max-height: 13px;
+  vertical-align: -2px;
+  flex-shrink: 0;
 }
 /* 章节播放/暂停按键图标显隐联动 */
 .pol-scope .recite-chapter-play-btn .icon-pause { display: none !important; }

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 extract_pol_data.py
-V2.0 终极整合规范：考研政治数据无损提取器
+V3.0.3 终极整合规范：考研政治数据无损提取器
 输出路径: D:\AI_file\706_807专业课背诵手卷\data\kaoyan_data_pol.js
 """
 
@@ -17,6 +17,8 @@ sys.stdout.reconfigure(encoding='utf-8')
 HANDBOOK_HTML = r"D:\AI_file\背诵手册\handbook\index.html"
 ANLANG_DIR = r"D:\AI_file\背诵手册\handbook\audio_xutao"
 OUTPUT_JS = r"D:\AI_file\706_807专业课背诵手卷\data\kaoyan_data_pol.js"
+
+STAR_SVG = '<svg class="ui-svg xs" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
 
 CAT_MAP = {
     "my": "马克思主义基本原理",
@@ -84,7 +86,11 @@ def normalize_pane_html(soup_el, soup):
         if onclick and any(fn in onclick for fn in ["seekChapterReciteSentence", "seekReciteSentence", "togglePlayCardAudio"]):
             del el["onclick"]
 
-    return str(soup_el)
+    html_str = str(soup_el)
+    # 替换 ★ 字符为 100% 纯矢量 SVG 星标
+    if "★" in html_str:
+        html_str = html_str.replace("★", STAR_SVG)
+    return html_str
 
 def main():
     print(f"Reading {HANDBOOK_HTML} ...")
@@ -135,10 +141,130 @@ def main():
         recite_box = art.find("div", class_="xt-part-recite")
         understand_box = art.find("div", class_="xt-part-understand")
 
+        raw_recite_sentences = CHAPTER_RECITE_SENTENCES.get(ch_id, [])
+        processed_recite_sentences = []
+
+        # 检查并补全/前置 recite-part-badge
+        badge_sent = None
+        badge_idx = None
+        for s_i, s in enumerate(raw_recite_sentences):
+            did = s.get("domId", "")
+            if did.startswith("recite_badge_"):
+                badge_sent = s
+                badge_idx = s_i
+                break
+
+        if badge_sent and recite_box:
+            badge_el = recite_box.find(class_=lambda c: c and ('xt-part-badge' in c or 'recite-part-badge' in c))
+            if not badge_el:
+                badge_el_art = art.find(class_=lambda c: c and ('xt-part-badge' in c or 'recite-part-badge' in c))
+                if badge_el_art:
+                    badge_row = badge_el_art.find_parent(class_='xt-part-badge-row')
+                    if badge_row:
+                        recite_box.insert(0, badge_row)
+                        badge_el = badge_el_art
+                    else:
+                        new_row = soup.new_tag('div', attrs={'class': 'xt-part-badge-row'})
+                        new_row.append(badge_el_art)
+                        recite_box.insert(0, new_row)
+                        badge_el = badge_el_art
+            if badge_el:
+                badge_el["id"] = badge_sent.get("domId")
+                badge_el["data-sent-id"] = badge_sent.get("domId")
+                badge_el["data-sent-idx"] = str(badge_idx)
+                badge_el["data-start"] = str(badge_sent.get("start", 0.0))
+                badge_el["data-end"] = str(badge_sent.get("end", 0.0))
+                classes = badge_el.get("class", [])
+                if isinstance(classes, str):
+                    classes = [classes]
+                if "recite-sent-item" not in classes:
+                    classes.append("recite-sent-item")
+                    badge_el["class"] = classes
+
+        boxes = [b for b in [recite_box, understand_box] if b]
+
+        # 为 Track 1 的每一句进行 DOM 锚点精准匹配与戳印
+        for s_idx, s in enumerate(raw_recite_sentences):
+            did = s.get("domId", "")
+            start = s.get("start", 0.0)
+            end = s.get("end", 0.0)
+            stext = s.get("text", "")
+            sent_id = did or f"sent_{ch_id}_{s_idx}"
+
+            s_copy = dict(s)
+            s_copy["idx"] = s_idx
+            s_copy["id"] = sent_id
+            processed_recite_sentences.append(s_copy)
+
+            el = None
+            # 1. 直接按 id 匹配
+            if did:
+                for b in boxes:
+                    cand = b.find(id=did)
+                    if cand:
+                        el = cand
+                        break
+
+            # 2. 按 data-sent-idx 匹配
+            if not el:
+                for b in boxes:
+                    cand = b.find(attrs={"data-sent-idx": str(s_idx)})
+                    if cand:
+                        el = cand
+                        break
+
+            # 3. 文本相似度匹配（特别针对 table tr, h4, p 等未盖戳元素）
+            if not el and stext:
+                clean_stext = re.sub(r'[:-]+', ' ', stext)
+                words = [w for w in re.split(r'[\s,，.。:：()（）/、:—\-$+]+', clean_stext) if len(w) >= 2]
+                best_cand = None
+                best_score = 0
+                for b in boxes:
+                    for cand in b.find_all(["tr", "p", "div", "h4", "li", "strong"]):
+                        if cand.name in ["div", "p"] and cand.find(["p", "tr", "h4", "div"]):
+                            continue
+                        if cand.get("id") and cand.get("id") != did:
+                            continue
+                        ctext = cand.get_text()
+                        score = sum(1 for w in words if w in ctext)
+                        if score > best_score and score >= 1:
+                            best_score = score
+                            best_cand = cand
+                if best_cand:
+                    el = best_cand
+
+            # 4. 容错邻近数字序号匹配
+            if not el and did:
+                m_num = re.search(r'recite_blk_[a-z]+_\d+_(\d+)', did)
+                if m_num:
+                    num = int(m_num.group(1))
+                    prefix = did[:m_num.start(1)]
+                    for alt_num in [num, num + 1, num - 1, num + 2, num - 2]:
+                        alt_id = f'{prefix}{alt_num}'
+                        for b in boxes:
+                            cand = b.find(id=alt_id)
+                            if cand and not cand.get('data-sent-id'):
+                                el = cand
+                                break
+                        if el:
+                            break
+
+            # 盖戳到匹配到的 DOM 节点
+            if el:
+                el["id"] = sent_id
+                el["data-sent-id"] = sent_id
+                el["data-sent-idx"] = str(s_idx)
+                el["data-start"] = str(start)
+                el["data-end"] = str(end)
+                classes = el.get("class", [])
+                if isinstance(classes, str):
+                    classes = [classes]
+                if "recite-sent-item" not in classes:
+                    classes.append("recite-sent-item")
+                    el["class"] = classes
+
         recite_html = normalize_pane_html(recite_box, soup)
         understand_html = normalize_pane_html(understand_box, soup)
-
-        recite_sentences = CHAPTER_RECITE_SENTENCES.get(ch_id, [])
 
         # 轨道二：名师深度伴读版
         lecture_pane = art.find("div", id=f"pane_lecture_{ch_id}")
@@ -164,6 +290,12 @@ def main():
                 card_tags = []
                 lecture_html = ""
 
+                raw_sub_sentences = CARD_SENTENCES.get(card_id, [])
+                if not raw_sub_sentences and card_id == "xsx_00":
+                    raw_sub_sentences = CARD_SENTENCES.get("xsx_01", [])
+
+                processed_sub_sentences = []
+
                 if stream_pane:
                     title_el = stream_pane.find(class_=re.compile(r'sub-card-title|stream-pane-title'))
                     if title_el:
@@ -174,6 +306,28 @@ def main():
                     tag_els = stream_pane.find_all(class_=re.compile(r'badge|tag'))
                     card_tags = [t.get_text(strip=True) for t in tag_els if t.get_text(strip=True)]
 
+                    # 为 Track 2 微考点内的句子打上精准锚点
+                    recite_spans = stream_pane.find_all(class_="recite-sentence")
+                    ds_span_map = {span.get("data-sent-idx"): span for span in recite_spans if span.get("data-sent-idx")}
+
+                    for s_idx, s in enumerate(raw_sub_sentences):
+                        sent_id = f"sent_{card_id}_{s_idx}"
+                        s_copy = dict(s)
+                        s_copy["idx"] = s_idx
+                        s_copy["id"] = sent_id
+                        processed_sub_sentences.append(s_copy)
+
+                        span = ds_span_map.get(str(s_idx))
+                        if not span and s_idx < len(recite_spans):
+                            span = recite_spans[s_idx]
+
+                        if span:
+                            span["id"] = sent_id
+                            span["data-sent-id"] = sent_id
+                            span["data-sent-idx"] = str(s_idx)
+                            span["data-start"] = str(s.get("start", 0.0))
+                            span["data-end"] = str(s.get("end", 0.0))
+
                     lecture_html = normalize_pane_html(stream_pane, soup)
 
                 # 音频白名单与规范：若 xsx_00 无音频则为 null
@@ -182,10 +336,6 @@ def main():
                 else:
                     card_audio = f"audio_cards/pol/{card_id}.mp3"
 
-                sub_sentences = CARD_SENTENCES.get(card_id, [])
-                if not sub_sentences and card_id == "xsx_00":
-                    sub_sentences = CARD_SENTENCES.get("xsx_01", [])
-
                 sub_cards.append({
                     "cardId": card_id,
                     "chipLabel": chip_label,
@@ -193,7 +343,7 @@ def main():
                     "tags": card_tags,
                     "audio": card_audio,
                     "lectureHtml": lecture_html,
-                    "sentences": sub_sentences
+                    "sentences": processed_sub_sentences
                 })
 
         total_subcards += len(sub_cards)
@@ -211,7 +361,7 @@ def main():
                 "audio": f"audio_cards/pol/{ch_id}_recite.mp3",
                 "reciteHtml": recite_html,
                 "understandHtml": understand_html,
-                "sentences": recite_sentences
+                "sentences": processed_recite_sentences
             },
             "track2": {
                 "subCards": sub_cards
@@ -221,7 +371,7 @@ def main():
     print(f"Processed 47 chapters with {total_subcards} subCards in total.")
 
     # 3. 处理模块二：徐涛 16 天选择题带背并校准龙安朗独立时间戳
-    print("Processing徐涛 16 天 (xutao16) with independent anlang timestamps...")
+    print("Processing 徐涛 16 天 (xutao16) with independent anlang timestamps...")
     processed_xt16 = []
     for day_data in xtAllDaysData:
         day_num = day_data.get("day", 1)
@@ -233,14 +383,12 @@ def main():
         raw_points = day_data.get("points", [])
         n_points = len(raw_points)
 
-        # 计算每个 point 纯文本长度
         text_lens = []
         for p in raw_points:
             t = p.get("raw_text") or re.sub(r'<[^>]+>', '', p.get("html_text", ""))
             text_lens.append(max(len(t), 4))
         total_len = sum(text_lens) or 1
 
-        # 龙安朗时间戳分配（每个 point 间预留 0.2s 气口）
         gap = 0.20 if n_points > 1 else 0.0
         total_gaps = gap * (n_points - 1)
         net_dur = max(anlang_dur - total_gaps, anlang_dur * 0.7)
@@ -260,11 +408,15 @@ def main():
                 a_end = round(curr_time + seg_dur, 2)
                 curr_time = a_end + gap
 
+            point_html = p.get("html_text", "")
+            if "★" in point_html:
+                point_html = point_html.replace("★", STAR_SVG)
+
             new_points.append({
                 "id": f"d{day_num}_p{p.get('idx', p_idx+1)}",
                 "num": p.get("idx", p_idx + 1),
                 "tag": p.get("tag", "核心题眼"),
-                "html": p.get("html_text", ""),
+                "html": point_html,
                 "voice_start": v_start,
                 "voice_end": v_end,
                 "anlang_start": a_start,
@@ -299,7 +451,6 @@ def main():
             else:
                 dur_str = "00:00"
 
-        # 整理 timestamps (包含 start, end, text)
         resolved_timestamps = []
         for idx, ts in enumerate(timestamps):
             s_text = sentences[idx] if idx < len(sentences) else ts.get("text", "")
@@ -309,11 +460,13 @@ def main():
                 "text": ts.get("text") or s_text
             })
 
-        # 整理 points (list of {label, text})
         raw_points = day_data.get("points", [])
         processed_points = []
         for p in raw_points:
             if isinstance(p, dict):
+                p_text = p.get("text", "")
+                if "★" in p_text:
+                    p["text"] = p_text.replace("★", STAR_SVG)
                 processed_points.append(p)
             elif isinstance(p, str):
                 if "：" in p:
@@ -322,9 +475,10 @@ def main():
                     lbl, txt = p.split(":", 1)
                 else:
                     lbl, txt = "核心考点", p
+                if "★" in txt:
+                    txt = txt.replace("★", STAR_SVG)
                 processed_points.append({"label": lbl.strip(), "text": txt.strip()})
 
-        # 整理 sections (映射 resolved_sentences)
         processed_sections = []
         for sec in day_data.get("sections", []):
             sec_obj = dict(sec)
@@ -359,7 +513,7 @@ def main():
 
     # 5. 组合为 window.KAOYAN_POL_DATA 并序列化
     output_obj = {
-        "version": "3.0.0",
+        "version": "3.0.3",
         "chapters47": chapters47,
         "xutao16": processed_xt16,
         "tuijie11": processed_tj11

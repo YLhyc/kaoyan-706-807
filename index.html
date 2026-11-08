@@ -11,12 +11,12 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="考研背诵手卷">
   <meta name="application-name" content="考研背诵手卷">
-  <title>2027 考研全科双轨随身背诵手卷 · 807/706/英语写作独立专属研读平台</title>
+  <title>考研全科双轨背诵手卷 · 807 & 706 & 考研政治 & 英语写作</title>
     <!-- Claude Typography: CJK Serif Priority (Noto Serif SC) + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app.css?v=3.0.2">
+  <link rel="stylesheet" href="app.css?v=3.0.3">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -32,9 +32,9 @@
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
   <!-- 动态微交互矢量图标引擎 (Kubai Icons · 金石朱墨主题) -->
-  <script src="kubai_icons.js?v=2.5.1" defer></script>
+  <script src="kubai_icons.js?v=3.0.3" defer></script>
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=2.5.1" defer></script>
+  <script src="data/kaoyan_data.js?v=3.0.3" defer></script>
 </head>
 <body>
 
@@ -222,9 +222,9 @@
 
         <!-- 政治三子模块切换栏（仅在政治科目显示） -->
         <div class="pol-submode-bar" id="pol-submode-bar" style="display: none;">
-          <button type="button" class="pol-submode-btn active" data-pol-submode="recite47">📖 47章背诵</button>
-          <button type="button" class="pol-submode-btn" data-pol-submode="xutao16">🎧 徐涛16天</button>
-          <button type="button" class="pol-submode-btn" data-pol-submode="tuijie11">🔥 腿姐11天</button>
+          <button type="button" class="pol-submode-btn active" data-pol-submode="recite47"><svg class="pol-btn-svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> 47章背诵</button>
+          <button type="button" class="pol-submode-btn" data-pol-submode="xutao16"><svg class="pol-btn-svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg> 徐涛16天</button>
+          <button type="button" class="pol-submode-btn" data-pol-submode="tuijie11"><svg class="pol-btn-svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> 腿姐11天</button>
         </div>
 
         <!-- 政治五大学科筛选胶囊（仅在 recite47 模式下显示） -->
@@ -263,7 +263,7 @@
       <div class="sidebar-footer">
         <div class="app-version-badge" id="appVersionBadge" title="点击检查更新">
           <span class="version-dot"></span>
-          <span id="versionText">版本 v1.9.2 · 金石朱墨全科双轨典藏版</span>
+          <span id="versionText">版本 v3.0.3 · 金石朱墨全科双轨典藏版</span>
         </div>
         <button id="btn-force-refresh" class="refresh-cache-btn" title="强制清除缓存并拉取最新版本">
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -282,17 +282,17 @@
           <!-- 考研政治主舞台专属子模块与五大学科快捷切换栏 -->
           <div id="stage-pol-nav" class="stage-pol-nav" style="display: none;">
             <div class="pol-submode-bar" id="stage-pol-submode-bar">
-              <button type="button" class="pol-submode-btn active" data-pol-submode="recite47">📖 47章背诵</button>
-              <button type="button" class="pol-submode-btn" data-pol-submode="xutao16">🎧 徐涛16天</button>
-              <button type="button" class="pol-submode-btn" data-pol-submode="tuijie11">🔥 腿姐11天</button>
+              <button type="button" class="pol-submode-btn active" data-pol-submode="recite47"><svg class="pol-btn-svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> 47章背诵</button>
+              <button type="button" class="pol-submode-btn" data-pol-submode="xutao16"><svg class="pol-btn-svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg> 徐涛16天</button>
+              <button type="button" class="pol-submode-btn" data-pol-submode="tuijie11"><svg class="pol-btn-svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> 腿姐11天</button>
             </div>
             <div class="pol-category-pills stage-pol-cats" id="stage-pol-category-pills">
               <button type="button" class="filter-pill active" data-pol-cat="all">全部 (47)</button>
-              <button type="button" class="filter-pill" data-pol-cat="mayuan">马原 (10)</button>
-              <button type="button" class="filter-pill" data-pol-cat="maozhongte">毛中特 (5)</button>
-              <button type="button" class="filter-pill" data-pol-cat="xinsixiang">新思想 (17)</button>
-              <button type="button" class="filter-pill" data-pol-cat="shigang">史纲 (9)</button>
-              <button type="button" class="filter-pill" data-pol-cat="sixiu">思修 (6)</button>
+              <button type="button" class="filter-pill" data-pol-cat="my">马原 (9)</button>
+              <button type="button" class="filter-pill" data-pol-cat="mzt">毛中特 (8)</button>
+              <button type="button" class="filter-pill" data-pol-cat="xsx">新思想 (15)</button>
+              <button type="button" class="filter-pill" data-pol-cat="sg">史纲 (8)</button>
+              <button type="button" class="filter-pill" data-pol-cat="sx">思修 (7)</button>
             </div>
           </div>
           <div class="question-nav-breadcrumbs">
@@ -536,7 +536,7 @@
   </nav>
 
 
-  <script src="app.js?v=3.0.2" defer></script>
+  <script src="app.js?v=3.0.3" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -641,7 +641,7 @@
         <div class="dash-total-progress-wrap">
           <div class="dash-progress-meta">
             <span class="dash-meta-title">全科考题攻克总进度</span>
-            <span class="dash-meta-numbers" id="dashTotalScoreText">已攻克 0 / 82 题 (0%)</span>
+            <span class="dash-meta-numbers" id="dashTotalScoreText">已攻克 0 / 228 题 (0%)</span>
           </div>
           <div class="dash-progress-track">
             <div class="dash-progress-bar-mastered" id="dashTotalBarMastered" style="width: 0%;"></div>
@@ -650,7 +650,7 @@
           <div class="dash-legend-row">
             <span class="legend-item"><span class="legend-dot dot-mastered"></span>已掌握 (<span id="dashTotalMasteredNum">0</span>)</span>
             <span class="legend-item"><span class="legend-dot dot-familiar"></span>磨耳中 (<span id="dashTotalFamiliarNum">0</span>)</span>
-            <span class="legend-item"><span class="legend-dot dot-unlearned"></span>待攻克 (<span id="dashTotalUnlearnedNum">82</span>)</span>
+            <span class="legend-item"><span class="legend-dot dot-unlearned"></span>待攻克 (<span id="dashTotalUnlearnedNum">228</span>)</span>
           </div>
         </div>
       </div>
@@ -665,39 +665,52 @@
         <div class="dash-sub-card">
           <div class="dash-sub-header">
             <span class="dash-sub-tag sub-807">807 现当代文学</span>
-            <span class="dash-sub-ratio" id="dashRatio807">0 / 37 题 · 0%</span>
+            <span class="dash-sub-ratio" id="dashRatio807">0 / 35 题 · 0%</span>
           </div>
           <div class="dash-progress-track compact">
             <div class="dash-progress-bar-mastered" id="dashBar807Mastered" style="width: 0%;"></div>
             <div class="dash-progress-bar-familiar" id="dashBar807Familiar" style="width: 0%;"></div>
           </div>
-          <div class="dash-sub-details" id="dashDetail807">已掌握 0 · 磨耳 0 · 待背 37</div>
+          <div class="dash-sub-details" id="dashDetail807">已掌握 0 · 磨耳 0 · 待背 35</div>
         </div>
 
         <!-- 706 古代文学 -->
         <div class="dash-sub-card">
           <div class="dash-sub-header">
             <span class="dash-sub-tag sub-706">706 古代文学</span>
-            <span class="dash-sub-ratio" id="dashRatio706">0 / 29 题 · 0%</span>
+            <span class="dash-sub-ratio" id="dashRatio706">0 / 37 题 · 0%</span>
           </div>
           <div class="dash-progress-track compact">
             <div class="dash-progress-bar-mastered" id="dashBar706Mastered" style="width: 0%;"></div>
             <div class="dash-progress-bar-familiar" id="dashBar706Familiar" style="width: 0%;"></div>
           </div>
-          <div class="dash-sub-details" id="dashDetail706">已掌握 0 · 磨耳 0 · 待背 29</div>
+          <div class="dash-sub-details" id="dashDetail706">已掌握 0 · 磨耳 0 · 待背 37</div>
         </div>
 
-        <!-- 考研英语 -->
+        <!-- 考研政治 -->
+        <div class="dash-sub-card">
+          <div class="dash-sub-header">
+            <span class="dash-sub-tag sub-pol">考研政治</span>
+            <span class="dash-sub-ratio" id="dashRatioPol">0 / 74 节 · 0%</span>
+          </div>
+          <div class="dash-progress-track compact">
+            <div class="dash-progress-bar-mastered" id="dashBarPolMastered" style="width: 0%;"></div>
+            <div class="dash-progress-bar-familiar" id="dashBarPolFamiliar" style="width: 0%;"></div>
+          </div>
+          <div class="dash-sub-details" id="dashDetailPol">已掌握 0 · 磨耳 0 · 待背 74</div>
+        </div>
+
+        <!-- 考研英语写作 -->
         <div class="dash-sub-card">
           <div class="dash-sub-header">
             <span class="dash-sub-tag sub-en">考研英语写作</span>
-            <span class="dash-sub-ratio" id="dashRatioEn">0 / 16 篇 · 0%</span>
+            <span class="dash-sub-ratio" id="dashRatioEn">0 / 82 篇 · 0%</span>
           </div>
           <div class="dash-progress-track compact">
             <div class="dash-progress-bar-mastered" id="dashBarEnMastered" style="width: 0%;"></div>
             <div class="dash-progress-bar-familiar" id="dashBarEnFamiliar" style="width: 0%;"></div>
           </div>
-          <div class="dash-sub-details" id="dashDetailEn">已掌握 0 · 磨耳 0 · 待背 16</div>
+          <div class="dash-sub-details" id="dashDetailEn">已掌握 0 · 磨耳 0 · 待背 82</div>
         </div>
       </div>
 

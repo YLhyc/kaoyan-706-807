@@ -25,10 +25,10 @@
   const state = {
     allData: null,
     currentSubject: '807', // '807' | '706' | 'pol' | 'en'
-    polSubMode: 'recite47', // 'recite47' | 'xutao16' | 'tuijie11'
-    polCategory: 'all', // 'all' | 'my' | 'mzt' | 'xsx' | 'sg' | 'sx'
-    polXtVoice: 'anlang', // 'anlang' | 'voice'
-    polSubCardId: null,
+    polSubMode: localStorage.getItem('kaoyan_pol_submode') || 'recite47', // 'recite47' | 'xutao16' | 'tuijie11'
+    polCategory: localStorage.getItem('kaoyan_pol_cat') || 'all', // 'all' | 'my' | 'mzt' | 'xsx' | 'sg' | 'sx'
+    polXtVoice: localStorage.getItem('kaoyan_pol_xt_voice') || 'anlang', // 'anlang' | 'voice'
+    polSubCardId: localStorage.getItem('kaoyan_pol_subcard_id') || null,
     polData: null,
     currentTrack: 1, // 1: 考场直接答题/中英磨耳, 2: 答题版逻辑精解/替换仿写
     activeItemId: null,
@@ -59,6 +59,8 @@
     lastUserScrollTime: 0,
     syncOffset: initialSyncOffset
   };
+
+  let isPolDataLoading = false;
 
   const audio = new Audio();
   audio.preload = 'metadata';
@@ -312,6 +314,11 @@
     el.dashBar706Familiar = document.getElementById('dashBar706Familiar');
     el.dashDetail706 = document.getElementById('dashDetail706');
     
+    el.dashRatioPol = document.getElementById('dashRatioPol');
+    el.dashBarPolMastered = document.getElementById('dashBarPolMastered');
+    el.dashBarPolFamiliar = document.getElementById('dashBarPolFamiliar');
+    el.dashDetailPol = document.getElementById('dashDetailPol');
+
     el.dashRatioEn = document.getElementById('dashRatioEn');
     el.dashBarEnMastered = document.getElementById('dashBarEnMastered');
     el.dashBarEnFamiliar = document.getElementById('dashBarEnFamiliar');
@@ -583,6 +590,24 @@
     if (el.subjectEnBtn) el.subjectEnBtn.classList.toggle('active', sub === 'en');
     
     updateSubjectUI(sub);
+
+    // 跨科切换掌握度保护：若当前筛选在目标科目下结果为空，自动回退到 'all' 避免白屏
+    if (state.masteryFilter !== 'all') {
+      let candList = [];
+      if (sub === '807') candList = state.allData?.items_807 || [];
+      else if (sub === '706') candList = state.allData?.items_706 || [];
+      else if (sub === 'en') candList = state.allData?.items_en || [];
+      else if (sub === 'pol' && window.KAOYAN_POL_DATA) {
+        candList = window.KAOYAN_POL_DATA.chapters47 || [];
+      }
+      const matchCount = candList.filter(it => getMasteryStatus(it.id) === state.masteryFilter).length;
+      if (matchCount === 0) {
+        state.masteryFilter = 'all';
+        document.querySelectorAll('#mastery-pills-wrap .filter-pill').forEach(b => {
+          b.classList.toggle('active', b.dataset.mastery === 'all');
+        });
+      }
+    }
     
     if (sub === 'pol') {
       if (el.polSubmodeBar) el.polSubmodeBar.style.display = 'flex';
@@ -591,6 +616,14 @@
       if (el.stagePolCategoryPills) el.stagePolCategoryPills.style.display = state.polSubMode === 'recite47' ? 'flex' : 'none';
       if (el.filterPillsWrap) el.filterPillsWrap.style.display = 'none';
       if (el.scoreFilterWrap) el.scoreFilterWrap.style.display = 'none';
+
+      // 恢复激活状态高亮
+      document.querySelectorAll('.pol-submode-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.polSubmode === state.polSubMode);
+      });
+      document.querySelectorAll('[data-pol-cat]').forEach(b => {
+        b.classList.toggle('active', b.dataset.polCat === state.polCategory);
+      });
 
       ensurePolDataLoaded().then(() => {
         renderSidebarList();
@@ -636,8 +669,28 @@
     if (items.length === 0) {
       el.itemList.innerHTML = `
         <div style="padding: 40px 16px; text-align: center; color: var(--ink-muted); font-size: 13px;">
-          未检索到符合条件的考点题目
+          <div style="margin-bottom:12px;">未检索到符合条件的考点题目</div>
+          <button type="button" class="btn-reset-filters" id="btnResetFilters" style="padding:5px 14px;font-size:12px;font-weight:600;border:1px solid var(--line-strong);border-radius:14px;background:var(--bg-card);color:var(--vermilion);cursor:pointer;transition:all 0.2s;">
+            重置筛选条件
+          </button>
         </div>`;
+      const btnReset = el.itemList.querySelector('#btnResetFilters');
+      if (btnReset) {
+        btnReset.addEventListener('click', () => {
+          state.masteryFilter = 'all';
+          state.searchQuery = '';
+          state.polCategory = 'all';
+          state.tierFilter = 'all';
+          if (el.searchInput) el.searchInput.value = '';
+          document.querySelectorAll('#mastery-pills-wrap .filter-pill').forEach(b => b.classList.toggle('active', b.dataset.mastery === 'all'));
+          document.querySelectorAll('#filter-pills-wrap .filter-pill').forEach(b => b.classList.toggle('active', b.dataset.tier === 'all'));
+          document.querySelectorAll('[data-pol-cat]').forEach(b => b.classList.toggle('active', b.dataset.polCat === 'all'));
+          localStorage.setItem('kaoyan_pol_cat', 'all');
+          renderSidebarList();
+          const list = getCurrentItemsList();
+          if (list.length > 0) selectItem(list[0].id, false);
+        });
+      }
       return;
     }
 
@@ -1008,6 +1061,13 @@
     if (el.dashBar706Familiar) el.dashBar706Familiar.style.width = `${s706.total ? (s706.f / s706.total) * 100 : 0}%`;
     if (el.dashDetail706) el.dashDetail706.textContent = `已掌握 ${s706.m} · 磨耳 ${s706.f} · 待背 ${s706.u}`;
 
+    // 政治
+    const sPol = calcStats(polItems);
+    if (el.dashRatioPol) el.dashRatioPol.textContent = `${sPol.m} / ${sPol.total} 节 · ${sPol.percent}%`;
+    if (el.dashBarPolMastered) el.dashBarPolMastered.style.width = `${sPol.percent}%`;
+    if (el.dashBarPolFamiliar) el.dashBarPolFamiliar.style.width = `${sPol.total ? (sPol.f / sPol.total) * 100 : 0}%`;
+    if (el.dashDetailPol) el.dashDetailPol.textContent = `已掌握 ${sPol.m} · 磨耳 ${sPol.f} · 待背 ${sPol.u}`;
+
     // 英语
     if (el.dashRatioEn) el.dashRatioEn.textContent = `${sEn.m} / ${sEn.total} 篇 · ${sEn.percent}%`;
     if (el.dashBarEnMastered) el.dashBarEnMastered.style.width = `${sEn.percent}%`;
@@ -1036,14 +1096,23 @@
     const items807 = state.allData.items_807 || [];
     const items706 = state.allData.items_706 || [];
     const itemsEn = state.allData.items_en || [];
+    let polItems = [];
+    if (window.KAOYAN_POL_DATA) {
+      polItems = [
+        ...(window.KAOYAN_POL_DATA.chapters47 || []).map(it => ({ ...it, subj: 'pol', polMode: 'recite47' })),
+        ...(window.KAOYAN_POL_DATA.xutao16 || []).map(it => ({ ...it, subj: 'pol', polMode: 'xutao16' })),
+        ...(window.KAOYAN_POL_DATA.tuijie11 || []).map(it => ({ ...it, subj: 'pol', polMode: 'tuijie11' }))
+      ];
+    }
     const allItems = [
       ...items807.map(it => ({ ...it, subj: '807' })),
       ...items706.map(it => ({ ...it, subj: '706' })),
-      ...itemsEn.map(it => ({ ...it, subj: 'en' }))
+      ...itemsEn.map(it => ({ ...it, subj: 'en' })),
+      ...polItems
     ];
 
     let candidates = allItems.filter(x => {
-      const isHighPriority = x.level === 'T0' || x.level === 'T1' || x.category_id;
+      const isHighPriority = x.level === 'T0' || x.level === 'T1' || x.category_id || x.importance === '必背考点';
       const isNotMastered = getMasteryStatus(x.id) !== 'mastered';
       return isHighPriority && isNotMastered;
     });
@@ -1053,18 +1122,36 @@
     }
 
     if (candidates.length === 0) {
-      showToast('大圆满！全科 82 道考题已全部背熟掌握！正在随机抽查一道进行复习...', 2500);
+      showToast('大圆满！全科 228 节考点已全部背熟掌握！正在随机抽查一道进行复习...', 2500);
       candidates = allItems;
     }
 
     const picked = candidates[Math.floor(Math.random() * candidates.length)];
     closeStudyDashboard();
 
-    if (state.currentSubject !== picked.subj) {
-      switchSubject(picked.subj);
+    if (picked.subj === 'pol') {
+      if (state.currentSubject !== 'pol') {
+        switchSubject('pol');
+      }
+      if (picked.polMode && picked.polMode !== state.polSubMode) {
+        state.polSubMode = picked.polMode;
+        localStorage.setItem('kaoyan_pol_submode', picked.polMode);
+        document.querySelectorAll('.pol-submode-btn').forEach(b => {
+          b.classList.toggle('active', b.dataset.polSubmode === picked.polMode);
+        });
+        const showCats = picked.polMode === 'recite47' ? 'flex' : 'none';
+        if (el.polCategoryPills) el.polCategoryPills.style.display = showCats;
+        if (el.stagePolCategoryPills) el.stagePolCategoryPills.style.display = showCats;
+        renderSidebarList();
+      }
+      selectItem(picked.id, true);
+    } else {
+      if (state.currentSubject !== picked.subj) {
+        switchSubject(picked.subj);
+      }
+      selectItem(picked.id, true);
     }
-    selectItem(picked.id, true);
-    showToast(`已为你抽查【${picked.level || '必背'}】${picked.title}，立即开始磨耳背诵！`, 3000);
+    showToast(`已为你抽查【${picked.level || picked.importance || '必背'}】${picked.title}，立即开始磨耳背诵！`, 3000);
   }
 
   // DOM 兜底解析机制：离线或 file:/// 协议无 JSON 缓存时，从当前 DOM 提取
@@ -1271,7 +1358,12 @@
       // Attach click events to all recite-sent spans
       const sents = el.paperContent.querySelectorAll('.recite-sent');
       sents.forEach(s => {
-        s.addEventListener('click', () => {
+        s.addEventListener('click', (e) => {
+          if (e.target.closest('.cloze') || e.target.closest('.kw-red')) return;
+          if (state.clozeMode === 'body') {
+            s.classList.toggle('cloze-revealed');
+            return;
+          }
           const sentId = s.dataset.sentId;
           const start = parseFloat(s.dataset.start);
           if (!isNaN(start)) {
@@ -1336,6 +1428,15 @@
   }
 
   function highlightSentence(sentId) {
+    if (sentId === null || sentId === undefined || sentId === '') {
+      if (lastSpotlightEl) {
+        lastSpotlightEl.classList.remove('active-spotlight');
+        lastSpotlightEl.classList.remove('loop-sent-active');
+        lastSpotlightEl = null;
+      }
+      return;
+    }
+
     const lastId = lastSpotlightEl ? (lastSpotlightEl.dataset.sentId ?? lastSpotlightEl.dataset.sentIdx ?? lastSpotlightEl.dataset.pointId ?? lastSpotlightEl.id) : null;
     if (lastSpotlightEl && String(lastId) === String(sentId)) return;
 
@@ -1344,10 +1445,12 @@
       lastSpotlightEl.classList.remove('loop-sent-active');
     }
 
-    const targetEl = (sentId ? document.getElementById(String(sentId)) : null) ||
-                     document.querySelector(`.recite-sent[data-sent-id="${sentId}"]`) ||
-                     document.querySelector(`[data-sent-idx="${sentId}"]`) ||
-                     document.querySelector(`.xt-day-point-card[data-point-id="${sentId}"]`);
+    const sentObj = (state.activeSentences || []).find(s => String(s.id ?? s.domId ?? s.idx) === String(sentId));
+
+    const targetEl = document.getElementById(String(sentId)) ||
+                     (el.paperContent ? el.paperContent.querySelector(`[data-sent-id="${sentId}"], .recite-sent[data-sent-id="${sentId}"], .xt-day-point-card[data-point-id="${sentId}"], .tj-point-row[data-sent-id="${sentId}"]`) : null) ||
+                     (sentObj && sentObj.idx !== undefined && el.paperContent ? el.paperContent.querySelector(`.recite-sent-item[data-sent-idx="${sentObj.idx}"], .recite-sentence[data-sent-idx="${sentObj.idx}"], [data-sent-idx="${sentObj.idx}"]`) : null);
+
     if (targetEl) {
       targetEl.classList.add('active-spotlight');
       if (state.playMode === 'sentence') {
@@ -1394,15 +1497,30 @@
 
     if (!el.paperContent) return;
 
-    const cards = el.paperContent.querySelectorAll('.exam-section-card, .logic-block-card, section.exam-section-card, .xt-section, .xt-day-point-card, .stream-card');
+    // 政治 47 章背诵模式优先索引 .xt-part-box 与 .stream-card
+    let cards = [];
+    if (el.paperContent.querySelector('.xt-part-box')) {
+      cards = Array.from(el.paperContent.querySelectorAll('.xt-part-box, .stream-card, .xt-day-point-card, .tj-handbook-card, .exam-section-card, .logic-block-card'));
+    } else {
+      cards = Array.from(el.paperContent.querySelectorAll('.exam-section-card, .logic-block-card, section.exam-section-card, .xt-section, .xt-day-point-card, .stream-card, .tj-handbook-card'));
+    }
     
     cards.forEach((card, idx) => {
-      const cardSents = card.querySelectorAll('.recite-sent, .recite-sentence, [data-sent-idx]');
+      const cardSents = card.querySelectorAll('.recite-sent, .recite-sent-item, .recite-sentence, .tj-point-row, [data-sent-idx]');
       const firstSent = cardSents.length > 0 ? cardSents[0] : null;
       const lastSent = cardSents.length > 0 ? cardSents[cardSents.length - 1] : null;
       let start = firstSent ? parseFloat(firstSent.dataset.start || 0) : 0;
       let end = lastSent ? parseFloat(lastSent.dataset.end || 0) : 0;
       let sentId = firstSent ? (firstSent.dataset.sentId ?? firstSent.dataset.sentIdx ?? firstSent.id) : null;
+
+      if (firstSent && firstSent.dataset.sentIdx !== undefined && start === 0 && state.activeSentences) {
+        const sIdx = parseInt(firstSent.dataset.sentIdx, 10);
+        const matchedS = state.activeSentences.find(s => s.idx === sIdx);
+        if (matchedS) {
+          start = matchedS.start;
+          sentId = matchedS.id || sentId;
+        }
+      }
 
       if (card.classList.contains('xt-day-point-card')) {
         const pId = card.dataset.pointId;
@@ -1422,7 +1540,25 @@
       const logicTitleEl = card.querySelector('.logic-block-title h3, h3');
       const qaBadgeEl = card.querySelector('.qa-badge');
 
-      if (card.classList.contains('xt-day-point-card')) {
+      if (card.classList.contains('xt-part-box')) {
+        const isRecitePart = card.classList.contains('xt-part-recite');
+        const badgeEl = card.querySelector('.xt-part-badge');
+        badge = badgeEl ? badgeEl.textContent.trim() : (isRecitePart ? '一、背诵部分' : '二、深度理解');
+        const hintEl = card.querySelector('.xt-part-hint');
+        desc = hintEl ? hintEl.textContent.trim() : (isRecitePart ? '分析大题采分骨架' : '真题考点因果深解');
+      } else if (card.classList.contains('stream-card')) {
+        const labelEl = card.querySelector('.stream-card-label span, .stream-card-label');
+        const tipBadge = card.querySelector('.stream-tip-badge, .stream-takeaway-tag, .pitfall-title');
+        if (labelEl) {
+          badge = labelEl.textContent.trim().replace(/^[^\u4e00-\u9fa5A-Za-z0-9]+/, '');
+        } else if (tipBadge) {
+          badge = tipBadge.textContent.trim().replace(/^[^\u4e00-\u9fa5A-Za-z0-9]+|[^\u4e00-\u9fa5A-Za-z0-9]+$/g, '');
+        } else {
+          badge = `微考点论述 ${idx + 1}`;
+        }
+        const titleEl = card.querySelector('.stream-card-title, h4, h3');
+        desc = titleEl ? titleEl.textContent.trim() : '';
+      } else if (card.classList.contains('xt-day-point-card')) {
         const tagEl = card.querySelector('.xt-point-num-tag');
         badge = tagEl ? tagEl.textContent.trim() : `考点 ${idx + 1}`;
         desc = '选择题核心题眼';
@@ -1662,7 +1798,7 @@
     if (el.drawerTopicSub && state.activeItem) {
       const item = state.activeItem;
       const subj = state.currentSubject === 'pol' ? '考研政治' : (state.currentSubject === '807' ? '807 综合' : (state.currentSubject === '706' ? '706 综合' : '考研英语'));
-      el.drawerTopicSub.textContent = `${subj} · ${item.title} (${item.score || ''})`;
+      el.drawerTopicSub.textContent = `${subj} · ${item.title}${item.score ? ` (${item.score})` : ''}`;
     }
 
     if (!currentFrameworkSections || currentFrameworkSections.length === 0) {
@@ -1961,6 +2097,26 @@
   }
 
   function playNextItem() {
+    if (state.currentSubject === 'pol' && state.polSubMode === 'recite47' && state.currentTrack === 2 && state.activeItem?.track2?.subCards?.length > 1) {
+      const subCards = state.activeItem.track2.subCards;
+      const curIdx = subCards.findIndex(c => c.cardId === state.polSubCardId);
+      if (curIdx >= 0 && curIdx < subCards.length - 1) {
+        const nextCard = subCards[curIdx + 1];
+        state.polSubCardId = nextCard.cardId;
+        localStorage.setItem('kaoyan_pol_subcard_id', nextCard.cardId);
+        document.querySelectorAll('#polSubcardPills .playlist-chip-btn').forEach(b => {
+          b.classList.toggle('active', b.dataset.cardId === nextCard.cardId);
+        });
+        const bodyEl = document.getElementById('polSubcardBody');
+        if (bodyEl) {
+          bodyEl.innerHTML = nextCard.lectureHtml || '';
+          activateSubCardAudio(nextCard, true);
+          enhanceClozeKeywords();
+          buildFrameworkIndex();
+        }
+        return;
+      }
+    }
     const list = getCurrentItemsList();
     const currIdx = list.findIndex(x => x.id === state.activeItemId);
     if (currIdx !== -1 && currIdx < list.length - 1) {
@@ -1969,6 +2125,26 @@
   }
 
   function playPrevItem() {
+    if (state.currentSubject === 'pol' && state.polSubMode === 'recite47' && state.currentTrack === 2 && state.activeItem?.track2?.subCards?.length > 1) {
+      const subCards = state.activeItem.track2.subCards;
+      const curIdx = subCards.findIndex(c => c.cardId === state.polSubCardId);
+      if (curIdx > 0) {
+        const prevCard = subCards[curIdx - 1];
+        state.polSubCardId = prevCard.cardId;
+        localStorage.setItem('kaoyan_pol_subcard_id', prevCard.cardId);
+        document.querySelectorAll('#polSubcardPills .playlist-chip-btn').forEach(b => {
+          b.classList.toggle('active', b.dataset.cardId === prevCard.cardId);
+        });
+        const bodyEl = document.getElementById('polSubcardBody');
+        if (bodyEl) {
+          bodyEl.innerHTML = prevCard.lectureHtml || '';
+          activateSubCardAudio(prevCard, true);
+          enhanceClozeKeywords();
+          buildFrameworkIndex();
+        }
+        return;
+      }
+    }
     const list = getCurrentItemsList();
     const currIdx = list.findIndex(x => x.id === state.activeItemId);
     if (currIdx > 0) {
@@ -1981,6 +2157,22 @@
     if (el.hudTrackBadge) {
       el.hudTrackBadge.addEventListener('click', (e) => {
         e.stopPropagation();
+        if (state.currentSubject === 'pol') {
+          if (state.polSubMode === 'xutao16') {
+            const nextVoice = state.polXtVoice === 'anlang' ? 'voice' : 'anlang';
+            state.polXtVoice = nextVoice;
+            localStorage.setItem('kaoyan_pol_xt_voice', nextVoice);
+            setXutao16Audio(state.activeItem, nextVoice, !audio.paused);
+            document.querySelectorAll('.xt-voice-btn').forEach(b => {
+              b.classList.toggle('active', b.dataset.voice === nextVoice);
+            });
+            showToast(`已切换至【${nextVoice === 'anlang' ? '龙安朗 AI 干货版' : '徐涛原声带背版'}】`, 2000);
+            return;
+          } else if (state.polSubMode === 'tuijie11') {
+            showToast('当前为腿姐冲刺讲义伴读模式', 2000);
+            return;
+          }
+        }
         const nextTrack = state.currentTrack === 1 ? 2 : 1;
         loadTrackData(nextTrack, state.isPlaying);
       });
@@ -2080,6 +2272,7 @@
         const mode = btn.dataset.polSubmode;
         if (mode && mode !== state.polSubMode) {
           state.polSubMode = mode;
+          localStorage.setItem('kaoyan_pol_submode', mode);
           document.querySelectorAll('.pol-submode-btn').forEach(b => {
             b.classList.toggle('active', b.dataset.polSubmode === mode);
           });
@@ -2099,6 +2292,7 @@
         const cat = btn.dataset.polCat;
         if (cat) {
           state.polCategory = cat;
+          localStorage.setItem('kaoyan_pol_cat', cat);
           document.querySelectorAll('[data-pol-cat]').forEach(b => {
             b.classList.toggle('active', b.dataset.polCat === cat);
           });
@@ -2868,7 +3062,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.0.2';
+  const APP_BUILD_ID = '3.0.3';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -2901,8 +3095,14 @@
     // 全流程可视化更新引擎 (Visual Progress Flow)
   let isUpdatingApp = false;
 
+  function triggerSilentSeamlessUpdate(targetVer) {
+    window.__manualSwUpdateRequested = true;
+    return performVisualUpdateFlow(targetVer);
+  }
+
   async function performVisualUpdateFlow(targetVer) {
     if (isUpdatingApp) return;
+    window.__manualSwUpdateRequested = true;
     isUpdatingApp = true;
 
     const banner = document.getElementById('updateBannerPill');
@@ -3101,8 +3301,10 @@
           if (installingWorker) {
             installingWorker.onstatechange = () => {
               if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                console.log('[PWA] 发现并激活新版本 v1.9.8，自动极速重载...');
-                window.location.reload();
+                console.log('[PWA] 发现新版本 Service Worker，等待更新触发');
+                if (window.__manualSwUpdateRequested) {
+                  window.location.reload();
+                }
               }
             };
           }
@@ -3114,7 +3316,7 @@
 
     let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (!refreshing) {
+      if (window.__manualSwUpdateRequested && !refreshing) {
         refreshing = true;
         window.location.reload();
       }
@@ -3130,17 +3332,11 @@
     setupVersionHandlers();
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startApp);
-  } else {
-    startApp();
-  }
-
 
   // ==========================================
   // 考研政治模块扩展引擎 (PolEngine V3.0)
   // ==========================================
-  let isPolDataLoading = false;
+
 
   function ensurePolDataLoaded() {
     if (window.KAOYAN_POL_DATA) {
@@ -3163,7 +3359,7 @@
     showToast('正在加载考研政治背诵手卷...', 2000);
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = 'data/kaoyan_data_pol.js';
+      script.src = 'data/kaoyan_data_pol.js?v=3.0.3';
       script.onload = () => {
         isPolDataLoading = false;
         state.polData = window.KAOYAN_POL_DATA;
@@ -3354,12 +3550,16 @@
       idx: s.idx !== undefined ? s.idx : idx
     }));
 
-    el.paperContent.querySelectorAll('[data-sent-idx], [id^="recite_bar_"], [id^="recite_blk_"]').forEach(elItem => {
+    el.paperContent.querySelectorAll('[data-sent-idx], [id^="recite_bar_"], [id^="recite_blk_"], .recite-sent-item, .recite-sentence').forEach(elItem => {
       elItem.addEventListener('click', (e) => {
         if (e.target.closest('.cloze') || e.target.closest('.kw-red')) return;
+        if (state.clozeMode === 'body') {
+          elItem.classList.toggle('cloze-revealed');
+          return;
+        }
         const domId = elItem.id;
         const sentIdx = elItem.dataset.sentIdx !== undefined ? parseInt(elItem.dataset.sentIdx, 10) : NaN;
-        const matched = state.activeSentences.find(s => (domId && s.domId === domId) || (!isNaN(sentIdx) && (s.idx === sentIdx || s.id === sentIdx)));
+        const matched = state.activeSentences.find(s => (domId && (s.domId === domId || s.id === domId)) || (!isNaN(sentIdx) && (s.idx === sentIdx || s.id === sentIdx)));
         if (matched) {
           seekToSentence(matched.id, matched.start);
         }
@@ -3458,11 +3658,15 @@
           toggleAudioPlayback();
         });
       });
-      bodyEl.querySelectorAll('[data-sent-idx]').forEach(span => {
+      bodyEl.querySelectorAll('[data-sent-idx], .recite-sentence').forEach(span => {
         span.addEventListener('click', (e) => {
           if (e.target.closest('.cloze') || e.target.closest('.kw-red')) return;
+          if (state.clozeMode === 'body') {
+            span.classList.toggle('cloze-revealed');
+            return;
+          }
           const sentIdx = parseInt(span.dataset.sentIdx, 10);
-          const matched = state.activeSentences.find(s => s.id === sentIdx || s.idx === sentIdx);
+          const matched = state.activeSentences.find(s => s.id === sentIdx || s.idx === sentIdx || (span.id && s.id === span.id));
           if (matched) {
             seekToSentence(matched.id, matched.start);
           }
@@ -3485,10 +3689,10 @@
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line-subtle, rgba(0,0,0,0.08));">
         <div class="xt-voice-switcher" id="xtVoiceSwitcher">
           <button type="button" class="xt-voice-btn ${state.polXtVoice === 'anlang' ? 'active' : ''}" data-voice="anlang">
-            🎙️ 龙安朗 AI 干货版
+            <svg class="pol-btn-svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg> 龙安朗 AI 干货版
           </button>
           <button type="button" class="xt-voice-btn ${state.polXtVoice === 'voice' ? 'active' : ''}" data-voice="voice">
-            👨‍🏫 徐涛原声带背版
+            <svg class="pol-btn-svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg> 徐涛原声带背版
           </button>
         </div>
         <button type="button" class="seal-btn ${isMastered ? 'sealed' : ''}" id="sealBtn_${dayItem.id}">
@@ -3523,6 +3727,7 @@
         const v = btn.dataset.voice;
         if (v !== state.polXtVoice) {
           state.polXtVoice = v;
+          localStorage.setItem('kaoyan_pol_xt_voice', v);
           voiceBtns.forEach(b => b.classList.toggle('active', b === btn));
           const currentPointIdx = Math.max(0, state.currentSentIndex);
           setXutao16Audio(dayItem, v, state.isPlaying, currentPointIdx);
@@ -3534,6 +3739,10 @@
     el.paperContent.querySelectorAll('.xt-day-point-card').forEach(card => {
       card.addEventListener('click', (e) => {
         if (e.target.closest('.cloze') || e.target.closest('.kw-red')) return;
+        if (state.clozeMode === 'body') {
+          card.classList.toggle('cloze-revealed');
+          return;
+        }
         const pIdx = parseInt(card.dataset.pointIdx, 10);
         const p = points[pIdx];
         if (p) {
@@ -3580,6 +3789,7 @@
       audio.play().catch(e => console.log('Autoplay prevented:', e));
     }
     updatePlayBtnUI();
+    buildFrameworkIndex();
   }
 
   function renderPolTuijie11(dayItem, autoPlay = false) {
@@ -3591,7 +3801,7 @@
     const topBarHtml = `
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line-subtle, rgba(0,0,0,0.08));">
         <div>
-          <span style="font-weight:700;color:var(--vermilion, #b91c1c);font-size:16px;">🔥 腿姐带背 · Day ${dayItem.day} 冲刺讲义</span>
+          <span style="font-weight:700;color:var(--vermilion, #b91c1c);font-size:16px;"><svg class="pol-btn-svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> 腿姐带背 · Day ${dayItem.day} 冲刺讲义</span>
           ${dayItem.subtitle ? `<div style="font-size:12.5px;color:var(--ink-muted);margin-top:2px;">${dayItem.subtitle}</div>` : ''}
         </div>
         <button type="button" class="seal-btn ${isMastered ? 'sealed' : ''}" id="sealBtn_${dayItem.id}">
@@ -3632,7 +3842,7 @@
       pointsHtml = `
         <div class="tj-points-box" style="margin-top:24px;padding:18px;background:var(--paper-subtle, var(--bg-card));border-radius:12px;border:1.5px dashed var(--vermilion, #b91c1c);">
           <div class="tj-points-title" style="font-size:15px;font-weight:800;color:var(--vermilion, #b91c1c);margin-bottom:12px;display:flex;align-items:center;gap:6px;">
-            <span>🎯 高频命题与辨析考点</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;"><svg class="pol-btn-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 高频命题与辨析考点</span>
           </div>
           <div class="tj-points-list" style="display:flex;flex-direction:column;gap:10px;">
             ${dayItem.points.map(p => `
@@ -3688,10 +3898,114 @@
   function enhanceClozeKeywords() {
     if (!el.paperContent) return;
 
-    // 1. 全科通用首字弱提示 (Ghost Hint)：为 807/706/en 中的 .kw-red 自动补充 data-ghost="首字···"
-    const redKeywords = el.paperContent.querySelectorAll('.kw-red:not([data-ghost])');
-    redKeywords.forEach(kw => {
-      const text = kw.textContent.trim();
+    // 0. 政治作用域自动关键词标记识别
+    if (el.paperContent.classList.contains('pol-scope')) {
+      // 轨二微考点关键词
+      el.paperContent.querySelectorAll('.stream-kw:not(.cloze)').forEach(elKw => {
+        elKw.classList.add('cloze');
+      });
+      // 徐涛 16 天考点重点
+      el.paperContent.querySelectorAll('.xt-point-content strong:not(.cloze)').forEach(st => {
+        st.classList.add('cloze');
+      });
+      // 腿姐 11 天核心考点与重点加粗短语
+      el.paperContent.querySelectorAll('.tj-point-text').forEach(pText => {
+        if (!pText.querySelector('strong, .cloze')) {
+          const raw = pText.innerHTML;
+          let enhanced = raw.replace(/([“《][^”》]+[”》])/g, '<span class="cloze pol-auto-cloze">$1</span>');
+          if (enhanced === raw) {
+            // 若无引号书名号，提取冒号、是、在于或括号内的核心题眼
+            const m = raw.match(/(：|在于|是)([^，。；！？\n<]{2,28})/);
+            if (m) {
+              const marker = m[1];
+              const phrase = m[2];
+              enhanced = raw.replace(m[0], `${marker}<span class="cloze pol-auto-cloze">${phrase}</span>`);
+            } else if (/[（(][^）)]+[）)]/.test(raw)) {
+              enhanced = raw.replace(/([（(][^）)]+[）)])/, '<span class="cloze pol-auto-cloze">$1</span>');
+            } else if (raw.includes('，')) {
+              const parts = raw.split('，');
+              if (parts.length >= 2 && parts[1].trim().length >= 3) {
+                const clause = parts[1].replace(/[。；！？\n].*$/, '').trim();
+                if (clause.length >= 3 && !clause.includes('<')) {
+                  enhanced = raw.replace(clause, `<span class="cloze pol-auto-cloze">${clause}</span>`);
+                }
+              }
+            } else if (raw.trim().length >= 4 && !raw.includes('<')) {
+              const phrase = raw.trim();
+              enhanced = `<span class="cloze pol-auto-cloze">${phrase}</span>`;
+            }
+          }
+          if (enhanced !== raw) {
+            pText.innerHTML = enhanced;
+          }
+        }
+      });
+      el.paperContent.querySelectorAll('.tj-point-text strong:not(.cloze)').forEach(st => {
+        st.classList.add('cloze');
+      });
+
+      // 轨二微考点 (#polSubcardBody / .lecture-structured-wrap) 自动关键词补全
+      const polSubcardBody = el.paperContent.querySelector('#polSubcardBody') || el.paperContent.querySelector('.lecture-structured-wrap');
+      if (polSubcardBody) {
+        const sents = polSubcardBody.querySelectorAll('.recite-sentence, .stream-takeaway-text .recite-sentence, .stream-outline-row .recite-sentence, .stream-intro-row .recite-sentence');
+        sents.forEach(sent => {
+          if (sent.querySelector('.cloze, .stream-kw')) return;
+          const raw = sent.innerHTML;
+          if (raw.includes('<span class="cloze') || raw.includes('<span class="stream-kw')) return;
+
+          let enhanced = raw;
+          if (/[“《][^”》]+[”》]/.test(raw)) {
+            enhanced = raw.replace(/([“《][^”》]+[”》])/g, '<span class="cloze pol-auto-cloze">$1</span>');
+          } else {
+            const m = raw.match(/(：|在于|是)([^，。；！？\n<]{2,28})/);
+            if (m) {
+              const marker = m[1];
+              const phrase = m[2];
+              enhanced = raw.replace(m[0], `${marker}<span class="cloze pol-auto-cloze">${phrase}</span>`);
+            } else if (raw.includes('，')) {
+              const parts = raw.split('，');
+              if (parts.length >= 2) {
+                const second = parts[1].replace(/[，。；！？\n].*$/, '').trim();
+                if (second.length >= 3 && !second.includes('<')) {
+                  enhanced = raw.replace(second, `<span class="cloze pol-auto-cloze">${second}</span>`);
+                }
+              }
+            } else {
+              const clean = raw.replace(/[。；！？\n]+$/, '').trim();
+              if (clean.length >= 6 && !clean.includes('<')) {
+                const core = clean.length > 10 ? clean.substring(2, clean.length - 2) : clean.substring(1);
+                enhanced = raw.replace(core, `<span class="cloze pol-auto-cloze">${core}</span>`);
+              }
+            }
+          }
+          if (enhanced !== raw) {
+            sent.innerHTML = enhanced;
+          }
+        });
+      }
+
+      // 兜底保障：若腿姐或其它政治页面中仍未产生 .cloze，则在正文首批句子中自动构建挖空
+      if (el.paperContent.querySelectorAll('.cloze').length === 0) {
+        el.paperContent.querySelectorAll('.recite-sent, .recite-sent-item').forEach(sent => {
+          if (sent.querySelector('.cloze')) return;
+          const raw = sent.innerHTML;
+          if (raw.includes('<span class="cloze')) return;
+          if (/[“《][^”》]+[”》]/.test(raw)) {
+            sent.innerHTML = raw.replace(/([“《][^”》]+[”》])/, '<span class="cloze pol-auto-cloze">$1</span>');
+          } else {
+            const m = raw.match(/(：|在于|是)([^，。；！？\n<]{2,28})/);
+            if (m) {
+              sent.innerHTML = raw.replace(m[0], `${m[1]}<span class="cloze pol-auto-cloze">${m[2]}</span>`);
+            }
+          }
+        });
+      }
+    }
+
+    // 1. 全科通用首字弱提示 (Ghost Hint)：为 .kw-red 与 .cloze:not([data-ghost]) 自动补充 data-ghost="首字···"
+    const needGhosts = el.paperContent.querySelectorAll('.kw-red:not([data-ghost]), .cloze:not([data-ghost]), .stream-kw:not([data-ghost])');
+    needGhosts.forEach(kw => {
+      let text = kw.textContent.trim().replace(/^[“《(\[{【（]+/, '');
       if (text.length > 0) {
         const firstChar = text.charAt(0);
         kw.setAttribute('data-ghost', `${firstChar}···`);
@@ -3699,7 +4013,7 @@
     });
 
     // 2. 为所有 .cloze 与 .kw-red 绑定独立单点揭晓/遮蔽事件，并阻止冒泡
-    const allClozes = el.paperContent.querySelectorAll('.cloze, .kw-red');
+    const allClozes = el.paperContent.querySelectorAll('.cloze, .kw-red, .stream-kw');
     allClozes.forEach(kw => {
       if (kw.dataset.clozeBound) return;
       kw.dataset.clozeBound = '1';
@@ -3756,5 +4070,12 @@
     if (ev && ev.stopPropagation) ev.stopPropagation();
     toggleAudioPlayback();
   };
+
+  // 确保 IIFE 内部所有变量、函数与垫片完全初始化后启动
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startApp);
+  } else {
+    startApp();
+  }
 
 })();
