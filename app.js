@@ -1275,10 +1275,13 @@
             }
             updateHUDDisplay(savedTime);
             if (state.activeSentences && state.activeSentences.length > 0) {
-              const matchedSent = state.activeSentences.find(s => savedTime >= s.start && savedTime < s.end);
-              if (matchedSent) {
-                state.currentSentIndex = state.activeSentences.indexOf(matchedSent);
-                highlightSentence(matchedSent.id);
+              let activeIdx = state.activeSentences.findIndex(s => savedTime >= s.start && savedTime < s.end);
+              if (activeIdx === -1) {
+                activeIdx = findActiveSentenceIndex(savedTime);
+              }
+              if (activeIdx !== -1) {
+                state.currentSentIndex = activeIdx;
+                highlightSentence(state.activeSentences[activeIdx].id);
               }
             }
           };
@@ -1448,8 +1451,8 @@
     const sentObj = (state.activeSentences || []).find(s => String(s.id ?? s.domId ?? s.idx) === String(sentId));
 
     const targetEl = document.getElementById(String(sentId)) ||
-                     (el.paperContent ? el.paperContent.querySelector(`[data-sent-id="${sentId}"], .recite-sent[data-sent-id="${sentId}"], .xt-day-point-card[data-point-id="${sentId}"], .tj-point-row[data-sent-id="${sentId}"]`) : null) ||
-                     (sentObj && sentObj.idx !== undefined && el.paperContent ? el.paperContent.querySelector(`.recite-sent-item[data-sent-idx="${sentObj.idx}"], .recite-sentence[data-sent-idx="${sentObj.idx}"], [data-sent-idx="${sentObj.idx}"]`) : null);
+                     (el.paperContent ? el.paperContent.querySelector(`[data-sent-id="${sentId}"], .recite-sent[data-sent-id="${sentId}"], .tj-sent-span[data-sent-id="${sentId}"], .xt-day-point-card[data-point-id="${sentId}"], .tj-point-card[data-point-id="${sentId}"]`) : null) ||
+                     (sentObj && sentObj.idx !== undefined && el.paperContent ? el.paperContent.querySelector(`.recite-sent-item[data-sent-idx="${sentObj.idx}"], .recite-sentence[data-sent-idx="${sentObj.idx}"], .tj-sent-span[data-sent-idx="${sentObj.idx}"], [data-sent-idx="${sentObj.idx}"]`) : null);
 
     if (targetEl) {
       targetEl.classList.add('active-spotlight');
@@ -1506,7 +1509,7 @@
     }
     
     cards.forEach((card, idx) => {
-      const cardSents = card.querySelectorAll('.recite-sent, .recite-sent-item, .recite-sentence, .tj-point-row, [data-sent-idx]');
+      const cardSents = card.querySelectorAll('.recite-sent, .recite-sent-item, .recite-sentence, .tj-sent-span, .tj-point-card, [data-sent-idx]');
       const firstSent = cardSents.length > 0 ? cardSents[0] : null;
       const lastSent = cardSents.length > 0 ? cardSents[cardSents.length - 1] : null;
       let start = firstSent ? parseFloat(firstSent.dataset.start || 0) : 0;
@@ -2624,11 +2627,23 @@
       });
     }
 
-    // 监听正文区域用户手动滚动，短时间内不强制打断滚动视图
+    // 监听正文区域及全局主舞台用户手动滚动/滑动/触控，防打架 (Bug Fix 4)
+    const markUserScroll = () => {
+      state.lastUserScrollTime = Date.now();
+    };
+    const mainStageEl = document.querySelector('.main-stage');
+    if (mainStageEl) {
+      mainStageEl.addEventListener('scroll', markUserScroll, { passive: true });
+      mainStageEl.addEventListener('wheel', markUserScroll, { passive: true });
+      mainStageEl.addEventListener('touchmove', markUserScroll, { passive: true });
+    }
+    window.addEventListener('scroll', markUserScroll, { passive: true });
+    window.addEventListener('wheel', markUserScroll, { passive: true });
+    window.addEventListener('touchmove', markUserScroll, { passive: true });
     if (el.paperContent) {
-      el.paperContent.addEventListener('scroll', () => {
-        state.lastUserScrollTime = Date.now();
-      }, { passive: true });
+      el.paperContent.addEventListener('scroll', markUserScroll, { passive: true });
+      el.paperContent.addEventListener('wheel', markUserScroll, { passive: true });
+      el.paperContent.addEventListener('touchmove', markUserScroll, { passive: true });
     }
 
 
@@ -3062,7 +3077,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.0.3';
+  const APP_BUILD_ID = '3.0.4';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -3359,7 +3374,7 @@
     showToast('正在加载考研政治背诵手卷...', 2000);
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = 'data/kaoyan_data_pol.js?v=3.0.3';
+      script.src = 'data/kaoyan_data_pol.js?v=3.0.4';
       script.onload = () => {
         isPolDataLoading = false;
         state.polData = window.KAOYAN_POL_DATA;

@@ -479,10 +479,24 @@ def main():
                     txt = txt.replace("★", STAR_SVG)
                 processed_points.append({"label": lbl.strip(), "text": txt.strip()})
 
-        processed_sections = []
+        # Check for orphan sentences not referenced in any section's sent_indices
+        all_referenced = set()
         for sec in day_data.get("sections", []):
+            for s_idx in sec.get("sent_indices", []):
+                all_referenced.add(s_idx)
+        orphan_indices = [i for i in range(len(sentences)) if i not in all_referenced]
+
+        processed_sections = []
+        raw_sections = day_data.get("sections", [])
+        for s_i, sec in enumerate(raw_sections):
             sec_obj = dict(sec)
-            sent_indices = sec.get("sent_indices", [])
+            sent_indices = list(sec.get("sent_indices", []))
+            # 自动将末尾遗漏未编入 section 的孤儿句子补齐至末尾 section (Fix 2: Day 05 sent 19, 20)
+            if s_i == len(raw_sections) - 1 and orphan_indices:
+                print(f"  Day {day_num:02d}: Appending orphan sentence indices {orphan_indices} to last section '{sec.get('title')}'")
+                sent_indices.extend(orphan_indices)
+                sec_obj["sent_indices"] = sent_indices
+
             resolved_sents = []
             for idx in sent_indices:
                 if 0 <= idx < len(sentences):
@@ -513,7 +527,7 @@ def main():
 
     # 5. 组合为 window.KAOYAN_POL_DATA 并序列化
     output_obj = {
-        "version": "3.0.3",
+        "version": "3.0.4",
         "chapters47": chapters47,
         "xutao16": processed_xt16,
         "tuijie11": processed_tj11

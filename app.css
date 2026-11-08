@@ -796,6 +796,8 @@ body {
 }
 
 .recite-sent.active-spotlight,
+.tj-sent-span.active-spotlight,
+.recite-part-badge.active-spotlight,
 [data-sent-idx].active-spotlight,
 .recite-sent-item.active-spotlight,
 .recite-sentence.active-spotlight,
@@ -809,6 +811,8 @@ body {
 }
 
 [data-theme="dark"] .recite-sent.active-spotlight,
+[data-theme="dark"] .tj-sent-span.active-spotlight,
+[data-theme="dark"] .recite-part-badge.active-spotlight,
 [data-theme="dark"] [data-sent-idx].active-spotlight,
 [data-theme="dark"] .recite-sent-item.active-spotlight,
 [data-theme="dark"] .recite-sentence.active-spotlight,
@@ -3864,10 +3868,11 @@ body {
 
 
 #paper-content.cloze-body .recite-sent:not(.thesis-sent):not(.active-spotlight):not(.cloze-revealed),
+#paper-content.cloze-body .tj-sent-span:not(.active-spotlight):not(.cloze-revealed),
 #paper-content.cloze-body .recite-sent-item:not(.active-spotlight):not(.cloze-revealed),
 #paper-content.cloze-body .recite-sentence:not(.active-spotlight):not(.cloze-revealed),
 #paper-content.cloze-body .xt-day-point-card:not(.active-spotlight):not(.cloze-revealed) .xt-point-content,
-#paper-content.cloze-body .tj-point-row:not(.active-spotlight):not(.cloze-revealed) .tj-point-text {
+#paper-content.cloze-body .tj-point-card:not(.active-spotlight):not(.cloze-revealed) .tj-point-text {
   filter: blur(6px);
   opacity: 0.65;
   transition: filter 0.25s ease, opacity 0.25s ease;
@@ -3876,14 +3881,16 @@ body {
 
 #paper-content.cloze-body .recite-sent:not(.thesis-sent):not(.active-spotlight):hover,
 #paper-content.cloze-body .recite-sent.cloze-revealed,
+#paper-content.cloze-body .tj-sent-span:not(.active-spotlight):hover,
+#paper-content.cloze-body .tj-sent-span.cloze-revealed,
 #paper-content.cloze-body .recite-sent-item:not(.active-spotlight):hover,
 #paper-content.cloze-body .recite-sent-item.cloze-revealed,
 #paper-content.cloze-body .recite-sentence:not(.active-spotlight):hover,
 #paper-content.cloze-body .recite-sentence.cloze-revealed,
 #paper-content.cloze-body .xt-day-point-card:not(.active-spotlight):hover .xt-point-content,
 #paper-content.cloze-body .xt-day-point-card.cloze-revealed .xt-point-content,
-#paper-content.cloze-body .tj-point-row:not(.active-spotlight):hover .tj-point-text,
-#paper-content.cloze-body .tj-point-row.cloze-revealed .tj-point-text {
+#paper-content.cloze-body .tj-point-card:not(.active-spotlight):hover .tj-point-text,
+#paper-content.cloze-body .tj-point-card.cloze-revealed .tj-point-text {
   filter: none;
   opacity: 1;
 }
@@ -7324,6 +7331,32 @@ body.dock-expanded .dock-fab-play {
 
 [data-theme="dark"] .pol-scope .xt-table tr:hover td {
   background: rgba(255, 255, 255, 0.03);
+}
+
+/* ---------------- 对比表格行实时高亮样式穿透 (Bug Fix 3) ---------------- */
+.pol-scope .xt-table tr.recite-sent-item.active-spotlight td,
+.pol-scope .xt-table tr.recite-sent-item.active-spotlight th,
+.pol-scope table tr.active-spotlight td,
+.pol-scope table tr.active-spotlight th {
+  background-color: var(--spotlight-bg, rgba(217, 119, 87, 0.16)) !important;
+  color: var(--spotlight-text, #8b261d) !important;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.pol-scope .xt-table tr.recite-sent-item.active-spotlight td:first-child,
+.pol-scope .xt-table tr.recite-sent-item.active-spotlight th:first-child {
+  box-shadow: inset 3px 0 0 var(--vermilion, #b8332a) !important;
+}
+
+[data-theme="dark"] .pol-scope .xt-table tr.recite-sent-item.active-spotlight td,
+[data-theme="dark"] .pol-scope .xt-table tr.recite-sent-item.active-spotlight th,
+[data-theme="dark"] .pol-scope table tr.active-spotlight td,
+[data-theme="dark"] .pol-scope table tr.active-spotlight th {
+  background-color: rgba(245, 158, 11, 0.2) !important;
+  color: #fff2db !important;
+}
+[data-theme="dark"] .pol-scope .xt-table tr.recite-sent-item.active-spotlight td:first-child,
+[data-theme="dark"] .pol-scope .xt-table tr.recite-sent-item.active-spotlight th:first-child {
+  box-shadow: inset 3px 0 0 #f59e0b !important;
 }
 
 /* ---------------- 4. 徐涛命题思路与避坑红线框 (.xt-trap-card) ---------------- */

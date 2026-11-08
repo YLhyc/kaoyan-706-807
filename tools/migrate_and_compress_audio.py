@@ -138,8 +138,9 @@ def main():
         d = xt["day"]
         fan = f"xt_anlang_d{d:02d}.mp3"
         fvo = f"xt_voice_d{d:02d}.mp3"
+        fsrc_vo = f"xt_d{d:02d}.mp3"
         pol_tasks[os.path.join(dst_xt_dir, fan)] = os.path.join(POL_SRC_XUTAO, fan)
-        pol_tasks[os.path.join(dst_xt_dir, fvo)] = os.path.join(POL_SRC_XUTAO, fvo)
+        pol_tasks[os.path.join(dst_xt_dir, fvo)] = os.path.join(POL_SRC_XUTAO, fsrc_vo)
 
     # tuijie 11 days
     dst_tj_dir = os.path.join(BASE_DST, "audio_tuijie")
