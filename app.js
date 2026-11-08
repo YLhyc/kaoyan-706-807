@@ -1175,10 +1175,13 @@
   // 工业级启发式时间轴匹配引擎 (消除静音空隙与跳跃，第一性原理纠偏)
   function findActiveSentenceIndex(currentTime) {
     if (!state.activeSentences || state.activeSentences.length === 0) return -1;
-    const offset = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.08;
-    const t = currentTime + offset;
+    // 倍速自适应动态前瞻补偿：基础 80ms，根据播放倍速自动微调，确保高倍速下人耳听音与视觉聚光始终 0 延迟咬合
+    const rate = (audio && audio.playbackRate > 0) ? audio.playbackRate : (state.speed || 1.0);
+    const baseOffset = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.08;
+    const dynamicOffset = baseOffset * Math.sqrt(rate);
+    const t = currentTime + dynamicOffset;
 
-    // 基于严格单调递增的 PA-PAT 物理声学时间戳匹配
+    // 基于严格单调递增的物理声学时间戳匹配
     for (let i = state.activeSentences.length - 1; i >= 0; i--) {
       const s = state.activeSentences[i];
       if (t >= s.start) {
@@ -1206,9 +1209,11 @@
       }
       lastSpotlightEl = targetEl;
 
-      // 智能视口可见性避让 (避免每秒调用 smooth 滚动造成高倍速下的掉帧与滞后)
+      // 智能视口可见性避让 (倍速自适应节流，避免高倍速下的掉帧与滞后)
       const now = Date.now();
-      if (now - state.lastUserScrollTime > 2000 && now - lastScrollTs > 800) {
+      const rate = (audio && audio.playbackRate > 0) ? audio.playbackRate : (state.speed || 1.0);
+      const throttleInterval = Math.max(350, Math.round(800 / rate));
+      if (now - state.lastUserScrollTime > 2000 && now - lastScrollTs > throttleInterval) {
         const rect = targetEl.getBoundingClientRect();
         const vh = window.innerHeight || 800;
         // 安全视线区：顶部留出 110px 避开顶栏，底部留出 180px 避开底栏
