@@ -204,6 +204,7 @@
     el.count807 = document.getElementById('count-807');
     el.count706 = document.getElementById('count-706');
     el.countEn = document.getElementById('count-en');
+    el.countPol = document.getElementById('count-pol');
     
     el.headerVoiceBadge = document.getElementById('headerVoiceBadge');
     el.filterPillsWrap = document.getElementById('filter-pills-wrap');
@@ -474,6 +475,23 @@
     if (el.countEn) {
       el.countEn.innerHTML = `${iEn.length}篇${mEn > 0 ? ` · <span style="color:var(--vermilion);font-weight:700;">${checkIconSvg}${mEn}</span>` : ''}`;
     }
+
+    let polItems = [];
+    if (window.KAOYAN_POL_DATA) {
+      polItems = [
+        ...(window.KAOYAN_POL_DATA.chapters47 || []),
+        ...(window.KAOYAN_POL_DATA.xutao16 || []),
+        ...(window.KAOYAN_POL_DATA.tuijie11 || [])
+      ];
+    }
+    const polTotal = polItems.length || 74;
+    const mPol = polItems.length
+      ? polItems.filter(x => getMasteryStatus(x.id) === 'mastered').length
+      : Object.keys(state.masteryState).filter(k => (k.startsWith('ch_') || k.startsWith('pol_')) && state.masteryState[k] === 'mastered').length;
+
+    if (el.countPol) {
+      el.countPol.innerHTML = `${polTotal}讲${mPol > 0 ? ` · <span style="color:var(--vermilion);font-weight:700;">${checkIconSvg}${mPol}</span>` : ''}`;
+    }
   }
 
   function renderFilterPills() {
@@ -579,6 +597,10 @@
       if (el.polSubmodeBar) el.polSubmodeBar.style.display = 'none';
       if (el.polCategoryPills) el.polCategoryPills.style.display = 'none';
       if (el.filterPillsWrap) el.filterPillsWrap.style.display = 'flex';
+      if (el.scoreFilterWrap) el.scoreFilterWrap.style.display = (sub === 'en' ? 'none' : '');
+      if (el.trackTabs) el.trackTabs.style.display = '';
+      updateTrackTabLabels();
+      if (el.paperContent) el.paperContent.classList.remove('pol-scope');
     }
 
     state.tierFilter = 'all';
@@ -719,9 +741,11 @@
           }
         } catch(e) {}
       }
+      state.masteryMap = state.masteryState;
     } catch (e) {
       console.warn('Failed to parse kaoyan_mastery_state:', e);
       state.masteryState = {};
+      state.masteryMap = state.masteryState;
     }
 
     try {
@@ -869,6 +893,19 @@
       if (el.masteryBtnText) el.masteryBtnText.textContent = '未背诵';
       el.btnMasteryToggle.title = '当前考题：未背诵 · 点击切换为磨耳熟悉中';
     }
+
+    // 实时联动同步页面上所有 .seal-btn 研毕印章按钮状态
+    if (el.paperContent) {
+      const sealBtns = el.paperContent.querySelectorAll('.seal-btn, [id^="sealBtn_"]');
+      sealBtns.forEach(b => {
+        const isMastered = (status === 'mastered');
+        b.classList.toggle('sealed', isMastered);
+        const spans = b.querySelectorAll('span');
+        if (spans.length >= 2) {
+          spans[1].textContent = isMastered ? '已落印研毕' : '落印研毕';
+        }
+      });
+    }
   }
 
   function openStudyDashboard() {
@@ -906,7 +943,15 @@
     const items807 = state.allData.items_807 || [];
     const items706 = state.allData.items_706 || [];
     const itemsEn = state.allData.items_en || [];
-    const allItems = [...items807, ...items706, ...itemsEn];
+    let polItems = [];
+    if (window.KAOYAN_POL_DATA) {
+      polItems = [
+        ...(window.KAOYAN_POL_DATA.chapters47 || []),
+        ...(window.KAOYAN_POL_DATA.xutao16 || []),
+        ...(window.KAOYAN_POL_DATA.tuijie11 || [])
+      ];
+    }
+    const allItems = [...items807, ...items706, ...itemsEn, ...polItems];
 
     function calcStats(list) {
       let m = 0, f = 0, u = 0;
@@ -1071,7 +1116,7 @@
     el.stageTier.className = `tier-badge tier-${item.level}`;
     
     if (el.hudTitleText) {
-      const subjPrefix = state.currentSubject === '807' ? '807' : (state.currentSubject === '706' ? '706' : '英语');
+      const subjPrefix = state.currentSubject === 'pol' ? '考研政治' : (state.currentSubject === '807' ? '807' : (state.currentSubject === '706' ? '706' : '英语'));
       el.hudTitleText.textContent = `${subjPrefix} · ${item.title}${item.score ? ' (' + item.score + ')' : ''}`;
     }
 
@@ -1089,6 +1134,10 @@
   }
 
   function loadTrackData(trackNum, autoPlay = false, restoreTime = false) {
+    if (state.currentSubject === 'pol') {
+      loadPolTrackData(trackNum, autoPlay, restoreTime);
+      return;
+    }
     state.currentTrack = trackNum;
     state.currentSentIndex = -1;
     state.loopCount = 0;
@@ -1198,6 +1247,7 @@
   function renderPaperContent(trackObj, sentences) {
     if (!el.paperContent) return;
     el.paperContent.innerHTML = '';
+    applyClozeClassToPaper();
 
     if (!trackObj) {
       el.paperContent.innerHTML = `<p class="paper-paragraph" style="color: var(--ink-muted);">暂无内容</p>`;
@@ -1274,17 +1324,17 @@
   }
 
   function highlightSentence(sentId) {
-    if (lastSpotlightEl && String(lastSpotlightEl.dataset.sentId) === String(sentId)) {
-      return;
-    }
+    const lastId = lastSpotlightEl ? (lastSpotlightEl.dataset.sentId ?? lastSpotlightEl.dataset.sentIdx ?? lastSpotlightEl.dataset.pointId ?? lastSpotlightEl.id) : null;
+    if (lastSpotlightEl && String(lastId) === String(sentId)) return;
 
     if (lastSpotlightEl) {
       lastSpotlightEl.classList.remove('active-spotlight');
       lastSpotlightEl.classList.remove('loop-sent-active');
     }
 
-    const targetEl = document.querySelector(`.recite-sent[data-sent-id="${sentId}"]`) ||
-                     document.querySelector(`span[data-sent-idx="${sentId}"]`) ||
+    const targetEl = (sentId ? document.getElementById(String(sentId)) : null) ||
+                     document.querySelector(`.recite-sent[data-sent-id="${sentId}"]`) ||
+                     document.querySelector(`[data-sent-idx="${sentId}"]`) ||
                      document.querySelector(`.xt-day-point-card[data-point-id="${sentId}"]`);
     if (targetEl) {
       targetEl.classList.add('active-spotlight');
@@ -1332,15 +1382,25 @@
 
     if (!el.paperContent) return;
 
-    const cards = el.paperContent.querySelectorAll('.exam-section-card, .logic-block-card, section.exam-section-card');
+    const cards = el.paperContent.querySelectorAll('.exam-section-card, .logic-block-card, section.exam-section-card, .xt-section, .xt-day-point-card, .stream-card');
     
     cards.forEach((card, idx) => {
-      const cardSents = card.querySelectorAll('.recite-sent');
+      const cardSents = card.querySelectorAll('.recite-sent, .recite-sentence, [data-sent-idx]');
       const firstSent = cardSents.length > 0 ? cardSents[0] : null;
       const lastSent = cardSents.length > 0 ? cardSents[cardSents.length - 1] : null;
-      const start = firstSent ? parseFloat(firstSent.dataset.start || 0) : 0;
+      let start = firstSent ? parseFloat(firstSent.dataset.start || 0) : 0;
       let end = lastSent ? parseFloat(lastSent.dataset.end || 0) : 0;
-      const sentId = firstSent ? firstSent.dataset.sentId : null;
+      let sentId = firstSent ? (firstSent.dataset.sentId ?? firstSent.dataset.sentIdx ?? firstSent.id) : null;
+
+      if (card.classList.contains('xt-day-point-card')) {
+        const pId = card.dataset.pointId;
+        const matchedPt = state.activeSentences ? state.activeSentences.find(s => String(s.id) === String(pId)) : null;
+        if (matchedPt) {
+          start = matchedPt.start;
+          end = matchedPt.end;
+          sentId = pId;
+        }
+      }
 
       let badge = '';
       let desc = '';
@@ -1350,7 +1410,16 @@
       const logicTitleEl = card.querySelector('.logic-block-title h3, h3');
       const qaBadgeEl = card.querySelector('.qa-badge');
 
-      if (secBadgeEl) {
+      if (card.classList.contains('xt-day-point-card')) {
+        const tagEl = card.querySelector('.xt-point-num-tag');
+        badge = tagEl ? tagEl.textContent.trim() : `考点 ${idx + 1}`;
+        desc = '选择题核心题眼';
+      } else if (card.classList.contains('xt-section') || card.classList.contains('tj-handbook-card')) {
+        const titleEl = card.querySelector('.tj-card-title, h3');
+        const tagEl = card.querySelector('.tj-card-tag');
+        badge = tagEl ? tagEl.textContent.trim() : (titleEl ? titleEl.textContent.trim() : `讲义 ${idx + 1}`);
+        desc = titleEl ? titleEl.textContent.trim() : '';
+      } else if (secBadgeEl) {
         badge = secBadgeEl.textContent.trim().replace(/^【|】$/g, '');
         desc = secDescEl ? secDescEl.textContent.trim() : '';
       } else if (logicTitleEl) {
@@ -1426,7 +1495,15 @@
     // 1. 轨道徽章与可点击切换样式
     if (el.hudTrackBadge && el.hudTrackText) {
       el.hudTrackBadge.className = isT1 ? 'hud-track-badge track1-mode' : 'hud-track-badge track2-mode';
-      if (state.currentSubject === 'en') {
+      if (state.currentSubject === 'pol') {
+        if (state.polSubMode === 'recite47') {
+          el.hudTrackText.textContent = isT1 ? '轨一 · 原书背诵版' : '轨二 · 微考点伴读';
+        } else if (state.polSubMode === 'xutao16') {
+          el.hudTrackText.textContent = state.polXtVoice === 'anlang' ? '龙安朗 · AI干货' : '徐涛 · 原声带背';
+        } else {
+          el.hudTrackText.textContent = '腿姐 · 冲刺讲义';
+        }
+      } else if (state.currentSubject === 'en') {
         el.hudTrackText.textContent = isT1 ? '轨一 · 中英磨耳版' : '轨二 · 仿写拓展版';
       } else {
         el.hudTrackText.textContent = isT1 ? '轨一 · 考场答题版' : '轨二 · 逻辑精解版';
@@ -1502,12 +1579,16 @@
     const item = state.activeItem;
     const isT1 = state.currentTrack === 1;
     let trackLabel = isT1 ? '轨一·考场答题' : '轨二·逻辑精解';
-    if (state.currentSubject === 'en') {
+    if (state.currentSubject === 'pol') {
+      if (state.polSubMode === 'recite47') trackLabel = isT1 ? '轨一·原书背诵' : '轨二·微考点伴读';
+      else if (state.polSubMode === 'xutao16') trackLabel = state.polXtVoice === 'anlang' ? '龙安朗·AI干货' : '徐涛·原声带背';
+      else trackLabel = '腿姐·冲刺讲义';
+    } else if (state.currentSubject === 'en') {
       trackLabel = isT1 ? '轨一·磨耳版' : '轨二·拓展版';
     }
 
     const secTitle = currentSec ? `[${currentSec.index + 1}/${totalSec} ${currentSec.badge}] ` : '';
-    const subjName = state.currentSubject === '807' ? '807 现代文学' : (state.currentSubject === '706' ? '706 古代文学' : '考研英语写作');
+    const subjName = state.currentSubject === 'pol' ? '考研政治' : (state.currentSubject === '807' ? '807 现代文学' : (state.currentSubject === '706' ? '706 古代文学' : '考研英语写作'));
 
     try {
       navigator.mediaSession.metadata = new MediaMetadata({
@@ -1568,7 +1649,7 @@
 
     if (el.drawerTopicSub && state.activeItem) {
       const item = state.activeItem;
-      const subj = state.currentSubject === '807' ? '807 综合' : (state.currentSubject === '706' ? '706 综合' : '考研英语');
+      const subj = state.currentSubject === 'pol' ? '考研政治' : (state.currentSubject === '807' ? '807 综合' : (state.currentSubject === '706' ? '706 综合' : '考研英语'));
       el.drawerTopicSub.textContent = `${subj} · ${item.title} (${item.score || ''})`;
     }
 
@@ -2182,27 +2263,19 @@
           state.clozeMode = 'keyword';
           if (el.clozeModeName) el.clozeModeName.textContent = '挖空';
           el.clozeModeBtn.classList.add('active');
-          if (el.paperContent) {
-            el.paperContent.classList.remove('cloze-body');
-            el.paperContent.classList.add('cloze-keyword');
-          }
+          applyClozeClassToPaper();
           showToast('已开启【采分词挖空自测】· 核心术语已遮罩，播到或点击即显', 2500);
         } else if (state.clozeMode === 'keyword') {
           state.clozeMode = 'body';
           if (el.clozeModeName) el.clozeModeName.textContent = '默背';
           el.clozeModeBtn.classList.add('active');
-          if (el.paperContent) {
-            el.paperContent.classList.remove('cloze-keyword');
-            el.paperContent.classList.add('cloze-body');
-          }
+          applyClozeClassToPaper();
           showToast('已开启【看纲默背自测】· 仅留骨架，点击或播到该句自动显现', 2500);
         } else {
           state.clozeMode = 'off';
           if (el.clozeModeName) el.clozeModeName.textContent = '自测';
           el.clozeModeBtn.classList.remove('active');
-          if (el.paperContent) {
-            el.paperContent.classList.remove('cloze-keyword', 'cloze-body');
-          }
+          applyClozeClassToPaper();
           showToast('已切换为【正常研读模式】· 全文清晰呈现', 2000);
         }
       });
@@ -2776,7 +2849,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '2.5.1';
+  const APP_BUILD_ID = '3.0.0';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -2955,7 +3028,7 @@
     if (badge) {
       badge.addEventListener('click', () => {
         if (badge.classList.contains('has-update')) {
-          performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '2.4.6');
+          performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.0.0');
         } else {
           checkAppUpdate(true);
         }
@@ -2964,13 +3037,13 @@
 
     if (refreshBtn) {
       refreshBtn.addEventListener('click', () => {
-        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '2.4.6');
+        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.0.0');
       });
     }
 
     if (bannerBody) {
       bannerBody.addEventListener('click', () => {
-        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '2.4.6');
+        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.0.0');
       });
     }
 
@@ -3209,15 +3282,18 @@
         renderPolChapterTrack2(state.activeItem, autoPlay);
       }
     } else if (mode === 'xutao16') {
+      if (el.trackTabs) el.trackTabs.style.display = 'none';
       renderPolXutao16(state.activeItem, autoPlay);
     } else if (mode === 'tuijie11') {
+      if (el.trackTabs) el.trackTabs.style.display = 'none';
       renderPolTuijie11(state.activeItem, autoPlay);
     }
   }
 
   function renderPolChapterTrack1(chapter, autoPlay = false) {
     if (!el.paperContent) return;
-    el.paperContent.className = 'pol-scope';
+    el.paperContent.classList.add('pol-scope');
+    applyClozeClassToPaper();
     
     const isMastered = getMasteryStatus(chapter.id) === 'mastered';
     const sealHtml = `
@@ -3250,17 +3326,20 @@
 
     const sentences = (chapter.track1 && chapter.track1.sentences) || [];
     state.activeSentences = sentences.map((s, idx) => ({
-      id: s.idx !== undefined ? s.idx : idx,
+      id: s.domId || (s.idx !== undefined ? s.idx : idx),
       start: s.start,
       end: s.end,
-      text: s.text
+      text: s.text,
+      domId: s.domId,
+      idx: s.idx !== undefined ? s.idx : idx
     }));
 
-    el.paperContent.querySelectorAll('span[data-sent-idx]').forEach(span => {
-      span.addEventListener('click', (e) => {
+    el.paperContent.querySelectorAll('[data-sent-idx], [id^="recite_bar_"], [id^="recite_blk_"]').forEach(elItem => {
+      elItem.addEventListener('click', (e) => {
         if (e.target.closest('.cloze') || e.target.closest('.kw-red')) return;
-        const sentIdx = parseInt(span.dataset.sentIdx, 10);
-        const matched = state.activeSentences.find(s => s.id === sentIdx);
+        const domId = elItem.id;
+        const sentIdx = elItem.dataset.sentIdx !== undefined ? parseInt(elItem.dataset.sentIdx, 10) : NaN;
+        const matched = state.activeSentences.find(s => (domId && s.domId === domId) || (!isNaN(sentIdx) && (s.idx === sentIdx || s.id === sentIdx)));
         if (matched) {
           seekToSentence(matched.id, matched.start);
         }
@@ -3268,12 +3347,14 @@
     });
 
     attachSealButtonListeners(chapter.id);
+    buildFrameworkIndex();
     enhanceClozeKeywords();
   }
 
   function renderPolChapterTrack2(chapter, autoPlay = false) {
     if (!el.paperContent) return;
-    el.paperContent.className = 'pol-scope';
+    el.paperContent.classList.add('pol-scope');
+    applyClozeClassToPaper();
 
     const subCards = (chapter.track2 && chapter.track2.subCards) || [];
     if (subCards.length === 0) {
@@ -3351,22 +3432,25 @@
 
     const bodyEl = document.getElementById('polSubcardBody');
     if (bodyEl) {
-      bodyEl.querySelectorAll('span[data-sent-idx]').forEach(span => {
+      bodyEl.querySelectorAll('[data-sent-idx]').forEach(span => {
         span.addEventListener('click', (e) => {
           if (e.target.closest('.cloze') || e.target.closest('.kw-red')) return;
           const sentIdx = parseInt(span.dataset.sentIdx, 10);
-          const matched = state.activeSentences.find(s => s.id === sentIdx);
+          const matched = state.activeSentences.find(s => s.id === sentIdx || s.idx === sentIdx);
           if (matched) {
             seekToSentence(matched.id, matched.start);
           }
         });
       });
     }
+
+    buildFrameworkIndex();
   }
 
   function renderPolXutao16(dayItem, autoPlay = false) {
     if (!el.paperContent) return;
-    el.paperContent.className = 'pol-scope';
+    el.paperContent.classList.add('pol-scope');
+    applyClozeClassToPaper();
 
     state.polXtVoice = state.polXtVoice || 'anlang';
 
@@ -3434,6 +3518,7 @@
     });
 
     attachSealButtonListeners(dayItem.id);
+    buildFrameworkIndex();
     enhanceClozeKeywords();
   }
 
@@ -3454,7 +3539,15 @@
     if (startPointIdx >= 0 && startPointIdx < points.length) {
       const p = points[startPointIdx];
       const t = voiceType === 'anlang' ? p.anlang_start : p.voice_start;
-      audio.currentTime = Math.max(0, t);
+      const setTime = () => {
+        audio.currentTime = Math.max(0, t);
+        highlightSentence(p.id);
+      };
+      if (audio.readyState >= 1) {
+        setTime();
+      } else {
+        audio.addEventListener('loadedmetadata', setTime, { once: true });
+      }
     }
 
     if (autoPlay) {
@@ -3465,12 +3558,16 @@
 
   function renderPolTuijie11(dayItem, autoPlay = false) {
     if (!el.paperContent) return;
-    el.paperContent.className = 'pol-scope';
+    el.paperContent.classList.add('pol-scope');
+    applyClozeClassToPaper();
 
     const isMastered = getMasteryStatus(dayItem.id) === 'mastered';
     const topBarHtml = `
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line-subtle, rgba(0,0,0,0.08));">
-        <span style="font-weight:700;color:var(--vermilion, #b91c1c);">🔥 腿姐带背 · Day ${dayItem.day} 冲刺讲义</span>
+        <div>
+          <span style="font-weight:700;color:var(--vermilion, #b91c1c);font-size:16px;">🔥 腿姐带背 · Day ${dayItem.day} 冲刺讲义</span>
+          ${dayItem.subtitle ? `<div style="font-size:12.5px;color:var(--ink-muted);margin-top:2px;">${dayItem.subtitle}</div>` : ''}
+        </div>
         <button type="button" class="seal-btn ${isMastered ? 'sealed' : ''}" id="sealBtn_${dayItem.id}">
           <span class="seal-mark">研毕</span>
           <span>${isMastered ? '已完成带背' : '打卡研毕'}</span>
@@ -3482,26 +3579,48 @@
     const allSentences = [];
 
     sections.forEach((sec, sIdx) => {
-      secHtml += `<div class="xt-section" style="margin-bottom:20px;padding:14px;background:var(--bg-card);border-radius:10px;border:1px solid var(--line-main);">`;
-      if (sec.title) {
-        secHtml += `<h3 style="font-size:15px;font-weight:700;margin-bottom:8px;color:var(--ink-primary);">${sec.title}</h3>`;
-      }
-      if (sec.intro) {
-        secHtml += `<p style="font-size:13.5px;color:var(--ink-secondary);margin-bottom:8px;">${sec.intro}</p>`;
-      }
-      if (sec.sentences && sec.sentences.length > 0) {
-        sec.sentences.forEach(s => {
-          const sentId = `tj_s_${allSentences.length}`;
-          allSentences.push({ id: sentId, start: s.start, end: s.end, text: s.text });
-          secHtml += `<span class="recite-sent" data-sent-id="${sentId}" data-start="${s.start}" style="cursor:pointer;padding:1px 2px;">${s.text}</span> `;
-        });
-      } else if (sec.point) {
-        secHtml += `<div style="font-size:14px;line-height:1.7;">${sec.point}</div>`;
-      }
-      secHtml += `</div>`;
+      const isIntro = sec.type === 'intro';
+      const isCallout = sec.type === 'callout';
+      const badgeType = isIntro ? 'intro' : (isCallout ? 'callout' : 'point');
+
+      const sents = sec.resolved_sentences || [];
+      const sentsHtml = sents.map(s => {
+        allSentences.push({ id: `tj_s_${s.idx}`, start: s.start, end: s.end, text: s.text, idx: s.idx });
+        return `<span class="recite-sent tj-sent-span" data-sent-id="tj_s_${s.idx}" data-sent-idx="${s.idx}" data-start="${s.start}" data-end="${s.end}">${s.text}</span>`;
+      }).join(' ');
+
+      secHtml += `
+        <article class="tj-handbook-card xt-section ${badgeType}" style="margin-bottom:20px;padding:16px;background:var(--bg-card);border-radius:12px;border:1px solid var(--line-main);">
+          <div class="tj-card-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <span class="tj-card-tag badge-type-${badgeType}" style="font-size:12px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--badge-bg, rgba(185,28,28,0.1));color:var(--vermilion, #b91c1c);">${sec.tag || `讲义 ${sIdx+1}`}</span>
+            <span class="tj-card-status" style="font-size:11.5px;color:var(--ink-muted);">${sec.badge || '重点掌握'}</span>
+          </div>
+          <h3 class="tj-card-title" style="font-size:15.5px;font-weight:700;margin-bottom:12px;color:var(--ink-primary);">${sec.title || ''}</h3>
+          <div class="tj-sentence-flow" style="font-size:14.5px;line-height:1.8;color:var(--ink-main);">${sentsHtml}</div>
+        </article>
+      `;
     });
 
-    el.paperContent.innerHTML = `${topBarHtml}${secHtml}`;
+    let pointsHtml = '';
+    if (dayItem.points && dayItem.points.length > 0) {
+      pointsHtml = `
+        <div class="tj-points-box" style="margin-top:24px;padding:18px;background:var(--paper-subtle, var(--bg-card));border-radius:12px;border:1.5px dashed var(--vermilion, #b91c1c);">
+          <div class="tj-points-title" style="font-size:15px;font-weight:800;color:var(--vermilion, #b91c1c);margin-bottom:12px;display:flex;align-items:center;gap:6px;">
+            <span>🎯 高频命题与辨析考点</span>
+          </div>
+          <div class="tj-points-list" style="display:flex;flex-direction:column;gap:10px;">
+            ${dayItem.points.map(p => `
+              <div class="tj-point-card" style="padding:10px 14px;background:var(--bg-card);border-radius:8px;border:1px solid var(--line-subtle, rgba(0,0,0,0.08));">
+                <span class="tj-point-label" style="font-weight:700;color:var(--vermilion, #b91c1c);margin-right:6px;">【${p.label}】</span>
+                <span class="tj-point-text" style="font-size:14px;line-height:1.6;color:var(--ink-main);">${p.text}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    el.paperContent.innerHTML = `${topBarHtml}${secHtml}${pointsHtml}`;
 
     if (dayItem.audio) {
       audio.src = dayItem.audio;
@@ -3515,7 +3634,8 @@
 
     state.activeSentences = allSentences;
     el.paperContent.querySelectorAll('.recite-sent').forEach(span => {
-      span.addEventListener('click', () => {
+      span.addEventListener('click', (e) => {
+        if (e.target.closest('.cloze') || e.target.closest('.kw-red')) return;
         const sId = span.dataset.sentId;
         const st = parseFloat(span.dataset.start);
         seekToSentence(sId, st);
@@ -3523,9 +3643,22 @@
     });
 
     attachSealButtonListeners(dayItem.id);
+    buildFrameworkIndex();
     enhanceClozeKeywords();
   }
 
+  function applyClozeClassToPaper() {
+    if (!el.paperContent) return;
+    if (state.clozeMode === 'keyword') {
+      el.paperContent.classList.remove('cloze-body');
+      el.paperContent.classList.add('cloze-keyword', 'cloze-keyword-active');
+    } else if (state.clozeMode === 'body') {
+      el.paperContent.classList.remove('cloze-keyword', 'cloze-keyword-active');
+      el.paperContent.classList.add('cloze-body');
+    } else {
+      el.paperContent.classList.remove('cloze-keyword', 'cloze-keyword-active', 'cloze-body');
+    }
+  }
   function enhanceClozeKeywords() {
     if (!el.paperContent) return;
 
@@ -3580,5 +3713,17 @@
       });
     });
   }
+
+
+  // 全局安全兜底垫片函数 (Global Shims)
+  window.seekChapterReciteSentence = function(chId, start, idx) {
+    seekToSentence(idx !== undefined ? idx : chId, start);
+  };
+  window.seekReciteSentence = function(cardId, start, idx) {
+    seekToSentence(idx !== undefined ? idx : cardId, start);
+  };
+  window.togglePlayCardAudio = function(cardId, title, chId) {
+    togglePlay();
+  };
 
 })();

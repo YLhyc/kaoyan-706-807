@@ -39,13 +39,51 @@ def get_audio_duration(file_path):
     except Exception:
         return 0.0
 
-def clean_element(soup_el):
-    """移除所有 .doubt-panel 元素并返回 inner HTML 或字符串"""
+def normalize_pane_html(soup_el, soup):
+    """
+    移除所有 .doubt-panel 元素；
+    规范化 <table>（添加 .xt-table 类，缺少外层包裹时补全 <div class="xt-table-wrap">，剥离 th/td 硬编码背景色）；
+    剥离 inline onclick 属性（如 seekChapterReciteSentence, seekReciteSentence, togglePlayCardAudio）。
+    """
     if soup_el is None:
         return ""
     # 剥离所有就地标疑面板
     for dp in soup_el.find_all(class_=re.compile(r'doubt-panel')):
         dp.decompose()
+
+    # 表格规范化与包裹
+    for table in soup_el.find_all("table"):
+        classes = table.get("class") or []
+        if isinstance(classes, str):
+            classes = [classes]
+        if "xt-table" not in classes:
+            classes.append("xt-table")
+            table["class"] = classes
+
+        parent = table.parent
+        parent_classes = parent.get("class", []) if parent else []
+        if isinstance(parent_classes, str):
+            parent_classes = [parent_classes]
+        if "xt-table-wrap" not in parent_classes:
+            wrap = soup.new_tag("div", attrs={"class": "xt-table-wrap"})
+            table.wrap(wrap)
+
+        for cell in table.find_all(["th", "td"]):
+            style = cell.get("style", "")
+            if style:
+                # 剥离硬编码背景色（如 #e0f7fa 等），保障深色模式自适应
+                new_style = re.sub(r'background-color:\s*#[a-fA-F0-9]{3,8}\s*;?', '', style, flags=re.I).strip()
+                if new_style:
+                    cell["style"] = new_style
+                else:
+                    del cell["style"]
+
+    # 剥离 inline onclick 冲突属性
+    for el in soup_el.find_all(True):
+        onclick = el.get("onclick", "")
+        if onclick and any(fn in onclick for fn in ["seekChapterReciteSentence", "seekReciteSentence", "togglePlayCardAudio"]):
+            del el["onclick"]
+
     return str(soup_el)
 
 def main():
@@ -97,8 +135,8 @@ def main():
         recite_box = art.find("div", class_="xt-part-recite")
         understand_box = art.find("div", class_="xt-part-understand")
 
-        recite_html = clean_element(recite_box)
-        understand_html = clean_element(understand_box)
+        recite_html = normalize_pane_html(recite_box, soup)
+        understand_html = normalize_pane_html(understand_box, soup)
 
         recite_sentences = CHAPTER_RECITE_SENTENCES.get(ch_id, [])
 
@@ -111,18 +149,22 @@ def main():
             for c in chips:
                 m_call = re.search(r"selectChapterAudioCard\(['\"]([^'\"]+)['\"],\s*['\"]([^'\"]+)['\"]\)", c.get("onclick", ""))
                 card_id = m_call.group(2) if m_call else c.get("id", "").replace(f"chip_{ch_id}_", "")
+
+                # 特殊修正：导论章节 ch_xsx_00 内部 DOM 为 xsx_00，无独立音频
+                if ch_id == "ch_xsx_00":
+                    card_id = "xsx_00"
+
                 chip_label = c.get_text(strip=True)
 
                 stream_pane = lecture_pane.find("div", id=f"stream_pane_{ch_id}_{card_id}")
+                if not stream_pane and ch_id == "ch_xsx_00":
+                    stream_pane = lecture_pane.find("div", id=f"stream_pane_{ch_id}_xsx_01")
+
                 card_title = ""
                 card_tags = []
                 lecture_html = ""
 
                 if stream_pane:
-                    # 剥离 stream_pane 中的 doubt-panel
-                    for dp in stream_pane.find_all(class_=re.compile(r'doubt-panel')):
-                        dp.decompose()
-
                     title_el = stream_pane.find(class_=re.compile(r'sub-card-title|stream-pane-title'))
                     if title_el:
                         card_title = title_el.get_text(strip=True)
@@ -132,7 +174,7 @@ def main():
                     tag_els = stream_pane.find_all(class_=re.compile(r'badge|tag'))
                     card_tags = [t.get_text(strip=True) for t in tag_els if t.get_text(strip=True)]
 
-                    lecture_html = str(stream_pane)
+                    lecture_html = normalize_pane_html(stream_pane, soup)
 
                 # 音频白名单与规范：若 xsx_00 无音频则为 null
                 if card_id == "xsx_00":
@@ -141,6 +183,8 @@ def main():
                     card_audio = f"audio_cards/pol/{card_id}.mp3"
 
                 sub_sentences = CARD_SENTENCES.get(card_id, [])
+                if not sub_sentences and card_id == "xsx_00":
+                    sub_sentences = CARD_SENTENCES.get("xsx_01", [])
 
                 sub_cards.append({
                     "cardId": card_id,
@@ -242,12 +286,75 @@ def main():
     processed_tj11 = []
     for day_data in tjAllDaysData:
         day_num = day_data.get("day", 1)
+        subtitle = day_data.get("subtitle") or day_data.get("sub", "")
+        audio = day_data.get("audio") or day_data.get("audio_src") or f"audio_tuijie/tuijie_d{day_num:02d}.mp3"
+        timestamps = day_data.get("timestamps", [])
+        sentences = day_data.get("sentences", [])
+
+        dur_str = day_data.get("duration_str")
+        if not dur_str:
+            if timestamps:
+                end_sec = timestamps[-1].get("end", 0.0)
+                dur_str = f"{int(end_sec // 60):02d}:{int(end_sec % 60):02d}"
+            else:
+                dur_str = "00:00"
+
+        # 整理 timestamps (包含 start, end, text)
+        resolved_timestamps = []
+        for idx, ts in enumerate(timestamps):
+            s_text = sentences[idx] if idx < len(sentences) else ts.get("text", "")
+            resolved_timestamps.append({
+                "start": ts.get("start", 0.0),
+                "end": ts.get("end", 0.0),
+                "text": ts.get("text") or s_text
+            })
+
+        # 整理 points (list of {label, text})
+        raw_points = day_data.get("points", [])
+        processed_points = []
+        for p in raw_points:
+            if isinstance(p, dict):
+                processed_points.append(p)
+            elif isinstance(p, str):
+                if "：" in p:
+                    lbl, txt = p.split("：", 1)
+                elif ":" in p:
+                    lbl, txt = p.split(":", 1)
+                else:
+                    lbl, txt = "核心考点", p
+                processed_points.append({"label": lbl.strip(), "text": txt.strip()})
+
+        # 整理 sections (映射 resolved_sentences)
+        processed_sections = []
+        for sec in day_data.get("sections", []):
+            sec_obj = dict(sec)
+            sent_indices = sec.get("sent_indices", [])
+            resolved_sents = []
+            for idx in sent_indices:
+                if 0 <= idx < len(sentences):
+                    t_start = timestamps[idx]["start"] if idx < len(timestamps) else 0.0
+                    t_end = timestamps[idx]["end"] if idx < len(timestamps) else 0.0
+                    s_text = sentences[idx]
+                    resolved_sents.append({
+                        "idx": idx,
+                        "start": t_start,
+                        "end": t_end,
+                        "text": s_text
+                    })
+            sec_obj["resolved_sentences"] = resolved_sents
+            processed_sections.append(sec_obj)
+
         processed_tj11.append({
             "id": f"pol_tj_d{day_num:02d}",
             "day": day_num,
             "title": day_data.get("title", f"Day {day_num:02d}"),
-            "audio": f"audio_tuijie/tuijie_d{day_num:02d}.mp3",
-            "sections": day_data.get("sections", [])
+            "subtitle": subtitle,
+            "audio": audio,
+            "duration_str": dur_str,
+            "sentences": sentences,
+            "timestamps": resolved_timestamps,
+            "points": processed_points,
+            "sections": processed_sections
         })
 
     # 5. 组合为 window.KAOYAN_POL_DATA 并序列化

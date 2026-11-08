@@ -792,11 +792,26 @@ body {
   background-color: rgba(245, 176, 65, 0.15);
 }
 
-.recite-sent.active-spotlight {
-  background-color: var(--spotlight-bg);
+.recite-sent.active-spotlight,
+[data-sent-idx].active-spotlight,
+.recite-sent-item.active-spotlight,
+.recite-sentence.active-spotlight,
+.xt-day-point-card.active-spotlight {
+  background-color: var(--spotlight-bg) !important;
   color: var(--spotlight-text);
-  box-shadow: 0 0 0 2px var(--spotlight-border), 0 2px 8px var(--spotlight-glow);
+  box-shadow: 0 0 0 2px var(--spotlight-border), 0 2px 8px var(--spotlight-glow) !important;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
   font-weight: 500;
+}
+
+[data-theme="dark"] .recite-sent.active-spotlight,
+[data-theme="dark"] [data-sent-idx].active-spotlight,
+[data-theme="dark"] .recite-sent-item.active-spotlight,
+[data-theme="dark"] .recite-sentence.active-spotlight,
+[data-theme="dark"] .xt-day-point-card.active-spotlight {
+  background-color: rgba(245, 158, 11, 0.2) !important;
+  box-shadow: 0 0 0 2px #f59e0b, 0 2px 10px rgba(245, 158, 11, 0.3) !important;
 }
 
 .recite-sent strong {
@@ -3819,24 +3834,16 @@ body {
 
 /* 背诵自测遮罩模式 (Recitation Cloze Mode) */
 
-#paper-content.cloze-keyword .recite-sent:not(.active-spotlight) strong {
-
+#paper-content.cloze-keyword .recite-sent:not(.active-spotlight) strong:not([data-ghost]):not(.cloze):not(.kw-red) {
   filter: blur(5px);
-
   background: rgba(180, 140, 80, 0.18);
-
   border-radius: 3px;
-
   transition: filter 0.2s ease;
-
   cursor: pointer;
-
 }
 
-#paper-content.cloze-keyword .recite-sent:not(.active-spotlight) strong:hover {
-
+#paper-content.cloze-keyword .recite-sent:not(.active-spotlight) strong:not([data-ghost]):not(.cloze):not(.kw-red):hover {
   filter: none;
-
 }
 
 
@@ -7455,9 +7462,12 @@ body.dock-expanded .dock-fab-play {
 }
 
 /* ---------------- 8. 全科通用首字弱提示 (Ghost Hint) 挖空交互 ---------------- */
+.cloze-keyword .xt-keyword.cloze:not(.revealed),
+.cloze-keyword .kw-red[data-ghost]:not(.revealed),
 .cloze-keyword-active .xt-keyword.cloze:not(.revealed),
 .cloze-keyword-active .kw-red:not(.revealed) {
   color: transparent !important;
+  filter: none !important;
   background: var(--cloze-bg, rgba(180, 83, 9, 0.10));
   border-bottom: 1.5px dashed var(--accent-primary, #b45309);
   border-radius: 4px;
@@ -7469,6 +7479,8 @@ body.dock-expanded .dock-fab-play {
   transition: all 0.2s ease;
 }
 
+.cloze-keyword .xt-keyword.cloze:not(.revealed)::after,
+.cloze-keyword .kw-red[data-ghost]:not(.revealed)::after,
 .cloze-keyword-active .xt-keyword.cloze:not(.revealed)::after,
 .cloze-keyword-active .kw-red:not(.revealed)::after {
   content: attr(data-ghost);
@@ -7483,6 +7495,8 @@ body.dock-expanded .dock-fab-play {
   letter-spacing: 1px;
 }
 
+.cloze-keyword .xt-keyword.cloze.revealed,
+.cloze-keyword .kw-red.revealed,
 .cloze-keyword-active .xt-keyword.cloze.revealed,
 .cloze-keyword-active .kw-red.revealed {
   color: var(--accent-primary, #b45309) !important;
@@ -7494,17 +7508,23 @@ body.dock-expanded .dock-fab-play {
   animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+[data-theme="dark"] .cloze-keyword .xt-keyword.cloze:not(.revealed),
+[data-theme="dark"] .cloze-keyword .kw-red[data-ghost]:not(.revealed),
 [data-theme="dark"] .cloze-keyword-active .xt-keyword.cloze:not(.revealed),
 [data-theme="dark"] .cloze-keyword-active .kw-red:not(.revealed) {
   background: rgba(245, 158, 11, 0.12);
   border-bottom-color: #f59e0b;
 }
 
+[data-theme="dark"] .cloze-keyword .xt-keyword.cloze:not(.revealed)::after,
+[data-theme="dark"] .cloze-keyword .kw-red[data-ghost]:not(.revealed)::after,
 [data-theme="dark"] .cloze-keyword-active .xt-keyword.cloze:not(.revealed)::after,
 [data-theme="dark"] .cloze-keyword-active .kw-red:not(.revealed)::after {
   color: #a8a29e;
 }
 
+[data-theme="dark"] .cloze-keyword .xt-keyword.cloze.revealed,
+[data-theme="dark"] .cloze-keyword .kw-red.revealed,
 [data-theme="dark"] .cloze-keyword-active .xt-keyword.cloze.revealed,
 [data-theme="dark"] .cloze-keyword-active .kw-red.revealed {
   color: #fbbf24 !important;
