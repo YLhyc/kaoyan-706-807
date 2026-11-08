@@ -1,5 +1,5 @@
 // 考研背诵手卷 · 离线 PWA Service Worker (v2.5.0)
-const CACHE_NAME = 'kaoyan-handbook-v251';
+const CACHE_NAME = 'kaoyan-all-in-one-v3.0.0';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -48,14 +48,19 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
   // 显式排除音视频大文件和 Range 请求（iOS Safari 依赖 206 Partial Content 进行拖动缓冲，Service Worker 缓存 206 会破坏断点续传）
-  const isMedia = url.pathname.endsWith('.mp3') || url.pathname.endsWith('.wav') || url.pathname.endsWith('.m4a');
+  const isMedia = url.pathname.endsWith('.mp3') || 
+                  url.pathname.endsWith('.wav') || 
+                  url.pathname.endsWith('.m4a') || 
+                  url.pathname.includes('/audio_cards/') || 
+                  url.pathname.includes('/audio_xutao/') || 
+                  url.pathname.includes('/audio_tuijie/');
   const isRange = event.request.headers.has('range');
   if (isMedia || isRange) {
     return; // 直接由浏览器原生网络引擎处理，绝不拦截与缓存
   }
 
   // 0. 核心数据包 (4MB+ 离线全量数据)：优先命中缓存秒级直开，彻底杜绝外网阻塞与移动端“加载中...”白屏假死
-  if (url.pathname.endsWith('kaoyan_data.js') || url.pathname.endsWith('kaoyan_all_manifest.json')) {
+  if (url.pathname.endsWith('kaoyan_data.js') || url.pathname.endsWith('kaoyan_data_pol.js') || url.pathname.endsWith('kaoyan_all_manifest.json')) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
         if (cached) return cached;

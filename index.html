@@ -111,6 +111,14 @@
         <span class="subject-name-full">706 古代文学</span><span class="subject-name-mobile">706 古代</span>
         <span id="count-706" class="count-tag">37题</span>
       </button>
+      <button id="btn-subject-pol" class="subject-btn" data-subject="pol">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+        </svg>
+        <span class="subject-name-full">考研政治背诵</span><span class="subject-name-mobile">考研政治</span>
+        <span id="count-pol" class="count-tag">47章+</span>
+      </button>
       <button id="btn-subject-en" class="subject-btn">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
@@ -212,6 +220,22 @@
           <input id="search-input" class="search-input" type="text" placeholder="检索考点名、作家、体裁或题眼..." autocomplete="off">
         </div>
 
+        <!-- 政治三子模块切换栏（仅在政治科目显示） -->
+        <div class="pol-submode-bar" id="pol-submode-bar" style="display: none;">
+          <button type="button" class="pol-submode-btn active" data-pol-submode="recite47">📖 47章背诵</button>
+          <button type="button" class="pol-submode-btn" data-pol-submode="xutao16">🎧 徐涛16天</button>
+          <button type="button" class="pol-submode-btn" data-pol-submode="tuijie11">🔥 腿姐11天</button>
+        </div>
+
+        <!-- 政治五大学科筛选胶囊（仅在 recite47 模式下显示） -->
+        <div class="filter-pills pol-category-pills" id="pol-category-pills" style="display: none;">
+          <button type="button" class="filter-pill active" data-pol-cat="all">全部(47)</button>
+          <button type="button" class="filter-pill" data-pol-cat="my">马原(9)</button>
+          <button type="button" class="filter-pill" data-pol-cat="mzt">毛中特(8)</button>
+          <button type="button" class="filter-pill" data-pol-cat="xsx">新思想(15)</button>
+          <button type="button" class="filter-pill" data-pol-cat="sg">史纲(8)</button>
+          <button type="button" class="filter-pill" data-pol-cat="sx">思修(7)</button>
+        </div>
         <div class="filter-pills" id="filter-pills-wrap">
           <button class="filter-pill active" data-tier="all">全部考点</button>
           <button class="filter-pill" data-tier="T0">T0 极高频必背</button>

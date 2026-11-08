@@ -6924,3 +6924,591 @@ body.dock-expanded .dock-fab-play {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
+
+
+/* ==========================================================================
+   考研政治专属组件样式 (.pol-scope) & 全科首字弱提示 (Ghost Hint) 系统
+   V2.0 终极整合架构师规范定稿 · 包含完整深浅色主题自适应与移动端横向平滑滚动
+   ========================================================================== */
+
+/* ---------------- 1. 政治侧边栏三子模块切换与五大学科筛选 ---------------- */
+.pol-submode-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  padding: 4px;
+  background: var(--line-subtle, rgba(0, 0, 0, 0.04));
+  border-radius: 10px;
+}
+
+[data-theme="dark"] .pol-submode-bar {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.pol-submode-btn {
+  flex: 1;
+  padding: 6px 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+  background: transparent;
+  color: var(--ink-muted, #78716c);
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.pol-submode-btn:hover {
+  color: var(--ink-primary, #1c1917);
+}
+
+.pol-submode-btn.active {
+  background: var(--bg-card, #ffffff);
+  color: var(--vermilion, #b91c1c);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] .pol-submode-btn.active {
+  background: var(--bg-elevated, #292524);
+  color: #f87171;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.pol-category-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+/* ---------------- 2. 政治正文排版与章节结构 (.pol-scope) ---------------- */
+.pol-scope {
+  color: var(--ink-primary, #1c1917);
+  font-family: var(--font-body, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  line-height: 1.75;
+}
+
+.pol-scope .xt-part-box {
+  margin-bottom: 28px;
+  padding: 18px 20px;
+  background: var(--bg-card, #ffffff);
+  border: 1px solid var(--line-main, rgba(0, 0, 0, 0.08));
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="dark"] .pol-scope .xt-part-box {
+  background: var(--bg-card, #1c1917);
+  border-color: var(--line-main, rgba(255, 255, 255, 0.08));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pol-scope .xt-part-title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1.5px solid var(--line-main, rgba(0, 0, 0, 0.08));
+}
+
+.pol-scope .xt-part-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--vermilion, #b91c1c);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+[data-theme="dark"] .pol-scope .xt-part-title {
+  color: #f87171;
+}
+
+.pol-scope .xt-section {
+  margin: 16px 0;
+}
+
+.pol-scope .xt-section-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink-primary, #1c1917);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pol-scope .xt-point-group {
+  margin: 10px 0;
+  padding-left: 12px;
+  border-left: 2px solid var(--line-subtle, rgba(185, 28, 28, 0.2));
+}
+
+.pol-scope .xt-point-title {
+  font-weight: 600;
+  color: var(--ink-secondary, #44403c);
+  margin-bottom: 4px;
+}
+
+/* 句级同频卡拉OK高亮与悬停 */
+.pol-scope span[data-sent-idx] {
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 1px 2px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.pol-scope span[data-sent-idx]:hover {
+  background: rgba(185, 28, 28, 0.08);
+}
+
+[data-theme="dark"] .pol-scope span[data-sent-idx]:hover {
+  background: rgba(248, 113, 113, 0.15);
+}
+
+.pol-scope span[data-sent-idx].sent-active {
+  background: rgba(185, 28, 28, 0.16) !important;
+  color: var(--vermilion, #b91c1c) !important;
+  font-weight: 600;
+  border-bottom: 1.5px solid var(--vermilion, #b91c1c);
+}
+
+[data-theme="dark"] .pol-scope span[data-sent-idx].sent-active {
+  background: rgba(248, 113, 113, 0.22) !important;
+  color: #fca5a5 !important;
+  border-bottom-color: #f87171;
+}
+
+/* ---------------- 3. 理解部分对比表格 (.xt-table) ---------------- */
+.pol-scope .xt-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 16px 0;
+  border-radius: 8px;
+  border: 1px solid var(--line-main, rgba(0, 0, 0, 0.1));
+}
+
+.pol-scope .xt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.pol-scope .xt-table th,
+.pol-scope .xt-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line-subtle, rgba(0, 0, 0, 0.06));
+}
+
+.pol-scope .xt-table th {
+  background: var(--line-subtle, rgba(0, 0, 0, 0.03));
+  font-weight: 700;
+  color: var(--ink-primary, #1c1917);
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .pol-scope .xt-table th {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.pol-scope .xt-table tr:last-child td {
+  border-bottom: none;
+}
+
+.pol-scope .xt-table tr:hover td {
+  background: rgba(0, 0, 0, 0.015);
+}
+
+[data-theme="dark"] .pol-scope .xt-table tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* ---------------- 4. 徐涛命题思路与避坑红线框 (.xt-trap-card) ---------------- */
+.pol-scope .xt-trap-card {
+  background: rgba(185, 28, 28, 0.035);
+  border: 1px solid rgba(185, 28, 28, 0.18);
+  border-left: 4px solid var(--vermilion, #b91c1c);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 14px 0;
+}
+
+[data-theme="dark"] .pol-scope .xt-trap-card {
+  background: rgba(248, 113, 113, 0.06);
+  border-color: rgba(248, 113, 113, 0.25);
+  border-left-color: #f87171;
+}
+
+.pol-scope .xt-trap-header {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--vermilion, #b91c1c);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+[data-theme="dark"] .pol-scope .xt-trap-header {
+  color: #f87171;
+}
+
+.pol-scope .badge-exam-wrong {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.1);
+  padding: 1px 7px;
+  border-radius: 4px;
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  margin-right: 6px;
+}
+
+.pol-scope .badge-exam-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #15803d;
+  background: rgba(21, 128, 61, 0.1);
+  padding: 1px 7px;
+  border-radius: 4px;
+  border: 1px solid rgba(21, 128, 61, 0.25);
+  margin-right: 6px;
+}
+
+/* ---------------- 5. 轨道二章内微考点胶囊与四段式伴读卡 ---------------- */
+.pol-subcard-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 2px 14px 2px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--line-subtle, rgba(0, 0, 0, 0.08));
+}
+
+.pol-subcard-pills::-webkit-scrollbar {
+  height: 4px;
+}
+
+.pol-subcard-pills::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+.playlist-chip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--bg-card, #ffffff);
+  border: 1px solid var(--line-main, rgba(0, 0, 0, 0.12));
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-secondary, #44403c);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="dark"] .playlist-chip-btn {
+  background: var(--bg-elevated, #292524);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #d6d3d1;
+}
+
+.playlist-chip-btn:hover {
+  border-color: var(--vermilion, #b91c1c);
+  color: var(--vermilion, #b91c1c);
+}
+
+.playlist-chip-btn.active {
+  background: var(--vermilion, #b91c1c);
+  border-color: var(--vermilion, #b91c1c);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(185, 28, 28, 0.28);
+}
+
+[data-theme="dark"] .playlist-chip-btn.active {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #ffffff;
+}
+
+/* 四段式微考点伴读卡片 */
+.pol-scope .card-audio-stream-pane {
+  animation: fadeIn 0.25s ease;
+}
+
+.pol-scope .lecture-structured-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.pol-scope .stream-card {
+  border-radius: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--line-main, rgba(0, 0, 0, 0.1));
+  background: var(--bg-card, #ffffff);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="dark"] .pol-scope .stream-card {
+  background: var(--bg-card, #1c1917);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.pol-scope .stream-card-label {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pol-scope .stream-card-golden {
+  border-left: 4px solid #d97706;
+}
+.pol-scope .stream-card-golden .stream-card-label {
+  color: #d97706;
+}
+
+.pol-scope .stream-card-outline {
+  border-left: 4px solid #2563eb;
+}
+.pol-scope .stream-card-outline .stream-card-label {
+  color: #2563eb;
+}
+
+.pol-scope .stream-card-alert {
+  border-left: 4px solid #dc2626;
+}
+.pol-scope .stream-card-alert .stream-card-label {
+  color: #dc2626;
+}
+
+.pol-scope .stream-card-core {
+  border-left: 4px solid #059669;
+}
+.pol-scope .stream-card-core .stream-card-label {
+  color: #059669;
+}
+
+/* ---------------- 6. 徐涛 16 天选择题带背视图 ---------------- */
+.xt-voice-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px;
+  background: var(--line-subtle, rgba(0, 0, 0, 0.05));
+  border-radius: 8px;
+}
+
+[data-theme="dark"] .xt-voice-switcher {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.xt-voice-btn {
+  padding: 4px 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: var(--ink-muted, #78716c);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.xt-voice-btn.active {
+  background: var(--bg-card, #ffffff);
+  color: var(--vermilion, #b91c1c);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .xt-voice-btn.active {
+  background: var(--bg-elevated, #292524);
+  color: #f87171;
+}
+
+.xt-day-points-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.xt-day-point-card {
+  padding: 14px 16px;
+  background: var(--bg-card, #ffffff);
+  border: 1px solid var(--line-main, rgba(0, 0, 0, 0.08));
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+[data-theme="dark"] .xt-day-point-card {
+  background: var(--bg-card, #1c1917);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.xt-day-point-card:hover {
+  border-color: var(--vermilion, #b91c1c);
+  transform: translateY(-1px);
+}
+
+.xt-day-point-card.playing {
+  border-color: var(--vermilion, #b91c1c);
+  background: rgba(185, 28, 28, 0.04);
+  box-shadow: 0 2px 10px rgba(185, 28, 28, 0.12);
+}
+
+[data-theme="dark"] .xt-day-point-card.playing {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: #f87171;
+}
+
+.xt-day-point-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.xt-point-num-tag {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--vermilion, #b91c1c);
+  background: rgba(185, 28, 28, 0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+[data-theme="dark"] .xt-point-num-tag {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.15);
+}
+
+/* ---------------- 7. 「落印研毕」朱砂印章按钮 (.seal-btn) ---------------- */
+.seal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1.5px solid var(--line-main, rgba(0, 0, 0, 0.15));
+  background: transparent;
+  color: var(--ink-secondary, #57534e);
+}
+
+.seal-btn:hover {
+  border-color: #b91c1c;
+  color: #b91c1c;
+}
+
+.seal-btn:active {
+  transform: scale(0.94);
+}
+
+.seal-btn.sealed {
+  background: #faece6;
+  border-color: #b91c1c;
+  color: #b91c1c;
+  box-shadow: 0 2px 6px rgba(185, 28, 28, 0.2);
+}
+
+[data-theme="dark"] .seal-btn.sealed {
+  background: rgba(248, 113, 113, 0.15);
+  border-color: #f87171;
+  color: #fca5a5;
+}
+
+.seal-mark {
+  display: inline-block;
+  font-family: var(--font-song, "SimSun", "Songti SC", serif);
+  border: 1px solid currentColor;
+  padding: 0 3px;
+  font-size: 11px;
+  border-radius: 2px;
+}
+
+/* ---------------- 8. 全科通用首字弱提示 (Ghost Hint) 挖空交互 ---------------- */
+.cloze-keyword-active .xt-keyword.cloze:not(.revealed),
+.cloze-keyword-active .kw-red:not(.revealed) {
+  color: transparent !important;
+  background: var(--cloze-bg, rgba(180, 83, 9, 0.10));
+  border-bottom: 1.5px dashed var(--accent-primary, #b45309);
+  border-radius: 4px;
+  padding: 0 6px;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: all 0.2s ease;
+}
+
+.cloze-keyword-active .xt-keyword.cloze:not(.revealed)::after,
+.cloze-keyword-active .kw-red:not(.revealed)::after {
+  content: attr(data-ghost);
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted, #9ca3af);
+  font-size: 0.85em;
+  font-weight: 500;
+  pointer-events: none;
+  letter-spacing: 1px;
+}
+
+.cloze-keyword-active .xt-keyword.cloze.revealed,
+.cloze-keyword-active .kw-red.revealed {
+  color: var(--accent-primary, #b45309) !important;
+  background: rgba(180, 83, 9, 0.08) !important;
+  border-bottom: 1.5px solid var(--accent-primary, #b45309) !important;
+  border-radius: 4px;
+  padding: 0 4px;
+  cursor: pointer;
+  animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+[data-theme="dark"] .cloze-keyword-active .xt-keyword.cloze:not(.revealed),
+[data-theme="dark"] .cloze-keyword-active .kw-red:not(.revealed) {
+  background: rgba(245, 158, 11, 0.12);
+  border-bottom-color: #f59e0b;
+}
+
+[data-theme="dark"] .cloze-keyword-active .xt-keyword.cloze:not(.revealed)::after,
+[data-theme="dark"] .cloze-keyword-active .kw-red:not(.revealed)::after {
+  color: #a8a29e;
+}
+
+[data-theme="dark"] .cloze-keyword-active .xt-keyword.cloze.revealed,
+[data-theme="dark"] .cloze-keyword-active .kw-red.revealed {
+  color: #fbbf24 !important;
+  background: rgba(245, 158, 11, 0.16) !important;
+  border-bottom-color: #f59e0b !important;
+}
+
