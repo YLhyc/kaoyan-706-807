@@ -2,64 +2,64 @@
   {
     "id": "sent_p1_s1",
     "text": "As is subtly delineated in the cartoon above, a young scholar is sitting tranquilly beside a window, engrossed in a thick masterpiece, with his mind seemingly wandering across boundless realms of wisdom.",
-    "start": "0.000",
-    "end": "18.228",
-    "duration": "18.228"
+    "start": "0.050",
+    "end": "18.200",
+    "duration": "18.150"
   },
   {
     "id": "sent_p1_s2",
     "text": "The profound insight implied here is obvious: systematic reading and deep contemplation constitute the most reliable ladder for personal growth and intellectual enlightenment.",
-    "start": "18.228",
-    "end": "28.271",
+    "start": "18.200",
+    "end": "28.243",
     "duration": "10.043"
   },
   {
     "id": "sent_p2_s1",
     "text": "Several prominent factors explain why deep reading remains irreplaceable in our fast-paced era.",
-    "start": "28.271",
-    "end": "36.622",
-    "duration": "8.351"
+    "start": "28.243",
+    "end": "36.592",
+    "duration": "8.349"
   },
   {
     "id": "sent_p2_s2",
     "text": "In the first place, immersing oneself in classic literature enriches mental horizons and cultivates critical thinking, allowing us to perceive complexities beyond superficial appearances.",
-    "start": "36.622",
-    "end": "48.392",
+    "start": "36.592",
+    "end": "48.362",
     "duration": "11.770"
   },
   {
     "id": "sent_p2_s3",
     "text": "As Francis Bacon famously remarked, \"By reading we enrich the mind.\"",
-    "start": "48.392",
-    "end": "54.220",
+    "start": "48.362",
+    "end": "54.190",
     "duration": "5.828"
   },
   {
     "id": "sent_p2_s4",
     "text": "In the second place, systematic reading serves as an effective antidote to the anxiety and intellectual shallowness triggered by sensationalized short-form videos.",
-    "start": "54.220",
-    "end": "65.950",
+    "start": "54.190",
+    "end": "65.920",
     "duration": "11.730"
   },
   {
     "id": "sent_p2_s5",
     "text": "Confronted with fierce social competition, continuous knowledge accumulation alone provides the inner fortitude needed to overcome uncertainty.",
-    "start": "65.950",
-    "end": "73.677",
+    "start": "65.920",
+    "end": "73.647",
     "duration": "7.727"
   },
   {
     "id": "sent_p3_s1",
     "text": "In view of the above discussion, young students are encouraged to allocate dedicated time for daily reading and resist mindless digital distractions.",
-    "start": "73.677",
-    "end": "88.242",
+    "start": "73.647",
+    "end": "88.212",
     "duration": "14.565"
   },
   {
     "id": "sent_p3_s2",
     "text": "Only when we furnish our minds with profound wisdom can we maintain poise and achieve true greatness.",
-    "start": "88.242",
+    "start": "88.212",
     "end": "96.155",
-    "duration": "7.913"
+    "duration": "7.943"
   }
 ]

@@ -2,71 +2,71 @@
   {
     "id": "sent_p1_s1",
     "text": "As is graphically portrayed in the illustration, two mountaineers are scaling a precipitous cliff: while one collapses on the ground in exhaustion and chooses to surrender halfway, the other advances bravely toward the summit with unwavering resolve.",
-    "start": "0.000",
-    "end": "17.488",
-    "duration": "17.488"
+    "start": "0.050",
+    "end": "17.458",
+    "duration": "17.408"
   },
   {
     "id": "sent_p1_s2",
     "text": "The deep implication of the cartoon is unmistakable: perseverance is the decisive factor that differentiates enduring triumph from regrettable mediocrity.",
-    "start": "17.488",
-    "end": "30.053",
+    "start": "17.458",
+    "end": "30.023",
     "duration": "12.565"
   },
   {
     "id": "sent_p2_s1",
     "text": "A multitude of driving factors account for this widespread phenomenon.",
-    "start": "30.053",
-    "end": "34.820",
+    "start": "30.023",
+    "end": "34.790",
     "duration": "4.767"
   },
   {
     "id": "sent_p2_s2",
     "text": "Chief among them is that any monumental accomplishment inevitably requires persistent dedication and enduring patience.",
-    "start": "34.820",
-    "end": "41.807",
+    "start": "34.790",
+    "end": "41.777",
     "duration": "6.987"
   },
   {
     "id": "sent_p2_s3",
     "text": "As an ancient proverb aptly puts it, \"Rome was not built in a day.\"",
-    "start": "41.807",
-    "end": "49.735",
+    "start": "41.777",
+    "end": "49.705",
     "duration": "7.928"
   },
   {
     "id": "sent_p2_s4",
     "text": "Confronted with unforeseen hurdles, only those equipped with a resilient spirit can convert stumbling blocks into stepping stones.",
-    "start": "49.735",
-    "end": "58.554",
-    "duration": "8.819"
+    "start": "49.705",
+    "end": "58.532",
+    "duration": "8.827"
   },
   {
     "id": "sent_p2_s5",
     "text": "Furthermore, facing hardships bravely not only tempers one's willpower, but also unlocks latent potential that ordinary circumstances could never reveal.",
-    "start": "58.554",
-    "end": "70.070",
-    "duration": "11.516"
+    "start": "58.532",
+    "end": "70.040",
+    "duration": "11.508"
   },
   {
     "id": "sent_p2_s6",
     "text": "Without sustained tenacity, even the most ambitious aspirations will end up as idle daydreams.",
-    "start": "70.070",
-    "end": "74.558",
+    "start": "70.040",
+    "end": "74.528",
     "duration": "4.488"
   },
   {
     "id": "sent_p3_s1",
     "text": "Drawing upon the analysis above, it is imperative that youngsters cultivate unwavering tenacity in pursuit of their lifelong dreams.",
-    "start": "74.558",
-    "end": "87.560",
+    "start": "74.528",
+    "end": "87.530",
     "duration": "13.002"
   },
   {
     "id": "sent_p3_s2",
     "text": "Only when we muster up the courage to surmount every obstacle on our journey can we ultimately harvest the fruits of genuine fulfillment.",
-    "start": "87.560",
+    "start": "87.530",
     "end": "97.635",
-    "duration": "10.075"
+    "duration": "10.105"
   }
 ]

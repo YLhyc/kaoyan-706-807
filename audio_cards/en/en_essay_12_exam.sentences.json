@@ -2,64 +2,64 @@
   {
     "id": "sent_p1_s1",
     "text": "As is subtly delineated in the cartoon above, amidst a torrential downpour, several passersby are holding a shared umbrella together and helping a disabled pedestrian navigate through the puddle.",
-    "start": "0.000",
-    "end": "14.197",
-    "duration": "14.197"
+    "start": "0.050",
+    "end": "14.170",
+    "duration": "14.120"
   },
   {
     "id": "sent_p1_s2",
     "text": "The heartwarming scene conveys a profound truth: mutual assistance and collective goodwill are the indispensable glue that binds a civilized society together.",
-    "start": "14.197",
-    "end": "26.758",
-    "duration": "12.561"
+    "start": "14.170",
+    "end": "26.728",
+    "duration": "12.558"
   },
   {
     "id": "sent_p2_s1",
     "text": "The rationale behind this virtuous conduct is multifaceted.",
-    "start": "26.758",
-    "end": "31.017",
-    "duration": "4.259"
+    "start": "26.728",
+    "end": "31.006",
+    "duration": "4.278"
   },
   {
     "id": "sent_p2_s2",
     "text": "First and foremost, when individuals confront sudden predicaments, timely support from others not only resolves imminent crises, but also restores faith in humanity.",
-    "start": "31.017",
-    "end": "43.109",
-    "duration": "12.092"
+    "start": "31.006",
+    "end": "43.079",
+    "duration": "12.073"
   },
   {
     "id": "sent_p2_s3",
     "text": "As the well-known proverb proclaims, \"Unity is strength.\"",
-    "start": "43.109",
-    "end": "48.047",
-    "duration": "4.938"
+    "start": "43.079",
+    "end": "48.018",
+    "duration": "4.939"
   },
   {
     "id": "sent_p2_s4",
     "text": "Selfish indifference merely isolates human hearts, whereas cooperative solidarity fosters reciprocal trust throughout the community.",
-    "start": "48.047",
-    "end": "54.341",
-    "duration": "6.294"
+    "start": "48.018",
+    "end": "56.133",
+    "duration": "8.115"
   },
   {
     "id": "sent_p2_s5",
     "text": "A prime case in point is the selfless dedication of community volunteers who rushed to offer relief supplies during extreme weather disasters, illustrating that ordinary kindness can generate boundless strength.",
-    "start": "54.341",
-    "end": "73.366",
-    "duration": "19.025"
+    "start": "56.133",
+    "end": "70.633",
+    "duration": "14.500"
   },
   {
     "id": "sent_p3_s1",
     "text": "To nurture this commendable spirit, it is imperative for the media and educational bodies to vigorously advocate civic responsibility and empathy.",
-    "start": "73.366",
-    "end": "81.791",
-    "duration": "8.425"
+    "start": "70.633",
+    "end": "81.770",
+    "duration": "11.137"
   },
   {
     "id": "sent_p3_s2",
     "text": "Only when every member of society extends a helping hand can we banish indifference and construct a society brimming with enduring warmth.",
-    "start": "81.791",
+    "start": "81.770",
     "end": "93.587",
-    "duration": "11.796"
+    "duration": "11.817"
   }
 ]

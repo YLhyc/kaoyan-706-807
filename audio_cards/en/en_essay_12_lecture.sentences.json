@@ -2,92 +2,92 @@
   {
     "id": "t2_intro",
     "text": "下面进入大作文 04 · 社会公德与协同互助：同舟共济、爱心接力与拒绝利己冷漠答题骨架与变体精解。",
-    "start": "0.000",
-    "end": "2.530",
-    "duration": "2.530"
+    "start": "0.050",
+    "end": "1.805",
+    "duration": "1.755"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：风雨同舟、众人合力撑伞画面的温情定格与公德立意。",
-    "start": "2.530",
-    "end": "14.489",
-    "duration": "11.959"
+    "start": "1.805",
+    "end": "2.705",
+    "duration": "0.900"
   },
   {
     "id": "t2_p1_en",
     "text": "Amidst a torrential downpour, passersby are holding a shared umbrella; mutual assistance and collective goodwill are the indispensable glue of a civilized society.",
-    "start": "14.489",
-    "end": "27.968",
-    "duration": "13.479"
+    "start": "2.705",
+    "end": "19.807",
+    "duration": "17.102"
   },
   {
     "id": "t2_p1_tip_cn",
     "text": "社会公德点题金句：mutual assistance and collective goodwill are the indispensable glue that binds a civilized society together.",
-    "start": "27.968",
-    "end": "34.228",
-    "duration": "6.260"
+    "start": "19.807",
+    "end": "32.159",
+    "duration": "12.352"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "Mutual assistance and collective goodwill are the indispensable glue of a civilized society.",
-    "start": "34.228",
-    "end": "44.603",
-    "duration": "10.375"
+    "start": "32.159",
+    "end": "41.806",
+    "duration": "9.647"
   },
   {
     "id": "t2_p2_cn",
     "text": "第二段：双重说理论证 + 团结名言 + 志愿奉献鲜活案例。",
-    "start": "44.603",
-    "end": "49.430",
-    "duration": "4.827"
+    "start": "41.806",
+    "end": "42.796",
+    "duration": "0.990"
   },
   {
     "id": "t2_p2_en",
     "text": "Selfish indifference merely isolates human hearts, whereas cooperative solidarity fosters reciprocal trust; as the proverb proclaims, 'Unity is strength'.",
-    "start": "49.430",
-    "end": "61.349",
-    "duration": "11.919"
+    "start": "42.796",
+    "end": "59.019",
+    "duration": "16.223"
   },
   {
     "id": "t2_p2_tip_cn",
     "text": "举例论证典范句：A prime case in point is the selfless dedication of community volunteers...",
-    "start": "61.349",
-    "end": "67.727",
-    "duration": "6.378"
+    "start": "59.019",
+    "end": "67.697",
+    "duration": "8.678"
   },
   {
     "id": "t2_p2_tip_en",
     "text": "Selfish indifference isolates human hearts, whereas cooperative solidarity fosters reciprocal trust.",
-    "start": "67.727",
-    "end": "75.743",
-    "duration": "8.016"
+    "start": "67.697",
+    "end": "75.714",
+    "duration": "8.017"
   },
   {
     "id": "t2_p3_cn",
     "text": "第三段：媒体与教育倡导责任，以驱散冷漠、共筑温情倒装收官。",
-    "start": "75.743",
-    "end": "86.061",
-    "duration": "10.318"
+    "start": "75.714",
+    "end": "77.636",
+    "duration": "1.922"
   },
   {
     "id": "t2_p3_en",
     "text": "Only when every member of society extends a helping hand can we banish indifference and construct a society brimming with enduring warmth.",
-    "start": "86.061",
-    "end": "98.528",
-    "duration": "12.467"
+    "start": "77.636",
+    "end": "96.833",
+    "duration": "19.197"
   },
   {
     "id": "t2_p3_tip_cn",
     "text": "温情社会倒装结语：Only when every member extends a helping hand can we banish indifference.",
-    "start": "98.528",
-    "end": "108.218",
-    "duration": "9.690"
+    "start": "96.833",
+    "end": "104.813",
+    "duration": "7.980"
   },
   {
     "id": "t2_p3_tip_en",
     "text": "Only when every member extends a helping hand can we construct a society brimming with warmth.",
-    "start": "108.218",
+    "start": "104.813",
     "end": "118.342",
-    "duration": "10.124"
+    "duration": "13.529"
   }
 ]

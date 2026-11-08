@@ -2,92 +2,92 @@
   {
     "id": "t2_intro",
     "text": "下面进入小作文 02 · 投诉与维权信：网购商品质量破损与售后服务冷漠答题骨架与变体精解。",
-    "start": "0.000",
-    "end": "1.941",
-    "duration": "1.941"
+    "start": "0.050",
+    "end": "1.913",
+    "duration": "1.863"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：直入主题，表明正式投诉意向与事由。",
-    "start": "1.941",
-    "end": "11.395",
-    "duration": "9.454"
+    "start": "1.913",
+    "end": "2.813",
+    "duration": "0.900"
   },
   {
     "id": "t2_p1_en",
     "text": "I am writing this letter to lodge a formal complaint concerning the substandard quality of the books I purchased and the unprofessional attitude of your staff.",
-    "start": "11.395",
-    "end": "23.945",
-    "duration": "12.550"
+    "start": "2.813",
+    "end": "20.998",
+    "duration": "18.185"
   },
   {
     "id": "t2_p1_tip_cn",
     "text": "加分短语：lodge a formal complaint 替换简单的 complain about。",
-    "start": "23.945",
-    "end": "27.479",
-    "duration": "3.534"
+    "start": "20.998",
+    "end": "23.915",
+    "duration": "2.917"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "lodge a formal complaint",
-    "start": "27.479",
-    "end": "30.630",
-    "duration": "3.151"
+    "start": "23.915",
+    "end": "27.449",
+    "duration": "3.534"
   },
   {
     "id": "t2_p2_cn",
     "text": "第二段：客观列举事实细节，指出商品缺陷与服务失职。",
-    "start": "30.630",
-    "end": "37.763",
-    "duration": "7.133"
+    "start": "27.449",
+    "end": "28.794",
+    "duration": "1.345"
   },
   {
     "id": "t2_p2_en",
     "text": "When the parcel arrived yesterday, I was shocked to find that the covers were torn and several key pages were missing.",
-    "start": "37.763",
-    "end": "50.683",
-    "duration": "12.920"
+    "start": "28.794",
+    "end": "44.941",
+    "duration": "16.147"
   },
   {
     "id": "t2_p2_tip_cn",
     "text": "表达不满情感句型：Even more frustrating was that...",
-    "start": "50.683",
-    "end": "52.461",
-    "duration": "1.778"
+    "start": "44.941",
+    "end": "47.685",
+    "duration": "2.744"
   },
   {
     "id": "t2_p2_tip_en",
     "text": "Even more frustrating was that my inquiry was met with total indifference.",
-    "start": "52.461",
-    "end": "61.716",
-    "duration": "9.255"
+    "start": "47.685",
+    "end": "58.485",
+    "duration": "10.800"
   },
   {
     "id": "t2_p3_cn",
     "text": "第三段：严肃督促整改，明确要求换货或全额退款。",
-    "start": "61.716",
-    "end": "68.214",
-    "duration": "6.498"
+    "start": "58.485",
+    "end": "59.385",
+    "duration": "0.900"
   },
   {
     "id": "t2_p3_en",
     "text": "Therefore, I deem it imperative that an immediate replacement or a full refund be arranged promptly.",
-    "start": "68.214",
-    "end": "77.061",
-    "duration": "8.847"
+    "start": "59.385",
+    "end": "70.294",
+    "duration": "10.909"
   },
   {
     "id": "t2_p3_tip_cn",
     "text": "高分虚拟语气句：I deem it imperative that sb. (should) do...",
-    "start": "77.061",
-    "end": "81.236",
-    "duration": "4.175"
+    "start": "70.294",
+    "end": "77.031",
+    "duration": "6.737"
   },
   {
     "id": "t2_p3_tip_en",
     "text": "I deem it imperative that effective rectifying measures be taken promptly.",
-    "start": "81.236",
+    "start": "77.031",
     "end": "87.430",
-    "duration": "6.194"
+    "duration": "10.399"
   }
 ]

@@ -2,64 +2,64 @@
   {
     "id": "sent_p1_s1",
     "text": "As is vividly depicted in the picture, a magnificent landscape shows barren hills transforming into luxuriant green forests, with fish swimming freely in clear streams.",
-    "start": "0.000",
-    "end": "12.596",
-    "duration": "12.596"
+    "start": "0.050",
+    "end": "12.566",
+    "duration": "12.516"
   },
   {
     "id": "sent_p1_s2",
     "text": "This contrast delivers an unmistakable message: ecological preservation and green development are vital prerequisites for the sustainable prosperity of human civilization.",
-    "start": "12.596",
-    "end": "26.044",
+    "start": "12.566",
+    "end": "26.014",
     "duration": "13.448"
   },
   {
     "id": "sent_p2_s1",
     "text": "A multitude of compelling arguments substantiate the urgency of environmental protection.",
-    "start": "26.044",
-    "end": "32.650",
+    "start": "26.014",
+    "end": "32.620",
     "duration": "6.606"
   },
   {
     "id": "sent_p2_s2",
     "text": "Chief among them is that reckless exploitation of natural resources and unrestrained pollution will inevitably disrupt the ecological equilibrium, ultimately inflicting irreversible damage upon human survival.",
-    "start": "32.650",
-    "end": "47.506",
+    "start": "32.620",
+    "end": "47.476",
     "duration": "14.856"
   },
   {
     "id": "sent_p2_s3",
     "text": "As the prudent saying asserts, \"An ounce of prevention is worth a pound of cure.\"",
-    "start": "47.506",
-    "end": "54.421",
+    "start": "47.476",
+    "end": "54.391",
     "duration": "6.915"
   },
   {
     "id": "sent_p2_s4",
     "text": "By contrast, investing in renewable energy and low-carbon lifestyles not only guards pristine biodiversity, but also stimulates sustainable economic growth for future generations.",
-    "start": "54.421",
-    "end": "66.672",
+    "start": "54.391",
+    "end": "66.642",
     "duration": "12.251"
   },
   {
     "id": "sent_p2_s5",
     "text": "Economic advancement should never be pursued at the exorbitant expense of a devastated environment.",
-    "start": "66.672",
-    "end": "74.593",
+    "start": "66.642",
+    "end": "74.563",
     "duration": "7.921"
   },
   {
     "id": "sent_p3_s1",
     "text": "To ensure the co-prosperity of humanity and nature, stringent legal frameworks must be enforced to punish polluting enterprises, while citizens are supposed to practice waste classification conscientiously.",
-    "start": "74.593",
-    "end": "89.606",
+    "start": "74.563",
+    "end": "89.576",
     "duration": "15.013"
   },
   {
     "id": "sent_p3_s2",
     "text": "Only in harmony with nature can mankind secure a thriving and promising future.",
-    "start": "89.606",
+    "start": "89.576",
     "end": "96.659",
-    "duration": "7.053"
+    "duration": "7.083"
   }
 ]

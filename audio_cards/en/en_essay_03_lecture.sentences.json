@@ -2,92 +2,92 @@
   {
     "id": "t2_intro",
     "text": "下面进入小作文 03 · 求职与自荐信：国际学术研讨会学生助理自荐答题骨架与变体精解。",
-    "start": "0.000",
-    "end": "2.008",
-    "duration": "2.008"
+    "start": "0.050",
+    "end": "1.978",
+    "duration": "1.928"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：交待招聘信息来源与自荐岗位。",
-    "start": "2.008",
-    "end": "10.289",
-    "duration": "8.281"
+    "start": "1.978",
+    "end": "2.878",
+    "duration": "0.900"
   },
   {
     "id": "t2_p1_en",
     "text": "Learning that student assistants are wanted for the upcoming International Academic Symposium, I am writing to recommend myself with utmost enthusiasm.",
-    "start": "10.289",
-    "end": "22.497",
-    "duration": "12.208"
+    "start": "2.878",
+    "end": "17.194",
+    "duration": "14.316"
   },
   {
     "id": "t2_p1_tip_cn",
     "text": "分词短语作状语：Learning from... that..., I am writing to...",
-    "start": "22.497",
-    "end": "27.051",
-    "duration": "4.554"
+    "start": "17.194",
+    "end": "22.467",
+    "duration": "5.273"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "I am writing to recommend myself with utmost enthusiasm.",
-    "start": "27.051",
-    "end": "31.112",
-    "duration": "4.061"
+    "start": "22.467",
+    "end": "29.127",
+    "duration": "6.660"
   },
   {
     "id": "t2_p2_cn",
     "text": "第二段：多角度论证个人优势（语言能力 + 会务经验 + 敬业态度）。",
-    "start": "31.112",
-    "end": "36.232",
-    "duration": "5.120"
+    "start": "29.127",
+    "end": "31.082",
+    "duration": "1.955"
   },
   {
     "id": "t2_p2_en",
     "text": "First of all, I have achieved excellent proficiency in English, which enables me to communicate fluently with foreign scholars.",
-    "start": "36.232",
-    "end": "47.506",
-    "duration": "11.274"
+    "start": "31.082",
+    "end": "43.655",
+    "duration": "12.573"
   },
   {
     "id": "t2_p2_tip_cn",
     "text": "分词作状语表达经验：Having served as a liaison officer, I possess sound organizational capabilities.",
-    "start": "47.506",
-    "end": "54.393",
-    "duration": "6.887"
+    "start": "43.655",
+    "end": "53.555",
+    "duration": "9.900"
   },
   {
     "id": "t2_p2_tip_en",
     "text": "Having served as a liaison officer, I possess sound organizational capabilities.",
-    "start": "54.393",
-    "end": "62.980",
-    "duration": "8.587"
+    "start": "53.555",
+    "end": "62.950",
+    "duration": "9.395"
   },
   {
     "id": "t2_p3_cn",
     "text": "第三段：提交履历材料并礼貌表达面试期盼。",
-    "start": "62.980",
-    "end": "69.595",
-    "duration": "6.615"
+    "start": "62.950",
+    "end": "63.850",
+    "duration": "0.900"
   },
   {
     "id": "t2_p3_en",
     "text": "Enclosed please find my curriculum vitae for your reference, and I would appreciate the opportunity to attend an interview at your convenience.",
-    "start": "69.595",
-    "end": "82.472",
-    "duration": "12.877"
+    "start": "63.850",
+    "end": "80.252",
+    "duration": "16.402"
   },
   {
     "id": "t2_p3_tip_cn",
     "text": "商务信函固定高分句：Enclosed please find my resume for your reference.",
-    "start": "82.472",
-    "end": "88.892",
-    "duration": "6.420"
+    "start": "80.252",
+    "end": "86.895",
+    "duration": "6.643"
   },
   {
     "id": "t2_p3_tip_en",
     "text": "Enclosed please find my curriculum vitae for your reference.",
-    "start": "88.892",
+    "start": "86.895",
     "end": "94.270",
-    "duration": "5.378"
+    "duration": "7.375"
   }
 ]

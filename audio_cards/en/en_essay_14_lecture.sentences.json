@@ -2,92 +2,92 @@
   {
     "id": "t2_intro",
     "text": "下面进入大作文 06 · 教育理念与青年修养：终身阅读、深度学习与拒绝精神内耗答题骨架与变体精解。",
-    "start": "0.000",
-    "end": "2.502",
-    "duration": "2.502"
+    "start": "0.050",
+    "end": "1.874",
+    "duration": "1.824"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：静坐窗前捧读经典的宁静神态描摹与智识启蒙立意。",
-    "start": "2.502",
-    "end": "11.873",
-    "duration": "9.371"
+    "start": "1.874",
+    "end": "2.774",
+    "duration": "0.900"
   },
   {
     "id": "t2_p1_en",
     "text": "A young scholar is sitting tranquilly beside a window, engrossed in a masterpiece; reading constitutes the most reliable ladder for growth.",
-    "start": "11.873",
-    "end": "24.831",
-    "duration": "12.958"
+    "start": "2.774",
+    "end": "18.824",
+    "duration": "16.050"
   },
   {
     "id": "t2_p1_tip_cn",
     "text": "深度阅读破题名句：systematic reading and deep contemplation constitute the most reliable ladder for intellectual enlightenment.",
-    "start": "24.831",
-    "end": "31.778",
-    "duration": "6.947"
+    "start": "18.824",
+    "end": "29.435",
+    "duration": "10.611"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "Reading constitutes the most reliable ladder for intellectual enlightenment.",
-    "start": "31.778",
-    "end": "37.126",
-    "duration": "5.348"
+    "start": "29.435",
+    "end": "37.096",
+    "duration": "7.661"
   },
   {
     "id": "t2_p2_cn",
     "text": "第二段：双重价值剖析，引用培根读书名言，并作为快餐短视频时代精神解毒剂。",
-    "start": "37.126",
-    "end": "50.639",
-    "duration": "13.513"
+    "start": "37.096",
+    "end": "37.996",
+    "duration": "0.900"
   },
   {
     "id": "t2_p2_en",
     "text": "Immersing in classic literature enriches mental horizons; as Bacon remarked, 'By reading we enrich the mind'; reading serves as an antidote to anxiety.",
-    "start": "50.639",
-    "end": "63.317",
-    "duration": "12.678"
+    "start": "37.996",
+    "end": "54.751",
+    "duration": "16.755"
   },
   {
     "id": "t2_p2_tip_cn",
     "text": "当代浮躁解药隐喻：serves as an effective antidote to the anxiety and intellectual shallowness.",
-    "start": "63.317",
-    "end": "68.758",
-    "duration": "5.441"
+    "start": "54.751",
+    "end": "63.288",
+    "duration": "8.537"
   },
   {
     "id": "t2_p2_tip_en",
     "text": "Reading serves as an effective antidote to the anxiety triggered by short-form videos.",
-    "start": "68.758",
-    "end": "74.684",
-    "duration": "5.926"
+    "start": "63.288",
+    "end": "74.654",
+    "duration": "11.366"
   },
   {
     "id": "t2_p3_cn",
     "text": "第三段：鼓励每日专属阅读时间，以内心笃定致远倒装收尾。",
-    "start": "74.684",
-    "end": "86.089",
-    "duration": "11.405"
+    "start": "74.654",
+    "end": "75.599",
+    "duration": "0.945"
   },
   {
     "id": "t2_p3_en",
     "text": "Only when we furnish our minds with profound wisdom can we maintain poise and achieve true greatness.",
-    "start": "86.089",
-    "end": "95.637",
-    "duration": "9.548"
+    "start": "75.599",
+    "end": "88.203",
+    "duration": "12.604"
   },
   {
     "id": "t2_p3_tip_cn",
     "text": "青年修身哲理倒装句：Only when we furnish our minds with profound wisdom can we maintain poise.",
-    "start": "95.637",
-    "end": "102.613",
-    "duration": "6.976"
+    "start": "88.203",
+    "end": "98.565",
+    "duration": "10.362"
   },
   {
     "id": "t2_p3_tip_en",
     "text": "Only when we furnish our minds with profound wisdom can we achieve true greatness.",
-    "start": "102.613",
+    "start": "98.565",
     "end": "111.838",
-    "duration": "9.225"
+    "duration": "13.273"
   }
 ]

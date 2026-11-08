@@ -2,64 +2,64 @@
   {
     "id": "sent_p1_s1",
     "text": "The bar chart explicitly illustrates the dramatic variation in the proportion of regular physical exercise participants in our nation between 2018 and 2025.",
-    "start": "0.000",
-    "end": "13.780",
-    "duration": "13.780"
+    "start": "0.050",
+    "end": "13.750",
+    "duration": "13.700"
   },
   {
     "id": "sent_p1_s2",
     "text": "During this period, the percentage climbed remarkably from 28.5% to approximately 65.2%, reflecting an inspiring shift toward healthier living across all demographics.",
-    "start": "13.780",
-    "end": "28.917",
-    "duration": "15.137"
+    "start": "13.750",
+    "end": "26.779",
+    "duration": "13.029"
   },
   {
     "id": "sent_p2_s1",
     "text": "A combination of powerful drivers accounts for this noticeable upsurge.",
-    "start": "28.917",
-    "end": "31.359",
-    "duration": "2.442"
+    "start": "26.779",
+    "end": "31.332",
+    "duration": "4.553"
   },
   {
     "id": "sent_p2_s2",
     "text": "Foremost among them is that accompanied by steady economic growth, Chinese citizens enjoy elevated disposable income and increasingly prioritize physical wellness over mere material acquisition.",
-    "start": "31.359",
-    "end": "46.194",
-    "duration": "14.835"
+    "start": "31.332",
+    "end": "46.184",
+    "duration": "14.852"
   },
   {
     "id": "sent_p2_s3",
     "text": "Furthermore, extensive government investments in public sports infrastructure—such as municipal jogging tracks and community fitness parks—have significantly lowered the threshold for physical workout.",
-    "start": "46.194",
-    "end": "58.138",
-    "duration": "11.944"
+    "start": "46.184",
+    "end": "62.422",
+    "duration": "16.238"
   },
   {
     "id": "sent_p2_s4",
     "text": "In addition, social media platforms and fitness applications have popularized active workouts as a trendy and invigorating lifestyle among youngsters.",
-    "start": "58.138",
-    "end": "73.058",
-    "duration": "14.920"
+    "start": "62.422",
+    "end": "73.029",
+    "duration": "10.607"
   },
   {
     "id": "sent_p2_s5",
     "text": "Health is rightfully recognized as the prerequisite for happiness.",
-    "start": "73.058",
-    "end": "78.505",
-    "duration": "5.447"
+    "start": "73.029",
+    "end": "78.475",
+    "duration": "5.446"
   },
   {
     "id": "sent_p3_s1",
     "text": "To summarize, this encouraging trend mirrors societal progress and heightened life quality.",
-    "start": "78.505",
-    "end": "85.768",
-    "duration": "7.263"
+    "start": "78.475",
+    "end": "85.739",
+    "duration": "7.264"
   },
   {
     "id": "sent_p3_s2",
     "text": "It is widely anticipated that regular physical exercise will gain greater momentum in the forthcoming years, ushering in a healthier nation.",
-    "start": "85.768",
+    "start": "85.739",
     "end": "97.211",
-    "duration": "11.443"
+    "duration": "11.472"
   }
 ]

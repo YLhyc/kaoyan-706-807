@@ -2,64 +2,64 @@
   {
     "id": "sent_p1_s1",
     "text": "As is graphically portrayed in the illustration, an elderly craftsman is enthusiastically teaching young apprentices traditional shadow puppetry, with radiant smiles on their faces.",
-    "start": "0.000",
-    "end": "12.525",
-    "duration": "12.525"
+    "start": "0.050",
+    "end": "12.496",
+    "duration": "12.446"
   },
   {
     "id": "sent_p1_s2",
     "text": "The subtle implication conveyed here is unmistakable: excellent traditional culture constitutes the spiritual cornerstone of national rejuvenation and deserves perpetual preservation.",
-    "start": "12.525",
-    "end": "27.167",
+    "start": "12.496",
+    "end": "27.138",
     "duration": "14.642"
   },
   {
     "id": "sent_p2_s1",
     "text": "Several prominent factors account for the urgent revitalization of intangible cultural heritage.",
-    "start": "27.167",
-    "end": "31.418",
-    "duration": "4.251"
+    "start": "27.138",
+    "end": "31.390",
+    "duration": "4.252"
   },
   {
     "id": "sent_p2_s2",
     "text": "Chief among them is that profound cultural traditions provide individuals with solid spiritual nourishment and a distinctive sense of belonging in a globalized era.",
-    "start": "31.418",
-    "end": "45.510",
-    "duration": "14.092"
+    "start": "31.390",
+    "end": "45.480",
+    "duration": "14.090"
   },
   {
     "id": "sent_p2_s3",
     "text": "Traditional arts and virtues not only temper our aesthetic sensibilities, but also safeguard moral integrity amidst commercialized vulgarity.",
-    "start": "45.510",
-    "end": "56.427",
-    "duration": "10.917"
+    "start": "45.480",
+    "end": "56.413",
+    "duration": "10.933"
   },
   {
     "id": "sent_p2_s4",
     "text": "Furthermore, integrating traditional wisdom into creative contemporary expressions breathes renewed vitality into our historical legacy.",
-    "start": "56.427",
-    "end": "65.945",
-    "duration": "9.518"
+    "start": "56.413",
+    "end": "65.915",
+    "duration": "9.502"
   },
   {
     "id": "sent_p2_s5",
     "text": "As a timeless saying reminds us, \"A tree cannot thrive without deep roots, nor can a civilization flourish without honoring its ancestral heritage.\"",
-    "start": "65.945",
-    "end": "78.042",
+    "start": "65.915",
+    "end": "78.012",
     "duration": "12.097"
   },
   {
     "id": "sent_p3_s1",
     "text": "Based on the discussion above, schools, cultural institutions, and the younger generation should collaborate dynamically to carry forward fine cultural legacies.",
-    "start": "78.042",
-    "end": "90.231",
+    "start": "78.012",
+    "end": "90.201",
     "duration": "12.189"
   },
   {
     "id": "sent_p3_s2",
     "text": "Only when the youth cherish cultural treasures with pride and creativity can Chinese civilization shine with everlasting splendor on the world stage.",
-    "start": "90.231",
+    "start": "90.201",
     "end": "101.267",
-    "duration": "11.036"
+    "duration": "11.066"
   }
 ]
