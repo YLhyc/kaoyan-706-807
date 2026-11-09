@@ -61,6 +61,8 @@
   };
 
   let isPolDataLoading = false;
+  let syncRafId = null;
+  let lastSpotlightEl = null;
 
   const audio = new Audio();
   audio.preload = 'metadata';
@@ -608,6 +610,16 @@
     if (state.currentSubject === sub) return;
     state.currentSubject = sub;
     
+    // 跨科切换状态隔离：立即暂停原音频并注销帧循环与残余焦点，杜绝幽灵音频与回调穿透
+    if (audio && !audio.paused) {
+      audio.pause();
+    }
+    if (syncRafId) {
+      cancelAnimationFrame(syncRafId);
+      syncRafId = null;
+    }
+    lastSpotlightEl = null;
+    
     if (el.subject807Btn) el.subject807Btn.classList.toggle('active', sub === '807');
     if (el.subject706Btn) el.subject706Btn.classList.toggle('active', sub === '706');
     if (el.subjectPolBtn) el.subjectPolBtn.classList.toggle('active', sub === 'pol');
@@ -650,6 +662,7 @@
       });
 
       ensurePolDataLoaded().then(() => {
+        if (state.currentSubject !== 'pol') return; // 用户已切走，终止过期的异步回调
         renderSidebarList();
         const list = getCurrentItemsList();
         const isCurrentInList = list.some(x => x.id === state.activeItemId);
@@ -754,7 +767,7 @@
               ${masteryBadgeHtml}
             </div>
             <span class="card-audio-status has-audio" title="伴读音频已就绪">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
                 <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
               </svg>
@@ -770,7 +783,7 @@
         const hasAudio = item.track1 && item.track1.has_audio;
         const audioStatusHtml = hasAudio 
           ? `<span class="card-audio-status has-audio" title="通读音频已就绪">
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
                </svg>
@@ -1206,6 +1219,7 @@
     const item = list.find(x => x.id === itemId);
     if (!item) return;
 
+    lastSpotlightEl = null; // 切换考题清除旧聚光引用，消除跨题内存残留与同名 sentId 穿透
     state.activeItemId = itemId;
     state.activeItem = item;
     state.currentSentIndex = -1;
@@ -1377,6 +1391,7 @@
 
   function renderPaperContent(trackObj, sentences) {
     if (!el.paperContent) return;
+    lastSpotlightEl = null;
     el.paperContent.innerHTML = '';
     applyClozeClassToPaper();
 
@@ -1403,6 +1418,57 @@
           }
         });
       });
+
+      // 英语写作专属：审题任务导引交互与一键直达开读正文
+      const enJumpPills = el.paperContent.querySelectorAll('.en-audio-jump-pill');
+      enJumpPills.forEach(pill => {
+        pill.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const firstSent = el.paperContent.querySelector('.en-full-essay-box .recite-sent');
+          if (firstSent) {
+            const sentId = firstSent.dataset.sentId;
+            const start = parseFloat(firstSent.dataset.start);
+            if (!isNaN(start)) {
+              seekToSentence(sentId, start);
+              showToast('已为您开读正文高分范文', 1800);
+            }
+          }
+        });
+      });
+
+      const enPromptBoxes = el.paperContent.querySelectorAll('.en-task-prompt-box, .en-task-prompt-text, .section-thesis-box');
+      enPromptBoxes.forEach(pBox => {
+        pBox.addEventListener('click', (e) => {
+          if (e.target.closest('.en-audio-jump-pill')) return;
+          const firstSent = el.paperContent.querySelector('.en-full-essay-box .recite-sent');
+          if (firstSent) {
+            const sentId = firstSent.dataset.sentId;
+            const start = parseFloat(firstSent.dataset.start);
+            if (!isNaN(start)) {
+              seekToSentence(sentId, start);
+              showToast('此部分为审题任务导引（静读），已定位开读正文范文', 2200);
+            }
+          } else {
+            showToast('此部分为审题任务导引，点击下方正文即可点词朗读', 2200);
+          }
+        });
+      });
+
+      const enIntroBadges = el.paperContent.querySelectorAll('.en-intro-badge, .card-intro .section-card-header');
+      enIntroBadges.forEach(ib => {
+        ib.addEventListener('click', (e) => {
+          const firstSent = el.paperContent.querySelector('.en-full-essay-box .recite-sent');
+          if (firstSent) {
+            const sentId = firstSent.dataset.sentId;
+            const start = parseFloat(firstSent.dataset.start);
+            if (!isNaN(start)) {
+              seekToSentence(sentId, start);
+              showToast('审题导引供静读构思，已为您起音开读高分范文', 2000);
+            }
+          }
+        });
+      });
+
       return;
     }
 
@@ -1417,7 +1483,7 @@
   }
 
   function seekToSentence(sentId, startTime) {
-    const targetTime = Math.max(0, (typeof startTime === 'number' && !isNaN(startTime) ? startTime : 0) - 0.35);
+    const targetTime = Math.max(0, (typeof startTime === 'number' && !isNaN(startTime) ? startTime : 0) - 0.08);
     const sentIdx = state.activeSentences.findIndex(s => String(s.id) === String(sentId));
     if (sentIdx !== -1) {
       state.currentSentIndex = sentIdx;
@@ -1461,7 +1527,7 @@
     }
   }
 
-  let lastSpotlightEl = null;
+  lastSpotlightEl = null;
   let lastScrollTs = 0;
 
   // 工业级启发式时间轴匹配引擎 (消除静音空隙与跳跃，第一性原理纠偏)
@@ -1493,8 +1559,11 @@
       return;
     }
 
-    const lastId = lastSpotlightEl ? (lastSpotlightEl.dataset.sentId ?? lastSpotlightEl.dataset.sentIdx ?? lastSpotlightEl.dataset.pointId ?? lastSpotlightEl.id) : null;
-    if (lastSpotlightEl && String(lastId) === String(sentId)) return;
+    const lastId = (lastSpotlightEl && lastSpotlightEl.isConnected) ? (lastSpotlightEl.dataset.sentId ?? lastSpotlightEl.dataset.sentIdx ?? lastSpotlightEl.dataset.pointId ?? lastSpotlightEl.id) : null;
+    if (lastSpotlightEl && lastSpotlightEl.isConnected && String(lastId) === String(sentId)) return;
+    if (lastSpotlightEl && !lastSpotlightEl.isConnected) {
+      lastSpotlightEl = null;
+    }
 
     if (lastSpotlightEl) {
       lastSpotlightEl.classList.remove('active-spotlight');
@@ -1966,7 +2035,7 @@
   const togglePlay = toggleAudioPlayback;
 
   function setupAudioEngine() {
-    let syncRafId = null;
+    syncRafId = null;
 
     // 60fps 高频毫秒级聚光同步引擎 (彻底消除 timeupdate 的 300ms 滞后与 1s 句子迟滞)
     function runSyncLoop() {
@@ -1983,12 +2052,23 @@
           }
         }
 
-        // 1. 单句循环模式 (精准闭环，不倒退 0.25s，微量保护 -0.04s)
+        // 1. 单句循环模式 (精准闭环，防越界抗干扰)
         if (state.playMode === 'sentence' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
           const sent = state.activeSentences[state.currentSentIndex];
-          if (cur >= sent.end - 0.04) {
+          if (cur < sent.start - 0.6 || cur > sent.end + 0.6) {
+            const newIdx = findActiveSentenceIndex(cur);
+            if (newIdx !== -1) {
+              state.currentSentIndex = newIdx;
+              state.loopCount = 0;
+              highlightSentence(state.activeSentences[newIdx].id);
+            }
+          } else if (cur >= sent.end - 0.04) {
             audio.currentTime = sent.start;
             if (audio.paused) audio.play().catch(e => console.log(e));
+            syncRafId = requestAnimationFrame(runSyncLoop);
+            return;
+          } else {
+            updateHUDDisplay(cur);
             syncRafId = requestAnimationFrame(runSyncLoop);
             return;
           }
@@ -1996,7 +2076,14 @@
         // 2. 单句3遍模式 (满3遍后精准推移至下一句)
         else if (state.playMode === 'loop3' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
           const sent = state.activeSentences[state.currentSentIndex];
-          if (cur >= sent.end - 0.04) {
+          if (cur < sent.start - 0.6 || cur > sent.end + 0.6) {
+            const newIdx = findActiveSentenceIndex(cur);
+            if (newIdx !== -1) {
+              state.currentSentIndex = newIdx;
+              state.loopCount = 0;
+              highlightSentence(state.activeSentences[newIdx].id);
+            }
+          } else if (cur >= sent.end - 0.04) {
             if (state.loopCount < 2) {
               state.loopCount++;
               audio.currentTime = sent.start;
@@ -2015,6 +2102,10 @@
                 return;
               }
             }
+          } else {
+            updateHUDDisplay(cur);
+            syncRafId = requestAnimationFrame(runSyncLoop);
+            return;
           }
         }
         // 3. 单段循环模式
@@ -2103,16 +2194,32 @@
         // 1. 单句循环模式
         if (state.playMode === 'sentence' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
           const sent = state.activeSentences[state.currentSentIndex];
-          if (cur >= sent.end - 0.04) {
+          if (cur < sent.start - 0.6 || cur > sent.end + 0.6) {
+            const newIdx = findActiveSentenceIndex(cur);
+            if (newIdx !== -1) {
+              state.currentSentIndex = newIdx;
+              state.loopCount = 0;
+              highlightSentence(state.activeSentences[newIdx].id);
+            }
+          } else if (cur >= sent.end - 0.04) {
             audio.currentTime = sent.start;
             if (audio.paused) audio.play().catch(e => console.log(e));
+            return;
+          } else {
             return;
           }
         }
         // 2. 单句3遍模式
         else if (state.playMode === 'loop3' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
           const sent = state.activeSentences[state.currentSentIndex];
-          if (cur >= sent.end - 0.04) {
+          if (cur < sent.start - 0.6 || cur > sent.end + 0.6) {
+            const newIdx = findActiveSentenceIndex(cur);
+            if (newIdx !== -1) {
+              state.currentSentIndex = newIdx;
+              state.loopCount = 0;
+              highlightSentence(state.activeSentences[newIdx].id);
+            }
+          } else if (cur >= sent.end - 0.04) {
             if (state.loopCount < 2) {
               state.loopCount++;
               audio.currentTime = sent.start;
@@ -2129,6 +2236,8 @@
                 return;
               }
             }
+          } else {
+            return;
           }
         }
         // 3. 单段循环模式
@@ -2228,14 +2337,14 @@
     if (!el.playBtn) return;
     if (state.isPlaying) {
       el.playBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="currentColor">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
           <rect x="6" y="4" width="4" height="16" rx="1"></rect>
           <rect x="14" y="4" width="4" height="16" rx="1"></rect>
         </svg>`;
       el.playBtn.title = "暂停播放";
     } else {
       el.playBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="currentColor">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
           <polygon points="6 4 20 12 6 20 6 4"></polygon>
         </svg>`;
       el.playBtn.title = "播放音频";
@@ -3243,7 +3352,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.0.6';
+  const APP_BUILD_ID = '3.0.7';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -3521,6 +3630,10 @@
   }
 
   function startApp() {
+    window.switchSubject = switchSubject;
+    window.selectItem = selectItem;
+    window.seekToSentence = seekToSentence;
+    window.getCurrentItemsList = getCurrentItemsList;
     initElements();
     setupAudioEngine();
     setupEventListeners();
@@ -3556,7 +3669,7 @@
     showToast('正在加载考研政治背诵手卷...', 2000);
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = 'data/kaoyan_data_pol.js?v=3.0.6';
+      script.src = 'data/kaoyan_data_pol.js?v=3.0.7';
       script.onload = () => {
         isPolDataLoading = false;
         state.polData = window.KAOYAN_POL_DATA;

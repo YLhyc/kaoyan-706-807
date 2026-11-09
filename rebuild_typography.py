@@ -308,20 +308,22 @@ def build_clean_track1_html(item, sents, meta, md_path):
         for s in sents:
             s_cl = clean_txt(s['text'])
             if sec_ptr + 1 < len(sections):
-                next_sec_cl = sec_cleans[sec_ptr + 1]
-                match = False
-                if len(next_sec_cl) >= 6:
-                    for k in range(0, min(24, len(next_sec_cl) - 5)):
-                        if next_sec_cl[k:k+6] in s_cl:
-                            match = True
-                            break
-                if not match and len(s_cl) >= 6:
-                    for k in range(0, min(20, len(s_cl) - 5)):
-                        if s_cl[k:k+6] in next_sec_cl[:45]:
-                            match = True
-                            break
-                if match:
-                    sec_ptr += 1
+                min_req = 4 if sec_ptr == 0 else 2
+                if len(assigned_sections[sec_ptr]) >= min_req:
+                    next_sec_cl = sec_cleans[sec_ptr + 1]
+                    match = False
+                    if len(next_sec_cl) >= 6:
+                        for k in range(0, min(24, len(next_sec_cl) - 5)):
+                            if next_sec_cl[k:k+6] in s_cl:
+                                match = True
+                                break
+                    if not match and len(s_cl) >= 6:
+                        for k in range(0, min(20, len(s_cl) - 5)):
+                            if s_cl[k:k+6] in next_sec_cl[:45]:
+                                match = True
+                                break
+                    if match:
+                        sec_ptr += 1
             assigned_sections[sec_ptr].append(s)
             
     lead_banner_html = ""
@@ -671,20 +673,22 @@ def build_clean_track2_html(item, sents2, meta, md_path=None, t1_sections=None):
             for s in sents2:
                 s_cl = clean_txt(s['text'])
                 if sec_ptr + 1 < len(t1_sections):
-                    next_sec_cl = sec_cleans[sec_ptr + 1]
-                    match = False
-                    if len(next_sec_cl) >= 6:
-                        for k in range(0, min(24, len(next_sec_cl) - 5)):
-                            if next_sec_cl[k:k+6] in s_cl:
-                                match = True
-                                break
-                    if not match and len(s_cl) >= 6:
-                        for k in range(0, min(20, len(s_cl) - 5)):
-                            if s_cl[k:k+6] in next_sec_cl[:45]:
-                                match = True
-                                break
-                    if match:
-                        sec_ptr += 1
+                    min_req = 4 if sec_ptr == 0 else 2
+                    if len(assigned_sections[sec_ptr]) >= min_req:
+                        next_sec_cl = sec_cleans[sec_ptr + 1]
+                        match = False
+                        if len(next_sec_cl) >= 6:
+                            for k in range(0, min(24, len(next_sec_cl) - 5)):
+                                if next_sec_cl[k:k+6] in s_cl:
+                                    match = True
+                                    break
+                        if not match and len(s_cl) >= 6:
+                            for k in range(0, min(20, len(s_cl) - 5)):
+                                if s_cl[k:k+6] in next_sec_cl[:45]:
+                                    match = True
+                                    break
+                        if match:
+                            sec_ptr += 1
                 assigned_sections[sec_ptr].append(s)
                 
             for b_idx, sec in enumerate(t1_sections):

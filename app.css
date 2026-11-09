@@ -1,3 +1,11 @@
+
+/* 防 SVG 异常膨胀全景基础防御 */
+svg {
+  max-width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
 /* 2027 考研专业课双轨随身背诵手卷 · 独立研读专版样式 */
 :root {
   /* Claude UI & Master Spec · Palette B: Warm Parchment (典籍暖纸色系) */
@@ -68,6 +76,7 @@
   --font-serif: Georgia, "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", serif;
   --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-body: var(--font-current);
   
   --font-base: 17px;
   --sidebar-w: 360px;
@@ -1765,17 +1774,19 @@ body {
   --font-fangsong: "STFangsong", "FangSong", "FangSong SC", "仿宋", "STSongti-SC-Regular", serif;
 
   --font-current: var(--font-song);
+  --font-body: var(--font-current);
 }
 
-[data-font="song"] { --font-current: var(--font-song); }
-[data-font="kai"] { --font-current: var(--font-kai); }
-[data-font="sans"], [data-font="hei"] { --font-current: var(--font-sans); }
-[data-font="fangsong"] { --font-current: var(--font-fangsong); }
+[data-font="song"] { --font-current: var(--font-song); --font-body: var(--font-song); }
+[data-font="kai"] { --font-current: var(--font-kai); --font-body: var(--font-kai); }
+[data-font="sans"], [data-font="hei"] { --font-current: var(--font-sans); --font-body: var(--font-sans); }
+[data-font="fangsong"] { --font-current: var(--font-fangsong); --font-body: var(--font-fangsong); }
 
 body,
 .paper-container,
 .paper-card,
 .paper-content,
+#paper-content,
 .exam-section-card,
 .section-card-content,
 .section-thesis-box,
@@ -1790,7 +1801,77 @@ body,
 .thesis-sent,
 .gold-sent-active,
 .quote-gold-core,
-.paper-paragraph {
+.paper-paragraph,
+/* 考研政治三模块（政治47章背诵/微考点、徐涛16天、腿姐11天）学术字系全局统一绑定 */
+.pol-scope,
+.pol-body,
+.pol-card,
+.xt-card,
+.xt-part-box,
+.xt-part-body,
+.xt-part-title,
+.xt-part-hint,
+.xt-sec-title,
+.xt-title-text,
+.xt-item-row,
+.xt-item-content,
+.xt-text-para,
+.xt-keyword,
+.xt-example-lead,
+.xt-trap-card,
+.xt-trap-header,
+.xt-trap-body,
+.xt-table,
+.xt-table th,
+.xt-table td,
+.xt-day-points-grid,
+.xt-day-point-card,
+.xt-point-content,
+.xt-point-text,
+.xt-point-group,
+.xt-point-title,
+.stream-card,
+.stream-card-label,
+.stream-card-lecture,
+.stream-card-golden,
+.stream-card-outline,
+.stream-card-alert,
+.stream-card-core,
+.card-audio-stream-pane,
+.lecture-structured-wrap,
+.stream-intro-row,
+.stream-outline-content,
+.stream-outline-row,
+.stream-takeaway-box,
+.stream-takeaway-tag,
+.stream-takeaway-text,
+.stream-tip-box,
+.stream-tip-badge,
+.stream-tip-body,
+.sub-card-title,
+.sub-card-badge,
+.pol-subcard-body,
+.recite-bar-title,
+.recite-bar-badge,
+.play-btn-text,
+.tj-handbook-card,
+.tj-card-header,
+.tj-card-tag,
+.tj-card-status,
+.tj-card-title,
+.tj-sentence-flow,
+.tj-sent-span,
+.tj-points-box,
+.tj-points-title,
+.tj-points-list,
+.tj-point-card,
+.tj-point-label,
+.tj-point-text,
+.recite-sent-item,
+.recite-sentence,
+.recite-pol-sent,
+.recite-pol-card,
+.recite-pol-item {
   font-family: var(--font-current) !important;
 }
 
@@ -3017,12 +3098,26 @@ body {
   color: #2d3748;
   line-height: 1.55;
   text-align: left !important;
+  cursor: pointer;
+  word-break: normal;
+  overflow-wrap: break-word;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.en-task-prompt-box:hover {
+  background: rgba(232, 241, 250, 0.9);
+  border-left-color: var(--vermilion, #d97757);
 }
 
 [data-theme="dark"] .en-task-prompt-box {
   background: rgba(43, 108, 176, 0.12);
   border-left-color: #4299e1;
   color: #cbd5e0;
+}
+
+[data-theme="dark"] .en-task-prompt-box:hover {
+  background: rgba(43, 108, 176, 0.22);
+  border-left-color: #f59e0b;
 }
 
 .en-task-prompt-text {
@@ -3032,10 +3127,92 @@ body {
   line-height: 1.55;
 }
 
+/* 审题指令导引与范文起音衔接提示条 (Pure SVG + 宣纸金石风) */
+.en-intro-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  background: rgba(43, 108, 176, 0.09) !important;
+  color: #245894 !important;
+  border: 1px solid rgba(43, 108, 176, 0.25) !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.en-intro-badge:hover {
+  background: rgba(43, 108, 176, 0.15) !important;
+  transform: translateY(-0.5px);
+}
+
+[data-theme="dark"] .en-intro-badge {
+  background: rgba(66, 153, 225, 0.15) !important;
+  color: #63b3ed !important;
+  border-color: rgba(66, 153, 225, 0.32) !important;
+}
+
+.en-prompt-audio-pill-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+  padding-top: 9px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] .en-prompt-audio-pill-wrap {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.en-audio-jump-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 13px;
+  border-radius: 9999px;
+  background: var(--vermilion, #d97757);
+  color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  font-size: 0.83rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 7px rgba(217, 119, 87, 0.25);
+  line-height: 1.25;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.en-audio-jump-pill:hover {
+  background: #c66646;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(217, 119, 87, 0.35);
+}
+
+.en-audio-jump-pill:active {
+  transform: scale(0.97);
+}
+
+.en-audio-jump-pill svg {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+}
+
+.en-audio-pill-note {
+  font-size: 0.81rem;
+  color: var(--ink-secondary, #718096);
+  line-height: 1.4;
+}
+
+[data-theme="dark"] .en-audio-pill-note {
+  color: #a0aec0;
+}
+
 /* 范文容器：纯平底托与优雅留白 */
 .en-full-essay-box {
   background: rgba(255, 255, 255, 0.95);
-  padding: 22px 20px 24px;
+  padding: 20px 18px 22px;
   border-radius: var(--radius-md);
   border: 0.5px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
@@ -3067,6 +3244,8 @@ body {
   color: var(--ink-primary);
   line-height: 1.4 !important;
   letter-spacing: -0.005em !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
 }
 
 /* 告示通知专用：大写标题居中 (Notice Heading) */
@@ -3090,6 +3269,8 @@ body {
   letter-spacing: 0.03em !important;
   text-transform: uppercase;
   line-height: 1.35 !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
 }
 
 [data-theme="dark"] .en-notice-heading {
@@ -3101,12 +3282,16 @@ body {
   margin: 0 0 1.15rem 0 !important;
   text-indent: 0 !important;
   line-height: 1.58 !important;
-  font-size: 1.05rem !important;
+  font-size: 1.04rem !important;
   font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, "Times New Roman", serif !important;
   color: var(--ink-primary) !important;
   text-align: left !important;
-  letter-spacing: -0.005em !important;
+  letter-spacing: -0.01em !important;
   word-spacing: normal !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+  -webkit-hyphens: auto !important;
+  hyphens: auto !important;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -3129,11 +3314,15 @@ body {
   text-align: right !important;
 }
 
-/* 英语听读句子微元 (Sentence Spotlight) 视觉微调：边缘圆润细腻 */
+/* 英语听读句子微元 (Sentence Spotlight) 视觉微调：边缘圆润细腻与西文连字换行 */
 .en-full-essay-box .recite-sent {
-  padding: 1px 3px !important;
+  padding: 1px 2px !important;
   border-radius: 4px !important;
   margin: 0 1px;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+  -webkit-hyphens: auto !important;
+  hyphens: auto !important;
 }
 
 .en-full-essay-box .recite-sent.active-spotlight {
@@ -3155,6 +3344,131 @@ body {
 [data-subject="en"] #paper-content p {
   text-align: left !important;
   text-justify: auto !important;
+}
+
+/* ========================================================
+   英语写作移动端专属横向宽度极致释放引擎 (Mobile Reading Width Optimization)
+   解决嵌套 padding 累积高达 148px 导致单行仅容纳 4-5 词的严重窄屏痛点
+   释放后移动端纯文本阅读净宽达 305px~330px，舒适容纳 8~12 词/行
+   ======================================================== */
+@media (max-width: 768px) {
+  [data-subject="en"] .main-stage {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+  
+  [data-subject="en"] .paper-container {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    max-width: 100% !important;
+  }
+  
+  [data-subject="en"] .exam-section-card {
+    padding: 16px 14px !important;
+    border-radius: 16px !important;
+    margin-bottom: 14px !important;
+  }
+  
+  .en-full-essay-box {
+    padding: 16px 14px 18px !important;
+  }
+
+  .en-task-prompt-box {
+    padding: 10px 12px !important;
+    font-size: 0.93rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  [data-subject="en"] .main-stage {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  [data-subject="en"] .paper-container {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    padding-top: 14px !important;
+  }
+
+  [data-subject="en"] .exam-section-card {
+    padding: 14px 12px !important;
+    border-radius: 14px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .en-full-essay-box {
+    padding: 14px 12px 16px !important;
+    border-radius: 10px !important;
+  }
+
+  .en-task-prompt-box {
+    padding: 9px 11px !important;
+    font-size: 0.91rem !important;
+    line-height: 1.5 !important;
+  }
+
+  .en-essay-para {
+    font-size: 1.015rem !important;
+    line-height: 1.56 !important;
+    letter-spacing: -0.01em !important;
+    margin-bottom: 0.95rem !important;
+  }
+
+  .en-letter-salutation-wrap {
+    margin-bottom: 0.75rem !important;
+  }
+
+  .en-salutation {
+    font-size: 1.05rem !important;
+  }
+
+  .en-letter-signoff-wrap,
+  .en-notice-signoff-wrap {
+    margin-top: 1rem !important;
+  }
+
+  .en-prompt-audio-pill-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  [data-subject="en"] .main-stage {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+
+  [data-subject="en"] .paper-container {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  [data-subject="en"] .exam-section-card {
+    padding: 12px 10px !important;
+    border-radius: 12px !important;
+  }
+
+  .en-full-essay-box {
+    padding: 12px 10px 14px !important;
+  }
+
+  .en-essay-para {
+    font-size: 1.0rem !important;
+    line-height: 1.54 !important;
+    letter-spacing: -0.012em !important;
+  }
+
+  .en-audio-jump-pill {
+    padding: 4px 11px;
+    font-size: 0.8rem;
+  }
+
+  .en-audio-pill-note {
+    font-size: 0.77rem;
+  }
 }
 
 
@@ -7197,8 +7511,102 @@ body.dock-expanded .dock-fab-play {
 /* ---------------- 2. 政治正文排版与章节结构 (.pol-scope) ---------------- */
 .pol-scope {
   color: var(--ink-primary, #1c1917);
-  font-family: var(--font-body, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-family: var(--font-current) !important;
   line-height: 1.75;
+}
+
+/* 政治三子模块（政治47章背诵/微考点、徐涛16天选择题、腿姐11天冲刺）学术字系继承穿透规范 */
+.pol-scope,
+.pol-scope p,
+.pol-scope span:not(.ui-svg):not(.pol-btn-svg):not(.seal-mark),
+.pol-scope div:not(.ui-svg):not(.pol-btn-svg),
+.pol-scope strong,
+.pol-scope em,
+.pol-scope table,
+.pol-scope th,
+.pol-scope td,
+.pol-scope h1,
+.pol-scope h2,
+.pol-scope h3,
+.pol-scope h4,
+.pol-scope h5,
+.pol-scope article,
+.pol-body,
+.pol-card,
+.xt-card,
+.xt-part-box,
+.xt-part-body,
+.xt-sec-title,
+.xt-title-text,
+.xt-item-row,
+.xt-item-content,
+.xt-text-para,
+.xt-keyword,
+.xt-num-badge,
+.xt-example-lead,
+.xt-trap-card,
+.xt-trap-header,
+.xt-trap-body,
+.xt-table,
+.xt-table th,
+.xt-table td,
+.xt-day-points-grid,
+.xt-day-point-card,
+.xt-day-point-header,
+.xt-point-num-tag,
+.xt-point-content,
+.xt-point-text,
+.xt-point-group,
+.xt-point-title,
+.stream-card,
+.stream-card-label,
+.stream-card-lecture,
+.stream-card-golden,
+.stream-card-outline,
+.stream-card-alert,
+.stream-card-core,
+.card-audio-stream-pane,
+.lecture-structured-wrap,
+.stream-intro-row,
+.stream-outline-content,
+.stream-outline-row,
+.stream-takeaway-box,
+.stream-takeaway-tag,
+.stream-takeaway-text,
+.stream-tip-box,
+.stream-tip-badge,
+.stream-tip-body,
+.sub-card-title,
+.sub-card-badge,
+.pol-subcard-body,
+.recite-bar-title,
+.recite-bar-badge,
+.play-btn-text,
+.tj-handbook-card,
+.tj-card-header,
+.tj-card-tag,
+.tj-card-status,
+.tj-card-title,
+.tj-sentence-flow,
+.tj-sent-span,
+.tj-points-box,
+.tj-points-title,
+.tj-points-list,
+.tj-point-card,
+.tj-point-label,
+.tj-point-text,
+.recite-sent,
+.recite-sent-item,
+.recite-sentence,
+.recite-pol-sent,
+.recite-pol-card,
+.recite-pol-item {
+  font-family: var(--font-current) !important;
+}
+
+.pol-scope button,
+.pol-scope input {
+  font-family: var(--font-current) !important;
 }
 
 .pol-scope .xt-part-box {
@@ -7687,7 +8095,7 @@ body.dock-expanded .dock-fab-play {
 
 .seal-mark {
   display: inline-block;
-  font-family: var(--font-song, "SimSun", "Songti SC", serif);
+  font-family: var(--font-song, "SimSun", "Songti SC", serif) !important;
   border: 1px solid currentColor;
   padding: 0 3px;
   font-size: 11px;
