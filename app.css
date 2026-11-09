@@ -7765,3 +7765,15 @@ body.dock-expanded .dock-fab-play {
   border-bottom-color: #f59e0b !important;
 }
 
+/* 移动端点词朗读与触摸增强 (v3.0.6) */
+.recite-sent, .recite-sent-item, .recite-sentence, .xt-day-point-card, .tj-sent-span {
+  cursor: pointer !important;
+  -webkit-tap-highlight-color: rgba(184, 51, 42, 0.15) !important;
+  touch-action: manipulation !important;
+}
+/* 彻底根除移动端 SVG 异常膨胀遮挡 */
+svg.ui-svg, .pol-scope svg, .xt-part-badge svg {
+  max-width: 20px !important;
+  max-height: 20px !important;
+  overflow: hidden !important;
+}

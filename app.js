@@ -64,6 +64,8 @@
 
   const audio = new Audio();
   audio.preload = 'metadata';
+  window.state = state;
+  window.audio = audio;
 
   const el = {};
 
@@ -1415,24 +1417,48 @@
   }
 
   function seekToSentence(sentId, startTime) {
-    // 提前 0.35s 起音缓冲，避免首字被吞音
-    audio.currentTime = Math.max(0, startTime - 0.35);
-    if (audio.paused) {
-      audio.play().catch(e => console.log(e));
-    }
+    const targetTime = Math.max(0, (typeof startTime === 'number' && !isNaN(startTime) ? startTime : 0) - 0.35);
     const sentIdx = state.activeSentences.findIndex(s => String(s.id) === String(sentId));
     if (sentIdx !== -1) {
       state.currentSentIndex = sentIdx;
       state.loopCount = 0;
     }
     if (currentFrameworkSections.length > 0) {
-      const matchedSecIdx = currentFrameworkSections.findIndex(s => startTime >= s.start - 0.1 && startTime <= s.end + 0.1);
+      const matchedSecIdx = currentFrameworkSections.findIndex(s => (startTime || 0) >= s.start - 0.1 && (startTime || 0) <= s.end + 0.1);
       if (matchedSecIdx !== -1) {
         currentActiveSectionIndex = matchedSecIdx;
       }
     }
     highlightSentence(sentId);
-    updateHUDDisplay(startTime);
+    updateHUDDisplay(startTime || 0);
+
+    const applySeek = () => {
+      try {
+        audio.currentTime = targetTime;
+      } catch (err) {
+        console.warn('Seek error:', err);
+      }
+    };
+
+    if (audio.readyState >= 1) {
+      applySeek();
+    } else {
+      audio.addEventListener('loadedmetadata', applySeek, { once: true });
+      audio.addEventListener('canplay', applySeek, { once: true });
+    }
+
+    if (audio.paused) {
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          if (Math.abs(audio.currentTime - targetTime) > 0.8) {
+            audio.currentTime = targetTime;
+          }
+        }).catch(e => console.log('Audio play failed:', e));
+      }
+    } else {
+      applySeek();
+    }
   }
 
   let lastSpotlightEl = null;
@@ -3217,7 +3243,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.0.5';
+  const APP_BUILD_ID = '3.0.6';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -3530,7 +3556,7 @@
     showToast('正在加载考研政治背诵手卷...', 2000);
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = 'data/kaoyan_data_pol.js?v=3.0.4';
+      script.src = 'data/kaoyan_data_pol.js?v=3.0.6';
       script.onload = () => {
         isPolDataLoading = false;
         state.polData = window.KAOYAN_POL_DATA;
