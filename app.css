@@ -787,7 +787,7 @@ body {
   padding: 2px 3px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  transition: box-shadow 0.08s ease;
   position: relative;
 }
 
@@ -806,7 +806,7 @@ body {
   color: var(--spotlight-text);
   box-shadow: 0 0 0 2px var(--spotlight-border), 0 2px 8px var(--spotlight-glow) !important;
   border-radius: 6px;
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: none !important;
   font-weight: 500;
 }
 
@@ -2410,17 +2410,22 @@ body,
   gap: 8px;
 }
 
-.toast-msg {
+.toast-msg,
+.toast-prompt {
   background: rgba(30, 24, 20, 0.92);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: #ffffff;
-  padding: 8px 16px;
+  padding: 8px 18px;
   border-radius: 20px;
   font-size: 13px;
   font-weight: 500;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   animation: toastFadeIn 0.25s ease, toastFadeOut 0.25s ease 2.2s forwards;
+  max-width: 90vw;
+  text-align: center;
+  word-break: break-word;
+  pointer-events: auto;
 }
 
 @keyframes toastFadeIn {
@@ -2847,7 +2852,7 @@ body {
 
 /* 4. 烛光暖晕聚光跟读高光 (Candlelight Active Spotlight) */
 .recite-sent {
-  transition: background-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease !important;
+  transition: box-shadow 0.08s ease !important;
 }
 
 .recite-sent.active-spotlight {
@@ -2857,6 +2862,7 @@ body {
   box-shadow: 0 0 0 3.5px #faeed0, 0 2px 16px rgba(184, 120, 30, 0.22) !important;
   font-weight: 600 !important;
   display: inline !important;
+  transition: none !important;
 }
 
 .active-spotlight strong,
@@ -7128,7 +7134,7 @@ body.dock-expanded .dock-fab-play {
 .pol-scope .stream-tip-box.xiao { background: rgba(217, 119, 6, 0.08); border-left: 3.5px solid #d97706; }
 .pol-scope .stream-tip-badge.xiao { display: inline-block; font-size: 12px; font-weight: 700; color: #b45309; margin-bottom: 3px; }
 [data-theme="dark"] .pol-scope .stream-tip-badge.xiao { color: #fbbf24; }
-.pol-scope .recite-sent-item, .pol-scope .recite-sentence { cursor: pointer; border-radius: 4px; transition: background-color 0.15s ease; }
+.pol-scope .recite-sent-item, .pol-scope .recite-sentence { cursor: pointer; border-radius: 4px; transition: box-shadow 0.08s ease; }
 
 /* ==========================================================================
    考研政治专属组件样式 (.pol-scope) & 全科首字弱提示 (Ghost Hint) 系统

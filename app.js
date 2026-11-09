@@ -7,19 +7,19 @@
 (function () {
   'use strict';
 
-  // 安全前置初始化同步补偿量 (防御性读取 localStorage)
-  let initialSyncOffset = 0.08;
+  // 安全前置初始化同步补偿量 (防御性读取 localStorage，提升跟读高光敏捷响应)
+  let initialSyncOffset = 0.15;
   try {
     const savedSync = parseFloat(localStorage.getItem('kaoyan_sync_offset'));
-    // PA-PAT 真实物理声学打点下，历史版本过大偏移自动重置为 0.08s 推荐合拍
-    if (!isNaN(savedSync) && savedSync >= -0.2 && savedSync <= 0.35) {
+    // 真实物理声学打点下，历史版本过小或过大偏移自动升级为 0.15s 灵敏合拍
+    if (!isNaN(savedSync) && savedSync >= -0.2 && savedSync <= 0.35 && savedSync !== 0.08) {
       initialSyncOffset = savedSync;
     } else {
-      initialSyncOffset = 0.08;
-      localStorage.setItem('kaoyan_sync_offset', '0.08');
+      initialSyncOffset = 0.15;
+      localStorage.setItem('kaoyan_sync_offset', '0.15');
     }
   } catch (e) {
-    initialSyncOffset = 0.08;
+    initialSyncOffset = 0.15;
   }
 
   const state = {
@@ -227,6 +227,8 @@
     el.tab2TextFull = document.getElementById('tab2-text-full');
     el.tab2TextShort = document.getElementById('tab2-text-short');
     el.trackVoicePill = document.getElementById('trackVoicePill');
+    el.trackTabs = document.querySelector('.track-switcher-wrap') || document.querySelector('.track-tabs');
+    el.scoreFilterWrap = document.getElementById('score-filter-wrap');
     
     el.paperContent = document.getElementById('paper-content');
     
@@ -523,14 +525,24 @@
       ];
       pills.forEach(p => {
         const btn = document.createElement('button');
+        btn.type = 'button';
         btn.className = `filter-pill ${state.tierFilter === p.id ? 'active' : ''}`;
         btn.dataset.filter = p.id;
+        btn.dataset.tier = p.id;
         btn.textContent = p.label;
         btn.addEventListener('click', () => {
           state.tierFilter = p.id;
           el.filterPillsWrap.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           renderSidebarList();
+
+          const matchingList = getCurrentItemsList();
+          if (matchingList.length > 0) {
+            const currentStillMatches = matchingList.some(it => it.id === state.activeItemId);
+            if (!currentStillMatches) {
+              selectItem(matchingList[0].id, false);
+            }
+          }
         });
         el.filterPillsWrap.appendChild(btn);
       });
@@ -543,14 +555,24 @@
       ];
       pills.forEach(p => {
         const btn = document.createElement('button');
+        btn.type = 'button';
         btn.className = `filter-pill ${state.tierFilter === p.id ? 'active' : ''}`;
         btn.dataset.filter = p.id;
+        btn.dataset.tier = p.id;
         btn.textContent = p.label;
         btn.addEventListener('click', () => {
           state.tierFilter = p.id;
           el.filterPillsWrap.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           renderSidebarList();
+
+          const matchingList = getCurrentItemsList();
+          if (matchingList.length > 0) {
+            const currentStillMatches = matchingList.some(it => it.id === state.activeItemId);
+            if (!currentStillMatches) {
+              selectItem(matchingList[0].id, false);
+            }
+          }
         });
         el.filterPillsWrap.appendChild(btn);
       });
@@ -628,8 +650,11 @@
       ensurePolDataLoaded().then(() => {
         renderSidebarList();
         const list = getCurrentItemsList();
+        const isCurrentInList = list.some(x => x.id === state.activeItemId);
         const savedForSub = localStorage.getItem(`kaoyan_last_item_${sub}`);
-        const targetItem = (savedForSub && list.find(x => x.id === savedForSub)) || list[0];
+        const targetItem = (!isCurrentInList && savedForSub && list.find(x => x.id === savedForSub))
+          || (!isCurrentInList ? list[0] : list.find(x => x.id === state.activeItemId))
+          || list[0];
         if (targetItem) {
           selectItem(targetItem.id, false);
         }
@@ -644,7 +669,6 @@
       if (el.filterPillsWrap) el.filterPillsWrap.style.display = 'flex';
       if (el.scoreFilterWrap) el.scoreFilterWrap.style.display = (sub === 'en' ? 'none' : '');
       if (el.trackTabs) el.trackTabs.style.display = '';
-      updateTrackTabLabels();
       if (el.paperContent) el.paperContent.classList.remove('pol-scope');
     }
 
@@ -654,8 +678,11 @@
     localStorage.setItem('kaoyan_last_subject', sub);
     renderSidebarList();
     const list = getCurrentItemsList();
+    const isCurrentInList = list.some(x => x.id === state.activeItemId);
     const savedForSub = localStorage.getItem(`kaoyan_last_item_${sub}`);
-    const targetItem = (savedForSub && list.find(x => x.id === savedForSub)) || list[0];
+    const targetItem = (!isCurrentInList && savedForSub && list.find(x => x.id === savedForSub))
+      || (!isCurrentInList ? list[0] : list.find(x => x.id === state.activeItemId))
+      || list[0];
     if (targetItem) {
       selectItem(targetItem.id, false);
     }
@@ -1414,9 +1441,9 @@
   // 工业级启发式时间轴匹配引擎 (消除静音空隙与跳跃，第一性原理纠偏)
   function findActiveSentenceIndex(currentTime) {
     if (!state.activeSentences || state.activeSentences.length === 0) return -1;
-    // 倍速自适应动态前瞻补偿：基础 80ms，根据播放倍速自动微调，确保高倍速下人耳听音与视觉聚光始终 0 延迟咬合
+    // 倍速自适应动态前瞻补偿：基础 150ms 灵敏合拍，根据播放倍速自动微调，消除视觉落后感
     const rate = (audio && audio.playbackRate > 0) ? audio.playbackRate : (state.speed || 1.0);
-    const baseOffset = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.08;
+    const baseOffset = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.15;
     const dynamicOffset = baseOffset * Math.sqrt(rate);
     const t = currentTime + dynamicOffset;
 
@@ -1919,7 +1946,64 @@
     function runSyncLoop() {
       if (state.isPlaying && !audio.paused && state.activeSentences && state.activeSentences.length > 0) {
         const cur = audio.currentTime;
-                const activeIdx = findActiveSentenceIndex(cur);
+
+        // 政治徐涛16天带背原声前奏导言区自动跳过 (若从开头播放且 cur < firstPoint.start - 0.3)
+        if (state.currentSubject === 'pol' && state.polSubMode === 'xutao16') {
+          const firstPoint = state.activeSentences[0];
+          if (firstPoint && typeof firstPoint.start === 'number' && firstPoint.start > 0.5 && cur < firstPoint.start - 0.3) {
+            audio.currentTime = firstPoint.start;
+            syncRafId = requestAnimationFrame(runSyncLoop);
+            return;
+          }
+        }
+
+        // 1. 单句循环模式 (精准闭环，不倒退 0.25s，微量保护 -0.04s)
+        if (state.playMode === 'sentence' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
+          const sent = state.activeSentences[state.currentSentIndex];
+          if (cur >= sent.end - 0.04) {
+            audio.currentTime = sent.start;
+            if (audio.paused) audio.play().catch(e => console.log(e));
+            syncRafId = requestAnimationFrame(runSyncLoop);
+            return;
+          }
+        }
+        // 2. 单句3遍模式 (满3遍后精准推移至下一句)
+        else if (state.playMode === 'loop3' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
+          const sent = state.activeSentences[state.currentSentIndex];
+          if (cur >= sent.end - 0.04) {
+            if (state.loopCount < 2) {
+              state.loopCount++;
+              audio.currentTime = sent.start;
+              if (audio.paused) audio.play().catch(e => console.log(e));
+              syncRafId = requestAnimationFrame(runSyncLoop);
+              return;
+            } else {
+              state.loopCount = 0;
+              if (state.currentSentIndex + 1 < state.activeSentences.length) {
+                const nextSent = state.activeSentences[state.currentSentIndex + 1];
+                state.currentSentIndex++;
+                audio.currentTime = nextSent.start;
+                highlightSentence(nextSent.id);
+                updateHUDDisplay(nextSent.start);
+                syncRafId = requestAnimationFrame(runSyncLoop);
+                return;
+              }
+            }
+          }
+        }
+        // 3. 单段循环模式
+        else if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
+          const curSec = currentFrameworkSections[currentActiveSectionIndex];
+          if (curSec && curSec.end > curSec.start && cur >= curSec.end - 0.04) {
+            audio.currentTime = curSec.start;
+            if (audio.paused) audio.play().catch(e => console.log(e));
+            syncRafId = requestAnimationFrame(runSyncLoop);
+            return;
+          }
+        }
+
+        // 4. 常规高光追踪
+        const activeIdx = findActiveSentenceIndex(cur);
         if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
           state.currentSentIndex = activeIdx;
           state.loopCount = 0;
@@ -1936,6 +2020,15 @@
     audio.addEventListener('play', () => {
       state.isPlaying = true;
       audio.playbackRate = state.speed;
+
+      // 政治徐涛16天带背原声前奏导言区自动跳过
+      if (state.currentSubject === 'pol' && state.polSubMode === 'xutao16' && state.activeSentences && state.activeSentences.length > 0) {
+        const firstPoint = state.activeSentences[0];
+        if (firstPoint && typeof firstPoint.start === 'number' && firstPoint.start > 0.5 && audio.currentTime < firstPoint.start - 0.3) {
+          audio.currentTime = firstPoint.start;
+        }
+      }
+
       updatePlayBtnUI();
       expandPlayerDock();
       if (syncRafId) cancelAnimationFrame(syncRafId);
@@ -1969,45 +2062,65 @@
       if (el.timeCurrent) el.timeCurrent.textContent = formatTime(cur);
       if (el.timeTotal && dur > 0) el.timeTotal.textContent = formatTime(dur);
 
-            updateHUDDisplay(cur);
+      updateHUDDisplay(cur);
 
       if (state.activeSentences && state.activeSentences.length > 0) {
+        // 徐涛16天带背原声前奏导言区自动跳至第一考点
+        if (state.currentSubject === 'pol' && state.polSubMode === 'xutao16') {
+          const firstPoint = state.activeSentences[0];
+          if (firstPoint && typeof firstPoint.start === 'number' && firstPoint.start > 0.5 && cur < firstPoint.start - 0.3) {
+            audio.currentTime = firstPoint.start;
+            return;
+          }
+        }
+
+        // 1. 单句循环模式
+        if (state.playMode === 'sentence' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
+          const sent = state.activeSentences[state.currentSentIndex];
+          if (cur >= sent.end - 0.04) {
+            audio.currentTime = sent.start;
+            if (audio.paused) audio.play().catch(e => console.log(e));
+            return;
+          }
+        }
+        // 2. 单句3遍模式
+        else if (state.playMode === 'loop3' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
+          const sent = state.activeSentences[state.currentSentIndex];
+          if (cur >= sent.end - 0.04) {
+            if (state.loopCount < 2) {
+              state.loopCount++;
+              audio.currentTime = sent.start;
+              if (audio.paused) audio.play().catch(e => console.log(e));
+              return;
+            } else {
+              state.loopCount = 0;
+              if (state.currentSentIndex + 1 < state.activeSentences.length) {
+                const nextSent = state.activeSentences[state.currentSentIndex + 1];
+                state.currentSentIndex++;
+                audio.currentTime = nextSent.start;
+                highlightSentence(nextSent.id);
+                updateHUDDisplay(nextSent.start);
+                return;
+              }
+            }
+          }
+        }
+        // 3. 单段循环模式
+        else if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
+          const curSec = currentFrameworkSections[currentActiveSectionIndex];
+          if (curSec && curSec.end > curSec.start && cur >= curSec.end - 0.04) {
+            audio.currentTime = curSec.start;
+            if (audio.paused) audio.play().catch(e => console.log(e));
+            return;
+          }
+        }
+
         const activeIdx = findActiveSentenceIndex(cur);
         if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
           state.currentSentIndex = activeIdx;
           state.loopCount = 0;
           const sent = state.activeSentences[activeIdx];
           highlightSentence(sent.id);
-        }
-
-        // 1. 单句循环模式
-        if (state.playMode === 'sentence' && state.currentSentIndex !== -1 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
-          const sent = state.activeSentences[state.currentSentIndex];
-          if (cur >= sent.end - 0.08) {
-            audio.currentTime = Math.max(0, sent.start - 0.25);
-            if (audio.paused) audio.play().catch(e => console.log(e));
-          }
-        }
-        // 2. 单段循环模式
-        else if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
-          const curSec = currentFrameworkSections[currentActiveSectionIndex];
-          if (cur >= curSec.end - 0.08) {
-            audio.currentTime = curSec.start;
-            if (audio.paused) audio.play().catch(e => console.log(e));
-          }
-        }
-        // 3. 单句3遍模式
-        else if (state.playMode === 'loop3' && state.currentSentIndex !== -1 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
-          const sent = state.activeSentences[state.currentSentIndex];
-          if (cur >= sent.end - 0.08) {
-            if (state.loopCount < 2) {
-              state.loopCount++;
-              audio.currentTime = Math.max(0, sent.start - 0.25);
-              if (audio.paused) audio.play().catch(e => console.log(e));
-            } else {
-              state.loopCount = 0;
-            }
-          }
         }
       }
     });
@@ -2025,13 +2138,24 @@
         audio.play().catch(e => console.log(e));
         return;
       }
-      // 3. 单段循环
+      // 3. 单句3遍模式
+      if (state.playMode === 'loop3' && state.currentSentIndex !== -1 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
+        if (state.loopCount < 2) {
+          state.loopCount++;
+          audio.currentTime = state.activeSentences[state.currentSentIndex].start;
+          audio.play().catch(e => console.log(e));
+          return;
+        } else {
+          state.loopCount = 0;
+        }
+      }
+      // 4. 单段循环
       if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
         audio.currentTime = currentFrameworkSections[currentActiveSectionIndex].start;
         audio.play().catch(e => console.log(e));
         return;
       }
-      // 4. 按顺序依次播放
+      // 5. 按顺序依次播放
       state.isPlaying = false;
       updatePlayBtnUI();
       playNextItem();
@@ -2226,6 +2350,14 @@
           state.masteryFilter = pill.dataset.mastery || 'all';
           mPills.forEach(p => p.classList.toggle('active', p === pill));
           renderSidebarList();
+
+          const matchingList = getCurrentItemsList();
+          if (matchingList.length > 0) {
+            const currentStillMatches = matchingList.some(it => it.id === state.activeItemId);
+            if (!currentStillMatches) {
+              selectItem(matchingList[0].id, false);
+            }
+          }
         });
       });
     }
@@ -2310,6 +2442,14 @@
       el.searchInput.addEventListener('input', (e) => {
         state.searchQuery = e.target.value.trim();
         renderSidebarList();
+
+        const matchingList = getCurrentItemsList();
+        if (matchingList.length > 0) {
+          const currentStillMatches = matchingList.some(it => it.id === state.activeItemId);
+          if (!currentStillMatches) {
+            selectItem(matchingList[0].id, false);
+          }
+        }
       });
     }
 
@@ -2846,11 +2986,11 @@
       }
       const syncValLabel = document.getElementById('sheetSyncVal');
       if (syncValLabel) {
-        const curOff = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.08;
+        const curOff = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.15;
         if (Math.abs(curOff) < 0.01) {
           syncValLabel.textContent = '原速直读 (0.00s · 原生声学)';
-        } else if (Math.abs(curOff - 0.08) < 0.02) {
-          syncValLabel.textContent = '智能微调 (+0.08s · 推荐合拍)';
+        } else if (Math.abs(curOff - 0.15) < 0.02 || Math.abs(curOff - 0.18) < 0.02) {
+          syncValLabel.textContent = `极速前瞻 (+${curOff.toFixed(2)}s · 灵敏跟随)`;
         } else if (curOff > 0) {
           syncValLabel.textContent = `灵敏前置 (+${curOff.toFixed(2)}s)`;
         } else {
@@ -2859,7 +2999,7 @@
       }
       document.querySelectorAll('.sync-card-btn').forEach(b => {
         const val = parseFloat(b.dataset.offset);
-        const curOff = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.95;
+        const curOff = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.15;
         b.classList.toggle('active', Math.abs(val - curOff) < 0.05);
       });
     }
@@ -3077,21 +3217,37 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.0.4';
+  const APP_BUILD_ID = '3.0.5';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
-    let t = document.getElementById('toastPrompt');
-    if (!t) {
-      t = document.createElement('div');
-      t.id = 'toastPrompt';
-      t.className = 'toast-prompt';
-      document.body.appendChild(t);
+    let container = document.getElementById('toast-container');
+    if (!container) {
+      container = document.querySelector('.toast-container');
     }
-    t.textContent = msg;
-    t.classList.add('visible');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toast-container';
+      container.className = 'toast-container';
+      document.body.appendChild(container);
+    }
+
+    // 清理任何残留的历史游离 toastPrompt 节点
+    const oldPrompt = document.getElementById('toastPrompt');
+    if (oldPrompt) oldPrompt.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'toast-msg';
+    toast.textContent = msg;
+    const fadeOutDelay = Math.max(0.1, (duration - 300) / 1000);
+    toast.style.animation = `toastFadeIn 0.25s ease, toastFadeOut 0.25s ease ${fadeOutDelay}s forwards`;
+
+    container.appendChild(toast);
+
     setTimeout(() => {
-      t.classList.remove('visible');
+      if (toast.parentNode) {
+        toast.remove();
+      }
     }, duration);
   }
 
@@ -3797,6 +3953,23 @@
         setTime();
       } else {
         audio.addEventListener('loadedmetadata', setTime, { once: true });
+      }
+    } else if (points.length > 0) {
+      // 若用户未指定特定考点且从开头播放，若首考点前有原声前奏导言区，自动就位至第一考点起始点
+      const p0 = points[0];
+      const t0 = voiceType === 'anlang' ? p0.anlang_start : p0.voice_start;
+      if (t0 > 0.5) {
+        const setFirst = () => {
+          if (audio.currentTime < t0 - 0.3) {
+            audio.currentTime = t0;
+            highlightSentence(p0.id);
+          }
+        };
+        if (audio.readyState >= 1) {
+          setFirst();
+        } else {
+          audio.addEventListener('loadedmetadata', setFirst, { once: true });
+        }
       }
     }
 

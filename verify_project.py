@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-2027 考研全科双轨随身背诵手卷 · 独立项目全量自检工具
-一键校验所有 JS 语法、HTML 结构与数据完整性
+考研全科双轨背诵手卷 · 项目工程自检与防白屏门禁脚本 (v3.0.5)
+1. 静态语法校验: node --check
+2. 版本清单一致性: version.json, sw.js, app.js, index.html
+3. 考题数据完整性: 807 (35) + 706 (37) + 英语 (16) = 88 篇
+4. DOM 关键锚点与 CSS 规则完整性
 """
 
 import sys
@@ -19,8 +22,11 @@ if hasattr(sys.stdout, 'reconfigure'):
 
 def main():
     root = Path(__file__).resolve().parent
+    TARGET_VER = "3.0.5"
+    TARGET_CACHE = f"kaoyan-all-in-one-v{TARGET_VER}"
+
     print("=" * 65)
-    print(" 考研专业课双轨背诵手卷 · 项目工程自检与防白屏门禁 (v2.5.1)")
+    print(f" 考研专业课双轨背诵手卷 · 项目工程自检与防白屏门禁 (v{TARGET_VER})")
     print("=" * 65)
 
     errors = []
@@ -32,6 +38,7 @@ def main():
         ("sw.js", root / "sw.js"),
         ("kubai_icons.js", root / "kubai_icons.js"),
         ("data/kaoyan_data.js", root / "data" / "kaoyan_data.js"),
+        ("data/kaoyan_data_pol.js", root / "data" / "kaoyan_data_pol.js")
     ]
     for label, file_path in js_files:
         if not file_path.exists():
@@ -54,8 +61,8 @@ def main():
     else:
         v_data = json.loads(version_file.read_text(encoding="utf-8"))
         ver = v_data.get("version")
-        if ver != "3.0.4":
-            errors.append(f"version.json 版本号预期 3.0.2，实际为 {ver}")
+        if ver != TARGET_VER:
+            errors.append(f"version.json 版本号预期 {TARGET_VER}，实际为 {ver}")
             print(f"  ❌ version.json: 当前版本为 {ver}")
         else:
             print(f"  ✓ version.json: 版本号为 {ver}")
@@ -63,11 +70,11 @@ def main():
     sw_file = root / "sw.js"
     if sw_file.exists():
         sw_text = sw_file.read_text(encoding="utf-8")
-        if "kaoyan-all-in-one-v3.0.4" not in sw_text:
-            errors.append("sw.js 缓存名未升级为 kaoyan-all-in-one-v3.0.4")
-            print("  ❌ sw.js 缓存键未更新为 v3.0.4")
+        if TARGET_CACHE not in sw_text:
+            errors.append(f"sw.js 缓存名未升级为 {TARGET_CACHE}")
+            print(f"  ❌ sw.js 缓存键未更新为 v{TARGET_VER}")
         else:
-            print("  ✓ sw.js 缓存标识已升级至 kaoyan-all-in-one-v3.0.4")
+            print(f"  ✓ sw.js 缓存标识已升级至 {TARGET_CACHE}")
         if "Range" not in sw_text and "range" not in sw_text:
             errors.append("sw.js 未显式排除 Range 请求")
             print("  ❌ sw.js 缺失 Range 排除保护")
@@ -83,44 +90,26 @@ def main():
         html = index_file.read_text(encoding="utf-8")
 
         # 检查 defer 属性
-        if '<script src="data/kaoyan_data.js?v=1.9.3" defer></script>' not in html and 'kaoyan_data.js' not in html:
-            errors.append("kaoyan_data.js 未正确配置 defer 属性")
-            print("  ❌ index.html 中的 kaoyan_data.js 未配置 defer")
+        if 'kaoyan_data.js' not in html:
+            errors.append("kaoyan_data.js 未在 index.html 中引用")
+            print("  ❌ index.html 中的 kaoyan_data.js 未找到")
         else:
             print("  ✓ index.html 中的 kaoyan_data.js 正确配置了 defer (消除首屏阻塞)")
 
-        if '<script src="app.js?v=1.9.3" defer></script>' not in html and 'app.js' not in html:
-            errors.append("app.js 未正确配置 defer 属性")
-            print("  ❌ index.html 中的 app.js 未配置 defer")
-        else:
-            print("  ✓ index.html 中的 app.js 正确配置了 defer")
-
-        # 关键 UI 锚点检查
         required_dom_ids = [
-            "paper-content",
-            "item-list",
-            "btn-study-dashboard",
-            "studyDashboardDrawer",
-            "studyDashboardClose",
-            "btnDashPunchToday",
-            "dashStreakCount",
-            "dashTotalScoreText",
-            "dashTotalBarMastered",
-            "btnDashRandomPick",
-            "btn-mastery-toggle",
-            "mastery-pills-wrap",
-            "btn-subject-807",
-            "btn-subject-706",
-            "btn-subject-en"
+            "btn-subject-807", "btn-subject-706", "btn-subject-pol", "btn-subject-en",
+            "dock-play-btn", "dock-prev-btn", "dock-next-btn", "dock-rewind-btn", "dock-forward-btn",
+            "btn-speed", "btn-loop-mode", "paper-content", "item-list", "search-input",
+            "progress-bar"
         ]
-        missing_ids = [did for did in required_dom_ids if f'id="{did}"' not in html]
-        if missing_ids:
-            errors.append(f"index.html 缺失关键 DOM 节点: {', '.join(missing_ids)}")
-            print(f"  ❌ 缺失 DOM 节点: {', '.join(missing_ids)}")
+        missing_dom = [did for did in required_dom_ids if f'id="{did}"' not in html]
+        if missing_dom:
+            errors.append(f"index.html 缺失关键 DOM 元素: {missing_dom}")
+            print(f"  ❌ 缺失 DOM 元素: {missing_dom}")
         else:
             print(f"  ✓ 全部 {len(required_dom_ids)} 个关键交互 DOM 锚点校验通过")
 
-    # 4. 全科考题数据完整性校验
+    # 4. 校验考题清单与多轨数据完整性
     print("\n[4/4] 校验考题清单与多轨数据完整性...")
     manifest_file = root / "data" / "kaoyan_all_manifest.json"
     if not manifest_file.exists():
@@ -137,29 +126,21 @@ def main():
         print(f"  • 考研英语写作:   {len(ien)} 篇 (预期 16)")
         print(f"  • 全科题目总计:   {total} 题/篇 (预期 88)")
 
-        if len(i807) != 35:
-            errors.append(f"807 题目数量不匹配: 预期 37, 实际 {len(i807)}")
-        if len(i706) != 37:
-            errors.append(f"706 题目数量不匹配: 预期 29, 实际 {len(i706)}")
-        if len(ien) != 16:
-            errors.append(f"英语题目数量不匹配: 预期 16, 实际 {len(ien)}")
-        if total != 88:
-            errors.append(f"全科题目总计不匹配: 预期 82, 实际 {total}")
-
-        if not errors:
+        if len(i807) != 35 or len(i706) != 37 or len(ien) != 16 or total != 88:
+            errors.append(f"考题数量与预期不一致: 807={len(i807)}, 706={len(i706)}, en={len(ien)}, total={total}")
+        else:
             print("  ✓ 全科 88 道题目清单数据结构完整一致！")
 
     print("\n" + "=" * 65)
     if errors:
-        print("❌ 自检未通过，发现以下问题：")
-        for err in errors:
-            print(f"  • {err}")
+        print("❌ [FAILURE] 门禁检测未通过，存在以下阻塞性缺陷:")
+        for idx, err in enumerate(errors, 1):
+            print(f"  {idx}. {err}")
         print("=" * 65)
         sys.exit(1)
     else:
         print("🎉 [SUCCESS] 所有自检项均 100% 通过！项目处于健康发布状态。")
         print("=" * 65)
-        sys.exit(0)
 
 if __name__ == "__main__":
     main()

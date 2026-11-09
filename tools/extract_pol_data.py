@@ -370,68 +370,43 @@ def main():
 
     print(f"Processed 47 chapters with {total_subcards} subCards in total.")
 
-    # 3. 处理模块二：徐涛 16 天选择题带背并校准龙安朗独立时间戳
-    print("Processing 徐涛 16 天 (xutao16) with independent anlang timestamps...")
+    # 3. 处理模块二：徐涛 16 天选择题带背（加载高精度 370 考点纯净库与双音轨时间戳）
+    print("Processing 徐涛 16 天 (xutao16) with pristine 370 points and authentic dual timestamps...")
     processed_xt16 = []
-    for day_data in xtAllDaysData:
-        day_num = day_data.get("day", 1)
-        anlang_file = os.path.join(ANLANG_DIR, f"xt_anlang_d{day_num:02d}.mp3")
-        anlang_dur = get_audio_duration(anlang_file)
-        if anlang_dur <= 0:
-            anlang_dur = float(day_data.get("duration_sec", 120))
-
-        raw_points = day_data.get("points", [])
-        n_points = len(raw_points)
-
-        text_lens = []
-        for p in raw_points:
-            t = p.get("raw_text") or re.sub(r'<[^>]+>', '', p.get("html_text", ""))
-            text_lens.append(max(len(t), 4))
-        total_len = sum(text_lens) or 1
-
-        gap = 0.20 if n_points > 1 else 0.0
-        total_gaps = gap * (n_points - 1)
-        net_dur = max(anlang_dur - total_gaps, anlang_dur * 0.7)
-        rate = net_dur / total_len
-
-        curr_time = 0.0
-        new_points = []
-        for p_idx, p in enumerate(raw_points):
-            v_start = float(p.get("start", 0.0))
-            v_end = float(p.get("end", v_start + 5.0))
-
-            a_start = round(curr_time, 2)
-            seg_dur = text_lens[p_idx] * rate
-            if p_idx == n_points - 1:
-                a_end = round(anlang_dur, 2)
-            else:
-                a_end = round(curr_time + seg_dur, 2)
-                curr_time = a_end + gap
-
-            point_html = p.get("html_text", "")
-            if "★" in point_html:
-                point_html = point_html.replace("★", STAR_SVG)
-
-            new_points.append({
-                "id": f"d{day_num}_p{p.get('idx', p_idx+1)}",
-                "num": p.get("idx", p_idx + 1),
-                "tag": p.get("tag", "核心题眼"),
-                "html": point_html,
-                "voice_start": v_start,
-                "voice_end": v_end,
-                "anlang_start": a_start,
-                "anlang_end": a_end
+    xt_final_path = r"D:\AI_file\背诵手册\xutao_16days_final.json"
+    if os.path.exists(xt_final_path):
+        with open(xt_final_path, "r", encoding="utf-8") as f:
+            final_xt_days = json.load(f)
+        for day_data in final_xt_days:
+            day_num = day_data.get("day", 1)
+            points = []
+            for p in day_data.get("points", []):
+                p_html = p.get("html", "")
+                if "★" in p_html:
+                    p_html = p_html.replace("★", STAR_SVG)
+                points.append({
+                    "id": p.get("id", f"pol_xt_d{day_num:02d}_p{p.get('num', 1):02d}"),
+                    "num": p.get("num", 1),
+                    "tag": p.get("tag", "核心考点"),
+                    "html": p_html,
+                    "voice_start": float(p.get("voice_start", 0.0)),
+                    "voice_end": float(p.get("voice_end", 0.0)),
+                    "anlang_start": float(p.get("anlang_start", 0.0)),
+                    "anlang_end": float(p.get("anlang_end", 0.0))
+                })
+            processed_xt16.append({
+                "id": f"pol_xt_d{day_num:02d}",
+                "day": day_num,
+                "title": day_data.get("title", f"Day {day_num:02d}"),
+                "subtitle": day_data.get("subtitle") or day_data.get("desc", ""),
+                "subject": day_data.get("subject", "马原"),
+                "duration_sec": int(day_data.get("duration_sec", 120)),
+                "anlang_audio": f"audio_xutao/xt_anlang_d{day_num:02d}.mp3",
+                "voice_audio": f"audio_xutao/xt_voice_d{day_num:02d}.mp3",
+                "points": points
             })
-
-        processed_xt16.append({
-            "id": f"pol_xt_d{day_num:02d}",
-            "day": day_num,
-            "title": day_data.get("title", f"Day {day_num:02d}"),
-            "subtitle": day_data.get("desc", ""),
-            "anlang_audio": f"audio_xutao/xt_anlang_d{day_num:02d}.mp3",
-            "voice_audio": f"audio_xutao/xt_voice_d{day_num:02d}.mp3",
-            "points": new_points
-        })
+    else:
+        print(f"  ❌ Error: {xt_final_path} not found!")
 
     # 4. 处理模块三：腿姐 11 天冲刺背诵
     print("Processing 腿姐 11 天 (tuijie11)...")
