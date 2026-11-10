@@ -144,14 +144,11 @@ def main():
         raw_recite_sentences = CHAPTER_RECITE_SENTENCES.get(ch_id, [])
         processed_recite_sentences = []
 
-        # 检查并补全/前置 recite-part-badge
+        # 检查并补全/前置 recite-part-badge 至 recite_box 顶端
         badge_sent = None
-        badge_idx = None
-        for s_i, s in enumerate(raw_recite_sentences):
-            did = s.get("domId", "")
-            if did.startswith("recite_badge_"):
+        for s in raw_recite_sentences:
+            if s.get("domId", "").startswith("recite_badge_"):
                 badge_sent = s
-                badge_idx = s_i
                 break
 
         if badge_sent and recite_box:
@@ -162,106 +159,182 @@ def main():
                     badge_row = badge_el_art.find_parent(class_='xt-part-badge-row')
                     if badge_row:
                         recite_box.insert(0, badge_row)
-                        badge_el = badge_el_art
                     else:
                         new_row = soup.new_tag('div', attrs={'class': 'xt-part-badge-row'})
                         new_row.append(badge_el_art)
                         recite_box.insert(0, new_row)
-                        badge_el = badge_el_art
-            if badge_el:
-                badge_el["id"] = badge_sent.get("domId")
-                badge_el["data-sent-id"] = badge_sent.get("domId")
-                badge_el["data-sent-idx"] = str(badge_idx)
-                badge_el["data-start"] = str(badge_sent.get("start", 0.0))
-                badge_el["data-end"] = str(badge_sent.get("end", 0.0))
-                classes = badge_el.get("class", [])
-                if isinstance(classes, str):
-                    classes = [classes]
-                if "recite-sent-item" not in classes:
-                    classes.append("recite-sent-item")
-                    badge_el["class"] = classes
+
+        # 清除模板中的历史旧戳印，杜绝残留属性污染
+        for el in art.find_all(True):
+            if 'data-sent-idx' in el.attrs:
+                del el['data-sent-idx']
+            if 'data-sent-id' in el.attrs:
+                del el['data-sent-id']
+            if 'data-start' in el.attrs:
+                del el['data-start']
+            if 'data-end' in el.attrs:
+                del el['data-end']
+            classes = el.get('class', [])
+            if isinstance(classes, list) and 'recite-sent-item' in classes:
+                classes.remove('recite-sent-item')
+                if classes:
+                    el['class'] = classes
+                else:
+                    del el['class']
 
         boxes = [b for b in [recite_box, understand_box] if b]
+
+        # 预处理：在 td, th, p 中若存在 <br/> 分隔的多句，将其包裹为 span.xt-subline 以便精准高光和独立点读
+        for b in boxes:
+            for cell in b.find_all(["td", "th", "p"]):
+                if cell.find("br") and not cell.find("table"):
+                    new_contents = []
+                    cur_span = None
+                    for child in list(cell.contents):
+                        if getattr(child, "name", None) == "br":
+                            cur_span = None
+                            new_contents.append(child)
+                        else:
+                            txt = child.get_text() if hasattr(child, "get_text") else str(child)
+                            if not txt.strip():
+                                continue
+                            if cur_span is None:
+                                cur_span = soup.new_tag("span", attrs={"class": "xt-subline"})
+                                new_contents.append(cur_span)
+                            cur_span.append(child)
+                    cell.clear()
+                    for nc in new_contents:
+                        cell.append(nc)
+
+        claimed = set()
 
         # 为 Track 1 的每一句进行 DOM 锚点精准匹配与戳印
         for s_idx, s in enumerate(raw_recite_sentences):
             did = s.get("domId", "")
-            start = s.get("start", 0.0)
-            end = s.get("end", 0.0)
+            start = float(s.get("start", 0.0))
+            end = float(s.get("end", 0.0))
             stext = s.get("text", "")
-            sent_id = did or f"sent_{ch_id}_{s_idx}"
+            sent_id = f"sent_{ch_id}_{s_idx:03d}"
 
             s_copy = dict(s)
             s_copy["idx"] = s_idx
             s_copy["id"] = sent_id
+            s_copy["domId"] = sent_id
+            s_copy["origDomId"] = did
+            s_copy["start"] = round(start, 3)
+            s_copy["end"] = round(end, 3)
             processed_recite_sentences.append(s_copy)
 
-            el = None
-            # 1. 直接按 id 匹配
-            if did:
+            clean_s = re.sub(r'[\s,，.。:：()（）/、:—\-$+*★✦➔\d一二三四五六七八九十①②③④⑤⑥⑦⑧⑨⑩]+', '', stext)
+            target_el = None
+
+            # 0: 标题锚点
+            if s_idx == 0:
+                target_el = art.find("span", class_="recite-bar-title") or art.find(class_="recite-bar-title")
+            # 1: 音频栏徽章锚点
+            elif s_idx == 1:
+                target_el = art.find("span", class_="recite-bar-badge") or art.find(class_="recite-audio-bar")
+            # 2: 导引标签锚点
+            elif s_idx == 2 or (did and did.startswith("recite_badge_")):
+                target_el = art.find(class_=lambda c: c and ("xt-part-badge" in c or "recite-part-badge" in c))
+
+            # 3. 按原始 did 直接匹配未认领节点
+            if not target_el and did:
+                for b in boxes:
+                    cand = b.find(id=did)
+                    if cand and id(cand) not in claimed:
+                        target_el = cand
+                        break
+
+            # 4. 相邻兄弟节点认领（应对 did 重复覆盖的连续序号行）
+            if not target_el and did:
                 for b in boxes:
                     cand = b.find(id=did)
                     if cand:
-                        el = cand
-                        break
+                        nxt = cand.find_next_sibling()
+                        while nxt:
+                            if id(nxt) not in claimed and nxt.name in ["div", "p", "h4", "tr", "li", "strong", "table", "span"]:
+                                if nxt.name == "table" or nxt.find("table"):
+                                    tbl = nxt if nxt.name == "table" else nxt.find("table")
+                                    for r in tbl.find_all("tr"):
+                                        if id(r) not in claimed:
+                                            target_el = r
+                                            break
+                                    if target_el: break
+                                else:
+                                    target_el = nxt
+                                    break
+                            nxt = nxt.find_next_sibling()
+                        if target_el: break
 
-            # 2. 按 data-sent-idx 匹配
-            if not el:
-                for b in boxes:
-                    cand = b.find(attrs={"data-sent-idx": str(s_idx)})
-                    if cand:
-                        el = cand
-                        break
-
-            # 3. 文本相似度匹配（特别针对 table tr, h4, p 等未盖戳元素）
-            if not el and stext:
-                clean_stext = re.sub(r'[:-]+', ' ', stext)
-                words = [w for w in re.split(r'[\s,，.。:：()（）/、:—\-$+]+', clean_stext) if len(w) >= 2]
+            # 5. 全局未认领元素文本相似度匹配
+            if not target_el and clean_s:
                 best_cand = None
                 best_score = 0
                 for b in boxes:
-                    for cand in b.find_all(["tr", "p", "div", "h4", "li", "strong"]):
-                        if cand.name in ["div", "p"] and cand.find(["p", "tr", "h4", "div"]):
-                            continue
-                        if cand.get("id") and cand.get("id") != did:
-                            continue
-                        ctext = cand.get_text()
-                        score = sum(1 for w in words if w in ctext)
-                        if score > best_score and score >= 1:
+                    for cand in b.find_all(["div", "p", "h4", "tr", "li", "strong", "td", "th", "span"]):
+                        if id(cand) in claimed: continue
+                        if cand.find(["p", "div", "tr", "h4", "table", "td", "th"]): continue
+                        ctext = re.sub(r'[\s,，.。:：()（）/、:—\-$+*★✦➔\d一二三四五六七八九十①②③④⑤⑥⑦⑧⑨⑩]+', '', cand.get_text())
+                        if not ctext: continue
+                        if ctext in clean_s or clean_s in ctext:
+                            score = min(len(ctext), len(clean_s)) + 10
+                        else:
+                            score = sum(3 for i in range(len(ctext) - 2) if ctext[i:i+3] in clean_s)
+                        if score > best_score and score >= 3:
                             best_score = score
                             best_cand = cand
                 if best_cand:
-                    el = best_cand
+                    target_el = best_cand
 
-            # 4. 容错邻近数字序号匹配
-            if not el and did:
-                m_num = re.search(r'recite_blk_[a-z]+_\d+_(\d+)', did)
-                if m_num:
-                    num = int(m_num.group(1))
-                    prefix = did[:m_num.start(1)]
-                    for alt_num in [num, num + 1, num - 1, num + 2, num - 2]:
-                        alt_id = f'{prefix}{alt_num}'
-                        for b in boxes:
-                            cand = b.find(id=alt_id)
-                            if cand and not cand.get('data-sent-id'):
-                                el = cand
-                                break
-                        if el:
+            # 6. 兜底匹配：在已有节点或相邻父级内嵌入独立内联 span，确保 100% 具备唯一锚点
+            if not target_el:
+                parent_cand = None
+                if did:
+                    for b in boxes:
+                        cand = b.find(id=did)
+                        if cand:
+                            parent_cand = cand
                             break
+                if not parent_cand and clean_s:
+                    for b in boxes:
+                        for cand in b.find_all(["div", "p", "tr", "td", "th", "h4"]):
+                            ctext = re.sub(r'[\s,，.。:：()（）/、:—\-$+*★✦➔\d一二三四五六七八九十①②③④⑤⑥⑦⑧⑨⑩]+', '', cand.get_text())
+                            if clean_s[:10] in ctext or (len(clean_s) >= 4 and clean_s in ctext):
+                                parent_cand = cand
+                                break
+                        if parent_cand: break
+
+                if not parent_cand and boxes:
+                    parent_cand = boxes[0]
+
+                if parent_cand:
+                    sub_span = soup.new_tag("span", attrs={
+                        "id": sent_id,
+                        "class": "recite-sent-item xt-inline-sent",
+                        "data-sent-id": sent_id,
+                        "data-sent-idx": str(s_idx),
+                        "data-start": f"{start:.3f}",
+                        "data-end": f"{end:.3f}"
+                    })
+                    sub_span.string = stext
+                    parent_cand.append(sub_span)
+                    target_el = sub_span
 
             # 盖戳到匹配到的 DOM 节点
-            if el:
-                el["id"] = sent_id
-                el["data-sent-id"] = sent_id
-                el["data-sent-idx"] = str(s_idx)
-                el["data-start"] = str(start)
-                el["data-end"] = str(end)
-                classes = el.get("class", [])
+            if target_el:
+                claimed.add(id(target_el))
+                target_el["id"] = sent_id
+                target_el["data-sent-id"] = sent_id
+                target_el["data-sent-idx"] = str(s_idx)
+                target_el["data-start"] = f"{start:.3f}"
+                target_el["data-end"] = f"{end:.3f}"
+                classes = target_el.get("class", [])
                 if isinstance(classes, str):
                     classes = [classes]
                 if "recite-sent-item" not in classes:
                     classes.append("recite-sent-item")
-                    el["class"] = classes
+                    target_el["class"] = classes
 
         recite_html = normalize_pane_html(recite_box, soup)
         understand_html = normalize_pane_html(understand_box, soup)

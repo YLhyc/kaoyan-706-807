@@ -790,7 +790,7 @@
                ${state.currentSubject === 'en' ? '范文' : '通读'}
              </span>`
           : `<span class="card-audio-status" title="文本已就绪">
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                  <polyline points="14 2 14 8 20 8"></polyline>
                </svg>
@@ -1199,15 +1199,16 @@
   // DOM 兜底解析机制：离线或 file:/// 协议无 JSON 缓存时，从当前 DOM 提取
   function extractSentencesFromDOM() {
     if (!el.paperContent) return [];
-    const nodes = el.paperContent.querySelectorAll('.recite-sent[data-start][data-end]');
+    const nodes = el.paperContent.querySelectorAll('.recite-sent[data-start][data-end], .recite-sent-item[data-start][data-end]');
     const list = [];
     nodes.forEach((node, idx) => {
       const start = parseFloat(node.dataset.start);
       const end = parseFloat(node.dataset.end);
       if (!isNaN(start) && !isNaN(end)) {
-        const id = node.dataset.sentId || node.dataset.id || node.id || `sent_${idx}`;
+        const id = node.dataset.sentId || node.dataset.sentIdx || node.dataset.id || node.id || `sent_${idx}`;
+        const sIdx = node.dataset.sentIdx !== undefined ? parseInt(node.dataset.sentIdx, 10) : idx;
         const text = (node.innerText || node.textContent || '').trim();
-        list.push({ id, start, end, text });
+        list.push({ id, start, end, text, idx: sIdx, domId: node.id });
       }
     });
     list.sort((a, b) => a.start - b.start);
@@ -1366,7 +1367,13 @@
       sentences = extractSentencesFromDOM();
     }
 
-    state.activeSentences = sentences || [];
+    state.activeSentences = (sentences || []).map((s, idx) => ({
+      ...s,
+      id: s.id !== undefined ? s.id : (s.idx !== undefined ? s.idx : idx),
+      start: typeof s.start === 'number' ? s.start : parseFloat(s.start || 0),
+      end: typeof s.end === 'number' ? s.end : parseFloat(s.end || 0),
+      idx: s.idx !== undefined ? s.idx : idx
+    }));
     buildFrameworkIndex();
 
     // 若未命中内置包且有 sFile，发起异步非阻塞 fetch 进行补充校准
@@ -1375,7 +1382,13 @@
         .then(res => res.ok ? res.json() : null)
         .then(fetchedSents => {
           if (fetchedSents && fetchedSents.length > 0 && state.currentTrack === trackNum && state.activeItemId === item.id) {
-            state.activeSentences = fetchedSents;
+            state.activeSentences = fetchedSents.map((s, idx) => ({
+              ...s,
+              id: s.id !== undefined ? s.id : (s.idx !== undefined ? s.idx : idx),
+              start: typeof s.start === 'number' ? s.start : parseFloat(s.start || 0),
+              end: typeof s.end === 'number' ? s.end : parseFloat(s.end || 0),
+              idx: s.idx !== undefined ? s.idx : idx
+            }));
             buildFrameworkIndex();
           }
         })
@@ -1387,6 +1400,63 @@
           }
         });
     }
+  }
+
+  // 权威句子点击事件代理绑定器 (优先从 state.activeSentences 读取权威起止时间戳，彻底纠正点击前一句/串音)
+  function bindSentenceClickHandlers(container) {
+    if (!container) return;
+    const sentEls = container.querySelectorAll('.recite-sent, .recite-sent-item, .recite-sentence, .tj-sent-span, [data-sent-id], [data-sent-idx], [id^="recite_bar_"], [id^="recite_blk_"]');
+    sentEls.forEach(elItem => {
+      if (elItem.dataset.clickBound === '1') return;
+      elItem.dataset.clickBound = '1';
+      elItem.addEventListener('click', (e) => {
+        if (e.target.closest('.cloze') || e.target.closest('.kw-red')) return;
+        if (state.clozeMode === 'body') {
+          elItem.classList.toggle('cloze-revealed');
+          return;
+        }
+
+        // 1. 优先从 state.activeSentences 根据 sentIdx / sentId 权威索引匹配
+        const rawIdx = elItem.dataset.sentIdx !== undefined ? parseInt(elItem.dataset.sentIdx, 10) : NaN;
+        const rawId = elItem.dataset.sentId || elItem.id || elItem.dataset.pointId;
+        let matched = null;
+
+        if (state.activeSentences && state.activeSentences.length > 0) {
+          // 优先级 1: 唯一 sentIdx 索引（政治47章、轨二微考点、腿姐讲义唯一句标）
+          if (!isNaN(rawIdx)) {
+            matched = state.activeSentences.find(s => s.idx === rawIdx || s.id === rawIdx || String(s.id) === String(rawIdx));
+            if (!matched && rawIdx >= 0 && rawIdx < state.activeSentences.length) {
+              matched = state.activeSentences[rawIdx];
+            }
+          }
+          // 优先级 2: 匹配唯一 sentence id
+          if (!matched && rawId) {
+            matched = state.activeSentences.find(s => String(s.id) === String(rawId));
+          }
+          // 优先级 3: 匹配 domId
+          if (!matched && rawId) {
+            matched = state.activeSentences.find(s => String(s.domId) === String(rawId));
+          }
+          // 优先级 4: 按 dataset.start 时间戳近似匹配
+          if (!matched) {
+            const dsStart = parseFloat(elItem.dataset.start);
+            if (!isNaN(dsStart)) {
+              matched = state.activeSentences.find(s => Math.abs(s.start - dsStart) < 0.1);
+            }
+          }
+        }
+
+        if (matched && typeof matched.start === 'number' && !isNaN(matched.start)) {
+          seekToSentence(matched.id, matched.start);
+        } else {
+          const fallbackStart = parseFloat(elItem.dataset.start);
+          const fallbackId = (!isNaN(rawIdx) ? rawIdx : rawId);
+          if (!isNaN(fallbackStart) && fallbackId !== null) {
+            seekToSentence(fallbackId, fallbackStart);
+          }
+        }
+      });
+    });
   }
 
   function renderPaperContent(trackObj, sentences) {
@@ -1402,36 +1472,22 @@
 
     if (trackObj.html) {
       el.paperContent.innerHTML = trackObj.html;
-      // Attach click events to all recite-sent spans
-      const sents = el.paperContent.querySelectorAll('.recite-sent');
-      sents.forEach(s => {
-        s.addEventListener('click', (e) => {
-          if (e.target.closest('.cloze') || e.target.closest('.kw-red')) return;
-          if (state.clozeMode === 'body') {
-            s.classList.toggle('cloze-revealed');
-            return;
-          }
-          const sentId = s.dataset.sentId;
-          const start = parseFloat(s.dataset.start);
-          if (!isNaN(start)) {
-            seekToSentence(sentId, start);
-          }
-        });
-      });
+
+      // 绑定权威高光追踪与点击点读事件
+      bindSentenceClickHandlers(el.paperContent);
 
       // 英语写作专属：审题任务导引交互与一键直达开读正文
       const enJumpPills = el.paperContent.querySelectorAll('.en-audio-jump-pill');
       enJumpPills.forEach(pill => {
         pill.addEventListener('click', (e) => {
           e.stopPropagation();
-          const firstSent = el.paperContent.querySelector('.en-full-essay-box .recite-sent');
-          if (firstSent) {
-            const sentId = firstSent.dataset.sentId;
-            const start = parseFloat(firstSent.dataset.start);
-            if (!isNaN(start)) {
-              seekToSentence(sentId, start);
-              showToast('已为您开读正文高分范文', 1800);
-            }
+          const firstSentObj = (state.activeSentences && state.activeSentences.length > 0) ? state.activeSentences[0] : null;
+          const firstSentEl = el.paperContent.querySelector('.en-full-essay-box .recite-sent');
+          const sId = firstSentObj ? firstSentObj.id : (firstSentEl ? firstSentEl.dataset.sentId : null);
+          const sStart = firstSentObj ? firstSentObj.start : (firstSentEl ? parseFloat(firstSentEl.dataset.start) : 0);
+          if (sId !== null && !isNaN(sStart)) {
+            seekToSentence(sId, sStart);
+            showToast('已为您开读正文高分范文', 1800);
           }
         });
       });
@@ -1440,12 +1496,13 @@
       enPromptBoxes.forEach(pBox => {
         pBox.addEventListener('click', (e) => {
           if (e.target.closest('.en-audio-jump-pill')) return;
-          const firstSent = el.paperContent.querySelector('.en-full-essay-box .recite-sent');
-          if (firstSent) {
-            const sentId = firstSent.dataset.sentId;
-            const start = parseFloat(firstSent.dataset.start);
-            if (!isNaN(start)) {
-              seekToSentence(sentId, start);
+          const firstSentObj = (state.activeSentences && state.activeSentences.length > 0) ? state.activeSentences[0] : null;
+          const firstSentEl = el.paperContent.querySelector('.en-full-essay-box .recite-sent');
+          if (firstSentObj || firstSentEl) {
+            const sId = firstSentObj ? firstSentObj.id : firstSentEl.dataset.sentId;
+            const sStart = firstSentObj ? firstSentObj.start : parseFloat(firstSentEl.dataset.start);
+            if (!isNaN(sStart)) {
+              seekToSentence(sId, sStart);
               showToast('此部分为审题任务导引（静读），已定位开读正文范文', 2200);
             }
           } else {
@@ -1457,12 +1514,13 @@
       const enIntroBadges = el.paperContent.querySelectorAll('.en-intro-badge, .card-intro .section-card-header');
       enIntroBadges.forEach(ib => {
         ib.addEventListener('click', (e) => {
-          const firstSent = el.paperContent.querySelector('.en-full-essay-box .recite-sent');
-          if (firstSent) {
-            const sentId = firstSent.dataset.sentId;
-            const start = parseFloat(firstSent.dataset.start);
-            if (!isNaN(start)) {
-              seekToSentence(sentId, start);
+          const firstSentObj = (state.activeSentences && state.activeSentences.length > 0) ? state.activeSentences[0] : null;
+          const firstSentEl = el.paperContent.querySelector('.en-full-essay-box .recite-sent');
+          if (firstSentObj || firstSentEl) {
+            const sId = firstSentObj ? firstSentObj.id : firstSentEl.dataset.sentId;
+            const sStart = firstSentObj ? firstSentObj.start : parseFloat(firstSentEl.dataset.start);
+            if (!isNaN(sStart)) {
+              seekToSentence(sId, sStart);
               showToast('审题导引供静读构思，已为您起音开读高分范文', 2000);
             }
           }
@@ -1483,20 +1541,35 @@
   }
 
   function seekToSentence(sentId, startTime) {
-    const targetTime = Math.max(0, (typeof startTime === 'number' && !isNaN(startTime) ? startTime : 0) - 0.08);
-    const sentIdx = state.activeSentences.findIndex(s => String(s.id) === String(sentId));
-    if (sentIdx !== -1) {
-      state.currentSentIndex = sentIdx;
-      state.loopCount = 0;
+    let exactTime = typeof startTime === 'number' && !isNaN(startTime) ? startTime : 0;
+    let targetSent = null;
+
+    if (state.activeSentences && state.activeSentences.length > 0) {
+      const sentIdx = state.activeSentences.findIndex(s =>
+        String(s.id) === String(sentId) ||
+        (s.idx !== undefined && String(s.idx) === String(sentId)) ||
+        (s.domId && String(s.domId) === String(sentId))
+      );
+      if (sentIdx !== -1) {
+        targetSent = state.activeSentences[sentIdx];
+        state.currentSentIndex = sentIdx;
+        state.loopCount = 0;
+        if (typeof targetSent.start === 'number' && !isNaN(targetSent.start)) {
+          exactTime = targetSent.start;
+        }
+      }
     }
+
+    // 精准定位目标时刻：以权威起始时间为基准，绝不随意提前减去负偏移导致播放到前一句
+    const targetTime = Math.max(0, exactTime);
     if (currentFrameworkSections.length > 0) {
-      const matchedSecIdx = currentFrameworkSections.findIndex(s => (startTime || 0) >= s.start - 0.1 && (startTime || 0) <= s.end + 0.1);
+      const matchedSecIdx = currentFrameworkSections.findIndex(s => targetTime >= s.start - 0.05 && targetTime <= s.end + 0.05);
       if (matchedSecIdx !== -1) {
         currentActiveSectionIndex = matchedSecIdx;
       }
     }
-    highlightSentence(sentId);
-    updateHUDDisplay(startTime || 0);
+    highlightSentence(targetSent ? targetSent.id : sentId);
+    updateHUDDisplay(targetTime);
 
     const applySeek = () => {
       try {
@@ -1530,23 +1603,45 @@
   lastSpotlightEl = null;
   let lastScrollTs = 0;
 
-  // 工业级启发式时间轴匹配引擎 (消除静音空隙与跳跃，第一性原理纠偏)
+  // 工业级严格区间与停顿空隙判定引擎 (消除前瞻迟滞漂移与跳句)
   function findActiveSentenceIndex(currentTime) {
-    if (!state.activeSentences || state.activeSentences.length === 0) return -1;
-    // 倍速自适应动态前瞻补偿：基础 150ms 灵敏合拍，根据播放倍速自动微调，消除视觉落后感
-    const rate = (audio && audio.playbackRate > 0) ? audio.playbackRate : (state.speed || 1.0);
-    const baseOffset = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.15;
-    const dynamicOffset = baseOffset * Math.sqrt(rate);
-    const t = currentTime + dynamicOffset;
+    const sents = state.activeSentences;
+    if (!sents || sents.length === 0) return -1;
+    const len = sents.length;
+    const t = Math.max(0, currentTime);
 
-    // 基于严格单调递增的物理声学时间戳匹配
-    for (let i = state.activeSentences.length - 1; i >= 0; i--) {
-      const s = state.activeSentences[i];
-      if (t >= s.start) {
+    // 1. 严格闭区间判定：若 currentTime 在 [s.start, s.end] 内，立即锁定该句
+    for (let i = 0; i < len; i++) {
+      const s = sents[i];
+      const sStart = typeof s.start === 'number' ? s.start : parseFloat(s.start || 0);
+      const next = (i + 1 < len) ? sents[i + 1] : null;
+      const nextStart = next ? (typeof next.start === 'number' ? next.start : parseFloat(next.start)) : Infinity;
+      const sEnd = (typeof s.end === 'number' && !isNaN(s.end) && s.end > sStart) ? s.end : nextStart;
+
+      // 若处于当前句子区间内
+      if (t >= sStart && t <= sEnd) {
+        // 若与下一句轻微重叠且已越过下一句起始点，平滑过渡至下一句
+        if (next && t >= nextStart) {
+          return i + 1;
+        }
         return i;
       }
+
+      // 2. 停顿/静音空隙区间判定：若处于句子 i 与句子 i+1 之间的空白停顿区
+      // 只要 currentTime < s_{i+1}.start - 0.1，保持高光在当前句 i，直到下一句真正开始
+      if (next && t > sEnd && t < nextStart) {
+        if (t < nextStart - 0.1) {
+          return i;
+        } else {
+          return i + 1;
+        }
+      }
     }
-    return 0;
+
+    // 3. 边界兜底保护
+    const firstStart = typeof sents[0].start === 'number' ? sents[0].start : parseFloat(sents[0].start || 0);
+    if (t < firstStart) return 0;
+    return len - 1;
   }
 
   function highlightSentence(sentId) {
@@ -1559,22 +1654,45 @@
       return;
     }
 
-    const lastId = (lastSpotlightEl && lastSpotlightEl.isConnected) ? (lastSpotlightEl.dataset.sentId ?? lastSpotlightEl.dataset.sentIdx ?? lastSpotlightEl.dataset.pointId ?? lastSpotlightEl.id) : null;
-    if (lastSpotlightEl && lastSpotlightEl.isConnected && String(lastId) === String(sentId)) return;
-    if (lastSpotlightEl && !lastSpotlightEl.isConnected) {
-      lastSpotlightEl = null;
+    const sentObj = (state.activeSentences || []).find(s => 
+      String(s.id) === String(sentId) || 
+      (s.idx !== undefined && String(s.idx) === String(sentId)) ||
+      (s.domId && String(s.domId) === String(sentId))
+    );
+
+    let targetEl = null;
+    if (el.paperContent) {
+      // 1. 优先以 sentObj.idx 进行精准匹配（政治47章、轨二微考点与腿姐讲义的唯一序号）
+      if (sentObj && sentObj.idx !== undefined) {
+        targetEl = el.paperContent.querySelector(`.recite-sent-item[data-sent-idx="${sentObj.idx}"], .recite-sent[data-sent-idx="${sentObj.idx}"], .recite-sentence[data-sent-idx="${sentObj.idx}"], .tj-sent-span[data-sent-idx="${sentObj.idx}"], [data-sent-idx="${sentObj.idx}"]`);
+      }
+      // 2. 按 sentId / data-sent-id 查询
+      if (!targetEl) {
+        targetEl = el.paperContent.querySelector(`[data-sent-id="${sentId}"], .recite-sent[data-sent-id="${sentId}"], .recite-sent-item[data-sent-id="${sentId}"], .tj-sent-span[data-sent-id="${sentId}"], .xt-day-point-card[data-point-id="${sentId}"], .tj-point-card[data-point-id="${sentId}"]`);
+      }
+      // 3. 按 domId 查询
+      if (!targetEl && sentObj && sentObj.domId) {
+        targetEl = el.paperContent.querySelector(`#${sentObj.domId}, [data-sent-id="${sentObj.domId}"]`);
+      }
+      // 4. 全局 getElementById 兜底
+      if (!targetEl) {
+        targetEl = document.getElementById(String(sentId));
+      }
+    }
+
+    if (lastSpotlightEl && targetEl === lastSpotlightEl) {
+      if (state.playMode === 'sentence') {
+        targetEl.classList.add('loop-sent-active');
+      } else {
+        targetEl.classList.remove('loop-sent-active');
+      }
+      return;
     }
 
     if (lastSpotlightEl) {
       lastSpotlightEl.classList.remove('active-spotlight');
       lastSpotlightEl.classList.remove('loop-sent-active');
     }
-
-    const sentObj = (state.activeSentences || []).find(s => String(s.id ?? s.domId ?? s.idx) === String(sentId));
-
-    const targetEl = document.getElementById(String(sentId)) ||
-                     (el.paperContent ? el.paperContent.querySelector(`[data-sent-id="${sentId}"], .recite-sent[data-sent-id="${sentId}"], .tj-sent-span[data-sent-id="${sentId}"], .xt-day-point-card[data-point-id="${sentId}"], .tj-point-card[data-point-id="${sentId}"]`) : null) ||
-                     (sentObj && sentObj.idx !== undefined && el.paperContent ? el.paperContent.querySelector(`.recite-sent-item[data-sent-idx="${sentObj.idx}"], .recite-sentence[data-sent-idx="${sentObj.idx}"], .tj-sent-span[data-sent-idx="${sentObj.idx}"], [data-sent-idx="${sentObj.idx}"]`) : null);
 
     if (targetEl) {
       targetEl.classList.add('active-spotlight');
@@ -1583,18 +1701,24 @@
       }
       lastSpotlightEl = targetEl;
 
-      // 智能视口可见性避让 (倍速自适应节流，避免高倍速下的掉帧与滞后)
+      // 视口舒适视线中心滑动追踪：保持高光处于屏幕黄金阅读线（vh * 0.40），杜绝沉底挤压与反复弹跳
       const now = Date.now();
       const rate = (audio && audio.playbackRate > 0) ? audio.playbackRate : (state.speed || 1.0);
-      const throttleInterval = Math.max(350, Math.round(800 / rate));
+      const throttleInterval = Math.max(300, Math.round(700 / rate));
       if (now - state.lastUserScrollTime > 2000 && now - lastScrollTs > throttleInterval) {
         const rect = targetEl.getBoundingClientRect();
         const vh = window.innerHeight || 800;
-        // 安全视线区：顶部留出 110px 避开顶栏，底部留出 180px 避开底栏
-        const outOfSafeZone = rect.top < 110 || rect.bottom > (vh - 180);
-        if (outOfSafeZone) {
+        const idealTop = vh * 0.40;
+        const delta = rect.top - idealTop;
+        if (Math.abs(delta) > 50) {
           lastScrollTs = now;
-          targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const mainStage = document.querySelector('.main-stage');
+          const isStageScrollable = mainStage && mainStage.scrollHeight > mainStage.clientHeight;
+          if (isStageScrollable) {
+            mainStage.scrollBy({ top: delta, behavior: 'smooth' });
+          } else {
+            window.scrollBy({ top: delta, behavior: 'smooth' });
+          }
         }
       }
     } else {
@@ -1622,10 +1746,12 @@
 
     if (!el.paperContent) return;
 
-    // 政治 47 章背诵模式优先索引 .xt-part-box 与 .stream-card
+    // 政治 47 章背诵模式优先索引 .xt-part-box 与 .stream-card；英语大/小作文优先索引各自然段 .en-essay-para
     let cards = [];
     if (el.paperContent.querySelector('.xt-part-box')) {
       cards = Array.from(el.paperContent.querySelectorAll('.xt-part-box, .stream-card, .xt-day-point-card, .tj-handbook-card, .exam-section-card, .logic-block-card'));
+    } else if (state.currentSubject === 'en' && el.paperContent.querySelector('.en-essay-para')) {
+      cards = Array.from(el.paperContent.querySelectorAll('.en-essay-para'));
     } else {
       cards = Array.from(el.paperContent.querySelectorAll('.exam-section-card, .logic-block-card, section.exam-section-card, .xt-section, .xt-day-point-card, .stream-card, .tj-handbook-card'));
     }
@@ -1638,12 +1764,45 @@
       let end = lastSent ? parseFloat(lastSent.dataset.end || 0) : 0;
       let sentId = firstSent ? (firstSent.dataset.sentId ?? firstSent.dataset.sentIdx ?? firstSent.id) : null;
 
-      if (firstSent && firstSent.dataset.sentIdx !== undefined && start === 0 && state.activeSentences) {
-        const sIdx = parseInt(firstSent.dataset.sentIdx, 10);
-        const matchedS = state.activeSentences.find(s => s.idx === sIdx);
-        if (matchedS) {
-          start = matchedS.start;
-          sentId = matchedS.id || sentId;
+      // 权威时间戳映射：优先从 state.activeSentences 对齐精确起止时间
+      if (firstSent && state.activeSentences && state.activeSentences.length > 0) {
+        const rawIdx = firstSent.dataset.sentIdx !== undefined ? parseInt(firstSent.dataset.sentIdx, 10) : NaN;
+        const rawId = firstSent.dataset.sentId || firstSent.id;
+        const matchedFirst = state.activeSentences.find(s => (!isNaN(rawIdx) && (s.idx === rawIdx || s.id === rawIdx)) || (rawId && (String(s.id) === String(rawId) || String(s.domId) === String(rawId))));
+        if (matchedFirst && typeof matchedFirst.start === 'number' && !isNaN(matchedFirst.start)) {
+          start = matchedFirst.start;
+          sentId = matchedFirst.id || sentId;
+        }
+      }
+      if (lastSent && state.activeSentences && state.activeSentences.length > 0) {
+        const rawIdx = lastSent.dataset.sentIdx !== undefined ? parseInt(lastSent.dataset.sentIdx, 10) : NaN;
+        const rawId = lastSent.dataset.sentId || lastSent.id;
+        const matchedLast = state.activeSentences.find(s => (!isNaN(rawIdx) && (s.idx === rawIdx || s.id === rawIdx)) || (rawId && (String(s.id) === String(rawId) || String(s.domId) === String(rawId))));
+        if (matchedLast && typeof matchedLast.end === 'number' && !isNaN(matchedLast.end)) {
+          end = matchedLast.end;
+        }
+      }
+
+      // 英语写作书信类：若首段前有称呼(salutation)，尾段后有落款(signoff)，自动吸纳进对应段落范围
+      if (state.currentSubject === 'en' && card.classList.contains('en-essay-para')) {
+        if (idx === 0) {
+          const salutation = el.paperContent.querySelector('.en-letter-salutation-wrap .recite-sent');
+          if (salutation && state.activeSentences) {
+            const mSal = state.activeSentences.find(s => String(s.id) === String(salutation.dataset.sentId));
+            if (mSal) {
+              start = Math.min(start, mSal.start);
+              sentId = mSal.id || sentId;
+            }
+          }
+        }
+        if (idx === cards.length - 1) {
+          const signoff = el.paperContent.querySelector('.en-letter-signoff-wrap .recite-sent');
+          if (signoff && state.activeSentences) {
+            const mSign = state.activeSentences.find(s => String(s.id) === String(signoff.dataset.sentId));
+            if (mSign) {
+              end = Math.max(end, mSign.end);
+            }
+          }
         }
       }
 
@@ -1665,7 +1824,10 @@
       const logicTitleEl = card.querySelector('.logic-block-title h3, h3');
       const qaBadgeEl = card.querySelector('.qa-badge');
 
-      if (card.classList.contains('xt-part-box')) {
+      if (state.currentSubject === 'en' && card.classList.contains('en-essay-para')) {
+        badge = `第 ${idx + 1} 自然段 · ${idx === 0 ? '首段破题' : (idx === cards.length - 1 ? '尾段升华' : '正文主体')}`;
+        desc = '高分范文论述段落';
+      } else if (card.classList.contains('xt-part-box')) {
         const isRecitePart = card.classList.contains('xt-part-recite');
         const badgeEl = card.querySelector('.xt-part-badge');
         badge = badgeEl ? badgeEl.textContent.trim() : (isRecitePart ? '一、背诵部分' : '二、深度理解');
@@ -1675,9 +1837,9 @@
         const labelEl = card.querySelector('.stream-card-label span, .stream-card-label');
         const tipBadge = card.querySelector('.stream-tip-badge, .stream-takeaway-tag, .pitfall-title');
         if (labelEl) {
-          badge = labelEl.textContent.trim().replace(/^[^\u4e00-\u9fa5A-Za-z0-9]+/, '');
+          badge = labelEl.textContent.trim().replace(/^[^一-龥A-Za-z0-9]+/, '');
         } else if (tipBadge) {
-          badge = tipBadge.textContent.trim().replace(/^[^\u4e00-\u9fa5A-Za-z0-9]+|[^\u4e00-\u9fa5A-Za-z0-9]+$/g, '');
+          badge = tipBadge.textContent.trim().replace(/^[^一-龥A-Za-z0-9]+|[^一-龥A-Za-z0-9]+$/g, '');
         } else {
           badge = `微考点论述 ${idx + 1}`;
         }
@@ -1706,9 +1868,9 @@
       let secType = 'point';
       if (/审题|规程/.test(badge)) {
         secType = 'spec';
-      } else if (/引论|立论/.test(badge)) {
+      } else if (/引论|立论|首段/.test(badge)) {
         secType = 'intro';
-      } else if (/结语|总结/.test(badge)) {
+      } else if (/结语|总结|尾段/.test(badge)) {
         secType = 'conclusion';
       }
 
@@ -2052,18 +2214,23 @@
           }
         }
 
-        // 1. 单句循环模式 (精准闭环，防越界抗干扰)
+        // 1. 单句循环模式 (严格精准闭环，防串音防越界)
         if (state.playMode === 'sentence' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
           const sent = state.activeSentences[state.currentSentIndex];
-          if (cur < sent.start - 0.6 || cur > sent.end + 0.6) {
+          const nextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
+          const sStart = typeof sent.start === 'number' ? sent.start : parseFloat(sent.start || 0);
+          const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (nextSent ? nextSent.start : Infinity));
+          const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
+
+          if (cur < sStart - 0.5) {
             const newIdx = findActiveSentenceIndex(cur);
-            if (newIdx !== -1) {
+            if (newIdx !== -1 && newIdx !== state.currentSentIndex) {
               state.currentSentIndex = newIdx;
               state.loopCount = 0;
               highlightSentence(state.activeSentences[newIdx].id);
             }
-          } else if (cur >= sent.end - 0.04) {
-            audio.currentTime = sent.start;
+          } else if (cur >= sEnd - 0.03 || (nextSent && cur >= nextStart - 0.05)) {
+            audio.currentTime = sStart;
             if (audio.paused) audio.play().catch(e => console.log(e));
             syncRafId = requestAnimationFrame(runSyncLoop);
             return;
@@ -2076,28 +2243,32 @@
         // 2. 单句3遍模式 (满3遍后精准推移至下一句)
         else if (state.playMode === 'loop3' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
           const sent = state.activeSentences[state.currentSentIndex];
-          if (cur < sent.start - 0.6 || cur > sent.end + 0.6) {
+          const nextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
+          const sStart = typeof sent.start === 'number' ? sent.start : parseFloat(sent.start || 0);
+          const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (nextSent ? nextSent.start : Infinity));
+          const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
+
+          if (cur < sStart - 0.5) {
             const newIdx = findActiveSentenceIndex(cur);
-            if (newIdx !== -1) {
+            if (newIdx !== -1 && newIdx !== state.currentSentIndex) {
               state.currentSentIndex = newIdx;
               state.loopCount = 0;
               highlightSentence(state.activeSentences[newIdx].id);
             }
-          } else if (cur >= sent.end - 0.04) {
+          } else if (cur >= sEnd - 0.03 || (nextSent && cur >= nextStart - 0.05)) {
             if (state.loopCount < 2) {
               state.loopCount++;
-              audio.currentTime = sent.start;
+              audio.currentTime = sStart;
               if (audio.paused) audio.play().catch(e => console.log(e));
               syncRafId = requestAnimationFrame(runSyncLoop);
               return;
             } else {
               state.loopCount = 0;
-              if (state.currentSentIndex + 1 < state.activeSentences.length) {
-                const nextSent = state.activeSentences[state.currentSentIndex + 1];
+              if (nextSent) {
                 state.currentSentIndex++;
-                audio.currentTime = nextSent.start;
+                audio.currentTime = nextStart;
                 highlightSentence(nextSent.id);
-                updateHUDDisplay(nextSent.start);
+                updateHUDDisplay(nextStart);
                 syncRafId = requestAnimationFrame(runSyncLoop);
                 return;
               }
@@ -2108,14 +2279,32 @@
             return;
           }
         }
-        // 3. 单段循环模式
+        // 3. 单段循环模式 (严格闭环防溢出)
         else if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
           const curSec = currentFrameworkSections[currentActiveSectionIndex];
-          if (curSec && curSec.end > curSec.start && cur >= curSec.end - 0.04) {
-            audio.currentTime = curSec.start;
-            if (audio.paused) audio.play().catch(e => console.log(e));
-            syncRafId = requestAnimationFrame(runSyncLoop);
-            return;
+          const nextSec = (currentActiveSectionIndex + 1 < currentFrameworkSections.length) ? currentFrameworkSections[currentActiveSectionIndex + 1] : null;
+          if (curSec && typeof curSec.start === 'number' && typeof curSec.end === 'number' && curSec.end > curSec.start) {
+            const nextSecStart = nextSec && typeof nextSec.start === 'number' ? nextSec.start : Infinity;
+            if (cur < curSec.start - 0.6) {
+              const matchedSecIdx = currentFrameworkSections.findIndex(s => cur >= s.start - 0.05 && cur <= s.end + 0.05);
+              if (matchedSecIdx !== -1) {
+                currentActiveSectionIndex = matchedSecIdx;
+              }
+            } else if (cur >= curSec.end - 0.03 || (nextSec && cur >= nextSecStart - 0.05)) {
+              audio.currentTime = curSec.start;
+              if (audio.paused) audio.play().catch(e => console.log(e));
+              syncRafId = requestAnimationFrame(runSyncLoop);
+              return;
+            } else {
+              updateHUDDisplay(cur);
+              const activeIdx = findActiveSentenceIndex(cur);
+              if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
+                state.currentSentIndex = activeIdx;
+                highlightSentence(state.activeSentences[activeIdx].id);
+              }
+              syncRafId = requestAnimationFrame(runSyncLoop);
+              return;
+            }
           }
         }
 
@@ -2194,16 +2383,22 @@
         // 1. 单句循环模式
         if (state.playMode === 'sentence' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
           const sent = state.activeSentences[state.currentSentIndex];
-          if (cur < sent.start - 0.6 || cur > sent.end + 0.6) {
+          const nextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
+          const sStart = typeof sent.start === 'number' ? sent.start : parseFloat(sent.start || 0);
+          const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (nextSent ? nextSent.start : Infinity));
+          const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
+
+          if (cur >= sEnd - 0.03 || (nextSent && cur >= nextStart - 0.05)) {
+            audio.currentTime = sStart;
+            if (audio.paused) audio.play().catch(e => console.log(e));
+            return;
+          } else if (cur < sStart - 0.5) {
             const newIdx = findActiveSentenceIndex(cur);
-            if (newIdx !== -1) {
+            if (newIdx !== -1 && newIdx !== state.currentSentIndex) {
               state.currentSentIndex = newIdx;
               state.loopCount = 0;
               highlightSentence(state.activeSentences[newIdx].id);
             }
-          } else if (cur >= sent.end - 0.04) {
-            audio.currentTime = sent.start;
-            if (audio.paused) audio.play().catch(e => console.log(e));
             return;
           } else {
             return;
@@ -2212,30 +2407,35 @@
         // 2. 单句3遍模式
         else if (state.playMode === 'loop3' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
           const sent = state.activeSentences[state.currentSentIndex];
-          if (cur < sent.start - 0.6 || cur > sent.end + 0.6) {
-            const newIdx = findActiveSentenceIndex(cur);
-            if (newIdx !== -1) {
-              state.currentSentIndex = newIdx;
-              state.loopCount = 0;
-              highlightSentence(state.activeSentences[newIdx].id);
-            }
-          } else if (cur >= sent.end - 0.04) {
+          const nextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
+          const sStart = typeof sent.start === 'number' ? sent.start : parseFloat(sent.start || 0);
+          const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (nextSent ? nextSent.start : Infinity));
+          const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
+
+          if (cur >= sEnd - 0.03 || (nextSent && cur >= nextStart - 0.05)) {
             if (state.loopCount < 2) {
               state.loopCount++;
-              audio.currentTime = sent.start;
+              audio.currentTime = sStart;
               if (audio.paused) audio.play().catch(e => console.log(e));
               return;
             } else {
               state.loopCount = 0;
-              if (state.currentSentIndex + 1 < state.activeSentences.length) {
-                const nextSent = state.activeSentences[state.currentSentIndex + 1];
+              if (nextSent) {
                 state.currentSentIndex++;
-                audio.currentTime = nextSent.start;
+                audio.currentTime = nextStart;
                 highlightSentence(nextSent.id);
-                updateHUDDisplay(nextSent.start);
+                updateHUDDisplay(nextStart);
                 return;
               }
             }
+          } else if (cur < sStart - 0.5) {
+            const newIdx = findActiveSentenceIndex(cur);
+            if (newIdx !== -1 && newIdx !== state.currentSentIndex) {
+              state.currentSentIndex = newIdx;
+              state.loopCount = 0;
+              highlightSentence(state.activeSentences[newIdx].id);
+            }
+            return;
           } else {
             return;
           }
@@ -2243,10 +2443,14 @@
         // 3. 单段循环模式
         else if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
           const curSec = currentFrameworkSections[currentActiveSectionIndex];
-          if (curSec && curSec.end > curSec.start && cur >= curSec.end - 0.04) {
-            audio.currentTime = curSec.start;
-            if (audio.paused) audio.play().catch(e => console.log(e));
-            return;
+          const nextSec = (currentActiveSectionIndex + 1 < currentFrameworkSections.length) ? currentFrameworkSections[currentActiveSectionIndex + 1] : null;
+          if (curSec && typeof curSec.start === 'number' && typeof curSec.end === 'number' && curSec.end > curSec.start) {
+            const nextSecStart = nextSec && typeof nextSec.start === 'number' ? nextSec.start : Infinity;
+            if (cur >= curSec.end - 0.03 || (nextSec && cur >= nextSecStart - 0.05)) {
+              audio.currentTime = curSec.start;
+              if (audio.paused) audio.play().catch(e => console.log(e));
+              return;
+            }
           }
         }
 
@@ -3669,7 +3873,7 @@
     showToast('正在加载考研政治背诵手卷...', 2000);
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = 'data/kaoyan_data_pol.js?v=3.0.7';
+      script.src = 'data/kaoyan_data_pol.js?v=3.0.8';
       script.onload = () => {
         isPolDataLoading = false;
         state.polData = window.KAOYAN_POL_DATA;
@@ -3852,29 +4056,15 @@
 
     const sentences = (chapter.track1 && chapter.track1.sentences) || [];
     state.activeSentences = sentences.map((s, idx) => ({
-      id: s.domId || (s.idx !== undefined ? s.idx : idx),
-      start: s.start,
-      end: s.end,
+      id: s.idx !== undefined ? s.idx : (s.id || idx),
+      start: typeof s.start === 'number' ? s.start : parseFloat(s.start || 0),
+      end: typeof s.end === 'number' ? s.end : parseFloat(s.end || 0),
       text: s.text,
-      domId: s.domId,
+      domId: s.domId || s.id,
       idx: s.idx !== undefined ? s.idx : idx
     }));
 
-    el.paperContent.querySelectorAll('[data-sent-idx], [id^="recite_bar_"], [id^="recite_blk_"], .recite-sent-item, .recite-sentence').forEach(elItem => {
-      elItem.addEventListener('click', (e) => {
-        if (e.target.closest('.cloze') || e.target.closest('.kw-red')) return;
-        if (state.clozeMode === 'body') {
-          elItem.classList.toggle('cloze-revealed');
-          return;
-        }
-        const domId = elItem.id;
-        const sentIdx = elItem.dataset.sentIdx !== undefined ? parseInt(elItem.dataset.sentIdx, 10) : NaN;
-        const matched = state.activeSentences.find(s => (domId && (s.domId === domId || s.id === domId)) || (!isNaN(sentIdx) && (s.idx === sentIdx || s.id === sentIdx)));
-        if (matched) {
-          seekToSentence(matched.id, matched.start);
-        }
-      });
-    });
+    bindSentenceClickHandlers(el.paperContent);
 
     attachSealButtonListeners(chapter.id);
     buildFrameworkIndex();
@@ -3955,9 +4145,10 @@
     const sentences = card.sentences || [];
     state.activeSentences = sentences.map((s, idx) => ({
       id: s.idx !== undefined ? s.idx : idx,
-      start: s.start,
-      end: s.end,
-      text: s.text
+      start: typeof s.start === 'number' ? s.start : parseFloat(s.start || 0),
+      end: typeof s.end === 'number' ? s.end : parseFloat(s.end || 0),
+      text: s.text,
+      idx: s.idx !== undefined ? s.idx : idx
     }));
 
     const bodyEl = document.getElementById('polSubcardBody');
@@ -3968,20 +4159,7 @@
           toggleAudioPlayback();
         });
       });
-      bodyEl.querySelectorAll('[data-sent-idx], .recite-sentence').forEach(span => {
-        span.addEventListener('click', (e) => {
-          if (e.target.closest('.cloze') || e.target.closest('.kw-red')) return;
-          if (state.clozeMode === 'body') {
-            span.classList.toggle('cloze-revealed');
-            return;
-          }
-          const sentIdx = parseInt(span.dataset.sentIdx, 10);
-          const matched = state.activeSentences.find(s => s.id === sentIdx || s.idx === sentIdx || (span.id && s.id === span.id));
-          if (matched) {
-            seekToSentence(matched.id, matched.start);
-          }
-        });
-      });
+      bindSentenceClickHandlers(bodyEl);
     }
 
     buildFrameworkIndex();
@@ -4054,10 +4232,18 @@
           return;
         }
         const pIdx = parseInt(card.dataset.pointIdx, 10);
-        const p = points[pIdx];
-        if (p) {
-          const startTime = state.polXtVoice === 'anlang' ? p.anlang_start : p.voice_start;
-          seekToSentence(p.id, startTime);
+        let matched = null;
+        if (state.activeSentences && !isNaN(pIdx) && pIdx >= 0 && pIdx < state.activeSentences.length) {
+          matched = state.activeSentences[pIdx];
+        }
+        if (matched && typeof matched.start === 'number' && !isNaN(matched.start)) {
+          seekToSentence(matched.id, matched.start);
+        } else {
+          const p = points[pIdx];
+          if (p) {
+            const startTime = state.polXtVoice === 'anlang' ? p.anlang_start : p.voice_start;
+            seekToSentence(p.id, startTime);
+          }
         }
       });
     });
@@ -4196,14 +4382,7 @@
     updatePlayBtnUI();
 
     state.activeSentences = allSentences;
-    el.paperContent.querySelectorAll('.recite-sent').forEach(span => {
-      span.addEventListener('click', (e) => {
-        if (e.target.closest('.cloze') || e.target.closest('.kw-red')) return;
-        const sId = span.dataset.sentId;
-        const st = parseFloat(span.dataset.start);
-        seekToSentence(sId, st);
-      });
-    });
+    bindSentenceClickHandlers(el.paperContent);
 
     attachSealButtonListeners(dayItem.id);
     buildFrameworkIndex();
@@ -4384,9 +4563,23 @@
 
   // 全局安全兜底垫片函数 (Global Shims)
   window.seekChapterReciteSentence = function(chId, start, idx) {
+    if (idx !== undefined) {
+      const matched = state.activeSentences ? state.activeSentences.find(s => s.idx === idx || s.id === idx) : null;
+      if (matched && typeof matched.start === 'number') {
+        seekToSentence(matched.id, matched.start);
+        return;
+      }
+    }
     seekToSentence(idx !== undefined ? idx : chId, start);
   };
   window.seekReciteSentence = function(cardId, start, idx) {
+    if (idx !== undefined) {
+      const matched = state.activeSentences ? state.activeSentences.find(s => s.idx === idx || s.id === idx) : null;
+      if (matched && typeof matched.start === 'number') {
+        seekToSentence(matched.id, matched.start);
+        return;
+      }
+    }
     seekToSentence(idx !== undefined ? idx : cardId, start);
   };
   window.toggleChapterReciteAudio = function(chId, ev) {

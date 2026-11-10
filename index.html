@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app.css?v=3.0.7">
+  <link rel="stylesheet" href="app.css?v=3.0.8">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -32,9 +32,9 @@
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
   <!-- 动态微交互矢量图标引擎 (Kubai Icons · 金石朱墨主题) -->
-  <script src="kubai_icons.js?v=3.0.7" defer></script>
+  <script src="kubai_icons.js?v=3.0.8" defer></script>
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=3.0.7" defer></script>
+  <script src="data/kaoyan_data.js?v=3.0.8" defer></script>
 </head>
 <body>
 
@@ -133,13 +133,13 @@
     <!-- 顶部辅助操作 -->
     <div class="header-actions">
       <button id="btn-font-dec" class="action-btn font-size-btn" title="减小正文字号">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="5" y1="12" x2="19" y2="12"></line>
         </svg>
         <span>A-</span>
       </button>
       <button id="btn-font-inc" class="action-btn font-size-btn" title="增大正文字号">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
         </svg>
@@ -176,7 +176,7 @@
         <span id="font-current-name">雅宋</span>
       </button>
       <button id="btn-theme-toggle" class="action-btn" title="切换暖杏羊皮纸 / 玄墨夜读">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="5"></circle>
           <line x1="12" y1="1" x2="12" y2="3"></line>
           <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -213,7 +213,7 @@
       </div>
       <div class="sidebar-search-box">
         <div class="search-input-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
@@ -263,7 +263,7 @@
       <div class="sidebar-footer">
         <div class="app-version-badge" id="appVersionBadge" title="点击检查更新">
           <span class="version-dot"></span>
-          <span id="versionText">版本 v3.0.7 · 金石朱墨全科双轨典藏版</span>
+          <span id="versionText">版本 v3.0.8 · 金石朱墨全科双轨典藏版</span>
         </div>
         <button id="btn-force-refresh" class="refresh-cache-btn" title="强制清除缓存并拉取最新版本">
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -316,7 +316,7 @@
           <div class="track-switcher-wrap">
             <div class="track-tabs">
               <button id="tab-track-1" class="track-tab-btn active">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                   <polyline points="14 2 14 8 20 8"></polyline>
                   <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -326,7 +326,7 @@
                 <span class="track-tab-full" id="tab1-text-full">【轨道一】考场直接答题完整版</span><span class="track-tab-short" id="tab1-text-short">轨道一 · 考场答题版</span>
               </button>
               <button id="tab-track-2" class="track-tab-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
                   <polyline points="2 17 12 22 22 17"></polyline>
                   <polyline points="2 12 12 17 22 12"></polyline>
@@ -417,7 +417,7 @@
 
         <!-- 上一考点 -->
         <button id="dock-prev-btn" class="dock-btn" title="上一考点">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polygon points="19 20 9 12 19 4 19 20"></polygon>
             <line x1="5" y1="19" x2="5" y2="5"></line>
           </svg>
@@ -425,7 +425,7 @@
 
         <!-- 快退 5 秒 -->
         <button id="dock-rewind-btn" class="dock-btn" title="快退 5 秒">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="1 4 1 10 7 10"></polyline>
             <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
           </svg>
@@ -433,14 +433,14 @@
 
         <!-- 【唯一核心大圆键】播放 / 暂停 -->
         <button id="dock-play-btn" class="dock-btn dock-btn-play" title="播放/暂停音频">
-          <svg viewBox="0 0 24 24" fill="currentColor">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
             <polygon points="6 4 20 12 6 20 6 4"></polygon>
           </svg>
         </button>
 
         <!-- 快进 5 秒 -->
         <button id="dock-forward-btn" class="dock-btn" title="快进 5 秒">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="23 4 23 10 17 10"></polyline>
             <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
           </svg>
@@ -448,7 +448,7 @@
 
         <!-- 下一考点 -->
         <button id="dock-next-btn" class="dock-btn" title="下一考点">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polygon points="5 4 15 12 5 20 5 4"></polygon>
             <line x1="19" y1="5" x2="19" y2="19"></line>
           </svg>
@@ -471,7 +471,7 @@
       <!-- 1. 题库 (动态 SVG 考卷滑出动效) -->
       <button type="button" class="nav-tab-item" id="nav-tab-syllabus" data-tab="syllabus" title="考点题库大纲">
         <span class="nav-tab-icon nav-icon-syllabus" id="icon-tab-syllabus">
-          <svg viewBox="0 0 24 24" class="svg-tab-icon svg-folder" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" width="22" height="22" class="svg-tab-icon svg-folder" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path class="folder-body" d="M4 19h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2z"/>
             <path class="folder-paper" d="M8 9h8v7H8z" fill="currentColor" fill-opacity="0.2" stroke-width="1.2"/>
             <line class="folder-line" x1="10" y1="12" x2="14" y2="12" stroke-width="1.2"/>
@@ -484,7 +484,7 @@
       <!-- 2. 自测 (动态 SVG 瞳孔眨眼聚焦动效) -->
       <button type="button" class="nav-tab-item" id="nav-tab-test" data-tab="test" title="自测挖空背诵">
         <span class="nav-tab-icon nav-icon-test" id="icon-tab-test">
-          <svg viewBox="0 0 24 24" class="svg-tab-icon svg-eye" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" width="22" height="22" class="svg-tab-icon svg-eye" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path class="eye-contour" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
             <circle class="eye-pupil" cx="12" cy="12" r="3" fill="currentColor"/>
             <circle class="eye-sparkle" cx="13.2" cy="10.8" r="0.9" fill="#fff"/>
@@ -511,7 +511,7 @@
       <!-- 4. 看板 (动态 SVG 柱状统计生长动效) -->
       <button type="button" class="nav-tab-item" id="nav-tab-dashboard" data-tab="dashboard" title="背诵进度看板">
         <span class="nav-tab-icon nav-icon-dashboard" id="icon-tab-dashboard">
-          <svg viewBox="0 0 24 24" class="svg-tab-icon svg-chart" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" width="22" height="22" class="svg-tab-icon svg-chart" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <line class="chart-bar bar-1" x1="6" y1="20" x2="6" y2="13" stroke-width="2.6"/>
             <line class="chart-bar bar-2" x1="12" y1="20" x2="12" y2="5" stroke-width="2.6"/>
             <line class="chart-bar bar-3" x1="18" y1="20" x2="18" y2="9" stroke-width="2.6"/>
@@ -524,7 +524,7 @@
       <!-- 5. 设置 (动态 SVG 齿轮 90度精准旋转动效) -->
       <button type="button" class="nav-tab-item" id="nav-tab-settings" data-tab="settings" title="功能与设置中心">
         <span class="nav-tab-icon nav-icon-settings" id="icon-tab-settings">
-          <svg viewBox="0 0 24 24" class="svg-tab-icon svg-gear" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" width="22" height="22" class="svg-tab-icon svg-gear" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"/>
             <path class="gear-teeth" d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
           </svg>
@@ -536,7 +536,7 @@
   </nav>
 
 
-  <script src="app.js?v=3.0.7" defer></script>
+  <script src="app.js?v=3.0.8" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -935,11 +935,11 @@
     </div>
     <h3 class="update-modal-title">正在同步云端新版本</h3>
     <div class="update-modal-badges">
-      <span class="update-badge-old" id="updateModalOldVer">v3.0.7</span>
+      <span class="update-badge-old" id="updateModalOldVer">v3.0.8</span>
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5 12h14M12 5l7 7-7 7"/>
       </svg>
-      <span class="update-badge-new" id="updateModalNewVer">v3.0.7</span>
+      <span class="update-badge-new" id="updateModalNewVer">v3.0.8</span>
     </div>
     <p class="update-modal-status" id="updateModalStatus">正在连接云端节点并校验资源清单...</p>
     <div class="update-progress-container">
