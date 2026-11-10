@@ -2,64 +2,64 @@
   {
     "id": "sent_p1_s1",
     "text": "Dear Customer Service Manager,",
-    "start": "0.050",
-    "end": "2.656",
-    "duration": "2.606"
+    "start": "0.099",
+    "end": "1.943",
+    "duration": "1.844"
   },
   {
     "id": "sent_p1_s2",
     "text": "I am writing this letter to lodge a formal complaint concerning the substandard quality of the books I purchased from your store and the unprofessional attitude of your staff.",
-    "start": "2.656",
-    "end": "16.434",
-    "duration": "13.778"
+    "start": "2.636",
+    "end": "16.108",
+    "duration": "13.472"
   },
   {
     "id": "sent_p2_s1",
     "text": "On October 25th, I ordered a set of reference books with Order Number 89214.",
-    "start": "16.434",
-    "end": "23.330",
-    "duration": "6.896"
+    "start": "16.406",
+    "end": "23.088",
+    "duration": "6.682"
   },
   {
     "id": "sent_p2_s2",
     "text": "However, when the parcel arrived yesterday, I was shocked to find that the covers were torn and several key pages were missing.",
-    "start": "23.330",
-    "end": "32.627",
-    "duration": "9.297"
+    "start": "23.310",
+    "end": "32.449",
+    "duration": "9.139"
   },
   {
     "id": "sent_p2_s3",
     "text": "Even more frustrating was that when I contacted your online customer representative for a reasonable explanation, my request was met with total indifference.",
-    "start": "32.627",
+    "start": "32.607",
     "end": "44.749",
-    "duration": "12.122"
+    "duration": "12.142"
   },
   {
     "id": "sent_p2_s4",
     "text": "Such irresponsible conduct is completely unacceptable to long-term consumers.",
     "start": "44.749",
-    "end": "48.505",
-    "duration": "3.756"
+    "end": "46.818",
+    "duration": "2.069"
   },
   {
     "id": "sent_p3_s1",
     "text": "Therefore, I deem it imperative that an immediate replacement or a full refund be arranged promptly.",
-    "start": "48.505",
-    "end": "58.256",
-    "duration": "9.751"
+    "start": "48.485",
+    "end": "58.104",
+    "duration": "9.619"
   },
   {
     "id": "sent_p3_s2",
     "text": "Your swift attention and rectifying measures will be highly appreciated.",
-    "start": "58.256",
-    "end": "62.015",
-    "duration": "3.759"
+    "start": "58.235",
+    "end": "61.769",
+    "duration": "3.534"
   },
   {
     "id": "sent_p3_s3",
     "text": "Yours sincerely, Li Ming",
-    "start": "62.015",
-    "end": "64.235",
-    "duration": "2.220"
+    "start": "61.995",
+    "end": "62.777",
+    "duration": "0.782"
   }
 ]

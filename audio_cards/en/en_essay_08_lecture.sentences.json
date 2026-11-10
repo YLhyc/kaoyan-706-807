@@ -2,92 +2,92 @@
   {
     "id": "t2_intro",
     "text": "下面进入小作文 08 · 询问与咨询信：考研报考意向与导师课题组要求咨询答题骨架与变体精解。",
-    "start": "0.050",
-    "end": "1.840",
-    "duration": "1.790"
+    "start": "0.083",
+    "end": "1.625",
+    "duration": "1.542"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：表达对导师前沿学术成果的敬佩并阐明求学咨询目的。",
-    "start": "1.840",
+    "start": "1.820",
     "end": "2.740",
-    "duration": "0.900"
+    "duration": "0.920"
   },
   {
     "id": "t2_p1_en",
     "text": "Having read your illuminating academic papers with great admiration, I am writing to consult you regarding your graduate research projects.",
     "start": "2.740",
-    "end": "17.777",
-    "duration": "15.037"
+    "end": "16.990",
+    "duration": "14.250"
   },
   {
     "id": "t2_p1_tip_cn",
     "text": "学术咨询经典破题：Having read your illuminating papers with great admiration, I am writing to...",
-    "start": "17.777",
-    "end": "27.126",
-    "duration": "9.349"
+    "start": "17.752",
+    "end": "26.366",
+    "duration": "8.614"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "I am writing to consult you regarding your graduate research projects.",
-    "start": "27.126",
-    "end": "35.063",
-    "duration": "7.937"
+    "start": "27.103",
+    "end": "34.275",
+    "duration": "7.172"
   },
   {
     "id": "t2_p2_cn",
     "text": "第二段：礼貌客气提出三个具有深度、体现求学诚意的专业问题。",
-    "start": "35.063",
+    "start": "35.043",
     "end": "35.963",
-    "duration": "0.900"
+    "duration": "0.920"
   },
   {
     "id": "t2_p2_en",
     "text": "In the first place, could you provide guidance on academic prerequisites? In the second place, are interdisciplinary students encouraged?",
     "start": "35.963",
-    "end": "49.319",
-    "duration": "13.356"
+    "end": "49.074",
+    "duration": "13.111"
   },
   {
     "id": "t2_p2_tip_cn",
     "text": "委婉提问句型：I would be exceedingly grateful if you could clarify... / I wonder whether...",
-    "start": "49.319",
-    "end": "59.364",
-    "duration": "10.045"
+    "start": "49.299",
+    "end": "58.808",
+    "duration": "9.509"
   },
   {
     "id": "t2_p2_tip_en",
     "text": "I wonder whether students from interdisciplinary backgrounds are encouraged.",
-    "start": "59.364",
-    "end": "65.154",
-    "duration": "5.790"
+    "start": "59.344",
+    "end": "64.441",
+    "duration": "5.097"
   },
   {
     "id": "t2_p3_cn",
     "text": "第三段：诚挚感激导师在百忙之中的点拨指导。",
-    "start": "65.154",
+    "start": "65.134",
     "end": "67.007",
-    "duration": "1.853"
+    "duration": "1.873"
   },
   {
     "id": "t2_p3_en",
     "text": "Thank you very much for your precious guidance, and I look forward to your valuable insights.",
     "start": "67.007",
-    "end": "79.080",
-    "duration": "12.073"
+    "end": "78.813",
+    "duration": "11.806"
   },
   {
     "id": "t2_p3_tip_cn",
     "text": "求学者谦逊敬意收束句：Thank you for your precious guidance and valuable insights.",
-    "start": "79.080",
-    "end": "85.747",
-    "duration": "6.667"
+    "start": "79.059",
+    "end": "85.174",
+    "duration": "6.115"
   },
   {
     "id": "t2_p3_tip_en",
     "text": "Thank you very much for your precious guidance.",
-    "start": "85.747",
-    "end": "93.526",
-    "duration": "7.779"
+    "start": "85.726",
+    "end": "91.907",
+    "duration": "6.181"
   }
 ]

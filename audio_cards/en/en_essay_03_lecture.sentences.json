@@ -2,16 +2,16 @@
   {
     "id": "t2_intro",
     "text": "下面进入小作文 03 · 求职与自荐信：国际学术研讨会学生助理自荐答题骨架与变体精解。",
-    "start": "0.050",
-    "end": "1.978",
-    "duration": "1.928"
+    "start": "0.088",
+    "end": "1.634",
+    "duration": "1.546"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：交待招聘信息来源与自荐岗位。",
-    "start": "1.978",
+    "start": "1.958",
     "end": "2.878",
-    "duration": "0.900"
+    "duration": "0.920"
   },
   {
     "id": "t2_p1_en",
@@ -24,50 +24,50 @@
     "id": "t2_p1_tip_cn",
     "text": "分词短语作状语：Learning from... that..., I am writing to...",
     "start": "17.194",
-    "end": "22.467",
-    "duration": "5.273"
+    "end": "22.357",
+    "duration": "5.163"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "I am writing to recommend myself with utmost enthusiasm.",
-    "start": "22.467",
-    "end": "29.127",
-    "duration": "6.660"
+    "start": "22.447",
+    "end": "28.480",
+    "duration": "6.033"
   },
   {
     "id": "t2_p2_cn",
     "text": "第二段：多角度论证个人优势（语言能力 + 会务经验 + 敬业态度）。",
-    "start": "29.127",
-    "end": "31.082",
-    "duration": "1.955"
+    "start": "29.107",
+    "end": "30.276",
+    "duration": "1.169"
   },
   {
     "id": "t2_p2_en",
     "text": "First of all, I have achieved excellent proficiency in English, which enables me to communicate fluently with foreign scholars.",
-    "start": "31.082",
-    "end": "43.655",
-    "duration": "12.573"
+    "start": "31.062",
+    "end": "42.870",
+    "duration": "11.808"
   },
   {
     "id": "t2_p2_tip_cn",
     "text": "分词作状语表达经验：Having served as a liaison officer, I possess sound organizational capabilities.",
-    "start": "43.655",
+    "start": "43.630",
     "end": "53.555",
-    "duration": "9.900"
+    "duration": "9.925"
   },
   {
     "id": "t2_p2_tip_en",
     "text": "Having served as a liaison officer, I possess sound organizational capabilities.",
     "start": "53.555",
-    "end": "62.950",
-    "duration": "9.395"
+    "end": "62.603",
+    "duration": "9.048"
   },
   {
     "id": "t2_p3_cn",
     "text": "第三段：提交履历材料并礼貌表达面试期盼。",
-    "start": "62.950",
+    "start": "62.930",
     "end": "63.850",
-    "duration": "0.900"
+    "duration": "0.920"
   },
   {
     "id": "t2_p3_en",
@@ -87,7 +87,7 @@
     "id": "t2_p3_tip_en",
     "text": "Enclosed please find my curriculum vitae for your reference.",
     "start": "86.895",
-    "end": "94.270",
-    "duration": "7.375"
+    "end": "92.664",
+    "duration": "5.769"
   }
 ]

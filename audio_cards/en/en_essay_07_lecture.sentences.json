@@ -2,92 +2,92 @@
   {
     "id": "t2_intro",
     "text": "下面进入小作文 07 · 道歉与说明信：因突发科研任务无法按期赴会答题骨架与变体精解。",
-    "start": "0.050",
-    "end": "2.052",
-    "duration": "2.002"
+    "start": "0.085",
+    "end": "1.820",
+    "duration": "1.735"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：直接陈述失约事实并表达深切歉意。",
-    "start": "2.052",
-    "end": "2.952",
-    "duration": "0.900"
+    "start": "2.030",
+    "end": "2.659",
+    "duration": "0.629"
   },
   {
     "id": "t2_p1_en",
     "text": "I am writing this letter with sincere regret to apologize for being unable to attend tomorrow's symposium as previously scheduled.",
-    "start": "2.952",
-    "end": "13.789",
-    "duration": "10.837"
+    "start": "2.669",
+    "end": "13.690",
+    "duration": "11.021"
   },
   {
     "id": "t2_p1_tip_cn",
     "text": "道歉母句：I am writing with sincere regret to apologize for being unable to do sth.。",
-    "start": "13.789",
-    "end": "22.995",
-    "duration": "9.206"
+    "start": "13.769",
+    "end": "22.866",
+    "duration": "9.097"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "I am writing with sincere regret to apologize for being unable to attend the symposium.",
-    "start": "22.995",
-    "end": "33.559",
-    "duration": "10.564"
+    "start": "22.975",
+    "end": "33.314",
+    "duration": "10.339"
   },
   {
     "id": "t2_p2_cn",
     "text": "第二段：解释合情合理、无可推卸的紧急客观事由（突发科研任务）。",
-    "start": "33.559",
+    "start": "33.314",
     "end": "34.459",
-    "duration": "0.900"
+    "duration": "1.145"
   },
   {
     "id": "t2_p2_en",
     "text": "Much to my distress, our laboratory has been assigned an emergency national research task, which prevents me from being absent.",
     "start": "34.459",
-    "end": "47.078",
-    "duration": "12.619"
+    "end": "46.852",
+    "duration": "12.393"
   },
   {
     "id": "t2_p2_tip_cn",
     "text": "情态副词状语短语：Much to my distress / Much to my regret, ...",
-    "start": "47.078",
-    "end": "51.517",
-    "duration": "4.439"
+    "start": "47.058",
+    "end": "51.152",
+    "duration": "4.094"
   },
   {
     "id": "t2_p2_tip_en",
     "text": "Much to my distress, our laboratory has been assigned an emergency research task.",
-    "start": "51.517",
-    "end": "61.905",
-    "duration": "10.388"
+    "start": "51.496",
+    "end": "61.702",
+    "duration": "10.206"
   },
   {
     "id": "t2_p3_cn",
     "text": "第三段：主动提供补救替代时间并重申歉意。",
-    "start": "61.905",
+    "start": "61.859",
     "end": "62.805",
-    "duration": "0.900"
+    "duration": "0.946"
   },
   {
     "id": "t2_p3_en",
     "text": "Would it be possible for us to reschedule our meeting for next Tuesday? Please accept my deepest apologies once again.",
     "start": "62.805",
-    "end": "76.717",
-    "duration": "13.912"
+    "end": "76.089",
+    "duration": "13.284"
   },
   {
     "id": "t2_p3_tip_cn",
     "text": "委婉改期商量句型：Would it be possible for us to reschedule our appointment for [Date]?",
-    "start": "76.717",
-    "end": "83.028",
-    "duration": "6.311"
+    "start": "76.697",
+    "end": "82.743",
+    "duration": "6.046"
   },
   {
     "id": "t2_p3_tip_en",
     "text": "Would it be possible for us to reschedule our meeting for next Tuesday?",
-    "start": "83.028",
-    "end": "92.998",
-    "duration": "9.970"
+    "start": "82.983",
+    "end": "91.390",
+    "duration": "8.407"
   }
 ]

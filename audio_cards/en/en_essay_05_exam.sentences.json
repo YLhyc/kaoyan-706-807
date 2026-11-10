@@ -2,16 +2,16 @@
   {
     "id": "sent_p1_s1",
     "text": "Notice: Volunteers Wanted",
-    "start": "0.050",
-    "end": "1.014",
-    "duration": "0.964"
+    "start": "0.099",
+    "end": "0.780",
+    "duration": "0.681"
   },
   {
     "id": "sent_p1_s2",
     "text": "In an effort to foster cross-cultural understanding on campus, the International Cultural Exchange Week will be grandly hosted from December 1st to 7th.",
-    "start": "1.014",
+    "start": "0.992",
     "end": "15.433",
-    "duration": "14.419"
+    "duration": "14.441"
   },
   {
     "id": "sent_p1_s3",
@@ -31,42 +31,42 @@
     "id": "sent_p2_s2",
     "text": "Above all, applicants should demonstrate fluent oral English communication skills and basic cultural sensitivity.",
     "start": "30.285",
-    "end": "38.424",
-    "duration": "8.139"
+    "end": "38.378",
+    "duration": "8.093"
   },
   {
     "id": "sent_p2_s3",
     "text": "In addition, prior volunteer experience and strong teamwork spirit will be viewed favorably.",
-    "start": "38.424",
-    "end": "47.088",
-    "duration": "8.664"
+    "start": "38.404",
+    "end": "46.759",
+    "duration": "8.355"
   },
   {
     "id": "sent_p2_s4",
     "text": "The primary responsibilities entail guiding international guests, coordinating exhibition booths, and facilitating cultural workshops.",
-    "start": "47.088",
-    "end": "54.833",
-    "duration": "7.745"
+    "start": "47.068",
+    "end": "54.775",
+    "duration": "7.707"
   },
   {
     "id": "sent_p3_s1",
     "text": "Those who are interested should submit an electronic application to volunteer_exchange@university.edu.cn before November 20th.",
-    "start": "54.833",
-    "end": "66.223",
-    "duration": "11.390"
+    "start": "54.801",
+    "end": "65.338",
+    "duration": "10.537"
   },
   {
     "id": "sent_p3_s2",
     "text": "We sincerely look forward to your active participation.",
-    "start": "66.223",
-    "end": "71.309",
-    "duration": "5.086"
+    "start": "66.203",
+    "end": "71.064",
+    "duration": "4.861"
   },
   {
     "id": "sent_p3_s3",
     "text": "The Organizing Committee, October 30th",
-    "start": "71.309",
-    "end": "74.235",
-    "duration": "2.926"
+    "start": "71.289",
+    "end": "72.757",
+    "duration": "1.468"
   }
 ]

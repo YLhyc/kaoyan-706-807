@@ -2,37 +2,37 @@
   {
     "id": "t2_intro",
     "text": "下面进入大作文 08 · 英二真题图表（静态占比）：大学毕业生月度消费支出结构分布答题骨架与变体精解。",
-    "start": "0.050",
-    "end": "1.957",
-    "duration": "1.907"
+    "start": "0.079",
+    "end": "1.903",
+    "duration": "1.824"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：饼图总貌概括，使用精准短语描述排序与百分比。",
-    "start": "1.957",
+    "start": "1.936",
     "end": "2.857",
-    "duration": "0.900"
+    "duration": "0.921"
   },
   {
     "id": "t2_p1_en",
     "text": "The pie chart provides a clear breakdown; catering accounts for the largest proportion at 45.0%, closely followed by intellectual enrichment at 25.0%.",
     "start": "2.857",
-    "end": "20.185",
-    "duration": "17.328"
+    "end": "19.450",
+    "duration": "16.593"
   },
   {
     "id": "t2_p1_tip_cn",
     "text": "静态占比排序标配句式：accounts for the largest proportion at ..., closely followed by ... at ...",
-    "start": "20.185",
-    "end": "29.185",
-    "duration": "9.000"
+    "start": "20.165",
+    "end": "29.108",
+    "duration": "8.943"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "Catering accounts for the largest proportion at 45.0%, closely followed by intellectual enrichment.",
-    "start": "29.185",
+    "start": "29.117",
     "end": "41.785",
-    "duration": "12.600"
+    "duration": "12.668"
   },
   {
     "id": "t2_p2_cn",
@@ -45,49 +45,49 @@
     "id": "t2_p2_en",
     "text": "Allocating the dominant share to catering is inevitable; educational investment demonstrates graduates' acute awareness of professional competitiveness.",
     "start": "43.366",
-    "end": "56.454",
-    "duration": "13.088"
+    "end": "55.701",
+    "duration": "12.335"
   },
   {
     "id": "t2_p2_tip_cn",
     "text": "主语从句高分句式：That educational investment occupies a quarter demonstrates graduates' acute awareness.",
-    "start": "56.454",
+    "start": "56.434",
     "end": "65.454",
-    "duration": "9.000"
+    "duration": "9.020"
   },
   {
     "id": "t2_p2_tip_en",
     "text": "Continuous skill refinement has become an essential stepping stone to career development.",
     "start": "65.454",
-    "end": "76.199",
-    "duration": "10.745"
+    "end": "75.436",
+    "duration": "9.982"
   },
   {
     "id": "t2_p3_cn",
     "text": "第三段：总结青年理性前瞻消费心态，提出稳健财务规划建议。",
-    "start": "76.199",
-    "end": "78.169",
-    "duration": "1.970"
+    "start": "76.179",
+    "end": "77.987",
+    "duration": "1.808"
   },
   {
     "id": "t2_p3_en",
     "text": "The spending pattern is rational and forward-looking; disciplined financial planning will assist youngsters in establishing a solid foundation.",
-    "start": "78.169",
-    "end": "93.845",
-    "duration": "15.676"
+    "start": "78.137",
+    "end": "93.260",
+    "duration": "15.123"
   },
   {
     "id": "t2_p3_tip_cn",
     "text": "理财启示结语：Cultivating disciplined financial planning will assist youngsters in establishing a solid foundation.",
-    "start": "93.845",
+    "start": "93.825",
     "end": "104.543",
-    "duration": "10.698"
+    "duration": "10.718"
   },
   {
     "id": "t2_p3_tip_en",
     "text": "Disciplined financial planning will assist youngsters in establishing a solid foundation.",
     "start": "104.543",
-    "end": "114.430",
-    "duration": "9.887"
+    "end": "112.839",
+    "duration": "8.296"
   }
 ]

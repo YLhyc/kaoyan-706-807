@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-考研全科双轨背诵手卷 · 项目工程自检与防白屏门禁脚本 (v3.1.0)
+考研全科双轨背诵手卷 · 项目工程自检与防白屏门禁脚本 (v3.1.1)
 1. 静态语法校验: node --check
 2. 版本清单一致性: version.json, sw.js, app.js, index.html
 3. DOM 关键锚点与 CSS 规则完整性
@@ -23,7 +23,7 @@ if hasattr(sys.stdout, 'reconfigure'):
 
 def main():
     root = Path(__file__).resolve().parent
-    TARGET_VER = '3.1.0'
+    TARGET_VER = '3.1.1'
     TARGET_CACHE = f"kaoyan-all-in-one-v{TARGET_VER}"
 
     print("=" * 65)

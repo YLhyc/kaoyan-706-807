@@ -1183,8 +1183,8 @@ body {
   }
 }
 
-/* 2. 中平板与窄屏桌面 (<= 900px) 侧边栏抽屉化与舞台适配 */
-@media (max-width: 900px) {
+/* 2. 平板竖屏与窄屏桌面 (<= 1024px portrait, <= 900px) 侧边栏抽屉化与舞台适配 */
+@media (max-width: 1024px) and (orientation: portrait), (max-width: 900px) {
   .sidebar {
     position: fixed;
     left: 0;
@@ -5193,8 +5193,8 @@ body {
   padding: 4px 8px;
 }
 
-/* 核心移动端 (<= 768px) 排版优化与 App 规范 */
-@media (max-width: 768px) {
+/* 核心移动端与平板竖屏排版优化与 App 规范 */
+@media (max-width: 1024px) and (orientation: portrait), (max-width: 834px) {
   .app-bottom-nav {
     display: block !important;
     position: fixed !important;
@@ -5819,10 +5819,10 @@ body.dock-expanded .dock-fab-play {
 
 
 /* ==========================================================================
-   Scheme B · 极简互斥替换模式与优雅分层播控坞 (Mobile-First Elegance)
+   Scheme B · 移动端与 iPad 竖屏优雅分层播控坞
    ========================================================================== */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) and (orientation: portrait), (max-width: 834px) {
   /* 1. 移动端 App 底部 5 导航主栏 */
   .app-bottom-nav {
     display: block !important;
@@ -5871,9 +5871,9 @@ body.dock-expanded .dock-fab-play {
   }
 
   body.dock-expanded .app-bottom-nav {
-    transform: translateY(120%) !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
 
   /* 抽屉打开时，底栏与控制坞均平滑下沉避让 */
@@ -6347,9 +6347,8 @@ body.dock-expanded .dock-fab-play {
   }
 }
 
-/* 移动端 (<= 768px · 彻底根治 iPhone 飘飞截断)：
-   双向绝对锁定 left: 12px / right: 12px，取消 translateX(-50%) 避免覆盖冲突 */
-@media (max-width: 768px) {
+/* 移动端与 iPad 竖屏：双向锁定且悬浮在底栏正上方 */
+@media (max-width: 1024px) and (orientation: portrait), (max-width: 834px) {
   .player-dock {
     position: fixed !important;
     left: 12px !important;
@@ -6357,7 +6356,9 @@ body.dock-expanded .dock-fab-play {
     width: auto !important;
     max-width: none !important;
     transform: none !important;
-    bottom: calc(16px + env(safe-area-inset-bottom, 8px)) !important;
+    bottom: calc(58px + env(safe-area-inset-bottom, 8px)) !important;
+    max-width: 680px !important;
+    margin: 0 auto !important;
     border-radius: 24px !important;
     padding: 10px 14px 12px !important;
     box-sizing: border-box !important;
@@ -6888,6 +6889,121 @@ body.dock-expanded .dock-fab-play {
   }
 }
 
+/* iPad 竖屏顶栏适配 (769px ~ 1024px 竖屏)：单行弹性排布，全称药丸舒适饱满 */
+@media (min-width: 769px) and (max-width: 1024px) and (orientation: portrait), (min-width: 769px) and (max-width: 834px) {
+  .app-header {
+    height: 52px !important;
+    min-height: 52px !important;
+    margin: 8px 12px 10px !important;
+    width: calc(100% - 24px) !important;
+    padding: 0 12px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
+    border-radius: 26px !important;
+    background: var(--bg-card, #ffffff) !important;
+    border: 1px solid var(--line-main, rgba(0, 0, 0, 0.08)) !important;
+    box-shadow: 0 2px 10px rgba(45, 36, 28, 0.05) !important;
+  }
+
+  [data-theme="dark"] .app-header {
+    background: var(--bg-card, #23211e) !important;
+    border: 1px solid var(--line-main, rgba(255, 255, 255, 0.08)) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .brand-section {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex: 0 0 auto !important;
+  }
+
+  .brand-section .mobile-menu-toggle {
+    display: inline-flex !important;
+  }
+
+  .brand-icon {
+    display: flex !important;
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .brand-title-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .brand-main-title {
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+  }
+
+  .brand-sub-badge,
+  .brand-voice-info {
+    display: none !important;
+  }
+
+  .subject-pill-group {
+    order: 2 !important;
+    flex: 0 1 auto !important;
+    display: inline-flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: var(--bg-sidebar, #f4efe6) !important;
+    border-radius: 20px !important;
+    gap: 4px !important;
+    margin: 0 8px !important;
+    padding: 3px !important;
+  }
+
+  .subject-btn {
+    flex: 0 1 auto !important;
+    height: 32px !important;
+    padding: 0 10px !important;
+    border-radius: 16px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    white-space: nowrap !important;
+  }
+
+  .subject-name-full {
+    display: inline !important;
+  }
+
+  .subject-name-mobile {
+    display: none !important;
+  }
+
+  .subject-btn .count-tag {
+    display: inline-block !important;
+    font-size: 10px !important;
+    padding: 1px 5px !important;
+  }
+
+  .header-actions {
+    order: 3 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex: 0 0 auto !important;
+  }
+
+  .header-actions #btn-theme-toggle {
+    display: inline-flex !important;
+  }
+}
+
 /* --------------------------------------------------------------------------
    Bug 修复 2：抽屉与遮罩层级穿透修复 (确保抽屉全屏最顶层)
    -------------------------------------------------------------------------- */
@@ -6912,9 +7028,9 @@ body.dock-expanded .dock-fab-play {
 }
 
 /* --------------------------------------------------------------------------
-   移动端原生底部导航栏优化 (清晰端庄、遮光率 95%、文字绝不穿透打架)
+   移动端与 iPad 竖屏原生底部导航栏优化
    -------------------------------------------------------------------------- */
-@media (max-width: 768px) {
+@media (max-width: 1024px) and (orientation: portrait), (max-width: 834px) {
   .app-bottom-nav {
     display: block !important;
     position: fixed !important;
@@ -8293,3 +8409,400 @@ body.drawer-scroll-locked #mainStage {
   overscroll-behavior: none !important;
 }
 
+
+
+/* ==========================================================================
+   iPad 横屏 (Landscape) 与平板双栏布局优化规则 (Warm Editorial 黄金标准)
+   ========================================================================== */
+@media (min-width: 835px) and (max-width: 1366px) and (orientation: landscape), (min-width: 769px) and (max-width: 1100px) {
+  :root {
+    --sidebar-w: 280px;
+    --header-h: 56px;
+  }
+
+  /* 1. 底栏在横屏双栏模式下不显示，完全交由顶栏操作 */
+  .app-bottom-nav {
+    display: none !important;
+  }
+
+  /* 2. 左侧侧边栏优雅收窄为 280px，释放横向黄金空间给正文研读 */
+  .sidebar {
+    position: static !important;
+    width: var(--sidebar-w, 280px) !important;
+    min-width: var(--sidebar-w, 280px) !important;
+    max-width: var(--sidebar-w, 280px) !important;
+    transform: none !important;
+    box-shadow: none !important;
+    border-right: 1px solid var(--line-main) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-shrink: 0 !important;
+    z-index: 100 !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: margin-left 0.28s cubic-bezier(0.16, 1, 0.3, 1), width 0.28s ease !important;
+  }
+
+  .sidebar-backdrop {
+    display: none !important;
+  }
+
+  .mobile-menu-toggle {
+    display: inline-flex !important;
+  }
+
+  .app-body.sidebar-collapsed .sidebar {
+    margin-left: calc(-1 * var(--sidebar-w, 280px)) !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    border-right: none !important;
+    overflow: hidden !important;
+  }
+
+  /* 3. 正文主舞台最大宽度放宽至 860px，正文阅读区居中，行宽舒适 */
+  .main-stage {
+    flex: 1 1 auto !important;
+    max-width: 100% !important;
+    padding: 18px 24px calc(110px + env(safe-area-inset-bottom, 16px)) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  .stage-wrapper {
+    width: 100% !important;
+    max-width: 860px !important;
+    margin: 0 auto !important;
+  }
+
+  .paper-container {
+    width: 100% !important;
+    max-width: 860px !important;
+    margin: 0 auto !important;
+    padding: 20px 24px calc(120px + env(safe-area-inset-bottom, 16px)) !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  /* 4. 顶栏科目标签单行排列，避免折行挤压 */
+  .app-header {
+    height: 56px !important;
+    min-height: 56px !important;
+    padding: 0 16px !important;
+    margin: 0 !important;
+    width: 100% !important;
+    border-radius: 0 !important;
+    border: none !important;
+    border-bottom: 1px solid var(--line-main) !important;
+    background: var(--bg-card, #ffffff) !important;
+    box-shadow: 0 1px 4px rgba(45, 36, 28, 0.04) !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    row-gap: 0 !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  [data-theme="dark"] .app-header {
+    background: var(--bg-card, #23211e) !important;
+    border-bottom: 1px solid var(--line-main, rgba(255, 255, 255, 0.08)) !important;
+  }
+
+  .brand-section {
+    order: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+  }
+
+  .brand-title-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .brand-icon {
+    display: flex !important;
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .brand-main-title {
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+  }
+
+  .brand-sub-badge,
+  .brand-voice-info {
+    display: none !important;
+  }
+
+  .subject-pill-group {
+    order: 2 !important;
+    width: auto !important;
+    flex: 0 1 auto !important;
+    display: inline-flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 8px !important;
+    padding: 3px !important;
+    gap: 4px !important;
+    background-color: var(--bg-sidebar) !important;
+    border-radius: 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  .subject-btn {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    padding: 5px 10px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    border-radius: 17px !important;
+    gap: 4px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .subject-name-full {
+    display: inline !important;
+  }
+
+  .subject-name-mobile {
+    display: none !important;
+  }
+
+  .subject-btn .count-tag {
+    display: inline-block !important;
+    font-size: 10px !important;
+    padding: 1px 5px !important;
+  }
+
+  .header-actions {
+    order: 3 !important;
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 5px !important;
+    padding: 0 !important;
+  }
+
+  .header-actions .action-btn {
+    height: 32px !important;
+    padding: 0 7px !important;
+    font-size: 12px !important;
+    gap: 3px !important;
+    display: inline-flex !important;
+  }
+
+  /* 5. 悬浮播控条在横屏模式下优雅浮动居中，宽度适度收窄，晶透磨砂质感 */
+  .player-dock {
+    position: fixed !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    bottom: calc(18px + env(safe-area-inset-bottom, 8px)) !important;
+    width: calc(100% - 48px) !important;
+    max-width: 760px !important;
+    border-radius: 28px !important;
+    padding: 8px 18px 10px !important;
+    background: var(--bg-dock) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border: 1px solid var(--line-main) !important;
+    box-shadow: 0 8px 32px rgba(42, 34, 27, 0.14) !important;
+    box-sizing: border-box !important;
+    z-index: 990 !important;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease !important;
+  }
+
+  .player-dock.dock-receded,
+  .player-dock.dock-collapsed {
+    transform: translate(-50%, calc(100% + 40px)) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
+/* ==========================================================================
+   iPad 竖屏 (Portrait) 底部导航栏、抽屉与正文安全距离终极规则 (Highest Priority)
+   ========================================================================== */
+@media (max-width: 1024px) and (orientation: portrait), (max-width: 834px) {
+  /* 1. 底栏必须完整显示，5 个 Tab 居中且具备 52px 良好触控热区 */
+  .app-bottom-nav {
+    display: block !important;
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    height: calc(52px + env(safe-area-inset-bottom, 8px)) !important;
+    padding-bottom: env(safe-area-inset-bottom, 8px) !important;
+    background: var(--bg-card, #ffffff) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-top: 1px solid var(--line-main, rgba(0, 0, 0, 0.08)) !important;
+    z-index: 1000 !important;
+    box-shadow: 0 -2px 14px rgba(42, 34, 27, 0.06) !important;
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  [data-theme="dark"] .app-bottom-nav {
+    background: var(--bg-card, #23211e) !important;
+    border-top: 1px solid var(--line-main, rgba(255, 255, 255, 0.08)) !important;
+    box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* 即使播控坞展开，底栏也坚决不沉没，保持常驻可用 */
+  body.dock-expanded .app-bottom-nav {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .nav-bottom-inner {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+    height: 52px !important;
+    max-width: 560px !important;
+    margin: 0 auto !important;
+    padding: 0 8px !important;
+  }
+
+  .nav-tab-item {
+    flex: 1 !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 2px 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .nav-tab-item .nav-tab-icon svg,
+  .nav-tab-item .kubai-icon-svg {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  .nav-tab-item .nav-tab-label {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    line-height: 1.1 !important;
+    margin-top: 2px !important;
+  }
+
+  /* 2. 悬浮播放条浮动在底栏正上方 */
+  .player-dock {
+    position: fixed !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+    max-width: 680px !important;
+    margin: 0 auto !important;
+    bottom: calc(58px + env(safe-area-inset-bottom, 8px)) !important;
+    z-index: 990 !important;
+    border-radius: 24px !important;
+    padding: 8px 14px 10px !important;
+    box-sizing: border-box !important;
+    transform: translateY(calc(100% + 80px)) !important;
+  }
+
+  body.dock-expanded .player-dock {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .player-dock.dock-receded,
+  .player-dock.dock-collapsed {
+    transform: translateY(calc(100% + 80px)) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* 3. 正文主舞台保持充分安全下边距，杜绝遮挡正文与打卡印章 */
+  .main-stage {
+    padding-bottom: calc(130px + env(safe-area-inset-bottom, 16px)) !important;
+  }
+
+  body.dock-expanded .main-stage {
+    padding-bottom: calc(180px + env(safe-area-inset-bottom, 16px)) !important;
+  }
+
+  .paper-container {
+    padding-bottom: calc(140px + env(safe-area-inset-bottom, 16px)) !important;
+  }
+
+  /* 抽屉打开时平滑下沉避让 */
+  .player-dock.dock-receded,
+  .app-bottom-nav.dock-receded {
+    transform: translateY(140%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* 4. 侧边栏默认作为抽屉打开 (Drawer 模式)，不再常驻霸占屏幕 */
+  .sidebar {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: min(340px, 85vw) !important;
+    max-width: 85vw !important;
+    z-index: 2500 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25) !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .sidebar.open {
+    transform: translateX(0) !important;
+  }
+
+  .sidebar-backdrop {
+    display: block !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(0, 0, 0, 0.45) !important;
+    backdrop-filter: blur(2px) !important;
+    -webkit-backdrop-filter: blur(2px) !important;
+    z-index: 2400 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.25s ease !important;
+  }
+
+  .sidebar-backdrop.open {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .mobile-menu-toggle {
+    display: inline-flex !important;
+  }
+}

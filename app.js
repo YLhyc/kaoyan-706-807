@@ -205,7 +205,7 @@
   }
 
   function isSidebarDrawerMode() {
-    return window.innerWidth <= 900;
+    return (window.innerWidth <= 834 || (window.innerWidth <= 1024 && window.innerHeight > window.innerWidth));
   }
 
   function openSidebar() {
@@ -2111,11 +2111,16 @@
     // 3. 动态框架层级与正文吸顶/高亮联动
     if (currentFrameworkSections.length > 0) {
       let activeSecIdx = 0;
-      for (let i = 0; i < currentFrameworkSections.length; i++) {
-        if (curTime >= currentFrameworkSections[i].start - 0.1) {
-          activeSecIdx = i;
-        } else {
-          break;
+      // 第一性原理：若处于单段循环模式，目标段落绝对锁定为 currentActiveSectionIndex，杜绝播放时间抖动篡改段落！
+      if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
+        activeSecIdx = currentActiveSectionIndex;
+      } else {
+        for (let i = 0; i < currentFrameworkSections.length; i++) {
+          if (curTime >= currentFrameworkSections[i].start - 0.1) {
+            activeSecIdx = i;
+          } else {
+            break;
+          }
         }
       }
 
@@ -2137,20 +2142,31 @@
         }
       });
 
-      if (activeSecIdx !== currentActiveSectionIndex) {
-        currentActiveSectionIndex = activeSecIdx;
+      if (state.playMode !== 'section') {
+        if (activeSecIdx !== currentActiveSectionIndex) {
+          currentActiveSectionIndex = activeSecIdx;
 
-        // 联动正文卡片当前焦点光晕
+          // 联动正文卡片当前焦点光晕
+          currentFrameworkSections.forEach((s, idx) => {
+            if (s.cardEl) {
+              s.cardEl.classList.toggle('active-section-card', idx === activeSecIdx);
+            }
+          });
+
+          // 联动大纲抽屉当前激活项
+          updateOutlineDrawerActive(activeSecIdx);
+
+          // 同步系统锁屏/通知栏 MediaSession 元数据
+          updateSystemMediaSession(sec, total);
+        }
+      } else {
+        // 单段循环下确保正文卡片聚焦与大纲抽屉高亮保持锁定在当前循环段落
         currentFrameworkSections.forEach((s, idx) => {
           if (s.cardEl) {
-            s.cardEl.classList.toggle('active-section-card', idx === activeSecIdx);
+            s.cardEl.classList.toggle('active-section-card', idx === currentActiveSectionIndex);
           }
         });
-
-        // 联动大纲抽屉当前激活项
-        updateOutlineDrawerActive(activeSecIdx);
-
-        // 同步系统锁屏/通知栏 MediaSession 元数据
+        updateOutlineDrawerActive(currentActiveSectionIndex);
         updateSystemMediaSession(sec, total);
       }
     } else {
@@ -2372,12 +2388,12 @@
           }
         }
 
-        // 1. 单句循环模式 (严格精准闭环，防串音防越界)
-        if (state.playMode === 'sentence' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
-          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
-            updateHUDDisplay(cur);
-            syncRafId = requestAnimationFrame(runSyncLoop);
-            return;
+        // 1. 单句循环模式 (严格第一性原理闭环：目标句子只能由用户显式指定，绝对锁定不可篡改)
+        if (state.playMode === 'sentence' && state.activeSentences && state.activeSentences.length > 0) {
+          if (state.currentSentIndex < 0 || state.currentSentIndex >= state.activeSentences.length) {
+            const initialIdx = findActiveSentenceIndex(cur);
+            state.currentSentIndex = initialIdx !== -1 ? initialIdx : 0;
+            state.loopCount = 0;
           }
 
           const sent = state.activeSentences[state.currentSentIndex];
@@ -2389,30 +2405,33 @@
           // 严格闭环截断边界：在下一句发声前绝对截断，严禁穿透至下一句语音起始；静音空隙则在当前句末即刻回弹
           const loopCutoff = Math.min(sEnd - 0.05, isFinite(nextStart) ? (nextStart - 0.08) : (sEnd - 0.05));
 
-          if (!isLoopSeeking && (cur < sStart - 0.5 || cur > sEnd + 0.8)) {
-            const newIdx = findActiveSentenceIndex(cur);
-            if (newIdx !== -1 && newIdx !== state.currentSentIndex) {
-              state.currentSentIndex = newIdx;
-              state.loopCount = 0;
-              highlightSentence(state.activeSentences[newIdx].id);
-            }
-          } else if (cur >= loopCutoff - 0.04) {
+          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+            updateHUDDisplay(cur);
+            syncRafId = requestAnimationFrame(runSyncLoop);
+            return;
+          }
+
+          // 当 cur >= loopCutoff 或 cur > sEnd 时，无条件强制倒回当前句开头 sStart！
+          // 目标句子 state.currentSentIndex 绝对锁定不可篡改，彻底铲除任何篡改指针漂移至下一句的逻辑！
+          if (cur >= loopCutoff - 0.04 || cur > sEnd) {
             triggerLoopSeek(sStart);
             if (audio.paused) audio.play().catch(e => console.log(e));
             syncRafId = requestAnimationFrame(runSyncLoop);
             return;
           } else {
+            // 若 cur < sStart - 0.3（倒带稍微过多或刚 seek 落地），保持当前句不变，静待其播放至 sStart
+            highlightSentence(sent.id);
             updateHUDDisplay(cur);
             syncRafId = requestAnimationFrame(runSyncLoop);
             return;
           }
         }
-        // 2. 单句3遍模式 (满3遍后精准推移至下一句)
-        else if (state.playMode === 'loop3' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
-          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
-            updateHUDDisplay(cur);
-            syncRafId = requestAnimationFrame(runSyncLoop);
-            return;
+        // 2. 单句3遍模式 (满3遍后精准推移至下一句，单句循环期间目标句子绝对锁定不可篡改)
+        else if (state.playMode === 'loop3' && state.activeSentences && state.activeSentences.length > 0) {
+          if (state.currentSentIndex < 0 || state.currentSentIndex >= state.activeSentences.length) {
+            const initialIdx = findActiveSentenceIndex(cur);
+            state.currentSentIndex = initialIdx !== -1 ? initialIdx : 0;
+            state.loopCount = 0;
           }
 
           const sent = state.activeSentences[state.currentSentIndex];
@@ -2422,14 +2441,13 @@
           const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
           const loopCutoff = Math.min(sEnd - 0.05, isFinite(nextStart) ? (nextStart - 0.08) : (sEnd - 0.05));
 
-          if (!isLoopSeeking && (cur < sStart - 0.5 || cur > sEnd + 0.8)) {
-            const newIdx = findActiveSentenceIndex(cur);
-            if (newIdx !== -1 && newIdx !== state.currentSentIndex) {
-              state.currentSentIndex = newIdx;
-              state.loopCount = 0;
-              highlightSentence(state.activeSentences[newIdx].id);
-            }
-          } else if (cur >= loopCutoff - 0.04) {
+          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+            updateHUDDisplay(cur);
+            syncRafId = requestAnimationFrame(runSyncLoop);
+            return;
+          }
+
+          if (cur >= loopCutoff - 0.04 || cur > sEnd) {
             if (state.loopCount < 2) {
               state.loopCount++;
               triggerLoopSeek(sStart);
@@ -2445,20 +2463,25 @@
                 updateHUDDisplay(nextStart);
                 syncRafId = requestAnimationFrame(runSyncLoop);
                 return;
+              } else {
+                triggerLoopSeek(sStart);
+                if (audio.paused) audio.play().catch(e => console.log(e));
+                syncRafId = requestAnimationFrame(runSyncLoop);
+                return;
               }
             }
           } else {
+            highlightSentence(sent.id);
             updateHUDDisplay(cur);
             syncRafId = requestAnimationFrame(runSyncLoop);
             return;
           }
         }
-        // 3. 单段循环模式 (严格闭环防溢出)
-        else if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
-          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
-            updateHUDDisplay(cur);
-            syncRafId = requestAnimationFrame(runSyncLoop);
-            return;
+        // 3. 单段循环模式 (严格在当前段落 [curSec.start, curSec.end] 内部无缝闭环回跳，绝对不允许篡改 currentActiveSectionIndex)
+        else if (state.playMode === 'section' && currentFrameworkSections.length > 0) {
+          if (currentActiveSectionIndex < 0 || currentActiveSectionIndex >= currentFrameworkSections.length) {
+            const matchedSecIdx = currentFrameworkSections.findIndex(s => cur >= s.start - 0.05 && cur <= s.end + 0.05);
+            currentActiveSectionIndex = matchedSecIdx !== -1 ? matchedSecIdx : 0;
           }
 
           const curSec = currentFrameworkSections[currentActiveSectionIndex];
@@ -2467,12 +2490,15 @@
             const nextSecStart = nextSec && typeof nextSec.start === 'number' ? nextSec.start : Infinity;
             const secCutoff = Math.min(curSec.end - 0.05, isFinite(nextSecStart) ? (nextSecStart - 0.08) : (curSec.end - 0.05));
 
-            if (!isLoopSeeking && (cur < curSec.start - 0.6 || cur > curSec.end + 0.8)) {
-              const matchedSecIdx = currentFrameworkSections.findIndex(s => cur >= s.start - 0.05 && cur <= s.end + 0.05);
-              if (matchedSecIdx !== -1) {
-                currentActiveSectionIndex = matchedSecIdx;
-              }
-            } else if (cur >= secCutoff - 0.04) {
+            if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+              updateHUDDisplay(cur);
+              syncRafId = requestAnimationFrame(runSyncLoop);
+              return;
+            }
+
+            // 当到达段尾截断点或滑过段尾时，无条件强制倒回当前段开头 curSec.start！
+            // currentActiveSectionIndex 绝对锁定不可被时间篡改！
+            if (cur >= secCutoff - 0.04 || cur > curSec.end) {
               triggerLoopSeek(curSec.start);
               if (audio.paused) audio.play().catch(e => console.log(e));
               syncRafId = requestAnimationFrame(runSyncLoop);
@@ -2481,8 +2507,12 @@
               updateHUDDisplay(cur);
               const activeIdx = findActiveSentenceIndex(cur);
               if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
-                state.currentSentIndex = activeIdx;
-                highlightSentence(state.activeSentences[activeIdx].id);
+                const s = state.activeSentences[activeIdx];
+                // 仅当句子属于当前段落范围时高亮，防止越界高亮
+                if (s && s.start >= curSec.start - 0.2 && s.start <= curSec.end + 0.1) {
+                  state.currentSentIndex = activeIdx;
+                  highlightSentence(s.id);
+                }
               }
               syncRafId = requestAnimationFrame(runSyncLoop);
               return;
@@ -2570,8 +2600,13 @@
           }
         }
 
-        // 1. 单句循环模式
-        if (state.playMode === 'sentence' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
+        // 1. 单句循环模式 (绝对锁定，强制闭环回跳)
+        if (state.playMode === 'sentence' && state.activeSentences && state.activeSentences.length > 0) {
+          if (state.currentSentIndex < 0 || state.currentSentIndex >= state.activeSentences.length) {
+            const initialIdx = findActiveSentenceIndex(cur);
+            state.currentSentIndex = initialIdx !== -1 ? initialIdx : 0;
+            state.loopCount = 0;
+          }
           if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
             return;
           }
@@ -2582,24 +2617,19 @@
           const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
           const loopCutoff = Math.min(sEnd - 0.05, isFinite(nextStart) ? (nextStart - 0.08) : (sEnd - 0.05));
 
-          if (cur >= loopCutoff - 0.04) {
+          if (cur >= loopCutoff - 0.04 || cur > sEnd) {
             triggerLoopSeek(sStart);
             if (audio.paused) audio.play().catch(e => console.log(e));
-            return;
-          } else if (!isLoopSeeking && (cur < sStart - 0.5 || cur > sEnd + 0.8)) {
-            const newIdx = findActiveSentenceIndex(cur);
-            if (newIdx !== -1 && newIdx !== state.currentSentIndex) {
-              state.currentSentIndex = newIdx;
-              state.loopCount = 0;
-              highlightSentence(state.activeSentences[newIdx].id);
-            }
-            return;
-          } else {
-            return;
           }
+          return;
         }
-        // 2. 单句3遍模式
-        else if (state.playMode === 'loop3' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
+        // 2. 单句3遍模式 (满3遍后推移，期间目标句子绝对锁定)
+        else if (state.playMode === 'loop3' && state.activeSentences && state.activeSentences.length > 0) {
+          if (state.currentSentIndex < 0 || state.currentSentIndex >= state.activeSentences.length) {
+            const initialIdx = findActiveSentenceIndex(cur);
+            state.currentSentIndex = initialIdx !== -1 ? initialIdx : 0;
+            state.loopCount = 0;
+          }
           if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
             return;
           }
@@ -2610,7 +2640,7 @@
           const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
           const loopCutoff = Math.min(sEnd - 0.05, isFinite(nextStart) ? (nextStart - 0.08) : (sEnd - 0.05));
 
-          if (cur >= loopCutoff - 0.04) {
+          if (cur >= loopCutoff - 0.04 || cur > sEnd) {
             if (state.loopCount < 2) {
               state.loopCount++;
               triggerLoopSeek(sStart);
@@ -2624,22 +2654,21 @@
                 highlightSentence(nextSent.id);
                 updateHUDDisplay(nextStart);
                 return;
+              } else {
+                triggerLoopSeek(sStart);
+                if (audio.paused) audio.play().catch(e => console.log(e));
+                return;
               }
             }
-          } else if (!isLoopSeeking && (cur < sStart - 0.5 || cur > sEnd + 0.8)) {
-            const newIdx = findActiveSentenceIndex(cur);
-            if (newIdx !== -1 && newIdx !== state.currentSentIndex) {
-              state.currentSentIndex = newIdx;
-              state.loopCount = 0;
-              highlightSentence(state.activeSentences[newIdx].id);
-            }
-            return;
-          } else {
-            return;
           }
+          return;
         }
-        // 3. 单段循环模式
-        else if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
+        // 3. 单段循环模式 (绝对锁定，强制闭环回跳)
+        else if (state.playMode === 'section' && currentFrameworkSections.length > 0) {
+          if (currentActiveSectionIndex < 0 || currentActiveSectionIndex >= currentFrameworkSections.length) {
+            const matchedSecIdx = currentFrameworkSections.findIndex(s => cur >= s.start - 0.05 && cur <= s.end + 0.05);
+            currentActiveSectionIndex = matchedSecIdx !== -1 ? matchedSecIdx : 0;
+          }
           if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
             return;
           }
@@ -2648,12 +2677,13 @@
           if (curSec && typeof curSec.start === 'number' && typeof curSec.end === 'number' && curSec.end > curSec.start) {
             const nextSecStart = nextSec && typeof nextSec.start === 'number' ? nextSec.start : Infinity;
             const secCutoff = Math.min(curSec.end - 0.05, isFinite(nextSecStart) ? (nextSecStart - 0.08) : (curSec.end - 0.05));
-            if (cur >= secCutoff - 0.04) {
+            if (cur >= secCutoff - 0.04 || cur > curSec.end) {
               triggerLoopSeek(curSec.start);
               if (audio.paused) audio.play().catch(e => console.log(e));
               return;
             }
           }
+          return;
         }
 
         const activeIdx = findActiveSentenceIndex(cur);
@@ -3364,7 +3394,7 @@
     const sidebarCollapseBtn = document.getElementById('btn-sidebar-collapse');
 
     // 恢复本地存储的侧边栏折叠状态 (大屏/iPad)
-    if (window.innerWidth > 768 && localStorage.getItem('kaoyan_sidebar_collapsed') === '1') {
+    if (!isSidebarDrawerMode() && localStorage.getItem('kaoyan_sidebar_collapsed') === '1') {
       if (appBody) appBody.classList.add('sidebar-collapsed');
     }
 
@@ -3846,7 +3876,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.1.0';
+  const APP_BUILD_ID = '3.1.1';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -4246,7 +4276,7 @@
     showToast('正在加载考研政治背诵手卷...', 2000);
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = 'data/kaoyan_data_pol.js?v=3.1.0';
+      script.src = 'data/kaoyan_data_pol.js?v=3.1.1';
       script.onload = () => {
         isPolDataLoading = false;
         state.polData = window.KAOYAN_POL_DATA;
