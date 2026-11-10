@@ -1124,13 +1124,13 @@ window.KAOYAN_POL_DATA = {
               {
                 "text": "时间是一维性、不可逆性，空间是三维性。",
                 "start": 60.727,
-                "end": 65.0,
+                "end": 65,
                 "idx": 11,
                 "id": "sent_ch_my_01_pt02_11"
               },
               {
                 "text": "时空是客观的，不以人的意志为转移。",
-                "start": 65.0,
+                "start": 65,
                 "end": 68.699,
                 "idx": 12,
                 "id": "sent_ch_my_01_pt02_12"
@@ -1866,13 +1866,13 @@ window.KAOYAN_POL_DATA = {
               {
                 "text": "为什么新事物必然战胜旧事物？",
                 "start": 17.117,
-                "end": 20.0,
+                "end": 20,
                 "idx": 4,
                 "id": "sent_my_12_4"
               },
               {
                 "text": "第一，新事物符合历史发展的必然趋势，具有强大的生命力和远大的发展前途。",
-                "start": 20.0,
+                "start": 20,
                 "end": 27.168,
                 "idx": 5,
                 "id": "sent_my_12_5"
@@ -6353,13 +6353,13 @@ window.KAOYAN_POL_DATA = {
               {
                 "text": "价值规律的表现形式是什么。",
                 "start": 17.283,
-                "end": 20.0,
+                "end": 20,
                 "idx": 4,
                 "id": "sent_my_39_4"
               },
               {
                 "text": "价格围绕价值自发上下波动。",
-                "start": 20.0,
+                "start": 20,
                 "end": 22.985,
                 "idx": 5,
                 "id": "sent_my_39_5"
@@ -11402,13 +11402,13 @@ window.KAOYAN_POL_DATA = {
               {
                 "text": "统一战线为什么是法宝？",
                 "start": 12.577,
-                "end": 15.0,
+                "end": 15,
                 "idx": 3,
                 "id": "sent_mzt_09_3"
               },
               {
                 "text": "因为中国社会两头小，中间大，无产阶级和大地主大资产阶级占少数。",
-                "start": 15.0,
+                "start": 15,
                 "end": 21.696,
                 "idx": 4,
                 "id": "sent_mzt_09_4"
@@ -20831,7 +20831,7 @@ window.KAOYAN_POL_DATA = {
           },
           {
             "start": 32.602,
-            "end": 35.0,
+            "end": 35,
             "text": "统领，党的政治建设。",
             "domId": "sent_ch_xsx_14_008",
             "idx": 8,
@@ -20839,7 +20839,7 @@ window.KAOYAN_POL_DATA = {
             "origDomId": "recite_blk_ch_xsx_14_9"
           },
           {
-            "start": 35.0,
+            "start": 35,
             "end": 37.87,
             "text": "根基，坚定理想信念宗旨。",
             "domId": "sent_ch_xsx_14_009",
@@ -26848,13 +26848,13 @@ window.KAOYAN_POL_DATA = {
               {
                 "text": "蒋介石二十年反革命统治由发展到消灭的转折点。",
                 "start": 50.293,
-                "end": 55.0,
+                "end": 55,
                 "idx": 9,
                 "id": "sent_sg_16_9"
               },
               {
                 "text": "帝国主义在华统治由发展到消灭的转折点。",
-                "start": 55.0,
+                "start": 55,
                 "end": 59.324,
                 "idx": 10,
                 "id": "sent_sg_16_10"
@@ -27023,13 +27023,13 @@ window.KAOYAN_POL_DATA = {
               {
                 "text": "1948年秋到1949年初，战略决战的时机成熟。",
                 "start": 0.1,
-                "end": 5.0,
+                "end": 5,
                 "idx": 0,
                 "id": "sent_sg_18_0"
               },
               {
                 "text": "人民解放军连续发动了辽沈战役，淮海战役，平津战役三大战役。",
-                "start": 5.0,
+                "start": 5,
                 "end": 11.097,
                 "idx": 1,
                 "id": "sent_sg_18_1"
@@ -29642,13 +29642,13 @@ window.KAOYAN_POL_DATA = {
               {
                 "text": "中国特色社会主义是科学社会主义在当代中国的成功实践。",
                 "start": 34.222,
-                "end": 40.0,
+                "end": 40,
                 "idx": 7,
                 "id": "sent_sx_06_7"
               },
               {
                 "text": "坚定中特信念，必须树立四个自信。",
-                "start": 40.0,
+                "start": 40,
                 "end": 43.406,
                 "idx": 8,
                 "id": "sent_sx_06_8"
@@ -32004,7 +32004,7 @@ window.KAOYAN_POL_DATA = {
           },
           {
             "start": 444.809,
-            "end": 450.0,
+            "end": 450,
             "text": "坚持依法立法，国家权力机关要加强和改进立法工作。",
             "domId": "sent_ch_sx_06_061",
             "idx": 61,
@@ -32012,7 +32012,7 @@ window.KAOYAN_POL_DATA = {
             "origDomId": "recite_blk_ch_sx_06_74"
           },
           {
-            "start": 450.0,
+            "start": 450,
             "end": 457.041,
             "text": "坚持严格执法，国家行政机关、监察机关和司法机关要严格执行法律。",
             "domId": "sent_ch_sx_06_062",
@@ -33358,7 +33358,7 @@ window.KAOYAN_POL_DATA = {
           "voice_start": 98.44,
           "voice_end": 103.12,
           "anlang_start": 65.4,
-          "anlang_end": 69.0
+          "anlang_end": 69
         },
         {
           "id": "pol_xt_d03_p14",
@@ -33930,7 +33930,7 @@ window.KAOYAN_POL_DATA = {
           "tag": "劳动力商品价值",
           "html": "决定劳动力商品价值的是维持、延续劳动力所必需的<strong class=\"xt-keyword cloze\" data-cloze=\"生活必需品的价值\" data-ghost=\"生···品的价值\">生活必需品的价值</strong>。",
           "voice_start": 152.42,
-          "voice_end": 160.0,
+          "voice_end": 160,
           "anlang_start": 109.16,
           "anlang_end": 116.68
         },
@@ -33939,7 +33939,7 @@ window.KAOYAN_POL_DATA = {
           "num": 14,
           "tag": "生产过程二重性",
           "html": "资本主义生产过程具有二重性：一方面是生产物质资料的劳动过程，另一方面是生产剩余价值的过程（<strong class=\"xt-keyword cloze\" data-cloze=\"价值增殖过程\" data-ghost=\"价·增殖过程\">价值增殖过程</strong>）。",
-          "voice_start": 160.0,
+          "voice_start": 160,
           "voice_end": 172.92,
           "anlang_start": 116.97,
           "anlang_end": 129.69
@@ -34144,7 +34144,7 @@ window.KAOYAN_POL_DATA = {
           "voice_start": 144.7,
           "voice_end": 152.3,
           "anlang_start": 87.72,
-          "anlang_end": 95.0
+          "anlang_end": 95
         },
         {
           "id": "pol_xt_d06_p14",
@@ -34284,7 +34284,7 @@ window.KAOYAN_POL_DATA = {
           "tag": "政治控制方式",
           "html": "金融寡头在政治上对国家机器的控制方式是同政府的“<strong class=\"xt-keyword cloze\" data-cloze=\"个人联合\" data-ghost=\"个·联合\">个人联合</strong>”。",
           "voice_start": 54.7,
-          "voice_end": 65.0,
+          "voice_end": 65,
           "anlang_start": 26.81,
           "anlang_end": 32.49
         },
@@ -34293,7 +34293,7 @@ window.KAOYAN_POL_DATA = {
           "num": 7,
           "tag": "政策影响方式",
           "html": "金融寡头对国家政府施加影响的方式是<strong class=\"xt-keyword cloze\" data-cloze=\"建立政策咨询机构\" data-ghost=\"建··策咨询机构\">建立政策咨询机构</strong>。",
-          "voice_start": 65.0,
+          "voice_start": 65,
           "voice_end": 90.07,
           "anlang_start": 32.86,
           "anlang_end": 37.9
@@ -35252,7 +35252,7 @@ window.KAOYAN_POL_DATA = {
           "tag": "总抓手",
           "html": "全面依法治国的总抓手是<strong class=\"xt-keyword cloze\" data-cloze=\"建设中国特色社会主义法治体系\" data-ghost=\"建·······法治体系\">建设中国特色社会主义法治体系</strong>。",
           "voice_start": 112.22,
-          "voice_end": 118.0,
+          "voice_end": 118,
           "anlang_start": 82.68,
           "anlang_end": 88.04
         },
@@ -35261,7 +35261,7 @@ window.KAOYAN_POL_DATA = {
           "num": 14,
           "tag": "实施重要保障",
           "html": "宪法法律有效实施的重要保障是<strong class=\"xt-keyword cloze\" data-cloze=\"严密的法治监督体系\" data-ghost=\"严···法治监督体系\">严密的法治监督体系</strong>。",
-          "voice_start": 118.0,
+          "voice_start": 118,
           "voice_end": 124.11,
           "anlang_start": 88.41,
           "anlang_end": 94.01
@@ -35373,7 +35373,7 @@ window.KAOYAN_POL_DATA = {
           "html": "我国公民法定义务包括：维护国家统一和民族团结，遵守宪法法律，维护安全荣誉利益，服兵役及依法纳税。",
           "voice_start": 202.77,
           "voice_end": 215.33,
-          "anlang_start": 160.0,
+          "anlang_start": 160,
           "anlang_end": 171.68
         }
       ]
@@ -35516,7 +35516,7 @@ window.KAOYAN_POL_DATA = {
           "voice_start": 157.85,
           "voice_end": 173.02,
           "anlang_start": 94.68,
-          "anlang_end": 103.0
+          "anlang_end": 103
         },
         {
           "id": "pol_xt_d12_p14",
@@ -35960,7 +35960,7 @@ window.KAOYAN_POL_DATA = {
           "voice_start": 100.72,
           "voice_end": 121.64,
           "anlang_start": 38.84,
-          "anlang_end": 49.0
+          "anlang_end": 49
         },
         {
           "id": "pol_xt_d14_p06",
@@ -36119,7 +36119,7 @@ window.KAOYAN_POL_DATA = {
           "html": "中国革命在解放战争时期建立的统一战线叫<strong class=\"xt-keyword cloze\" data-cloze=\"人民民主统一战线\" data-ghost=\"人······\">人民民主统一战线</strong>。",
           "voice_start": 340.27,
           "voice_end": 347.34,
-          "anlang_start": 167.0,
+          "anlang_start": 167,
           "anlang_end": 173.48
         },
         {
@@ -36222,7 +36222,7 @@ window.KAOYAN_POL_DATA = {
           "voice_start": 40.79,
           "voice_end": 55.67,
           "anlang_start": 26.76,
-          "anlang_end": 39.0
+          "anlang_end": 39
         },
         {
           "id": "pol_xt_d15_p06",
@@ -36262,7 +36262,7 @@ window.KAOYAN_POL_DATA = {
           "voice_start": 81.31,
           "voice_end": 89.28,
           "anlang_start": 62.64,
-          "anlang_end": 70.0
+          "anlang_end": 70
         },
         {
           "id": "pol_xt_d15_p10",
@@ -36729,7 +36729,7 @@ window.KAOYAN_POL_DATA = {
       ],
       "timestamps": [
         {
-          "start": 0.0,
+          "start": 0,
           "end": 8.38,
           "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要会议总结（一）：党的一大至四大与国民党一大。"
         },
@@ -36909,7 +36909,7 @@ window.KAOYAN_POL_DATA = {
           "resolved_sentences": [
             {
               "idx": 0,
-              "start": 0.0,
+              "start": 0,
               "end": 8.38,
               "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要会议总结（一）：党的一大至四大与国民党一大。"
             },
@@ -37202,7 +37202,7 @@ window.KAOYAN_POL_DATA = {
       ],
       "timestamps": [
         {
-          "start": 0.0,
+          "start": 0,
           "end": 10.94,
           "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要会议总结（二）：八七会议、古田会议、遵义会议、瓦窑堡会议与洛川会议。"
         },
@@ -37227,7 +37227,7 @@ window.KAOYAN_POL_DATA = {
           "text": "会议彻底清算了大革命后期的陈独秀右倾机会主义错误，确定了土地革命和武装反抗国民党反动派的总方针。"
         },
         {
-          "start": 46.0,
+          "start": 46,
           "end": 54.44,
           "text": "毛泽东在会上深刻总结大革命失败的沉痛教训，提出了“须知政权是由枪杆子中取得的”著名论断。"
         },
@@ -37377,7 +37377,7 @@ window.KAOYAN_POL_DATA = {
           "resolved_sentences": [
             {
               "idx": 0,
-              "start": 0.0,
+              "start": 0,
               "end": 10.94,
               "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要会议总结（二）：八七会议、古田会议、遵义会议、瓦窑堡会议与洛川会议。"
             },
@@ -37422,7 +37422,7 @@ window.KAOYAN_POL_DATA = {
             },
             {
               "idx": 5,
-              "start": 46.0,
+              "start": 46,
               "end": 54.44,
               "text": "毛泽东在会上深刻总结大革命失败的沉痛教训，提出了“须知政权是由枪杆子中取得的”著名论断。"
             },
@@ -37659,7 +37659,7 @@ window.KAOYAN_POL_DATA = {
       ],
       "timestamps": [
         {
-          "start": 0.0,
+          "start": 0,
           "end": 9.98,
           "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要会议总结（三）：六届六中全会、六届七中全会、中共七大与七届二中全会。"
         },
@@ -37810,7 +37810,7 @@ window.KAOYAN_POL_DATA = {
           "resolved_sentences": [
             {
               "idx": 0,
-              "start": 0.0,
+              "start": 0,
               "end": 9.98,
               "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要会议总结（三）：六届六中全会、六届七中全会、中共七大与七届二中全会。"
             },
@@ -38056,7 +38056,7 @@ window.KAOYAN_POL_DATA = {
       ],
       "timestamps": [
         {
-          "start": 0.0,
+          "start": 0,
           "end": 10.78,
           "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要会议总结（四）：从社会主义建设探索、十一届三中全会到党的十二大至二十大。"
         },
@@ -38217,7 +38217,7 @@ window.KAOYAN_POL_DATA = {
           "resolved_sentences": [
             {
               "idx": 0,
-              "start": 0.0,
+              "start": 0,
               "end": 10.78,
               "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要会议总结（四）：从社会主义建设探索、十一届三中全会到党的十二大至二十大。"
             },
@@ -38473,7 +38473,7 @@ window.KAOYAN_POL_DATA = {
       ],
       "timestamps": [
         {
-          "start": 0.0,
+          "start": 0,
           "end": 9.26,
           "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要会议总结（五）：重要会议考法汇总与常考考点横向辨析。"
         },
@@ -38610,7 +38610,7 @@ window.KAOYAN_POL_DATA = {
           "resolved_sentences": [
             {
               "idx": 0,
-              "start": 0.0,
+              "start": 0,
               "end": 9.26,
               "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要会议总结（五）：重要会议考法汇总与常考考点横向辨析。"
             },
@@ -38826,7 +38826,7 @@ window.KAOYAN_POL_DATA = {
       ],
       "timestamps": [
         {
-          "start": 0.0,
+          "start": 0,
           "end": 11.57,
           "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要文献总结（一）：李大钊早期探索文献至毛泽东井冈山与中央苏区时期经典著作。"
         },
@@ -38953,7 +38953,7 @@ window.KAOYAN_POL_DATA = {
           "resolved_sentences": [
             {
               "idx": 0,
-              "start": 0.0,
+              "start": 0,
               "end": 11.57,
               "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要文献总结（一）：李大钊早期探索文献至毛泽东井冈山与中央苏区时期经典著作。"
             },
@@ -39158,7 +39158,7 @@ window.KAOYAN_POL_DATA = {
       ],
       "timestamps": [
         {
-          "start": 0.0,
+          "start": 0,
           "end": 9.74,
           "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要文献总结（二）：毛泽东思想达到成熟时期的经典文献全景透析。"
         },
@@ -39228,7 +39228,7 @@ window.KAOYAN_POL_DATA = {
           "text": "著作明确指出，把党建设成为一个全国范围的、广大群众性的、思想上政治上组织上完全巩固的马克思主义政党，是一项“伟大的工程”。"
         },
         {
-          "start": 141.0,
+          "start": 141,
           "end": 152.02,
           "text": "在《中国革命和中国共产党》中，毛泽东首次提出了“新民主主义革命”的科学概念，系统阐述了中国革命的对象、动力、性质与前途。"
         },
@@ -39304,7 +39304,7 @@ window.KAOYAN_POL_DATA = {
           "resolved_sentences": [
             {
               "idx": 0,
-              "start": 0.0,
+              "start": 0,
               "end": 9.74,
               "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要文献总结（二）：毛泽东思想达到成熟时期的经典文献全景透析。"
             },
@@ -39431,7 +39431,7 @@ window.KAOYAN_POL_DATA = {
             },
             {
               "idx": 14,
-              "start": 141.0,
+              "start": 141,
               "end": 152.02,
               "text": "在《中国革命和中国共产党》中，毛泽东首次提出了“新民主主义革命”的科学概念，系统阐述了中国革命的对象、动力、性质与前途。"
             },
@@ -39537,7 +39537,7 @@ window.KAOYAN_POL_DATA = {
       ],
       "timestamps": [
         {
-          "start": 0.0,
+          "start": 0,
           "end": 11.18,
           "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要文献总结（三）：解放战争后期文献、建国初期探索文献以及邓小平南方谈话。"
         },
@@ -39664,7 +39664,7 @@ window.KAOYAN_POL_DATA = {
           "resolved_sentences": [
             {
               "idx": 0,
-              "start": 0.0,
+              "start": 0,
               "end": 11.18,
               "text": "早上好，今天我们一起来学习《冲刺背诵手册》重要文献总结（三）：解放战争后期文献、建国初期探索文献以及邓小平南方谈话。"
             },
@@ -39867,7 +39867,7 @@ window.KAOYAN_POL_DATA = {
       ],
       "timestamps": [
         {
-          "start": 0.0,
+          "start": 0,
           "end": 10.46,
           "text": "早上好，今天我们一起来学习《冲刺背诵手册》史纲专题突破（一）：农民阶级、地主阶级洋务派与资产阶级早期救国探索。"
         },
@@ -39999,7 +39999,7 @@ window.KAOYAN_POL_DATA = {
           "resolved_sentences": [
             {
               "idx": 0,
-              "start": 0.0,
+              "start": 0,
               "end": 10.46,
               "text": "早上好，今天我们一起来学习《冲刺背诵手册》史纲专题突破（一）：农民阶级、地主阶级洋务派与资产阶级早期救国探索。"
             },
@@ -40210,7 +40210,7 @@ window.KAOYAN_POL_DATA = {
       ],
       "timestamps": [
         {
-          "start": 0.0,
+          "start": 0,
           "end": 11.18,
           "text": "早上好，今天我们一起来学习《冲刺背诵手册》史纲专题突破（二）：党在各个历史时期的土地政策演进与农业社会主义改造全景脉络。"
         },
@@ -40230,13 +40230,13 @@ window.KAOYAN_POL_DATA = {
           "text": "土地革命战争时期，党确立了消灭封建土地所有制的根本方针。"
         },
         {
-          "start": 36.0,
+          "start": 36,
           "end": 51.82,
           "text": "毛泽东主持制定了党史上第一个土地法《井冈山土地法》，明确没收一切土地归苏维埃政府所有，用抽多补少、抽肥补瘦的方法分给农民使用；但由于缺乏经验，存在没收一切土地和禁止土地买卖等缺点。"
         },
         {
-          "start": 52.0,
-          "end": 65.0,
+          "start": 52,
+          "end": 65,
           "text": "随后制定的《兴国土地法》，将“没收一切土地”改为“没收一切公共土地及地主阶级土地”，这是一个原则性的重大修正，保护了中农利益，标志着党的土地法走向成熟。"
         },
         {
@@ -40255,7 +40255,7 @@ window.KAOYAN_POL_DATA = {
           "text": "地主减租减息、农民交租交息。减租减息适当减轻了农民的封建负担，提高了农民抗日和生产的积极性；同时交租交息兼顾了地主阶级的利益，有利于联合地主阶级一致抗日。"
         },
         {
-          "start": 103.0,
+          "start": 103,
           "end": 114.42,
           "text": "减租减息政策成功兼顾了农民与地主的关系，巩固并壮大了抗日民族统一战线，是党在抗战特殊历史条件下极具政治智慧的策略方针。"
         },
@@ -40351,7 +40351,7 @@ window.KAOYAN_POL_DATA = {
           "resolved_sentences": [
             {
               "idx": 0,
-              "start": 0.0,
+              "start": 0,
               "end": 11.18,
               "text": "早上好，今天我们一起来学习《冲刺背诵手册》史纲专题突破（二）：党在各个历史时期的土地政策演进与农业社会主义改造全景脉络。"
             },
@@ -40389,14 +40389,14 @@ window.KAOYAN_POL_DATA = {
             },
             {
               "idx": 4,
-              "start": 36.0,
+              "start": 36,
               "end": 51.82,
               "text": "毛泽东主持制定了党史上第一个土地法《井冈山土地法》，明确没收一切土地归苏维埃政府所有，用抽多补少、抽肥补瘦的方法分给农民使用；但由于缺乏经验，存在没收一切土地和禁止土地买卖等缺点。"
             },
             {
               "idx": 5,
-              "start": 52.0,
-              "end": 65.0,
+              "start": 52,
+              "end": 65,
               "text": "随后制定的《兴国土地法》，将“没收一切土地”改为“没收一切公共土地及地主阶级土地”，这是一个原则性的重大修正，保护了中农利益，标志着党的土地法走向成熟。"
             },
             {
@@ -40433,7 +40433,7 @@ window.KAOYAN_POL_DATA = {
             },
             {
               "idx": 9,
-              "start": 103.0,
+              "start": 103,
               "end": 114.42,
               "text": "减租减息政策成功兼顾了农民与地主的关系，巩固并壮大了抗日民族统一战线，是党在抗战特殊历史条件下极具政治智慧的策略方针。"
             },
@@ -40578,7 +40578,7 @@ window.KAOYAN_POL_DATA = {
       ],
       "timestamps": [
         {
-          "start": 0.0,
+          "start": 0,
           "end": 10.85,
           "text": "早上好，今天我们一起来学习《冲刺背诵手册》思修法基决胜篇：理想信念、中国精神、社会主义道德与法治体系核心考点精粹。"
         },
@@ -40608,7 +40608,7 @@ window.KAOYAN_POL_DATA = {
           "text": "中国精神是兴国强国之魂，包括以爱国主义为核心的民族精神和以改革创新为核心的时代精神。"
         },
         {
-          "start": 57.0,
+          "start": 57,
           "end": 70.42,
           "text": "爱国主义是中华民族的优良传统，在新时代的鲜明主题是坚持爱国主义与爱社会主义相统一、维护祖国统一和民族团结、实现中华民族伟大复兴的中国梦。"
         },
@@ -40710,7 +40710,7 @@ window.KAOYAN_POL_DATA = {
           "resolved_sentences": [
             {
               "idx": 0,
-              "start": 0.0,
+              "start": 0,
               "end": 10.85,
               "text": "早上好，今天我们一起来学习《冲刺背诵手册》思修法基决胜篇：理想信念、中国精神、社会主义道德与法治体系核心考点精粹。"
             },
@@ -40761,7 +40761,7 @@ window.KAOYAN_POL_DATA = {
             },
             {
               "idx": 6,
-              "start": 57.0,
+              "start": 57,
               "end": 70.42,
               "text": "爱国主义是中华民族的优良传统，在新时代的鲜明主题是坚持爱国主义与爱社会主义相统一、维护祖国统一和民族团结、实现中华民族伟大复兴的中国梦。"
             },

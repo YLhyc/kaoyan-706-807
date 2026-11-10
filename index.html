@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app.css?v=3.0.9">
+  <link rel="stylesheet" href="app.css?v=3.1.0">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -32,9 +32,9 @@
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
   <!-- 动态微交互矢量图标引擎 (Kubai Icons · 金石朱墨主题) -->
-  <script src="kubai_icons.js?v=3.0.9" defer></script>
+  <script src="kubai_icons.js?v=3.1.0" defer></script>
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=3.0.9" defer></script>
+  <script src="data/kaoyan_data.js?v=3.1.0" defer></script>
 </head>
 <body>
 
@@ -263,7 +263,7 @@
       <div class="sidebar-footer">
         <div class="app-version-badge" id="appVersionBadge" title="点击检查更新">
           <span class="version-dot"></span>
-          <span id="versionText">版本 v3.0.9 · 金石朱墨全科双轨典藏版</span>
+          <span id="versionText">版本 v3.1.0 · 金石朱墨全科双轨典藏版</span>
         </div>
         <button id="btn-force-refresh" class="refresh-cache-btn" title="强制清除缓存并拉取最新版本">
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -301,7 +301,7 @@
             <span id="stage-topic" class="breadcrumb-item">名家专章</span>
             <span>/</span>
             <span id="stage-score" class="score-badge">30分论述</span>
-            <span id="stage-tier" class="tier-badge tier-T0">T0</span>
+            <span id="stage-tier" class="tier-badge tier-T0" role="button" tabindex="0" title="点击按此分级筛选题库 · 打开考点抽屉">T0</span>
             <button type="button" class="mastery-toggle-btn status-unlearned" id="btn-mastery-toggle" title="点击切换背诵掌握状态（未背诵 / 磨耳中 / 已背熟掌握朱砂印）">
               <span class="mastery-btn-icon" id="masteryBtnIcon">
                 <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"></circle></svg>
@@ -536,7 +536,7 @@
   </nav>
 
 
-  <script src="app.js?v=3.0.9" defer></script>
+  <script src="app.js?v=3.1.0" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -935,11 +935,11 @@
     </div>
     <h3 class="update-modal-title">正在同步云端新版本</h3>
     <div class="update-modal-badges">
-      <span class="update-badge-old" id="updateModalOldVer">v3.0.9</span>
+      <span class="update-badge-old" id="updateModalOldVer">v3.1.0</span>
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5 12h14M12 5l7 7-7 7"/>
       </svg>
-      <span class="update-badge-new" id="updateModalNewVer">v3.0.9</span>
+      <span class="update-badge-new" id="updateModalNewVer">v3.1.0</span>
     </div>
     <p class="update-modal-status" id="updateModalStatus">正在连接云端节点并校验资源清单...</p>
     <div class="update-progress-container">

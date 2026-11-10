@@ -575,6 +575,46 @@ body {
   letter-spacing: 0.3px;
 }
 
+/* 正文顶部分级胶囊可点击交互 (T0 / T1 / 题眼) */
+#stage-tier {
+  cursor: pointer !important;
+  user-select: none;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, filter 0.18s ease !important;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+}
+
+#stage-tier:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#stage-tier:active {
+  transform: scale(0.92);
+  filter: brightness(0.92);
+}
+
+#stage-tier::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.45) 10%, transparent 70%);
+  opacity: 0;
+  transform: scale(2);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+
+#stage-tier:active::after {
+  opacity: 1;
+  transform: scale(0);
+  transition: 0s;
+}
+
 .tier-T0 {
   background-color: var(--vermilion-soft);
   color: var(--vermilion);
@@ -5846,11 +5886,11 @@ body.dock-expanded .dock-fab-play {
 
   /* 页面底边距防遮挡垫高 */
   .main-stage {
-    padding-bottom: calc(80px + env(safe-area-inset-bottom, 8px)) !important;
+    padding-bottom: calc(130px + env(safe-area-inset-bottom, 16px)) !important;
   }
 
   body.dock-expanded .main-stage {
-    padding-bottom: calc(146px + env(safe-area-inset-bottom, 10px)) !important;
+    padding-bottom: calc(190px + env(safe-area-inset-bottom, 16px)) !important;
   }
 }
 

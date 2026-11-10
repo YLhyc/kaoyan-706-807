@@ -495,21 +495,7 @@
       return;
     }
 
-    // 恢复上次背诵的科目与音轨
-    const savedSubject = localStorage.getItem('kaoyan_last_subject');
-    if (savedSubject && ['807', '706', 'en', 'pol'].includes(savedSubject)) {
-      if (savedSubject === 'pol') {
-        switchSubject('pol');
-        return;
-      }
-      state.currentSubject = savedSubject;
-      if (el.subject807Btn) el.subject807Btn.classList.toggle('active', savedSubject === '807');
-      if (el.subject706Btn) el.subject706Btn.classList.toggle('active', savedSubject === '706');
-      if (el.subjectPolBtn) el.subjectPolBtn.classList.toggle('active', savedSubject === 'pol');
-      if (el.subjectEnBtn) el.subjectEnBtn.classList.toggle('active', savedSubject === 'en');
-      updateSubjectUI(savedSubject);
-    }
-
+    // 恢复上次背诵的音轨
     const savedTrack = localStorage.getItem('kaoyan_last_track');
     if (savedTrack && (savedTrack === '1' || savedTrack === '2')) {
       state.currentTrack = parseInt(savedTrack, 10);
@@ -517,16 +503,32 @@
       if (el.tabTrack2) el.tabTrack2.classList.toggle('active', state.currentTrack === 2);
     }
 
+    // 基础初始化必须完整执行（包含全科打卡徽标计算等）
     updateBadgeCounts();
-    renderFilterPills();
-    renderSidebarList();
-    
-    // 恢复上次听到的知识点，不再每次进入都回到最开始的第一题
-    const defaultList = getCurrentItemsList();
-    const savedItemId = localStorage.getItem(`kaoyan_last_item_${state.currentSubject}`) || localStorage.getItem('kaoyan_last_item_id');
-    const targetItem = (savedItemId && defaultList.find(x => x.id === savedItemId)) || defaultList[0];
-    if (targetItem) {
-      selectItem(targetItem.id, false, true);
+
+    // 恢复上次背诵的科目
+    const savedSubject = localStorage.getItem('kaoyan_last_subject');
+    if (savedSubject === 'pol') {
+      switchSubject('pol');
+    } else {
+      if (savedSubject && ['807', '706', 'en'].includes(savedSubject)) {
+        state.currentSubject = savedSubject;
+        if (el.subject807Btn) el.subject807Btn.classList.toggle('active', savedSubject === '807');
+        if (el.subject706Btn) el.subject706Btn.classList.toggle('active', savedSubject === '706');
+        if (el.subjectPolBtn) el.subjectPolBtn.classList.toggle('active', savedSubject === 'pol');
+        if (el.subjectEnBtn) el.subjectEnBtn.classList.toggle('active', savedSubject === 'en');
+        updateSubjectUI(savedSubject);
+      }
+      renderFilterPills();
+      renderSidebarList();
+      
+      // 恢复上次听到的知识点，不再每次进入都回到最开始的第一题
+      const defaultList = getCurrentItemsList();
+      const savedItemId = localStorage.getItem(`kaoyan_last_item_${state.currentSubject}`) || localStorage.getItem('kaoyan_last_item_id');
+      const targetItem = (savedItemId && defaultList.find(x => x.id === savedItemId)) || defaultList[0];
+      if (targetItem) {
+        selectItem(targetItem.id, false, true);
+      }
     }
   }
 
@@ -724,24 +726,28 @@
     
     updateSubjectUI(sub);
 
-    // 跨科切换掌握度保护：若当前筛选在目标科目下结果为空，自动回退到 'all' 避免白屏
-    if (state.masteryFilter !== 'all') {
-      let candList = [];
-      if (sub === '807') candList = state.allData?.items_807 || [];
-      else if (sub === '706') candList = state.allData?.items_706 || [];
-      else if (sub === 'en') candList = state.allData?.items_en || [];
-      else if (sub === 'pol' && window.KAOYAN_POL_DATA) {
-        candList = window.KAOYAN_POL_DATA.chapters47 || [];
-      }
-      const matchCount = candList.filter(it => getMasteryStatus(it.id) === state.masteryFilter).length;
-      if (matchCount === 0) {
-        state.masteryFilter = 'all';
-        document.querySelectorAll('#mastery-pills-wrap .filter-pill').forEach(b => {
-          b.classList.toggle('active', b.dataset.mastery === 'all');
-        });
-      }
+    // a) 跨科目切换时，必须完全重置过滤状态
+    state.tierFilter = 'all';
+    state.masteryFilter = 'all';
+    state.scoreFilter = 'all';
+    state.searchQuery = '';
+    if (el.searchInput) el.searchInput.value = '';
+
+    // 同步重置 DOM 中所有 filter pills 的 active 状态
+    document.querySelectorAll('#mastery-pills-wrap .filter-pill').forEach(b => {
+      b.classList.toggle('active', b.dataset.mastery === 'all');
+    });
+    if (el.scoreFilterWrap) {
+      el.scoreFilterWrap.querySelectorAll('.filter-pill').forEach(b => {
+        b.classList.toggle('active', b.dataset.score === 'all' || !b.dataset.score);
+      });
     }
-    
+    document.querySelectorAll('[data-pol-cat]').forEach(b => {
+      b.classList.toggle('active', b.dataset.polCat === 'all');
+    });
+
+    localStorage.setItem('kaoyan_last_subject', sub);
+
     if (sub === 'pol') {
       if (el.polSubmodeBar) el.polSubmodeBar.style.display = 'flex';
       if (el.polCategoryPills) el.polCategoryPills.style.display = state.polSubMode === 'recite47' ? 'flex' : 'none';
@@ -761,19 +767,19 @@
       ensurePolDataLoaded().then(() => {
         if (state.currentSubject !== 'pol') return; // 用户已切走，终止过期的异步回调
         renderSidebarList();
-        const list = getCurrentItemsList();
-        const isCurrentInList = list.some(x => x.id === state.activeItemId);
+        let list = getCurrentItemsList();
+        if (!list || list.length === 0) {
+          list = getPolItemList() || [];
+        }
         const savedForSub = localStorage.getItem(`kaoyan_last_item_${sub}`);
-        const targetItem = (!isCurrentInList && savedForSub && list.find(x => x.id === savedForSub))
-          || (!isCurrentInList ? list[0] : list.find(x => x.id === state.activeItemId))
-          || list[0];
+        let targetItem = (savedForSub && list.find(x => x.id === savedForSub)) || list[0];
         if (targetItem) {
           selectItem(targetItem.id, false);
         }
       });
-      localStorage.setItem('kaoyan_last_subject', sub);
       return;
     } else {
+      // e) 检查从 pol 切到专业课时：必须清理 paperContent 上的任何政治类名与残留 HTML，强制让专业课的 renderPaperContent 完整接管！
       if (el.polSubmodeBar) el.polSubmodeBar.style.display = 'none';
       if (el.polCategoryPills) el.polCategoryPills.style.display = 'none';
       if (el.stagePolNav) el.stagePolNav.style.display = 'none';
@@ -781,20 +787,39 @@
       if (el.filterPillsWrap) el.filterPillsWrap.style.display = 'flex';
       if (el.scoreFilterWrap) el.scoreFilterWrap.style.display = (sub === 'en' ? 'none' : '');
       if (el.trackTabs) el.trackTabs.style.display = '';
-      if (el.paperContent) el.paperContent.classList.remove('pol-scope');
+      if (el.paperContent) {
+        el.paperContent.classList.remove('pol-scope');
+        el.paperContent.innerHTML = '';
+      }
     }
 
-    state.tierFilter = 'all';
     renderFilterPills();
-    
-    localStorage.setItem('kaoyan_last_subject', sub);
     renderSidebarList();
-    const list = getCurrentItemsList();
-    const isCurrentInList = list.some(x => x.id === state.activeItemId);
+
+    // b) 计算 list = getCurrentItemsList()。若 list 为空（做防御性容错），则强制重置后重新取 rawList
+    let list = getCurrentItemsList();
+    if (!list || list.length === 0) {
+      state.tierFilter = 'all';
+      state.masteryFilter = 'all';
+      state.scoreFilter = 'all';
+      state.searchQuery = '';
+      if (sub === '807') list = state.allData?.items_807 || [];
+      else if (sub === '706') list = state.allData?.items_706 || [];
+      else if (sub === 'en') list = state.allData?.items_en || [];
+      else list = [];
+    }
+
+    // c) 寻找 targetItem：如果用户之前在政治（或其他科目），savedForSub 在当前科目的列表中不存在，必须坚决 fallback 到当前科目的第一项 list[0]！
     const savedForSub = localStorage.getItem(`kaoyan_last_item_${sub}`);
-    const targetItem = (!isCurrentInList && savedForSub && list.find(x => x.id === savedForSub))
-      || (!isCurrentInList ? list[0] : list.find(x => x.id === state.activeItemId))
-      || list[0];
+    let targetItem = null;
+    if (savedForSub && list.length > 0) {
+      targetItem = list.find(x => x.id === savedForSub);
+    }
+    if (!targetItem && list.length > 0) {
+      targetItem = list[0];
+    }
+
+    // d) 强制调用 selectItem(targetItem.id, false)
     if (targetItem) {
       selectItem(targetItem.id, false);
     }
@@ -1335,8 +1360,16 @@
   }
 
   function selectItem(itemId, autoPlay = false, restoreTime = false) {
-    const list = getCurrentItemsList();
-    const item = list.find(x => x.id === itemId);
+    let list = getCurrentItemsList();
+    let item = list.find(x => x.id === itemId);
+    if (!item) {
+      let rawList;
+      if (state.currentSubject === 'pol') rawList = getPolItemList();
+      else if (state.currentSubject === '807') rawList = state.allData?.items_807;
+      else if (state.currentSubject === '706') rawList = state.allData?.items_706;
+      else rawList = state.allData?.items_en;
+      item = (rawList && rawList.find(x => x.id === itemId)) || (rawList && rawList[0]) || (list && list[0]);
+    }
     if (!item) return;
 
     lastSpotlightEl = null; // 切换考题清除旧聚光引用，消除跨题内存残留与同名 sentId 穿透
@@ -1358,6 +1391,9 @@
     if (state.currentSubject === 'pol') {
       selectPolItem(item, autoPlay, restoreTime);
       return;
+    }
+    if (el.paperContent) {
+      el.paperContent.classList.remove('pol-scope');
     }
     if (state.currentSubject === '807') {
       el.stageSubject.textContent = '807 现当代文学';
@@ -1569,6 +1605,7 @@
   function renderPaperContent(trackObj, sentences) {
     if (!el.paperContent) return;
     lastSpotlightEl = null;
+    el.paperContent.classList.remove('pol-scope');
     el.paperContent.innerHTML = '';
     applyClozeClassToPaper();
 
@@ -2853,6 +2890,97 @@
       });
     }
 
+    // 正文顶部 stage-tier (如 T0/T1/题眼 胶囊) 点击交互增强：聚焦分级筛选并联动弹出题库抽屉
+    if (el.stageTier) {
+      el.stageTier.setAttribute('role', 'button');
+      el.stageTier.setAttribute('tabindex', '0');
+      el.stageTier.setAttribute('title', '点击按此分级筛选题库 · 打开考点抽屉');
+
+      const handleStageTierClick = (e) => {
+        if (e) e.stopPropagation();
+        
+        const sub = state.currentSubject;
+        if (sub === '807' || sub === '706') {
+          const itemLevel = state.activeItem?.level || el.stageTier.textContent.trim() || 'T0';
+          // 若当前未以此分级筛选，则聚焦该级别；若已在此级别，则轮换回全部考点 (all)
+          if (state.tierFilter !== itemLevel) {
+            state.tierFilter = itemLevel;
+            showToast(`已聚焦【${itemLevel}】级别考点`, 1800);
+          } else {
+            state.tierFilter = 'all';
+            showToast('已重置为【全部考点】', 1800);
+          }
+
+          // 同步更新题库顶部筛选 pills
+          if (el.filterPillsWrap) {
+            el.filterPillsWrap.querySelectorAll('.filter-pill').forEach(b => {
+              const pId = b.dataset.tier || b.dataset.filter;
+              b.classList.toggle('active', pId === state.tierFilter);
+            });
+          }
+          renderSidebarList();
+        } else if (sub === 'en') {
+          const itemType = state.activeItem?.type || state.activeItem?.level || 'all';
+          if (state.tierFilter !== itemType && itemType !== 'all') {
+            state.tierFilter = itemType;
+            showToast(`已聚焦【${state.activeItem?.title || itemType}】类范文`, 1800);
+          } else {
+            state.tierFilter = 'all';
+            showToast('已重置为【全部范文】', 1800);
+          }
+          if (el.filterPillsWrap) {
+            el.filterPillsWrap.querySelectorAll('.filter-pill').forEach(b => {
+              const pId = b.dataset.tier || b.dataset.filter;
+              b.classList.toggle('active', pId === state.tierFilter);
+            });
+          }
+          renderSidebarList();
+        } else if (sub === 'pol') {
+          if (state.polSubMode === 'recite47' && state.activeItem?.category) {
+            const itemCat = state.activeItem.category;
+            if (state.polCategory !== itemCat) {
+              state.polCategory = itemCat;
+              localStorage.setItem('kaoyan_pol_cat', itemCat);
+              document.querySelectorAll('[data-pol-cat]').forEach(b => {
+                b.classList.toggle('active', b.dataset.polCat === itemCat);
+              });
+              renderSidebarList();
+              showToast(`已聚焦【${state.activeItem.categoryName || itemCat}】模块`, 1800);
+            }
+          }
+        }
+
+        // 打开题库抽屉 (移动端弹出侧边抽屉，桌面端若折叠则展开)
+        if (isSidebarDrawerMode()) {
+          openSidebar();
+        } else {
+          const appBody = document.querySelector('.app-body');
+          if (appBody && appBody.classList.contains('sidebar-collapsed')) {
+            appBody.classList.remove('sidebar-collapsed');
+            localStorage.setItem('kaoyan_sidebar_collapsed', '0');
+          }
+        }
+
+        // 平滑滚入当前考点卡片
+        setTimeout(() => {
+          if (el.itemList) {
+            const activeCard = el.itemList.querySelector('.question-card-item.active') || el.itemList.querySelector('.question-card-item');
+            if (activeCard) {
+              activeCard.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            }
+          }
+        }, 80);
+      };
+
+      el.stageTier.addEventListener('click', handleStageTierClick);
+      el.stageTier.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleStageTierClick(e);
+        }
+      });
+    }
+
     if (el.masteryPillsWrap) {
       const mPills = el.masteryPillsWrap.querySelectorAll('.filter-pill');
       mPills.forEach(pill => {
@@ -3718,7 +3846,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.0.9';
+  const APP_BUILD_ID = '3.1.0';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -4118,7 +4246,7 @@
     showToast('正在加载考研政治背诵手卷...', 2000);
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = 'data/kaoyan_data_pol.js?v=3.0.9';
+      script.src = 'data/kaoyan_data_pol.js?v=3.1.0';
       script.onload = () => {
         isPolDataLoading = false;
         state.polData = window.KAOYAN_POL_DATA;
