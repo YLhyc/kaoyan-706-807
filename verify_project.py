@@ -4,12 +4,13 @@
 考研全科双轨背诵手卷 · 项目工程自检与防白屏门禁脚本 (v3.0.9)
 1. 静态语法校验: node --check
 2. 版本清单一致性: version.json, sw.js, app.js, index.html
-3. 考题数据完整性: 807 (35) + 706 (37) + 英语 (16) = 88 篇
-4. DOM 关键锚点与 CSS 规则完整性
+3. DOM 关键锚点与 CSS 规则完整性
+4. 考题数据完整性: 807 (35) + 706 (37) + 英语 (16) = 88 篇
 """
 
 import sys
 import json
+import re
 import subprocess
 from pathlib import Path
 
@@ -68,25 +69,70 @@ def main():
             print(f"  ✓ version.json: 版本号为 {ver}")
 
     sw_file = root / "sw.js"
-    if sw_file.exists():
+    if not sw_file.exists():
+        errors.append("缺失 sw.js")
+    else:
         sw_text = sw_file.read_text(encoding="utf-8")
         if TARGET_CACHE not in sw_text:
             errors.append(f"sw.js 缓存名未升级为 {TARGET_CACHE}")
             print(f"  ❌ sw.js 缓存键未更新为 v{TARGET_VER}")
         else:
             print(f"  ✓ sw.js 缓存标识已升级至 {TARGET_CACHE}")
+        if f"?v={TARGET_VER}" not in sw_text:
+            errors.append(f"sw.js ASSETS_TO_CACHE 静态资源未配置 ?v={TARGET_VER}")
+            print(f"  ❌ sw.js 静态资源缺失版本戳 ?v={TARGET_VER}")
+        else:
+            print(f"  ✓ sw.js 静态资源统一配置 ?v={TARGET_VER}")
         if "Range" not in sw_text and "range" not in sw_text:
             errors.append("sw.js 未显式排除 Range 请求")
             print("  ❌ sw.js 缺失 Range 排除保护")
         else:
             print("  ✓ sw.js 包含音频与 Range 请求原生流放行保护")
 
-    # 3. HTML 结构与关键 DOM 锚点完整性
-    print("\n[3/4] 校验 index.html 结构与关键 DOM 锚点...")
+    # 校验 app.js 中的 APP_BUILD_ID
+    app_file = root / "app.js"
+    if not app_file.exists():
+        errors.append("缺失 app.js")
+    else:
+        app_text = app_file.read_text(encoding="utf-8")
+        m_app_ver = re.search(r"const\s+APP_BUILD_ID\s*=\s*['\"]([^'\"]+)['\"];", app_text)
+        if not m_app_ver:
+            errors.append("app.js 中未声明 const APP_BUILD_ID")
+            print("  ❌ app.js: 未找到 APP_BUILD_ID 声明")
+        elif m_app_ver.group(1) != TARGET_VER:
+            errors.append(f"app.js APP_BUILD_ID 预期为 {TARGET_VER}，实际为 {m_app_ver.group(1)}")
+            print(f"  ❌ app.js: APP_BUILD_ID 为 {m_app_ver.group(1)} (预期 {TARGET_VER})")
+        else:
+            print(f"  ✓ app.js: APP_BUILD_ID 严格同步为 {m_app_ver.group(1)}")
+
+    # 校验 index.html 中的脚本与样式版本戳
     index_file = root / "index.html"
     if not index_file.exists():
         errors.append("缺失 index.html")
     else:
+        html_text = index_file.read_text(encoding="utf-8")
+        if f"app.js?v={TARGET_VER}" not in html_text:
+            errors.append(f"index.html app.js 缺失 ?v={TARGET_VER}")
+            print(f"  ❌ index.html: app.js 未配置 ?v={TARGET_VER}")
+        else:
+            print(f"  ✓ index.html: app.js 已接入 ?v={TARGET_VER}")
+
+        if f"app.css?v={TARGET_VER}" not in html_text:
+            errors.append(f"index.html app.css 缺失 ?v={TARGET_VER}")
+            print(f"  ❌ index.html: app.css 未配置 ?v={TARGET_VER}")
+        else:
+            print(f"  ✓ index.html: app.css 已接入 ?v={TARGET_VER}")
+
+        stale_script_vers = set(re.findall(r"\?v=(3\.0\.[0-8])", html_text))
+        if stale_script_vers:
+            errors.append(f"index.html 存在过期版本参数: {stale_script_vers}")
+            print(f"  ❌ index.html 存在陈旧版本引用: {stale_script_vers}")
+        else:
+            print(f"  ✓ index.html: 核心脚本与样式表均已接入最新 ?v={TARGET_VER}")
+
+    # 3. HTML 结构与关键 DOM 锚点完整性
+    print("\n[3/4] 校验 index.html 结构与关键 DOM 锚点...")
+    if index_file.exists():
         html = index_file.read_text(encoding="utf-8")
 
         # 检查 defer 属性

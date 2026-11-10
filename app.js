@@ -3718,7 +3718,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.0.7';
+  const APP_BUILD_ID = '3.0.9';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -3846,11 +3846,22 @@
       setStep(100, '步骤 4/4 · 同步就绪', '同步完成！背诵手卷正在重新启封...');
       await sleep(380);
 
+      if (targetVer) {
+        try {
+          sessionStorage.setItem('just_updated_v' + targetVer, '1');
+        } catch (e) {}
+      }
+
       const cleanUrl = window.location.origin + window.location.pathname + '?v=' + encodeURIComponent(targetVer) + '&t=' + Date.now();
       window.location.replace(cleanUrl);
     } catch (err) {
       console.error('Update flow error:', err);
       setStep(100, '完成', '正在刷新页面...');
+      if (targetVer) {
+        try {
+          sessionStorage.setItem('just_updated_v' + targetVer, '1');
+        } catch (e) {}
+      }
       window.location.reload();
     }
   }
@@ -3873,10 +3884,22 @@
       latestUpdatePayload = payload;
 
       const remoteVer = String(payload.version || '');
-      const isNewer = compareVersions(remoteVer, APP_BUILD_ID) > 0;
+      const isJustUpdated = sessionStorage.getItem('just_updated_v' + remoteVer) === '1';
       const isDismissed = sessionStorage.getItem('dismiss_update_v' + remoteVer) === '1';
+      const isNewer = compareVersions(remoteVer, APP_BUILD_ID) > 0;
 
-      if (isNewer) {
+      // 如果已是最新版本，或刚完成更新(isJustUpdated 且 remoteVer == targetVer)，严格隐藏横幅并抑制更新提示
+      if (remoteVer === APP_BUILD_ID || isJustUpdated || !isNewer) {
+        // 当前已是最新版本，彻底消除横幅与红点
+        if (banner) banner.style.display = 'none';
+        if (badge) badge.classList.remove('has-update');
+        if (versionText) {
+          versionText.textContent = `已是最新版 v${APP_BUILD_ID} · 88篇全科真题`;
+        }
+        if (isManual) {
+          showToast(`当前已是最新版本 v${APP_BUILD_ID}`, 2000);
+        }
+      } else {
         if (banner && !isDismissed) {
           if (bannerText) bannerText.textContent = `发现新版本 v${remoteVer} · 点击同步更新`;
           banner.style.display = 'flex';
@@ -3890,16 +3913,6 @@
         if (isManual) {
           showToast(`发现新版本 v${remoteVer}，准备同步`, 2000);
           performVisualUpdateFlow(remoteVer);
-        }
-      } else {
-        // 当前已是最新版本，彻底消除横幅与红点
-        if (banner) banner.style.display = 'none';
-        if (badge) badge.classList.remove('has-update');
-        if (versionText) {
-          versionText.textContent = `已是最新版 v${APP_BUILD_ID} · 88题全科纯享`;
-        }
-        if (isManual) {
-          showToast(`当前已是最新版本 v${APP_BUILD_ID}`, 2000);
         }
       }
     } catch (err) {
@@ -3919,7 +3932,7 @@
     if (badge) {
       badge.addEventListener('click', () => {
         if (badge.classList.contains('has-update')) {
-          performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.0.0');
+          performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.0.9');
         } else {
           checkAppUpdate(true);
         }
@@ -3928,13 +3941,13 @@
 
     if (refreshBtn) {
       refreshBtn.addEventListener('click', () => {
-        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.0.0');
+        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.0.9');
       });
     }
 
     if (bannerBody) {
       bannerBody.addEventListener('click', () => {
-        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.0.0');
+        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.0.9');
       });
     }
 
