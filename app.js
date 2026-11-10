@@ -64,6 +64,29 @@
   let syncRafId = null;
   let lastSpotlightEl = null;
 
+  // 严密循环闭环与寻音防重入锁引擎 (Anti-Reentry & Drift-Prevention Engine)
+  let isLoopSeeking = false;
+  let loopSeekTimer = null;
+  let lastSeekTs = 0;
+
+  function triggerLoopSeek(targetTime) {
+    const now = Date.now();
+    if (isLoopSeeking && (now - lastSeekTs < 150)) {
+      return;
+    }
+    isLoopSeeking = true;
+    lastSeekTs = now;
+    try {
+      audio.currentTime = targetTime;
+    } catch (err) {
+      console.warn('Seek error:', err);
+    }
+    if (loopSeekTimer) clearTimeout(loopSeekTimer);
+    loopSeekTimer = setTimeout(() => {
+      isLoopSeeking = false;
+    }, 150);
+  }
+
   const audio = new Audio();
   audio.preload = 'metadata';
   window.state = state;
@@ -135,8 +158,80 @@
     state.loopCount = 0;
     localStorage.setItem('kaoyan_play_mode', modeId);
     updatePlayModeUI(showToastNotice);
-    if (state.currentSentIndex !== -1 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
-      highlightSentence(state.activeSentences[state.currentSentIndex].id);
+
+    // 智能校准当前高光与指针
+    if (state.activeSentences && state.activeSentences.length > 0) {
+      if (state.currentSentIndex === -1 || !state.activeSentences[state.currentSentIndex]) {
+        state.currentSentIndex = findActiveSentenceIndex(audio.currentTime || 0);
+      }
+      if (state.currentSentIndex !== -1 && state.activeSentences[state.currentSentIndex]) {
+        highlightSentence(state.activeSentences[state.currentSentIndex].id);
+      }
+    }
+
+    if (modeId === 'section' && currentFrameworkSections.length > 0) {
+      const cur = audio.currentTime || 0;
+      const matchedSecIdx = currentFrameworkSections.findIndex(s => cur >= s.start - 0.05 && cur <= s.end + 0.05);
+      if (matchedSecIdx !== -1) {
+        currentActiveSectionIndex = matchedSecIdx;
+      }
+    }
+    updateHUDDisplay(audio.currentTime || 0);
+  }
+
+  // ==========================================
+  // 移动端抽屉滚动穿透锁与触摸隔离管理器 (Touch Isolation & Scroll Lock Manager)
+  // ==========================================
+  const activeDrawers = new Set();
+
+  function lockBodyScroll(drawerName = 'drawer') {
+    const key = (typeof drawerName === 'string') ? drawerName : (drawerName?.id || drawerName?.className || 'drawer');
+    activeDrawers.add(key);
+    document.documentElement.classList.add('drawer-scroll-locked');
+    document.body.classList.add('drawer-scroll-locked');
+  }
+
+  function unlockBodyScroll(drawerName = 'drawer') {
+    const key = (typeof drawerName === 'string') ? drawerName : (drawerName?.id || drawerName?.className || 'drawer');
+    activeDrawers.delete(key);
+    if (activeDrawers.size === 0) {
+      document.documentElement.classList.remove('drawer-scroll-locked');
+      document.body.classList.remove('drawer-scroll-locked');
+    }
+  }
+
+  function isBodyScrollLocked() {
+    return activeDrawers.size > 0;
+  }
+
+  function isSidebarDrawerMode() {
+    return window.innerWidth <= 900;
+  }
+
+  function openSidebar() {
+    if (!el.sidebar) return;
+    el.sidebar.classList.add('open');
+    if (el.backdrop) el.backdrop.classList.add('open');
+    lockBodyScroll('sidebar');
+    setPlayerDockReceded(true);
+    setBottomNavActiveTab('syllabus');
+  }
+
+  function closeSidebar() {
+    if (!el.sidebar) return;
+    el.sidebar.classList.remove('open');
+    if (el.backdrop) el.backdrop.classList.remove('open');
+    unlockBodyScroll('sidebar');
+    setPlayerDockReceded(false);
+    setBottomNavActiveTab('');
+  }
+
+  function toggleSidebar() {
+    if (!el.sidebar) return;
+    if (el.sidebar.classList.contains('open')) {
+      closeSidebar();
+    } else {
+      openSidebar();
     }
   }
 
@@ -149,6 +244,7 @@
       el.playModeDrawer.classList.add('open');
       el.playModeDrawer.setAttribute('aria-hidden', 'false');
     }, 10);
+    lockBodyScroll('playModeDrawer');
   }
 
   function closePlayModeDrawer() {
@@ -159,6 +255,7 @@
       if (el.playModeBackdrop) el.playModeBackdrop.style.display = 'none';
     }, 280);
     setPlayerDockReceded(false);
+    unlockBodyScroll('playModeDrawer');
   }
 
   function renderPlayModeList() {
@@ -818,10 +915,8 @@
         selectItem(item.id);
         const studyTab = document.getElementById('nav-tab-study');
         if (studyTab) studyTab.click();
-        if (window.innerWidth <= 900 && el.sidebar) {
-          el.sidebar.classList.remove('open');
-          setPlayerDockReceded(false);
-          if (el.backdrop) el.backdrop.classList.remove('open');
+        if (isSidebarDrawerMode() && el.sidebar) {
+          closeSidebar();
         }
       });
 
@@ -1021,6 +1116,7 @@
     el.studyDashboardDrawer.classList.add('open');
     setPlayerDockReceded(true);
     if (el.studyDashboardBackdrop) el.studyDashboardBackdrop.style.display = 'block';
+    lockBodyScroll('studyDashboardDrawer');
   }
 
   function closeStudyDashboard() {
@@ -1028,6 +1124,7 @@
     el.studyDashboardDrawer.classList.remove('open');
     setPlayerDockReceded(false);
     if (el.studyDashboardBackdrop) el.studyDashboardBackdrop.style.display = 'none';
+    unlockBodyScroll('studyDashboardDrawer');
   }
 
   function updateStudyDashboardUI() {
@@ -1196,6 +1293,29 @@
     showToast(`已为你抽查【${picked.level || picked.importance || '必背'}】${picked.title}，立即开始磨耳背诵！`, 3000);
   }
 
+  // 权威时间戳净化引擎：严格确保递增、数值合法且每句 end 决不越过下句 start
+  function sanitizeSentences(sentences) {
+    if (!sentences || !Array.isArray(sentences) || sentences.length === 0) return [];
+    const list = sentences.map((s, idx) => {
+      const start = typeof s.start === 'number' ? s.start : parseFloat(s.start || 0);
+      let end = typeof s.end === 'number' ? s.end : parseFloat(s.end || 0);
+      return {
+        ...s,
+        id: s.id !== undefined ? s.id : (s.idx !== undefined ? s.idx : idx),
+        start: isNaN(start) ? 0 : start,
+        end: isNaN(end) ? (start + 1.0) : end,
+        idx: s.idx !== undefined ? s.idx : idx
+      };
+    });
+    list.sort((a, b) => a.start - b.start);
+    for (let i = 0; i < list.length - 1; i++) {
+      if (list[i].end > list[i + 1].start) {
+        list[i].end = list[i + 1].start;
+      }
+    }
+    return list;
+  }
+
   // DOM 兜底解析机制：离线或 file:/// 协议无 JSON 缓存时，从当前 DOM 提取
   function extractSentencesFromDOM() {
     if (!el.paperContent) return [];
@@ -1211,8 +1331,7 @@
         list.push({ id, start, end, text, idx: sIdx, domId: node.id });
       }
     });
-    list.sort((a, b) => a.start - b.start);
-    return list;
+    return sanitizeSentences(list);
   }
 
   function selectItem(itemId, autoPlay = false, restoreTime = false) {
@@ -1367,13 +1486,7 @@
       sentences = extractSentencesFromDOM();
     }
 
-    state.activeSentences = (sentences || []).map((s, idx) => ({
-      ...s,
-      id: s.id !== undefined ? s.id : (s.idx !== undefined ? s.idx : idx),
-      start: typeof s.start === 'number' ? s.start : parseFloat(s.start || 0),
-      end: typeof s.end === 'number' ? s.end : parseFloat(s.end || 0),
-      idx: s.idx !== undefined ? s.idx : idx
-    }));
+    state.activeSentences = sanitizeSentences(sentences);
     buildFrameworkIndex();
 
     // 若未命中内置包且有 sFile，发起异步非阻塞 fetch 进行补充校准
@@ -1382,13 +1495,7 @@
         .then(res => res.ok ? res.json() : null)
         .then(fetchedSents => {
           if (fetchedSents && fetchedSents.length > 0 && state.currentTrack === trackNum && state.activeItemId === item.id) {
-            state.activeSentences = fetchedSents.map((s, idx) => ({
-              ...s,
-              id: s.id !== undefined ? s.id : (s.idx !== undefined ? s.idx : idx),
-              start: typeof s.start === 'number' ? s.start : parseFloat(s.start || 0),
-              end: typeof s.end === 'number' ? s.end : parseFloat(s.end || 0),
-              idx: s.idx !== undefined ? s.idx : idx
-            }));
+            state.activeSentences = sanitizeSentences(fetchedSents);
             buildFrameworkIndex();
           }
         })
@@ -1571,6 +1678,14 @@
     highlightSentence(targetSent ? targetSent.id : sentId);
     updateHUDDisplay(targetTime);
 
+    // 严密防重入与防漂移寻音锁：在寻音落地前锁定当前句指针，杜绝未落地前的脏读覆盖
+    isLoopSeeking = true;
+    lastSeekTs = Date.now();
+    if (loopSeekTimer) clearTimeout(loopSeekTimer);
+    loopSeekTimer = setTimeout(() => {
+      isLoopSeeking = false;
+    }, 200);
+
     const applySeek = () => {
       try {
         audio.currentTime = targetTime;
@@ -1705,7 +1820,7 @@
       const now = Date.now();
       const rate = (audio && audio.playbackRate > 0) ? audio.playbackRate : (state.speed || 1.0);
       const throttleInterval = Math.max(300, Math.round(700 / rate));
-      if (now - state.lastUserScrollTime > 2000 && now - lastScrollTs > throttleInterval) {
+      if (!isBodyScrollLocked() && now - state.lastUserScrollTime > 2000 && now - lastScrollTs > throttleInterval) {
         const rect = targetEl.getBoundingClientRect();
         const vh = window.innerHeight || 800;
         const idealTop = vh * 0.40;
@@ -1910,10 +2025,14 @@
     const fallbackTotalEnd = (lastGlobalSent && lastGlobalSent.end) ? parseFloat(lastGlobalSent.end) : (audio.duration || 9999);
     for (let i = 0; i < currentFrameworkSections.length; i++) {
       const sec = currentFrameworkSections[i];
+      const nextSec = (i < currentFrameworkSections.length - 1) ? currentFrameworkSections[i + 1] : null;
       if (!sec.end || isNaN(sec.end) || sec.end <= sec.start) {
-        sec.end = (i < currentFrameworkSections.length - 1 && currentFrameworkSections[i + 1].start > sec.start)
-          ? currentFrameworkSections[i + 1].start
+        sec.end = (nextSec && nextSec.start > sec.start)
+          ? nextSec.start
           : fallbackTotalEnd;
+      }
+      if (nextSec && typeof nextSec.start === 'number' && sec.end > nextSec.start) {
+        sec.end = nextSec.start;
       }
     }
 
@@ -2140,23 +2259,25 @@
     renderOutlineDrawer();
     if (el.outlineDrawer) {
       el.outlineDrawer.classList.add('open');
-    setPlayerDockReceded(true);
+      setPlayerDockReceded(true);
       el.outlineDrawer.setAttribute('aria-hidden', 'false');
     }
     if (el.outlineDrawerBackdrop) {
       el.outlineDrawerBackdrop.style.display = 'block';
     }
+    lockBodyScroll('outlineDrawer');
   }
 
   function closeOutlineDrawer() {
     if (el.outlineDrawer) {
       el.outlineDrawer.classList.remove('open');
-    setPlayerDockReceded(false);
+      setPlayerDockReceded(false);
       el.outlineDrawer.setAttribute('aria-hidden', 'true');
     }
     if (el.outlineDrawerBackdrop) {
       el.outlineDrawerBackdrop.style.display = 'none';
     }
+    unlockBodyScroll('outlineDrawer');
   }
 
   function renderProgressTicks() {
@@ -2216,21 +2337,30 @@
 
         // 1. 单句循环模式 (严格精准闭环，防串音防越界)
         if (state.playMode === 'sentence' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
+          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+            updateHUDDisplay(cur);
+            syncRafId = requestAnimationFrame(runSyncLoop);
+            return;
+          }
+
           const sent = state.activeSentences[state.currentSentIndex];
           const nextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
           const sStart = typeof sent.start === 'number' ? sent.start : parseFloat(sent.start || 0);
           const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (nextSent ? nextSent.start : Infinity));
           const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
 
-          if (cur < sStart - 0.5) {
+          // 严格闭环截断边界：在下一句发声前绝对截断，严禁穿透至下一句语音起始；静音空隙则在当前句末即刻回弹
+          const loopCutoff = Math.min(sEnd - 0.05, isFinite(nextStart) ? (nextStart - 0.08) : (sEnd - 0.05));
+
+          if (!isLoopSeeking && (cur < sStart - 0.5 || cur > sEnd + 0.8)) {
             const newIdx = findActiveSentenceIndex(cur);
             if (newIdx !== -1 && newIdx !== state.currentSentIndex) {
               state.currentSentIndex = newIdx;
               state.loopCount = 0;
               highlightSentence(state.activeSentences[newIdx].id);
             }
-          } else if (cur >= sEnd - 0.03 || (nextSent && cur >= nextStart - 0.05)) {
-            audio.currentTime = sStart;
+          } else if (cur >= loopCutoff - 0.04) {
+            triggerLoopSeek(sStart);
             if (audio.paused) audio.play().catch(e => console.log(e));
             syncRafId = requestAnimationFrame(runSyncLoop);
             return;
@@ -2242,23 +2372,30 @@
         }
         // 2. 单句3遍模式 (满3遍后精准推移至下一句)
         else if (state.playMode === 'loop3' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
+          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+            updateHUDDisplay(cur);
+            syncRafId = requestAnimationFrame(runSyncLoop);
+            return;
+          }
+
           const sent = state.activeSentences[state.currentSentIndex];
           const nextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
           const sStart = typeof sent.start === 'number' ? sent.start : parseFloat(sent.start || 0);
           const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (nextSent ? nextSent.start : Infinity));
           const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
+          const loopCutoff = Math.min(sEnd - 0.05, isFinite(nextStart) ? (nextStart - 0.08) : (sEnd - 0.05));
 
-          if (cur < sStart - 0.5) {
+          if (!isLoopSeeking && (cur < sStart - 0.5 || cur > sEnd + 0.8)) {
             const newIdx = findActiveSentenceIndex(cur);
             if (newIdx !== -1 && newIdx !== state.currentSentIndex) {
               state.currentSentIndex = newIdx;
               state.loopCount = 0;
               highlightSentence(state.activeSentences[newIdx].id);
             }
-          } else if (cur >= sEnd - 0.03 || (nextSent && cur >= nextStart - 0.05)) {
+          } else if (cur >= loopCutoff - 0.04) {
             if (state.loopCount < 2) {
               state.loopCount++;
-              audio.currentTime = sStart;
+              triggerLoopSeek(sStart);
               if (audio.paused) audio.play().catch(e => console.log(e));
               syncRafId = requestAnimationFrame(runSyncLoop);
               return;
@@ -2266,7 +2403,7 @@
               state.loopCount = 0;
               if (nextSent) {
                 state.currentSentIndex++;
-                audio.currentTime = nextStart;
+                triggerLoopSeek(nextStart);
                 highlightSentence(nextSent.id);
                 updateHUDDisplay(nextStart);
                 syncRafId = requestAnimationFrame(runSyncLoop);
@@ -2281,17 +2418,25 @@
         }
         // 3. 单段循环模式 (严格闭环防溢出)
         else if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
+          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+            updateHUDDisplay(cur);
+            syncRafId = requestAnimationFrame(runSyncLoop);
+            return;
+          }
+
           const curSec = currentFrameworkSections[currentActiveSectionIndex];
           const nextSec = (currentActiveSectionIndex + 1 < currentFrameworkSections.length) ? currentFrameworkSections[currentActiveSectionIndex + 1] : null;
           if (curSec && typeof curSec.start === 'number' && typeof curSec.end === 'number' && curSec.end > curSec.start) {
             const nextSecStart = nextSec && typeof nextSec.start === 'number' ? nextSec.start : Infinity;
-            if (cur < curSec.start - 0.6) {
+            const secCutoff = Math.min(curSec.end - 0.05, isFinite(nextSecStart) ? (nextSecStart - 0.08) : (curSec.end - 0.05));
+
+            if (!isLoopSeeking && (cur < curSec.start - 0.6 || cur > curSec.end + 0.8)) {
               const matchedSecIdx = currentFrameworkSections.findIndex(s => cur >= s.start - 0.05 && cur <= s.end + 0.05);
               if (matchedSecIdx !== -1) {
                 currentActiveSectionIndex = matchedSecIdx;
               }
-            } else if (cur >= curSec.end - 0.03 || (nextSec && cur >= nextSecStart - 0.05)) {
-              audio.currentTime = curSec.start;
+            } else if (cur >= secCutoff - 0.04) {
+              triggerLoopSeek(curSec.start);
               if (audio.paused) audio.play().catch(e => console.log(e));
               syncRafId = requestAnimationFrame(runSyncLoop);
               return;
@@ -2351,6 +2496,14 @@
       collapsePlayerDock(); // 暂停即自动收起为底栏
     });
 
+    audio.addEventListener('seeked', () => {
+      isLoopSeeking = false;
+      if (loopSeekTimer) {
+        clearTimeout(loopSeekTimer);
+        loopSeekTimer = null;
+      }
+    });
+
     audio.addEventListener('timeupdate', () => {
       const cur = audio.currentTime;
       const dur = audio.duration || 0;
@@ -2382,17 +2535,21 @@
 
         // 1. 单句循环模式
         if (state.playMode === 'sentence' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
+          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+            return;
+          }
           const sent = state.activeSentences[state.currentSentIndex];
           const nextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
           const sStart = typeof sent.start === 'number' ? sent.start : parseFloat(sent.start || 0);
           const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (nextSent ? nextSent.start : Infinity));
           const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
+          const loopCutoff = Math.min(sEnd - 0.05, isFinite(nextStart) ? (nextStart - 0.08) : (sEnd - 0.05));
 
-          if (cur >= sEnd - 0.03 || (nextSent && cur >= nextStart - 0.05)) {
-            audio.currentTime = sStart;
+          if (cur >= loopCutoff - 0.04) {
+            triggerLoopSeek(sStart);
             if (audio.paused) audio.play().catch(e => console.log(e));
             return;
-          } else if (cur < sStart - 0.5) {
+          } else if (!isLoopSeeking && (cur < sStart - 0.5 || cur > sEnd + 0.8)) {
             const newIdx = findActiveSentenceIndex(cur);
             if (newIdx !== -1 && newIdx !== state.currentSentIndex) {
               state.currentSentIndex = newIdx;
@@ -2406,29 +2563,33 @@
         }
         // 2. 单句3遍模式
         else if (state.playMode === 'loop3' && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
+          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+            return;
+          }
           const sent = state.activeSentences[state.currentSentIndex];
           const nextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
           const sStart = typeof sent.start === 'number' ? sent.start : parseFloat(sent.start || 0);
           const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (nextSent ? nextSent.start : Infinity));
           const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
+          const loopCutoff = Math.min(sEnd - 0.05, isFinite(nextStart) ? (nextStart - 0.08) : (sEnd - 0.05));
 
-          if (cur >= sEnd - 0.03 || (nextSent && cur >= nextStart - 0.05)) {
+          if (cur >= loopCutoff - 0.04) {
             if (state.loopCount < 2) {
               state.loopCount++;
-              audio.currentTime = sStart;
+              triggerLoopSeek(sStart);
               if (audio.paused) audio.play().catch(e => console.log(e));
               return;
             } else {
               state.loopCount = 0;
               if (nextSent) {
                 state.currentSentIndex++;
-                audio.currentTime = nextStart;
+                triggerLoopSeek(nextStart);
                 highlightSentence(nextSent.id);
                 updateHUDDisplay(nextStart);
                 return;
               }
             }
-          } else if (cur < sStart - 0.5) {
+          } else if (!isLoopSeeking && (cur < sStart - 0.5 || cur > sEnd + 0.8)) {
             const newIdx = findActiveSentenceIndex(cur);
             if (newIdx !== -1 && newIdx !== state.currentSentIndex) {
               state.currentSentIndex = newIdx;
@@ -2442,12 +2603,16 @@
         }
         // 3. 单段循环模式
         else if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
+          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+            return;
+          }
           const curSec = currentFrameworkSections[currentActiveSectionIndex];
           const nextSec = (currentActiveSectionIndex + 1 < currentFrameworkSections.length) ? currentFrameworkSections[currentActiveSectionIndex + 1] : null;
           if (curSec && typeof curSec.start === 'number' && typeof curSec.end === 'number' && curSec.end > curSec.start) {
             const nextSecStart = nextSec && typeof nextSec.start === 'number' ? nextSec.start : Infinity;
-            if (cur >= curSec.end - 0.03 || (nextSec && cur >= nextSecStart - 0.05)) {
-              audio.currentTime = curSec.start;
+            const secCutoff = Math.min(curSec.end - 0.05, isFinite(nextSecStart) ? (nextSecStart - 0.08) : (curSec.end - 0.05));
+            if (cur >= secCutoff - 0.04) {
+              triggerLoopSeek(curSec.start);
               if (audio.paused) audio.play().catch(e => console.log(e));
               return;
             }
@@ -2467,13 +2632,13 @@
     audio.addEventListener('ended', () => {
       // 1. 完全循环（整个知识点循环）
       if (state.playMode === 'item') {
-        audio.currentTime = 0;
+        triggerLoopSeek(0);
         audio.play().catch(e => console.log(e));
         return;
       }
       // 2. 单句循环
       if (state.playMode === 'sentence' && state.currentSentIndex !== -1 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
-        audio.currentTime = state.activeSentences[state.currentSentIndex].start;
+        triggerLoopSeek(state.activeSentences[state.currentSentIndex].start);
         audio.play().catch(e => console.log(e));
         return;
       }
@@ -2481,7 +2646,7 @@
       if (state.playMode === 'loop3' && state.currentSentIndex !== -1 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
         if (state.loopCount < 2) {
           state.loopCount++;
-          audio.currentTime = state.activeSentences[state.currentSentIndex].start;
+          triggerLoopSeek(state.activeSentences[state.currentSentIndex].start);
           audio.play().catch(e => console.log(e));
           return;
         } else {
@@ -2490,7 +2655,7 @@
       }
       // 4. 单段循环
       if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
-        audio.currentTime = currentFrameworkSections[currentActiveSectionIndex].start;
+        triggerLoopSeek(currentFrameworkSections[currentActiveSectionIndex].start);
         audio.play().catch(e => console.log(e));
         return;
       }
@@ -2668,9 +2833,15 @@
     }
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        if (el.sidebar && el.sidebar.classList.contains('open')) closeSidebar();
         if (el.outlineDrawer && el.outlineDrawer.classList.contains('open')) closeOutlineDrawer();
         if (el.playModeDrawer && el.playModeDrawer.classList.contains('open')) closePlayModeDrawer();
         if (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) closeStudyDashboard();
+        const settingsDrawer = document.getElementById('settingsDrawer');
+        if (settingsDrawer && settingsDrawer.classList.contains('open')) {
+          const settingsClose = document.getElementById('settingsClose');
+          if (settingsClose) settingsClose.click();
+        }
       }
     });
 
@@ -3071,43 +3242,39 @@
 
     if (el.mobileMenuBtn && el.sidebar) {
       el.mobileMenuBtn.addEventListener('click', () => {
-        if (window.innerWidth > 768) {
+        if (isSidebarDrawerMode()) {
+          toggleSidebar();
+        } else {
           if (appBody) {
             const isCollapsed = appBody.classList.toggle('sidebar-collapsed');
             localStorage.setItem('kaoyan_sidebar_collapsed', isCollapsed ? '1' : '0');
           }
-        } else {
-          el.sidebar.classList.toggle('open');
-          if (el.backdrop) el.backdrop.classList.toggle('open');
         }
       });
     }
 
     if (sidebarCollapseBtn) {
       sidebarCollapseBtn.addEventListener('click', () => {
-        if (window.innerWidth > 768) {
+        if (isSidebarDrawerMode()) {
+          closeSidebar();
+        } else {
           if (appBody) {
             appBody.classList.add('sidebar-collapsed');
             localStorage.setItem('kaoyan_sidebar_collapsed', '1');
           }
-        } else {
-          el.sidebar.classList.remove('open');
-          setPlayerDockReceded(false);
-          if (el.backdrop) el.backdrop.classList.remove('open');
         }
       });
     }
 
     if (el.backdrop && el.sidebar) {
       el.backdrop.addEventListener('click', () => {
-        el.sidebar.classList.remove('open');
-          setPlayerDockReceded(false);
-        el.backdrop.classList.remove('open');
+        closeSidebar();
       });
     }
 
     // 监听正文区域及全局主舞台用户手动滚动/滑动/触控，防打架 (Bug Fix 4)
     const markUserScroll = () => {
+      if (isBodyScrollLocked()) return;
       state.lastUserScrollTime = Date.now();
     };
     const mainStageEl = document.querySelector('.main-stage');
@@ -3235,10 +3402,11 @@
       if (nav) nav.classList.add('dock-receded');
     } else {
       const hasOpenDrawer = (
-        (el.sidebar && el.sidebar.classList.contains('open') && window.innerWidth <= 768) ||
+        (el.sidebar && el.sidebar.classList.contains('open') && isSidebarDrawerMode()) ||
         (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) ||
         (document.getElementById('settingsDrawer') && document.getElementById('settingsDrawer').classList.contains('open')) ||
-        (document.getElementById('outlineDrawer') && document.getElementById('outlineDrawer').classList.contains('open'))
+        (document.getElementById('outlineDrawer') && document.getElementById('outlineDrawer').classList.contains('open')) ||
+        (el.playModeDrawer && el.playModeDrawer.classList.contains('open'))
       );
       if (!hasOpenDrawer) {
         if (dock) dock.classList.remove('dock-receded');
@@ -3292,6 +3460,7 @@
       }
       updateSettingsSheetUI();
       setBottomNavActiveTab('settings');
+      lockBodyScroll('settingsDrawer');
     }
 
     function closeSettings() {
@@ -3305,6 +3474,7 @@
       }
       setPlayerDockReceded(false);
       setBottomNavActiveTab('');
+      unlockBodyScroll('settingsDrawer');
     }
 
     function updateSettingsSheetUI() {
@@ -3429,14 +3599,8 @@
         if (settingsDrawer && settingsDrawer.classList.contains('open')) closeSettings();
         if (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) closeStudyDashboard();
 
-        if (window.innerWidth <= 768) {
-          if (el.sidebar) {
-            const willOpen = !el.sidebar.classList.contains('open');
-            el.sidebar.classList.toggle('open', willOpen);
-            if (el.backdrop) el.backdrop.classList.toggle('open', willOpen);
-            setPlayerDockReceded(willOpen);
-            setBottomNavActiveTab(willOpen ? 'syllabus' : '');
-          }
+        if (isSidebarDrawerMode()) {
+          toggleSidebar();
         } else {
           const appBody = document.querySelector('.app-body');
           if (appBody) {
@@ -3516,8 +3680,7 @@
       tabDashboard.addEventListener('click', () => {
         if (settingsDrawer && settingsDrawer.classList.contains('open')) closeSettings();
         if (el.sidebar && el.sidebar.classList.contains('open')) {
-          el.sidebar.classList.remove('open');
-          if (el.backdrop) el.backdrop.classList.remove('open');
+          closeSidebar();
         }
         if (el.studyDashboardDrawer) {
           if (el.studyDashboardDrawer.classList.contains('open')) {
@@ -3536,8 +3699,7 @@
     if (tabSettings) {
       tabSettings.addEventListener('click', () => {
         if (el.sidebar && el.sidebar.classList.contains('open')) {
-          el.sidebar.classList.remove('open');
-          if (el.backdrop) el.backdrop.classList.remove('open');
+          closeSidebar();
         }
         if (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) closeStudyDashboard();
 
@@ -3833,6 +3995,75 @@
     });
   }
 
+  // ==========================================
+  // 触摸手势隔离与遮罩层滚动锁初始化 (Touch Isolation Setup)
+  // ==========================================
+  function initTouchIsolation() {
+    const backdropSelectors = [
+      '#sidebar-backdrop',
+      '.sidebar-backdrop',
+      '#outlineDrawerBackdrop',
+      '.outline-drawer-backdrop',
+      '#playModeBackdrop',
+      '.mode-drawer-backdrop',
+      '#studyDashboardBackdrop',
+      '.dashboard-drawer-backdrop',
+      '#settingsModalBackdrop',
+      '.settings-backdrop',
+      '#speedModalBackdrop',
+      '.speed-modal-backdrop',
+      '#updateModalBackdrop',
+      '.update-modal-backdrop',
+      '.drawer-backdrop'
+    ];
+
+    const preventBackdropTouch = (e) => {
+      e.preventDefault();
+    };
+
+    backdropSelectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(backdrop => {
+        backdrop.addEventListener('touchmove', preventBackdropTouch, { passive: false });
+      });
+    });
+
+    // 移动端全局手势隔离：当任意抽屉开启且锁定滚动时，阻止背景层或非滚动容器的 touchmove 逃逸到根页面
+    document.addEventListener('touchmove', (e) => {
+      if (!isBodyScrollLocked()) return;
+
+      // 1. 遮罩层直接阻止滚动
+      if (e.target && (
+        e.target.matches?.('.sidebar-backdrop, .outline-drawer-backdrop, .mode-drawer-backdrop, .dashboard-drawer-backdrop, .settings-backdrop, .speed-modal-backdrop, .update-modal-backdrop, .drawer-backdrop') ||
+        e.target.closest?.('.sidebar-backdrop, .outline-drawer-backdrop, .mode-drawer-backdrop, .dashboard-drawer-backdrop, .settings-backdrop, .speed-modal-backdrop, .update-modal-backdrop, .drawer-backdrop')
+      )) {
+        e.preventDefault();
+        return;
+      }
+
+      // 2. 底层主舞台与底栏直接阻止滚动
+      if (e.target && e.target.closest?.('.main-stage, #mainStage, .player-dock, .app-bottom-nav')) {
+        e.preventDefault();
+        return;
+      }
+
+      // 3. 检查是否在允许滚动的抽屉容器内
+      const scrollable = e.target.closest?.('.item-list-container, #item-list, .outline-drawer-body, .mode-drawer-body, #playModeList, .play-mode-list, .dashboard-drawer-body, #studyDashboardBody, .settings-body, .appearance-drawer, .filter-pills, .pol-submode-bar');
+      if (!scrollable) {
+        if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+          return;
+        }
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    // 窗口尺寸自适应：若从移动端横屏/小屏放大到桌面大屏，自动解除移动抽屉
+    window.addEventListener('resize', () => {
+      if (!isSidebarDrawerMode() && el.sidebar && el.sidebar.classList.contains('open')) {
+        closeSidebar();
+      }
+    });
+  }
+
   function startApp() {
     window.switchSubject = switchSubject;
     window.selectItem = selectItem;
@@ -3844,6 +4075,7 @@
     setupKubaiNavigation();
     loadManifestData();
     setupVersionHandlers();
+    initTouchIsolation();
   }
 
 
@@ -3873,7 +4105,7 @@
     showToast('正在加载考研政治背诵手卷...', 2000);
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = 'data/kaoyan_data_pol.js?v=3.0.8';
+      script.src = 'data/kaoyan_data_pol.js?v=3.0.9';
       script.onload = () => {
         isPolDataLoading = false;
         state.polData = window.KAOYAN_POL_DATA;
@@ -4055,14 +4287,14 @@
     updatePlayBtnUI();
 
     const sentences = (chapter.track1 && chapter.track1.sentences) || [];
-    state.activeSentences = sentences.map((s, idx) => ({
+    state.activeSentences = sanitizeSentences(sentences.map((s, idx) => ({
       id: s.idx !== undefined ? s.idx : (s.id || idx),
       start: typeof s.start === 'number' ? s.start : parseFloat(s.start || 0),
       end: typeof s.end === 'number' ? s.end : parseFloat(s.end || 0),
       text: s.text,
       domId: s.domId || s.id,
       idx: s.idx !== undefined ? s.idx : idx
-    }));
+    })));
 
     bindSentenceClickHandlers(el.paperContent);
 
@@ -4143,13 +4375,13 @@
     updatePlayBtnUI();
 
     const sentences = card.sentences || [];
-    state.activeSentences = sentences.map((s, idx) => ({
+    state.activeSentences = sanitizeSentences(sentences.map((s, idx) => ({
       id: s.idx !== undefined ? s.idx : idx,
       start: typeof s.start === 'number' ? s.start : parseFloat(s.start || 0),
       end: typeof s.end === 'number' ? s.end : parseFloat(s.end || 0),
       text: s.text,
       idx: s.idx !== undefined ? s.idx : idx
-    }));
+    })));
 
     const bodyEl = document.getElementById('polSubcardBody');
     if (bodyEl) {
@@ -4260,12 +4492,12 @@
     audio.playbackRate = state.speed;
 
     const points = dayItem.points || [];
-    state.activeSentences = points.map(p => ({
+    state.activeSentences = sanitizeSentences(points.map(p => ({
       id: p.id,
       start: voiceType === 'anlang' ? p.anlang_start : p.voice_start,
       end: voiceType === 'anlang' ? p.anlang_end : p.voice_end,
       text: p.tag
-    }));
+    })));
 
     if (startPointIdx >= 0 && startPointIdx < points.length) {
       const p = points[startPointIdx];
@@ -4381,7 +4613,7 @@
     }
     updatePlayBtnUI();
 
-    state.activeSentences = allSentences;
+    state.activeSentences = sanitizeSentences(allSentences);
     bindSentenceClickHandlers(el.paperContent);
 
     attachSealButtonListeners(dayItem.id);

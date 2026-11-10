@@ -8185,3 +8185,71 @@ svg.ui-svg, .pol-scope svg, .xt-part-badge svg {
   max-height: 20px !important;
   overflow: hidden !important;
 }
+
+/* ==========================================================================
+   移动端抽屉滚动穿透锁与触摸手势隔离 (Mobile Drawer Scroll Lock & Touch Isolation)
+   ========================================================================== */
+
+/* 1. 抽屉打开时，彻底锁定 html 和 body 根容器滚动链 */
+html.drawer-scroll-locked,
+body.drawer-scroll-locked {
+  overflow: hidden !important;
+  touch-action: none !important;
+  height: 100% !important;
+}
+
+/* 2. 底层主舞台在抽屉展开时彻底禁止触摸与滚动穿透 */
+body.drawer-scroll-locked .main-stage,
+body.drawer-scroll-locked #mainStage {
+  overflow: hidden !important;
+  touch-action: none !important;
+  pointer-events: none !important;
+}
+
+/* 3. 抽屉与侧边栏独立接管纵向手势，杜绝滚动手势链漏到下层页面 */
+.sidebar,
+#sidebar,
+.item-list-container,
+#item-list,
+.outline-drawer,
+#outlineDrawer,
+.outline-drawer-body,
+.mode-drawer,
+#playModeDrawer,
+.mode-drawer-body,
+.play-mode-list,
+#playModeList,
+.dashboard-drawer,
+#studyDashboardDrawer,
+.dashboard-drawer-body,
+.settings-drawer,
+#settingsDrawer,
+.settings-body,
+.appearance-drawer {
+  overscroll-behavior: contain !important;
+  overscroll-behavior-y: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+  pointer-events: auto !important;
+}
+
+/* 4. 遮罩层禁止触摸与滚动手势 */
+.sidebar-backdrop,
+#sidebar-backdrop,
+.outline-drawer-backdrop,
+#outlineDrawerBackdrop,
+.mode-drawer-backdrop,
+#playModeBackdrop,
+.dashboard-drawer-backdrop,
+#studyDashboardBackdrop,
+.settings-backdrop,
+#settingsModalBackdrop,
+.speed-modal-backdrop,
+#speedModalBackdrop,
+.update-modal-backdrop,
+#updateModalBackdrop,
+.drawer-backdrop {
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+}
+
