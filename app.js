@@ -69,7 +69,7 @@
   let loopSeekTimer = null;
   let lastSeekTs = 0;
 
-  function triggerLoopSeek(targetTime) {
+  function triggerLoopSeek(targetTime, targetSentIdx = null) {
     const now = Date.now();
     if (isLoopSeeking && (now - lastSeekTs < 150)) {
       return;
@@ -80,6 +80,10 @@
       audio.currentTime = targetTime;
     } catch (err) {
       console.warn('Seek error:', err);
+    }
+    if (targetSentIdx !== null && typeof targetSentIdx === 'number' && state.activeSentences && targetSentIdx >= 0 && targetSentIdx < state.activeSentences.length) {
+      state.currentSentIndex = targetSentIdx;
+      highlightSentence(targetSentIdx);
     }
     if (loopSeekTimer) clearTimeout(loopSeekTimer);
     loopSeekTimer = setTimeout(() => {
@@ -171,10 +175,17 @@
 
     if (modeId === 'section' && currentFrameworkSections.length > 0) {
       const cur = audio.currentTime || 0;
-      const matchedSecIdx = currentFrameworkSections.findIndex(s => cur >= s.start - 0.05 && cur <= s.end + 0.05);
-      if (matchedSecIdx !== -1) {
-        currentActiveSectionIndex = matchedSecIdx;
+      let matchedSecIdx = currentFrameworkSections.findIndex(s => cur >= s.start - 0.1 && cur <= s.end + 0.1);
+      if (matchedSecIdx === -1) {
+        if (cur < currentFrameworkSections[0].start) {
+          matchedSecIdx = 0;
+        } else {
+          for (let i = 0; i < currentFrameworkSections.length; i++) {
+            if (cur >= currentFrameworkSections[i].start) matchedSecIdx = i;
+          }
+        }
       }
+      currentActiveSectionIndex = Math.max(0, matchedSecIdx);
     }
     updateHUDDisplay(audio.currentTime || 0);
   }
@@ -1451,6 +1462,7 @@
   // 板块/卡片级点读交互引擎：点击任意板块头部或卡片背景，自动定位并起音朗读该板块的第一句话（杜绝落空或归零）
   function bindCardSectionClickHandlers(container) {
     if (!container) return;
+    container.querySelectorAll('[data-card-click-bound]').forEach(el => el.removeAttribute('data-card-click-bound'));
 
     const cardOrHeaderSelectors = [
       '.exam-section-card',
@@ -1735,6 +1747,7 @@
   // 权威句子点击事件代理绑定器 (优先从 state.activeSentences 读取权威起止时间戳，彻底纠正点击前一句/串音)
   function bindSentenceClickHandlers(container) {
     if (!container) return;
+    container.querySelectorAll('[data-click-bound]').forEach(el => el.removeAttribute('data-click-bound'));
     const sentEls = container.querySelectorAll('.recite-sent, .recite-sent-item, .recite-sentence, .tj-sent-span, [data-sent-id], [data-sent-idx], [id^="recite_bar_"], [id^="recite_blk_"]');
     sentEls.forEach(elItem => {
       if (elItem.dataset.clickBound === '1') return;
@@ -1973,9 +1986,8 @@
       const playPromise = audio.play();
       if (playPromise !== undefined) {
         playPromise.then(() => {
-          if (Math.abs(audio.currentTime - targetTime) > 0.8) {
-            audio.currentTime = targetTime;
-          }
+          // 在音频播放落地时强制核验并锚定目标时刻，杜绝 Safari 归零启动
+          audio.currentTime = targetTime;
         }).catch(e => console.log('Audio play failed:', e));
       }
     } else {
@@ -2724,8 +2736,17 @@
         // 3. 单段循环模式 (严格在当前段落 [curSec.start, curSec.end] 内部无缝闭环回跳，绝对不允许篡改 currentActiveSectionIndex)
         else if (state.playMode === 'section' && currentFrameworkSections.length > 0) {
           if (currentActiveSectionIndex < 0 || currentActiveSectionIndex >= currentFrameworkSections.length) {
-            const matchedSecIdx = currentFrameworkSections.findIndex(s => cur >= s.start - 0.05 && cur <= s.end + 0.05);
-            currentActiveSectionIndex = matchedSecIdx !== -1 ? matchedSecIdx : 0;
+            let matchedSecIdx = currentFrameworkSections.findIndex(s => cur >= s.start - 0.1 && cur <= s.end + 0.1);
+            if (matchedSecIdx === -1) {
+              if (cur < currentFrameworkSections[0].start) {
+                matchedSecIdx = 0;
+              } else {
+                for (let i = 0; i < currentFrameworkSections.length; i++) {
+                  if (cur >= currentFrameworkSections[i].start) matchedSecIdx = i;
+                }
+              }
+            }
+            currentActiveSectionIndex = Math.max(0, matchedSecIdx);
           }
 
           const curSec = currentFrameworkSections[currentActiveSectionIndex];
@@ -2743,7 +2764,9 @@
             // 当到达段尾截断点或滑过段尾时，无条件强制倒回当前段开头 curSec.start！
             // currentActiveSectionIndex 绝对锁定不可被时间篡改！
             if (cur >= secCutoff - 0.04 || cur > curSec.end) {
-              triggerLoopSeek(curSec.start);
+              const firstSentIdx = state.activeSentences.findIndex(s => s.start >= curSec.start - 0.05 && s.start <= curSec.end + 0.05);
+              const targetIdx = firstSentIdx !== -1 ? firstSentIdx : 0;
+              triggerLoopSeek(curSec.start, targetIdx);
               if (audio.paused) audio.play().catch(e => console.log(e));
               syncRafId = requestAnimationFrame(runSyncLoop);
               return;
@@ -2909,8 +2932,17 @@
         // 3. 单段循环模式 (绝对锁定，强制闭环回跳)
         else if (state.playMode === 'section' && currentFrameworkSections.length > 0) {
           if (currentActiveSectionIndex < 0 || currentActiveSectionIndex >= currentFrameworkSections.length) {
-            const matchedSecIdx = currentFrameworkSections.findIndex(s => cur >= s.start - 0.05 && cur <= s.end + 0.05);
-            currentActiveSectionIndex = matchedSecIdx !== -1 ? matchedSecIdx : 0;
+            let matchedSecIdx = currentFrameworkSections.findIndex(s => cur >= s.start - 0.1 && cur <= s.end + 0.1);
+            if (matchedSecIdx === -1) {
+              if (cur < currentFrameworkSections[0].start) {
+                matchedSecIdx = 0;
+              } else {
+                for (let i = 0; i < currentFrameworkSections.length; i++) {
+                  if (cur >= currentFrameworkSections[i].start) matchedSecIdx = i;
+                }
+              }
+            }
+            currentActiveSectionIndex = Math.max(0, matchedSecIdx);
           }
           if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
             return;
@@ -2921,7 +2953,9 @@
             const nextSecStart = nextSec && typeof nextSec.start === 'number' ? nextSec.start : Infinity;
             const secCutoff = Math.min(curSec.end - 0.05, isFinite(nextSecStart) ? (nextSecStart - 0.08) : (curSec.end - 0.05));
             if (cur >= secCutoff - 0.04 || cur > curSec.end) {
-              triggerLoopSeek(curSec.start);
+              const firstSentIdx = state.activeSentences.findIndex(s => s.start >= curSec.start - 0.05 && s.start <= curSec.end + 0.05);
+              const targetIdx = firstSentIdx !== -1 ? firstSentIdx : 0;
+              triggerLoopSeek(curSec.start, targetIdx);
               if (audio.paused) audio.play().catch(e => console.log(e));
               return;
             }
@@ -4116,7 +4150,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.2.0';
+  const APP_BUILD_ID = '3.2.1';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -4330,7 +4364,7 @@
     if (badge) {
       badge.addEventListener('click', () => {
         if (badge.classList.contains('has-update')) {
-          performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.2.0');
+          performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.2.1');
         } else {
           checkAppUpdate(true);
         }
@@ -4339,13 +4373,13 @@
 
     if (refreshBtn) {
       refreshBtn.addEventListener('click', () => {
-        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.2.0');
+        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.2.1');
       });
     }
 
     if (bannerBody) {
       bannerBody.addEventListener('click', () => {
-        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.2.0');
+        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.2.1');
       });
     }
 
@@ -4521,7 +4555,7 @@
     showToast('正在加载考研政治背诵手卷...', 2000);
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = 'data/kaoyan_data_pol.js?v=3.2.0';
+      script.src = 'data/kaoyan_data_pol.js?v=3.2.1';
       script.onload = () => {
         isPolDataLoading = false;
         state.polData = window.KAOYAN_POL_DATA;
