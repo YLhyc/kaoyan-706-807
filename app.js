@@ -1952,7 +1952,7 @@
     if (loopSeekTimer) clearTimeout(loopSeekTimer);
     loopSeekTimer = setTimeout(() => {
       isLoopSeeking = false;
-    }, 200);
+    }, 350);
 
     const applySeek = () => {
       try {
@@ -1993,38 +1993,25 @@
     const len = sents.length;
     const t = Math.max(0, currentTime);
 
-    // 1. 严格闭区间判定：若 currentTime 在 [s.start, s.end] 内，立即锁定该句
-    for (let i = 0; i < len; i++) {
-      const s = sents[i];
-      const sStart = typeof s.start === 'number' ? s.start : parseFloat(s.start || 0);
-      const next = (i + 1 < len) ? sents[i + 1] : null;
-      const nextStart = next ? (typeof next.start === 'number' ? next.start : parseFloat(next.start)) : Infinity;
-      const sEnd = (typeof s.end === 'number' && !isNaN(s.end) && s.end > sStart) ? s.end : nextStart;
-
-      // 若处于当前句子区间内
-      if (t >= sStart && t <= sEnd) {
-        // 若与下一句轻微重叠且已越过下一句起始点，平滑过渡至下一句
-        if (next && t >= nextStart) {
-          return i + 1;
-        }
-        return i;
-      }
-
-      // 2. 停顿/静音空隙区间判定：若处于句子 i 与句子 i+1 之间的空白停顿区
-      // 只要 currentTime < s_{i+1}.start - 0.1，保持高光在当前句 i，直到下一句真正开始
-      if (next && t > sEnd && t < nextStart) {
-        if (t < nextStart - 0.1) {
-          return i;
-        } else {
-          return i + 1;
-        }
-      }
-    }
-
-    // 3. 边界兜底保护
     const firstStart = typeof sents[0].start === 'number' ? sents[0].start : parseFloat(sents[0].start || 0);
     if (t < firstStart) return 0;
-    return len - 1;
+
+    // 二分查找满足 sents[i].start <= t 的最大索引 i (严格单调数学对齐，彻底消除抢跑与迟滞)
+    let low = 0;
+    let high = len - 1;
+    let ans = 0;
+
+    while (low <= high) {
+      const mid = (low + high) >> 1;
+      const mStart = typeof sents[mid].start === 'number' ? sents[mid].start : parseFloat(sents[mid].start || 0);
+      if (mStart <= t) {
+        ans = mid;
+        low = mid + 1;
+      } else {
+        high = mid - 1;
+      }
+    }
+    return ans;
   }
 
   function highlightSentence(target) {
@@ -2119,6 +2106,8 @@
         const delta = rect.top - idealTop;
         if (Math.abs(delta) > 50) {
           lastScrollTs = now;
+          isProgrammaticScrolling = true;
+          setTimeout(() => { isProgrammaticScrolling = false; }, 380);
           const mainStage = document.querySelector('.main-stage');
           const isStageScrollable = mainStage && mainStage.scrollHeight > mainStage.clientHeight;
           if (isStageScrollable) {
@@ -3685,22 +3674,25 @@
     }
 
     // 监听正文区域及全局主舞台用户手动滚动/滑动/触控，防打架 (Bug Fix 4)
-    const markUserScroll = () => {
-      if (isBodyScrollLocked()) return;
+    let isProgrammaticScrolling = false;
+    const markUserScroll = (e) => {
+      if (isBodyScrollLocked() || isProgrammaticScrolling) return;
       state.lastUserScrollTime = Date.now();
     };
+
     const mainStageEl = document.querySelector('.main-stage');
+    // 仅用户真实触控或滚轮手势才抑制自动聚焦，程序化 smooth scroll 绝不自锁！
     if (mainStageEl) {
-      mainStageEl.addEventListener('scroll', markUserScroll, { passive: true });
       mainStageEl.addEventListener('wheel', markUserScroll, { passive: true });
+      mainStageEl.addEventListener('touchstart', markUserScroll, { passive: true });
       mainStageEl.addEventListener('touchmove', markUserScroll, { passive: true });
     }
-    window.addEventListener('scroll', markUserScroll, { passive: true });
     window.addEventListener('wheel', markUserScroll, { passive: true });
+    window.addEventListener('touchstart', markUserScroll, { passive: true });
     window.addEventListener('touchmove', markUserScroll, { passive: true });
     if (el.paperContent) {
-      el.paperContent.addEventListener('scroll', markUserScroll, { passive: true });
       el.paperContent.addEventListener('wheel', markUserScroll, { passive: true });
+      el.paperContent.addEventListener('touchstart', markUserScroll, { passive: true });
       el.paperContent.addEventListener('touchmove', markUserScroll, { passive: true });
     }
 
@@ -4124,7 +4116,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.1.2';
+  const APP_BUILD_ID = '3.2.0';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -4338,7 +4330,7 @@
     if (badge) {
       badge.addEventListener('click', () => {
         if (badge.classList.contains('has-update')) {
-          performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.0.9');
+          performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.2.0');
         } else {
           checkAppUpdate(true);
         }
@@ -4347,13 +4339,13 @@
 
     if (refreshBtn) {
       refreshBtn.addEventListener('click', () => {
-        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.0.9');
+        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.2.0');
       });
     }
 
     if (bannerBody) {
       bannerBody.addEventListener('click', () => {
-        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.0.9');
+        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.2.0');
       });
     }
 
@@ -4529,7 +4521,7 @@
     showToast('正在加载考研政治背诵手卷...', 2000);
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = 'data/kaoyan_data_pol.js?v=3.1.1';
+      script.src = 'data/kaoyan_data_pol.js?v=3.2.0';
       script.onload = () => {
         isPolDataLoading = false;
         state.polData = window.KAOYAN_POL_DATA;

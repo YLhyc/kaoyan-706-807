@@ -8377,7 +8377,6 @@ body.drawer-scroll-locked .main-stage,
 body.drawer-scroll-locked #mainStage {
   overflow: hidden !important;
   touch-action: none !important;
-  pointer-events: none !important;
 }
 
 /* 3. 抽屉与侧边栏独立接管纵向手势，杜绝滚动手势链漏到下层页面 */
