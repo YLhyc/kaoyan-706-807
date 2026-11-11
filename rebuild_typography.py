@@ -159,6 +159,10 @@ def parse_track1_sections_from_md(md_path):
                     badge = '【结语 · 总结升华】'
                     desc = '融汇全篇论据 · 提炼权威学术定评'
                     stype = 'conclusion'
+                    m_title = re.search(r'【(?:第?[0-9一二三四五六七八九十]+[、.： ]+)?(?:总结升华[：:]\s*)?([^】]+)】', p)
+                    if m_title:
+                        desc = m_title.group(1).strip()
+                        p = re.sub(r'【[^】]+】\s*', '', p)
                 else:
                     badge = f'【本论 · 分论点{num_map.get(i, str(i))}】'
                     desc = '核心要旨深化 · 纵深多维展开'
@@ -322,6 +326,8 @@ def build_clean_track1_html(item, sents, meta, md_path):
                             if s_cl[k:k+6] in next_sec_cl[:45]:
                                 match = True
                                 break
+                    if not match and len(s_cl) >= 4 and s_cl in next_sec_cl[:len(s_cl)+2]:
+                        match = True
                     if match:
                         sec_ptr += 1
             assigned_sections[sec_ptr].append(s)
@@ -334,7 +340,7 @@ def build_clean_track1_html(item, sents, meta, md_path):
             sid = s['id']
             sstart = s['start']
             send = s['end']
-            hdr_spans.append(f'<span class="recite-sent" data-sent-id="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>')
+            hdr_spans.append(f'<span class="recite-sent" data-sent-id="{sid}" data-sent-idx="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>')
         lead_banner_html = f"""
         <div class="noun-lead-banner">
           <div class="noun-lead-header">
@@ -407,7 +413,7 @@ def build_clean_track1_html(item, sents, meta, md_path):
             sid = s['id']
             sstart = s['start']
             send = s['end']
-            topic_spans.append(f'<span class="recite-sent thesis-sent" data-sent-id="{sid}" data-start="{sstart}" data-end="{send}">{pill_tag}{txt_fmt}</span>')
+            topic_spans.append(f'<span class="recite-sent thesis-sent" data-sent-id="{sid}" data-sent-idx="{sid}" data-start="{sstart}" data-end="{send}">{pill_tag}{txt_fmt}</span>')
             
         thesis_box_html = f"""
         <div class="section-thesis-box">
@@ -421,7 +427,7 @@ def build_clean_track1_html(item, sents, meta, md_path):
             sid = s['id']
             sstart = s['start']
             send = s['end']
-            body_spans.append(f'<span class="recite-sent" data-sent-id="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>')
+            body_spans.append(f'<span class="recite-sent" data-sent-id="{sid}" data-sent-idx="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>')
             
         body_box_html = f"""
         <div class="section-body-text">
@@ -616,7 +622,7 @@ def build_clean_track2_html(item, sents2, meta, md_path=None, t1_sections=None):
                     sid = s['id']
                     sstart = s['start']
                     send = s['end']
-                    hdr_spans.append(f'<span class="recite-sent" data-sent-id="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>')
+                    hdr_spans.append(f'<span class="recite-sent" data-sent-id="{sid}" data-sent-idx="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>')
                 html_parts.append(f"""
                 <div class="noun-lead-banner">
                   <div class="noun-lead-header">
@@ -639,7 +645,7 @@ def build_clean_track2_html(item, sents2, meta, md_path=None, t1_sections=None):
                     send = s['end']
                     sents_html.append(f"""
                     <div class="teacher-explain-row">
-                      <span class="recite-sent" data-sent-id="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>
+                      <span class="recite-sent" data-sent-id="{sid}" data-sent-idx="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>
                     </div>
                     """)
                 block_html = f"""
@@ -687,6 +693,8 @@ def build_clean_track2_html(item, sents2, meta, md_path=None, t1_sections=None):
                                 if s_cl[k:k+6] in next_sec_cl[:45]:
                                     match = True
                                     break
+                        if not match and len(s_cl) >= 4 and s_cl in next_sec_cl[:len(s_cl)+2]:
+                            match = True
                         if match:
                             sec_ptr += 1
                 assigned_sections[sec_ptr].append(s)
@@ -713,7 +721,7 @@ def build_clean_track2_html(item, sents2, meta, md_path=None, t1_sections=None):
                     send = s['end']
                     block_items_html.append(f"""
                     <div class="teacher-explain-row">
-                      <span class="recite-sent" data-sent-id="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>
+                      <span class="recite-sent" data-sent-id="{sid}" data-sent-idx="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>
                     </div>
                     """)
                     
@@ -787,7 +795,7 @@ def build_clean_track2_html(item, sents2, meta, md_path=None, t1_sections=None):
                     <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
                     <span>审题指引与立意维度</span>
                   </div>
-                  <span class="recite-sent" data-sent-id="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>
+                  <span class="recite-sent" data-sent-id="{sid}" data-sent-idx="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>
                 </div>
                 """)
                 i += 1
@@ -810,7 +818,7 @@ def build_clean_track2_html(item, sents2, meta, md_path=None, t1_sections=None):
                     sid = qc['id']
                     sstart = qc['start']
                     send = qc['end']
-                    quote_spans.append(f'<span class="recite-sent gold-sent-active" data-sent-id="{sid}" data-start="{sstart}" data-end="{send}">{qc_fmt}</span>')
+                    quote_spans.append(f'<span class="recite-sent gold-sent-active" data-sent-id="{sid}" data-sent-idx="{sid}" data-start="{sstart}" data-end="{send}">{qc_fmt}</span>')
                     
                 block_items_html.append(f"""
                 <div class="gold-quote-box">
@@ -837,7 +845,7 @@ def build_clean_track2_html(item, sents2, meta, md_path=None, t1_sections=None):
                     row_cls += " teacher-guidance-lead"
                 block_items_html.append(f"""
                 <div class="{row_cls}">
-                  <span class="recite-sent" data-sent-id="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>
+                  <span class="recite-sent" data-sent-id="{sid}" data-sent-idx="{sid}" data-start="{sstart}" data-end="{send}">{txt_fmt}</span>
                 </div>
                 """)
                 i += 1

@@ -7478,12 +7478,30 @@ body.dock-expanded .dock-fab-play {
 /* ==========================================================================
    全局与政治主舞台严格宽度包含与防移动端横向溢出 (Bug 2 Fix)
    ========================================================================== */
-.main-stage,
-.stage-wrapper,
+.main-stage {
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.stage-wrapper {
+  width: 100% !important;
+  max-width: 860px !important;
+  margin: 0 auto !important;
+  box-sizing: border-box !important;
+}
+
 .stage-header-card {
   width: 100% !important;
   min-width: 0 !important;
-  max-width: 820px;
+  max-width: 860px !important;
   box-sizing: border-box !important;
 }
 .paper-container {
@@ -8414,7 +8432,7 @@ body.drawer-scroll-locked #mainStage {
 /* ==========================================================================
    iPad 横屏 (Landscape) 与平板双栏布局优化规则 (Warm Editorial 黄金标准)
    ========================================================================== */
-@media (min-width: 835px) and (max-width: 1366px) and (orientation: landscape), (min-width: 769px) and (max-width: 1100px) {
+@media (min-width: 835px) and (max-width: 1366px) and (orientation: landscape), (min-width: 769px) and (max-width: 1100px) and (orientation: landscape) {
   :root {
     --sidebar-w: 280px;
     --header-h: 56px;
@@ -8743,6 +8761,8 @@ body.drawer-scroll-locked #mainStage {
   /* 3. 正文主舞台保持充分安全下边距，杜绝遮挡正文与打卡印章 */
   .main-stage {
     padding-bottom: calc(130px + env(safe-area-inset-bottom, 16px)) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
   body.dock-expanded .main-stage {

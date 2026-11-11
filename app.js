@@ -165,7 +165,7 @@
         state.currentSentIndex = findActiveSentenceIndex(audio.currentTime || 0);
       }
       if (state.currentSentIndex !== -1 && state.activeSentences[state.currentSentIndex]) {
-        highlightSentence(state.activeSentences[state.currentSentIndex].id);
+        highlightSentence(state.currentSentIndex);
       }
     }
 
@@ -184,6 +184,40 @@
   // ==========================================
   const activeDrawers = new Set();
 
+  function hasAnyOpenDrawer() {
+    const isSidebarOpenAsDrawer = !!(el.sidebar && el.sidebar.classList.contains('open') && isSidebarDrawerMode());
+    if (isSidebarOpenAsDrawer) return true;
+
+    const drawerElements = [
+      el.outlineDrawer,
+      el.playModeDrawer,
+      el.studyDashboardDrawer,
+      document.getElementById('settingsDrawer'),
+      document.getElementById('speedModal'),
+      document.getElementById('updateModal'),
+      document.querySelector('.appearance-drawer')
+    ];
+
+    for (const d of drawerElements) {
+      if (d && d.classList.contains('open')) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function syncBodyScrollLock() {
+    const trulyOpen = hasAnyOpenDrawer();
+    if (trulyOpen) {
+      document.documentElement.classList.add('drawer-scroll-locked');
+      document.body.classList.add('drawer-scroll-locked');
+    } else {
+      activeDrawers.clear();
+      document.documentElement.classList.remove('drawer-scroll-locked');
+      document.body.classList.remove('drawer-scroll-locked');
+    }
+  }
+
   function lockBodyScroll(drawerName = 'drawer') {
     const key = (typeof drawerName === 'string') ? drawerName : (drawerName?.id || drawerName?.className || 'drawer');
     activeDrawers.add(key);
@@ -194,14 +228,11 @@
   function unlockBodyScroll(drawerName = 'drawer') {
     const key = (typeof drawerName === 'string') ? drawerName : (drawerName?.id || drawerName?.className || 'drawer');
     activeDrawers.delete(key);
-    if (activeDrawers.size === 0) {
-      document.documentElement.classList.remove('drawer-scroll-locked');
-      document.body.classList.remove('drawer-scroll-locked');
-    }
+    syncBodyScrollLock();
   }
 
   function isBodyScrollLocked() {
-    return activeDrawers.size > 0;
+    return hasAnyOpenDrawer() || (activeDrawers.size > 0 && document.body.classList.contains('drawer-scroll-locked'));
   }
 
   function isSidebarDrawerMode() {
@@ -1318,7 +1349,7 @@
     showToast(`已为你抽查【${picked.level || picked.importance || '必背'}】${picked.title}，立即开始磨耳背诵！`, 3000);
   }
 
-  // 权威时间戳净化引擎：严格确保递增、数值合法且每句 end 决不越过下句 start
+  // 权威时间戳净化引擎：严格确保递增、数值合法、0-based连续idx，且每句 end 决不越过下句 start
   function sanitizeSentences(sentences) {
     if (!sentences || !Array.isArray(sentences) || sentences.length === 0) return [];
     const list = sentences.map((s, idx) => {
@@ -1326,10 +1357,11 @@
       let end = typeof s.end === 'number' ? s.end : parseFloat(s.end || 0);
       return {
         ...s,
-        id: s.id !== undefined ? s.id : (s.idx !== undefined ? s.idx : idx),
+        id: (s.id !== undefined && s.id !== null) ? s.id : (s.idx !== undefined ? s.idx : idx),
         start: isNaN(start) ? 0 : start,
         end: isNaN(end) ? (start + 1.0) : end,
-        idx: s.idx !== undefined ? s.idx : idx
+        text: s.text || '',
+        domId: s.domId || (s.id !== undefined ? String(s.id) : undefined)
       };
     });
     list.sort((a, b) => a.start - b.start);
@@ -1338,25 +1370,171 @@
         list[i].end = list[i + 1].start;
       }
     }
+    // 标准化严格 0-based 连续整数索引 0, 1, ..., len - 1，彻底消解 1-based 与 0-based 错位
+    list.forEach((item, index) => {
+      item.idx = index;
+    });
     return list;
   }
 
   // DOM 兜底解析机制：离线或 file:/// 协议无 JSON 缓存时，从当前 DOM 提取
   function extractSentencesFromDOM() {
     if (!el.paperContent) return [];
-    const nodes = el.paperContent.querySelectorAll('.recite-sent[data-start][data-end], .recite-sent-item[data-start][data-end]');
+    const nodes = el.paperContent.querySelectorAll('.recite-sent, .recite-sent-item, .recite-sentence, .tj-sent-span, [data-sent-id], [data-sent-idx]');
     const list = [];
     nodes.forEach((node, idx) => {
       const start = parseFloat(node.dataset.start);
       const end = parseFloat(node.dataset.end);
-      if (!isNaN(start) && !isNaN(end)) {
+      if (!isNaN(start)) {
         const id = node.dataset.sentId || node.dataset.sentIdx || node.dataset.id || node.id || `sent_${idx}`;
-        const sIdx = node.dataset.sentIdx !== undefined ? parseInt(node.dataset.sentIdx, 10) : idx;
         const text = (node.innerText || node.textContent || '').trim();
-        list.push({ id, start, end, text, idx: sIdx, domId: node.id });
+        list.push({
+          id,
+          start,
+          end: (!isNaN(end) && end > start) ? end : (start + 1.5),
+          text,
+          domId: node.id
+        });
       }
     });
-    return sanitizeSentences(list);
+    const sanitized = sanitizeSentences(list);
+    return sanitized;
+  }
+
+  // 权威句标与 DOM 1:1 双向映射校准器：严格确保 DOM 节点上的 data-sent-idx 与 state.activeSentences[idx] 绝对一致
+  function stampSentenceIndices() {
+    if (!el.paperContent || !state.activeSentences || state.activeSentences.length === 0) return;
+    const sents = state.activeSentences;
+
+    sents.forEach((s, idx) => {
+      let node = null;
+      if (s.id !== undefined && s.id !== null) {
+        node = el.paperContent.querySelector(`[data-sent-id="${s.id}"], [data-point-id="${s.id}"]`);
+      }
+      if (!node && s.domId) {
+        try {
+          const escId = (typeof CSS !== 'undefined' && CSS.escape) ? CSS.escape(String(s.domId)) : String(s.domId).replace(/([ #;?%&,.+*~\':"!^$[\]()=>|\/@])/g, '\\$1');
+          node = el.paperContent.querySelector(`#${escId}, [data-sent-id="${s.domId}"]`);
+        } catch (e) {}
+      }
+      if (!node && typeof s.start === 'number' && !isNaN(s.start)) {
+        const timeCandidates = el.paperContent.querySelectorAll('.recite-sent, .recite-sent-item, .recite-sentence, .tj-sent-span');
+        for (let j = 0; j < timeCandidates.length; j++) {
+          const tNode = timeCandidates[j];
+          const tStart = parseFloat(tNode.dataset.start);
+          if (!isNaN(tStart) && Math.abs(tStart - s.start) < 0.04) {
+            node = tNode;
+            break;
+          }
+        }
+      }
+      if (node) {
+        node.dataset.sentIdx = String(idx);
+      }
+    });
+
+    el.paperContent.querySelectorAll('.xt-day-point-card').forEach((card, cIdx) => {
+      card.dataset.sentIdx = String(cIdx);
+    });
+
+    const unstamped = el.paperContent.querySelectorAll('.recite-sent:not([data-sent-idx]), .recite-sent-item:not([data-sent-idx]), .recite-sentence:not([data-sent-idx])');
+    if (unstamped.length > 0) {
+      const allEls = el.paperContent.querySelectorAll('.recite-sent, .recite-sent-item, .recite-sentence, .tj-sent-span');
+      if (allEls.length === sents.length) {
+        allEls.forEach((elNode, eIdx) => {
+          elNode.dataset.sentIdx = String(eIdx);
+        });
+      }
+    }
+  }
+
+  // 板块/卡片级点读交互引擎：点击任意板块头部或卡片背景，自动定位并起音朗读该板块的第一句话（杜绝落空或归零）
+  function bindCardSectionClickHandlers(container) {
+    if (!container) return;
+
+    const cardOrHeaderSelectors = [
+      '.exam-section-card',
+      '.section-card-header',
+      '.sec-badge',
+      '.sec-desc',
+      '.logic-block-card',
+      '.logic-block-title',
+      '.xt-day-point-card',
+      '.xt-day-point-header',
+      '.en-essay-para',
+      '.sub-card',
+      '.stream-card',
+      '.xt-part-box',
+      '.xt-part-badge-row',
+      '.tj-handbook-card',
+      '.tj-card-header'
+    ].join(', ');
+
+    const targets = container.querySelectorAll(cardOrHeaderSelectors);
+    targets.forEach(targetEl => {
+      if (targetEl.dataset.cardClickBound === '1') return;
+      targetEl.dataset.cardClickBound = '1';
+
+      targetEl.addEventListener('click', (e) => {
+        // 若点击的是交互控件（按钮、链接、填空词、专属跳转胶囊、或具体某句子），由其自身专属事件接管
+        if (e.target.closest('button, a, input, .cloze, .kw-red, .seal-btn, .en-audio-jump-pill')) {
+          return;
+        }
+        if (e.target.closest('.recite-sent, .recite-sent-item, .recite-sentence, .tj-sent-span')) {
+          return;
+        }
+
+        // 向上锁定所属板块卡片
+        const card = targetEl.closest('.exam-section-card, .logic-block-card, .xt-part-box, .stream-card, .xt-day-point-card, .tj-handbook-card, .en-essay-para, .sub-card') || targetEl;
+
+        // 获取该卡片内的第一句话
+        const firstSent = card.querySelector('.recite-sent, .recite-sent-item, .recite-sentence, .tj-sent-span, [data-sent-idx], [data-sent-id]');
+
+        if (firstSent) {
+          e.stopPropagation();
+          const rawIdx = firstSent.dataset.sentIdx !== undefined ? parseInt(firstSent.dataset.sentIdx, 10) : NaN;
+          const rawStart = parseFloat(firstSent.dataset.start);
+          const rawId = firstSent.dataset.sentId || firstSent.id;
+
+          let targetIdx = -1;
+          let targetStart = isNaN(rawStart) ? 0 : rawStart;
+
+          if (!isNaN(rawIdx) && state.activeSentences && rawIdx >= 0 && rawIdx < state.activeSentences.length) {
+            targetIdx = rawIdx;
+            if (typeof state.activeSentences[rawIdx].start === 'number') {
+              targetStart = state.activeSentences[rawIdx].start;
+            }
+          } else if (state.activeSentences && state.activeSentences.length > 0) {
+            const foundIdx = state.activeSentences.findIndex(s =>
+              (rawId && (String(s.id) === String(rawId) || String(s.domId) === String(rawId))) ||
+              (typeof s.start === 'number' && !isNaN(rawStart) && Math.abs(s.start - rawStart) < 0.05)
+            );
+            if (foundIdx !== -1) {
+              targetIdx = foundIdx;
+              targetStart = state.activeSentences[foundIdx].start;
+            }
+          }
+
+          if (targetIdx !== -1) {
+            seekToSentence(targetIdx, targetStart);
+          } else if (!isNaN(targetStart)) {
+            seekToSentence(rawId || (!isNaN(rawIdx) ? rawIdx : 0), targetStart);
+          }
+          if (audio.paused) {
+            audio.play().catch(err => console.log('Card click play failed:', err));
+          }
+        } else if (currentFrameworkSections && currentFrameworkSections.length > 0) {
+          const matchedSec = currentFrameworkSections.find(s => s.cardEl === card);
+          if (matchedSec && typeof matchedSec.start === 'number' && !isNaN(matchedSec.start)) {
+            e.stopPropagation();
+            seekToSentence(matchedSec.sentId, matchedSec.start);
+            if (audio.paused) {
+              audio.play().catch(err => console.log('Section click play failed:', err));
+            }
+          }
+        }
+      });
+    });
   }
 
   function selectItem(itemId, autoPlay = false, restoreTime = false) {
@@ -1480,7 +1658,7 @@
               }
               if (activeIdx !== -1) {
                 state.currentSentIndex = activeIdx;
-                highlightSentence(state.activeSentences[activeIdx].id);
+                highlightSentence(activeIdx);
               }
             }
           };
@@ -1523,6 +1701,9 @@
     }
 
     state.activeSentences = sanitizeSentences(sentences);
+    stampSentenceIndices();
+    bindSentenceClickHandlers(el.paperContent);
+    bindCardSectionClickHandlers(el.paperContent);
     buildFrameworkIndex();
 
     // 若未命中内置包且有 sFile，发起异步非阻塞 fetch 进行补充校准
@@ -1532,6 +1713,9 @@
         .then(fetchedSents => {
           if (fetchedSents && fetchedSents.length > 0 && state.currentTrack === trackNum && state.activeItemId === item.id) {
             state.activeSentences = sanitizeSentences(fetchedSents);
+            stampSentenceIndices();
+            bindSentenceClickHandlers(el.paperContent);
+            bindCardSectionClickHandlers(el.paperContent);
             buildFrameworkIndex();
           }
         })
@@ -1539,6 +1723,9 @@
           console.warn('Sentence timestamps fallback failed:', e);
           if (!state.activeSentences || state.activeSentences.length === 0) {
             state.activeSentences = extractSentencesFromDOM();
+            stampSentenceIndices();
+            bindSentenceClickHandlers(el.paperContent);
+            bindCardSectionClickHandlers(el.paperContent);
             buildFrameworkIndex();
           }
         });
@@ -1559,38 +1746,51 @@
           return;
         }
 
+        e.stopPropagation();
+
         // 1. 优先从 state.activeSentences 根据 sentIdx / sentId 权威索引匹配
         const rawIdx = elItem.dataset.sentIdx !== undefined ? parseInt(elItem.dataset.sentIdx, 10) : NaN;
         const rawId = elItem.dataset.sentId || elItem.id || elItem.dataset.pointId;
         let matched = null;
+        let targetIdx = -1;
 
         if (state.activeSentences && state.activeSentences.length > 0) {
-          // 优先级 1: 唯一 sentIdx 索引（政治47章、轨二微考点、腿姐讲义唯一句标）
-          if (!isNaN(rawIdx)) {
-            matched = state.activeSentences.find(s => s.idx === rawIdx || s.id === rawIdx || String(s.id) === String(rawIdx));
-            if (!matched && rawIdx >= 0 && rawIdx < state.activeSentences.length) {
-              matched = state.activeSentences[rawIdx];
-            }
+          // 优先级 1: 0-based sentIdx 连续下标直接访问（100% 精准无歧义，消除 1-based 与 0-based 错位碰撞）
+          if (!isNaN(rawIdx) && rawIdx >= 0 && rawIdx < state.activeSentences.length) {
+            targetIdx = rawIdx;
+            matched = state.activeSentences[rawIdx];
           }
           // 优先级 2: 匹配唯一 sentence id
           if (!matched && rawId) {
-            matched = state.activeSentences.find(s => String(s.id) === String(rawId));
+            const foundIdx = state.activeSentences.findIndex(s => String(s.id) === String(rawId));
+            if (foundIdx !== -1) {
+              targetIdx = foundIdx;
+              matched = state.activeSentences[foundIdx];
+            }
           }
           // 优先级 3: 匹配 domId
           if (!matched && rawId) {
-            matched = state.activeSentences.find(s => String(s.domId) === String(rawId));
+            const foundIdx = state.activeSentences.findIndex(s => String(s.domId) === String(rawId));
+            if (foundIdx !== -1) {
+              targetIdx = foundIdx;
+              matched = state.activeSentences[foundIdx];
+            }
           }
           // 优先级 4: 按 dataset.start 时间戳近似匹配
           if (!matched) {
             const dsStart = parseFloat(elItem.dataset.start);
             if (!isNaN(dsStart)) {
-              matched = state.activeSentences.find(s => Math.abs(s.start - dsStart) < 0.1);
+              const foundIdx = state.activeSentences.findIndex(s => Math.abs(s.start - dsStart) < 0.1);
+              if (foundIdx !== -1) {
+                targetIdx = foundIdx;
+                matched = state.activeSentences[foundIdx];
+              }
             }
           }
         }
 
-        if (matched && typeof matched.start === 'number' && !isNaN(matched.start)) {
-          seekToSentence(matched.id, matched.start);
+        if (targetIdx !== -1 && matched && typeof matched.start === 'number' && !isNaN(matched.start)) {
+          seekToSentence(targetIdx, matched.start);
         } else {
           const fallbackStart = parseFloat(elItem.dataset.start);
           const fallbackId = (!isNaN(rawIdx) ? rawIdx : rawId);
@@ -1620,18 +1820,25 @@
       // 绑定权威高光追踪与点击点读事件
       bindSentenceClickHandlers(el.paperContent);
 
-      // 英语写作专属：审题任务导引交互与一键直达开读正文
+      // 绑定板块与卡片级别点读事件
+      bindCardSectionClickHandlers(el.paperContent);
+
+      // 英语写作专属：审题任务导引交互与一键直达开读对应段落高分范文
       const enJumpPills = el.paperContent.querySelectorAll('.en-audio-jump-pill');
       enJumpPills.forEach(pill => {
         pill.addEventListener('click', (e) => {
           e.stopPropagation();
-          const firstSentObj = (state.activeSentences && state.activeSentences.length > 0) ? state.activeSentences[0] : null;
-          const firstSentEl = el.paperContent.querySelector('.en-full-essay-box .recite-sent');
-          const sId = firstSentObj ? firstSentObj.id : (firstSentEl ? firstSentEl.dataset.sentId : null);
-          const sStart = firstSentObj ? firstSentObj.start : (firstSentEl ? parseFloat(firstSentEl.dataset.start) : 0);
-          if (sId !== null && !isNaN(sStart)) {
-            seekToSentence(sId, sStart);
-            showToast('已为您开读正文高分范文', 1800);
+          const targetCard = pill.closest('.en-essay-para') || pill.closest('.exam-section-card') || el.paperContent.querySelector('.en-full-essay-box') || el.paperContent;
+          const firstSentEl = targetCard.querySelector('.recite-sent, .recite-sent-item, [data-sent-idx]');
+          if (firstSentEl) {
+            const rawIdx = firstSentEl.dataset.sentIdx !== undefined ? parseInt(firstSentEl.dataset.sentIdx, 10) : NaN;
+            const sStart = parseFloat(firstSentEl.dataset.start);
+            if (!isNaN(rawIdx) && state.activeSentences && rawIdx >= 0 && rawIdx < state.activeSentences.length) {
+              seekToSentence(rawIdx, state.activeSentences[rawIdx].start);
+            } else {
+              seekToSentence(firstSentEl.dataset.sentId || rawIdx, sStart);
+            }
+            showToast('已为您开读本段高分范文', 1800);
           }
         });
       });
@@ -1640,15 +1847,17 @@
       enPromptBoxes.forEach(pBox => {
         pBox.addEventListener('click', (e) => {
           if (e.target.closest('.en-audio-jump-pill')) return;
-          const firstSentObj = (state.activeSentences && state.activeSentences.length > 0) ? state.activeSentences[0] : null;
-          const firstSentEl = el.paperContent.querySelector('.en-full-essay-box .recite-sent');
-          if (firstSentObj || firstSentEl) {
-            const sId = firstSentObj ? firstSentObj.id : firstSentEl.dataset.sentId;
-            const sStart = firstSentObj ? firstSentObj.start : parseFloat(firstSentEl.dataset.start);
-            if (!isNaN(sStart)) {
-              seekToSentence(sId, sStart);
-              showToast('此部分为审题任务导引（静读），已定位开读正文范文', 2200);
+          const targetCard = pBox.closest('.en-essay-para') || pBox.closest('.exam-section-card') || pBox.nextElementSibling || el.paperContent.querySelector('.en-full-essay-box');
+          const firstSentEl = targetCard ? targetCard.querySelector('.recite-sent, .recite-sent-item, [data-sent-idx]') : null;
+          if (firstSentEl) {
+            const rawIdx = firstSentEl.dataset.sentIdx !== undefined ? parseInt(firstSentEl.dataset.sentIdx, 10) : NaN;
+            const sStart = parseFloat(firstSentEl.dataset.start);
+            if (!isNaN(rawIdx) && state.activeSentences && rawIdx >= 0 && rawIdx < state.activeSentences.length) {
+              seekToSentence(rawIdx, state.activeSentences[rawIdx].start);
+            } else {
+              seekToSentence(firstSentEl.dataset.sentId || rawIdx, sStart);
             }
+            showToast('此部分为审题任务导引（静读），已定位开读对应段落范文', 2200);
           } else {
             showToast('此部分为审题任务导引，点击下方正文即可点词朗读', 2200);
           }
@@ -1658,15 +1867,17 @@
       const enIntroBadges = el.paperContent.querySelectorAll('.en-intro-badge, .card-intro .section-card-header');
       enIntroBadges.forEach(ib => {
         ib.addEventListener('click', (e) => {
-          const firstSentObj = (state.activeSentences && state.activeSentences.length > 0) ? state.activeSentences[0] : null;
-          const firstSentEl = el.paperContent.querySelector('.en-full-essay-box .recite-sent');
-          if (firstSentObj || firstSentEl) {
-            const sId = firstSentObj ? firstSentObj.id : firstSentEl.dataset.sentId;
-            const sStart = firstSentObj ? firstSentObj.start : parseFloat(firstSentEl.dataset.start);
-            if (!isNaN(sStart)) {
-              seekToSentence(sId, sStart);
-              showToast('审题导引供静读构思，已为您起音开读高分范文', 2000);
+          const targetCard = ib.closest('.en-essay-para') || ib.closest('.exam-section-card') || el.paperContent.querySelector('.en-full-essay-box');
+          const firstSentEl = targetCard ? targetCard.querySelector('.recite-sent, .recite-sent-item, [data-sent-idx]') : null;
+          if (firstSentEl) {
+            const rawIdx = firstSentEl.dataset.sentIdx !== undefined ? parseInt(firstSentEl.dataset.sentIdx, 10) : NaN;
+            const sStart = parseFloat(firstSentEl.dataset.start);
+            if (!isNaN(rawIdx) && state.activeSentences && rawIdx >= 0 && rawIdx < state.activeSentences.length) {
+              seekToSentence(rawIdx, state.activeSentences[rawIdx].start);
+            } else {
+              seekToSentence(firstSentEl.dataset.sentId || rawIdx, sStart);
             }
+            showToast('审题导引供静读构思，已为您起音开读对应段落范文', 2000);
           }
         });
       });
@@ -1684,19 +1895,39 @@
     return text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   }
 
-  function seekToSentence(sentId, startTime) {
+  function seekToSentence(sentIdxOrId, startTime) {
     let exactTime = typeof startTime === 'number' && !isNaN(startTime) ? startTime : 0;
     let targetSent = null;
+    let targetIdx = -1;
 
     if (state.activeSentences && state.activeSentences.length > 0) {
-      const sentIdx = state.activeSentences.findIndex(s =>
-        String(s.id) === String(sentId) ||
-        (s.idx !== undefined && String(s.idx) === String(sentId)) ||
-        (s.domId && String(s.domId) === String(sentId))
-      );
-      if (sentIdx !== -1) {
-        targetSent = state.activeSentences[sentIdx];
-        state.currentSentIndex = sentIdx;
+      const len = state.activeSentences.length;
+
+      // 1. 若传入严格 0-based 整数索引，直接按下标精准读取 state.activeSentences[idx]
+      // 彻底消除 1-based id 与 0-based idx 在 findIndex 中的碰撞错位！
+      if (typeof sentIdxOrId === 'number' && Number.isInteger(sentIdxOrId) && sentIdxOrId >= 0 && sentIdxOrId < len) {
+        targetIdx = sentIdxOrId;
+        targetSent = state.activeSentences[sentIdxOrId];
+      } else {
+        // 2. 按 s.id 或 s.domId 查找
+        const matchIdx = state.activeSentences.findIndex(s =>
+          String(s.id) === String(sentIdxOrId) ||
+          (s.domId && String(s.domId) === String(sentIdxOrId))
+        );
+        if (matchIdx !== -1) {
+          targetIdx = matchIdx;
+          targetSent = state.activeSentences[matchIdx];
+        } else {
+          const parsed = parseInt(sentIdxOrId, 10);
+          if (!isNaN(parsed) && parsed >= 0 && parsed < len) {
+            targetIdx = parsed;
+            targetSent = state.activeSentences[parsed];
+          }
+        }
+      }
+
+      if (targetSent) {
+        state.currentSentIndex = targetIdx;
         state.loopCount = 0;
         if (typeof targetSent.start === 'number' && !isNaN(targetSent.start)) {
           exactTime = targetSent.start;
@@ -1712,7 +1943,7 @@
         currentActiveSectionIndex = matchedSecIdx;
       }
     }
-    highlightSentence(targetSent ? targetSent.id : sentId);
+    highlightSentence(targetIdx !== -1 ? targetIdx : (targetSent ? targetSent.idx : sentIdxOrId));
     updateHUDDisplay(targetTime);
 
     // 严密防重入与防漂移寻音锁：在寻音落地前锁定当前句指针，杜绝未落地前的脏读覆盖
@@ -1796,8 +2027,8 @@
     return len - 1;
   }
 
-  function highlightSentence(sentId) {
-    if (sentId === null || sentId === undefined || sentId === '') {
+  function highlightSentence(target) {
+    if (target === null || target === undefined || target === '') {
       if (lastSpotlightEl) {
         lastSpotlightEl.classList.remove('active-spotlight');
         lastSpotlightEl.classList.remove('loop-sent-active');
@@ -1806,29 +2037,53 @@
       return;
     }
 
-    const sentObj = (state.activeSentences || []).find(s => 
-      String(s.id) === String(sentId) || 
-      (s.idx !== undefined && String(s.idx) === String(sentId)) ||
-      (s.domId && String(s.domId) === String(sentId))
-    );
+    let targetIdx = -1;
+    let sentObj = null;
+
+    if (state.activeSentences && state.activeSentences.length > 0) {
+      const len = state.activeSentences.length;
+      if (typeof target === 'number' && Number.isInteger(target) && target >= 0 && target < len) {
+        targetIdx = target;
+        sentObj = state.activeSentences[target];
+      } else {
+        const found = state.activeSentences.findIndex(s => 
+          String(s.id) === String(target) || 
+          (s.domId && String(s.domId) === String(target)) ||
+          (s.idx !== undefined && String(s.idx) === String(target))
+        );
+        if (found !== -1) {
+          targetIdx = found;
+          sentObj = state.activeSentences[found];
+        }
+      }
+    }
 
     let targetEl = null;
     if (el.paperContent) {
-      // 1. 优先以 sentObj.idx 进行精准匹配（政治47章、轨二微考点与腿姐讲义的唯一序号）
-      if (sentObj && sentObj.idx !== undefined) {
-        targetEl = el.paperContent.querySelector(`.recite-sent-item[data-sent-idx="${sentObj.idx}"], .recite-sent[data-sent-idx="${sentObj.idx}"], .recite-sentence[data-sent-idx="${sentObj.idx}"], .tj-sent-span[data-sent-idx="${sentObj.idx}"], [data-sent-idx="${sentObj.idx}"]`);
+      // 1. 绝对第一优先级：严格以 [data-sent-idx="${targetIdx}"] 查询（100% 音画同拍）
+      if (targetIdx !== -1) {
+        targetEl = el.paperContent.querySelector(`[data-sent-idx="${targetIdx}"]`);
       }
-      // 2. 按 sentId / data-sent-id 查询
+      // 2. 备用：按 sentObj.id 或 sentObj.domId 查询
+      if (!targetEl && sentObj) {
+        if (sentObj.id !== undefined && sentObj.id !== null) {
+          targetEl = el.paperContent.querySelector(`[data-sent-id="${sentObj.id}"], [data-point-id="${sentObj.id}"]`);
+        }
+        if (!targetEl && sentObj.domId) {
+          try {
+            const escId = (typeof CSS !== 'undefined' && CSS.escape) ? CSS.escape(String(sentObj.domId)) : String(sentObj.domId).replace(/([ #;?%&,.+*~\':"!^$[\]()=>|\/@])/g, '\\$1');
+            targetEl = el.paperContent.querySelector(`#${escId}, [data-sent-id="${sentObj.domId}"]`);
+          } catch (e) {}
+        }
+      }
+      // 3. 备用：全局 getElementById 兜底
       if (!targetEl) {
-        targetEl = el.paperContent.querySelector(`[data-sent-id="${sentId}"], .recite-sent[data-sent-id="${sentId}"], .recite-sent-item[data-sent-id="${sentId}"], .tj-sent-span[data-sent-id="${sentId}"], .xt-day-point-card[data-point-id="${sentId}"], .tj-point-card[data-point-id="${sentId}"]`);
+        targetEl = el.paperContent.querySelector(`[data-sent-id="${target}"], [data-point-id="${target}"]`);
       }
-      // 3. 按 domId 查询
-      if (!targetEl && sentObj && sentObj.domId) {
-        targetEl = el.paperContent.querySelector(`#${sentObj.domId}, [data-sent-id="${sentObj.domId}"]`);
-      }
-      // 4. 全局 getElementById 兜底
       if (!targetEl) {
-        targetEl = document.getElementById(String(sentId));
+        try {
+          targetEl = document.getElementById(String(target));
+        } catch (e) {}
       }
     }
 
@@ -1923,7 +2178,7 @@
         const matchedFirst = state.activeSentences.find(s => (!isNaN(rawIdx) && (s.idx === rawIdx || s.id === rawIdx)) || (rawId && (String(s.id) === String(rawId) || String(s.domId) === String(rawId))));
         if (matchedFirst && typeof matchedFirst.start === 'number' && !isNaN(matchedFirst.start)) {
           start = matchedFirst.start;
-          sentId = matchedFirst.id || sentId;
+          sentId = matchedFirst.idx !== undefined ? matchedFirst.idx : (matchedFirst.id || sentId);
         }
       }
       if (lastSent && state.activeSentences && state.activeSentences.length > 0) {
@@ -2420,7 +2675,7 @@
             return;
           } else {
             // 若 cur < sStart - 0.3（倒带稍微过多或刚 seek 落地），保持当前句不变，静待其播放至 sStart
-            highlightSentence(sent.id);
+            highlightSentence(state.currentSentIndex);
             updateHUDDisplay(cur);
             syncRafId = requestAnimationFrame(runSyncLoop);
             return;
@@ -2459,7 +2714,7 @@
               if (nextSent) {
                 state.currentSentIndex++;
                 triggerLoopSeek(nextStart);
-                highlightSentence(nextSent.id);
+                highlightSentence(state.currentSentIndex);
                 updateHUDDisplay(nextStart);
                 syncRafId = requestAnimationFrame(runSyncLoop);
                 return;
@@ -2471,7 +2726,7 @@
               }
             }
           } else {
-            highlightSentence(sent.id);
+            highlightSentence(state.currentSentIndex);
             updateHUDDisplay(cur);
             syncRafId = requestAnimationFrame(runSyncLoop);
             return;
@@ -2511,7 +2766,7 @@
                 // 仅当句子属于当前段落范围时高亮，防止越界高亮
                 if (s && s.start >= curSec.start - 0.2 && s.start <= curSec.end + 0.1) {
                   state.currentSentIndex = activeIdx;
-                  highlightSentence(s.id);
+                  highlightSentence(activeIdx);
                 }
               }
               syncRafId = requestAnimationFrame(runSyncLoop);
@@ -2525,8 +2780,7 @@
         if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
           state.currentSentIndex = activeIdx;
           state.loopCount = 0;
-          const sent = state.activeSentences[activeIdx];
-          highlightSentence(sent.id);
+          highlightSentence(activeIdx);
           updateHUDDisplay(cur);
         }
       }
@@ -2651,7 +2905,7 @@
               if (nextSent) {
                 state.currentSentIndex++;
                 triggerLoopSeek(nextStart);
-                highlightSentence(nextSent.id);
+                highlightSentence(state.currentSentIndex);
                 updateHUDDisplay(nextStart);
                 return;
               } else {
@@ -2690,8 +2944,7 @@
         if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
           state.currentSentIndex = activeIdx;
           state.loopCount = 0;
-          const sent = state.activeSentences[activeIdx];
-          highlightSentence(sent.id);
+          highlightSentence(activeIdx);
         }
       }
     });
@@ -2909,6 +3162,7 @@
           const settingsClose = document.getElementById('settingsClose');
           if (settingsClose) settingsClose.click();
         }
+        syncBodyScrollLock();
       }
     });
 
@@ -3559,13 +3813,7 @@
       if (dock) dock.classList.add('dock-receded');
       if (nav) nav.classList.add('dock-receded');
     } else {
-      const hasOpenDrawer = (
-        (el.sidebar && el.sidebar.classList.contains('open') && isSidebarDrawerMode()) ||
-        (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) ||
-        (document.getElementById('settingsDrawer') && document.getElementById('settingsDrawer').classList.contains('open')) ||
-        (document.getElementById('outlineDrawer') && document.getElementById('outlineDrawer').classList.contains('open')) ||
-        (el.playModeDrawer && el.playModeDrawer.classList.contains('open'))
-      );
+      const hasOpenDrawer = hasAnyOpenDrawer();
       if (!hasOpenDrawer) {
         if (dock) dock.classList.remove('dock-receded');
         if (nav) nav.classList.remove('dock-receded');
@@ -3876,7 +4124,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.1.1';
+  const APP_BUILD_ID = '3.1.2';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -4227,12 +4475,16 @@
       }
     }, { passive: false });
 
-    // 窗口尺寸自适应：若从移动端横屏/小屏放大到桌面大屏，自动解除移动抽屉
-    window.addEventListener('resize', () => {
+    // 窗口尺寸自适应：若从移动端横屏/小屏放大到桌面大屏，自动解除移动抽屉并同步滚动穿透锁
+    const handleViewportChange = () => {
       if (!isSidebarDrawerMode() && el.sidebar && el.sidebar.classList.contains('open')) {
         closeSidebar();
       }
-    });
+      syncBodyScrollLock();
+    };
+
+    window.addEventListener('resize', handleViewportChange);
+    window.addEventListener('orientationchange', handleViewportChange);
   }
 
   function startApp() {
@@ -4247,6 +4499,7 @@
     loadManifestData();
     setupVersionHandlers();
     initTouchIsolation();
+    syncBodyScrollLock();
   }
 
 
@@ -4467,7 +4720,9 @@
       idx: s.idx !== undefined ? s.idx : idx
     })));
 
+    stampSentenceIndices();
     bindSentenceClickHandlers(el.paperContent);
+    bindCardSectionClickHandlers(el.paperContent);
 
     attachSealButtonListeners(chapter.id);
     buildFrameworkIndex();
@@ -4554,15 +4809,30 @@
       idx: s.idx !== undefined ? s.idx : idx
     })));
 
+    stampSentenceIndices();
+
     const bodyEl = document.getElementById('polSubcardBody');
     if (bodyEl) {
       bodyEl.querySelectorAll('.card-audio-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
-          toggleAudioPlayback();
+          const firstSent = (state.activeSentences && state.activeSentences.length > 0) ? state.activeSentences[0] : null;
+          const firstSentEl = bodyEl.querySelector('.recite-sentence, .recite-sent, [data-sent-idx]');
+          const targetIdx = firstSent ? firstSent.idx : 0;
+          const targetStart = firstSent ? firstSent.start : (firstSentEl ? parseFloat(firstSentEl.dataset.start) : 0);
+
+          if (state.isPlaying) {
+            toggleAudioPlayback();
+          } else {
+            seekToSentence(targetIdx, targetStart);
+            if (audio.paused) {
+              audio.play().catch(err => console.log('Subcard audio play failed:', err));
+            }
+          }
         });
       });
       bindSentenceClickHandlers(bodyEl);
+      bindCardSectionClickHandlers(bodyEl);
     }
 
     buildFrameworkIndex();
@@ -4640,17 +4910,19 @@
           matched = state.activeSentences[pIdx];
         }
         if (matched && typeof matched.start === 'number' && !isNaN(matched.start)) {
-          seekToSentence(matched.id, matched.start);
+          seekToSentence(matched.idx, matched.start);
         } else {
           const p = points[pIdx];
           if (p) {
             const startTime = state.polXtVoice === 'anlang' ? p.anlang_start : p.voice_start;
-            seekToSentence(p.id, startTime);
+            seekToSentence(pIdx, startTime);
           }
         }
       });
     });
 
+    stampSentenceIndices();
+    bindCardSectionClickHandlers(el.paperContent);
     attachSealButtonListeners(dayItem.id);
     buildFrameworkIndex();
     enhanceClozeKeywords();
@@ -4669,13 +4941,14 @@
       end: voiceType === 'anlang' ? p.anlang_end : p.voice_end,
       text: p.tag
     })));
+    stampSentenceIndices();
 
     if (startPointIdx >= 0 && startPointIdx < points.length) {
       const p = points[startPointIdx];
       const t = voiceType === 'anlang' ? p.anlang_start : p.voice_start;
       const setTime = () => {
         audio.currentTime = Math.max(0, t);
-        highlightSentence(p.id);
+        highlightSentence(startPointIdx);
       };
       if (audio.readyState >= 1) {
         setTime();
@@ -4690,7 +4963,7 @@
         const setFirst = () => {
           if (audio.currentTime < t0 - 0.3) {
             audio.currentTime = t0;
-            highlightSentence(p0.id);
+            highlightSentence(0);
           }
         };
         if (audio.readyState >= 1) {
@@ -4785,7 +5058,9 @@
     updatePlayBtnUI();
 
     state.activeSentences = sanitizeSentences(allSentences);
+    stampSentenceIndices();
     bindSentenceClickHandlers(el.paperContent);
+    bindCardSectionClickHandlers(el.paperContent);
 
     attachSealButtonListeners(dayItem.id);
     buildFrameworkIndex();
@@ -4967,9 +5242,9 @@
   // 全局安全兜底垫片函数 (Global Shims)
   window.seekChapterReciteSentence = function(chId, start, idx) {
     if (idx !== undefined) {
-      const matched = state.activeSentences ? state.activeSentences.find(s => s.idx === idx || s.id === idx) : null;
-      if (matched && typeof matched.start === 'number') {
-        seekToSentence(matched.id, matched.start);
+      const parsedIdx = parseInt(idx, 10);
+      if (!isNaN(parsedIdx) && state.activeSentences && parsedIdx >= 0 && parsedIdx < state.activeSentences.length) {
+        seekToSentence(parsedIdx, state.activeSentences[parsedIdx].start);
         return;
       }
     }
@@ -4977,9 +5252,9 @@
   };
   window.seekReciteSentence = function(cardId, start, idx) {
     if (idx !== undefined) {
-      const matched = state.activeSentences ? state.activeSentences.find(s => s.idx === idx || s.id === idx) : null;
-      if (matched && typeof matched.start === 'number') {
-        seekToSentence(matched.id, matched.start);
+      const parsedIdx = parseInt(idx, 10);
+      if (!isNaN(parsedIdx) && state.activeSentences && parsedIdx >= 0 && parsedIdx < state.activeSentences.length) {
+        seekToSentence(parsedIdx, state.activeSentences[parsedIdx].start);
         return;
       }
     }
@@ -4991,7 +5266,15 @@
   };
   window.togglePlayCardAudio = function(cardId, title, chId, ev) {
     if (ev && ev.stopPropagation) ev.stopPropagation();
-    toggleAudioPlayback();
+    const firstSent = (state.activeSentences && state.activeSentences.length > 0) ? state.activeSentences[0] : null;
+    if (!state.isPlaying && firstSent) {
+      seekToSentence(firstSent.idx, firstSent.start);
+      if (audio.paused) {
+        audio.play().catch(e => console.log(e));
+      }
+    } else {
+      toggleAudioPlayback();
+    }
   };
 
   // 确保 IIFE 内部所有变量、函数与垫片完全初始化后启动
