@@ -1532,17 +1532,11 @@
           } else if (!isNaN(targetStart)) {
             seekToSentence(rawId || (!isNaN(rawIdx) ? rawIdx : 0), targetStart);
           }
-          if (audio.paused) {
-            audio.play().catch(err => console.log('Card click play failed:', err));
-          }
         } else if (currentFrameworkSections && currentFrameworkSections.length > 0) {
           const matchedSec = currentFrameworkSections.find(s => s.cardEl === card);
           if (matchedSec && typeof matchedSec.start === 'number' && !isNaN(matchedSec.start)) {
             e.stopPropagation();
             seekToSentence(matchedSec.sentId, matchedSec.start);
-            if (audio.paused) {
-              audio.play().catch(err => console.log('Section click play failed:', err));
-            }
           }
         }
       });
@@ -1977,21 +1971,32 @@
 
     if (audio.readyState >= 1) {
       applySeek();
-    } else {
-      audio.addEventListener('loadedmetadata', applySeek, { once: true });
-      audio.addEventListener('canplay', applySeek, { once: true });
-    }
-
-    if (audio.paused) {
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          // 在音频播放落地时强制核验并锚定目标时刻，杜绝 Safari 归零启动
-          audio.currentTime = targetTime;
-        }).catch(e => console.log('Audio play failed:', e));
+      if (audio.paused) {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            if (Math.abs(audio.currentTime - targetTime) > 0.4) {
+              audio.currentTime = targetTime;
+            }
+          }).catch(e => console.log('Audio play failed:', e));
+        }
       }
     } else {
-      applySeek();
+      const onReadySeekAndPlay = () => {
+        applySeek();
+        if (audio.paused) {
+          audio.play().then(() => {
+            if (Math.abs(audio.currentTime - targetTime) > 0.4) {
+              audio.currentTime = targetTime;
+            }
+          }).catch(e => console.log('Audio play failed:', e));
+        }
+      };
+      audio.addEventListener('loadedmetadata', onReadySeekAndPlay, { once: true });
+      audio.addEventListener('canplay', onReadySeekAndPlay, { once: true });
+      if (audio.paused) {
+        audio.load();
+      }
     }
   }
 
@@ -2023,6 +2028,16 @@
         high = mid - 1;
       }
     }
+
+    // 句间停顿与起音迟滞防御：若处于两句之间的交接边界（t 距离下一句起始不到 0.08s），
+    // 且当前状态停留在上一句，保持上一句高光，杜绝在尾部静音期提前跳亮下一句
+    if (ans > 0 && ans < len) {
+      const curStart = typeof sents[ans].start === 'number' ? sents[ans].start : parseFloat(sents[ans].start || 0);
+      if (t < curStart + 0.08 && (state.currentSentIndex === ans - 1 || state.currentSentIndex === -1)) {
+        return ans - 1;
+      }
+    }
+
     return ans;
   }
 
@@ -2787,13 +2802,15 @@
           }
         }
 
-        // 4. 常规高光追踪
-        const activeIdx = findActiveSentenceIndex(cur);
-        if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
-          state.currentSentIndex = activeIdx;
-          state.loopCount = 0;
-          highlightSentence(activeIdx);
-          updateHUDDisplay(cur);
+        // 4. 常规高光追踪 (寻音跳转锁保护：寻音期间绝不回退至第0句)
+        if (!isLoopSeeking) {
+          const activeIdx = findActiveSentenceIndex(cur);
+          if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
+            state.currentSentIndex = activeIdx;
+            state.loopCount = 0;
+            highlightSentence(activeIdx);
+            updateHUDDisplay(cur);
+          }
         }
       }
       if (state.isPlaying) {
@@ -2963,11 +2980,13 @@
           return;
         }
 
-        const activeIdx = findActiveSentenceIndex(cur);
-        if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
-          state.currentSentIndex = activeIdx;
-          state.loopCount = 0;
-          highlightSentence(activeIdx);
+        if (!isLoopSeeking) {
+          const activeIdx = findActiveSentenceIndex(cur);
+          if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
+            state.currentSentIndex = activeIdx;
+            state.loopCount = 0;
+            highlightSentence(activeIdx);
+          }
         }
       }
     });
@@ -4150,7 +4169,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.2.1';
+  const APP_BUILD_ID = '3.2.2';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -4364,7 +4383,7 @@
     if (badge) {
       badge.addEventListener('click', () => {
         if (badge.classList.contains('has-update')) {
-          performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.2.1');
+          performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.2.2');
         } else {
           checkAppUpdate(true);
         }
@@ -4373,13 +4392,13 @@
 
     if (refreshBtn) {
       refreshBtn.addEventListener('click', () => {
-        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.2.1');
+        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.2.2');
       });
     }
 
     if (bannerBody) {
       bannerBody.addEventListener('click', () => {
-        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.2.1');
+        performVisualUpdateFlow((latestUpdatePayload && latestUpdatePayload.version) || '3.2.2');
       });
     }
 
@@ -4555,7 +4574,7 @@
     showToast('正在加载考研政治背诵手卷...', 2000);
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = 'data/kaoyan_data_pol.js?v=3.2.1';
+      script.src = 'data/kaoyan_data_pol.js?v=3.2.2';
       script.onload = () => {
         isPolDataLoading = false;
         state.polData = window.KAOYAN_POL_DATA;

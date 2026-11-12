@@ -5195,6 +5195,23 @@ body {
 
 /* 核心移动端与平板竖屏排版优化与 App 规范 */
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait), (min-width: 768px) and (max-width: 834px) {
+  .app-body {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: calc(100% - var(--header-h, 60px)) !important;
+    display: flex !important;
+    overflow: hidden !important;
+  }
+
+  .nav-tab-item {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    box-shadow: none !important;
+  }
   .app-bottom-nav {
     display: block !important;
     position: fixed !important;
@@ -8469,14 +8486,16 @@ body.drawer-scroll-locked #mainStage {
   }
 
   .app-body.sidebar-collapsed .sidebar {
-    margin-left: calc(-1 * var(--sidebar-w, 280px)) !important;
+    display: none !important;
     width: 0 !important;
     min-width: 0 !important;
     max-width: 0 !important;
+    margin-left: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    overflow: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
-    border-right: none !important;
-    overflow: hidden !important;
   }
 
   /* 2.1 确保侧边栏收起时内容绝对水平居中，两翼对称，绝不靠左偏倚 */
@@ -8489,6 +8508,8 @@ body.drawer-scroll-locked #mainStage {
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 auto !important;
+    min-height: 0 !important;
+    height: 100% !important;
     padding-left: max(32px, env(safe-area-inset-left)) !important;
     padding-right: max(32px, env(safe-area-inset-right)) !important;
     display: flex !important;
@@ -8727,6 +8748,16 @@ body.drawer-scroll-locked #mainStage {
     padding: 0 8px !important;
   }
 
+  .nav-tab-item {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    box-shadow: none !important;
+  }
+
   .nav-tab-item:not(.nav-tab-center-play) {
     flex: 1 !important;
     height: 52px !important;
@@ -8737,6 +8768,13 @@ body.drawer-scroll-locked #mainStage {
     justify-content: center !important;
     padding: 2px 0 !important;
     box-sizing: border-box !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    box-shadow: none !important;
   }
 
   .nav-tab-center-play {
@@ -8938,6 +8976,16 @@ body.drawer-scroll-locked #mainStage {
     padding: 0 4px !important;
   }
 
+  .nav-tab-item {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    box-shadow: none !important;
+  }
+
   .nav-tab-item:not(.nav-tab-center-play) {
     flex: 1 !important;
     height: 52px !important;
@@ -8948,6 +8996,13 @@ body.drawer-scroll-locked #mainStage {
     justify-content: center !important;
     padding: 2px 0 !important;
     box-sizing: border-box !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    box-shadow: none !important;
   }
 
   .nav-tab-center-play {
@@ -8980,17 +9035,17 @@ body.drawer-scroll-locked #mainStage {
     box-shadow: 0 4px 14px rgba(184, 51, 42, 0.42), 0 2px 5px rgba(0, 0, 0, 0.12) !important;
   }
 
-  /* 3. 手机端播放坞：收起时沉底，展开时占底 */
+  /* 3. 手机端播放坞：浮动胶囊卡片，展开时悬浮于底栏上方，收起时平滑沉底 */
   .player-dock {
     position: fixed !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    border-radius: 20px 20px 0 0 !important;
-    padding: 6px 14px calc(10px + env(safe-area-inset-bottom, 8px)) !important;
+    left: 12px !important;
+    right: 12px !important;
+    bottom: calc(16px + env(safe-area-inset-bottom, 8px)) !important;
+    width: auto !important;
+    max-width: 680px !important;
+    margin: 0 auto !important;
+    border-radius: 24px !important;
+    padding: 8px 14px 10px !important;
     transform: translateY(140%) !important;
     opacity: 0 !important;
     pointer-events: none !important;
@@ -8998,8 +9053,8 @@ body.drawer-scroll-locked #mainStage {
     background: var(--bg-dock) !important;
     backdrop-filter: blur(24px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-    border-top: 1px solid var(--line-main) !important;
-    box-shadow: 0 -6px 24px rgba(42, 34, 27, 0.1) !important;
+    border: 1px solid var(--line-main) !important;
+    box-shadow: 0 8px 32px rgba(42, 34, 27, 0.14) !important;
     transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
   }
 
@@ -9015,8 +9070,10 @@ body.drawer-scroll-locked #mainStage {
     pointer-events: none !important;
   }
 
-  /* 4. 手机端正文防遮挡下边距 */
+  /* 4. 手机端正文防遮挡下边距与全屏顺滑滚动 */
   .main-stage {
+    min-height: 0 !important;
+    height: 100% !important;
     padding-bottom: calc(90px + env(safe-area-inset-bottom, 16px)) !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
