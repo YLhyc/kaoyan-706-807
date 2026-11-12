@@ -417,9 +417,13 @@ body {
 /* 大屏与 iPad 折叠侧边栏时主舞台全屏扩展 */
 @media (min-width: 769px) {
   .app-body.sidebar-collapsed .sidebar {
-    margin-left: calc(-1 * var(--sidebar-w)) !important;
+    display: none !important;
+    margin-left: 0 !important;
     width: 0 !important;
     min-width: 0 !important;
+    max-width: 0 !important;
+    flex: 0 0 0 !important;
+    padding: 0 !important;
     opacity: 0 !important;
     pointer-events: none !important;
     border-right: none !important;
@@ -427,7 +431,9 @@ body {
   }
 
   .app-body.sidebar-collapsed .main-stage {
+    margin-left: 0 !important;
     max-width: 100% !important;
+    width: 100% !important;
     flex: 1 1 100% !important;
     transition: max-width 0.28s ease;
   }
@@ -446,7 +452,7 @@ body {
   width: 100%;
 }
 
-.search-input-wrap svg {
+.search-input-wrap .search-leading-icon {
   position: absolute;
   left: 10px;
   top: 50%;
@@ -457,10 +463,33 @@ body {
   pointer-events: none;
 }
 
+.search-clear-btn {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.search-clear-btn:hover {
+  background: rgba(184, 51, 42, 0.10);
+  color: var(--vermilion, #b8332a);
+}
+
 .search-input {
   width: 100%;
   height: 36px;
-  padding: 0 12px 0 34px;
+  padding: 0 32px 0 34px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--line-main);
   background: var(--bg-card);
@@ -4183,19 +4212,7 @@ body {
 }
 
 [data-theme="dark"] .mode-drawer {
-  position: fixed;
-  left: 50%;
-  bottom: 0;
-  transform: translate(-50%, 105%);
-  width: min(560px, 100vw);
-  max-height: 75vh;
   background: var(--bg-card);
-  border-radius: 18px 18px 0 0;
-  box-shadow: 0 -8px 36px rgba(0, 0, 0, 0.22);
-  z-index: 1210 !important;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
 }
 [data-theme="dark"] .mode-drawer-sub {
   border-bottom-color: rgba(255, 255, 255, 0.08);
@@ -5194,7 +5211,7 @@ body {
 }
 
 /* 核心移动端与平板竖屏排版优化与 App 规范 */
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait), (min-width: 768px) and (max-width: 834px) {
+@media (max-width: 767px), (min-width: 768px) and (max-width: 1024px) and (orientation: portrait), (min-width: 768px) and (max-width: 834px), (orientation: landscape) and (max-height: 500px) and (max-width: 960px) {
   .app-body {
     flex: 1 1 auto !important;
     min-height: 0 !important;
@@ -5733,14 +5750,17 @@ body.dock-expanded .dock-fab-play {
     border-radius: 16px !important;
     border: 1px solid var(--line-main) !important;
     opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    visibility: hidden;
+    pointer-events: none !important;
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.25s !important;
   }
 
   .settings-drawer.open {
     transform: translate(-50%, -50%) scale(1) !important;
     opacity: 1 !important;
+    visibility: visible;
     pointer-events: auto !important;
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s !important;
   }
 }
 
@@ -5825,7 +5845,7 @@ body.dock-expanded .dock-fab-play {
 }
 
 .settings-info-box {
-  line-height: 1.6;
+  line-height: 1.65;
   font-size: 12px;
   color: var(--ink-secondary);
   background: var(--bg-card);
@@ -5834,12 +5854,38 @@ body.dock-expanded .dock-fab-play {
   border: 1px solid var(--line-subtle);
 }
 
+.settings-shortcut-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.shortcut-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(184, 51, 42, 0.06);
+  border: 1px solid var(--line-main);
+  font-size: 11px;
+  color: var(--ink-secondary);
+}
+
+.shortcut-chip kbd {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
 
 /* ==========================================================================
    Scheme B · 移动端与 iPad 竖屏优雅分层播控坞
    ========================================================================== */
 
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait), (min-width: 768px) and (max-width: 834px) {
+@media (max-width: 767px), (min-width: 768px) and (max-width: 1024px) and (orientation: portrait), (min-width: 768px) and (max-width: 834px), (orientation: landscape) and (max-height: 500px) and (max-width: 960px) {
   /* 1. 移动端 App 底部 5 导航主栏 */
   .app-bottom-nav {
     display: block !important;
@@ -6343,7 +6389,7 @@ body.dock-expanded .dock-fab-play {
   background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.35) 50%, transparent 100%) !important;
 }
 
-/* 桌面端 (>= 769px)：居中悬浮胶囊托盘 */
+/* 桌面与平铺大屏 (>= 769px)：居中悬浮胶囊托盘 */
 @media (min-width: 769px) {
   .player-dock {
     position: fixed !important;
@@ -6364,8 +6410,24 @@ body.dock-expanded .dock-fab-play {
   }
 }
 
+/* Desktop (>= 1367px) 底栏隐藏时播控胶囊常驻可见，防止桌面端失去播放/倍速/循环入口 */
+@media (min-width: 1367px) {
+  .player-dock.dock-collapsed:not(.dock-receded) {
+    transform: translateX(-50%) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+  body:has(.app-body:not(.sidebar-collapsed)) .player-dock {
+    left: calc(50% + 140px) !important;
+    max-width: min(820px, calc(100vw - 340px)) !important;
+  }
+  .dock-collapse-close-btn {
+    display: none !important;
+  }
+}
+
 /* 移动端与 iPad 竖屏：双向锁定且悬浮在底栏正上方 */
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait), (min-width: 768px) and (max-width: 834px) {
+@media (max-width: 767px), (min-width: 768px) and (max-width: 1024px) and (orientation: portrait), (min-width: 768px) and (max-width: 834px), (orientation: landscape) and (max-height: 500px) and (max-width: 960px) {
   .player-dock {
     position: fixed !important;
     left: 12px !important;
@@ -7033,10 +7095,10 @@ body.dock-expanded .dock-fab-play {
 }
 
 /* --------------------------------------------------------------------------
-   Bug 修复 3：底部安全避让留白 (保证正文滑到底部绝不被底栏遮盖)
+   Bug 修复 3：底部安全避让留白 (保证正文滑到底部绝不被底栏/悬浮托盘遮盖)
    -------------------------------------------------------------------------- */
 .paper-container {
-  padding-bottom: 140px !important;
+  padding-bottom: 170px !important;
 }
 @media (max-width: 768px) {
   .paper-container {
@@ -7047,7 +7109,7 @@ body.dock-expanded .dock-fab-play {
 /* --------------------------------------------------------------------------
    移动端与 iPad 竖屏原生底部导航栏优化
    -------------------------------------------------------------------------- */
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait), (min-width: 768px) and (max-width: 834px) {
+@media (max-width: 767px), (min-width: 768px) and (max-width: 1024px) and (orientation: portrait), (min-width: 768px) and (max-width: 834px), (orientation: landscape) and (max-height: 500px) and (max-width: 960px) {
   .app-bottom-nav {
     display: block !important;
     position: fixed !important;
@@ -7607,23 +7669,24 @@ body.dock-expanded .dock-fab-play {
 .pol-scope .xt-num-badge { flex-shrink: 0; font-weight: 700; color: var(--vermilion, #b91c1c); min-width: 18px; }
 .pol-scope .xt-num-badge.sub-bullet { color: var(--ink-muted); }
 .pol-scope .xt-item-content { flex: 1; min-width: 0; }
-.pol-scope .xt-example-lead { font-size: 14px; font-weight: 700; color: #2e5b88; margin: 10px 0 4px 0; }
+.pol-scope .xt-example-lead { font-size: calc(var(--font-base, 17px) * 0.86); font-weight: 700; color: #2e5b88; margin: 10px 0 4px 0; }
 [data-theme="dark"] .pol-scope .xt-example-lead { color: #7eccf5; }
-.pol-scope .xt-text-para { margin: 7px 0; line-height: 1.8; font-size: var(--font-base, 16px); color: var(--ink-primary); }
+.pol-scope .xt-text-para { margin: 7px 0; line-height: 1.8; font-size: var(--font-base, 17px); color: var(--ink-primary); }
 .pol-scope .xt-keyword { color: var(--vermilion, #b91c1c); font-weight: 700; }
 [data-theme="dark"] .pol-scope .xt-keyword { color: #f87171; }
-.pol-scope .xt-trap-body { font-size: 14px; line-height: 1.7; }
+.pol-scope .xt-trap-body { font-size: calc(var(--font-base, 17px) * 0.88); line-height: 1.75; }
+.pol-scope .xt-point-content, .pol-scope .tj-sentence-flow, .pol-scope .tj-point-text { line-height: 1.85; font-size: calc(var(--font-base, 17px) * 0.92); color: var(--ink-primary); }
 
 /* 4. Track 2 Subcard Header & 4-Part Stream Cards (.sub-card-audio-ctrl, .stream-card-*) */
 .pol-scope .sub-card-audio-ctrl { background: var(--bg-card, #fff); border: 1px solid var(--line-main); border-radius: 10px; padding: 10px 12px; margin-bottom: 12px; }
 [data-theme="dark"] .pol-scope .sub-card-audio-ctrl { background: var(--bg-card, #1c1917); border-color: rgba(255,255,255,0.08); }
 .pol-scope .sub-card-title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; flex-wrap: wrap; }
 .pol-scope .sub-card-badge { font-size: 11px; font-weight: 700; color: var(--vermilion, #b91c1c); background: rgba(185, 28, 28, 0.1); padding: 2px 7px; border-radius: 999px; flex-shrink: 0; }
-.pol-scope .sub-card-title { font-size: 15px; font-weight: 700; color: var(--ink-primary); margin: 0; flex: 1; min-width: 140px; line-height: 1.35; }
+.pol-scope .sub-card-title { font-size: calc(var(--font-base, 17px) * 0.92); font-weight: 700; color: var(--ink-primary); margin: 0; flex: 1; min-width: 140px; line-height: 1.38; }
 .pol-scope .card-audio-btn { display: inline-flex; align-items: center; gap: 4px; background: rgba(185, 28, 28, 0.1); border: 1px solid rgba(185, 28, 28, 0.25); color: var(--vermilion, #b91c1c); border-radius: 999px; padding: 4px 11px; font-size: 11.5px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
 .pol-scope .card-audio-btn.playing { background: var(--vermilion, #b91c1c); color: #fff; border-color: var(--vermilion, #b91c1c); }
-.pol-scope .stream-intro-row, .pol-scope .stream-outline-intro, .pol-scope .stream-lecture-intro { font-size: 13.5px; color: var(--ink-secondary); margin-bottom: 6px; line-height: 1.7; }
-.pol-scope .stream-outline-content { display: flex; flex-direction: column; gap: 7px; }
+.pol-scope .stream-intro-row, .pol-scope .stream-outline-intro, .pol-scope .stream-lecture-intro { font-size: calc(var(--font-base, 17px) * 0.85); color: var(--ink-secondary); margin-bottom: 6px; line-height: 1.7; }
+.pol-scope .stream-outline-content { display: flex; flex-direction: column; gap: 7px; font-size: calc(var(--font-base, 17px) * 0.92); }
 .pol-scope .stream-outline-row { padding: 7px 10px; background: var(--bg-canvas, rgba(0,0,0,0.02)); border-radius: 6px; border: 1px solid var(--line-subtle); line-height: 1.85; }
 .pol-scope .stream-card-lecture { border-left: 4px solid #059669; }
 .pol-scope .stream-card-lecture .stream-card-label { color: #059669; }
@@ -7631,9 +7694,9 @@ body.dock-expanded .dock-fab-play {
 .pol-scope .stream-takeaway-box { margin-top: 8px; padding: 8px 11px; background: rgba(5, 150, 105, 0.08); border-radius: 6px; border-left: 3px solid #059669; }
 .pol-scope .stream-takeaway-tag { font-size: 11.5px; font-weight: 700; color: #059669; margin-bottom: 3px; }
 [data-theme="dark"] .pol-scope .stream-takeaway-tag { color: #34d399; }
-.pol-scope .stream-takeaway-text { font-weight: 600; color: var(--ink-primary); line-height: 1.8; font-size: 14.5px; }
+.pol-scope .stream-takeaway-text { font-weight: 600; color: var(--ink-primary); line-height: 1.8; font-size: calc(var(--font-base, 17px) * 0.90); }
 .pol-scope .stream-card-tips { display: flex; flex-direction: column; gap: 8px; border: none !important; padding: 0 !important; background: transparent !important; box-shadow: none !important; }
-.pol-scope .stream-tip-box { padding: 10px 12px; border-radius: 8px; line-height: 1.8; font-size: 14.5px; }
+.pol-scope .stream-tip-box { padding: 10px 12px; border-radius: 8px; line-height: 1.8; font-size: calc(var(--font-base, 17px) * 0.90); }
 .pol-scope .stream-tip-box.xt { background: rgba(185, 28, 28, 0.05); border-left: 3.5px solid var(--vermilion, #b91c1c); }
 .pol-scope .stream-tip-badge.xt { display: inline-block; font-size: 12px; font-weight: 700; color: var(--vermilion, #b91c1c); margin-bottom: 3px; }
 .pol-scope .stream-tip-box.xiao { background: rgba(217, 119, 6, 0.08); border-left: 3.5px solid #d97706; }
@@ -8294,71 +8357,123 @@ body.dock-expanded .dock-fab-play {
 }
 
 /* ---------------- 8. 全科通用首字弱提示 (Ghost Hint) 挖空交互 ---------------- */
-.cloze-keyword .xt-keyword.cloze:not(.revealed),
+.cloze-keyword .cloze:not(.revealed),
 .cloze-keyword .kw-red[data-ghost]:not(.revealed),
-.cloze-keyword-active .xt-keyword.cloze:not(.revealed),
-.cloze-keyword-active .kw-red:not(.revealed) {
+.cloze-keyword .stream-kw.cloze:not(.revealed),
+.cloze-keyword-active .cloze:not(.revealed),
+.cloze-keyword-active .kw-red:not(.revealed),
+.cloze-keyword-active .stream-kw:not(.revealed) {
   color: transparent !important;
   filter: none !important;
   background: var(--cloze-bg, rgba(180, 83, 9, 0.10));
   border-bottom: 1.5px dashed var(--accent-primary, #b45309);
   border-radius: 4px;
   padding: 0 6px;
+  display: inline-block;
+  max-width: 100%;
+  min-width: 2.6em;
+  vertical-align: baseline;
+  line-height: 1.45;
   cursor: pointer;
   position: relative;
   user-select: none;
   -webkit-user-select: none;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.cloze-keyword .xt-keyword.cloze:not(.revealed)::after,
+.cloze-keyword .cloze:not(.revealed)::after,
 .cloze-keyword .kw-red[data-ghost]:not(.revealed)::after,
-.cloze-keyword-active .xt-keyword.cloze:not(.revealed)::after,
-.cloze-keyword-active .kw-red:not(.revealed)::after {
+.cloze-keyword .stream-kw.cloze:not(.revealed)::after,
+.cloze-keyword-active .cloze:not(.revealed)::after,
+.cloze-keyword-active .kw-red:not(.revealed)::after,
+.cloze-keyword-active .stream-kw:not(.revealed)::after {
   content: attr(data-ghost);
   position: absolute;
-  left: 6px;
+  left: 50%;
   top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-muted, #9ca3af);
+  transform: translate(-50%, -50%);
+  max-width: calc(100% - 6px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink-muted, #9ca3af);
   font-size: 0.85em;
   font-weight: 500;
   pointer-events: none;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
-.cloze-keyword .xt-keyword.cloze.revealed,
+.cloze-keyword .cloze.revealed,
 .cloze-keyword .kw-red.revealed,
-.cloze-keyword-active .xt-keyword.cloze.revealed,
-.cloze-keyword-active .kw-red.revealed {
+.cloze-keyword .stream-kw.revealed,
+.cloze-keyword .active-spotlight .cloze,
+.cloze-keyword .active-spotlight .kw-red,
+.cloze-keyword .active-spotlight .stream-kw,
+.cloze-keyword .active-spotlight .stream-kw.cloze,
+.cloze-keyword .active-spotlight .kw-red.cloze,
+.cloze-keyword-active .cloze.revealed,
+.cloze-keyword-active .kw-red.revealed,
+.cloze-keyword-active .stream-kw.revealed,
+.cloze-keyword-active .active-spotlight .cloze,
+.cloze-keyword-active .active-spotlight .kw-red,
+.cloze-keyword-active .active-spotlight .stream-kw,
+.cloze-keyword-active .active-spotlight .stream-kw.cloze,
+.cloze-keyword-active .active-spotlight .kw-red.cloze {
   color: var(--accent-primary, #b45309) !important;
   background: rgba(180, 83, 9, 0.08) !important;
   border-bottom: 1.5px solid var(--accent-primary, #b45309) !important;
   border-radius: 4px;
   padding: 0 4px;
+  display: inline;
   cursor: pointer;
   animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-[data-theme="dark"] .cloze-keyword .xt-keyword.cloze:not(.revealed),
+.cloze-keyword .active-spotlight .cloze::after,
+.cloze-keyword .active-spotlight .kw-red::after,
+.cloze-keyword .active-spotlight .stream-kw::after,
+.cloze-keyword-active .active-spotlight .cloze::after,
+.cloze-keyword-active .active-spotlight .kw-red::after,
+.cloze-keyword-active .active-spotlight .stream-kw::after {
+  content: none !important;
+  display: none !important;
+}
+
+[data-theme="dark"] .cloze-keyword .cloze:not(.revealed),
 [data-theme="dark"] .cloze-keyword .kw-red[data-ghost]:not(.revealed),
-[data-theme="dark"] .cloze-keyword-active .xt-keyword.cloze:not(.revealed),
-[data-theme="dark"] .cloze-keyword-active .kw-red:not(.revealed) {
+[data-theme="dark"] .cloze-keyword .stream-kw.cloze:not(.revealed),
+[data-theme="dark"] .cloze-keyword-active .cloze:not(.revealed),
+[data-theme="dark"] .cloze-keyword-active .kw-red:not(.revealed),
+[data-theme="dark"] .cloze-keyword-active .stream-kw:not(.revealed) {
   background: rgba(245, 158, 11, 0.12);
   border-bottom-color: #f59e0b;
 }
 
-[data-theme="dark"] .cloze-keyword .xt-keyword.cloze:not(.revealed)::after,
+[data-theme="dark"] .cloze-keyword .cloze:not(.revealed)::after,
 [data-theme="dark"] .cloze-keyword .kw-red[data-ghost]:not(.revealed)::after,
-[data-theme="dark"] .cloze-keyword-active .xt-keyword.cloze:not(.revealed)::after,
-[data-theme="dark"] .cloze-keyword-active .kw-red:not(.revealed)::after {
+[data-theme="dark"] .cloze-keyword .stream-kw.cloze:not(.revealed)::after,
+[data-theme="dark"] .cloze-keyword-active .cloze:not(.revealed)::after,
+[data-theme="dark"] .cloze-keyword-active .kw-red:not(.revealed)::after,
+[data-theme="dark"] .cloze-keyword-active .stream-kw:not(.revealed)::after {
   color: #a8a29e;
 }
 
-[data-theme="dark"] .cloze-keyword .xt-keyword.cloze.revealed,
+[data-theme="dark"] .cloze-keyword .cloze.revealed,
 [data-theme="dark"] .cloze-keyword .kw-red.revealed,
-[data-theme="dark"] .cloze-keyword-active .xt-keyword.cloze.revealed,
-[data-theme="dark"] .cloze-keyword-active .kw-red.revealed {
+[data-theme="dark"] .cloze-keyword .stream-kw.revealed,
+[data-theme="dark"] .cloze-keyword .active-spotlight .cloze,
+[data-theme="dark"] .cloze-keyword .active-spotlight .kw-red,
+[data-theme="dark"] .cloze-keyword .active-spotlight .stream-kw,
+[data-theme="dark"] .cloze-keyword .active-spotlight .stream-kw.cloze,
+[data-theme="dark"] .cloze-keyword .active-spotlight .kw-red.cloze,
+[data-theme="dark"] .cloze-keyword-active .cloze.revealed,
+[data-theme="dark"] .cloze-keyword-active .kw-red.revealed,
+[data-theme="dark"] .cloze-keyword-active .stream-kw.revealed,
+[data-theme="dark"] .cloze-keyword-active .active-spotlight .cloze,
+[data-theme="dark"] .cloze-keyword-active .active-spotlight .kw-red,
+[data-theme="dark"] .cloze-keyword-active .active-spotlight .stream-kw,
+[data-theme="dark"] .cloze-keyword-active .active-spotlight .stream-kw.cloze,
+[data-theme="dark"] .cloze-keyword-active .active-spotlight .kw-red.cloze {
   color: #fbbf24 !important;
   background: rgba(245, 158, 11, 0.16) !important;
   border-bottom-color: #f59e0b !important;
@@ -8396,24 +8511,31 @@ body.drawer-scroll-locked #mainStage {
   touch-action: none !important;
 }
 
-/* 3. 抽屉与侧边栏独立接管纵向手势，杜绝滚动手势链漏到下层页面 */
+/* 3. 抽屉与侧边栏独立接管纵向手势，杜绝滚动手势链漏到下层页面；未开启的浮动抽屉禁止拦截点击 */
+.outline-drawer:not(.open),
+.mode-drawer:not(.open),
+.dashboard-drawer:not(.open),
+.settings-drawer:not(.open) {
+  pointer-events: none !important;
+}
+
 .sidebar,
 #sidebar,
 .item-list-container,
 #item-list,
-.outline-drawer,
-#outlineDrawer,
+.outline-drawer.open,
+#outlineDrawer.open,
 .outline-drawer-body,
-.mode-drawer,
-#playModeDrawer,
+.mode-drawer.open,
+#playModeDrawer.open,
 .mode-drawer-body,
 .play-mode-list,
 #playModeList,
-.dashboard-drawer,
-#studyDashboardDrawer,
+.dashboard-drawer.open,
+#studyDashboardDrawer.open,
 .dashboard-drawer-body,
-.settings-drawer,
-#settingsDrawer,
+.settings-drawer.open,
+#settingsDrawer.open,
 .settings-body,
 .appearance-drawer {
   overscroll-behavior: contain !important;
@@ -8448,7 +8570,7 @@ body.drawer-scroll-locked #mainStage {
 /* ==========================================================================
    iPad 横屏 (Landscape) 与平板双栏布局优化规则 (Warm Editorial 黄金标准)
    ========================================================================== */
-@media (min-width: 835px) and (max-width: 1366px) and (orientation: landscape), (min-width: 769px) and (max-width: 1100px) and (orientation: landscape) {
+@media (min-width: 835px) and (max-width: 1366px) and (orientation: landscape) and (min-height: 501px), (min-width: 769px) and (max-width: 1100px) and (orientation: landscape) and (min-height: 501px) {
   :root {
     --sidebar-w: 280px;
     --header-h: 56px;
@@ -8704,7 +8826,7 @@ body.drawer-scroll-locked #mainStage {
 /* ==========================================================================
    iPad 竖屏 (Portrait) 底部导航栏、抽屉与正文安全距离终极规则 (Highest Priority)
    ========================================================================== */
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait), (min-width: 768px) and (max-width: 834px) {
+@media (max-width: 767px), (min-width: 768px) and (max-width: 1024px) and (orientation: portrait), (min-width: 768px) and (max-width: 834px), (orientation: landscape) and (max-height: 500px) and (max-width: 960px) {
   /* 1. 底栏必须完整显示，5 个 Tab 居中且具备 52px 良好触控热区 */
   .app-bottom-nav {
     display: block !important;
@@ -8912,112 +9034,426 @@ body.drawer-scroll-locked #mainStage {
 
 
 /* ==========================================================================
-   iPhone & Mobile Phone (<= 767px) 手机端终极严格隔离规范 (Warm Editorial & VisionOS)
-   彻底解耦手机与平板视口冲突，恢复播放时底栏平滑下沉退让、正圆大播放按键绝不变形
+   v3.2.3 跨端响应式统一精修：iPhone / iPad 横竖屏 / Desktop 零溢出与全导航规范
    ========================================================================== */
+
+/* 1. Desktop 与大屏平板 (1367px ~ 1580px)：消除 1440px 顶栏横向溢出 */
+@media (min-width: 1367px) and (max-width: 1580px) {
+  .app-header {
+    padding: 0 14px !important;
+    gap: 10px !important;
+  }
+  .brand-voice-info {
+    display: none !important;
+  }
+  .subject-pill-group {
+    padding: 3px !important;
+    gap: 3px !important;
+  }
+  .subject-btn {
+    padding: 6px 12px !important;
+    font-size: 13px !important;
+    gap: 5px !important;
+  }
+  .header-actions {
+    gap: 6px !important;
+  }
+  .header-actions .action-btn {
+    padding: 0 9px !important;
+    font-size: 12.5px !important;
+  }
+}
+
+@media (min-width: 1367px) and (max-width: 1480px) {
+  .brand-sub-badge {
+    display: none !important;
+  }
+}
+
+/* 2. iPad 竖屏 (769px ~ 1024px portrait, 以及 769px ~ 834px)：两行工整排布，零溢出 */
+@media (min-width: 769px) and (max-width: 1024px) and (orientation: portrait),
+       (min-width: 769px) and (max-width: 834px) and (min-height: 501px) {
+  :root {
+    --header-h: 96px;
+  }
+  .app-header {
+    height: auto !important;
+    min-height: 92px !important;
+    padding: 8px 16px !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    row-gap: 8px !important;
+    column-gap: 8px !important;
+    box-sizing: border-box !important;
+  }
+  .brand-section {
+    order: 1 !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    gap: 8px !important;
+  }
+  .brand-sub-badge,
+  .brand-voice-info {
+    display: none !important;
+  }
+  .header-actions {
+    order: 2 !important;
+    flex: 0 0 auto !important;
+    gap: 5px !important;
+    margin-left: auto !important;
+    padding-right: 0 !important;
+  }
+  .header-actions .action-btn {
+    height: 32px !important;
+    padding: 0 8px !important;
+    font-size: 12px !important;
+  }
+  .subject-pill-group {
+    order: 3 !important;
+    width: 100% !important;
+    flex: 1 1 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    margin: 0 !important;
+    padding: 3px !important;
+    gap: 4px !important;
+    box-sizing: border-box !important;
+  }
+  .subject-btn {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    justify-content: center !important;
+    padding: 6px 8px !important;
+    font-size: 13px !important;
+  }
+  .dock-fab-play {
+    display: none !important;
+  }
+}
+
+/* 3. iPhone 竖屏 (<= 767px)：恢复规范 5-Tab 底栏与悬浮在底栏上方的 Liquid Glass 播放坞 */
 @media (max-width: 767px) {
-  /* 1. 手机端底部 5 Tab 导航主栏：默认常驻显示 */
   .app-bottom-nav {
     display: block !important;
-    position: fixed !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    height: calc(52px + env(safe-area-inset-bottom, 8px)) !important;
-    padding-bottom: env(safe-area-inset-bottom, 8px) !important;
-    background: var(--bg-card, #ffffff) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    border-top: 1px solid var(--line-main, rgba(0, 0, 0, 0.08)) !important;
-    z-index: 1000 !important;
-    box-shadow: 0 -2px 14px rgba(42, 34, 27, 0.06) !important;
     transform: translateY(0) !important;
     opacity: 1 !important;
     pointer-events: auto !important;
-    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
   }
-
-  [data-theme="dark"] .app-bottom-nav {
-    background: var(--bg-card, #23211e) !important;
-    border-top: 1px solid var(--line-main, rgba(255, 255, 255, 0.08)) !important;
-    box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.4) !important;
-  }
-
-  /* 核心规则：iPhone 开始播放后底栏必须平滑下沉退下，仅底部悬浮播放坞展开；暂停时底栏恢复 */
   body.dock-expanded .app-bottom-nav {
-    transform: translateY(140%) !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-
-  body:not(.dock-expanded) .app-bottom-nav {
     transform: translateY(0) !important;
     opacity: 1 !important;
     pointer-events: auto !important;
   }
-
-  /* 抽屉打开时，底栏与播放坞均下沉避让 */
-  .app-bottom-nav.dock-receded,
-  .player-dock.dock-receded {
+  .app-bottom-nav.dock-receded {
     transform: translateY(140%) !important;
     opacity: 0 !important;
     pointer-events: none !important;
   }
-
-  /* 2. 手机端 5 Tab 结构：正中播放按键突出且保持 44px 正圆，绝不变形 */
   .nav-bottom-inner {
+    height: 54px !important;
+    padding: 0 6px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-around !important;
-    height: 52px !important;
-    width: 100% !important;
-    max-width: 480px !important;
+  }
+  .dock-fab-play {
+    display: none !important;
+  }
+  body.dock-expanded .player-dock {
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    max-width: calc(100vw - 20px) !important;
     margin: 0 auto !important;
-    padding: 0 4px !important;
+    bottom: calc(64px + env(safe-area-inset-bottom, 8px)) !important;
+    border-radius: 22px !important;
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
-
-  .nav-tab-item {
-    background: transparent !important;
-    background-color: transparent !important;
-    border: none !important;
-    outline: none !important;
-    -webkit-appearance: none !important;
-    appearance: none !important;
-    box-shadow: none !important;
+  .player-dock.dock-collapsed,
+  .player-dock.dock-receded {
+    transform: translateY(calc(100% + 90px)) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
+  .main-stage {
+    min-height: 0 !important;
+    height: 100% !important;
+    padding-bottom: calc(136px + env(safe-area-inset-bottom, 16px)) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  body.dock-expanded .main-stage {
+    padding-bottom: calc(200px + env(safe-area-inset-bottom, 16px)) !important;
+  }
+}
 
-  .nav-tab-item:not(.nav-tab-center-play) {
-    flex: 1 !important;
-    height: 52px !important;
-    min-height: 52px !important;
+/* 4. iPhone / 手机横屏 (orientation: landscape, height <= 500px)：侧栏切为抽屉，避免挤占阅读区与顶栏溢出 */
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 960px) {
+  :root {
+    --header-h: 48px;
+  }
+  .app-header {
+    height: 48px !important;
+    min-height: 48px !important;
+    padding: 4px 10px !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 6px !important;
+  }
+  .brand-section {
     display: flex !important;
-    flex-direction: column !important;
+    flex: 0 0 auto !important;
+    gap: 0 !important;
+  }
+  .brand-icon,
+  .brand-text-group,
+  .brand-sub-badge,
+  .brand-voice-info {
+    display: none !important;
+  }
+  .brand-section .mobile-menu-toggle {
+    display: inline-flex !important;
+    width: 34px !important;
+    height: 32px !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 2px 0 !important;
-    box-sizing: border-box !important;
-    background: transparent !important;
-    background-color: transparent !important;
-    border: none !important;
-    outline: none !important;
-    -webkit-appearance: none !important;
-    appearance: none !important;
-    box-shadow: none !important;
+  }
+  .subject-pill-group {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 2px !important;
+    gap: 2px !important;
+  }
+  .subject-btn {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    padding: 4px 6px !important;
+    font-size: 12px !important;
+    gap: 3px !important;
+    justify-content: center !important;
+  }
+  .subject-btn .count-tag,
+  .subject-btn svg {
+    display: none !important;
+  }
+  .header-actions {
+    flex: 0 0 auto !important;
+    gap: 4px !important;
+  }
+  .header-actions .action-btn {
+    height: 30px !important;
+    padding: 0 7px !important;
+    font-size: 11.5px !important;
+  }
+  .header-actions #btn-study-dashboard,
+  .header-actions #btn-cloze-mode,
+  .header-actions #btn-font-dec,
+  .header-actions #btn-font-inc,
+  .header-actions #btn-font-switch,
+  .header-actions .theme-text {
+    display: none !important;
+  }
+  .sidebar {
+    position: fixed !important;
+    left: 0 !important;
+    top: var(--header-h) !important;
+    bottom: 0 !important;
+    width: min(320px, 75vw) !important;
+    max-width: 320px !important;
+    z-index: 950 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.25s ease !important;
+    display: flex !important;
+  }
+  .sidebar.open {
+    transform: translateX(0) !important;
+  }
+  .main-stage {
+    width: 100% !important;
+    margin-left: 0 !important;
+    padding-bottom: calc(110px + env(safe-area-inset-bottom, 10px)) !important;
+  }
+  .stage-wrapper {
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 12px 14px !important;
+  }
+  .app-bottom-nav {
+    display: block !important;
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+  .app-bottom-nav.dock-receded {
+    transform: translateY(140%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  .nav-bottom-inner {
+    height: 46px !important;
+  }
+  .dock-fab-play {
+    display: none !important;
+  }
+  body.dock-expanded .player-dock {
+    bottom: calc(54px + env(safe-area-inset-bottom, 6px)) !important;
+  }
+}
+
+/* 5. iPad 横屏 (835px ~ 1366px landscape, min-height 501px)：
+      顶栏单行零溢出 + 底部居中玻璃胶囊 5-Tab 导航栏常驻 + 收起侧栏完美居中 */
+@media (min-width: 835px) and (max-width: 1366px) and (orientation: landscape) and (min-height: 501px),
+       (min-width: 769px) and (max-width: 1100px) and (orientation: landscape) and (min-height: 501px) {
+  :root {
+    --header-h: 56px;
+  }
+  .app-header {
+    height: 56px !important;
+    min-height: 56px !important;
+    padding: 0 12px !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+  .brand-section {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    gap: 8px !important;
+  }
+  .brand-sub-badge,
+  .brand-voice-info {
+    display: none !important;
+  }
+  .brand-main-title {
+    font-size: 15px !important;
+    white-space: nowrap !important;
+  }
+  .subject-pill-group {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 3px !important;
+    gap: 3px !important;
+  }
+  .subject-btn {
+    padding: 5px 11px !important;
+    font-size: 13px !important;
+    gap: 4px !important;
+    white-space: nowrap !important;
+  }
+  .subject-btn .count-tag {
+    display: none !important;
+  }
+  .header-actions {
+    flex: 0 0 auto !important;
+    gap: 4px !important;
+    padding-right: 0 !important;
+  }
+  .header-actions .action-btn {
+    height: 32px !important;
+    padding: 0 8px !important;
+    font-size: 12px !important;
+    gap: 3px !important;
+    white-space: nowrap !important;
+  }
+  .header-actions .theme-text {
+    display: none !important;
+  }
+  #btn-font-dec svg,
+  #btn-font-inc svg {
+    display: none !important;
   }
 
-  .nav-tab-center-play {
-    flex: 1.15 !important;
-    margin-top: -14px !important;
+  /* iPad 横屏保持桌面级双栏静态 280px 侧边栏（折叠时彻底收起居中） */
+  .sidebar {
+    position: static !important;
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
     height: auto !important;
-    min-height: unset !important;
+    transform: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    z-index: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transition: width 0.28s ease, opacity 0.25s ease !important;
+  }
+  .app-body.sidebar-collapsed .sidebar {
+    display: none !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    margin-left: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* 恢复 iPad 横屏底部 5-Tab Liquid Glass 胶囊导航栏 */
+  .nav-tab-item {
+    position: relative !important;
+    flex: 1 1 0 !important;
+    height: 46px !important;
+    border: none !important;
+    background: transparent !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    box-sizing: border-box !important;
-    z-index: 1010 !important;
+    gap: 2px !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    color: var(--ink-secondary) !important;
+    -webkit-tap-highlight-color: transparent !important;
   }
-
+  .nav-tab-item:not(.nav-tab-center-play) {
+    border-radius: 16px !important;
+    height: 42px !important;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, color 0.2s ease !important;
+  }
+  .nav-tab-item:not(.nav-tab-center-play):hover {
+    background: var(--glass-btn-bg) !important;
+    color: var(--vermilion) !important;
+  }
+  .nav-tab-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 22px !important;
+    height: 22px !important;
+  }
+  .nav-tab-label {
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02em !important;
+    line-height: 1 !important;
+    font-family: var(--font-sans) !important;
+  }
+  .nav-tab-dot {
+    width: 4px !important;
+    height: 4px !important;
+    border-radius: 50% !important;
+    background: var(--vermilion) !important;
+    position: absolute !important;
+    bottom: 2px !important;
+    opacity: 0 !important;
+    transition: opacity 0.2s ease !important;
+  }
+  .nav-tab-item.active {
+    color: var(--vermilion) !important;
+  }
+  .nav-tab-item.active .nav-tab-dot {
+    opacity: 1 !important;
+  }
+  .nav-tab-center-play {
+    flex: 0 0 64px !important;
+  }
   .center-play-circle {
     width: 44px !important;
     height: 44px !important;
@@ -9025,61 +9461,106 @@ body.drawer-scroll-locked #mainStage {
     min-height: 44px !important;
     max-width: 44px !important;
     max-height: 44px !important;
+    flex-shrink: 0 !important;
     border-radius: 50% !important;
+    background: radial-gradient(circle at 30% 30%, #e06b52 0%, var(--vermilion) 65%, #a8321b 100%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.72) !important;
+    box-shadow: 0 4px 14px rgba(196, 61, 35, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.45) !important;
+    color: #ffffff !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    box-sizing: border-box !important;
-    flex-shrink: 0 !important;
-    background: linear-gradient(135deg, #c53a30, #9f2a22) !important;
-    box-shadow: 0 4px 14px rgba(184, 51, 42, 0.42), 0 2px 5px rgba(0, 0, 0, 0.12) !important;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease !important;
   }
-
-  /* 3. 手机端播放坞：浮动胶囊卡片，展开时悬浮于底栏上方，收起时平滑沉底 */
-  .player-dock {
+  .app-bottom-nav {
+    display: block !important;
     position: fixed !important;
-    left: 12px !important;
-    right: 12px !important;
-    bottom: calc(16px + env(safe-area-inset-bottom, 8px)) !important;
-    width: auto !important;
-    max-width: 680px !important;
-    margin: 0 auto !important;
-    border-radius: 24px !important;
-    padding: 8px 14px 10px !important;
-    transform: translateY(140%) !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    z-index: 1020 !important;
-    background: var(--bg-dock) !important;
-    backdrop-filter: blur(24px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-    border: 1px solid var(--line-main) !important;
-    box-shadow: 0 8px 32px rgba(42, 34, 27, 0.14) !important;
-    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
-  }
-
-  body.dock-expanded .player-dock {
-    transform: translateY(0) !important;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: min(500px, calc(100vw - 48px)) !important;
+    border-radius: 28px !important;
+    background: var(--glass-dock-bg) !important;
+    backdrop-filter: var(--glass-dock-blur) !important;
+    -webkit-backdrop-filter: var(--glass-dock-blur) !important;
+    border: 1px solid var(--glass-dock-border) !important;
+    box-shadow: var(--glass-dock-shadow) !important;
+    padding-bottom: 0 !important;
+    z-index: 940 !important;
     opacity: 1 !important;
     pointer-events: auto !important;
   }
-
-  .player-dock.dock-collapsed {
-    transform: translateY(140%) !important;
+  [data-theme="dark"] .app-bottom-nav {
+    background: var(--glass-dock-bg) !important;
+    border-color: var(--glass-dock-border) !important;
+  }
+  body:has(.app-body:not(.sidebar-collapsed)) .app-bottom-nav {
+    left: calc(50% + 140px) !important;
+    width: min(480px, calc(100vw - 320px)) !important;
+  }
+  body.dock-expanded .app-bottom-nav {
+    transform: translateX(-50%) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+  .app-bottom-nav.dock-receded {
+    transform: translate(-50%, 150%) !important;
     opacity: 0 !important;
     pointer-events: none !important;
   }
-
-  /* 4. 手机端正文防遮挡下边距与全屏顺滑滚动 */
-  .main-stage {
-    min-height: 0 !important;
-    height: 100% !important;
-    padding-bottom: calc(90px + env(safe-area-inset-bottom, 16px)) !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
+  .nav-bottom-inner {
+    height: 52px !important;
+    padding: 0 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-around !important;
   }
-
+  .dock-fab-play {
+    display: none !important;
+  }
+  body.dock-expanded .player-dock {
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+    transform: translateX(-50%) !important;
+    left: 50% !important;
+    width: min(760px, calc(100vw - 48px)) !important;
+    max-width: calc(100vw - 48px) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+  body:has(.app-body:not(.sidebar-collapsed)).dock-expanded .player-dock {
+    left: calc(50% + 140px) !important;
+    width: min(712px, calc(100vw - 312px)) !important;
+    max-width: calc(100vw - 312px) !important;
+  }
+  .player-dock.dock-collapsed,
+  .player-dock.dock-receded {
+    transform: translate(-50%, calc(100% + 90px)) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  .main-stage {
+    padding-bottom: calc(136px + env(safe-area-inset-bottom, 16px)) !important;
+  }
   body.dock-expanded .main-stage {
-    padding-bottom: calc(140px + env(safe-area-inset-bottom, 16px)) !important;
+    padding-bottom: calc(200px + env(safe-area-inset-bottom, 16px)) !important;
+  }
+}
+
+@media (min-width: 835px) and (max-width: 1120px) and (orientation: landscape) and (min-height: 501px) {
+  .header-actions #btn-study-dashboard span,
+  .header-actions #btn-cloze-mode #cloze-mode-name {
+    display: none !important;
+  }
+  .header-actions #btn-study-dashboard,
+  .header-actions #btn-cloze-mode,
+  .header-actions #btn-theme-toggle {
+    width: 32px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+  }
+  .subject-btn {
+    padding: 5px 8px !important;
+    font-size: 12px !important;
   }
 }

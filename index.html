@@ -12,29 +12,23 @@
   <meta name="apple-mobile-web-app-title" content="考研背诵手卷">
   <meta name="application-name" content="考研背诵手卷">
   <title>考研全科双轨背诵手卷 · 807 & 706 & 考研政治 & 英语写作</title>
-    <!-- Claude Typography: CJK Serif Priority (Noto Serif SC) + JetBrains Mono -->
+  <!-- 异步/非阻塞字体加载：优先采用 iOS/Android/Win 原生高清字系 (Songti SC / Kaiti SC / 苹方)，离线或无外网时 0 白屏首屏秒开 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app.css?v=3.2.2">
+  <link rel="stylesheet" href="app.css?v=3.2.4">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="icon-256.png">
   <link rel="manifest" href="manifest.json">
-  <!-- 典雅宋体与霞鹜文楷在线字体库（有网时高保真呈现，离线时无缝回退系统字体） -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- 异步/非阻塞字体加载：优先采用 iOS/Android/Win 原生高清字系 (Songti SC / Kaiti SC / 苹方)，0 白屏首屏秒开 -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css" media="print" onload="this.media='all'">
 
-  <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
   <!-- 动态微交互矢量图标引擎 (Kubai Icons · 金石朱墨主题) -->
-  <script src="kubai_icons.js?v=3.1.1" defer></script>
+  <script src="kubai_icons.js?v=3.2.4" defer></script>
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=3.2.2" defer></script>
+  <script src="data/kaoyan_data.js?v=3.2.4" defer></script>
 </head>
 <body>
 
@@ -213,11 +207,17 @@
       </div>
       <div class="sidebar-search-box">
         <div class="search-input-wrap">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="search-leading-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
           <input id="search-input" class="search-input" type="text" placeholder="检索考点名、作家、体裁或题眼..." autocomplete="off">
+          <button type="button" id="btn-clear-search" class="search-clear-btn" title="清空检索" aria-label="清空检索" style="display: none;">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
         </div>
 
         <!-- 政治三子模块切换栏（仅在政治科目显示） -->
@@ -263,7 +263,7 @@
       <div class="sidebar-footer">
         <div class="app-version-badge" id="appVersionBadge" title="点击检查更新">
           <span class="version-dot"></span>
-          <span id="versionText">版本 v3.1.1 · 金石朱墨全科双轨典藏版</span>
+          <span id="versionText">版本 v3.2.4 · 金石朱墨全科双轨典藏版</span>
         </div>
         <button id="btn-force-refresh" class="refresh-cache-btn" title="强制清除缓存并拉取最新版本">
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -536,7 +536,7 @@
   </nav>
 
 
-  <script src="app.js?v=3.2.2" defer></script>
+  <script src="app.js?v=3.2.4" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -641,7 +641,7 @@
         <div class="dash-total-progress-wrap">
           <div class="dash-progress-meta">
             <span class="dash-meta-title">全科考题攻克总进度</span>
-            <span class="dash-meta-numbers" id="dashTotalScoreText">已攻克 0 / 228 题 (0%)</span>
+            <span class="dash-meta-numbers" id="dashTotalScoreText">已攻克 0 / 162 题 (0%)</span>
           </div>
           <div class="dash-progress-track">
             <div class="dash-progress-bar-mastered" id="dashTotalBarMastered" style="width: 0%;"></div>
@@ -650,7 +650,7 @@
           <div class="dash-legend-row">
             <span class="legend-item"><span class="legend-dot dot-mastered"></span>已掌握 (<span id="dashTotalMasteredNum">0</span>)</span>
             <span class="legend-item"><span class="legend-dot dot-familiar"></span>磨耳中 (<span id="dashTotalFamiliarNum">0</span>)</span>
-            <span class="legend-item"><span class="legend-dot dot-unlearned"></span>待攻克 (<span id="dashTotalUnlearnedNum">228</span>)</span>
+            <span class="legend-item"><span class="legend-dot dot-unlearned"></span>待攻克 (<span id="dashTotalUnlearnedNum">162</span>)</span>
           </div>
         </div>
       </div>
@@ -704,13 +704,13 @@
         <div class="dash-sub-card">
           <div class="dash-sub-header">
             <span class="dash-sub-tag sub-en">考研英语写作</span>
-            <span class="dash-sub-ratio" id="dashRatioEn">0 / 82 篇 · 0%</span>
+            <span class="dash-sub-ratio" id="dashRatioEn">0 / 16 篇 · 0%</span>
           </div>
           <div class="dash-progress-track compact">
             <div class="dash-progress-bar-mastered" id="dashBarEnMastered" style="width: 0%;"></div>
             <div class="dash-progress-bar-familiar" id="dashBarEnFamiliar" style="width: 0%;"></div>
           </div>
-          <div class="dash-sub-details" id="dashDetailEn">已掌握 0 · 磨耳 0 · 待背 82</div>
+          <div class="dash-sub-details" id="dashDetailEn">已掌握 0 · 磨耳 0 · 待背 16</div>
         </div>
       </div>
 
@@ -889,20 +889,20 @@
       <div class="settings-section">
         <div class="settings-sec-title">
           <span>跟读聚光同频校准</span>
-          <span class="settings-sec-desc" id="sheetSyncVal">智能微调 (+0.08s · 推荐合拍)</span>
+          <span class="settings-sec-desc" id="sheetSyncVal">智能微调 (+0.15s · 推荐合拍)</span>
         </div>
         <div class="sync-options-grid">
-          <button type="button" class="sync-card-btn active" data-offset="0.08">
-            <span class="sync-card-title">智能微调 (+0.08s)</span>
-            <small class="sync-card-sub">微调80ms · 推荐合拍</small>
+          <button type="button" class="sync-card-btn active" data-offset="0.15">
+            <span class="sync-card-title">智能微调 (+0.15s)</span>
+            <small class="sync-card-sub">提前150ms · 推荐合拍</small>
+          </button>
+          <button type="button" class="sync-card-btn" data-offset="0.08">
+            <span class="sync-card-title">轻柔前置 (+0.08s)</span>
+            <small class="sync-card-sub">微调80ms · 常速跟读</small>
           </button>
           <button type="button" class="sync-card-btn" data-offset="0.00">
             <span class="sync-card-title">原速直读 (0.00s)</span>
             <small class="sync-card-sub">物理声学 · 原生时间戳</small>
-          </button>
-          <button type="button" class="sync-card-btn" data-offset="0.18">
-            <span class="sync-card-title">灵敏前置 (+0.18s)</span>
-            <small class="sync-card-sub">抢先一步 · 适合高倍速</small>
           </button>
           <button type="button" class="sync-card-btn" data-offset="-0.05">
             <span class="sync-card-title">舒缓微调 (-0.05s)</span>
@@ -911,14 +911,20 @@
         </div>
       </div>
 
-      <!-- 4. 朗读偏好与全息提示 -->
+      <!-- 4. 朗读偏好与快捷键说明 -->
       <div class="settings-section">
         <div class="settings-sec-title">
-          <span>朗读音色与通读</span>
-          <span class="settings-sec-desc">龙安朗 · 清爽利落全段通读</span>
+          <span>朗读音色与快捷键</span>
+          <span class="settings-sec-desc">全科 162 节 · 毫秒级音画对齐</span>
         </div>
         <div class="settings-info-box">
-          已支持全科 88 篇考题毫秒级句读对齐。点击正文中任意段落语句，即可瞬间跳播试听，双轨逻辑无缝切换。
+          已支持 807、706、考研政治与英语写作共 162 节考题毫秒级句读对齐；点击正文任意句段即可瞬间跳播。
+          <div class="settings-shortcut-list">
+            <span class="shortcut-chip"><kbd>Space</kbd> 播放/暂停</span>
+            <span class="shortcut-chip"><kbd>←</kbd> / <kbd>→</kbd> 5秒快退快进</span>
+            <span class="shortcut-chip"><kbd>↑</kbd> / <kbd>↓</kbd> 切换上下题</span>
+            <span class="shortcut-chip"><kbd>Esc</kbd> 关闭弹窗</span>
+          </div>
         </div>
       </div>
     </div>
@@ -935,11 +941,11 @@
     </div>
     <h3 class="update-modal-title">正在同步云端新版本</h3>
     <div class="update-modal-badges">
-      <span class="update-badge-old" id="updateModalOldVer">v3.1.1</span>
+      <span class="update-badge-old" id="updateModalOldVer">v3.2.4</span>
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5 12h14M12 5l7 7-7 7"/>
       </svg>
-      <span class="update-badge-new" id="updateModalNewVer">v3.1.1</span>
+      <span class="update-badge-new" id="updateModalNewVer">v3.2.4</span>
     </div>
     <p class="update-modal-status" id="updateModalStatus">正在连接云端节点并校验资源清单...</p>
     <div class="update-progress-container">
