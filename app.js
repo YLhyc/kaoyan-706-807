@@ -76,6 +76,23 @@
   let isLoopSeeking = false;
   let loopSeekTimer = null;
   let lastSeekTs = 0;
+  let manualSeekEpoch = 0;
+  let pendingSeekTarget = null; // { token, time, idx, startedAt, wasMuted, mutedForSeek }
+  let pendingSeekTimer = null;
+  let lastClickedSentGuard = null; // { idx, time, until }
+
+  function clearPendingSeek(restoreMute = true) {
+    if (pendingSeekTimer) {
+      clearTimeout(pendingSeekTimer);
+      pendingSeekTimer = null;
+    }
+    if (pendingSeekTarget && restoreMute && pendingSeekTarget.mutedForSeek) {
+      try {
+        audio.muted = Boolean(pendingSeekTarget.wasMuted);
+      } catch (e) {}
+    }
+    pendingSeekTarget = null;
+  }
 
   function findSectionIndexAtTime(time) {
     if (!currentFrameworkSections || currentFrameworkSections.length === 0) return -1;
@@ -218,7 +235,9 @@
       if (localStorage.getItem('kaoyan_last_time_key') !== expectedKey) return;
       const savedTime = parseFloat(localStorage.getItem('kaoyan_last_time') || '0');
       if (!(savedTime > 1)) return;
+      const restoreEpoch = manualSeekEpoch;
       const applyRestored = () => {
+        if (restoreEpoch !== manualSeekEpoch || (pendingSeekTarget && Date.now() - pendingSeekTarget.startedAt < 5000)) return;
         const dur = audio.duration || 0;
         const safeTime = dur > 0 ? Math.min(savedTime, Math.max(0, dur - 0.5)) : savedTime;
         try { audio.currentTime = safeTime; } catch (err) {}
@@ -1572,6 +1591,225 @@
     return sanitized;
   }
 
+  // 政治 47 章 DOM-文本顺序对齐净化器：剥离源 HTML 嵌套/错配句标，按真实阅读顺序逐句一对一贴标并无损拆分同段多句
+  function normalizePoliticsSentenceDom() {
+    if (!el.paperContent || !el.paperContent.classList.contains('pol-scope') || !state.activeSentences || state.activeSentences.length === 0) return;
+    const root = el.paperContent;
+    const sents = state.activeSentences;
+    const cleanCharRe = /[^\s\u3000，。；：、！？“”‘’（）()《》【】\[\]—…·.,!?;:'"\-]/;
+    const cleanStr = (str) => (str || '').replace(/[\s\u3000，。；：、！？“”‘’（）()《》【】\[\]—…·.,!?;:'"\-]+/g, '');
+
+    // 1. 彻底清除源 HTML 中错位/嵌套的旧句标属性，避免内层或错号元素劫持点击
+    root.querySelectorAll('.recite-sent-item, .recite-sent, .recite-sentence, [data-sent-idx], [id^="sent_"]').forEach(n => {
+      n.classList.remove('recite-sent-item', 'recite-sent', 'recite-sentence', 'active-spotlight');
+      delete n.dataset.sentIdx;
+      delete n.dataset.sentId;
+      delete n.dataset.start;
+      delete n.dataset.end;
+      if (n.id && /^sent_/.test(n.id)) n.removeAttribute('id');
+      if (n.getAttribute('title') === '点击从该句播放') n.removeAttribute('title');
+    });
+
+    // 2. 收集正文区域按阅读顺序排列的字符流与归属原子块
+    const skipSelector = '.paper-header, button, svg, .seal-btn, .xt-card-actions, .recite-bar-actions, .pol-sub-controls, script, style';
+    const doc = root.ownerDocument;
+    const walker = doc.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_SKIP;
+        if (node.parentElement && node.parentElement.closest(skipSelector)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+
+    const entries = [];
+    const cleanChars = [];
+    const getBlock = (nodeEl) => {
+      if (!nodeEl) return root;
+      return nodeEl.closest('.xt-part-badge-row')
+        || nodeEl.closest('.recite-bar-title')
+        || nodeEl.closest('.recite-bar-badge')
+        || nodeEl.closest('.xt-subline')
+        || nodeEl.closest('.xt-item-content')
+        || nodeEl.closest('td, th')
+        || nodeEl.closest('p.xt-text-para, h4.xt-sec-title, h3, li')
+        || nodeEl;
+    };
+
+    let tn;
+    while ((tn = walker.nextNode())) {
+      const val = tn.nodeValue;
+      const block = getBlock(tn.parentElement);
+      for (let i = 0; i < val.length; i++) {
+        if (cleanCharRe.test(val[i])) {
+          entries.push({ node: tn, rawOff: i, block });
+          cleanChars.push(val[i]);
+        }
+      }
+    }
+    const stream = cleanChars.join('');
+    if (!stream) return;
+
+    const applySentAttrs = (target, sent, arrayIdx) => {
+      target.classList.add('recite-sent-item');
+      target.dataset.sentIdx = String(arrayIdx);
+      target.dataset.sentId = String(sent.id !== undefined ? sent.id : '');
+      target.dataset.start = String(sent.start);
+      target.dataset.end = String(sent.end);
+      if (sent.domId && !root.querySelector('#' + (typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(sent.domId) : sent.domId))) {
+        target.id = sent.domId;
+      }
+      target.title = '点击从该句播放';
+    };
+
+    // 3. 按时间轴顺序将每句话精准对齐到 DOM 文本偏移
+    let cursor = 0;
+    const spansByBlock = new Map();
+
+    for (let i = 0; i < sents.length; i++) {
+      const sent = sents[i];
+      const sc = cleanStr(sent.text);
+      if (!sc) continue;
+
+      const findAnchor = (minPos, maxPos) => {
+        const slice = stream.slice(minPos, maxPos);
+        if (sc.length <= 16) {
+          const p = slice.indexOf(sc);
+          if (p !== -1) return { pos: minPos + p, off: 0, len: sc.length };
+        }
+        // 外层按锚点长度降序尝试，防止短前缀抢跑命中下游无关片段
+        for (const anchorLen of [16, 12, 9, 6, 4]) {
+          if (anchorLen > sc.length && sc.length >= 4) continue;
+          const effLen = Math.min(anchorLen, sc.length);
+          const maxOff = anchorLen <= 5 ? Math.min(8, Math.max(0, sc.length - effLen)) : Math.min(20, Math.max(0, sc.length - effLen));
+          for (let off = 0; off <= maxOff; off++) {
+            const anchor = sc.slice(off, off + effLen);
+            const p = slice.indexOf(anchor);
+            if (p !== -1) return { pos: minPos + p, off, len: effLen };
+          }
+        }
+        if (sc.length >= 8) {
+          const tailLen = Math.min(10, sc.length);
+          const tail = sc.slice(sc.length - tailLen);
+          const p = slice.indexOf(tail);
+          if (p !== -1) {
+            return { pos: Math.max(minPos, minPos + p - (sc.length - tailLen)), off: 0, len: tailLen };
+          }
+        }
+        return null;
+      };
+
+      let found = findAnchor(cursor, Math.min(stream.length, cursor + Math.max(300, sc.length * 4)));
+      if (!found) found = findAnchor(cursor, stream.length);
+      if (!found && cursor > 0) found = findAnchor(Math.max(0, cursor - 250), stream.length);
+
+      if (!found) {
+        const stampHeaderFallback = (sel) => {
+          const hdr = root.querySelector(sel);
+          if (!hdr || hdr.dataset.sentIdx !== undefined || hdr.querySelector('[data-sent-idx]')) return false;
+          applySentAttrs(hdr, sent, i);
+          return true;
+        };
+        if (i <= 3 && /原书/.test(sc) && stampHeaderFallback('.recite-bar-badge')) continue;
+        if (i <= 3 && /背诵(部分|内容)/.test(sc) && stampHeaderFallback('.xt-part-badge-row')) continue;
+        continue;
+      }
+
+      let startIdx = found.pos;
+      if (found.off > 0) {
+        const anchorBlock = entries[found.pos].block;
+        let back = 0;
+        while (back < found.off && startIdx - 1 >= cursor && entries[startIdx - 1].block === anchorBlock) {
+          startIdx--;
+          back++;
+        }
+      }
+
+      // 若仅蹭到上一段末尾不足 12 字（如 TTS 跨越“其他内容见附录2”），优先落到后续正文主体块
+      let startBlock = entries[startIdx].block;
+      let remainInBlock = 1;
+      while (startIdx + remainInBlock < entries.length && entries[startIdx + remainInBlock].block === startBlock && remainInBlock <= 14) {
+        remainInBlock++;
+      }
+      if (remainInBlock < 12 && sc.length - found.off >= 12) {
+        const nextIdx = startIdx + remainInBlock;
+        if (nextIdx < entries.length && entries[nextIdx].block !== startBlock) {
+          const probeSlice = stream.slice(nextIdx, nextIdx + 16);
+          if (probeSlice.length >= 4 && sc.includes(probeSlice.slice(0, Math.min(7, probeSlice.length)))) {
+            startIdx = nextIdx;
+            startBlock = entries[nextIdx].block;
+          }
+        }
+      }
+
+      let endIdx = Math.min(entries.length - 1, startIdx + Math.max(1, sc.length - found.off) - 1);
+      while (endIdx > startIdx && entries[endIdx].block !== startBlock) {
+        endIdx--;
+      }
+
+      if (!spansByBlock.has(startBlock)) spansByBlock.set(startBlock, []);
+      spansByBlock.get(startBlock).push({ sent, arrayIdx: i, startIdx, endIdx });
+      cursor = Math.max(cursor, startIdx + Math.min(found.len, 6));
+    }
+
+    // 4. 按块落实唯一 DOM 句标或 DOM Range 无损拆分子句
+    for (const [block, list] of spansByBlock.entries()) {
+      list.sort((a, b) => a.startIdx - b.startIdx);
+      let blockEnd = list[list.length - 1].endIdx;
+      while (blockEnd + 1 < entries.length && entries[blockEnd + 1].block === block) blockEnd++;
+      let blockStart = list[0].startIdx;
+      while (blockStart - 1 >= 0 && entries[blockStart - 1].block === block) blockStart--;
+
+      if (list.length === 1) {
+        let target = block;
+        if (block.classList && block.classList.contains('xt-item-content')) {
+          const row = block.closest('.xt-item-row');
+          if (row && row.querySelectorAll('.xt-item-content').length === 1 && !row.querySelector('.xt-subline') && !row.querySelector('[data-sent-idx]')) {
+            target = row;
+          }
+        }
+        applySentAttrs(target, list[0].sent, list[0].arrayIdx);
+        continue;
+      }
+
+      const boundaries = list.map((item, k) => ({
+        sent: item.sent,
+        arrayIdx: item.arrayIdx,
+        start: (k === 0 && item.startIdx - blockStart <= 6) ? blockStart : item.startIdx
+      }));
+      for (let k = 1; k < boundaries.length; k++) {
+        if (boundaries[k].start <= boundaries[k - 1].start) {
+          boundaries[k].start = Math.min(blockEnd, boundaries[k - 1].start + 1);
+        }
+      }
+
+      const frags = [];
+      for (let k = 0; k < boundaries.length; k++) {
+        const bStart = boundaries[k].start;
+        const eStart = (k + 1 < boundaries.length) ? boundaries[k + 1].start : blockEnd + 1;
+        const startEnt = entries[bStart];
+        if (!startEnt) continue;
+        const range = doc.createRange();
+        if (k === 0 && block.firstChild) {
+          range.setStart(block, 0);
+        } else {
+          range.setStart(startEnt.node, startEnt.rawOff);
+        }
+        if (k + 1 < boundaries.length && entries[eStart]) {
+          range.setEnd(entries[eStart].node, entries[eStart].rawOff);
+        } else {
+          range.setEnd(block, block.childNodes.length);
+        }
+        const span = doc.createElement('span');
+        applySentAttrs(span, boundaries[k].sent, boundaries[k].arrayIdx);
+        span.appendChild(range.cloneContents());
+        frags.push(span);
+      }
+      if (frags.length === boundaries.length) {
+        block.innerHTML = '';
+        frags.forEach(f => block.appendChild(f));
+      }
+    }
+  }
   // 权威句标与 DOM 1:1 双向映射校准器：严格确保 DOM 节点上的 data-sent-idx 与 state.activeSentences[idx] 绝对一致
   function stampSentenceIndices() {
     if (!el.paperContent || !state.activeSentences || state.activeSentences.length === 0) return;
@@ -1648,8 +1886,11 @@
       targetEl.dataset.cardClickBound = '1';
 
       targetEl.addEventListener('click', (e) => {
-        // 若点击的是交互控件（按钮、链接、填空词、专属跳转胶囊、或具体某句子），由其自身专属事件接管
-        if (e.target.closest('button, a, input, .cloze, .kw-red, .seal-btn, .en-audio-jump-pill')) {
+        // 若点击的是交互控件（按钮、链接、专属跳转胶囊、或挖空测验模式的填空词），由其自身专属事件接管
+        if (e.target.closest('button, a, input, .seal-btn, .en-audio-jump-pill')) {
+          return;
+        }
+        if (state.clozeMode === 'keyword' && (e.target.closest('.cloze') || e.target.closest('.kw-red') || e.target.closest('.stream-kw'))) {
           return;
         }
         const clickedTimedSent = e.target.closest('[data-sent-idx], [data-sent-id], .recite-sent[data-start], .recite-sent-item[data-start], .recite-sentence[data-start], .tj-sent-span[data-start]');
@@ -1879,7 +2120,7 @@
       if (elItem.dataset.clickBound === '1') return;
       elItem.dataset.clickBound = '1';
       elItem.addEventListener('click', (e) => {
-        if (e.target.closest('.cloze') || e.target.closest('.kw-red')) return;
+        if (state.clozeMode === 'keyword' && (e.target.closest('.cloze') || e.target.closest('.kw-red') || e.target.closest('.stream-kw'))) return;
         if (state.clozeMode === 'body') {
           elItem.classList.toggle('cloze-revealed');
           return;
@@ -2089,13 +2330,22 @@
     highlightSentence(targetIdx !== -1 ? targetIdx : (targetSent ? targetSent.idx : sentIdxOrId));
     updateHUDDisplay(targetTime);
 
-    // 严密防重入与防漂移寻音锁：在寻音落地前锁定当前句指针，杜绝未落地前的脏读覆盖
+    manualSeekEpoch++;
+    clearPendingSeek(true);
+
+    if (targetIdx !== -1) {
+      lastClickedSentGuard = { idx: targetIdx, time: targetTime, until: Date.now() + 900 };
+    } else {
+      lastClickedSentGuard = null;
+    }
+
+    // 严密防重入与防漂移寻音锁：在寻音真实落地前锁定当前句指针，杜绝慢网/Safari 重置至 0 秒覆盖高亮
     isLoopSeeking = true;
     lastSeekTs = Date.now();
     if (loopSeekTimer) clearTimeout(loopSeekTimer);
     loopSeekTimer = setTimeout(() => {
       isLoopSeeking = false;
-    }, 350);
+    }, 4000);
 
     const applySeek = () => {
       try {
@@ -2107,20 +2357,65 @@
 
     if (!audio.getAttribute('src') && !audio.currentSrc) {
       isLoopSeeking = false;
+      if (loopSeekTimer) { clearTimeout(loopSeekTimer); loopSeekTimer = null; }
       showToast('当前内容为纯文本导学，无伴读音频', 2000);
       return;
     }
 
     const myToken = ++seekToken;
+    const seekIdx = targetIdx !== -1 ? targetIdx : (targetSent ? targetSent.idx : -1);
+    pendingSeekTarget = {
+      token: myToken,
+      time: targetTime,
+      idx: seekIdx,
+      startedAt: Date.now(),
+      wasMuted: audio.muted,
+      mutedForSeek: false
+    };
+    pendingSeekTimer = setTimeout(() => {
+      if (pendingSeekTarget && pendingSeekTarget.token === myToken) {
+        clearPendingSeek(true);
+        isLoopSeeking = false;
+      }
+    }, 4200);
+
+    const settlePendingIfLanded = () => {
+      if (!pendingSeekTarget || pendingSeekTarget.token !== myToken) return false;
+      if (Math.abs(audio.currentTime - targetTime) <= 0.45 && audio.readyState >= 2 && !audio.seeking) {
+        clearPendingSeek(true);
+        isLoopSeeking = false;
+        if (loopSeekTimer) { clearTimeout(loopSeekTimer); loopSeekTimer = null; }
+        return true;
+      }
+      return false;
+    };
+
     const playAndEnforceTarget = () => {
-      if (!audio.paused) return;
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          if (myToken === seekToken && Math.abs(audio.currentTime - targetTime) > 0.25) {
-            applySeek();
-          }
-        }).catch(e => console.log('Audio play failed:', e));
+      if (myToken !== seekToken) return;
+      if (audio.paused) {
+        // 慢网 readyState === 0 时暂静音并在同步手势内起音以保留 iOS Safari 播放权限，到位即恢复有声
+        if (audio.readyState < 2 && targetTime > 0.25 && !audio.muted && pendingSeekTarget && pendingSeekTarget.token === myToken) {
+          pendingSeekTarget.mutedForSeek = true;
+          audio.muted = true;
+        }
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            if (myToken !== seekToken) return;
+            if (audio.readyState >= 1 && Math.abs(audio.currentTime - targetTime) > 0.25) {
+              applySeek();
+            }
+            settlePendingIfLanded();
+          }).catch(e => {
+            if (pendingSeekTarget && pendingSeekTarget.token === myToken && pendingSeekTarget.mutedForSeek) {
+              audio.muted = Boolean(pendingSeekTarget.wasMuted);
+              pendingSeekTarget.mutedForSeek = false;
+            }
+            console.log('Audio play failed:', e);
+          });
+        }
+      } else {
+        settlePendingIfLanded();
       }
     };
 
@@ -2128,18 +2423,30 @@
       applySeek();
       playAndEnforceTarget();
     } else {
-      const onReadySeekAndPlay = () => {
+      const cleanupReadyListeners = () => {
         audio.removeEventListener('loadedmetadata', onReadySeekAndPlay);
         audio.removeEventListener('canplay', onReadySeekAndPlay);
-        if (myToken !== seekToken) return;
-        applySeek();
+      };
+      const onReadySeekAndPlay = () => {
+        if (myToken !== seekToken) {
+          cleanupReadyListeners();
+          return;
+        }
+        if (audio.readyState >= 1) {
+          applySeek();
+        }
         playAndEnforceTarget();
+        if (audio.readyState >= 2) {
+          cleanupReadyListeners();
+        }
       };
       audio.addEventListener('loadedmetadata', onReadySeekAndPlay);
       audio.addEventListener('canplay', onReadySeekAndPlay);
       if (audio.paused && audio.networkState === 0) {
         audio.load();
       }
+      // iOS WebKit PWA 必须在用户点击手势同一调用栈内触发 play() 才能激活音频权限
+      playAndEnforceTarget();
     }
   }
 
@@ -2795,9 +3102,11 @@
   }
 
   function toggleAudioPlayback() {
-    expandPlayerDock();
+    const hasSrc = Boolean(audio.getAttribute('src') || audio.currentSrc);
+    if (hasSrc) {
+      expandPlayerDock();
+    }
     if (audio.paused) {
-      const hasSrc = Boolean(audio.getAttribute('src') || audio.currentSrc);
       if (!hasSrc) {
         if (state.currentSubject === 'pol' && state.polSubMode === 'recite47' && state.currentTrack === 2) {
           showToast('当前为纯图表速览卡片，无伴读音频，可点击后续考点卡片播放', 2200);
@@ -2820,6 +3129,30 @@
     function runSyncLoop() {
       if (state.isPlaying && !audio.paused && state.activeSentences && state.activeSentences.length > 0) {
         const cur = audio.currentTime;
+
+        // 寻音着陆守卫：音频未实际跳转到位前锁定目标句高亮与时间戳，必要时二次补跳，彻底杜绝跳回第 0 句
+        if (pendingSeekTarget && pendingSeekTarget.token === seekToken) {
+          const drift = Math.abs(cur - pendingSeekTarget.time);
+          if (drift <= 0.45 && audio.readyState >= 2 && !audio.seeking) {
+            clearPendingSeek(true);
+            isLoopSeeking = false;
+            if (loopSeekTimer) { clearTimeout(loopSeekTimer); loopSeekTimer = null; }
+          } else if (Date.now() - pendingSeekTarget.startedAt < 3800) {
+            if (audio.readyState >= 1 && !audio.seeking && drift > 0.5) {
+              try { audio.currentTime = pendingSeekTarget.time; } catch (e) {}
+            }
+            if (pendingSeekTarget.idx !== -1) {
+              state.currentSentIndex = pendingSeekTarget.idx;
+              highlightSentence(pendingSeekTarget.idx);
+            }
+            updateHUDDisplay(pendingSeekTarget.time);
+            syncRafId = requestAnimationFrame(runSyncLoop);
+            return;
+          } else {
+            clearPendingSeek(true);
+            isLoopSeeking = false;
+          }
+        }
 
         // 政治徐涛16天带背原声前奏导言区自动跳过 (若从开头播放且 cur < firstPoint.start - 0.3)
         if (state.currentSubject === 'pol' && state.polSubMode === 'xutao16') {
@@ -2973,6 +3306,10 @@
         if (!isLoopSeeking) {
           const activeIdx = findActiveSentenceIndex(cur);
           if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
+            if (lastClickedSentGuard && Date.now() < lastClickedSentGuard.until && cur < lastClickedSentGuard.time + 0.12 && activeIdx !== lastClickedSentGuard.idx) {
+              syncRafId = requestAnimationFrame(runSyncLoop);
+              return;
+            }
             state.currentSentIndex = activeIdx;
             state.loopCount = 0;
             highlightSentence(activeIdx);
@@ -2989,12 +3326,15 @@
       state.isPlaying = true;
       audio.playbackRate = state.speed;
 
-      // 政治徐涛16天带背原声前奏导言区自动跳过
-      if (state.currentSubject === 'pol' && state.polSubMode === 'xutao16' && state.activeSentences && state.activeSentences.length > 0) {
+      // 政治徐涛16天带背原声前奏导言区自动跳过（若用户刚主动点选过句子且在寻求目标时刻，不覆盖）
+      if ((!pendingSeekTarget || pendingSeekTarget.token !== seekToken) && state.currentSubject === 'pol' && state.polSubMode === 'xutao16' && state.activeSentences && state.activeSentences.length > 0) {
         const firstPoint = state.activeSentences[0];
         if (firstPoint && typeof firstPoint.start === 'number' && firstPoint.start > 0.5 && audio.currentTime < firstPoint.start - 0.3) {
           audio.currentTime = firstPoint.start;
         }
+      }
+      if (pendingSeekTarget && pendingSeekTarget.token === seekToken && audio.readyState >= 1 && Math.abs(audio.currentTime - pendingSeekTarget.time) > 0.35) {
+        try { audio.currentTime = pendingSeekTarget.time; } catch (e) {}
       }
 
       updatePlayBtnUI();
@@ -3004,6 +3344,7 @@
     });
 
     audio.addEventListener('pause', () => {
+      clearPendingSeek(true);
       state.isPlaying = false;
       if (syncRafId) {
         cancelAnimationFrame(syncRafId);
@@ -3014,11 +3355,33 @@
     });
 
     audio.addEventListener('seeked', () => {
+      if (pendingSeekTarget && pendingSeekTarget.token === seekToken) {
+        if (Math.abs(audio.currentTime - pendingSeekTarget.time) <= 0.45 && audio.readyState >= 2 && !audio.seeking) {
+          clearPendingSeek(true);
+          isLoopSeeking = false;
+          if (loopSeekTimer) { clearTimeout(loopSeekTimer); loopSeekTimer = null; }
+        } else if (audio.readyState >= 1 && Date.now() - pendingSeekTarget.startedAt < 3500) {
+          try { audio.currentTime = pendingSeekTarget.time; } catch (e) {}
+        }
+        return;
+      }
       if (isLoopSeeking && Date.now() - lastSeekTs >= 25) {
         isLoopSeeking = false;
         if (loopSeekTimer) {
           clearTimeout(loopSeekTimer);
           loopSeekTimer = null;
+        }
+      }
+    });
+
+    audio.addEventListener('canplay', () => {
+      if (pendingSeekTarget && pendingSeekTarget.token === seekToken) {
+        if (Math.abs(audio.currentTime - pendingSeekTarget.time) > 0.35 && !audio.seeking && Date.now() - pendingSeekTarget.startedAt < 3500) {
+          try { audio.currentTime = pendingSeekTarget.time; } catch (e) {}
+        } else if (Math.abs(audio.currentTime - pendingSeekTarget.time) <= 0.45 && audio.readyState >= 2) {
+          clearPendingSeek(true);
+          isLoopSeeking = false;
+          if (loopSeekTimer) { clearTimeout(loopSeekTimer); loopSeekTimer = null; }
         }
       }
     });
@@ -4374,7 +4737,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.2.4';
+  const APP_BUILD_ID = '3.2.5';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -4986,6 +5349,7 @@
       idx: s.idx !== undefined ? s.idx : idx
     })));
 
+    normalizePoliticsSentenceDom();
     stampSentenceIndices();
     bindSentenceClickHandlers(el.paperContent);
     bindCardSectionClickHandlers(el.paperContent);
@@ -5172,7 +5536,7 @@
 
     el.paperContent.querySelectorAll('.xt-day-point-card').forEach(card => {
       card.addEventListener('click', (e) => {
-        if (e.target.closest('.cloze') || e.target.closest('.kw-red')) return;
+        if (state.clozeMode === 'keyword' && (e.target.closest('.cloze') || e.target.closest('.kw-red') || e.target.closest('.stream-kw'))) return;
         if (state.clozeMode === 'body') {
           card.classList.toggle('cloze-revealed');
           return;
@@ -5239,7 +5603,9 @@
       const p0 = points[0];
       const t0 = voiceType === 'anlang' ? p0.anlang_start : p0.voice_start;
       if (t0 > 0.5) {
+        const xtEpoch = manualSeekEpoch;
         const setFirst = () => {
+          if (xtEpoch !== manualSeekEpoch || (pendingSeekTarget && Date.now() - pendingSeekTarget.startedAt < 5000)) return;
           if (audio.currentTime < t0 - 0.3) {
             audio.currentTime = t0;
             highlightSentence(0);

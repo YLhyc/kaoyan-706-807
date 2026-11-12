@@ -5934,9 +5934,9 @@ body.dock-expanded .dock-fab-play {
   }
 
   body.dock-expanded .app-bottom-nav {
-    transform: translateY(0) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
+    transform: translateY(140%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 
   /* 抽屉打开时，底栏与控制坞均平滑下沉避让 */
@@ -8845,6 +8845,7 @@ body.drawer-scroll-locked #mainStage {
     transform: translateY(0) !important;
     opacity: 1 !important;
     pointer-events: auto !important;
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease !important;
   }
 
   [data-theme="dark"] .app-bottom-nav {
@@ -8853,11 +8854,11 @@ body.drawer-scroll-locked #mainStage {
     box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.4) !important;
   }
 
-  /* 即使播控坞展开，底栏也坚决不沉没，保持常驻可用 */
+  /* 开始播放展开控制坞时，底栏自动平滑退出（暂停或收起控制坞后恢复） */
   body.dock-expanded .app-bottom-nav {
-    transform: translateY(0) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
+    transform: translateY(140%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 
   .nav-bottom-inner {
@@ -8934,7 +8935,7 @@ body.drawer-scroll-locked #mainStage {
     margin-top: 2px !important;
   }
 
-  /* 2. 悬浮播放条浮动在底栏正上方 */
+  /* 2. 悬浮播放条（底栏已退出后优雅贴底悬浮） */
   .player-dock {
     position: fixed !important;
     left: 12px !important;
@@ -8942,7 +8943,7 @@ body.drawer-scroll-locked #mainStage {
     width: auto !important;
     max-width: 680px !important;
     margin: 0 auto !important;
-    bottom: calc(58px + env(safe-area-inset-bottom, 8px)) !important;
+    bottom: calc(12px + env(safe-area-inset-bottom, 8px)) !important;
     z-index: 990 !important;
     border-radius: 24px !important;
     padding: 8px 14px 10px !important;
@@ -9139,11 +9140,12 @@ body.drawer-scroll-locked #mainStage {
     transform: translateY(0) !important;
     opacity: 1 !important;
     pointer-events: auto !important;
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease !important;
   }
   body.dock-expanded .app-bottom-nav {
-    transform: translateY(0) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
+    transform: translateY(140%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
   .app-bottom-nav.dock-receded {
     transform: translateY(140%) !important;
@@ -9166,7 +9168,7 @@ body.drawer-scroll-locked #mainStage {
     width: auto !important;
     max-width: calc(100vw - 20px) !important;
     margin: 0 auto !important;
-    bottom: calc(64px + env(safe-area-inset-bottom, 8px)) !important;
+    bottom: calc(12px + env(safe-area-inset-bottom, 8px)) !important;
     border-radius: 22px !important;
     transform: translateY(0) !important;
     opacity: 1 !important;
@@ -9186,7 +9188,7 @@ body.drawer-scroll-locked #mainStage {
     -webkit-overflow-scrolling: touch !important;
   }
   body.dock-expanded .main-stage {
-    padding-bottom: calc(200px + env(safe-area-inset-bottom, 16px)) !important;
+    padding-bottom: calc(156px + env(safe-area-inset-bottom, 16px)) !important;
   }
 }
 
@@ -9289,6 +9291,7 @@ body.drawer-scroll-locked #mainStage {
     opacity: 1 !important;
     pointer-events: auto !important;
   }
+  body.dock-expanded .app-bottom-nav,
   .app-bottom-nav.dock-receded {
     transform: translateY(140%) !important;
     opacity: 0 !important;
@@ -9301,7 +9304,7 @@ body.drawer-scroll-locked #mainStage {
     display: none !important;
   }
   body.dock-expanded .player-dock {
-    bottom: calc(54px + env(safe-area-inset-bottom, 6px)) !important;
+    bottom: calc(8px + env(safe-area-inset-bottom, 6px)) !important;
   }
 }
 
@@ -9490,6 +9493,7 @@ body.drawer-scroll-locked #mainStage {
     z-index: 940 !important;
     opacity: 1 !important;
     pointer-events: auto !important;
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease !important;
   }
   [data-theme="dark"] .app-bottom-nav {
     background: var(--glass-dock-bg) !important;
@@ -9499,11 +9503,7 @@ body.drawer-scroll-locked #mainStage {
     left: calc(50% + 140px) !important;
     width: min(480px, calc(100vw - 320px)) !important;
   }
-  body.dock-expanded .app-bottom-nav {
-    transform: translateX(-50%) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-  }
+  body.dock-expanded .app-bottom-nav,
   .app-bottom-nav.dock-receded {
     transform: translate(-50%, 150%) !important;
     opacity: 0 !important;
@@ -9520,7 +9520,7 @@ body.drawer-scroll-locked #mainStage {
     display: none !important;
   }
   body.dock-expanded .player-dock {
-    bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
     transform: translateX(-50%) !important;
     left: 50% !important;
     width: min(760px, calc(100vw - 48px)) !important;
