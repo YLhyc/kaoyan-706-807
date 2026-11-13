@@ -2,92 +2,92 @@
   {
     "id": "t2_intro",
     "text": "下面进入大作文 07 · 英二真题图表（动态变化）：全民健身运动参与率显著增长答题骨架与变体精解。",
-    "start": "0.082",
-    "end": "1.748",
-    "duration": "1.666"
+    "start": "0.090",
+    "end": "10.114",
+    "duration": "10.024"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：图表题首句规范总述与动态增减数据精准表达。",
-    "start": "1.767",
-    "end": "2.687",
-    "duration": "0.920"
+    "start": "11.285",
+    "end": "17.209",
+    "duration": "5.924"
   },
   {
     "id": "t2_p1_en",
     "text": "The bar chart explicitly illustrates the dramatic variation; the percentage climbed remarkably from 28.5% to approximately 65.2%.",
-    "start": "2.687",
-    "end": "17.223",
-    "duration": "14.536"
+    "start": "18.023",
+    "end": "31.677",
+    "duration": "13.654"
   },
   {
     "id": "t2_p1_tip_cn",
     "text": "动态数据上升经典句：The percentage climbed remarkably from [A] to [B], reflecting an inspiring shift.",
-    "start": "18.015",
-    "end": "26.784",
-    "duration": "8.769"
+    "start": "31.677",
+    "end": "38.866",
+    "duration": "7.189"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "The percentage climbed remarkably from 28.5% to approximately 65.2%.",
-    "start": "27.089",
-    "end": "36.214",
-    "duration": "9.125"
+    "start": "39.683",
+    "end": "47.636",
+    "duration": "7.953"
   },
   {
     "id": "t2_p2_cn",
     "text": "第二段：三维度因果推导（经济收入与健康观 + 政府市政设施红利 + 移动互联健身潮流）。",
-    "start": "36.718",
-    "end": "38.883",
-    "duration": "2.165"
+    "start": "49.364",
+    "end": "58.301",
+    "duration": "8.937"
   },
   {
     "id": "t2_p2_en",
     "text": "Citizens prioritize physical wellness; extensive government investments in sports infrastructure lowered the threshold; social media popularized workouts.",
-    "start": "38.883",
-    "end": "52.568",
-    "duration": "13.685"
+    "start": "59.050",
+    "end": "72.099",
+    "duration": "13.049"
   },
   {
     "id": "t2_p2_tip_cn",
     "text": "图表驱动诱因分析：A combination of powerful drivers accounts for this noticeable upsurge.",
-    "start": "52.608",
-    "end": "61.628",
-    "duration": "9.020"
+    "start": "72.099",
+    "end": "77.226",
+    "duration": "5.127"
   },
   {
     "id": "t2_p2_tip_en",
     "text": "Government investments in sports infrastructure have lowered the threshold for physical workout.",
-    "start": "61.628",
-    "end": "72.428",
-    "duration": "10.800"
+    "start": "77.226",
+    "end": "83.395",
+    "duration": "6.169"
   },
   {
     "id": "t2_p3_cn",
     "text": "第三段：宏观社会学高度评价与未来趋势乐观前瞻。",
-    "start": "72.428",
-    "end": "73.951",
-    "duration": "1.523"
+    "start": "85.062",
+    "end": "92.008",
+    "duration": "6.946"
   },
   {
     "id": "t2_p3_en",
     "text": "This encouraging trend mirrors societal progress; it is widely anticipated that physical exercise will gain greater momentum in forthcoming years.",
-    "start": "73.960",
-    "end": "90.724",
-    "duration": "16.764"
+    "start": "92.008",
+    "end": "103.404",
+    "duration": "11.396"
   },
   {
     "id": "t2_p3_tip_cn",
     "text": "图表题展望收官句：It is widely anticipated that this trend will gain greater momentum in the forthcoming years.",
-    "start": "91.461",
-    "end": "103.804",
-    "duration": "12.343"
+    "start": "103.404",
+    "end": "109.493",
+    "duration": "6.089"
   },
   {
     "id": "t2_p3_tip_en",
     "text": "It is widely anticipated that regular physical exercise will gain greater momentum in the forthcoming years.",
-    "start": "104.048",
-    "end": "117.452",
-    "duration": "13.404"
+    "start": "110.265",
+    "end": "119.038",
+    "duration": "8.773"
   }
 ]

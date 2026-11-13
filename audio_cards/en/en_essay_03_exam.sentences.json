@@ -2,64 +2,64 @@
   {
     "id": "sent_p1_s1",
     "text": "Dear Organizing Committee,",
-    "start": "0.095",
-    "end": "1.784",
-    "duration": "1.689"
+    "start": "0.103",
+    "end": "1.771",
+    "duration": "1.668"
   },
   {
     "id": "sent_p1_s2",
     "text": "Learning from the university website that enthusiastic student assistants are wanted for the upcoming International Academic Symposium, I am writing to recommend myself with utmost enthusiasm.",
-    "start": "2.465",
-    "end": "14.966",
-    "duration": "12.501"
+    "start": "2.475",
+    "end": "14.946",
+    "duration": "12.471"
   },
   {
     "id": "sent_p2_s1",
     "text": "As a senior majoring in English Literature, I am convinced that my qualifications match your requirements remarkably well.",
-    "start": "16.534",
-    "end": "24.308",
-    "duration": "7.774"
+    "start": "16.544",
+    "end": "24.294",
+    "duration": "7.750"
   },
   {
     "id": "sent_p2_s2",
     "text": "First of all, I have achieved excellent proficiency in both oral and written English, which enables me to communicate fluently with foreign scholars.",
-    "start": "24.977",
-    "end": "35.512",
-    "duration": "10.535"
+    "start": "24.982",
+    "end": "34.018",
+    "duration": "9.036"
   },
   {
     "id": "sent_p2_s3",
     "text": "Furthermore, having served as a liaison officer in previous university forums, I possess sound interpersonal skills and strong organizational capabilities.",
-    "start": "35.813",
-    "end": "45.989",
-    "duration": "10.176"
+    "start": "34.714",
+    "end": "45.969",
+    "duration": "11.255"
   },
   {
     "id": "sent_p2_s4",
     "text": "Most importantly, I am dependable and fully committed to fulfilling every designated assignment with diligence.",
-    "start": "46.633",
-    "end": "53.246",
-    "duration": "6.613"
+    "start": "46.643",
+    "end": "53.228",
+    "duration": "6.585"
   },
   {
     "id": "sent_p3_s1",
     "text": "Enclosed please find my curriculum vitae for your reference.",
-    "start": "54.795",
-    "end": "58.630",
-    "duration": "3.835"
+    "start": "54.805",
+    "end": "58.614",
+    "duration": "3.809"
   },
   {
     "id": "sent_p3_s2",
     "text": "I would appreciate the opportunity to attend an interview at your convenience.",
-    "start": "59.326",
-    "end": "65.369",
-    "duration": "6.043"
+    "start": "59.336",
+    "end": "63.468",
+    "duration": "4.132"
   },
   {
     "id": "sent_p3_s3",
     "text": "Yours sincerely, Li Ming",
-    "start": "65.595",
-    "end": "66.377",
-    "duration": "0.782"
+    "start": "64.197",
+    "end": "67.835",
+    "duration": "3.638"
   }
 ]

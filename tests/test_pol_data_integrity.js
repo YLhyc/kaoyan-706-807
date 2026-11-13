@@ -69,7 +69,7 @@ console.log('  Day 2 Point 1 text:', cleanHtml);
 assert(cleanHtml.includes('运动着的物质的基本存在形式是时间和空间'), 'Day 2 Point 1 missing core concept');
 assert(!cleanHtml.includes('今天是我们背诵笔记'), 'Day 2 Point 1 contains greeting chatter: 今天是我们背诵笔记');
 assert(!cleanHtml.includes('挖空带背'), 'Day 2 Point 1 contains greeting chatter: 挖空带背');
-assert(d2p1.voice_start >= 15.0, `Day 2 Point 1 voice_start (${d2p1.voice_start}) must skip intro greeting (~15s)`);
+assert(d2p1.voice_start >= 13.5, `Day 2 Point 1 voice_start (${d2p1.voice_start}) must skip intro greeting (ends ~13.0s)`);
 assert(d2p1.voice_end > d2p1.voice_start, 'Day 2 Point 1 voice_end must be greater than voice_start');
 assert(d2p1.anlang_start >= 0, 'Day 2 Point 1 anlang_start must be >= 0');
 assert(d2p1.anlang_end > d2p1.anlang_start, 'Day 2 Point 1 anlang_end must be greater than anlang_start');

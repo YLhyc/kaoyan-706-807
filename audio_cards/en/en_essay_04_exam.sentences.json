@@ -2,57 +2,57 @@
   {
     "id": "sent_p1_s1",
     "text": "Dear Professor Green,",
-    "start": "0.103",
-    "end": "1.559",
-    "duration": "1.456"
+    "start": "0.112",
+    "end": "1.542",
+    "duration": "1.430"
   },
   {
     "id": "sent_p1_s2",
     "text": "On behalf of the Student Union, I am honored to extend a cordial invitation to you to serve as an expert judge for our upcoming 15th Campus English Speech Contest.",
-    "start": "2.229",
-    "end": "13.219",
-    "duration": "10.990"
+    "start": "2.239",
+    "end": "13.205",
+    "duration": "10.966"
   },
   {
     "id": "sent_p2_s1",
     "text": "The event is scheduled to be held in the Grand Auditorium from 2:00 p.m. to 5:00 p.m. next Friday, November 14th.",
-    "start": "14.784",
-    "end": "27.028",
-    "duration": "12.244"
+    "start": "14.794",
+    "end": "22.822",
+    "duration": "8.028"
   },
   {
     "id": "sent_p2_s2",
     "text": "The contest will feature fifteen distinguished finalists delivering speeches on the theme of Cultural Interconnection in the Modern Era.",
-    "start": "27.028",
-    "end": "35.164",
-    "duration": "8.136"
+    "start": "23.636",
+    "end": "31.750",
+    "duration": "8.114"
   },
   {
     "id": "sent_p2_s3",
     "text": "Considering your outstanding academic prestige and profound linguistic insight, your professional evaluation and commentary would undoubtedly inspire all contestants and elevate the academic caliber of this competition.",
-    "start": "35.337",
-    "end": "46.523",
-    "duration": "11.186"
+    "start": "32.419",
+    "end": "46.504",
+    "duration": "14.085"
   },
   {
     "id": "sent_p3_s1",
     "text": "We would be deeply grateful if you could accept our invitation.",
-    "start": "48.084",
-    "end": "51.599",
-    "duration": "3.515"
+    "start": "48.092",
+    "end": "51.586",
+    "duration": "3.494"
   },
   {
     "id": "sent_p3_s2",
     "text": "Please kindly notify us of your availability before this Wednesday.",
-    "start": "52.305",
-    "end": "58.105",
-    "duration": "5.800"
+    "start": "52.315",
+    "end": "56.232",
+    "duration": "3.917"
   },
   {
     "id": "sent_p3_s3",
     "text": "Yours sincerely, Li Ming",
-    "start": "58.331",
-    "end": "59.034",
-    "duration": "0.703"
+    "start": "56.933",
+    "end": "60.499",
+    "duration": "3.566"
   }
 ]

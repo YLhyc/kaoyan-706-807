@@ -2,71 +2,71 @@
   {
     "id": "sent_p1_s1",
     "text": "The pie chart provides a clear breakdown of the monthly expenditure distribution among fresh college graduates in 2025.",
-    "start": "0.099",
-    "end": "10.595",
-    "duration": "10.496"
+    "start": "0.109",
+    "end": "8.150",
+    "duration": "8.041"
   },
   {
     "id": "sent_p1_s2",
     "text": "As is visibly indicated, basic food and catering accounts for the largest proportion at 45.0%, closely followed by intellectual enrichment and skill training at 25.0%.",
-    "start": "10.948",
-    "end": "25.381",
-    "duration": "14.433"
+    "start": "8.813",
+    "end": "23.956",
+    "duration": "15.143"
   },
   {
     "id": "sent_p1_s3",
     "text": "Meanwhile, social entertainment and savings represent 18.0% and 12.0% respectively.",
-    "start": "25.638",
-    "end": "32.662",
-    "duration": "7.024"
+    "start": "24.618",
+    "end": "33.564",
+    "duration": "8.946"
   },
   {
     "id": "sent_p2_s1",
     "text": "A thorough examination reveals several understandable reasons behind this budgetary allocation.",
-    "start": "32.730",
-    "end": "39.107",
-    "duration": "6.377"
+    "start": "35.184",
+    "end": "41.160",
+    "duration": "5.976"
   },
   {
     "id": "sent_p2_s2",
     "text": "To begin with, since food and daily sustenance remain basic survival necessities for recent graduates entering the job market, allocating the dominant share to catering is inevitable.",
-    "start": "39.111",
-    "end": "53.939",
-    "duration": "14.828"
+    "start": "41.869",
+    "end": "53.925",
+    "duration": "12.056"
   },
   {
     "id": "sent_p2_s3",
     "text": "More importantly, that educational investment occupies a remarkable quarter of the total expenditure demonstrates graduates' acute awareness of professional competitiveness.",
-    "start": "54.646",
-    "end": "64.940",
-    "duration": "10.294"
+    "start": "54.656",
+    "end": "64.928",
+    "duration": "10.272"
   },
   {
     "id": "sent_p2_s4",
     "text": "In an era marked by rapid industrial upgrading, continuous skill refinement has become an essential stepping stone to career development.",
-    "start": "65.585",
-    "end": "76.277",
-    "duration": "10.692"
+    "start": "65.595",
+    "end": "74.839",
+    "duration": "9.244"
   },
   {
     "id": "sent_p2_s5",
     "text": "Finally, allocating a sensible quota to savings reflects a mature financial attitude.",
-    "start": "76.579",
-    "end": "82.107",
-    "duration": "5.528"
+    "start": "75.550",
+    "end": "81.946",
+    "duration": "6.396"
   },
   {
     "id": "sent_p3_s1",
     "text": "Overall, the spending pattern of contemporary college graduates is rational and forward-looking.",
-    "start": "83.723",
-    "end": "89.963",
-    "duration": "6.240"
+    "start": "81.946",
+    "end": "89.956",
+    "duration": "8.010"
   },
   {
     "id": "sent_p3_s2",
     "text": "Cultivating disciplined financial planning will undoubtedly assist youngsters in establishing a solid foundation for future endeavors.",
-    "start": "90.656",
-    "end": "98.888",
-    "duration": "8.232"
+    "start": "90.665",
+    "end": "100.395",
+    "duration": "9.730"
   }
 ]

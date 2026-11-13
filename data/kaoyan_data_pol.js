@@ -1427,7 +1427,7 @@ window.KAOYAN_POL_DATA = {
               "〔秒杀口诀与记忆回路〕"
             ],
             "audio": "audio_cards/pol/ch_my_01_pt06.mp3",
-            "lectureHtml": "<div class=\"card-audio-stream-pane\" id=\"stream_pane_ch_my_01_ch_my_01_pt06\" style=\"display: none;\">\n<div class=\"sub-card-audio-ctrl\">\n<div class=\"sub-card-title-row\">\n<span class=\"sub-card-badge\">音轨 06</span>\n<h4 class=\"sub-card-title\">世界的物质统一性原理与一切从实际出发</h4>\n<button class=\"card-audio-btn\" data-card-id=\"ch_my_01_pt06\" data-chapter-id=\"ch_my_01\" id=\"audio_btn_ch_my_01_pt06\" type=\"button\">\n<svg class=\"ui-svg xs audio-play-icon\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.2\" viewbox=\"0 0 24 24\"><polygon points=\"5 3 19 12 5 21 5 3\"></polygon></svg>\n<span class=\"audio-btn-text\">试听伴读</span>\n</button>\n</div>\n</div>\n<div class=\"lecture-structured-wrap\">\n<div class=\"stream-card stream-card-golden\">\n<div class=\"stream-card-label\">\n<svg class=\"ui-svg xs\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.2\" viewbox=\"0 0 24 24\"><path d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"></path></svg>\n<span>考点设问引入与立论锚点</span>\n</div>\n<div class=\"stream-intro-row\"><span class=\"recite-sentence\" data-card-id=\"ch_my_01_pt06\" data-end=\"8.048\" data-sent-id=\"sent_ch_my_01_pt06_0\" data-sent-idx=\"0\" data-start=\"0.1\" id=\"sent_ch_my_01_pt06_0\" title=\"点击从该句起播\">背诵手册第一章第六个考点，是世界的物质统一性原理，同时结合理解部分的哲学避坑。</span></div>\n</div>\n<div class=\"stream-card stream-card-outline\">\n<div class=\"stream-card-label\">\n<svg class=\"ui-svg xs\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.2\" viewbox=\"0 0 24 24\"><line x1=\"8\" x2=\"21\" y1=\"6\" y2=\"6\"></line><line x1=\"8\" x2=\"21\" y1=\"12\" y2=\"12\"></line><line x1=\"8\" x2=\"21\" y1=\"18\" y2=\"18\"></line><line x1=\"3\" x2=\"3.01\" y1=\"6\" y2=\"6\"></line><line x1=\"3\" x2=\"3.01\" y1=\"12\" y2=\"12\"></line><line x1=\"3\" x2=\"3.01\" y1=\"18\" y2=\"18\"></line></svg>\n<span>核心概念深度因果推导</span>\n</div>\n<div class=\"stream-outline-content\">\n<div class=\"stream-outline-row\"><span class=\"recite-sentence\" data-card-id=\"ch_my_01_pt06\" data-end=\"16.619\" data-sent-id=\"sent_ch_my_01_pt06_1\" data-sent-idx=\"1\" data-start=\"8.048\" id=\"sent_ch_my_01_pt06_1\" title=\"点击从该句起播\">第一，辩证唯物主义最基本、最核心的观点，马克思主义哲学的基石，是世界的物质统一性原理。</span> <span class=\"recite-sentence\" data-card-id=\"ch_my_01_pt06\" data-end=\"25.179\" data-sent-id=\"sent_ch_my_01_pt06_2\" data-sent-idx=\"2\" data-start=\"16.62\" id=\"sent_ch_my_01_pt06_2\" title=\"点击从该句起播\">整个世界是一个统一的物质世界，自然界是物质的，人类社会也是物质的，意识是物质世界的产物。</span></div><div class=\"stream-outline-row\"><span class=\"recite-sentence\" data-card-id=\"ch_my_01_pt06\" data-end=\"34.923\" data-sent-id=\"sent_ch_my_01_pt06_3\" data-sent-idx=\"3\" data-start=\"25.179\" id=\"sent_ch_my_01_pt06_3\" title=\"点击从该句起播\">第二，在坚持和发展中国特色社会主义伟大实践中，想问题、办事情的根本立足点是一切从实际出发。</span> <span class=\"recite-sentence\" data-card-id=\"ch_my_01_pt06\" data-end=\"41.237\" data-sent-id=\"sent_ch_my_01_pt06_4\" data-sent-idx=\"4\" data-start=\"34.923\" id=\"sent_ch_my_01_pt06_4\" title=\"点击从该句起播\">中国最大的实际，就是我国仍处于并将长期处于社会主义初级阶段。</span></div>\n</div>\n</div>\n<div class=\"stream-card stream-card-tips\">\n<div class=\"stream-tip-box xiao\">\n<span class=\"stream-tip-badge xiao\">〔考场避坑 · 审题红线与偷换陷阱〕</span>\n<div class=\"stream-tip-body\"><span class=\"recite-sentence\" data-card-id=\"ch_my_01_pt06\" data-end=\"55.791\" data-sent-id=\"sent_ch_my_01_pt06_5\" data-sent-idx=\"5\" data-start=\"41.237\" id=\"sent_ch_my_01_pt06_5\" title=\"点击从该句起播\">第三，结合理解部分的考场避坑：古代朴素唯物主义把物质等同于水、火、气，近代机械唯物主义把物质等同于原子，唯有辩证唯物主义指出了物质的客观实在性。</span></div>\n</div>\n</div>\n<div class=\"stream-card stream-card-lecture\">\n<div class=\"stream-card-label\">\n<svg class=\"ui-svg xs\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.2\" viewbox=\"0 0 24 24\"><polygon points=\"13 2 3 14 12 14 11 22 21 10 12 10 13 2\"></polygon></svg>\n<span>考点本质闭环与采分口诀</span>\n</div>\n<div class=\"stream-takeaway-box\">\n<div class=\"stream-takeaway-tag\">〔秒杀口诀与记忆回路〕</div>\n<div class=\"stream-takeaway-text\"><span class=\"recite-sentence\" data-card-id=\"ch_my_01_pt06\" data-end=\"66.097\" data-sent-id=\"sent_ch_my_01_pt06_6\" data-sent-idx=\"6\" data-start=\"55.791\" id=\"sent_ch_my_01_pt06_6\" title=\"点击从该句起播\">在做题时，如果选项把暗物质、能量说成世界的本原，就犯了旧唯物主义的错误，世界的本原只能是客观实在的物质。</span></div>\n</div>\n</div>\n</div>\n</div>",
+            "lectureHtml": "<div class=\"card-audio-stream-pane\" id=\"stream_pane_ch_my_01_ch_my_01_pt06\" style=\"display: none;\">\n<div class=\"sub-card-audio-ctrl\">\n<div class=\"sub-card-title-row\">\n<span class=\"sub-card-badge\">音轨 06</span>\n<h4 class=\"sub-card-title\">世界的物质统一性原理与一切从实际出发</h4>\n<button class=\"card-audio-btn\" data-card-id=\"ch_my_01_pt06\" data-chapter-id=\"ch_my_01\" id=\"audio_btn_ch_my_01_pt06\" type=\"button\">\n<svg class=\"ui-svg xs audio-play-icon\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.2\" viewbox=\"0 0 24 24\"><polygon points=\"5 3 19 12 5 21 5 3\"></polygon></svg>\n<span class=\"audio-btn-text\">试听伴读</span>\n</button>\n</div>\n</div>\n<div class=\"lecture-structured-wrap\">\n<div class=\"stream-card stream-card-golden\">\n<div class=\"stream-card-label\">\n<svg class=\"ui-svg xs\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.2\" viewbox=\"0 0 24 24\"><path d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"></path></svg>\n<span>考点设问引入与立论锚点</span>\n</div>\n<div class=\"stream-intro-row\"><span class=\"recite-sentence\" data-card-id=\"ch_my_01_pt06\" data-end=\"8.048\" data-sent-id=\"sent_ch_my_01_pt06_0\" data-sent-idx=\"0\" data-start=\"0.1\" id=\"sent_ch_my_01_pt06_0\" title=\"点击从该句起播\">背诵手册第一章第六个考点，是世界的物质统一性原理，同时结合理解部分的哲学避坑。</span></div>\n</div>\n<div class=\"stream-card stream-card-outline\">\n<div class=\"stream-card-label\">\n<svg class=\"ui-svg xs\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.2\" viewbox=\"0 0 24 24\"><line x1=\"8\" x2=\"21\" y1=\"6\" y2=\"6\"></line><line x1=\"8\" x2=\"21\" y1=\"12\" y2=\"12\"></line><line x1=\"8\" x2=\"21\" y1=\"18\" y2=\"18\"></line><line x1=\"3\" x2=\"3.01\" y1=\"6\" y2=\"6\"></line><line x1=\"3\" x2=\"3.01\" y1=\"12\" y2=\"12\"></line><line x1=\"3\" x2=\"3.01\" y1=\"18\" y2=\"18\"></line></svg>\n<span>核心概念深度因果推导</span>\n</div>\n<div class=\"stream-outline-content\">\n<div class=\"stream-outline-row\"><span class=\"recite-sentence\" data-card-id=\"ch_my_01_pt06\" data-end=\"16.619\" data-sent-id=\"sent_ch_my_01_pt06_1\" data-sent-idx=\"1\" data-start=\"8.048\" id=\"sent_ch_my_01_pt06_1\" title=\"点击从该句起播\">第一，辩证唯物主义最基本、最核心的观点，马克思主义哲学的基石，是世界的物质统一性原理。</span> <span class=\"recite-sentence\" data-card-id=\"ch_my_01_pt06\" data-end=\"25.179\" data-sent-id=\"sent_ch_my_01_pt06_2\" data-sent-idx=\"2\" data-start=\"16.62\" id=\"sent_ch_my_01_pt06_2\" title=\"点击从该句起播\">整个世界是一个统一的物质世界，自然界是物质的，人类社会也是物质的，意识是物质世界的产物。</span></div><div class=\"stream-outline-row\"><span class=\"recite-sentence\" data-card-id=\"ch_my_01_pt06\" data-end=\"34.923\" data-sent-id=\"sent_ch_my_01_pt06_3\" data-sent-idx=\"3\" data-start=\"25.179\" id=\"sent_ch_my_01_pt06_3\" title=\"点击从该句起播\">第二，在坚持和发展中国特色社会主义伟大实践中，想问题、办事情的根本立足点是一切从实际出发。</span> <span class=\"recite-sentence\" data-card-id=\"ch_my_01_pt06\" data-end=\"41.237\" data-sent-id=\"sent_ch_my_01_pt06_4\" data-sent-idx=\"4\" data-start=\"34.923\" id=\"sent_ch_my_01_pt06_4\" title=\"点击从该句起播\">中国最大的实际，就是我国仍处于并将长期处于社会主义初级阶段。</span></div>\n</div>\n</div>\n<div class=\"stream-card stream-card-tips\">\n<div class=\"stream-tip-box xiao\">\n<span class=\"stream-tip-badge xiao\">〔考场避坑 · 审题红线与偷换陷阱〕</span>\n<div class=\"stream-tip-body\"><span class=\"recite-sentence\" data-card-id=\"ch_my_01_pt06\" data-end=\"55.791\" data-sent-id=\"sent_ch_my_01_pt06_5\" data-sent-idx=\"5\" data-start=\"41.237\" id=\"sent_ch_my_01_pt06_5\" title=\"点击从该句起播\">第三，结合理解部分的考场避坑：古代朴素唯物主义把物质等同于水、火、气，近代机械唯物主义把物质等同于原子，唯有辩证唯物主义指出了物质的客观实在性。</span></div>\n</div>\n</div>\n<div class=\"stream-card stream-card-lecture\">\n<div class=\"stream-card-label\">\n<svg class=\"ui-svg xs\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.2\" viewbox=\"0 0 24 24\"><polygon points=\"13 2 3 14 12 14 11 22 21 10 12 10 13 2\"></polygon></svg>\n<span>考点本质闭环与采分口诀</span>\n</div>\n<div class=\"stream-takeaway-box\">\n<div class=\"stream-takeaway-tag\">〔秒杀口诀与记忆回路〕</div>\n<div class=\"stream-takeaway-text\"><span class=\"recite-sentence\" data-card-id=\"ch_my_01_pt06\" data-end=\"65.400\" data-sent-id=\"sent_ch_my_01_pt06_6\" data-sent-idx=\"6\" data-start=\"55.791\" id=\"sent_ch_my_01_pt06_6\" title=\"点击从该句起播\">在做题时，如果选项把暗物质、能量说成世界的本原，就犯了旧唯物主义的错误，世界的本原只能是客观实在的物质。</span></div>\n</div>\n</div>\n</div>\n</div>",
             "sentences": [
               {
                 "text": "背诵手册第一章第六个考点，是世界的物质统一性原理，同时结合理解部分的哲学避坑。",
@@ -1474,7 +1474,7 @@ window.KAOYAN_POL_DATA = {
               {
                 "text": "在做题时，如果选项把暗物质、能量说成世界的本原，就犯了旧唯物主义的错误，世界的本原只能是客观实在的物质。",
                 "start": 55.791,
-                "end": 66.097,
+                "end": 65.4,
                 "idx": 6,
                 "id": "sent_ch_my_01_pt06_6"
               }
@@ -32811,7 +32811,7 @@ window.KAOYAN_POL_DATA = {
           "num": 1,
           "tag": "基本立场",
           "html": "马克思主义的基本立场是<strong class=\"xt-keyword cloze\" data-cloze=\"以人民为中心\" data-ghost=\"以··为中心\">以人民为中心</strong>。",
-          "voice_start": 47.12,
+          "voice_start": 45.21,
           "voice_end": 50.65,
           "anlang_start": 0.08,
           "anlang_end": 3.28
@@ -33023,7 +33023,7 @@ window.KAOYAN_POL_DATA = {
           "num": 1,
           "tag": "时空形式",
           "html": "运动着的物质的基本存在形式是<strong class=\"xt-keyword cloze\" data-cloze=\"时间和空间\" data-ghost=\"时··空间\">时间和空间</strong>。",
-          "voice_start": 15.24,
+          "voice_start": 14.21,
           "voice_end": 19.11,
           "anlang_start": 0.08,
           "anlang_end": 3.92
@@ -33235,7 +33235,7 @@ window.KAOYAN_POL_DATA = {
           "num": 1,
           "tag": "根本特征",
           "html": "马克思主义理论区别于其他理论的根本特征是<strong class=\"xt-keyword cloze\" data-cloze=\"实践性\" data-ghost=\"实·性\">实践性</strong>。",
-          "voice_start": 19.69,
+          "voice_start": 19.35,
           "voice_end": 24.68,
           "anlang_start": 0.08,
           "anlang_end": 4.8
@@ -33296,7 +33296,7 @@ window.KAOYAN_POL_DATA = {
           "tag": "主客体关系",
           "html": "实践的主体和客体相互作用的关系包括<strong class=\"xt-keyword cloze\" data-cloze=\"实践关系\" data-ghost=\"实·关系\">实践关系</strong>、认识关系和价值关系，其中最根本的是实践关系。",
           "voice_start": 63.34,
-          "voice_end": 73.65,
+          "voice_end": 73.16,
           "anlang_start": 33.82,
           "anlang_end": 43.1
         },
@@ -33305,7 +33305,7 @@ window.KAOYAN_POL_DATA = {
           "num": 8,
           "tag": "认识论首要",
           "html": "辩证唯物主义认识论第一的和基本的观点是<strong class=\"xt-keyword cloze\" data-cloze=\"实践的观点\" data-ghost=\"实·的观点\">实践的观点</strong>。",
-          "voice_start": 73.65,
+          "voice_start": 73.16,
           "voice_end": 80.03,
           "anlang_start": 43.39,
           "anlang_end": 48.43
@@ -33809,7 +33809,7 @@ window.KAOYAN_POL_DATA = {
           "num": 1,
           "tag": "产生条件",
           "html": "商品经济产生的社会历史条件是社会分工的存在，以及生产资料和劳动产品属于不同的所有者。",
-          "voice_start": 18.29,
+          "voice_start": 17.6,
           "voice_end": 26.74,
           "anlang_start": 0.08,
           "anlang_end": 8.16
@@ -34021,7 +34021,7 @@ window.KAOYAN_POL_DATA = {
           "num": 1,
           "tag": "扩大再生产源泉",
           "html": "资本主义扩大再生产的源泉是<strong class=\"xt-keyword cloze\" data-cloze=\"资本积累\" data-ghost=\"资·积累\">资本积累</strong>。",
-          "voice_start": 20.23,
+          "voice_start": 18.43,
           "voice_end": 24.24,
           "anlang_start": 0.08,
           "anlang_end": 3.76
@@ -34284,7 +34284,7 @@ window.KAOYAN_POL_DATA = {
           "tag": "政治控制方式",
           "html": "金融寡头在政治上对国家机器的控制方式是同政府的“<strong class=\"xt-keyword cloze\" data-cloze=\"个人联合\" data-ghost=\"个·联合\">个人联合</strong>”。",
           "voice_start": 54.7,
-          "voice_end": 65,
+          "voice_end": 64.54,
           "anlang_start": 26.81,
           "anlang_end": 32.49
         },
@@ -34293,7 +34293,7 @@ window.KAOYAN_POL_DATA = {
           "num": 7,
           "tag": "政策影响方式",
           "html": "金融寡头对国家政府施加影响的方式是<strong class=\"xt-keyword cloze\" data-cloze=\"建立政策咨询机构\" data-ghost=\"建··策咨询机构\">建立政策咨询机构</strong>。",
-          "voice_start": 65,
+          "voice_start": 64.54,
           "voice_end": 90.07,
           "anlang_start": 32.86,
           "anlang_end": 37.9
@@ -34919,7 +34919,7 @@ window.KAOYAN_POL_DATA = {
           "num": 1,
           "tag": "价值观特点",
           "html": "价值观具有三个特点：反映着特定时代精神，体现着鲜明民族特色，蕴含着特定阶级立场。",
-          "voice_start": 9.03,
+          "voice_start": 7.86,
           "voice_end": 19.23,
           "anlang_start": 0.08,
           "anlang_end": 9.44
@@ -35131,7 +35131,7 @@ window.KAOYAN_POL_DATA = {
           "num": 1,
           "tag": "法律运行环节",
           "html": "法律运行的环节包括<strong class=\"xt-keyword cloze\" data-cloze=\"法律制定、法律执行、法律适用和法律遵守\" data-ghost=\"法···、法···、法···和法···\">法律制定、法律执行、法律适用和法律遵守</strong>。",
-          "voice_start": 20.03,
+          "voice_start": 18.38,
           "voice_end": 25.6,
           "anlang_start": 0.08,
           "anlang_end": 5.76
@@ -35968,7 +35968,7 @@ window.KAOYAN_POL_DATA = {
           "tag": "建党伟大意义",
           "html": "中共成立伟大意义：有了坚强领导核心；踏上民族独立人民解放征程；形成伟大建党精神；深刻改变民族前途世界格局。",
           "voice_start": 121.64,
-          "voice_end": 168.36,
+          "voice_end": 167.42,
           "anlang_start": 49.37,
           "anlang_end": 61.53
         },
@@ -35977,7 +35977,7 @@ window.KAOYAN_POL_DATA = {
           "num": 7,
           "tag": "首要问题",
           "html": "中国革命的首要问题是<strong class=\"xt-keyword cloze\" data-cloze=\"分清敌友\" data-ghost=\"分·敌友\">分清敌友</strong>。",
-          "voice_start": 168.36,
+          "voice_start": 167.42,
           "voice_end": 172.04,
           "anlang_start": 61.9,
           "anlang_end": 65.5
@@ -36179,7 +36179,7 @@ window.KAOYAN_POL_DATA = {
           "num": 1,
           "tag": "侵华序幕",
           "html": "日本侵华战争开始的序幕是1931年日本发动的<strong class=\"xt-keyword cloze\" data-cloze=\"九一八事变\" data-ghost=\"九···变\">九一八事变</strong>。",
-          "voice_start": 13.71,
+          "voice_start": 13.0,
           "voice_end": 19.74,
           "anlang_start": 0.08,
           "anlang_end": 5.28
@@ -36441,8 +36441,8 @@ window.KAOYAN_POL_DATA = {
           "num": 1,
           "tag": "整风主要任务",
           "html": "延安整风运动中最主要的任务是<strong class=\"xt-keyword cloze\" data-cloze=\"反对主观主义\" data-ghost=\"反·主观主义\">反对主观主义</strong>以整顿学风。",
-          "voice_start": 16.67,
-          "voice_end": 21.91,
+          "voice_start": 15.54,
+          "voice_end": 20.76,
           "anlang_start": 0.08,
           "anlang_end": 4.72
         },
@@ -36451,7 +36451,7 @@ window.KAOYAN_POL_DATA = {
           "num": 2,
           "tag": "整风重点",
           "html": "延安整风运动中的重点是反对<strong class=\"xt-keyword cloze\" data-cloze=\"教条主义\" data-ghost=\"教·主义\">教条主义</strong>。",
-          "voice_start": 21.91,
+          "voice_start": 20.76,
           "voice_end": 25.9,
           "anlang_start": 5.01,
           "anlang_end": 8.21

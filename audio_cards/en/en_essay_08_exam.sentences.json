@@ -2,64 +2,64 @@
   {
     "id": "sent_p1_s1",
     "text": "Dear Professor Williams,",
-    "start": "0.104",
-    "end": "1.611",
-    "duration": "1.507"
+    "start": "0.114",
+    "end": "1.620",
+    "duration": "1.506"
   },
   {
     "id": "sent_p1_s2",
     "text": "Having read your illuminating academic papers on artificial intelligence and cognitive linguistics with great admiration, I am writing to consult you regarding your graduate research projects and prospective student requirements.",
-    "start": "2.303",
-    "end": "16.134",
-    "duration": "13.831"
+    "start": "2.306",
+    "end": "16.116",
+    "duration": "13.810"
   },
   {
     "id": "sent_p2_s1",
     "text": "As a fourth-year undergraduate student planning to apply for your research team, I would be exceedingly grateful if you could spare a few minutes to clarify three specific concerns.",
-    "start": "17.689",
-    "end": "28.988",
-    "duration": "11.299"
+    "start": "17.699",
+    "end": "28.979",
+    "duration": "11.280"
   },
   {
     "id": "sent_p2_s2",
     "text": "In the first place, could you please provide some guidance on the primary academic prerequisites your laboratory prioritizes?",
-    "start": "29.659",
-    "end": "37.291",
-    "duration": "7.632"
+    "start": "29.669",
+    "end": "37.286",
+    "duration": "7.617"
   },
   {
     "id": "sent_p2_s3",
     "text": "In the second place, I wonder whether students from interdisciplinary backgrounds are encouraged to participate in your ongoing grants.",
-    "start": "37.955",
-    "end": "47.468",
-    "duration": "9.513"
+    "start": "37.965",
+    "end": "46.083",
+    "duration": "8.118"
   },
   {
     "id": "sent_p2_s4",
     "text": "Lastly, what foundational literature would you recommend reading before the upcoming interview?",
-    "start": "47.781",
-    "end": "52.327",
-    "duration": "4.546"
+    "start": "46.739",
+    "end": "52.313",
+    "duration": "5.574"
   },
   {
     "id": "sent_p3_s1",
     "text": "Thank you very much for your precious guidance.",
-    "start": "53.922",
-    "end": "56.232",
-    "duration": "2.310"
+    "start": "53.929",
+    "end": "56.216",
+    "duration": "2.287"
   },
   {
     "id": "sent_p3_s2",
     "text": "I look forward to your valuable insights.",
-    "start": "56.946",
-    "end": "61.145",
-    "duration": "4.199"
+    "start": "56.956",
+    "end": "59.303",
+    "duration": "2.347"
   },
   {
     "id": "sent_p3_s3",
     "text": "Yours sincerely, Li Ming",
-    "start": "61.371",
-    "end": "62.153",
-    "duration": "0.782"
+    "start": "59.973",
+    "end": "63.611",
+    "duration": "3.638"
   }
 ]

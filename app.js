@@ -1856,6 +1856,27 @@
         });
       }
     }
+
+    // Track 2 联动锚点句（.t1-linked-sent）补全 data-linked-sent-idx，确保点读可用且不抢占主句聚光灯
+    const linkedEls = el.paperContent.querySelectorAll('.t1-linked-sent:not([data-sent-idx])');
+    if (linkedEls.length > 0) {
+      const normText = (str) => (str || '')
+        .replace(/【[^】]*】/g, '')
+        .replace(/[\s，。！？、；：“”‘’（）《》【】·—…,.!?;:"'()\-]/g, '');
+      const sNorms = sents.map((s) => normText(s.text));
+      linkedEls.forEach((lNode) => {
+        if (lNode.dataset.linkedSentIdx !== undefined) return;
+        const lNorm = normText(lNode.textContent);
+        if (!lNorm || lNorm.length < 4) return;
+        let matchIdx = sNorms.findIndex((sn) => sn && sn === lNorm);
+        if (matchIdx === -1) {
+          matchIdx = sNorms.findIndex((sn) => sn.length >= 6 && (lNorm.startsWith(sn) || lNorm.includes(sn) || sn.includes(lNorm)));
+        }
+        if (matchIdx !== -1) {
+          lNode.dataset.linkedSentIdx = String(matchIdx);
+        }
+      });
+    }
   }
 
   // 板块/卡片级点读交互引擎：点击任意板块头部或卡片背景，自动定位并起音朗读该板块的第一句话（杜绝落空或归零）
@@ -2126,10 +2147,9 @@
           return;
         }
 
-        e.stopPropagation();
-
         // 1. 优先从 state.activeSentences 根据 sentIdx / sentId 权威索引匹配
         const rawIdx = elItem.dataset.sentIdx !== undefined ? parseInt(elItem.dataset.sentIdx, 10) : NaN;
+        const rawLinkedIdx = elItem.dataset.linkedSentIdx !== undefined ? parseInt(elItem.dataset.linkedSentIdx, 10) : NaN;
         const rawId = elItem.dataset.sentId || elItem.id || elItem.dataset.pointId;
         let matched = null;
         let targetIdx = -1;
@@ -2139,6 +2159,11 @@
           if (!isNaN(rawIdx) && rawIdx >= 0 && rawIdx < state.activeSentences.length) {
             targetIdx = rawIdx;
             matched = state.activeSentences[rawIdx];
+          }
+          // 优先级 1b: Track 2 .t1-linked-sent 联动索引
+          if (!matched && !isNaN(rawLinkedIdx) && rawLinkedIdx >= 0 && rawLinkedIdx < state.activeSentences.length) {
+            targetIdx = rawLinkedIdx;
+            matched = state.activeSentences[rawLinkedIdx];
           }
           // 优先级 2: 匹配唯一 sentence id
           if (!matched && rawId) {
@@ -2170,13 +2195,16 @@
         }
 
         if (targetIdx !== -1 && matched && typeof matched.start === 'number' && !isNaN(matched.start)) {
+          e.stopPropagation();
           seekToSentence(targetIdx, matched.start);
         } else {
           const fallbackStart = parseFloat(elItem.dataset.start);
           const fallbackId = (!isNaN(rawIdx) ? rawIdx : rawId);
-          if (!isNaN(fallbackStart) && fallbackId !== null) {
+          if (!isNaN(fallbackStart) && fallbackId !== null && fallbackId !== undefined) {
+            e.stopPropagation();
             seekToSentence(fallbackId, fallbackStart);
           }
+          // 无有效时间戳的修饰性元素（如 .sec-desc）不阻止冒泡，交由卡片级点读兜底
         }
       });
     });
@@ -4737,7 +4765,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.2.5';
+  const APP_BUILD_ID = '3.2.6';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -5584,17 +5612,25 @@
     })));
     stampSentenceIndices();
 
+    let playedViaSeek = false;
     if (startPointIdx >= 0 && startPointIdx < points.length) {
       const p = points[startPointIdx];
       const t = voiceType === 'anlang' ? p.anlang_start : p.voice_start;
-      const setTime = () => {
-        audio.currentTime = Math.max(0, t);
-        highlightSentence(startPointIdx);
-      };
-      if (audio.readyState >= 1) {
-        setTime();
+      if (autoPlay) {
+        seekToSentence(startPointIdx, t);
+        playedViaSeek = true;
       } else {
-        audio.addEventListener('loadedmetadata', setTime, { once: true });
+        const xtEpoch = ++manualSeekEpoch;
+        const setTime = () => {
+          if (xtEpoch !== manualSeekEpoch) return;
+          audio.currentTime = Math.max(0, t);
+          highlightSentence(startPointIdx);
+        };
+        if (audio.readyState >= 1) {
+          setTime();
+        } else {
+          audio.addEventListener('loadedmetadata', setTime, { once: true });
+        }
       }
     } else if (restoreTime) {
       tryRestoreAudioTime(true, `pol_${dayItem.id}_${state.currentTrack}`);
@@ -5603,23 +5639,28 @@
       const p0 = points[0];
       const t0 = voiceType === 'anlang' ? p0.anlang_start : p0.voice_start;
       if (t0 > 0.5) {
-        const xtEpoch = manualSeekEpoch;
-        const setFirst = () => {
-          if (xtEpoch !== manualSeekEpoch || (pendingSeekTarget && Date.now() - pendingSeekTarget.startedAt < 5000)) return;
-          if (audio.currentTime < t0 - 0.3) {
-            audio.currentTime = t0;
-            highlightSentence(0);
-          }
-        };
-        if (audio.readyState >= 1) {
-          setFirst();
+        if (autoPlay) {
+          seekToSentence(0, t0);
+          playedViaSeek = true;
         } else {
-          audio.addEventListener('loadedmetadata', setFirst, { once: true });
+          const xtEpoch = ++manualSeekEpoch;
+          const setFirst = () => {
+            if (xtEpoch !== manualSeekEpoch || (pendingSeekTarget && Date.now() - pendingSeekTarget.startedAt < 5000)) return;
+            if (audio.currentTime < t0 - 0.3) {
+              audio.currentTime = t0;
+              highlightSentence(0);
+            }
+          };
+          if (audio.readyState >= 1) {
+            setFirst();
+          } else {
+            audio.addEventListener('loadedmetadata', setFirst, { once: true });
+          }
         }
       }
     }
 
-    if (autoPlay) {
+    if (autoPlay && !playedViaSeek) {
       audio.play().catch(e => console.log('Autoplay prevented:', e));
     }
     updatePlayBtnUI();

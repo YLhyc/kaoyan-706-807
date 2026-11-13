@@ -2,71 +2,71 @@
   {
     "id": "sent_p1_s1",
     "text": "Notice: Volunteers Wanted",
-    "start": "0.099",
-    "end": "0.780",
-    "duration": "0.681"
+    "start": "0.108",
+    "end": "2.352",
+    "duration": "2.244"
   },
   {
     "id": "sent_p1_s2",
     "text": "In an effort to foster cross-cultural understanding on campus, the International Cultural Exchange Week will be grandly hosted from December 1st to 7th.",
-    "start": "0.992",
-    "end": "15.433",
-    "duration": "14.441"
+    "start": "3.058",
+    "end": "12.631",
+    "duration": "9.573"
   },
   {
     "id": "sent_p1_s3",
     "text": "This notice is issued for the purpose of recruiting 20 energetic and responsible student volunteers.",
-    "start": "15.433",
-    "end": "24.564",
-    "duration": "9.131"
+    "start": "13.438",
+    "end": "20.069",
+    "duration": "6.631"
   },
   {
     "id": "sent_p2_s1",
     "text": "Prospective candidates are expected to fulfill the following qualifications.",
-    "start": "24.564",
-    "end": "30.285",
-    "duration": "5.721"
+    "start": "21.679",
+    "end": "26.378",
+    "duration": "4.699"
   },
   {
     "id": "sent_p2_s2",
     "text": "Above all, applicants should demonstrate fluent oral English communication skills and basic cultural sensitivity.",
-    "start": "30.285",
-    "end": "38.378",
-    "duration": "8.093"
+    "start": "27.092",
+    "end": "34.761",
+    "duration": "7.669"
   },
   {
     "id": "sent_p2_s3",
     "text": "In addition, prior volunteer experience and strong teamwork spirit will be viewed favorably.",
-    "start": "38.404",
-    "end": "46.759",
-    "duration": "8.355"
+    "start": "35.462",
+    "end": "41.799",
+    "duration": "6.337"
   },
   {
     "id": "sent_p2_s4",
     "text": "The primary responsibilities entail guiding international guests, coordinating exhibition booths, and facilitating cultural workshops.",
-    "start": "47.068",
-    "end": "54.775",
-    "duration": "7.707"
+    "start": "42.547",
+    "end": "51.865",
+    "duration": "9.318"
   },
   {
     "id": "sent_p3_s1",
     "text": "Those who are interested should submit an electronic application to volunteer_exchange@university.edu.cn before November 20th.",
-    "start": "54.801",
-    "end": "65.338",
-    "duration": "10.537"
+    "start": "53.431",
+    "end": "65.322",
+    "duration": "11.891"
   },
   {
     "id": "sent_p3_s2",
     "text": "We sincerely look forward to your active participation.",
-    "start": "66.203",
-    "end": "71.064",
-    "duration": "4.861"
+    "start": "66.211",
+    "end": "68.531",
+    "duration": "2.320"
   },
   {
     "id": "sent_p3_s3",
     "text": "The Organizing Committee, October 30th",
-    "start": "71.289",
-    "end": "72.757",
-    "duration": "1.468"
+    "start": "68.531",
+    "end": "74.235",
+    "duration": "5.704"
   }
 ]
