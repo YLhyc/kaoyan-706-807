@@ -2,11 +2,11 @@
   "id": "kaoyan-recite-handbook-706-807-v1",
   "name": "2027 考研全科双轨随身背诵手卷",
   "short_name": "考研背诵手卷",
-  "description": "807 现当代文学 + 706 古代文学/古代汉语 + 英语大小作文双轨随身背诵手卷",
+  "description": "807 现当代文学 + 706 古代文学/古代汉语 + 考研政治 + 英语大小作文全科双轨随身背诵手卷",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "background_color": "#f5f2e9",
   "theme_color": "#f5f2e9",
   "icons": [

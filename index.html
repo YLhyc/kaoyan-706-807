@@ -15,7 +15,7 @@
   <!-- 异步/非阻塞字体加载：优先采用 iOS/Android/Win 原生高清字系 (Songti SC / Kaiti SC / 苹方)，离线或无外网时 0 白屏首屏秒开 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="app.css?v=3.2.7">
+  <link rel="stylesheet" href="app.css?v=3.2.8">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -25,10 +25,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css" media="print" onload="this.media='all'">
 
-  <!-- 动态微交互矢量图标引擎 (Kubai Icons · 金石朱墨主题) -->
-  <script src="kubai_icons.js?v=3.2.7" defer></script>
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=3.2.7" defer></script>
+  <script src="data/kaoyan_data.js?v=3.2.8" defer></script>
 </head>
 <body>
 
@@ -111,7 +109,7 @@
           <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
         </svg>
         <span class="subject-name-full">考研政治背诵</span><span class="subject-name-mobile">考研政治</span>
-        <span id="count-pol" class="count-tag">47章+</span>
+        <span id="count-pol" class="count-tag">74讲</span>
       </button>
       <button id="btn-subject-en" class="subject-btn">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -263,7 +261,7 @@
       <div class="sidebar-footer">
         <div class="app-version-badge" id="appVersionBadge" title="点击检查更新">
           <span class="version-dot"></span>
-          <span id="versionText">版本 v3.2.7 · 金石朱墨全科双轨典藏版</span>
+          <span id="versionText">版本 v3.2.8 · 金石朱墨全科双轨典藏版</span>
         </div>
         <button id="btn-force-refresh" class="refresh-cache-btn" title="强制清除缓存并拉取最新版本">
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -408,12 +406,13 @@
       <div class="dock-core-transport">
         <!-- 循环模式 (保留在下方操作排) -->
         <button id="btn-loop-mode" class="dock-btn dock-btn-tool dock-tool-loop" title="背诵循环模式">
-          <svg class="mode-icon-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="mode-icon-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="17 1 21 5 17 9"></polyline>
             <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
             <polyline points="7 23 3 19 7 15"></polyline>
             <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
           </svg>
+          <span class="mode-text">顺播</span>
         </button>
 
         <!-- 上一考点 -->
@@ -537,7 +536,7 @@
   </nav>
 
 
-  <script src="app.js?v=3.2.7" defer></script>
+  <script src="app.js?v=3.2.8" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -639,6 +638,20 @@
           </button>
         </div>
 
+        <div class="dash-listen-row">
+          <span class="dash-listen-item">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+              <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+            </svg>
+            <span>今日听读 <strong id="dashTodayListenMin">0</strong> 分钟</span>
+          </span>
+          <span class="dash-listen-divider" aria-hidden="true">·</span>
+          <span class="dash-listen-item">
+            <span>累计磨耳 <strong id="dashTotalListenMin">0</strong> 分钟</span>
+          </span>
+        </div>
+
         <div class="dash-total-progress-wrap">
           <div class="dash-progress-meta">
             <span class="dash-meta-title">全科考题攻克总进度</span>
@@ -656,7 +669,7 @@
         </div>
       </div>
 
-      <!-- 2. 三大科目各自的分项攻克卡片 -->
+      <!-- 2. 四大科目各自的分项攻克卡片 -->
       <div class="dash-section-title">
         <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
         <span>分科背诵掌握矩阵</span>
@@ -743,17 +756,36 @@
         </div>
       </div>
 
-      <!-- 4. 随机抽查快捷操作 -->
+      <!-- 4. 随机抽查与学习记录备份 -->
       <div class="dash-action-box">
-        <button type="button" class="dash-random-pick-btn" id="btnDashRandomPick" title="随机抽选一道未掌握的重点大题立即开始磨耳背诵">
+        <button type="button" class="dash-random-pick-btn" id="btnDashRandomPick" title="随机抽选一道未掌握的重点考点（含专业课 T0/T1、英语与政治）立即开始磨耳背诵">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="2" y="2" width="20" height="20" rx="4"></rect>
             <circle cx="8" cy="8" r="1.5" fill="currentColor"></circle>
             <circle cx="16" cy="16" r="1.5" fill="currentColor"></circle>
             <circle cx="12" cy="12" r="1.5" fill="currentColor"></circle>
           </svg>
-          <span>随机抽查一道【未掌握的 T0/T1 考题】磨耳背诵</span>
+          <span>随机抽查一道【未掌握重点考点】磨耳背诵</span>
         </button>
+      </div>
+      <div class="dash-backup-row">
+        <button type="button" class="dash-backup-btn" id="btnDashExportData" title="导出全科掌握度与打卡听读记录为 JSON 备份">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>导出进度备份</span>
+        </button>
+        <button type="button" class="dash-backup-btn" id="btnDashImportData" title="从 JSON 备份恢复掌握度与打卡记录">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <span>导入恢复记录</span>
+        </button>
+        <input type="file" id="dashImportFileInput" accept=".json,application/json" style="display: none;">
       </div>
     </div>
   </aside>
@@ -942,11 +974,11 @@
     </div>
     <h3 class="update-modal-title">正在同步云端新版本</h3>
     <div class="update-modal-badges">
-      <span class="update-badge-old" id="updateModalOldVer">v3.2.7</span>
+      <span class="update-badge-old" id="updateModalOldVer">v3.2.8</span>
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5 12h14M12 5l7 7-7 7"/>
       </svg>
-      <span class="update-badge-new" id="updateModalNewVer">v3.2.7</span>
+      <span class="update-badge-new" id="updateModalNewVer">v3.2.8</span>
     </div>
     <p class="update-modal-status" id="updateModalStatus">正在连接云端节点并校验资源清单...</p>
     <div class="update-progress-container">

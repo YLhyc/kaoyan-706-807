@@ -1,13 +1,12 @@
 // 考研背诵手卷 · 离线 PWA Service Worker (v2.5.0)
-const CACHE_NAME = 'kaoyan-all-in-one-v3.2.7';
+const CACHE_NAME = 'kaoyan-all-in-one-v3.2.8';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
-  './app.css?v=3.2.7',
-  './app.js?v=3.2.7',
-  './kubai_icons.js?v=3.2.7',
-  './data/kaoyan_data.js?v=3.2.7',
-  './data/kaoyan_data_pol.js?v=3.2.7',
+  './app.css?v=3.2.8',
+  './app.js?v=3.2.8',
+  './data/kaoyan_data.js?v=3.2.8',
+  './data/kaoyan_data_pol.js?v=3.2.8',
   './version.json',
   './manifest.json',
   './favicon.svg',
@@ -43,6 +42,14 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+function offlineResponse() {
+  return new Response('Offline', {
+    status: 503,
+    statusText: 'Offline',
+    headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+  });
+}
+
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
@@ -73,7 +80,7 @@ self.addEventListener('fetch', (event) => {
           return networkResponse;
         }).catch(() => {
           // 弱网或离线时，即使带 query 参数也宽容回退到已有缓存
-          return caches.match(event.request, { ignoreSearch: true });
+          return caches.match(event.request, { ignoreSearch: true }).then((fallback) => fallback || offlineResponse());
         });
       })
     );
@@ -89,15 +96,14 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
         return networkResponse;
-      }).catch(() => caches.match(event.request))
+      }).catch(() => caches.match(event.request).then((fallback) => fallback || offlineResponse()))
     );
     return;
   }
 
   // 2. 核心样式与脚本（自带版本指纹，Cache-First 快速响应）
   const isStaticCode = url.pathname.endsWith('app.css') || 
-                       url.pathname.endsWith('app.js') || 
-                       url.pathname.endsWith('kubai_icons.js');
+                       url.pathname.endsWith('app.js');
 
   if (isStaticCode) {
     event.respondWith(
@@ -109,7 +115,7 @@ self.addEventListener('fetch', (event) => {
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
           }
           return networkResponse;
-        }).catch(() => caches.match(event.request, { ignoreSearch: true }));
+        }).catch(() => caches.match(event.request, { ignoreSearch: true }).then((fallback) => fallback || offlineResponse()));
       })
     );
     return;
@@ -121,15 +127,21 @@ self.addEventListener('fetch', (event) => {
       caches.match('./index.html').then((cached) => {
         const netFetch = fetch(event.request).then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
-            const clone = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', clone));
+            const cloneForCache = networkResponse.clone();
+            const cloneForCheck = networkResponse.clone();
+            const verTag = `?v=${CACHE_NAME.replace('kaoyan-all-in-one-v', '')}`;
+            cloneForCheck.text().then((htmlText) => {
+              if (htmlText.includes(verTag)) {
+                caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', cloneForCache));
+              }
+            }).catch(() => {});
           }
           return networkResponse;
         }).catch(() => null);
 
         // 如果已有离线缓存，0ms 立即展示页面 (消除白屏)，后台静默更新缓存
         if (cached) return cached;
-        return netFetch.then((res) => res || caches.match('./index.html'));
+        return netFetch.then((res) => res || caches.match('./index.html').then((fallback) => fallback || offlineResponse()));
       })
     );
     return;
@@ -150,7 +162,7 @@ self.addEventListener('fetch', (event) => {
         }
         return networkResponse;
       }).catch(() => {
-        return cachedResponse;
+        return cachedResponse || offlineResponse();
       });
     })
   );
