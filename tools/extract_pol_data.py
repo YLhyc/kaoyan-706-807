@@ -443,10 +443,10 @@ def main():
 
     print(f"Processed 47 chapters with {total_subcards} subCards in total.")
 
-    # 3. 处理模块二：徐涛 16 天选择题带背（加载高精度 370 考点纯净库与双音轨时间戳）
-    print("Processing 徐涛 16 天 (xutao16) with pristine 370 points and authentic dual timestamps...")
+    # 3. 处理模块二：徐涛 26 天选择题带背（加载高精度 608 考点纯净库与双音轨时间戳）
+    print("Processing 徐涛 26 天 (xutao16) with pristine 608 points and authentic dual timestamps...")
     processed_xt16 = []
-    xt_final_path = r"D:\AI_file\背诵手册\xutao_16days_final.json"
+    xt_final_path = r"D:\AI_file\背诵手册\xutao_26days_final.json"
     if os.path.exists(xt_final_path):
         with open(xt_final_path, "r", encoding="utf-8") as f:
             final_xt_days = json.load(f)

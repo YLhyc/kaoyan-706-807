@@ -1103,7 +1103,7 @@
         ...(window.KAOYAN_POL_DATA.tuijie11 || [])
       ];
     }
-    const polTotal = polItems.length || 74;
+    const polTotal = polItems.length || 84;
     const mPol = polItems.length
       ? polItems.filter(x => getMasteryStatus(x.id) === 'mastered').length
       : Object.keys(state.masteryState).filter(k => (k.startsWith('ch_') || k.startsWith('pol_')) && state.masteryState[k] === 'mastered').length;
@@ -1410,7 +1410,7 @@
         const isRecite47 = state.polSubMode === 'recite47';
         const isXt = state.polSubMode === 'xutao16';
         const subCount = (item.track2 && item.track2.subCards) ? item.track2.subCards.length : 0;
-        const tagText = isRecite47 ? (item.importance || '必背') : (isXt ? '16天带背' : '冲刺背诵');
+        const tagText = isRecite47 ? (item.importance || '必背') : (isXt ? '26天带背' : '冲刺背诵');
         const scoreText = isRecite47 ? (item.chapterNum || `第${idx+1}章`) : `Day ${item.day}`;
         const descText = isRecite47 ? `${item.categoryName || '考研政治'} · ${subCount}微考点` : (isXt ? `${item.points ? item.points.length : 0}个核心题眼` : '考前冲刺必背');
 
@@ -2078,7 +2078,7 @@
       }
       selectItem(picked.id, true);
     }
-    showToast(`已为你抽查【${picked.level || picked.importance || (picked.polMode === 'xutao16' ? '徐涛16天' : '腿姐11天') || '必背'}】${picked.title}，立即开始磨耳背诵！`, 3000);
+    showToast(`已为你抽查【${picked.level || picked.importance || (picked.polMode === 'xutao16' ? '徐涛26天' : '腿姐11天') || '必背'}】${picked.title}，立即开始磨耳背诵！`, 3000);
   }
 
   // 权威时间戳净化引擎：严格确保递增、数值合法、0-based连续idx，且每句 end 决不越过下句 start
@@ -3645,7 +3645,7 @@
         if (state.polSubMode === 'recite47') {
           el.drawerTrackBadge.textContent = isT1 ? '47章 · 原书背诵版' : '47章 · 微考点伴读';
         } else if (state.polSubMode === 'xutao16') {
-          el.drawerTrackBadge.textContent = state.polXtVoice === 'anlang' ? '徐涛16天 · AI干货' : '徐涛16天 · 原声带背';
+          el.drawerTrackBadge.textContent = state.polXtVoice === 'anlang' ? '徐涛26天 · AI干货' : '徐涛26天 · 原声带背';
         } else {
           el.drawerTrackBadge.textContent = '腿姐11天 · 冲刺讲义';
         }
@@ -5388,7 +5388,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.2.8';
+  const APP_BUILD_ID = '3.2.9';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -5579,7 +5579,7 @@
         if (banner) banner.style.display = 'none';
         if (badge) badge.classList.remove('has-update');
         if (versionText) {
-          versionText.textContent = `已是最新版 v${APP_BUILD_ID} · 162节全科真题`;
+          versionText.textContent = `已是最新版 v${APP_BUILD_ID} · 172节全科真题`;
         }
         if (isManual) {
           showToast(`当前已是最新版本 v${APP_BUILD_ID}`, 2000);
@@ -5906,7 +5906,7 @@
       el.stageTier.textContent = item.importance || '必背';
       el.stageTier.className = 'tier-badge tier-T0';
     } else if (state.polSubMode === 'xutao16') {
-      el.stageTopic.textContent = '徐涛16天选择题带背';
+      el.stageTopic.textContent = '徐涛26天选择题带背';
       el.stageScore.textContent = `Day ${item.day}`;
       el.stageTier.textContent = '题眼';
       el.stageTier.className = 'tier-badge tier-T1';

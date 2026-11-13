@@ -33890,7 +33890,7 @@ window.KAOYAN_POL_DATA = {
           "tag": "资本主义基本矛盾",
           "html": "资本主义的基本矛盾是<strong class=\"xt-keyword cloze\" data-cloze=\"生产资料资本主义私人占有和生产社会化\" data-ghost=\"生··料资本主义私人占有和生···化\">生产资料资本主义私人占有和生产社会化</strong>之间的矛盾。",
           "voice_start": 106.055,
-          "voice_end": 117.0,
+          "voice_end": 117,
           "anlang_start": 71.52,
           "anlang_end": 83.68
         },
@@ -35050,7 +35050,7 @@ window.KAOYAN_POL_DATA = {
           "tag": "道德核心",
           "html": "道德的核心问题是为什么人服务；社会主义道德的核心是<strong class=\"xt-keyword cloze\" data-cloze=\"为人民服务\" data-ghost=\"为····\">为人民服务</strong>。",
           "voice_start": 121.325,
-          "voice_end": 130.0,
+          "voice_end": 130,
           "anlang_start": 96.09,
           "anlang_end": 102.97
         },
@@ -36685,6 +36685,2506 @@ window.KAOYAN_POL_DATA = {
           "voice_end": 340.05,
           "anlang_start": 200.4,
           "anlang_end": 209.84
+        }
+      ]
+    },
+    {
+      "id": "pol_xt_d17",
+      "day": 17,
+      "title": "Day 17 史纲篇-史纲6",
+      "subtitle": "七届二中全会“两个务必”、新中国成立、外交方针、“三反”“五反”与过渡时期总路线",
+      "subject": "史纲",
+      "duration_sec": 249,
+      "anlang_audio": "audio_xutao/xt_anlang_d17.mp3",
+      "voice_audio": "audio_xutao/xt_voice_d17.mp3",
+      "points": [
+        {
+          "id": "pol_xt_d17_p01",
+          "num": 1,
+          "tag": "两个务必",
+          "html": "“两个务必”是指务必使同志们继续地保持谦虚、谨慎、不骄、不躁的作风，务必使同志们继续地保持艰苦奋斗的作风，提出于<strong class=\"xt-keyword cloze\" data-cloze=\"中共七届二中全会\" data-ghost=\"中····全会\">中共七届二中全会</strong>。",
+          "voice_start": 16.87,
+          "voice_end": 37.46,
+          "anlang_start": 0.08,
+          "anlang_end": 12.72
+        },
+        {
+          "id": "pol_xt_d17_p02",
+          "num": 2,
+          "tag": "建国奠基文件",
+          "html": "为中华人民共和国奠基的三个历史性文件：《中国人民政治协商会议组织法》《中华人民共和国中央人民政府组织法》和<strong class=\"xt-keyword cloze\" data-cloze=\"《中国人民政治协商会议共同纲领》\" data-ghost=\"《中······共同纲领》\">《中国人民政治协商会议共同纲领》</strong>。",
+          "voice_start": 37.46,
+          "voice_end": 51.58,
+          "anlang_start": 13.01,
+          "anlang_end": 24.53
+        },
+        {
+          "id": "pol_xt_d17_p03",
+          "num": 3,
+          "tag": "新型政党制度",
+          "html": "中国新型政党制度（中国共产党领导的多党合作和政治协商制度）确立的标志是<strong class=\"xt-keyword cloze\" data-cloze=\"1949年中国人民政治协商会议的召开\" data-ghost=\"1949年中······的召开\">1949年中国人民政治协商会议的召开</strong>。",
+          "voice_start": 51.58,
+          "voice_end": 64.76,
+          "anlang_start": 24.82,
+          "anlang_end": 34.66
+        },
+        {
+          "id": "pol_xt_d17_p04",
+          "num": 4,
+          "tag": "重庆谈判",
+          "html": "重庆谈判的结果是国共双方签署<strong class=\"xt-keyword cloze\" data-cloze=\"“双十协定”，确认和平建国的基本方针\" data-ghost=\"“双···”，确····基本方针\">“双十协定”，确认和平建国的基本方针</strong>，同意长期合作，坚决避免内战。",
+          "voice_start": 64.76,
+          "voice_end": 75.62,
+          "anlang_start": 35.03,
+          "anlang_end": 44.31
+        },
+        {
+          "id": "pol_xt_d17_p05",
+          "num": 5,
+          "tag": "《对时局的意见》",
+          "html": "《对时局的意见》标志着中国各民主党派和无党派民主人士<strong class=\"xt-keyword cloze\" data-cloze=\"公开、自愿地接受了中国共产党的领导\" data-ghost=\"公·、自······的领导\">公开、自愿地接受了中国共产党的领导</strong>，决心走人民革命的道路，拥护建立人民民主的新中国。",
+          "voice_start": 75.62,
+          "voice_end": 90.47,
+          "anlang_start": 44.68,
+          "anlang_end": 57.16
+        },
+        {
+          "id": "pol_xt_d17_p06",
+          "num": 6,
+          "tag": "民主党派地位",
+          "html": "民主党派的地位发生根本变化：不再是旧中国反动政权下的在野党，而是<strong class=\"xt-keyword cloze\" data-cloze=\"接受中国共产党领导、共同担负起管理国家和建设新中国历史任务的参政党\" data-ghost=\"接······、共······的参政党\">接受中国共产党领导、共同担负起管理国家和建设新中国历史任务的参政党</strong>。",
+          "voice_start": 90.47,
+          "voice_end": 110.8,
+          "anlang_start": 57.53,
+          "anlang_end": 66.81
+        },
+        {
+          "id": "pol_xt_d17_p07",
+          "num": 7,
+          "tag": "第三条道路",
+          "html": "“第三条道路”指的是资产阶级共和国道路，其实质是<strong class=\"xt-keyword cloze\" data-cloze=\"旧民主主义革命的道路\" data-ghost=\"旧······道路\">旧民主主义革命的道路</strong>。",
+          "voice_start": 110.8,
+          "voice_end": 119.04,
+          "anlang_start": 67.1,
+          "anlang_end": 73.58
+        },
+        {
+          "id": "pol_xt_d17_p08",
+          "num": 8,
+          "tag": "革命胜利原因",
+          "html": "中国革命胜利的原因，从根本上说是由于有了中国工人阶级的先锋队——<strong class=\"xt-keyword cloze\" data-cloze=\"中国共产党的领导\" data-ghost=\"中····领导\">中国共产党的领导</strong>。",
+          "voice_start": 119.04,
+          "voice_end": 127.74,
+          "anlang_start": 73.87,
+          "anlang_end": 81.15
+        },
+        {
+          "id": "pol_xt_d17_p09",
+          "num": 9,
+          "tag": "新中国成立意义",
+          "html": "中华人民共和国的成立彻底结束了旧中国半殖民地半封建社会历史、极少数剥削者统治广大劳动人民历史、旧中国一盘散沙局面，彻底废除了列强不平等条约与在华一切特权，实现了中国<strong class=\"xt-keyword cloze\" data-cloze=\"从几千年封建专制政治向人民民主的伟大飞跃\" data-ghost=\"从······向人民民主的伟大飞跃\">从几千年封建专制政治向人民民主的伟大飞跃</strong>。",
+          "voice_start": 127.74,
+          "voice_end": 153.51,
+          "anlang_start": 81.44,
+          "anlang_end": 99.76
+        },
+        {
+          "id": "pol_xt_d17_p10",
+          "num": 10,
+          "tag": "社会性质转变",
+          "html": "中华人民共和国的成立，标志着半殖民地半封建社会的结束和<strong class=\"xt-keyword cloze\" data-cloze=\"新民主主义社会在全国范围内的确立\" data-ghost=\"新·······范围内的确立\">新民主主义社会在全国范围内的确立</strong>。",
+          "voice_start": 153.51,
+          "voice_end": 162.34,
+          "anlang_start": 100.05,
+          "anlang_end": 108.53
+        },
+        {
+          "id": "pol_xt_d17_p11",
+          "num": 11,
+          "tag": "革命阶段转变",
+          "html": "中华人民共和国的成立，标志着我国<strong class=\"xt-keyword cloze\" data-cloze=\"新民主主义革命阶段的基本结束和社会主义革命阶段的开始\" data-ghost=\"新·······结束和社······的开始\">新民主主义革命阶段的基本结束和社会主义革命阶段的开始</strong>。",
+          "voice_start": 162.38,
+          "voice_end": 171.69,
+          "anlang_start": 108.82,
+          "anlang_end": 116.42
+        },
+        {
+          "id": "pol_xt_d17_p12",
+          "num": 12,
+          "tag": "建国初期两任务",
+          "html": "新生共和国成立初期面临的两大历史任务：一是继续完成新民主主义革命的遗留任务、彻底解决中国人民同三大敌人的矛盾；二是动员人民努力<strong class=\"xt-keyword cloze\" data-cloze=\"医治战争创伤、恢复破败的国民经济\" data-ghost=\"医····、恢·····\">医治战争创伤、恢复破败的国民经济</strong>。",
+          "voice_start": 171.69,
+          "voice_end": 189.24,
+          "anlang_start": 116.71,
+          "anlang_end": 131.59
+        },
+        {
+          "id": "pol_xt_d17_p13",
+          "num": 13,
+          "tag": "1950土改政策",
+          "html": "1950年至1953年《中华人民共和国土地改革法》对待富农的政策是<strong class=\"xt-keyword cloze\" data-cloze=\"保存富农经济\" data-ghost=\"保··农经济\">保存富农经济</strong>。",
+          "voice_start": 189.3,
+          "voice_end": 197.99,
+          "anlang_start": 131.88,
+          "anlang_end": 139.64
+        },
+        {
+          "id": "pol_xt_d17_p14",
+          "num": 14,
+          "tag": "七届三中全会任务",
+          "html": "中共七届三中全会提出的当时党和全国人民的中心任务是在三年左右的时间内<strong class=\"xt-keyword cloze\" data-cloze=\"争取国家财政经济状况的基本好转\" data-ghost=\"争·······状况的基本好转\">争取国家财政经济状况的基本好转</strong>。",
+          "voice_start": 197.99,
+          "voice_end": 209.74,
+          "anlang_start": 140.01,
+          "anlang_end": 150.09
+        },
+        {
+          "id": "pol_xt_d17_p15",
+          "num": 15,
+          "tag": "建国初期策略方针",
+          "html": "中共七届三中全会制定的党在中华人民共和国成立初期的战略策略方针是<strong class=\"xt-keyword cloze\" data-cloze=\"不要四面出击\" data-ghost=\"不··面出击\">不要四面出击</strong>。",
+          "voice_start": 209.74,
+          "voice_end": 219.4,
+          "anlang_start": 150.38,
+          "anlang_end": 158.06
+        },
+        {
+          "id": "pol_xt_d17_p16",
+          "num": 16,
+          "tag": "新中国外交方针",
+          "html": "为巩固民族独立、维护国家主权和安全，以毛泽东为主要代表的中国共产党人提出了<strong class=\"xt-keyword cloze\" data-cloze=\"“另起炉灶”、“打扫干净屋子再请客”和“一边倒”\" data-ghost=\"“另···”、“打······再请客”和“一··”\">“另起炉灶”、“打扫干净屋子再请客”和“一边倒”</strong>的外交方针。",
+          "voice_start": 219.4,
+          "voice_end": 232.02,
+          "anlang_start": 158.43,
+          "anlang_end": 171.23
+        },
+        {
+          "id": "pol_xt_d17_p17",
+          "num": 17,
+          "tag": "站起来的宣言书",
+          "html": "成为中国人民站起来后屹立于世界东方的宣言书的事件是<strong class=\"xt-keyword cloze\" data-cloze=\"抗美援朝战争的伟大胜利\" data-ghost=\"抗····的伟大胜利\">抗美援朝战争的伟大胜利</strong>。",
+          "voice_start": 232.02,
+          "voice_end": 240.15,
+          "anlang_start": 171.6,
+          "anlang_end": 179.04
+        },
+        {
+          "id": "pol_xt_d17_p18",
+          "num": 18,
+          "tag": "三反运动内容",
+          "html": "1951年至1952年的“三反”运动是在党政军机关中开展的以<strong class=\"xt-keyword cloze\" data-cloze=\"反贪污、反浪费、反官僚主义\" data-ghost=\"反··、反··、反····\">反贪污、反浪费、反官僚主义</strong>为核心的大规模群众性政治运动。",
+          "voice_start": 240.15,
+          "voice_end": 252.56,
+          "anlang_start": 179.33,
+          "anlang_end": 189.81
+        },
+        {
+          "id": "pol_xt_d17_p19",
+          "num": 19,
+          "tag": "五反运动内容",
+          "html": "1952年的“五反”运动是在全国大中城市开展的打击不法资本家<strong class=\"xt-keyword cloze\" data-cloze=\"行贿、偷税漏税、盗窃国家财产、偷工减料、盗窃经济情报\" data-ghost=\"行·、偷···、盗····、偷···、盗····\">行贿、偷税漏税、盗窃国家财产、偷工减料、盗窃经济情报</strong>等不法行为的大规模群众性政治运动。",
+          "voice_start": 252.7,
+          "voice_end": 270.61,
+          "anlang_start": 190.18,
+          "anlang_end": 203.54
+        },
+        {
+          "id": "pol_xt_d17_p20",
+          "num": 20,
+          "tag": "官僚资本性质",
+          "html": "没收官僚资本具有两重性质，即<strong class=\"xt-keyword cloze\" data-cloze=\"民主革命的性质和社会主义革命的性质\" data-ghost=\"民···性质和社····性质\">民主革命的性质和社会主义革命的性质</strong>。",
+          "voice_start": 270.61,
+          "voice_end": 277.68,
+          "anlang_start": 203.83,
+          "anlang_end": 209.91
+        },
+        {
+          "id": "pol_xt_d17_p21",
+          "num": 21,
+          "tag": "引导个体农民",
+          "html": "我们党积极引导个体农民在土改后逐步走上<strong class=\"xt-keyword cloze\" data-cloze=\"互助合作的道路\" data-ghost=\"互···的道路\">互助合作的道路</strong>。",
+          "voice_start": 277.68,
+          "voice_end": 284.58,
+          "anlang_start": 210.2,
+          "anlang_end": 215.4
+        },
+        {
+          "id": "pol_xt_d17_p22",
+          "num": 22,
+          "tag": "过渡时期总路线",
+          "html": "党在过渡时期的总路线是“<strong class=\"xt-keyword cloze\" data-cloze=\"一化三改\" data-ghost=\"一·三改\">一化三改</strong>”。",
+          "voice_start": 284.58,
+          "voice_end": 288.87,
+          "anlang_start": 215.69,
+          "anlang_end": 219.77
+        },
+        {
+          "id": "pol_xt_d17_p23",
+          "num": 23,
+          "tag": "过渡总路线依据",
+          "html": "党提出过渡时期总路线的依据：一方面，随着民主革命遗留任务完成，<strong class=\"xt-keyword cloze\" data-cloze=\"国内阶级关系和主要矛盾发生深刻变化\" data-ghost=\"国····和主要矛盾发生··变化\">国内阶级关系和主要矛盾发生深刻变化</strong>；另一方面，随着国民经济恢复和初步发展，中国社会的经济成分发生重要变化。",
+          "voice_start": 288.87,
+          "voice_end": 308.76,
+          "anlang_start": 220.14,
+          "anlang_end": 233.9
+        },
+        {
+          "id": "pol_xt_d17_p24",
+          "num": 24,
+          "tag": "改造必要性与条件",
+          "html": "社会主义改造的必要性和条件：国营经济力量相对强大；资本主义经济弱小不可能成为工业起飞的基础；<strong class=\"xt-keyword cloze\" data-cloze=\"对个体农业进行社会主义改造是实现国家工业化的必要条件\" data-ghost=\"对······社会主义改造是····的必要条件\">对个体农业进行社会主义改造是实现国家工业化的必要条件</strong>；国际环境促使中国选择社会主义。",
+          "voice_start": 308.76,
+          "voice_end": 334.74,
+          "anlang_start": 234.19,
+          "anlang_end": 249.47
+        }
+      ]
+    },
+    {
+      "id": "pol_xt_d18",
+      "day": 18,
+      "title": "Day 18 史纲篇-史纲7",
+      "subtitle": "一五计划、三大改造步骤与“四马分肥”、全面建设探索、《解放思想》与南方谈话",
+      "subject": "史纲",
+      "duration_sec": 229,
+      "anlang_audio": "audio_xutao/xt_anlang_d18.mp3",
+      "voice_audio": "audio_xutao/xt_voice_d18.mp3",
+      "points": [
+        {
+          "id": "pol_xt_d18_p01",
+          "num": 1,
+          "tag": "工业化目的",
+          "html": "社会主义工业化的目的是<strong class=\"xt-keyword cloze\" data-cloze=\"使中国富强\" data-ghost=\"使··富强\">使中国富强</strong>。",
+          "voice_start": 28.82,
+          "voice_end": 33.21,
+          "anlang_start": 0.08,
+          "anlang_end": 3.36
+        },
+        {
+          "id": "pol_xt_d18_p02",
+          "num": 2,
+          "tag": "改造目的",
+          "html": "社会主义改造的目的是消灭资本家和私有制，<strong class=\"xt-keyword cloze\" data-cloze=\"建立社会主义制度，使工业化沿着社会主义方向进行\" data-ghost=\"建······，使工业化······进行\">建立社会主义制度，使工业化沿着社会主义方向进行</strong>。",
+          "voice_start": 33.21,
+          "voice_end": 44.2,
+          "anlang_start": 3.73,
+          "anlang_end": 12.61
+        },
+        {
+          "id": "pol_xt_d18_p03",
+          "num": 3,
+          "tag": "一五期间成就",
+          "html": "“一五”期间工业化主要成就：<strong class=\"xt-keyword cloze\" data-cloze=\"鞍山、包头、武汉三大钢铁基地\" data-ghost=\"鞍·、包·、武····基地\">鞍山、包头、武汉三大钢铁基地</strong>建设取得重大进展；武汉长江大桥通车；青藏、康藏、新藏公路建成通车。",
+          "voice_start": 44.2,
+          "voice_end": 58.2,
+          "anlang_start": 12.98,
+          "anlang_end": 25.94
+        },
+        {
+          "id": "pol_xt_d18_p04",
+          "num": 4,
+          "tag": "农业改造步骤",
+          "html": "农业社会主义改造的三个步骤：互助组（社会主义萌芽性质）→ <strong class=\"xt-keyword cloze\" data-cloze=\"初级农业生产合作社（半社会主义性质）\" data-ghost=\"初·······（半······）\">初级农业生产合作社（半社会主义性质）</strong>→ 高级农业生产合作社（完全社会主义性质）。",
+          "voice_start": 58.2,
+          "voice_end": 78.21,
+          "anlang_start": 26.31,
+          "anlang_end": 39.19
+        },
+        {
+          "id": "pol_xt_d18_p05",
+          "num": 5,
+          "tag": "农业改造道路",
+          "html": "农业社会主义改造的道路是<strong class=\"xt-keyword cloze\" data-cloze=\"互助合作\" data-ghost=\"互··作\">互助合作</strong>（或合作化）。",
+          "voice_start": 78.21,
+          "voice_end": 84.46,
+          "anlang_start": 39.32,
+          "anlang_end": 43.48
+        },
+        {
+          "id": "pol_xt_d18_p06",
+          "num": 6,
+          "tag": "农业合作化方针",
+          "html": "农业合作化的方针是<strong class=\"xt-keyword cloze\" data-cloze=\"积极领导，稳步前进\" data-ghost=\"积···，稳···\">积极领导，稳步前进</strong>。",
+          "voice_start": 84.46,
+          "voice_end": 89.11,
+          "anlang_start": 43.77,
+          "anlang_end": 47.93
+        },
+        {
+          "id": "pol_xt_d18_p07",
+          "num": 7,
+          "tag": "农业合作化原则",
+          "html": "农业合作化的原则是<strong class=\"xt-keyword cloze\" data-cloze=\"自愿互利、典型示范、国家帮助\" data-ghost=\"自···、典···、国···\">自愿互利、典型示范、国家帮助</strong>。",
+          "voice_start": 89.11,
+          "voice_end": 94.72,
+          "anlang_start": 48.3,
+          "anlang_end": 53.5
+        },
+        {
+          "id": "pol_xt_d18_p08",
+          "num": 8,
+          "tag": "农业合作化方法",
+          "html": "农业合作化的方法是<strong class=\"xt-keyword cloze\" data-cloze=\"说服教育、典型示范、逐步推广\" data-ghost=\"说···、典···、逐···\">说服教育、典型示范、逐步推广</strong>、国家帮助。",
+          "voice_start": 94.72,
+          "voice_end": 101.3,
+          "anlang_start": 53.79,
+          "anlang_end": 59.23
+        },
+        {
+          "id": "pol_xt_d18_p09",
+          "num": 9,
+          "tag": "合作社评判标准",
+          "html": "农业合作化是否办好的标准是<strong class=\"xt-keyword cloze\" data-cloze=\"是否增产\" data-ghost=\"是··产\">是否增产</strong>。",
+          "voice_start": 101.3,
+          "voice_end": 105.93,
+          "anlang_start": 59.6,
+          "anlang_end": 63.92
+        },
+        {
+          "id": "pol_xt_d18_p10",
+          "num": 10,
+          "tag": "合作化与机械化",
+          "html": "合作化与机械化的先后关系是<strong class=\"xt-keyword cloze\" data-cloze=\"先完成农业合作化，再实现农业机械化\" data-ghost=\"先······，再······\">先完成农业合作化，再实现农业机械化</strong>。",
+          "voice_start": 105.93,
+          "voice_end": 122.98,
+          "anlang_start": 64.29,
+          "anlang_end": 70.85
+        },
+        {
+          "id": "pol_xt_d18_p11",
+          "num": 11,
+          "tag": "手工业改造步骤",
+          "html": "手工业社会主义改造三步骤：手工业生产合作小组（社会主义萌芽性质）→ <strong class=\"xt-keyword cloze\" data-cloze=\"手工业供销合作社（半社会主义性质）\" data-ghost=\"手······（半······）\">手工业供销合作社（半社会主义性质）</strong>→ 手工业生产合作社（完全社会主义性质）。",
+          "voice_start": 122.98,
+          "voice_end": 142.92,
+          "anlang_start": 71.14,
+          "anlang_end": 86.9
+        },
+        {
+          "id": "pol_xt_d18_p12",
+          "num": 12,
+          "tag": "手工业改造方针",
+          "html": "手工业社会主义改造的方针是<strong class=\"xt-keyword cloze\" data-cloze=\"积极领导，稳步前进\" data-ghost=\"积···，稳···\">积极领导，稳步前进</strong>。",
+          "voice_start": 142.92,
+          "voice_end": 147.2,
+          "anlang_start": 87.19,
+          "anlang_end": 91.11
+        },
+        {
+          "id": "pol_xt_d18_p13",
+          "num": 13,
+          "tag": "工商业改造方法",
+          "html": "资本主义工商业社会主义改造采取的方法是<strong class=\"xt-keyword cloze\" data-cloze=\"和平赎买\" data-ghost=\"和··买\">和平赎买</strong>。",
+          "voice_start": 147.2,
+          "voice_end": 152.84,
+          "anlang_start": 91.48,
+          "anlang_end": 96.68
+        },
+        {
+          "id": "pol_xt_d18_p14",
+          "num": 14,
+          "tag": "工商业改造形式",
+          "html": "资本主义工商业社会主义改造采取的形式是<strong class=\"xt-keyword cloze\" data-cloze=\"国家资本主义\" data-ghost=\"国·····\">国家资本主义</strong>。",
+          "voice_start": 152.84,
+          "voice_end": 158.48,
+          "anlang_start": 96.97,
+          "anlang_end": 102.57
+        },
+        {
+          "id": "pol_xt_d18_p15",
+          "num": 15,
+          "tag": "资产阶级两面性",
+          "html": "民族资产阶级在社会主义革命阶段的两面性：既有<strong class=\"xt-keyword cloze\" data-cloze=\"剥削工人取得利润的一面，又有拥护共产党领导\" data-ghost=\"剥······的一面，又有······\">剥削工人取得利润的一面，又有拥护共产党领导</strong>、拥护宪法、愿意接受社会主义改造的一面。",
+          "voice_start": 158.48,
+          "voice_end": 173.36,
+          "anlang_start": 102.86,
+          "anlang_end": 115.74
+        },
+        {
+          "id": "pol_xt_d18_p16",
+          "num": 16,
+          "tag": "工商业改造步骤",
+          "html": "资本主义工商业社会主义改造经历的步骤是<strong class=\"xt-keyword cloze\" data-cloze=\"由初级形式的国家资本主义到高级形式的国家资本主义\" data-ghost=\"由······到高······\">由初级形式的国家资本主义到高级形式的国家资本主义</strong>。",
+          "voice_start": 173.42,
+          "voice_end": 184.22,
+          "anlang_start": 116.03,
+          "anlang_end": 124.99
+        },
+        {
+          "id": "pol_xt_d18_p17",
+          "num": 17,
+          "tag": "四马分肥范围",
+          "html": "企业利润分配方式“四马分肥”适用于初级形式国家资本主义和个别企业公私合营；发展到<strong class=\"xt-keyword cloze\" data-cloze=\"全行业公私合营时改行定息，不再实行“四马分肥”\" data-ghost=\"全······时改行··，不·······\">全行业公私合营时改行定息，不再实行“四马分肥”</strong>。",
+          "voice_start": 184.22,
+          "voice_end": 218.38,
+          "anlang_start": 125.12,
+          "anlang_end": 137.52
+        },
+        {
+          "id": "pol_xt_d18_p18",
+          "num": 18,
+          "tag": "对待资产阶级政策",
+          "html": "对待资产阶级的三大政策：用赎买和国家资本主义方法有偿地、逐步地改变资产阶级所有制；在改造同时给予必要的工作安排；<strong class=\"xt-keyword cloze\" data-cloze=\"不剥夺资产阶级的选举权\" data-ghost=\"不······选举权\">不剥夺资产阶级的选举权</strong>，并对贡献代表人物给予恰当的政治安排。",
+          "voice_start": 218.38,
+          "voice_end": 250.18,
+          "anlang_start": 137.65,
+          "anlang_end": 152.61
+        },
+        {
+          "id": "pol_xt_d18_p19",
+          "num": 19,
+          "tag": "全面建设两问题",
+          "html": "全面建设社会主义开始后中国主要面临两大问题：<strong class=\"xt-keyword cloze\" data-cloze=\"社会主义条件下的阶级斗争问题、社会主义建设中的规模和速度问题\" data-ghost=\"社······阶级斗争问题、社······规模和速度问题\">社会主义条件下的阶级斗争问题、社会主义建设中的规模和速度问题</strong>。",
+          "voice_start": 250.18,
+          "voice_end": 263.58,
+          "anlang_start": 152.98,
+          "anlang_end": 163.62
+        },
+        {
+          "id": "pol_xt_d18_p20",
+          "num": 20,
+          "tag": "1957整风运动",
+          "html": "1957年4月中共中央下发《关于整风运动的指示》，全党整风运动的主要内容是<strong class=\"xt-keyword cloze\" data-cloze=\"反对官僚主义、宗派主义和主观主义\" data-ghost=\"反····、宗···和主···\">反对官僚主义、宗派主义和主观主义</strong>。",
+          "voice_start": 263.58,
+          "voice_end": 276,
+          "anlang_start": 163.99,
+          "anlang_end": 172.87
+        },
+        {
+          "id": "pol_xt_d18_p21",
+          "num": 21,
+          "tag": "20年建设成就",
+          "html": "全面建设社会主义（1956—1976）五大成就：建立<strong class=\"xt-keyword cloze\" data-cloze=\"独立且比较完整的工业体系和国民经济体系\" data-ghost=\"独······工业体系和国民经济体系\">独立且比较完整的工业体系和国民经济体系</strong>；人民生活水平提高；科教文卫体事业普遍发展；形成历久弥新的时代精神；国际地位提高与国际环境改善。",
+          "voice_start": 276,
+          "voice_end": 306.39,
+          "anlang_start": 173.16,
+          "anlang_end": 191
+        },
+        {
+          "id": "pol_xt_d18_p22",
+          "num": 22,
+          "tag": "真理标准讨论实质",
+          "html": "真理标准问题的讨论是继延安整风运动之后又一场马克思主义思想解放运动，其实质在于<strong class=\"xt-keyword cloze\" data-cloze=\"是不是坚持马克思列宁主义、毛泽东思想\" data-ghost=\"是··持······\">是不是坚持马克思列宁主义、毛泽东思想</strong>。",
+          "voice_start": 306.39,
+          "voice_end": 319.22,
+          "anlang_start": 191.37,
+          "anlang_end": 201.69
+        },
+        {
+          "id": "pol_xt_d18_p23",
+          "num": 23,
+          "tag": "开辟新时期宣言书",
+          "html": "成为开辟新时期新道路、开创建设有中国特色社会主义理论宣言书的文章是<strong class=\"xt-keyword cloze\" data-cloze=\"《解放思想，实事求是，团结一致向前看》\" data-ghost=\"《解···，实···，团······》\">《解放思想，实事求是，团结一致向前看》</strong>。",
+          "voice_start": 319.22,
+          "voice_end": 331.46,
+          "anlang_start": 202.06,
+          "anlang_end": 213.18
+        },
+        {
+          "id": "pol_xt_d18_p24",
+          "num": 24,
+          "tag": "南方谈话内容",
+          "html": "邓小平南方谈话主要内容：<strong class=\"xt-keyword cloze\" data-cloze=\"计划和市场都是经济手段\" data-ghost=\"计··市··是经济手段\">计划和市场都是经济手段</strong>；阐明社会主义的本质；提出“发展才是硬道理”；提出“三个有利于”标准；强调加强党的建设；论述社会主义初级阶段长期性和前途。",
+          "voice_start": 331.46,
+          "voice_end": 361.21,
+          "anlang_start": 213.55,
+          "anlang_end": 229.39
+        }
+      ]
+    },
+    {
+      "id": "pol_xt_d19",
+      "day": 19,
+      "title": "Day 19 毛中特1-导论＋毛泽东思想",
+      "subtitle": "马克思主义中国化时代化、“两个结合”、毛泽东思想发展阶段与“活的灵魂”",
+      "subject": "毛中特",
+      "duration_sec": 175,
+      "anlang_audio": "audio_xutao/xt_anlang_d19.mp3",
+      "voice_audio": "audio_xutao/xt_voice_d19.mp3",
+      "points": [
+        {
+          "id": "pol_xt_d19_p01",
+          "num": 1,
+          "tag": "首次提出会议",
+          "html": "首先提出“马克思主义中国化”命题的会议是<strong class=\"xt-keyword cloze\" data-cloze=\"中共六届六中全会\" data-ghost=\"中··届··全会\">中共六届六中全会</strong>。",
+          "voice_start": 17.36,
+          "voice_end": 22.84,
+          "anlang_start": 0.08,
+          "anlang_end": 5.36
+        },
+        {
+          "id": "pol_xt_d19_p02",
+          "num": 2,
+          "tag": "首次提出报告",
+          "html": "最先提出“马克思主义中国化”命题的著作是<strong class=\"xt-keyword cloze\" data-cloze=\"《论新阶段》的政治报告\" data-ghost=\"《论···》的政治报告\">《论新阶段》的政治报告</strong>。",
+          "voice_start": 22.84,
+          "voice_end": 28.32,
+          "anlang_start": 5.65,
+          "anlang_end": 10.85
+        },
+        {
+          "id": "pol_xt_d19_p03",
+          "num": 3,
+          "tag": "中国化根本途径",
+          "html": "推进马克思主义中国化时代化的根本途径是“<strong class=\"xt-keyword cloze\" data-cloze=\"两个结合\" data-ghost=\"两·结合\">两个结合</strong>”。",
+          "voice_start": 28.32,
+          "voice_end": 33.36,
+          "anlang_start": 11.22,
+          "anlang_end": 15.94
+        },
+        {
+          "id": "pol_xt_d19_p04",
+          "num": 4,
+          "tag": "第一次历史性飞跃",
+          "html": "马克思主义中国化时代化第一次历史性飞跃的理论成果是<strong class=\"xt-keyword cloze\" data-cloze=\"毛泽东思想\" data-ghost=\"毛··思想\">毛泽东思想</strong>。",
+          "voice_start": 33.36,
+          "voice_end": 39.66,
+          "anlang_start": 16.31,
+          "anlang_end": 21.99
+        },
+        {
+          "id": "pol_xt_d19_p05",
+          "num": 5,
+          "tag": "第二次理论飞跃",
+          "html": "改革开放以后实现马克思主义中国化时代化第二次（新的）飞跃的成果是<strong class=\"xt-keyword cloze\" data-cloze=\"中国特色社会主义理论体系\" data-ghost=\"中·······理论体系\">中国特色社会主义理论体系</strong>。",
+          "voice_start": 39.66,
+          "voice_end": 49.74,
+          "anlang_start": 22.28,
+          "anlang_end": 30.12
+        },
+        {
+          "id": "pol_xt_d19_p06",
+          "num": 6,
+          "tag": "两个结合内涵",
+          "html": "“两个结合”指的是马克思主义必须同<strong class=\"xt-keyword cloze\" data-cloze=\"中国具体实际相结合、同中华优秀传统文化\" data-ghost=\"中·····相结合、同·······\">中国具体实际相结合、同中华优秀传统文化</strong>相结合。",
+          "voice_start": 49.74,
+          "voice_end": 58,
+          "anlang_start": 30.49,
+          "anlang_end": 38.33
+        },
+        {
+          "id": "pol_xt_d19_p07",
+          "num": 7,
+          "tag": "坚持马克思主义",
+          "html": "坚持马克思主义，最重要的是坚持马克思主义的基本原理和贯穿其中的<strong class=\"xt-keyword cloze\" data-cloze=\"立场、观点和方法\" data-ghost=\"立·、观··方法\">立场、观点和方法</strong>。",
+          "voice_start": 58,
+          "voice_end": 65.39,
+          "anlang_start": 38.62,
+          "anlang_end": 46.06
+        },
+        {
+          "id": "pol_xt_d19_p08",
+          "num": 8,
+          "tag": "新时代新飞跃",
+          "html": "党的十八大以来创立<strong class=\"xt-keyword cloze\" data-cloze=\"习近平新时代中国特色社会主义思想\" data-ghost=\"习············思想\">习近平新时代中国特色社会主义思想</strong>，实现了马克思主义中国化时代化新的飞跃。",
+          "voice_start": 65.39,
+          "voice_end": 76.1,
+          "anlang_start": 46.19,
+          "anlang_end": 56.59
+        },
+        {
+          "id": "pol_xt_d19_p09",
+          "num": 9,
+          "tag": "中国化科学内涵",
+          "html": "马克思主义中国化时代化的重要内涵之一，就是运用马克思主义的立场、观点和方法去观察时代、把握时代、引领时代，<strong class=\"xt-keyword cloze\" data-cloze=\"解决中国革命、建设、改革中的实际问题\" data-ghost=\"解····、建·、改····际问题\">解决中国革命、建设、改革中的实际问题</strong>。",
+          "voice_start": 76.1,
+          "voice_end": 101.76,
+          "anlang_start": 56.96,
+          "anlang_end": 66.08
+        },
+        {
+          "id": "pol_xt_d19_p10",
+          "num": 10,
+          "tag": "毛思想实践基础",
+          "html": "毛泽东思想形成和发展的实践基础是中国共产党<strong class=\"xt-keyword cloze\" data-cloze=\"领导人民进行革命和建设的成功实践\" data-ghost=\"领······和建设的成功实践\">领导人民进行革命和建设的成功实践</strong>。",
+          "voice_start": 101.76,
+          "voice_end": 109.81,
+          "anlang_start": 66.45,
+          "anlang_end": 73.89
+        },
+        {
+          "id": "pol_xt_d19_p11",
+          "num": 11,
+          "tag": "毛思想萌芽标志",
+          "html": "毛泽东思想开始萌芽的标志是毛泽东提出了<strong class=\"xt-keyword cloze\" data-cloze=\"新民主主义革命的基本思想\" data-ghost=\"新······基本思想\">新民主主义革命的基本思想</strong>。",
+          "voice_start": 109.81,
+          "voice_end": 116.38,
+          "anlang_start": 74.18,
+          "anlang_end": 80.42
+        },
+        {
+          "id": "pol_xt_d19_p12",
+          "num": 12,
+          "tag": "毛思想初步形成",
+          "html": "毛泽东思想初步形成的标志是土地革命战争时期<strong class=\"xt-keyword cloze\" data-cloze=\"农村包围城市、武装夺取政权\" data-ghost=\"农····、武····\">农村包围城市、武装夺取政权</strong>革命道路理论的初步形成。",
+          "voice_start": 116.38,
+          "voice_end": 126.12,
+          "anlang_start": 80.71,
+          "anlang_end": 90.15
+        },
+        {
+          "id": "pol_xt_d19_p13",
+          "num": 13,
+          "tag": "毛思想趋于成熟",
+          "html": "毛泽东思想趋于成熟的标志是遵义会议以后直至抗日战争时期，毛泽东<strong class=\"xt-keyword cloze\" data-cloze=\"系统阐述新民主主义革命理论\" data-ghost=\"系·······革命理论\">系统阐述新民主主义革命理论</strong>。",
+          "voice_start": 126.12,
+          "voice_end": 135.7,
+          "anlang_start": 90.44,
+          "anlang_end": 99.4
+        },
+        {
+          "id": "pol_xt_d19_p14",
+          "num": 14,
+          "tag": "毛思想继续发展",
+          "html": "解放战争时期和新中国成立以后形成社会主义革命和社会主义建设的重要思想，属于毛泽东思想<strong class=\"xt-keyword cloze\" data-cloze=\"继续发展\" data-ghost=\"继··展\">继续发展</strong>的阶段。",
+          "voice_start": 135.7,
+          "voice_end": 146.78,
+          "anlang_start": 99.69,
+          "anlang_end": 109.53
+        },
+        {
+          "id": "pol_xt_d19_p15",
+          "num": 15,
+          "tag": "活的灵魂会议",
+          "html": "“毛泽东思想活的灵魂”是在党的<strong class=\"xt-keyword cloze\" data-cloze=\"十一届六中全会\" data-ghost=\"十·届··全会\">十一届六中全会</strong>上提出的。",
+          "voice_start": 146.78,
+          "voice_end": 152.1,
+          "anlang_start": 109.82,
+          "anlang_end": 114.86
+        },
+        {
+          "id": "pol_xt_d19_p16",
+          "num": 16,
+          "tag": "活的灵魂文件",
+          "html": "“毛泽东思想活的灵魂”是在<strong class=\"xt-keyword cloze\" data-cloze=\"《关于建国以来党的若干历史问题的决议》\" data-ghost=\"《关······历史问题的决议》\">《关于建国以来党的若干历史问题的决议》</strong>中提出概括的。",
+          "voice_start": 152.1,
+          "voice_end": 170.54,
+          "anlang_start": 114.99,
+          "anlang_end": 121.31
+        },
+        {
+          "id": "pol_xt_d19_p17",
+          "num": 17,
+          "tag": "活的灵魂三方面",
+          "html": "毛泽东思想活的灵魂是<strong class=\"xt-keyword cloze\" data-cloze=\"实事求是、群众路线、独立自主\" data-ghost=\"实···、群···、独···\">实事求是、群众路线、独立自主</strong>。",
+          "voice_start": 170.54,
+          "voice_end": 175.15,
+          "anlang_start": 121.6,
+          "anlang_end": 127.12
+        },
+        {
+          "id": "pol_xt_d19_p18",
+          "num": 18,
+          "tag": "基本点与精髓",
+          "html": "毛泽东思想的基本点和精髓是<strong class=\"xt-keyword cloze\" data-cloze=\"实事求是\" data-ghost=\"实···\">实事求是</strong>。",
+          "voice_start": 175.15,
+          "voice_end": 178.8,
+          "anlang_start": 127.41,
+          "anlang_end": 131.73
+        },
+        {
+          "id": "pol_xt_d19_p19",
+          "num": 19,
+          "tag": "党的思想路线",
+          "html": "中国共产党人认识世界、改造世界的根本要求和党的思想路线是<strong class=\"xt-keyword cloze\" data-cloze=\"实事求是\" data-ghost=\"实···\">实事求是</strong>。",
+          "voice_start": 178.8,
+          "voice_end": 187.13,
+          "anlang_start": 132.1,
+          "anlang_end": 139.62
+        },
+        {
+          "id": "pol_xt_d19_p20",
+          "num": 20,
+          "tag": "思想路线确立",
+          "html": "实事求是的思想路线在全党得到确立的标志是<strong class=\"xt-keyword cloze\" data-cloze=\"延安整风运动和党的七大\" data-ghost=\"延·····和党的七大\">延安整风运动和党的七大</strong>。",
+          "voice_start": 187.13,
+          "voice_end": 194.3,
+          "anlang_start": 139.99,
+          "anlang_end": 146.55
+        },
+        {
+          "id": "pol_xt_d19_p21",
+          "num": 21,
+          "tag": "党的生命线",
+          "html": "党的生命线和根本工作路线是<strong class=\"xt-keyword cloze\" data-cloze=\"群众路线\" data-ghost=\"群··线\">群众路线</strong>。",
+          "voice_start": 194.3,
+          "voice_end": 198.92,
+          "anlang_start": 146.84,
+          "anlang_end": 151
+        },
+        {
+          "id": "pol_xt_d19_p22",
+          "num": 22,
+          "tag": "贯彻群众路线途径",
+          "html": "贯彻群众路线的有效途径是<strong class=\"xt-keyword cloze\" data-cloze=\"调查研究\" data-ghost=\"调··究\">调查研究</strong>。",
+          "voice_start": 198.92,
+          "voice_end": 203.32,
+          "anlang_start": 151.37,
+          "anlang_end": 155.61
+        },
+        {
+          "id": "pol_xt_d19_p23",
+          "num": 23,
+          "tag": "群众路线哲学基础",
+          "html": "群众路线的哲学基础是<strong class=\"xt-keyword cloze\" data-cloze=\"人民群众创造历史的原理\" data-ghost=\"人····历史的··\">人民群众创造历史的原理</strong>。",
+          "voice_start": 203.32,
+          "voice_end": 208.46,
+          "anlang_start": 155.98,
+          "anlang_end": 160.94
+        },
+        {
+          "id": "pol_xt_d19_p24",
+          "num": 24,
+          "tag": "独立自主最初出处",
+          "html": "独立自主思想最初明确的表述是毛泽东在<strong class=\"xt-keyword cloze\" data-cloze=\"《反对本本主义》\" data-ghost=\"《反··本··》\">《反对本本主义》</strong>中提出的。",
+          "voice_start": 208.46,
+          "voice_end": 215.1,
+          "anlang_start": 161.23,
+          "anlang_end": 167.23
+        },
+        {
+          "id": "pol_xt_d19_p25",
+          "num": 25,
+          "tag": "独立自主地位",
+          "html": "党的根本原则、党全部理论和实践的立足点以及中华民族的精神之魂是<strong class=\"xt-keyword cloze\" data-cloze=\"独立自主\" data-ghost=\"独··主\">独立自主</strong>。",
+          "voice_start": 215.1,
+          "voice_end": 222.59,
+          "anlang_start": 167.6,
+          "anlang_end": 175.52
+        }
+      ]
+    },
+    {
+      "id": "pol_xt_d20",
+      "day": 20,
+      "title": "Day 20 毛中特2-新民主主义革命+社会主义改造",
+      "subtitle": "近代国情与矛盾、新民主主义革命总路线与“五大问题”、三大法宝与社会主义改造",
+      "subject": "毛中特",
+      "duration_sec": 150,
+      "anlang_audio": "audio_xutao/xt_anlang_d20.mp3",
+      "voice_audio": "audio_xutao/xt_voice_d20.mp3",
+      "points": [
+        {
+          "id": "pol_xt_d20_p01",
+          "num": 1,
+          "tag": "近代基本国情",
+          "html": "近代中国最基本的国情是<strong class=\"xt-keyword cloze\" data-cloze=\"半殖民地半封建社会\" data-ghost=\"半····半···社会\">半殖民地半封建社会</strong>。",
+          "voice_start": 18.99,
+          "voice_end": 23.68,
+          "anlang_start": 0.08,
+          "anlang_end": 4.4
+        },
+        {
+          "id": "pol_xt_d20_p02",
+          "num": 2,
+          "tag": "近代主要矛盾",
+          "html": "近代中国占支配地位的主要矛盾是<strong class=\"xt-keyword cloze\" data-cloze=\"帝国主义和中华民族的矛盾、封建主义和人民大众的矛盾\" data-ghost=\"帝·······的矛盾、封·······的矛盾\">帝国主义和中华民族的矛盾、封建主义和人民大众的矛盾</strong>。",
+          "voice_start": 23.68,
+          "voice_end": 32.47,
+          "anlang_start": 4.77,
+          "anlang_end": 13.01
+        },
+        {
+          "id": "pol_xt_d20_p03",
+          "num": 3,
+          "tag": "最主要的矛盾",
+          "html": "近代中国各种矛盾中最主要的矛盾是<strong class=\"xt-keyword cloze\" data-cloze=\"帝国主义和中华民族的矛盾\" data-ghost=\"帝······中华民族的··\">帝国主义和中华民族的矛盾</strong>。",
+          "voice_start": 32.47,
+          "voice_end": 42.89,
+          "anlang_start": 13.3,
+          "anlang_end": 19.54
+        },
+        {
+          "id": "pol_xt_d20_p04",
+          "num": 4,
+          "tag": "近代革命性质",
+          "html": "近代中国革命的性质是<strong class=\"xt-keyword cloze\" data-cloze=\"资产阶级民主革命\" data-ghost=\"资··级民主··\">资产阶级民主革命</strong>。",
+          "voice_start": 42.89,
+          "voice_end": 46.59,
+          "anlang_start": 19.83,
+          "anlang_end": 23.75
+        },
+        {
+          "id": "pol_xt_d20_p05",
+          "num": 5,
+          "tag": "总结总路线文章",
+          "html": "完整总结和概括新民主主义革命总路线的文章是毛泽东<strong class=\"xt-keyword cloze\" data-cloze=\"《在晋绥干部会议上的讲话》\" data-ghost=\"《在····会议上的讲话》\">《在晋绥干部会议上的讲话》</strong>。",
+          "voice_start": 46.59,
+          "voice_end": 54.62,
+          "anlang_start": 24.12,
+          "anlang_end": 31.24
+        },
+        {
+          "id": "pol_xt_d20_p06",
+          "num": 6,
+          "tag": "新民革命总路线",
+          "html": "新民主主义革命总路线是<strong class=\"xt-keyword cloze\" data-cloze=\"无产阶级领导的、人民大众的、反对帝国主义、封建主义和官僚资本主义\" data-ghost=\"无··级领导的、人····、反····、封···和官·····\">无产阶级领导的、人民大众的、反对帝国主义、封建主义和官僚资本主义</strong>的革命。",
+          "voice_start": 54.62,
+          "voice_end": 63.27,
+          "anlang_start": 31.53,
+          "anlang_end": 40.89
+        },
+        {
+          "id": "pol_xt_d20_p07",
+          "num": 7,
+          "tag": "灾难祸害总根源",
+          "html": "近代中国贫穷落后和一切灾难祸害的总根源是<strong class=\"xt-keyword cloze\" data-cloze=\"帝国主义\" data-ghost=\"帝··义\">帝国主义</strong>。",
+          "voice_start": 63.27,
+          "voice_end": 69.12,
+          "anlang_start": 41.18,
+          "anlang_end": 46.3
+        },
+        {
+          "id": "pol_xt_d20_p08",
+          "num": 8,
+          "tag": "革命最基本动力",
+          "html": "中国革命最基本的动力是<strong class=\"xt-keyword cloze\" data-cloze=\"无产阶级\" data-ghost=\"无··级\">无产阶级</strong>。",
+          "voice_start": 69.12,
+          "voice_end": 72.86,
+          "anlang_start": 46.59,
+          "anlang_end": 49.79
+        },
+        {
+          "id": "pol_xt_d20_p09",
+          "num": 9,
+          "tag": "革命的主力军",
+          "html": "中国革命的主力军是<strong class=\"xt-keyword cloze\" data-cloze=\"农民阶级\" data-ghost=\"农··级\">农民阶级</strong>。",
+          "voice_start": 72.86,
+          "voice_end": 76.14,
+          "anlang_start": 50.08,
+          "anlang_end": 53.36
+        },
+        {
+          "id": "pol_xt_d20_p10",
+          "num": 10,
+          "tag": "可靠同盟者",
+          "html": "无产阶级可靠的同盟者是<strong class=\"xt-keyword cloze\" data-cloze=\"城市小资产阶级\" data-ghost=\"城··资产··\">城市小资产阶级</strong>。",
+          "voice_start": 76.14,
+          "voice_end": 80.61,
+          "anlang_start": 53.65,
+          "anlang_end": 58.05
+        },
+        {
+          "id": "pol_xt_d20_p11",
+          "num": 11,
+          "tag": "新民理论核心问题",
+          "html": "中国革命的中心问题（也是新民主主义革命理论的核心问题）是<strong class=\"xt-keyword cloze\" data-cloze=\"无产阶级的领导权问题\" data-ghost=\"无··级的领导权··\">无产阶级的领导权问题</strong>。",
+          "voice_start": 80.61,
+          "voice_end": 89.07,
+          "anlang_start": 58.34,
+          "anlang_end": 65.22
+        },
+        {
+          "id": "pol_xt_d20_p12",
+          "num": 12,
+          "tag": "国民革命中心问题",
+          "html": "国民革命的中心问题是<strong class=\"xt-keyword cloze\" data-cloze=\"农民问题\" data-ghost=\"农··题\">农民问题</strong>。",
+          "voice_start": 89.07,
+          "voice_end": 92.83,
+          "anlang_start": 65.59,
+          "anlang_end": 68.95
+        },
+        {
+          "id": "pol_xt_d20_p13",
+          "num": 13,
+          "tag": "资产民主中心问题",
+          "html": "中国资产阶级民主革命的中心问题是<strong class=\"xt-keyword cloze\" data-cloze=\"土地革命\" data-ghost=\"土··命\">土地革命</strong>。",
+          "voice_start": 92.83,
+          "voice_end": 98,
+          "anlang_start": 69.24,
+          "anlang_end": 73.4
+        },
+        {
+          "id": "pol_xt_d20_p14",
+          "num": 14,
+          "tag": "中国革命首要问题",
+          "html": "中国革命的首要问题是<strong class=\"xt-keyword cloze\" data-cloze=\"分清敌友\" data-ghost=\"分·敌友\">分清敌友</strong>。",
+          "voice_start": 98,
+          "voice_end": 102.44,
+          "anlang_start": 73.77,
+          "anlang_end": 77.45
+        },
+        {
+          "id": "pol_xt_d20_p15",
+          "num": 15,
+          "tag": "中国革命基本问题",
+          "html": "中国革命的基本问题是<strong class=\"xt-keyword cloze\" data-cloze=\"农民问题\" data-ghost=\"农··题\">农民问题</strong>。",
+          "voice_start": 102.44,
+          "voice_end": 178.09,
+          "anlang_start": 77.74,
+          "anlang_end": 81.02
+        },
+        {
+          "id": "pol_xt_d20_p16",
+          "num": 16,
+          "tag": "新旧革命根本标志",
+          "html": "区分新、旧两种不同范畴民主革命的根本标志是革命的<strong class=\"xt-keyword cloze\" data-cloze=\"领导权掌握在无产阶级手中还是资产阶级手中\" data-ghost=\"领····在无··级手中还是·····\">领导权掌握在无产阶级手中还是资产阶级手中</strong>。",
+          "voice_start": 178.09,
+          "voice_end": 186.74,
+          "anlang_start": 81.31,
+          "anlang_end": 90.19
+        },
+        {
+          "id": "pol_xt_d20_p17",
+          "num": 17,
+          "tag": "革命胜利根本保证",
+          "html": "中国革命取得胜利的根本保证是<strong class=\"xt-keyword cloze\" data-cloze=\"无产阶级及其政党的领导\" data-ghost=\"无··级及其政党的··\">无产阶级及其政党的领导</strong>。",
+          "voice_start": 186.94,
+          "voice_end": 192.7,
+          "anlang_start": 90.48,
+          "anlang_end": 96.24
+        },
+        {
+          "id": "pol_xt_d20_p18",
+          "num": 18,
+          "tag": "革命分两步走",
+          "html": "五四运动以后中国革命分两步走：<strong class=\"xt-keyword cloze\" data-cloze=\"第一步完成反帝反封建的新民主主义革命任务，第二步完成社会主义革命任务\" data-ghost=\"第······新民主主义革命任务，第······革命任务\">第一步完成反帝反封建的新民主主义革命任务，第二步完成社会主义革命任务</strong>。",
+          "voice_start": 192.7,
+          "voice_end": 204.02,
+          "anlang_start": 96.53,
+          "anlang_end": 106.61
+        },
+        {
+          "id": "pol_xt_d20_p19",
+          "num": 19,
+          "tag": "三大法宝",
+          "html": "新民主主义革命的三大法宝是<strong class=\"xt-keyword cloze\" data-cloze=\"统一战线、武装斗争和党的建设\" data-ghost=\"统···、武···和党···\">统一战线、武装斗争和党的建设</strong>。",
+          "voice_start": 204.02,
+          "voice_end": 210.14,
+          "anlang_start": 106.9,
+          "anlang_end": 112.82
+        },
+        {
+          "id": "pol_xt_d20_p20",
+          "num": 20,
+          "tag": "两个基本武器",
+          "html": "中国革命的两个基本特点、战胜敌人的两个基本武器是<strong class=\"xt-keyword cloze\" data-cloze=\"统一战线和武装斗争\" data-ghost=\"统···和武···\">统一战线和武装斗争</strong>。",
+          "voice_start": 210.14,
+          "voice_end": 217.35,
+          "anlang_start": 113.11,
+          "anlang_end": 120.07
+        },
+        {
+          "id": "pol_xt_d20_p21",
+          "num": 21,
+          "tag": "统一战线支柱",
+          "html": "统一战线的中心支柱是<strong class=\"xt-keyword cloze\" data-cloze=\"武装斗争\" data-ghost=\"武··争\">武装斗争</strong>。",
+          "voice_start": 217.35,
+          "voice_end": 221.07,
+          "anlang_start": 120.44,
+          "anlang_end": 124.04
+        },
+        {
+          "id": "pol_xt_d20_p22",
+          "num": 22,
+          "tag": "个体经济过渡形式",
+          "html": "个体经济向社会主义集体经济过渡的形式是<strong class=\"xt-keyword cloze\" data-cloze=\"半社会主义性质的合作社经济\" data-ghost=\"半······的合作社经济\">半社会主义性质的合作社经济</strong>。",
+          "voice_start": 221.07,
+          "voice_end": 228.72,
+          "anlang_start": 124.41,
+          "anlang_end": 130.97
+        },
+        {
+          "id": "pol_xt_d20_p23",
+          "num": 23,
+          "tag": "私营经济过渡形式",
+          "html": "私人资本主义经济向社会主义国营经济过渡的形式是<strong class=\"xt-keyword cloze\" data-cloze=\"国家资本主义经济\" data-ghost=\"国·····经济\">国家资本主义经济</strong>。",
+          "voice_start": 228.72,
+          "voice_end": 235.14,
+          "anlang_start": 131.26,
+          "anlang_end": 137.9
+        },
+        {
+          "id": "pol_xt_d20_p24",
+          "num": 24,
+          "tag": "工商业改造方法",
+          "html": "资本主义工商业改造采取的方法是<strong class=\"xt-keyword cloze\" data-cloze=\"和平赎买\" data-ghost=\"和··买\">和平赎买</strong>。",
+          "voice_start": 235.18,
+          "voice_end": 240.01,
+          "anlang_start": 138.19,
+          "anlang_end": 142.51
+        },
+        {
+          "id": "pol_xt_d20_p25",
+          "num": 25,
+          "tag": "工商业过渡形式",
+          "html": "资本主义工商业改造采取的形式是<strong class=\"xt-keyword cloze\" data-cloze=\"从低级到高级的国家资本主义过渡形式\" data-ghost=\"从······国家资本主义过渡形式\">从低级到高级的国家资本主义过渡形式</strong>。",
+          "voice_start": 240.01,
+          "voice_end": 247.91,
+          "anlang_start": 142.8,
+          "anlang_end": 150
+        }
+      ]
+    },
+    {
+      "id": "pol_xt_d21",
+      "day": 21,
+      "title": "Day 21 毛中特3-社会主义建设道路初步探索的理论成果",
+      "subtitle": "《论十大关系》、社会主义社会矛盾学说、走中国工业化道路与初步探索意义",
+      "subject": "毛中特",
+      "duration_sec": 199,
+      "anlang_audio": "audio_xutao/xt_anlang_d21.mp3",
+      "voice_audio": "audio_xutao/xt_voice_d21.mp3",
+      "points": [
+        {
+          "id": "pol_xt_d21_p01",
+          "num": 1,
+          "tag": "初步探索原则",
+          "html": "《论十大关系》确定的探索社会主义建设道路的原则和指导思想是<strong class=\"xt-keyword cloze\" data-cloze=\"“以苏为鉴”，独立自主地探索适合中国情况的社会主义建设道路\" data-ghost=\"“以···”，独············道路\">“以苏为鉴”，独立自主地探索适合中国情况的社会主义建设道路</strong>。",
+          "voice_start": 17.86,
+          "voice_end": 30.68,
+          "anlang_start": 0.08,
+          "anlang_end": 9.6
+        },
+        {
+          "id": "pol_xt_d21_p02",
+          "num": 2,
+          "tag": "良好开端标志",
+          "html": "党探索中国社会主义建设道路良好开端的标志是<strong class=\"xt-keyword cloze\" data-cloze=\"《论十大关系》\" data-ghost=\"《论····》\">《论十大关系》</strong>。",
+          "voice_start": 30.68,
+          "voice_end": 37.79,
+          "anlang_start": 9.89,
+          "anlang_end": 15.41
+        },
+        {
+          "id": "pol_xt_d21_p03",
+          "num": 3,
+          "tag": "十大关系基本方针",
+          "html": "《论十大关系》确立的基本方针是<strong class=\"xt-keyword cloze\" data-cloze=\"调动一切积极因素，为社会主义事业（建设）服务\" data-ghost=\"调······，为······服务\">调动一切积极因素，为社会主义事业（建设）服务</strong>。",
+          "voice_start": 37.79,
+          "voice_end": 45.89,
+          "anlang_start": 15.78,
+          "anlang_end": 22.58
+        },
+        {
+          "id": "pol_xt_d21_p04",
+          "num": 4,
+          "tag": "社社基本矛盾",
+          "html": "社会主义社会的基本矛盾仍然是<strong class=\"xt-keyword cloze\" data-cloze=\"生产关系和生产力之间的矛盾、上层建筑和经济基础之间的矛盾\" data-ghost=\"生·······的矛盾、上·······的矛盾\">生产关系和生产力之间的矛盾、上层建筑和经济基础之间的矛盾</strong>。",
+          "voice_start": 45.89,
+          "voice_end": 54.72,
+          "anlang_start": 22.87,
+          "anlang_end": 30.55
+        },
+        {
+          "id": "pol_xt_d21_p05",
+          "num": 5,
+          "tag": "基本矛盾运动特点",
+          "html": "社会主义社会基本矛盾运动的特点是“<strong class=\"xt-keyword cloze\" data-cloze=\"又相适应又相矛盾\" data-ghost=\"又···又···\">又相适应又相矛盾</strong>”。",
+          "voice_start": 54.72,
+          "voice_end": 60.05,
+          "anlang_start": 30.68,
+          "anlang_end": 36.2
+        },
+        {
+          "id": "pol_xt_d21_p06",
+          "num": 6,
+          "tag": "八大主要矛盾",
+          "html": "社会主义改造完成后，党的八大指出我国社会主要矛盾是：人民对于<strong class=\"xt-keyword cloze\" data-cloze=\"建立先进的工业国的要求同落后的农业国的现实之间的矛盾\" data-ghost=\"建······同······之间的矛盾\">建立先进的工业国的要求同落后的农业国的现实之间的矛盾</strong>，人民对于经济文化迅速发展的需要同当前经济文化不能满足人民需要的状况之间的矛盾。",
+          "voice_start": 60.05,
+          "voice_end": 79.9,
+          "anlang_start": 36.49,
+          "anlang_end": 54.57
+        },
+        {
+          "id": "pol_xt_d21_p07",
+          "num": 7,
+          "tag": "两类不同性质矛盾",
+          "html": "社会主义社会存在两类不同性质的矛盾，即<strong class=\"xt-keyword cloze\" data-cloze=\"敌我矛盾和人民内部矛盾\" data-ghost=\"敌···和人····\">敌我矛盾和人民内部矛盾</strong>。",
+          "voice_start": 79.9,
+          "voice_end": 86.29,
+          "anlang_start": 54.86,
+          "anlang_end": 60.54
+        },
+        {
+          "id": "pol_xt_d21_p08",
+          "num": 8,
+          "tag": "居主导地位矛盾",
+          "html": "社会主义社会两类不同性质矛盾中居于主导地位的是<strong class=\"xt-keyword cloze\" data-cloze=\"人民内部矛盾\" data-ghost=\"人····盾\">人民内部矛盾</strong>。",
+          "voice_start": 86.29,
+          "voice_end": 92.91,
+          "anlang_start": 60.83,
+          "anlang_end": 66.51
+        },
+        {
+          "id": "pol_xt_d21_p09",
+          "num": 9,
+          "tag": "两类矛盾性质",
+          "html": "社会主义社会两类不同性质矛盾的性质分别是：敌我矛盾是<strong class=\"xt-keyword cloze\" data-cloze=\"对抗性矛盾，人民内部矛盾是非对抗性矛盾\" data-ghost=\"对···矛盾，人····是非····\">对抗性矛盾，人民内部矛盾是非对抗性矛盾</strong>。",
+          "voice_start": 92.91,
+          "voice_end": 100.89,
+          "anlang_start": 66.88,
+          "anlang_end": 75.92
+        },
+        {
+          "id": "pol_xt_d21_p10",
+          "num": 10,
+          "tag": "内部矛盾性质",
+          "html": "人民内部矛盾的性质是<strong class=\"xt-keyword cloze\" data-cloze=\"非对抗性的矛盾\" data-ghost=\"非····矛盾\">非对抗性的矛盾</strong>。",
+          "voice_start": 100.89,
+          "voice_end": 105,
+          "anlang_start": 76.05,
+          "anlang_end": 79.57
+        },
+        {
+          "id": "pol_xt_d21_p11",
+          "num": 11,
+          "tag": "两类矛盾处理方法",
+          "html": "处理社会主义社会两类不同性质矛盾的两种不同方法是<strong class=\"xt-keyword cloze\" data-cloze=\"专政和民主\" data-ghost=\"专·和··\">专政和民主</strong>。",
+          "voice_start": 105,
+          "voice_end": 112.53,
+          "anlang_start": 79.86,
+          "anlang_end": 85.06
+        },
+        {
+          "id": "pol_xt_d21_p12",
+          "num": 12,
+          "tag": "内部矛盾总方针",
+          "html": "解决人民内部矛盾的总方针是<strong class=\"xt-keyword cloze\" data-cloze=\"民主\" data-ghost=\"民·\">民主</strong>（即民主的方法）。",
+          "voice_start": 112.53,
+          "voice_end": 117.28,
+          "anlang_start": 85.43,
+          "anlang_end": 89.51
+        },
+        {
+          "id": "pol_xt_d21_p13",
+          "num": 13,
+          "tag": "思想政治领域方针",
+          "html": "解决思想政治领域人民内部矛盾的方针是“<strong class=\"xt-keyword cloze\" data-cloze=\"团结—批评—团结\" data-ghost=\"团·—批·—团·\">团结—批评—团结</strong>”。",
+          "voice_start": 117.28,
+          "voice_end": 123.44,
+          "anlang_start": 89.8,
+          "anlang_end": 94.92
+        },
+        {
+          "id": "pol_xt_d21_p14",
+          "num": 14,
+          "tag": "物质利益分配方针",
+          "html": "解决物质利益、分配方面矛盾的方针是<strong class=\"xt-keyword cloze\" data-cloze=\"统筹兼顾、适当安排\" data-ghost=\"统···、适···\">统筹兼顾、适当安排</strong>。",
+          "voice_start": 123.44,
+          "voice_end": 130.72,
+          "anlang_start": 95.29,
+          "anlang_end": 100.25
+        },
+        {
+          "id": "pol_xt_d21_p15",
+          "num": 15,
+          "tag": "群众与政府机关",
+          "html": "解决人民群众与政府机关之间矛盾的方针是坚持<strong class=\"xt-keyword cloze\" data-cloze=\"民主集中制\" data-ghost=\"民····\">民主集中制</strong>。",
+          "voice_start": 130.72,
+          "voice_end": 137.4,
+          "anlang_start": 100.62,
+          "anlang_end": 106.14
+        },
+        {
+          "id": "pol_xt_d21_p16",
+          "num": 16,
+          "tag": "科学文化领域方针",
+          "html": "解决科学文化领域矛盾的方针是“<strong class=\"xt-keyword cloze\" data-cloze=\"百花齐放、百家争鸣\" data-ghost=\"百···、百···\">百花齐放、百家争鸣</strong>”。",
+          "voice_start": 137.8,
+          "voice_end": 144.61,
+          "anlang_start": 106.43,
+          "anlang_end": 111.71
+        },
+        {
+          "id": "pol_xt_d21_p17",
+          "num": 17,
+          "tag": "党与民主党派方针",
+          "html": "解决共产党和民主党派之间矛盾的方针是“<strong class=\"xt-keyword cloze\" data-cloze=\"长期共存、互相监督\" data-ghost=\"长···、互···\">长期共存、互相监督</strong>”。",
+          "voice_start": 144.61,
+          "voice_end": 152.56,
+          "anlang_start": 112,
+          "anlang_end": 118.16
+        },
+        {
+          "id": "pol_xt_d21_p18",
+          "num": 18,
+          "tag": "民族矛盾方针",
+          "html": "解决民族之间矛盾的方针是<strong class=\"xt-keyword cloze\" data-cloze=\"民族平等、团结互助\" data-ghost=\"民···、团···\">民族平等、团结互助</strong>。",
+          "voice_start": 152.56,
+          "voice_end": 184.23,
+          "anlang_start": 118.45,
+          "anlang_end": 122.77
+        },
+        {
+          "id": "pol_xt_d21_p19",
+          "num": 19,
+          "tag": "国家政治生活主题",
+          "html": "社会主义国家政治生活的主题是<strong class=\"xt-keyword cloze\" data-cloze=\"正确处理人民内部矛盾\" data-ghost=\"正·······矛盾\">正确处理人民内部矛盾</strong>的问题。",
+          "voice_start": 184.23,
+          "voice_end": 191.32,
+          "anlang_start": 123.06,
+          "anlang_end": 128.18
+        },
+        {
+          "id": "pol_xt_d21_p20",
+          "num": 20,
+          "tag": "论断根本着眼点",
+          "html": "提出正确处理人民内部矛盾这一论断的根本着眼点是<strong class=\"xt-keyword cloze\" data-cloze=\"调动一切积极因素，团结一切可以团结的力量\" data-ghost=\"调······，团······力量\">调动一切积极因素，团结一切可以团结的力量</strong>，把全党的注意力转移到社会主义建设上来。",
+          "voice_start": 191.32,
+          "voice_end": 204.74,
+          "anlang_start": 128.55,
+          "anlang_end": 140.31
+        },
+        {
+          "id": "pol_xt_d21_p21",
+          "num": 21,
+          "tag": "工业化政治前提",
+          "html": "为我国实现工业化提供了根本政治前提的是<strong class=\"xt-keyword cloze\" data-cloze=\"中华人民共和国的成立\" data-ghost=\"中·······成立\">中华人民共和国的成立</strong>。",
+          "voice_start": 204.74,
+          "voice_end": 211.56,
+          "anlang_start": 140.6,
+          "anlang_end": 146.76
+        },
+        {
+          "id": "pol_xt_d21_p22",
+          "num": 22,
+          "tag": "工业化总方针思路",
+          "html": "毛泽东关于工业化道路提出的发展思路：<strong class=\"xt-keyword cloze\" data-cloze=\"以农业为基础、以工业为主导、以农轻重为序\" data-ghost=\"以····、以····、以····\">以农业为基础、以工业为主导、以农轻重为序</strong>发展国民经济的总方针，以及一整套“两条腿走路”的工业化发展思路。",
+          "voice_start": 211.56,
+          "voice_end": 225.97,
+          "anlang_start": 147.05,
+          "anlang_end": 160.01
+        },
+        {
+          "id": "pol_xt_d21_p23",
+          "num": 23,
+          "tag": "工业化核心关系",
+          "html": "《关于正确处理人民内部矛盾的问题》指出，中国工业化道路问题主要是指<strong class=\"xt-keyword cloze\" data-cloze=\"重工业、轻工业和农业的发展关系问题\" data-ghost=\"重··、轻··和农······\">重工业、轻工业和农业的发展关系问题</strong>，强调要走一条有别于苏联的中国工业化道路。",
+          "voice_start": 225.97,
+          "voice_end": 241.42,
+          "anlang_start": 160.3,
+          "anlang_end": 174.14
+        },
+        {
+          "id": "pol_xt_d21_p24",
+          "num": 24,
+          "tag": "八大经济建设方针",
+          "html": "党的八大提出的正确经济建设方针是<strong class=\"xt-keyword cloze\" data-cloze=\"既反保守又反冒进，坚持在综合平衡中稳步前进\" data-ghost=\"既····反冒进，坚······稳步前进\">既反保守又反冒进，坚持在综合平衡中稳步前进</strong>的方针。",
+          "voice_start": 241.42,
+          "voice_end": 269.4,
+          "anlang_start": 174.27,
+          "anlang_end": 184.27
+        },
+        {
+          "id": "pol_xt_d21_p25",
+          "num": 25,
+          "tag": "初步探索三大意义",
+          "html": "社会主义建设道路初步探索的意义：巩固和发展了我国的社会主义制度；<strong class=\"xt-keyword cloze\" data-cloze=\"为开创中国特色社会主义提供了宝贵经验、理论准备、物质基础\" data-ghost=\"为········提供了····、理···、物···\">为开创中国特色社会主义提供了宝贵经验、理论准备、物质基础</strong>；丰富了科学社会主义的理论和实践。",
+          "voice_start": 269.62,
+          "voice_end": 288.49,
+          "anlang_start": 184.64,
+          "anlang_end": 199.6
+        }
+      ]
+    },
+    {
+      "id": "pol_xt_d22",
+      "day": 22,
+      "title": "Day 22 毛中特4-中特理论体系的形成和发展",
+      "subtitle": "改革开放以来重要党代会全会、社会主义本质论、“自我革命”与邓小平理论精髓",
+      "subject": "毛中特",
+      "duration_sec": 162,
+      "anlang_audio": "audio_xutao/xt_anlang_d22.mp3",
+      "voice_audio": "audio_xutao/xt_voice_d22.mp3",
+      "points": [
+        {
+          "id": "pol_xt_d22_p01",
+          "num": 1,
+          "tag": "彻底否定错误方针",
+          "html": "中共十一届三中全会彻底否定的错误方针是<strong class=\"xt-keyword cloze\" data-cloze=\"“两个凡是”\" data-ghost=\"“两·凡·”\">“两个凡是”</strong>。",
+          "voice_start": 18.05,
+          "voice_end": 25.8,
+          "anlang_start": 0.08,
+          "anlang_end": 4.64
+        },
+        {
+          "id": "pol_xt_d22_p02",
+          "num": 2,
+          "tag": "重新确立三条路线",
+          "html": "重新确立马克思主义<strong class=\"xt-keyword cloze\" data-cloze=\"思想路线、政治路线、组织路线\" data-ghost=\"思···、政···、组···\">思想路线、政治路线、组织路线</strong>的会议是中共十一届三中全会。",
+          "voice_start": 25.8,
+          "voice_end": 33.55,
+          "anlang_start": 5.01,
+          "anlang_end": 11.73
+        },
+        {
+          "id": "pol_xt_d22_p03",
+          "num": 3,
+          "tag": "开启新时期会议",
+          "html": "开始拨乱反正、开始改革开放和开启社会主义现代化建设新时期的会议是<strong class=\"xt-keyword cloze\" data-cloze=\"中共十一届三中全会\" data-ghost=\"中···三中全会\">中共十一届三中全会</strong>。",
+          "voice_start": 33.55,
+          "voice_end": 47.42,
+          "anlang_start": 12.02,
+          "anlang_end": 19.7
+        },
+        {
+          "id": "pol_xt_d22_p04",
+          "num": 4,
+          "tag": "完成指导思想拨乱",
+          "html": "完成党在指导思想上拨乱反正的会议是<strong class=\"xt-keyword cloze\" data-cloze=\"中共十一届六中全会\" data-ghost=\"中···六中全会\">中共十一届六中全会</strong>。",
+          "voice_start": 47.42,
+          "voice_end": 61.09,
+          "anlang_start": 20.07,
+          "anlang_end": 25.03
+        },
+        {
+          "id": "pol_xt_d22_p05",
+          "num": 5,
+          "tag": "首提初级阶段会议",
+          "html": "第一次使用<strong class=\"xt-keyword cloze\" data-cloze=\"“社会主义初级阶段”\" data-ghost=\"“社······阶段”\">“社会主义初级阶段”</strong>这一科学概念的会议是中共十一届六中全会。",
+          "voice_start": 61.09,
+          "voice_end": 67.74,
+          "anlang_start": 25.32,
+          "anlang_end": 30.44
+        },
+        {
+          "id": "pol_xt_d22_p06",
+          "num": 6,
+          "tag": "直接发展动力",
+          "html": "社会主义社会发展的直接动力是<strong class=\"xt-keyword cloze\" data-cloze=\"改革\" data-ghost=\"改·\">改革</strong>。",
+          "voice_start": 67.74,
+          "voice_end": 71.64,
+          "anlang_start": 30.73,
+          "anlang_end": 33.85
+        },
+        {
+          "id": "pol_xt_d22_p07",
+          "num": 7,
+          "tag": "系统阐述初级阶段",
+          "html": "第一次对社会主义初级阶段理论进行系统阐述的会议是<strong class=\"xt-keyword cloze\" data-cloze=\"中共十三大\" data-ghost=\"中··三大\">中共十三大</strong>。",
+          "voice_start": 71.64,
+          "voice_end": 77.6,
+          "anlang_start": 34.22,
+          "anlang_end": 40.14
+        },
+        {
+          "id": "pol_xt_d22_p08",
+          "num": 8,
+          "tag": "党的基本路线",
+          "html": "中共十三大提出党在社会主义初级阶段的基本路线，简明概括为“<strong class=\"xt-keyword cloze\" data-cloze=\"一个中心、两个基本点\" data-ghost=\"一·中心、两····\">一个中心、两个基本点</strong>”。",
+          "voice_start": 77.6,
+          "voice_end": 85.68,
+          "anlang_start": 40.43,
+          "anlang_end": 47.23
+        },
+        {
+          "id": "pol_xt_d22_p09",
+          "num": 9,
+          "tag": "市场经济改革目标",
+          "html": "明确确立建立社会主义市场经济体制改革目标的会议是<strong class=\"xt-keyword cloze\" data-cloze=\"中共十四大\" data-ghost=\"中··四大\">中共十四大</strong>。",
+          "voice_start": 85.68,
+          "voice_end": 91.39,
+          "anlang_start": 47.52,
+          "anlang_end": 52.32
+        },
+        {
+          "id": "pol_xt_d22_p10",
+          "num": 10,
+          "tag": "中特成为主题",
+          "html": "使“中国特色社会主义”成为党的全部理论和实践创新主题的会议是<strong class=\"xt-keyword cloze\" data-cloze=\"中共十二大\" data-ghost=\"中··二大\">中共十二大</strong>。",
+          "voice_start": 91.39,
+          "voice_end": 98.52,
+          "anlang_start": 52.61,
+          "anlang_end": 59.01
+        },
+        {
+          "id": "pol_xt_d22_p11",
+          "num": 11,
+          "tag": "系统概括中特理论",
+          "html": "第一次对中国特色社会主义理论进行系统概括的会议是<strong class=\"xt-keyword cloze\" data-cloze=\"中共十三大\" data-ghost=\"中··三大\">中共十三大</strong>。",
+          "voice_start": 98.52,
+          "voice_end": 104.48,
+          "anlang_start": 59.38,
+          "anlang_end": 65.14
+        },
+        {
+          "id": "pol_xt_d22_p12",
+          "num": 12,
+          "tag": "科学发展观内涵",
+          "html": "科学发展观：第一要义是发展，<strong class=\"xt-keyword cloze\" data-cloze=\"核心立场是以人为本，基本要求是全面协调可持续，根本方法是统筹兼顾\" data-ghost=\"核····以人为本，基····全面协调可持续，根····统筹兼顾\">核心立场是以人为本，基本要求是全面协调可持续，根本方法是统筹兼顾</strong>。",
+          "voice_start": 104.48,
+          "voice_end": 115.85,
+          "anlang_start": 65.43,
+          "anlang_end": 76.23
+        },
+        {
+          "id": "pol_xt_d22_p13",
+          "num": 13,
+          "tag": "国家生命线",
+          "html": "党和国家的生命线、人民的幸福线是<strong class=\"xt-keyword cloze\" data-cloze=\"党的基本路线\" data-ghost=\"党····路线\">党的基本路线</strong>。",
+          "voice_start": 115.85,
+          "voice_end": 121.27,
+          "anlang_start": 76.52,
+          "anlang_end": 81.32
+        },
+        {
+          "id": "pol_xt_d22_p14",
+          "num": 14,
+          "tag": "社会主义根本任务",
+          "html": "社会主义的根本任务是<strong class=\"xt-keyword cloze\" data-cloze=\"解放和发展生产力\" data-ghost=\"解···展生产力\">解放和发展生产力</strong>。",
+          "voice_start": 121.27,
+          "voice_end": 129.02,
+          "anlang_start": 81.69,
+          "anlang_end": 85.69
+        },
+        {
+          "id": "pol_xt_d22_p15",
+          "num": 15,
+          "tag": "党和国家工作重点",
+          "html": "党和国家的工作重点是<strong class=\"xt-keyword cloze\" data-cloze=\"经济建设\" data-ghost=\"经··设\">经济建设</strong>。",
+          "voice_start": 129.02,
+          "voice_end": 133.13,
+          "anlang_start": 85.98,
+          "anlang_end": 89.66
+        },
+        {
+          "id": "pol_xt_d22_p16",
+          "num": 16,
+          "tag": "和平与发展问题",
+          "html": "和平问题是东西问题，发展问题是南北问题，当今世界最核心的问题是<strong class=\"xt-keyword cloze\" data-cloze=\"南北问题（发展问题）\" data-ghost=\"南···（发···）\">南北问题（发展问题）</strong>。",
+          "voice_start": 133.13,
+          "voice_end": 147.24,
+          "anlang_start": 90.03,
+          "anlang_end": 98.67
+        },
+        {
+          "id": "pol_xt_d22_p17",
+          "num": 17,
+          "tag": "跳出周期率两答案",
+          "html": "党跳出历史治乱兴衰周期率的第一个答案是人民监督政府，第二个答案是<strong class=\"xt-keyword cloze\" data-cloze=\"自我革命\" data-ghost=\"自··命\">自我革命</strong>。",
+          "voice_start": 147.24,
+          "voice_end": 158.52,
+          "anlang_start": 99.04,
+          "anlang_end": 106.8
+        },
+        {
+          "id": "pol_xt_d22_p18",
+          "num": 18,
+          "tag": "邓论首要基本问题",
+          "html": "邓小平理论首要的基本的理论问题是“<strong class=\"xt-keyword cloze\" data-cloze=\"什么是社会主义、怎样建设社会主义\" data-ghost=\"什·····、怎·······\">什么是社会主义、怎样建设社会主义</strong>”。",
+          "voice_start": 158.64,
+          "voice_end": 165.65,
+          "anlang_start": 107.09,
+          "anlang_end": 113.41
+        },
+        {
+          "id": "pol_xt_d22_p19",
+          "num": 19,
+          "tag": "搞清首要问题关键",
+          "html": "搞清楚“什么是社会主义、怎样建设社会主义”，关键是要在坚持社会主义基本制度的基础上进一步<strong class=\"xt-keyword cloze\" data-cloze=\"认清社会主义的本质\" data-ghost=\"认······本质\">认清社会主义的本质</strong>。",
+          "voice_start": 165.65,
+          "voice_end": 177.98,
+          "anlang_start": 113.7,
+          "anlang_end": 123.7
+        },
+        {
+          "id": "pol_xt_d22_p20",
+          "num": 20,
+          "tag": "概括本质的场合",
+          "html": "对社会主义本质做出鲜明理论概括的是邓小平<strong class=\"xt-keyword cloze\" data-cloze=\"南方谈话\" data-ghost=\"南··话\">南方谈话</strong>。",
+          "voice_start": 177.98,
+          "voice_end": 182.44,
+          "anlang_start": 123.99,
+          "anlang_end": 128.55
+        },
+        {
+          "id": "pol_xt_d22_p21",
+          "num": 21,
+          "tag": "社会主义本质内容",
+          "html": "社会主义的本质是解放生产力，发展生产力，<strong class=\"xt-keyword cloze\" data-cloze=\"消灭剥削，消除两极分化，最终达到共同富裕\" data-ghost=\"消···，消·····，最······\">消灭剥削，消除两极分化，最终达到共同富裕</strong>。",
+          "voice_start": 182.44,
+          "voice_end": 190.96,
+          "anlang_start": 128.84,
+          "anlang_end": 137.8
+        },
+        {
+          "id": "pol_xt_d22_p22",
+          "num": 22,
+          "tag": "改革两条根本原则",
+          "html": "在改革中始终坚持的两条根本原则：一是<strong class=\"xt-keyword cloze\" data-cloze=\"以社会主义公有制经济为主体\" data-ghost=\"以····公有制经济为主体\">以社会主义公有制经济为主体</strong>，二是共同富裕。",
+          "voice_start": 190.96,
+          "voice_end": 199.9,
+          "anlang_start": 138.09,
+          "anlang_end": 146.01
+        },
+        {
+          "id": "pol_xt_d22_p23",
+          "num": 23,
+          "tag": "邓论精髓与灵魂",
+          "html": "邓小平理论的精髓和活的灵魂都是<strong class=\"xt-keyword cloze\" data-cloze=\"解放思想、实事求是\" data-ghost=\"解···、实···\">解放思想、实事求是</strong>。",
+          "voice_start": 199.9,
+          "voice_end": 212.76,
+          "anlang_start": 146.3,
+          "anlang_end": 151.66
+        },
+        {
+          "id": "pol_xt_d22_p24",
+          "num": 24,
+          "tag": "政治基石",
+          "html": "我们党和国家生存发展的政治基石是<strong class=\"xt-keyword cloze\" data-cloze=\"四项基本原则\" data-ghost=\"四····则\">四项基本原则</strong>。",
+          "voice_start": 212.76,
+          "voice_end": 218.72,
+          "anlang_start": 151.95,
+          "anlang_end": 157.39
+        },
+        {
+          "id": "pol_xt_d22_p25",
+          "num": 25,
+          "tag": "活力源泉",
+          "html": "我们党和国家发展进步的活力源泉是<strong class=\"xt-keyword cloze\" data-cloze=\"改革开放\" data-ghost=\"改··放\">改革开放</strong>。",
+          "voice_start": 218.72,
+          "voice_end": 223.23,
+          "anlang_start": 157.68,
+          "anlang_end": 162.64
+        }
+      ]
+    },
+    {
+      "id": "pol_xt_d23",
+      "day": 23,
+      "title": "Day 23 新思想1-导论＋第一章",
+      "subtitle": "“两个结合”魂脉与根脉、“十个明确”“六个必须坚持”、新时代判断依据与“两个没有变”",
+      "subject": "新思想",
+      "duration_sec": 174,
+      "anlang_audio": "audio_xutao/xt_anlang_d23.mp3",
+      "voice_audio": "audio_xutao/xt_voice_d23.mp3",
+      "points": [
+        {
+          "id": "pol_xt_d23_p01",
+          "num": 1,
+          "tag": "取得成功最大法宝",
+          "html": "我们党在探索中国特色社会主义道路中得出的规律性认识、取得成功的最大法宝是<strong class=\"xt-keyword cloze\" data-cloze=\"“两个结合”\" data-ghost=\"“两·结合”\">“两个结合”</strong>。",
+          "voice_start": 20.44,
+          "voice_end": 29.6,
+          "anlang_start": 0.08,
+          "anlang_end": 8.56
+        },
+        {
+          "id": "pol_xt_d23_p02",
+          "num": 2,
+          "tag": "中特文化魂脉",
+          "html": "<strong class=\"xt-keyword cloze\" data-cloze=\"马克思主义\" data-ghost=\"马····\">马克思主义</strong>中国化时代化的“魂脉”是马克思主义。",
+          "voice_start": 29.6,
+          "voice_end": 35.09,
+          "anlang_start": 8.93,
+          "anlang_end": 13.49
+        },
+        {
+          "id": "pol_xt_d23_p03",
+          "num": 3,
+          "tag": "中特文化根脉",
+          "html": "马克思主义中国化时代化的“根脉”是<strong class=\"xt-keyword cloze\" data-cloze=\"中华优秀传统文化\" data-ghost=\"中·······\">中华优秀传统文化</strong>。",
+          "voice_start": 35.09,
+          "voice_end": 41.57,
+          "anlang_start": 13.78,
+          "anlang_end": 18.98
+        },
+        {
+          "id": "pol_xt_d23_p04",
+          "num": 4,
+          "tag": "主体内容四梁八柱",
+          "html": "习近平新时代中国特色社会主义思想的主体内容和“四梁八柱”、发挥着统摄作用的是<strong class=\"xt-keyword cloze\" data-cloze=\"“十个明确”\" data-ghost=\"“十·明确”\">“十个明确”</strong>。",
+          "voice_start": 41.57,
+          "voice_end": 51.8,
+          "anlang_start": 19.35,
+          "anlang_end": 27.43
+        },
+        {
+          "id": "pol_xt_d23_p05",
+          "num": 5,
+          "tag": "基本方略",
+          "html": "习近平新时代中国特色社会主义思想的基本方略是<strong class=\"xt-keyword cloze\" data-cloze=\"“十四个坚持”\" data-ghost=\"“十··坚持”\">“十四个坚持”</strong>。",
+          "voice_start": 51.8,
+          "voice_end": 58.63,
+          "anlang_start": 27.72,
+          "anlang_end": 33.08
+        },
+        {
+          "id": "pol_xt_d23_p06",
+          "num": 6,
+          "tag": "理论实践成果",
+          "html": "习近平新时代中国特色社会主义思想总结新时代的理论与实践成果是<strong class=\"xt-keyword cloze\" data-cloze=\"“十三个方面成就”\" data-ghost=\"“十··方面成就”\">“十三个方面成就”</strong>。",
+          "voice_start": 58.63,
+          "voice_end": 66.4,
+          "anlang_start": 33.45,
+          "anlang_end": 39.69
+        },
+        {
+          "id": "pol_xt_d23_p07",
+          "num": 7,
+          "tag": "世界观与方法论",
+          "html": "体现习近平新时代中国特色社会主义思想世界观和方法论、彰显理论品格和鲜明特征的是<strong class=\"xt-keyword cloze\" data-cloze=\"“六个必须坚持”\" data-ghost=\"“六·必须坚持”\">“六个必须坚持”</strong>。",
+          "voice_start": 66.4,
+          "voice_end": 77.74,
+          "anlang_start": 39.98,
+          "anlang_end": 49.34
+        },
+        {
+          "id": "pol_xt_d23_p08",
+          "num": 8,
+          "tag": "变与不变内在联系",
+          "html": "“六个必须坚持”中体现变与不变、继承与发展内在联系的是<strong class=\"xt-keyword cloze\" data-cloze=\"坚持守正创新\" data-ghost=\"坚·守正创新\">坚持守正创新</strong>。",
+          "voice_start": 77.74,
+          "voice_end": 86.26,
+          "anlang_start": 49.71,
+          "anlang_end": 56.27
+        },
+        {
+          "id": "pol_xt_d23_p09",
+          "num": 9,
+          "tag": "矛盾普遍性客观性",
+          "html": "“六个必须坚持”中体现矛盾的普遍性和客观性的是<strong class=\"xt-keyword cloze\" data-cloze=\"坚持问题导向\" data-ghost=\"坚·问题导向\">坚持问题导向</strong>。",
+          "voice_start": 86.26,
+          "voice_end": 93.78,
+          "anlang_start": 56.64,
+          "anlang_end": 62.48
+        },
+        {
+          "id": "pol_xt_d23_p10",
+          "num": 10,
+          "tag": "唯物辩证普遍联系",
+          "html": "“六个必须坚持”中体现辩证唯物主义普遍联系观点的是<strong class=\"xt-keyword cloze\" data-cloze=\"坚持系统观念\" data-ghost=\"坚·系统观念\">坚持系统观念</strong>。",
+          "voice_start": 93.78,
+          "voice_end": 100.64,
+          "anlang_start": 62.85,
+          "anlang_end": 69.49
+        },
+        {
+          "id": "pol_xt_d23_p11",
+          "num": 11,
+          "tag": "追求人类解放理想",
+          "html": "“六个必须坚持”中体现马克思主义追求人类进步和解放崇高理想的是<strong class=\"xt-keyword cloze\" data-cloze=\"坚持胸怀天下\" data-ghost=\"坚·胸怀天下\">坚持胸怀天下</strong>。",
+          "voice_start": 100.64,
+          "voice_end": 109.8,
+          "anlang_start": 69.78,
+          "anlang_end": 77.54
+        },
+        {
+          "id": "pol_xt_d23_p12",
+          "num": 12,
+          "tag": "文化主体性体现",
+          "html": "中华文化主体性的最有力体现是<strong class=\"xt-keyword cloze\" data-cloze=\"习近平新时代中国特色社会主义思想的创立\" data-ghost=\"习············思想的创立\">习近平新时代中国特色社会主义思想的创立</strong>。",
+          "voice_start": 109.88,
+          "voice_end": 118.52,
+          "anlang_start": 77.91,
+          "anlang_end": 85.11
+        },
+        {
+          "id": "pol_xt_d23_p13",
+          "num": 13,
+          "tag": "新时代决定性因素",
+          "html": "新时代党和国家事业取得历史性成就、发生历史性变革的决定性因素是<strong class=\"xt-keyword cloze\" data-cloze=\"“两个确立”\" data-ghost=\"“两·确立”\">“两个确立”</strong>。",
+          "voice_start": 118.52,
+          "voice_end": 128.31,
+          "anlang_start": 85.4,
+          "anlang_end": 92.84
+        },
+        {
+          "id": "pol_xt_d23_p14",
+          "num": 14,
+          "tag": "兴衰成败第一位",
+          "html": "关系党的事业兴衰成败第一位的问题是<strong class=\"xt-keyword cloze\" data-cloze=\"道路问题\" data-ghost=\"道··题\">道路问题</strong>。",
+          "voice_start": 128.31,
+          "voice_end": 134.66,
+          "anlang_start": 93.13,
+          "anlang_end": 97.93
+        },
+        {
+          "id": "pol_xt_d23_p15",
+          "num": 15,
+          "tag": "实行什么主义关键",
+          "html": "一个国家实行什么样的主义，关键要看这个主义<strong class=\"xt-keyword cloze\" data-cloze=\"能否解决这个国家面临的历史性课题\" data-ghost=\"能······历史性课题\">能否解决这个国家面临的历史性课题</strong>。",
+          "voice_start": 134.66,
+          "voice_end": 143.1,
+          "anlang_start": 98.22,
+          "anlang_end": 105.66
+        },
+        {
+          "id": "pol_xt_d23_p16",
+          "num": 16,
+          "tag": "马克思主义核心",
+          "html": "<strong class=\"xt-keyword cloze\" data-cloze=\"科学社会主义的基本原则\" data-ghost=\"科·······基本原则\">科学社会主义的基本原则</strong>是马克思主义的核心内容（不可偏离）。",
+          "voice_start": 143.4,
+          "voice_end": 149.56,
+          "anlang_start": 105.95,
+          "anlang_end": 110.83
+        },
+        {
+          "id": "pol_xt_d23_p17",
+          "num": 17,
+          "tag": "四个自信理论支撑",
+          "html": "坚定“四个自信”的理论支撑和根本依据是马克思主义深刻揭示了<strong class=\"xt-keyword cloze\" data-cloze=\"社会主义必然代替资本主义的客观规律\" data-ghost=\"社····代替····客观规律\">社会主义必然代替资本主义的客观规律</strong>。",
+          "voice_start": 149.56,
+          "voice_end": 160.54,
+          "anlang_start": 111.12,
+          "anlang_end": 119.2
+        },
+        {
+          "id": "pol_xt_d23_p18",
+          "num": 18,
+          "tag": "四个自信最大优势",
+          "html": "坚定“四个自信”的最大优势是<strong class=\"xt-keyword cloze\" data-cloze=\"中国共产党的坚强领导\" data-ghost=\"中····坚强领导\">中国共产党的坚强领导</strong>。",
+          "voice_start": 160.54,
+          "voice_end": 165.8,
+          "anlang_start": 119.57,
+          "anlang_end": 124.05
+        },
+        {
+          "id": "pol_xt_d23_p19",
+          "num": 19,
+          "tag": "四个自信文化根脉",
+          "html": "坚定“四个自信”的文化根脉和突出优势是<strong class=\"xt-keyword cloze\" data-cloze=\"连绵不绝的中华五千多年文明\" data-ghost=\"连····中华五千多年文明\">连绵不绝的中华五千多年文明</strong>。",
+          "voice_start": 165.8,
+          "voice_end": 173.78,
+          "anlang_start": 124.34,
+          "anlang_end": 130.34
+        },
+        {
+          "id": "pol_xt_d23_p20",
+          "num": 20,
+          "tag": "文化自信基础地位",
+          "html": "坚定中国特色社会主义道路自信、理论自信、制度自信，说到底是要坚定<strong class=\"xt-keyword cloze\" data-cloze=\"文化自信\" data-ghost=\"文··信\">文化自信</strong>。",
+          "voice_start": 173.86,
+          "voice_end": 182.64,
+          "anlang_start": 130.63,
+          "anlang_end": 138.15
+        },
+        {
+          "id": "pol_xt_d23_p21",
+          "num": 21,
+          "tag": "进入新时代依据",
+          "html": "我们党作出中国特色社会主义进入新时代重大判断的基本依据是<strong class=\"xt-keyword cloze\" data-cloze=\"我国社会主要矛盾已经发生了变化\" data-ghost=\"我····矛盾已经··变化\">我国社会主要矛盾已经发生了变化</strong>。",
+          "voice_start": 183.02,
+          "voice_end": 192.4,
+          "anlang_start": 138.44,
+          "anlang_end": 147.32
+        },
+        {
+          "id": "pol_xt_d23_p22",
+          "num": 22,
+          "tag": "主要制约因素",
+          "html": "满足人民日益增长的美好生活需要的主要制约因素是<strong class=\"xt-keyword cloze\" data-cloze=\"发展不平衡不充分\" data-ghost=\"发··平衡··分\">发展不平衡不充分</strong>的问题。",
+          "voice_start": 192.48,
+          "voice_end": 200.06,
+          "anlang_start": 147.61,
+          "anlang_end": 154.81
+        },
+        {
+          "id": "pol_xt_d23_p23",
+          "num": 23,
+          "tag": "两个没有变",
+          "html": "新时代主要矛盾变化但“两个没有变”：我国仍处于并将长期处于<strong class=\"xt-keyword cloze\" data-cloze=\"社会主义初级阶段的基本国情没有变，我国是世界上最大的发展中国家的国际地位没有变\" data-ghost=\"社·······国情没有变，我········的国际地位没有变\">社会主义初级阶段的基本国情没有变，我国是世界上最大的发展中国家的国际地位没有变</strong>。",
+          "voice_start": 200.06,
+          "voice_end": 225.96,
+          "anlang_start": 155.18,
+          "anlang_end": 167.9
+        },
+        {
+          "id": "pol_xt_d23_p24",
+          "num": 24,
+          "tag": "把握历史主动根本",
+          "html": "我们党坚定信仰信念、把握历史主动的根本所在是<strong class=\"xt-keyword cloze\" data-cloze=\"拥有马克思主义科学理论指导\" data-ghost=\"拥······科学理论指导\">拥有马克思主义科学理论指导</strong>。",
+          "voice_start": 225.98,
+          "voice_end": 235.03,
+          "anlang_start": 168.19,
+          "anlang_end": 174.91
+        }
+      ]
+    },
+    {
+      "id": "pol_xt_d24",
+      "day": 24,
+      "title": "Day 24 新思想2-第二章至第三章",
+      "subtitle": "中国梦本质、2035年与本世纪中叶目标、中国式现代化中国特色、党的全面领导",
+      "subject": "新思想",
+      "duration_sec": 165,
+      "anlang_audio": "audio_xutao/xt_anlang_d24.mp3",
+      "voice_audio": "audio_xutao/xt_voice_d24.mp3",
+      "points": [
+        {
+          "id": "pol_xt_d24_p01",
+          "num": 1,
+          "tag": "中国梦本质",
+          "html": "中国梦的本质是<strong class=\"xt-keyword cloze\" data-cloze=\"国家富强、民族振兴、人民幸福\" data-ghost=\"国···、民···、人···\">国家富强、民族振兴、人民幸福</strong>。",
+          "voice_start": 20.81,
+          "voice_end": 25.47,
+          "anlang_start": 0.08,
+          "anlang_end": 4.88
+        },
+        {
+          "id": "pol_xt_d24_p02",
+          "num": 2,
+          "tag": "基础与保障",
+          "html": "国家富强、民族振兴是人民幸福的<strong class=\"xt-keyword cloze\" data-cloze=\"基础和保障\" data-ghost=\"基·和保障\">基础和保障</strong>。",
+          "voice_start": 25.47,
+          "voice_end": 30.14,
+          "anlang_start": 5.25,
+          "anlang_end": 9.49
+        },
+        {
+          "id": "pol_xt_d24_p03",
+          "num": 3,
+          "tag": "出发点与落脚点",
+          "html": "人民幸福是国家富强、民族振兴的<strong class=\"xt-keyword cloze\" data-cloze=\"根本出发点和落脚点\" data-ghost=\"根··发点和··点\">根本出发点和落脚点</strong>（根本目的）。",
+          "voice_start": 30.14,
+          "voice_end": 38.22,
+          "anlang_start": 9.86,
+          "anlang_end": 16.1
+        },
+        {
+          "id": "pol_xt_d24_p04",
+          "num": 4,
+          "tag": "中特总任务",
+          "html": "坚持和发展中国特色社会主义的总任务是<strong class=\"xt-keyword cloze\" data-cloze=\"实现社会主义现代化和中华民族伟大复兴\" data-ghost=\"实········和中华····复兴\">实现社会主义现代化和中华民族伟大复兴</strong>。",
+          "voice_start": 38.22,
+          "voice_end": 47.27,
+          "anlang_start": 16.39,
+          "anlang_end": 23.43
+        },
+        {
+          "id": "pol_xt_d24_p05",
+          "num": 5,
+          "tag": "2035年具体目标",
+          "html": "到2035年我国发展总体目标：人均国内生产总值迈上新的大台阶，达到中等发达国家水平，进入创新型国家前列；建成教育强国、科技强国、人才强国、文化强国、体育强国、健康中国；<strong class=\"xt-keyword cloze\" data-cloze=\"共同富裕取得更为明显的实质性进展\" data-ghost=\"共·········性进展\">共同富裕取得更为明显的实质性进展</strong>；碳排放达峰后稳中有降；全面建成高水平社会主义市场经济体制。",
+          "voice_start": 47.27,
+          "voice_end": 109.52,
+          "anlang_start": 23.8,
+          "anlang_end": 45.24
+        },
+        {
+          "id": "pol_xt_d24_p06",
+          "num": 6,
+          "tag": "本世纪中叶目标",
+          "html": "到本世纪中叶我国发展的总体目标是建成富强民主文明和谐美丽的社会主义现代化强国，<strong class=\"xt-keyword cloze\" data-cloze=\"全体人民共同富裕基本实现\" data-ghost=\"全·······基本实现\">全体人民共同富裕基本实现</strong>。",
+          "voice_start": 109.52,
+          "voice_end": 116.48,
+          "anlang_start": 45.53,
+          "anlang_end": 51.29
+        },
+        {
+          "id": "pol_xt_d24_p07",
+          "num": 7,
+          "tag": "新民革命历史贡献",
+          "html": "为中国式现代化创造了<strong class=\"xt-keyword cloze\" data-cloze=\"根本社会条件\" data-ghost=\"根··会条件\">根本社会条件</strong>的是新民主主义革命的胜利。",
+          "voice_start": 116.58,
+          "voice_end": 122.57,
+          "anlang_start": 51.58,
+          "anlang_end": 56.38
+        },
+        {
+          "id": "pol_xt_d24_p08",
+          "num": 8,
+          "tag": "社革社建历史贡献",
+          "html": "为中国式现代化奠定<strong class=\"xt-keyword cloze\" data-cloze=\"根本政治前提和制度基础\" data-ghost=\"根······和制度基础\">根本政治前提和制度基础</strong>，提供宝贵经验、理论准备和物质基础的是社会主义革命和建设。",
+          "voice_start": 122.57,
+          "voice_end": 133.64,
+          "anlang_start": 56.67,
+          "anlang_end": 66.67
+        },
+        {
+          "id": "pol_xt_d24_p09",
+          "num": 9,
+          "tag": "改革开放历史贡献",
+          "html": "为中国式现代化提供<strong class=\"xt-keyword cloze\" data-cloze=\"充满新的活力的体制保证和快速发展的物质条件\" data-ghost=\"充······体制保证和·······\">充满新的活力的体制保证和快速发展的物质条件</strong>的是改革开放和社会主义现代化建设。",
+          "voice_start": 133.64,
+          "voice_end": 144.05,
+          "anlang_start": 67.04,
+          "anlang_end": 76.32
+        },
+        {
+          "id": "pol_xt_d24_p10",
+          "num": 10,
+          "tag": "新时代历史贡献",
+          "html": "为中国式现代化提供了<strong class=\"xt-keyword cloze\" data-cloze=\"更为完善的制度保证、更为坚实的物质基础、更为主动的精神力量\" data-ghost=\"更·······、更·······、更·······\">更为完善的制度保证、更为坚实的物质基础、更为主动的精神力量</strong>的是新时代中国特色社会主义的伟大成就。",
+          "voice_start": 144.05,
+          "voice_end": 171.98,
+          "anlang_start": 76.61,
+          "anlang_end": 86.45
+        },
+        {
+          "id": "pol_xt_d24_p11",
+          "num": 11,
+          "tag": "中国式现代化特色",
+          "html": "中国式现代化的五点中国特色：人口规模巨大的现代化、全体人民共同富裕的现代化、<strong class=\"xt-keyword cloze\" data-cloze=\"物质文明和精神文明相协调的现代化、人与自然和谐共生的现代化\" data-ghost=\"物·······协调的现代化、人········的现代化\">物质文明和精神文明相协调的现代化、人与自然和谐共生的现代化</strong>、走和平发展道路的现代化。",
+          "voice_start": 171.98,
+          "voice_end": 189.32,
+          "anlang_start": 86.74,
+          "anlang_end": 98.42
+        },
+        {
+          "id": "pol_xt_d24_p12",
+          "num": 12,
+          "tag": "区别于西方的标志",
+          "html": "中国式现代化区别于西方现代化的显著标志是<strong class=\"xt-keyword cloze\" data-cloze=\"全体人民共同富裕的现代化\" data-ghost=\"全·······的现代化\">全体人民共同富裕的现代化</strong>。",
+          "voice_start": 189.4,
+          "voice_end": 197.58,
+          "anlang_start": 98.71,
+          "anlang_end": 105.43
+        },
+        {
+          "id": "pol_xt_d24_p13",
+          "num": 13,
+          "tag": "中国式现代化定性",
+          "html": "对中国式现代化的根本定性（本质要求之首）是<strong class=\"xt-keyword cloze\" data-cloze=\"中国共产党领导\" data-ghost=\"中····领导\">中国共产党领导</strong>的社会主义现代化。",
+          "voice_start": 197.58,
+          "voice_end": 206.01,
+          "anlang_start": 105.72,
+          "anlang_end": 112.76
+        },
+        {
+          "id": "pol_xt_d24_p14",
+          "num": 14,
+          "tag": "最本质的特征",
+          "html": "中国特色社会主义最本质的特征是<strong class=\"xt-keyword cloze\" data-cloze=\"中国共产党的领导\" data-ghost=\"中····领导\">中国共产党的领导</strong>。",
+          "voice_start": 206.01,
+          "voice_end": 211.06,
+          "anlang_start": 113.05,
+          "anlang_end": 117.13
+        },
+        {
+          "id": "pol_xt_d24_p15",
+          "num": 15,
+          "tag": "最大的优势",
+          "html": "中国特色社会主义制度的最大优势是<strong class=\"xt-keyword cloze\" data-cloze=\"中国共产党的领导\" data-ghost=\"中····领导\">中国共产党的领导</strong>。",
+          "voice_start": 211.06,
+          "voice_end": 215.88,
+          "anlang_start": 117.5,
+          "anlang_end": 121.18
+        },
+        {
+          "id": "pol_xt_d24_p16",
+          "num": 16,
+          "tag": "中国最大的国情",
+          "html": "当代中国最大的国情是<strong class=\"xt-keyword cloze\" data-cloze=\"中国共产党的领导\" data-ghost=\"中····领导\">中国共产党的领导</strong>。",
+          "voice_start": 215.88,
+          "voice_end": 219.44,
+          "anlang_start": 121.47,
+          "anlang_end": 124.67
+        },
+        {
+          "id": "pol_xt_d24_p17",
+          "num": 17,
+          "tag": "民族复兴根本保证",
+          "html": "实现中华民族伟大复兴的根本保证是<strong class=\"xt-keyword cloze\" data-cloze=\"中国共产党的领导\" data-ghost=\"中····领导\">中国共产党的领导</strong>。",
+          "voice_start": 219.44,
+          "voice_end": 224.52,
+          "anlang_start": 125.04,
+          "anlang_end": 129.04
+        },
+        {
+          "id": "pol_xt_d24_p18",
+          "num": 18,
+          "tag": "国家治理体系核心",
+          "html": "我国国家治理体系的核心是<strong class=\"xt-keyword cloze\" data-cloze=\"党的领导\" data-ghost=\"党··导\">党的领导</strong>。",
+          "voice_start": 224.52,
+          "voice_end": 228.59,
+          "anlang_start": 129.33,
+          "anlang_end": 132.61
+        },
+        {
+          "id": "pol_xt_d24_p19",
+          "num": 19,
+          "tag": "党的领导最高原则",
+          "html": "坚持和加强党的全面领导的最高原则是<strong class=\"xt-keyword cloze\" data-cloze=\"党中央权威和集中统一领导\" data-ghost=\"党·····集中统一领导\">党中央权威和集中统一领导</strong>。",
+          "voice_start": 228.59,
+          "voice_end": 233.93,
+          "anlang_start": 132.9,
+          "anlang_end": 137.62
+        },
+        {
+          "id": "pol_xt_d24_p20",
+          "num": 20,
+          "tag": "维护中央领导关键",
+          "html": "维护党中央权威和集中统一领导最关键的是坚决维护<strong class=\"xt-keyword cloze\" data-cloze=\"习近平同志党中央的核心、全党的核心地位\" data-ghost=\"习·······的核心、全····地位\">习近平同志党中央的核心、全党的核心地位</strong>。",
+          "voice_start": 233.93,
+          "voice_end": 245.12,
+          "anlang_start": 137.91,
+          "anlang_end": 146.55
+        },
+        {
+          "id": "pol_xt_d24_p21",
+          "num": 21,
+          "tag": "居于统领地位制度",
+          "html": "在我国国家政治制度体系中居于统领地位的是<strong class=\"xt-keyword cloze\" data-cloze=\"党的领导制度\" data-ghost=\"党···制度\">党的领导制度</strong>。",
+          "voice_start": 245.24,
+          "voice_end": 252.41,
+          "anlang_start": 146.84,
+          "anlang_end": 152.12
+        },
+        {
+          "id": "pol_xt_d24_p22",
+          "num": 22,
+          "tag": "我国根本领导制度",
+          "html": "我国的根本领导制度是<strong class=\"xt-keyword cloze\" data-cloze=\"党的领导制度\" data-ghost=\"党···制度\">党的领导制度</strong>（中国特色社会主义制度和国家治理体系的统领）。",
+          "voice_start": 252.41,
+          "voice_end": 256.95,
+          "anlang_start": 152.41,
+          "anlang_end": 156.25
+        },
+        {
+          "id": "pol_xt_d24_p23",
+          "num": 23,
+          "tag": "《关于建立报告制度》",
+          "html": "<strong class=\"xt-keyword cloze\" data-cloze=\"1948年年初\" data-ghost=\"1948年··\">1948年年初</strong>，毛泽东为中共中央起草《关于建立报告制度》的党内指示，推动建立健全请示报告制度。",
+          "voice_start": 256.95,
+          "voice_end": 266.52,
+          "anlang_start": 156.62,
+          "anlang_end": 165.02
+        }
+      ]
+    },
+    {
+      "id": "pol_xt_d25",
+      "day": 25,
+      "title": "Day 25 新思想3-第四章至第五章",
+      "subtitle": "人民立场、全面深化改革总目标、“三个推进方面”与高水平制度型开放",
+      "subject": "新思想",
+      "duration_sec": 135,
+      "anlang_audio": "audio_xutao/xt_anlang_d25.mp3",
+      "voice_audio": "audio_xutao/xt_voice_d25.mp3",
+      "points": [
+        {
+          "id": "pol_xt_d25_p01",
+          "num": 1,
+          "tag": "根本政治立场",
+          "html": "中国共产党的根本政治立场是<strong class=\"xt-keyword cloze\" data-cloze=\"人民立场\" data-ghost=\"人··场\">人民立场</strong>。",
+          "voice_start": 17.01,
+          "voice_end": 21.79,
+          "anlang_start": 0.08,
+          "anlang_end": 3.92
+        },
+        {
+          "id": "pol_xt_d25_p02",
+          "num": 2,
+          "tag": "党最大政治优势",
+          "html": "我们党最大的政治优势是<strong class=\"xt-keyword cloze\" data-cloze=\"密切联系群众\" data-ghost=\"密···群众\">密切联系群众</strong>。",
+          "voice_start": 21.79,
+          "voice_end": 26.57,
+          "anlang_start": 4.21,
+          "anlang_end": 7.81
+        },
+        {
+          "id": "pol_xt_d25_p03",
+          "num": 3,
+          "tag": "执政后最大危险",
+          "html": "党执政后的最大危险是<strong class=\"xt-keyword cloze\" data-cloze=\"脱离群众\" data-ghost=\"脱··众\">脱离群众</strong>。",
+          "voice_start": 26.57,
+          "voice_end": 30.6,
+          "anlang_start": 8.1,
+          "anlang_end": 11.7
+        },
+        {
+          "id": "pol_xt_d25_p04",
+          "num": 4,
+          "tag": "新时代价值取向",
+          "html": "新时代治国理政的根本价值取向是<strong class=\"xt-keyword cloze\" data-cloze=\"坚持人民至上\" data-ghost=\"坚···至上\">坚持人民至上</strong>。",
+          "voice_start": 30.6,
+          "voice_end": 37,
+          "anlang_start": 12.07,
+          "anlang_end": 16.71
+        },
+        {
+          "id": "pol_xt_d25_p05",
+          "num": 5,
+          "tag": "最高裁决者评判者",
+          "html": "党的一切工作的最高裁决者和最终评判者是<strong class=\"xt-keyword cloze\" data-cloze=\"人民\" data-ghost=\"人·\">人民</strong>。",
+          "voice_start": 37,
+          "voice_end": 42.84,
+          "anlang_start": 17.08,
+          "anlang_end": 21.48
+        },
+        {
+          "id": "pol_xt_d25_p06",
+          "num": 6,
+          "tag": "党根本工作方法",
+          "html": "我们党始终坚持的根本工作方法是<strong class=\"xt-keyword cloze\" data-cloze=\"群众路线\" data-ghost=\"群··线\">群众路线</strong>。",
+          "voice_start": 42.84,
+          "voice_end": 48.68,
+          "anlang_start": 21.85,
+          "anlang_end": 26.17
+        },
+        {
+          "id": "pol_xt_d25_p07",
+          "num": 7,
+          "tag": "真知灼见源头活水",
+          "html": "既是获得真知灼见的源头活水，也是贯彻群众路线的有效途径的是<strong class=\"xt-keyword cloze\" data-cloze=\"调查研究\" data-ghost=\"调··究\">调查研究</strong>。",
+          "voice_start": 48.68,
+          "voice_end": 57.86,
+          "anlang_start": 26.46,
+          "anlang_end": 32.78
+        },
+        {
+          "id": "pol_xt_d25_p08",
+          "num": 8,
+          "tag": "开启改革开放会议",
+          "html": "开启了改革开放和社会主义现代化建设新时期的会议是<strong class=\"xt-keyword cloze\" data-cloze=\"中共十一届三中全会\" data-ghost=\"中···三中全会\">中共十一届三中全会</strong>。",
+          "voice_start": 57.86,
+          "voice_end": 65,
+          "anlang_start": 33.07,
+          "anlang_end": 39.07
+        },
+        {
+          "id": "pol_xt_d25_p09",
+          "num": 9,
+          "tag": "全面深化改革会议",
+          "html": "开启了新时代全面深化改革、系统整体设计推进改革新征程的会议是<strong class=\"xt-keyword cloze\" data-cloze=\"中共十八届三中全会\" data-ghost=\"中···三中全会\">中共十八届三中全会</strong>。",
+          "voice_start": 65,
+          "voice_end": 69.69,
+          "anlang_start": 39.36,
+          "anlang_end": 43.52
+        },
+        {
+          "id": "pol_xt_d25_p10",
+          "num": 10,
+          "tag": "五年规划政治优势",
+          "html": "制定和实施五年规划有利于实现党的领导、有利于集中力量办大事、有利于前瞻性把握战略问题、有利于保持事业连续性，得益于<strong class=\"xt-keyword cloze\" data-cloze=\"发挥中国特色社会主义政治优势\" data-ghost=\"发········政治优势\">发挥中国特色社会主义政治优势</strong>。",
+          "voice_start": 69.69,
+          "voice_end": 104.86,
+          "anlang_start": 43.81,
+          "anlang_end": 57.25
+        },
+        {
+          "id": "pol_xt_d25_p11",
+          "num": 11,
+          "tag": "全面深改落脚点",
+          "html": "全面深化改革的出发点和落脚点是以人民为中心，<strong class=\"xt-keyword cloze\" data-cloze=\"促进社会公平正义、增进人民福祉\" data-ghost=\"促······、增····\">促进社会公平正义、增进人民福祉</strong>。",
+          "voice_start": 104.86,
+          "voice_end": 114.3,
+          "anlang_start": 57.54,
+          "anlang_end": 65.62
+        },
+        {
+          "id": "pol_xt_d25_p12",
+          "num": 12,
+          "tag": "改革开放思想前提",
+          "html": "改革开放的思想前提是<strong class=\"xt-keyword cloze\" data-cloze=\"解放思想\" data-ghost=\"解··想\">解放思想</strong>。",
+          "voice_start": 114.3,
+          "voice_end": 118.74,
+          "anlang_start": 65.99,
+          "anlang_end": 69.43
+        },
+        {
+          "id": "pol_xt_d25_p13",
+          "num": 13,
+          "tag": "改革开放鲜明特征",
+          "html": "改革开放的鲜明特征和首要任务是<strong class=\"xt-keyword cloze\" data-cloze=\"解放和发展社会生产力\" data-ghost=\"解····社会生产力\">解放和发展社会生产力</strong>。",
+          "voice_start": 118.74,
+          "voice_end": 125.27,
+          "anlang_start": 69.72,
+          "anlang_end": 75.4
+        },
+        {
+          "id": "pol_xt_d25_p14",
+          "num": 14,
+          "tag": "改革开放关键所在",
+          "html": "改革开放的基本目的和关键所在是<strong class=\"xt-keyword cloze\" data-cloze=\"解放和增强社会活力\" data-ghost=\"解···增强社会活力\">解放和增强社会活力</strong>。",
+          "voice_start": 125.27,
+          "voice_end": 132.06,
+          "anlang_start": 75.69,
+          "anlang_end": 80.97
+        },
+        {
+          "id": "pol_xt_d25_p15",
+          "num": 15,
+          "tag": "全面深化改革总目标",
+          "html": "全面深化改革的总目标是<strong class=\"xt-keyword cloze\" data-cloze=\"完善和发展中国特色社会主义制度，推进国家治理体系和治理能力现代化\" data-ghost=\"完·········制度，推······和治理能力现代化\">完善和发展中国特色社会主义制度，推进国家治理体系和治理能力现代化</strong>。",
+          "voice_start": 132.06,
+          "voice_end": 141.72,
+          "anlang_start": 81.26,
+          "anlang_end": 89.5
+        },
+        {
+          "id": "pol_xt_d25_p16",
+          "num": 16,
+          "tag": "总目标根本方向",
+          "html": "全面深化改革总目标中“完善和发展中国特色社会主义制度”规定了改革的<strong class=\"xt-keyword cloze\" data-cloze=\"根本方向\" data-ghost=\"根··向\">根本方向</strong>。",
+          "voice_start": 141.72,
+          "voice_end": 148.86,
+          "anlang_start": 89.79,
+          "anlang_end": 96.75
+        },
+        {
+          "id": "pol_xt_d25_p17",
+          "num": 17,
+          "tag": "总目标时代要求",
+          "html": "全面深化改革总目标中“推进国家治理体系和治理能力现代化”规定了<strong class=\"xt-keyword cloze\" data-cloze=\"鲜明指向和时代要求\" data-ghost=\"鲜···和时代要求\">鲜明指向和时代要求</strong>。",
+          "voice_start": 148.86,
+          "voice_end": 158.8,
+          "anlang_start": 97.04,
+          "anlang_end": 104.88
+        },
+        {
+          "id": "pol_xt_d25_p18",
+          "num": 18,
+          "tag": "统筹推进改革引领",
+          "html": "统筹推进各领域各方面改革开放的引领是<strong class=\"xt-keyword cloze\" data-cloze=\"全面深化改革的总目标\" data-ghost=\"全····的··标\">全面深化改革的总目标</strong>。",
+          "voice_start": 158.8,
+          "voice_end": 166.41,
+          "anlang_start": 105.17,
+          "anlang_end": 111.09
+        },
+        {
+          "id": "pol_xt_d25_p19",
+          "num": 19,
+          "tag": "统筹推进改革主线",
+          "html": "统筹推进各领域各方面改革开放的主线是<strong class=\"xt-keyword cloze\" data-cloze=\"制度建设\" data-ghost=\"制··设\">制度建设</strong>。",
+          "voice_start": 166.41,
+          "voice_end": 172,
+          "anlang_start": 111.46,
+          "anlang_end": 116.18
+        },
+        {
+          "id": "pol_xt_d25_p20",
+          "num": 20,
+          "tag": "统筹推进改革重点",
+          "html": "统筹推进各领域各方面改革开放的重点（牵引）是<strong class=\"xt-keyword cloze\" data-cloze=\"经济体制改革\" data-ghost=\"经···改革\">经济体制改革</strong>。",
+          "voice_start": 172.02,
+          "voice_end": 177.78,
+          "anlang_start": 116.47,
+          "anlang_end": 121.59
+        },
+        {
+          "id": "pol_xt_d25_p21",
+          "num": 21,
+          "tag": "统筹推进改革突破口",
+          "html": "统筹推进各领域各方面改革开放的突破口是<strong class=\"xt-keyword cloze\" data-cloze=\"重点领域和关键环节的改革\" data-ghost=\"重···和关键环节的改革\">重点领域和关键环节的改革</strong>。",
+          "voice_start": 177.78,
+          "voice_end": 185.46,
+          "anlang_start": 121.88,
+          "anlang_end": 128.44
+        },
+        {
+          "id": "pol_xt_d25_p22",
+          "num": 22,
+          "tag": "高水平对外开放重点",
+          "html": "当前我国推进高水平对外开放的突出特征是稳步扩大规则、规制、管理、标准等<strong class=\"xt-keyword cloze\" data-cloze=\"制度型开放\" data-ghost=\"制··开放\">制度型开放</strong>。",
+          "voice_start": 185.46,
+          "voice_end": 196.98,
+          "anlang_start": 128.81,
+          "anlang_end": 135.13
+        }
+      ]
+    },
+    {
+      "id": "pol_xt_d26",
+      "day": 26,
+      "title": "Day 26 新思想4-第六章",
+      "subtitle": "市场经济与民营经济、新发展理念与新发展格局、新质生产力、现代化产业体系与乡村振兴",
+      "subject": "新思想",
+      "duration_sec": 121,
+      "anlang_audio": "audio_xutao/xt_anlang_d26.mp3",
+      "voice_audio": "audio_xutao/xt_voice_d26.mp3",
+      "points": [
+        {
+          "id": "pol_xt_d26_p01",
+          "num": 1,
+          "tag": "重要组成部分",
+          "html": "公有制经济和非公有制经济都是<strong class=\"xt-keyword cloze\" data-cloze=\"社会主义市场经济\" data-ghost=\"社····市场··\">社会主义市场经济</strong>的重要组成部分，都是我国经济社会发展的重要基础。",
+          "voice_start": 17.63,
+          "voice_end": 29.34,
+          "anlang_start": 0.08,
+          "anlang_end": 8.16
+        },
+        {
+          "id": "pol_xt_d26_p02",
+          "num": 2,
+          "tag": "国民经济主导作用",
+          "html": "在国民经济中起主导作用的是<strong class=\"xt-keyword cloze\" data-cloze=\"国有经济\" data-ghost=\"国··济\">国有经济</strong>。",
+          "voice_start": 29.34,
+          "voice_end": 34.21,
+          "anlang_start": 8.45,
+          "anlang_end": 12.53
+        },
+        {
+          "id": "pol_xt_d26_p03",
+          "num": 3,
+          "tag": "中国式现代化生力军",
+          "html": "推进中国式现代化的生力军（高质量发展重要基础）是<strong class=\"xt-keyword cloze\" data-cloze=\"民营经济\" data-ghost=\"民··济\">民营经济</strong>。",
+          "voice_start": 34.21,
+          "voice_end": 39.09,
+          "anlang_start": 12.82,
+          "anlang_end": 16.82
+        },
+        {
+          "id": "pol_xt_d26_p04",
+          "num": 4,
+          "tag": "市场经济体制关键",
+          "html": "构建高水平社会主义市场经济体制的关键是处理好<strong class=\"xt-keyword cloze\" data-cloze=\"政府和市场的关系\" data-ghost=\"政·和··的关系\">政府和市场的关系</strong>。",
+          "voice_start": 39.09,
+          "voice_end": 48.07,
+          "anlang_start": 17.19,
+          "anlang_end": 23.27
+        },
+        {
+          "id": "pol_xt_d26_p05",
+          "num": 5,
+          "tag": "创新解决的问题",
+          "html": "创新是引领发展的第一动力，注重解决的是<strong class=\"xt-keyword cloze\" data-cloze=\"发展动力问题\" data-ghost=\"发·动力问题\">发展动力问题</strong>。",
+          "voice_start": 48.07,
+          "voice_end": 54.74,
+          "anlang_start": 23.64,
+          "anlang_end": 28.44
+        },
+        {
+          "id": "pol_xt_d26_p06",
+          "num": 6,
+          "tag": "协调解决的问题",
+          "html": "协调是持续健康发展的内在要求，注重解决的是<strong class=\"xt-keyword cloze\" data-cloze=\"发展不平衡问题\" data-ghost=\"发··平衡问题\">发展不平衡问题</strong>。",
+          "voice_start": 54.74,
+          "voice_end": 62.06,
+          "anlang_start": 28.73,
+          "anlang_end": 34.73
+        },
+        {
+          "id": "pol_xt_d26_p07",
+          "num": 7,
+          "tag": "共享解决的问题",
+          "html": "共享是中国特色社会主义的本质要求，注重解决的是<strong class=\"xt-keyword cloze\" data-cloze=\"社会公平正义问题\" data-ghost=\"社·公平正义问题\">社会公平正义问题</strong>。",
+          "voice_start": 62.06,
+          "voice_end": 70.14,
+          "anlang_start": 35.1,
+          "anlang_end": 40.78
+        },
+        {
+          "id": "pol_xt_d26_p08",
+          "num": 8,
+          "tag": "新发展格局本质特征",
+          "html": "新发展格局最本质的特征是<strong class=\"xt-keyword cloze\" data-cloze=\"实现高水平的自立自强\" data-ghost=\"实·····的自立自强\">实现高水平的自立自强</strong>。",
+          "voice_start": 70.14,
+          "voice_end": 76.2,
+          "anlang_start": 41.07,
+          "anlang_end": 46.59
+        },
+        {
+          "id": "pol_xt_d26_p09",
+          "num": 9,
+          "tag": "新发展格局主线",
+          "html": "构建新发展格局的主线（工作主线）是<strong class=\"xt-keyword cloze\" data-cloze=\"深化供给侧结构性改革\" data-ghost=\"深·····构性改革\">深化供给侧结构性改革</strong>。",
+          "voice_start": 76.2,
+          "voice_end": 81.97,
+          "anlang_start": 46.96,
+          "anlang_end": 52
+        },
+        {
+          "id": "pol_xt_d26_p10",
+          "num": 10,
+          "tag": "新发展格局战略基点",
+          "html": "构建新发展格局的战略基点是<strong class=\"xt-keyword cloze\" data-cloze=\"扩大内需\" data-ghost=\"扩··需\">扩大内需</strong>。",
+          "voice_start": 81.97,
+          "voice_end": 86.74,
+          "anlang_start": 52.37,
+          "anlang_end": 56.45
+        },
+        {
+          "id": "pol_xt_d26_p11",
+          "num": 11,
+          "tag": "新发展格局关键",
+          "html": "构建新发展格局的关键在于<strong class=\"xt-keyword cloze\" data-cloze=\"经济循环的畅通无阻\" data-ghost=\"经··环的畅通无阻\">经济循环的畅通无阻</strong>（备选亦可表述为高水平科技自立自强）。",
+          "voice_start": 86.74,
+          "voice_end": 99.3,
+          "anlang_start": 56.74,
+          "anlang_end": 64.66
+        },
+        {
+          "id": "pol_xt_d26_p12",
+          "num": 12,
+          "tag": "新时代发展鲜明主题",
+          "html": "新时代我国经济社会发展的鲜明主题是<strong class=\"xt-keyword cloze\" data-cloze=\"高质量发展\" data-ghost=\"高··发展\">高质量发展</strong>。",
+          "voice_start": 99.3,
+          "voice_end": 105.32,
+          "anlang_start": 64.95,
+          "anlang_end": 69.27
+        },
+        {
+          "id": "pol_xt_d26_p13",
+          "num": 13,
+          "tag": "推动发展着力点",
+          "html": "发展<strong class=\"xt-keyword cloze\" data-cloze=\"新质生产力\" data-ghost=\"新··产力\">新质生产力</strong>是推动高质量发展的内在要求和重要着力点。",
+          "voice_start": 105.32,
+          "voice_end": 121.51,
+          "anlang_start": 69.56,
+          "anlang_end": 76.52
+        },
+        {
+          "id": "pol_xt_d26_p14",
+          "num": 14,
+          "tag": "新质生产力核心要素",
+          "html": "发展新质生产力的核心要素是<strong class=\"xt-keyword cloze\" data-cloze=\"科技创新\" data-ghost=\"科··新\">科技创新</strong>。",
+          "voice_start": 121.51,
+          "voice_end": 125.68,
+          "anlang_start": 76.81,
+          "anlang_end": 80.49
+        },
+        {
+          "id": "pol_xt_d26_p15",
+          "num": 15,
+          "tag": "新质生产力核心标志",
+          "html": "新质生产力以<strong class=\"xt-keyword cloze\" data-cloze=\"全要素生产率大幅提升\" data-ghost=\"全···生产率····\">全要素生产率大幅提升</strong>为核心标志。",
+          "voice_start": 125.68,
+          "voice_end": 131.32,
+          "anlang_start": 80.78,
+          "anlang_end": 85.98
+        },
+        {
+          "id": "pol_xt_d26_p16",
+          "num": 16,
+          "tag": "现代产业体系根基",
+          "html": "现代化产业体系的根基（立身之本）是<strong class=\"xt-keyword cloze\" data-cloze=\"实体经济\" data-ghost=\"实··济\">实体经济</strong>。",
+          "voice_start": 131.32,
+          "voice_end": 135.81,
+          "anlang_start": 86.35,
+          "anlang_end": 90.03
+        },
+        {
+          "id": "pol_xt_d26_p17",
+          "num": 17,
+          "tag": "现代产业体系骨干",
+          "html": "现代化产业体系的骨干和实体经济的重点是<strong class=\"xt-keyword cloze\" data-cloze=\"先进制造业\" data-ghost=\"先···造业\">先进制造业</strong>。",
+          "voice_start": 135.81,
+          "voice_end": 149.56,
+          "anlang_start": 90.32,
+          "anlang_end": 98.56
+        },
+        {
+          "id": "pol_xt_d26_p18",
+          "num": 18,
+          "tag": "现代化强国根基",
+          "html": "社会主义现代化强国的根基是<strong class=\"xt-keyword cloze\" data-cloze=\"农业强国\" data-ghost=\"农··国\">农业强国</strong>。",
+          "voice_start": 149.56,
+          "voice_end": 154.59,
+          "anlang_start": 98.85,
+          "anlang_end": 102.45
+        },
+        {
+          "id": "pol_xt_d26_p19",
+          "num": 19,
+          "tag": "乡村振兴总方针",
+          "html": "实施乡村振兴战略的总方针是<strong class=\"xt-keyword cloze\" data-cloze=\"坚持农业农村优先发展\" data-ghost=\"坚······先发展\">坚持农业农村优先发展</strong>。",
+          "voice_start": 154.59,
+          "voice_end": 161.2,
+          "anlang_start": 102.82,
+          "anlang_end": 108.18
+        },
+        {
+          "id": "pol_xt_d26_p20",
+          "num": 20,
+          "tag": "三农工作总抓手",
+          "html": "新时代推进“三农”工作的总抓手是<strong class=\"xt-keyword cloze\" data-cloze=\"乡村全面振兴\" data-ghost=\"乡···振兴\">乡村全面振兴</strong>（推进乡村全面振兴）。",
+          "voice_start": 161.2,
+          "voice_end": 174.25,
+          "anlang_start": 108.47,
+          "anlang_end": 115.43
+        },
+        {
+          "id": "pol_xt_d26_p21",
+          "num": 21,
+          "tag": "城镇化首要任务",
+          "html": "我国推进以人为核心的新型城镇化的首要任务是<strong class=\"xt-keyword cloze\" data-cloze=\"推进农业转移人口市民化\" data-ghost=\"推·······市民化\">推进农业转移人口市民化</strong>。",
+          "voice_start": 174.25,
+          "voice_end": 181.03,
+          "anlang_start": 115.72,
+          "anlang_end": 121.08
         }
       ]
     }

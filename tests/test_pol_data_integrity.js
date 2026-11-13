@@ -4,10 +4,10 @@
  * 自动化测试与断言脚本：
  * 1. 验证 data/kaoyan_data_pol.js 语法正确，通过 node 载入并注册 window.KAOYAN_POL_DATA
  * 2. 断言 chapters47 长度为 47
- * 3. 断言 xutao16 长度为 16
+ * 3. 断言 xutao16 长度为 26
  * 4. 断言 tuijie11 长度为 11
  * 5. 断言 xutao16 Day 2 考点 1 文本为纯知识点，不含“今天是我们背诵笔记”等打招呼寒暄
- * 6. 断言所有 370 个 xutao16 考点的 voice_start, voice_end, anlang_start, anlang_end 均真实合法
+ * 6. 断言所有 608 个 xutao16 考点的 voice_start, voice_end, anlang_start, anlang_end 均真实合法
  * 7. 断言文件大小在合理区间 (约 3.5MB ~ 4.2MB)
  */
 
@@ -48,10 +48,10 @@ const subcardsCount = polData.chapters47.reduce((sum, ch) => sum + (ch.track2?.s
 assert.strictEqual(subcardsCount, 119, `Total subcards expected 119, got ${subcardsCount}`);
 console.log(`  ✓ chapters47 length is exactly 47 (subcards: ${subcardsCount})`);
 
-console.log('>>> [4/7] Asserting xutao16 length === 16...');
+console.log('>>> [4/7] Asserting xutao16 length === 26...');
 assert(Array.isArray(polData.xutao16), 'xutao16 is not an array');
-assert.strictEqual(polData.xutao16.length, 16, `xutao16 length expected 16, got ${polData.xutao16.length}`);
-console.log('  ✓ xutao16 length is exactly 16');
+assert.strictEqual(polData.xutao16.length, 26, `xutao16 length expected 26, got ${polData.xutao16.length}`);
+console.log('  ✓ xutao16 length is exactly 26');
 
 console.log('>>> [5/7] Asserting tuijie11 length === 11...');
 assert(Array.isArray(polData.tuijie11), 'tuijie11 is not an array');
@@ -75,7 +75,7 @@ assert(d2p1.anlang_start >= 0, 'Day 2 Point 1 anlang_start must be >= 0');
 assert(d2p1.anlang_end > d2p1.anlang_start, 'Day 2 Point 1 anlang_end must be greater than anlang_start');
 console.log('  ✓ Day 2 Point 1 is 100% pure knowledge and free of greeting chatter');
 
-console.log('>>> [7/7] Validating all 370 points across all 16 days in xutao16...');
+console.log('>>> [7/7] Validating all 608 points across all 26 days in xutao16...');
 let totalCheckedPoints = 0;
 polData.xutao16.forEach(day => {
   day.points.forEach(p => {
