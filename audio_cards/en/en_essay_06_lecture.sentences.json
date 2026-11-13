@@ -2,92 +2,92 @@
   {
     "id": "t2_intro",
     "text": "下面进入小作文 06 · 告示 Notice：绿色校园“书香流转”旧书捐赠公益倡议答题骨架与变体精解。",
-    "start": "0.087",
-    "end": "9.547",
-    "duration": "9.460"
+    "start": "0.030",
+    "end": "11.220",
+    "duration": "11.190"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：阐明倡议活动崇高宗旨与活动主题。",
-    "start": "10.732",
-    "end": "16.812",
-    "duration": "6.080"
+    "start": "11.625",
+    "end": "15.110",
+    "duration": "3.485"
   },
   {
     "id": "t2_p1_en",
     "text": "To advocate environmental sustainability and support rural basic education, our university is launching a campus-wide book donation campaign.",
-    "start": "16.812",
-    "end": "29.382",
-    "duration": "12.570"
+    "start": "15.785",
+    "end": "25.980",
+    "duration": "10.195"
   },
   {
     "id": "t2_p1_tip_cn",
     "text": "动词不定式引导目的状语开篇：To advocate..., our university is launching...",
-    "start": "29.926",
-    "end": "33.985",
-    "duration": "4.059"
+    "start": "26.665",
+    "end": "33.930",
+    "duration": "7.265"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "launching a campus-wide book donation campaign",
-    "start": "33.985",
-    "end": "38.380",
-    "duration": "4.395"
+    "start": "34.545",
+    "end": "37.620",
+    "duration": "3.075"
   },
   {
     "id": "t2_p2_cn",
     "text": "第二段：交代捐赠范围、规范要求与现场展位时间。",
-    "start": "38.380",
-    "end": "44.404",
-    "duration": "6.024"
+    "start": "39.275",
+    "end": "44.410",
+    "duration": "5.135"
   },
   {
     "id": "t2_p2_en",
     "text": "We warmly welcome unused books, particularly academic references, and collection stations will be set up at the Central Library this coming weekend.",
-    "start": "45.235",
-    "end": "56.525",
-    "duration": "11.290"
+    "start": "45.175",
+    "end": "54.850",
+    "duration": "9.675"
   },
   {
     "id": "t2_p2_tip_cn",
     "text": "清晰事务交代句式：Collection stations will be set up at [Location] from [Time].",
-    "start": "56.525",
-    "end": "61.562",
-    "duration": "5.037"
+    "start": "55.545",
+    "end": "61.580",
+    "duration": "6.035"
   },
   {
     "id": "t2_p2_tip_en",
     "text": "Collection stations will be set up at the lobby of the Central Library.",
-    "start": "62.342",
-    "end": "66.197",
-    "duration": "3.855"
+    "start": "62.285",
+    "end": "66.200",
+    "duration": "3.915"
   },
   {
     "id": "t2_p3_cn",
     "text": "第三段：感召全校师生践行善举，共筑书香温情。",
-    "start": "67.851",
-    "end": "73.517",
-    "duration": "5.666"
+    "start": "67.835",
+    "end": "73.530",
+    "duration": "5.695"
   },
   {
     "id": "t2_p3_en",
     "text": "Every donated book delivers a ray of hope to children in need; let us join hands to share our wisdom and foster social harmony!",
-    "start": "74.341",
-    "end": "84.667",
-    "duration": "10.326"
+    "start": "74.315",
+    "end": "82.960",
+    "duration": "8.645"
   },
   {
     "id": "t2_p3_tip_cn",
     "text": "公益号召金句：Let us join hands to share our wisdom and foster social harmony!",
-    "start": "84.667",
-    "end": "89.653",
-    "duration": "4.986"
+    "start": "83.690",
+    "end": "89.670",
+    "duration": "5.980"
   },
   {
     "id": "t2_p3_tip_en",
     "text": "Let us join hands to share our wisdom and foster social harmony!",
-    "start": "90.414",
-    "end": "96.406",
-    "duration": "5.992"
+    "start": "90.355",
+    "end": "94.860",
+    "duration": "4.505"
   }
 ]

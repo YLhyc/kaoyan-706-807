@@ -39,10 +39,13 @@
     // 播放状态
     isPlaying: false,
     speed: 1.0,
-    playMode: 'sequence', // 'all', 'sentence', 'section', 'loop3'
+    playMode: 'sequence', // 'sequence', 'item', 'section', 'loop3', 'sentence'
     clozeMode: 'off', // 'off' | 'keyword' | 'body'
     reciteMode: 'normal',
     loopCount: 0,
+    sentenceRepeatCount: 3, // 2 | 3 | 4 | 5
+    sectionRepeatCount: 0,  // 0 (∞) | 2 | 3 | 4 | 5
+    loopGapMs: 500,         // 0 | 500 | 800 | 1200
     fontSize: 17,
     theme: 'parchment',
     
@@ -77,6 +80,13 @@
   let loopSeekTimer = null;
   let lastSeekTs = 0;
   let manualSeekEpoch = 0;
+  let isLoopGapWaiting = false;
+  let loopGapTimer = null;
+  let loopGapEpoch = 0;
+  let lastLiveRepeatText = '';
+  let lastLiveRepeatHost = null;
+  let lastLiveRepeatWaiting = false;
+  let liveRepeatBadgeEl = null;
   let pendingSeekTarget = null; // { token, time, idx, startedAt, wasMuted, mutedForSeek }
   let pendingSeekTimer = null;
   let lastClickedSentGuard = null; // { idx, time, until }
@@ -122,13 +132,30 @@
   function getCardTimedSentences(card) {
     if (!card) return [];
     const candidates = card.querySelectorAll('[data-sent-idx], [data-sent-id], [data-start], .recite-sent, .recite-sent-item, .recite-sentence, .tj-sent-span, .tj-point-card');
-    return Array.from(candidates).filter(node => {
+    const filtered = Array.from(candidates).filter(node => {
       if (node.dataset.sentIdx !== undefined && node.dataset.sentIdx !== '') return true;
       if (node.dataset.sentId !== undefined && node.dataset.sentId !== '') return true;
       if (node.dataset.start !== undefined && node.dataset.start !== '' && !isNaN(parseFloat(node.dataset.start))) return true;
       if (node.classList.contains('tj-point-card') && node.dataset.pointId) return true;
       return false;
     });
+    // 按 0-based sentIdx / 物理起始时间排序，消除政治 47 章卡首徽章与音频栏 DOM 倒序造成的跳句错位
+    return filtered
+      .map((node, domOrder) => {
+        const idxNum = node.dataset.sentIdx !== undefined ? parseInt(node.dataset.sentIdx, 10) : NaN;
+        const startNum = node.dataset.start !== undefined ? parseFloat(node.dataset.start) : NaN;
+        return { node, domOrder, idxNum, startNum };
+      })
+      .sort((a, b) => {
+        const aHasIdx = !isNaN(a.idxNum);
+        const bHasIdx = !isNaN(b.idxNum);
+        if (aHasIdx && bHasIdx && a.idxNum !== b.idxNum) return a.idxNum - b.idxNum;
+        const aHasStart = !isNaN(a.startNum);
+        const bHasStart = !isNaN(b.startNum);
+        if (aHasStart && bHasStart && Math.abs(a.startNum - b.startNum) > 1e-4) return a.startNum - b.startNum;
+        return a.domOrder - b.domOrder;
+      })
+      .map(item => item.node);
   }
 
   function triggerLoopSeek(targetTime, targetSentIdx = null) {
@@ -159,6 +186,86 @@
   window.audio = audio;
 
   const el = {};
+
+  function cancelLoopGapWait() {
+    isLoopGapWaiting = false;
+    loopGapEpoch++;
+    if (loopGapTimer) {
+      clearTimeout(loopGapTimer);
+      loopGapTimer = null;
+    }
+  }
+
+  /**
+   * 统一闭环跳转/推进控制器：立即落位指针与高光，并按用户配置的停顿气口延迟复播
+   */
+  function performLoopTransition(targetTime, options = {}) {
+    const {
+      targetSentIdx = null,
+      targetSecIdx = null,
+      shouldResume = true,
+      useGap = false
+    } = options;
+
+    cancelLoopGapWait();
+    if (typeof targetSecIdx === 'number' && targetSecIdx >= 0 && targetSecIdx < currentFrameworkSections.length) {
+      currentActiveSectionIndex = targetSecIdx;
+    }
+    triggerLoopSeek(targetTime, targetSentIdx);
+
+    if (el.timeCurrent) el.timeCurrent.textContent = formatTime(targetTime);
+    const dur = audio.duration || 0;
+    if (dur > 0 && el.progressFill) {
+      el.progressFill.style.width = Math.min(100, (targetTime / dur) * 100) + '%';
+    }
+
+    const gapMs = useGap ? (Number(state.loopGapMs) || 0) : 0;
+    if (gapMs > 0 && shouldResume && (audio.getAttribute('src') || audio.currentSrc)) {
+      const myEpoch = ++loopGapEpoch;
+      isLoopGapWaiting = true;
+      state.isPlaying = true;
+      try {
+        audio.pause();
+      } catch (e) {}
+      updatePlayBtnUI();
+      updateHUDDisplay(targetTime);
+      loopGapTimer = setTimeout(() => {
+        if (myEpoch !== loopGapEpoch) return;
+        isLoopGapWaiting = false;
+        loopGapTimer = null;
+        if (!state.isPlaying || !(audio.getAttribute('src') || audio.currentSrc)) return;
+        updateHUDDisplay(audio.currentTime || targetTime);
+        audio.play().catch(err => console.log('Loop gap resume failed:', err));
+      }, gapMs);
+    } else {
+      updateHUDDisplay(targetTime);
+      if (shouldResume && audio.paused) {
+        audio.play().catch(err => console.log('Loop transition play failed:', err));
+      }
+    }
+  }
+
+  const REPEAT_COUNT_OPTIONS = [2, 3, 4, 5];
+  const LOOP_GAP_OPTIONS = [
+    { ms: 0, label: '0s 无停顿' },
+    { ms: 500, label: '0.5s 微喘气' },
+    { ms: 800, label: '0.8s 默念缓冲' },
+    { ms: 1200, label: '1.2s 完整复述' }
+  ];
+
+  function getActiveRepeatTarget() {
+    if (state.playMode === 'loop3') {
+      return Math.max(2, Number(state.sentenceRepeatCount) || 3);
+    }
+    if (state.playMode === 'section') {
+      const secReps = Number(state.sectionRepeatCount) || 0;
+      return secReps >= 2 ? secReps : Infinity;
+    }
+    if (state.playMode === 'sentence') {
+      return Infinity;
+    }
+    return 1;
+  }
 
   // ==========================================
   // 听读背诵循环模式配置 (按顺序依次播放 / 完全循环 / 单段循环 / 单句循环)
@@ -212,6 +319,7 @@
   ];
 
   function clearAudioSource() {
+    cancelLoopGapWait();
     try {
       audio.pause();
       audio.removeAttribute('src');
@@ -260,10 +368,37 @@
     } catch (e) {}
   }
 
+  function getEffectivePlayModeDisplay() {
+    const modeConfig = PLAY_MODES.find(m => m.id === state.playMode) || PLAY_MODES[0];
+    if (state.playMode === 'loop3') {
+      const reps = Math.max(2, Number(state.sentenceRepeatCount) || 3);
+      return {
+        ...modeConfig,
+        label: `句×${reps}`,
+        name: `单句 / 考点精听（${reps}遍推进）`,
+        toast: `已开启【单句/考点 ×${reps}遍推进】· 每条连读 ${reps} 遍后自动切换下一条`,
+        iconSvg: `<polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path><text x="12" y="16" font-size="8" font-weight="900" text-anchor="middle" fill="currentColor">${reps}</text>`
+      };
+    }
+    if (state.playMode === 'section') {
+      const secReps = Number(state.sectionRepeatCount) || 0;
+      if (secReps >= 2) {
+        return {
+          ...modeConfig,
+          label: `段×${secReps}`,
+          name: `单段精听（${secReps}遍推进）`,
+          toast: `已开启【单段 ×${secReps}遍推进】· 每段连读 ${secReps} 遍后自动切换下一段`,
+          iconSvg: `<polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path><text x="12" y="16" font-size="8" font-weight="900" text-anchor="middle" fill="currentColor">${secReps}</text>`
+        };
+      }
+    }
+    return modeConfig;
+  }
+
   function updatePlayModeUI(showToastNotice = false) {
     if (!el.loopModeBtn) return;
-    const modeConfig = PLAY_MODES.find(m => m.id === state.playMode) || PLAY_MODES[0];
-    el.loopModeBtn.classList.toggle('active', modeConfig.id !== 'sequence');
+    const modeConfig = getEffectivePlayModeDisplay();
+    el.loopModeBtn.classList.toggle('active', state.playMode !== 'sequence');
     el.loopModeBtn.title = `听读模式：${modeConfig.name}（点击打开选择列表）`;
 
     const iconEl = el.loopModeBtn.querySelector('svg');
@@ -278,6 +413,7 @@
   }
 
   function setPlayMode(modeId, showToastNotice = true) {
+    cancelLoopGapWait();
     state.playMode = modeId;
     state.loopCount = 0;
     localStorage.setItem('kaoyan_play_mode', modeId);
@@ -422,39 +558,165 @@
     if (!el.playModeList) return;
     el.playModeList.innerHTML = '';
 
-    PLAY_MODES.forEach(m => {
-      const isCurrent = m.id === state.playMode;
+    const secMode = PLAY_MODES.find(m => m.id === 'section');
+    const seqMode = PLAY_MODES.find(m => m.id === 'sequence');
+    const itemMode = PLAY_MODES.find(m => m.id === 'item');
+    const loop3Mode = PLAY_MODES.find(m => m.id === 'loop3');
+
+    const sentReps = Math.max(2, Number(state.sentenceRepeatCount) || 3);
+    const secReps = Number(state.sectionRepeatCount) || 0;
+
+    const drawerCards = [
+      {
+        modeId: 'sequence',
+        isCurrent: state.playMode === 'sequence',
+        name: seqMode.name,
+        badge: seqMode.badge,
+        desc: seqMode.desc,
+        iconSvg: seqMode.iconSvg,
+        pills: null
+      },
+      {
+        modeId: 'item',
+        isCurrent: state.playMode === 'item',
+        name: itemMode.name,
+        badge: itemMode.badge,
+        desc: itemMode.desc,
+        iconSvg: itemMode.iconSvg,
+        pills: null
+      },
+      {
+        modeId: 'section',
+        isCurrent: state.playMode === 'section',
+        name: '单段循环 / 多遍推进',
+        badge: secReps >= 2 ? `${secReps}遍推进` : '∞ 无限循环',
+        desc: '按板块/分论点背诵：选 2~5 遍读完自动推向下一段，或选 ∞ 在当前段内无限循环',
+        iconSvg: secMode.iconSvg,
+        pills: [
+          { val: 0, label: '∞ 无限', active: state.playMode === 'section' && secReps === 0 },
+          ...REPEAT_COUNT_OPTIONS.map(n => ({ val: n, label: `${n}遍`, active: state.playMode === 'section' && secReps === n }))
+        ],
+        onPillClick: (val) => {
+          state.sectionRepeatCount = val;
+          localStorage.setItem('kaoyan_sec_repeat_count', String(val));
+          setPlayMode('section', true);
+          closePlayModeDrawer();
+        },
+        onCardClick: () => {
+          setPlayMode('section', true);
+          closePlayModeDrawer();
+        }
+      },
+      {
+        modeId: state.playMode === 'sentence' ? 'sentence' : 'loop3',
+        isCurrent: state.playMode === 'loop3' || state.playMode === 'sentence',
+        name: '单句循环 / 考点精听',
+        badge: state.playMode === 'sentence' ? '∞ 无限单句' : `${sentReps}遍推进`,
+        desc: '徐涛考点 / 正文单句：选 2遍(AABBCC)、三遍(AAABBBCCC) 等逐条推进，或选 ∞ 无限单句循环',
+        iconSvg: loop3Mode.iconSvg,
+        pills: [
+          ...REPEAT_COUNT_OPTIONS.map(n => ({ val: n, label: `${n}遍`, active: state.playMode === 'loop3' && sentReps === n })),
+          { val: 0, label: '∞ 无限', active: state.playMode === 'sentence' }
+        ],
+        onPillClick: (val) => {
+          if (val === 0) {
+            setPlayMode('sentence', true);
+          } else {
+            state.sentenceRepeatCount = val;
+            localStorage.setItem('kaoyan_sent_repeat_count', String(val));
+            setPlayMode('loop3', true);
+          }
+          closePlayModeDrawer();
+        },
+        onCardClick: () => {
+          setPlayMode(state.playMode === 'sentence' ? 'sentence' : 'loop3', true);
+          closePlayModeDrawer();
+        }
+      }
+    ];
+
+    drawerCards.forEach(cfg => {
       const card = document.createElement('div');
-      card.className = `mode-option-card ${isCurrent ? 'active-mode-card' : ''}`;
+      card.className = `mode-option-card ${cfg.isCurrent ? 'active-mode-card' : ''} ${cfg.pills ? 'has-repeat-pills' : ''}`;
+      card.dataset.modeScope = cfg.modeId;
+
+      const pillsHtml = cfg.pills
+        ? `<div class="mode-repeat-pills">
+            <span class="mode-repeat-label">每条遍数:</span>
+            ${cfg.pills.map(p => `<button type="button" class="mode-repeat-pill ${p.active ? 'active' : ''}" data-rep-val="${p.val}">${p.label}</button>`).join('')}
+          </div>`
+        : '';
+
       card.innerHTML = `
         <div class="mode-option-icon">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            ${m.iconSvg}
+            ${cfg.iconSvg}
           </svg>
         </div>
         <div class="mode-option-info">
           <div class="mode-option-title-row">
-            <span class="mode-option-name">${m.name}</span>
-            <span class="mode-option-badge">${m.badge}</span>
+            <span class="mode-option-name">${cfg.name}</span>
+            <span class="mode-option-badge">${cfg.badge}</span>
           </div>
-          <div class="mode-option-desc">${m.desc}</div>
+          <div class="mode-option-desc">${cfg.desc}</div>
         </div>
-        ${isCurrent ? `
+        ${cfg.isCurrent ? `
           <div class="mode-option-check">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
           </div>
         ` : ''}
+        ${pillsHtml}
       `;
 
+      if (cfg.pills) {
+        card.querySelectorAll('.mode-repeat-pill').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const val = parseInt(btn.dataset.repVal, 10);
+            cfg.onPillClick(val);
+          });
+        });
+      }
+
       card.addEventListener('click', () => {
-        setPlayMode(m.id, true);
-        closePlayModeDrawer();
+        if (cfg.onCardClick) {
+          cfg.onCardClick();
+        } else {
+          setPlayMode(cfg.modeId, true);
+          closePlayModeDrawer();
+        }
       });
 
       el.playModeList.appendChild(card);
     });
+
+    const curGapMs = Number(state.loopGapMs) || 0;
+    const gapCard = document.createElement('div');
+    gapCard.className = 'mode-gap-card';
+    gapCard.innerHTML = `
+      <div class="mode-gap-header">
+        <span class="mode-gap-title">遍间停顿气口</span>
+        <span class="mode-gap-sub">每次重播与切换下一条前留出默念反应时间</span>
+      </div>
+      <div class="mode-gap-pills">
+        ${LOOP_GAP_OPTIONS.map(opt => `<button type="button" class="mode-gap-pill ${curGapMs === opt.ms ? 'active' : ''}" data-gap-ms="${opt.ms}">${opt.label}</button>`).join('')}
+      </div>
+    `;
+    gapCard.querySelectorAll('.mode-gap-pill').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const ms = parseInt(btn.dataset.gapMs, 10);
+        state.loopGapMs = isNaN(ms) ? 0 : ms;
+        localStorage.setItem('kaoyan_loop_gap_ms', String(state.loopGapMs));
+        gapCard.querySelectorAll('.mode-gap-pill').forEach(b => b.classList.toggle('active', parseInt(b.dataset.gapMs, 10) === state.loopGapMs));
+        updateHUDDisplay(audio.currentTime || 0);
+        const opt = LOOP_GAP_OPTIONS.find(o => o.ms === state.loopGapMs);
+        showToast(`遍间停顿已设为【${opt ? opt.label : (state.loopGapMs + 'ms')}】`, 1800);
+      });
+    });
+    el.playModeList.appendChild(gapCard);
   }
 
 
@@ -529,6 +791,7 @@
     el.hudTitleText = document.getElementById('hudTitleText');
     el.hudFrameworkTrigger = document.getElementById('hudFrameworkTrigger');
     el.hudFrameworkText = document.getElementById('hudFrameworkText');
+    el.hudRepeatBadge = document.getElementById('hudRepeatBadge');
     el.btnOpenOutline = document.getElementById('btnOpenOutline');
     
     // 答题思维骨架抽屉 (Outline Drawer)
@@ -1867,10 +2130,16 @@
       linkedEls.forEach((lNode) => {
         if (lNode.dataset.linkedSentIdx !== undefined) return;
         const lNorm = normText(lNode.textContent);
-        if (!lNorm || lNorm.length < 4) return;
+        if (!lNorm || lNorm.length < 2) return;
         let matchIdx = sNorms.findIndex((sn) => sn && sn === lNorm);
         if (matchIdx === -1) {
-          matchIdx = sNorms.findIndex((sn) => sn.length >= 6 && (lNorm.startsWith(sn) || lNorm.includes(sn) || sn.includes(lNorm)));
+          matchIdx = sNorms.findIndex((sn) => sn && sn.length >= 2 && lNorm.startsWith(sn));
+        }
+        if (matchIdx === -1) {
+          matchIdx = sNorms.findIndex((sn) => sn && lNorm.length >= 4 && sn.startsWith(lNorm));
+        }
+        if (matchIdx === -1) {
+          matchIdx = sNorms.findIndex((sn) => sn && sn.length >= 6 && (lNorm.includes(sn) || sn.includes(lNorm)));
         }
         if (matchIdx !== -1) {
           lNode.dataset.linkedSentIdx = String(matchIdx);
@@ -1982,6 +2251,7 @@
 
     const resolvedId = item.id;
     lastSpotlightEl = null; // 切换考题清除旧聚光引用，消除跨题内存残留与同名 sentId 穿透
+    cancelLoopGapWait();
     state.activeItemId = resolvedId;
     state.activeItem = item;
     state.currentSentIndex = -1;
@@ -2308,6 +2578,13 @@
   }
 
   function seekToSentence(sentIdxOrId, startTime) {
+    cancelLoopGapWait();
+    if (!audio.getAttribute('src') && !audio.currentSrc) {
+      isLoopSeeking = false;
+      if (loopSeekTimer) { clearTimeout(loopSeekTimer); loopSeekTimer = null; }
+      showToast('当前内容为纯文本导学，无伴读音频', 2000);
+      return;
+    }
     let exactTime = typeof startTime === 'number' && !isNaN(startTime) ? startTime : 0;
     let targetSent = null;
     let targetIdx = -1;
@@ -2662,23 +2939,33 @@
       let end = lastSent ? parseFloat(lastSent.dataset.end || 0) : 0;
       let sentId = firstSent ? (firstSent.dataset.sentId ?? firstSent.dataset.sentIdx ?? firstSent.id) : null;
 
-      // 权威时间戳映射：优先从 state.activeSentences 对齐精确起止时间
-      if (firstSent && state.activeSentences && state.activeSentences.length > 0) {
-        const rawIdx = firstSent.dataset.sentIdx !== undefined ? parseInt(firstSent.dataset.sentIdx, 10) : NaN;
-        const rawId = firstSent.dataset.sentId || firstSent.id;
-        const matchedFirst = state.activeSentences.find(s => (!isNaN(rawIdx) && (s.idx === rawIdx || s.id === rawIdx)) || (rawId && (String(s.id) === String(rawId) || String(s.domId) === String(rawId))));
-        if (matchedFirst && typeof matchedFirst.start === 'number' && !isNaN(matchedFirst.start)) {
-          start = matchedFirst.start;
-          sentId = matchedFirst.idx !== undefined ? matchedFirst.idx : (matchedFirst.id || sentId);
+      const resolveActiveSentMatch = (node) => {
+        if (!node || !state.activeSentences || state.activeSentences.length === 0) return null;
+        const rawIdx = node.dataset.sentIdx !== undefined ? parseInt(node.dataset.sentIdx, 10) : NaN;
+        const rawId = node.dataset.sentId || node.id;
+        if (!isNaN(rawIdx)) {
+          const byIdx = state.activeSentences.find(s => s.idx === rawIdx);
+          if (byIdx) return byIdx;
         }
+        if (rawId) {
+          const byId = state.activeSentences.find(s => String(s.domId || '') === String(rawId) || String(s.id || '') === String(rawId));
+          if (byId) return byId;
+        }
+        if (!isNaN(rawIdx)) {
+          return state.activeSentences.find(s => s.id === rawIdx) || null;
+        }
+        return null;
+      };
+
+      // 权威时间戳映射：优先从 state.activeSentences 按 0-based idx 匹配，避免 807/706 的 1-based id 碰撞偏移
+      const matchedFirst = resolveActiveSentMatch(firstSent);
+      if (matchedFirst && typeof matchedFirst.start === 'number' && !isNaN(matchedFirst.start)) {
+        start = matchedFirst.start;
+        sentId = matchedFirst.idx !== undefined ? matchedFirst.idx : (matchedFirst.id || sentId);
       }
-      if (lastSent && state.activeSentences && state.activeSentences.length > 0) {
-        const rawIdx = lastSent.dataset.sentIdx !== undefined ? parseInt(lastSent.dataset.sentIdx, 10) : NaN;
-        const rawId = lastSent.dataset.sentId || lastSent.id;
-        const matchedLast = state.activeSentences.find(s => (!isNaN(rawIdx) && (s.idx === rawIdx || s.id === rawIdx)) || (rawId && (String(s.id) === String(rawId) || String(s.domId) === String(rawId))));
-        if (matchedLast && typeof matchedLast.end === 'number' && !isNaN(matchedLast.end)) {
-          end = matchedLast.end;
-        }
+      const matchedLast = resolveActiveSentMatch(lastSent);
+      if (matchedLast && typeof matchedLast.end === 'number' && !isNaN(matchedLast.end)) {
+        end = matchedLast.end;
       }
 
       // 英语写作书信类：若首段前有称呼(salutation)，尾段后有落款(signoff)，自动吸纳进对应段落范围
@@ -2824,7 +3111,67 @@
     renderProgressTicks();
   }
 
-  function updateHUDDisplay(curTime = 0) {
+  function updateRepeatIndicatorUI(activeSecIdx = -1) {
+    const targetReps = getActiveRepeatTarget();
+    const showFinite = isFinite(targetReps) && targetReps >= 2 && state.activeSentences && state.activeSentences.length > 0;
+    const curRep = showFinite ? Math.min(targetReps, (state.loopCount || 0) + 1) : 1;
+    const labelText = showFinite ? `第 ${curRep}/${targetReps} 遍${isLoopGapWaiting ? ' · 停顿' : ''}` : '';
+
+    if (el.hudRepeatBadge) {
+      if (showFinite) {
+        if (el.hudRepeatBadge.textContent !== labelText) {
+          el.hudRepeatBadge.textContent = labelText;
+        }
+        el.hudRepeatBadge.style.display = 'inline-flex';
+        el.hudRepeatBadge.classList.toggle('is-gap-waiting', isLoopGapWaiting);
+      } else if (el.hudRepeatBadge.style.display !== 'none') {
+        el.hudRepeatBadge.style.display = 'none';
+      }
+    }
+
+    let hostEl = null;
+    if (showFinite && el.paperContent) {
+      if (state.playMode === 'loop3' && state.currentSubject === 'pol' && state.polSubMode === 'xutao16') {
+        hostEl = el.paperContent.querySelector('.xt-day-point-card.active-spotlight .xt-day-point-header');
+        if (!hostEl && state.currentSentIndex >= 0) {
+          hostEl = el.paperContent.querySelector(`.xt-day-point-card[data-sent-idx="${state.currentSentIndex}"] .xt-day-point-header`);
+        }
+      } else if (state.playMode === 'section' && activeSecIdx >= 0 && currentFrameworkSections[activeSecIdx]?.cardEl) {
+        const cardEl = currentFrameworkSections[activeSecIdx].cardEl;
+        hostEl = cardEl.querySelector('.section-card-header, .logic-block-title, .xt-day-point-header, .tj-card-header');
+      }
+    }
+
+    if (!hostEl) {
+      if (liveRepeatBadgeEl && liveRepeatBadgeEl.parentNode) {
+        liveRepeatBadgeEl.remove();
+      }
+      lastLiveRepeatHost = null;
+      lastLiveRepeatText = '';
+      lastLiveRepeatWaiting = false;
+      return;
+    }
+
+    if (!liveRepeatBadgeEl) {
+      liveRepeatBadgeEl = document.createElement('span');
+      liveRepeatBadgeEl.className = 'live-repeat-badge';
+    }
+    if (hostEl !== lastLiveRepeatHost || liveRepeatBadgeEl.parentNode !== hostEl) {
+      hostEl.appendChild(liveRepeatBadgeEl);
+      lastLiveRepeatHost = hostEl;
+      lastLiveRepeatText = '';
+    }
+    if (labelText !== lastLiveRepeatText) {
+      liveRepeatBadgeEl.textContent = labelText;
+      lastLiveRepeatText = labelText;
+    }
+    if (isLoopGapWaiting !== lastLiveRepeatWaiting) {
+      liveRepeatBadgeEl.classList.toggle('is-gap-waiting', isLoopGapWaiting);
+      lastLiveRepeatWaiting = isLoopGapWaiting;
+    }
+  }
+
+  function updateHUDDisplay(curTime) {
     if (!state.activeItem) return;
     const item = state.activeItem;
     const isT1 = state.currentTrack === 1;
@@ -2908,14 +3255,12 @@
         updateOutlineDrawerActive(currentActiveSectionIndex);
         updateSystemMediaSession(sec, total);
       }
+      updateRepeatIndicatorUI(activeSecIdx);
     } else {
       if (el.hudFrameworkText) {
-        let modePrefix = '';
-        if (state.playMode === 'section') modePrefix = '[单段循环] ';
-        else if (state.playMode === 'sentence') modePrefix = '[单句循环] ';
-        else if (state.playMode === 'item') modePrefix = '[完全循环] ';
         el.hudFrameworkText.textContent = `大纲`;
       }
+      updateRepeatIndicatorUI(-1);
     }
   }
 
@@ -3114,6 +3459,7 @@
   let lastTimeSaveTs = 0;
 
   function syncManualSeekPointers(targetTime) {
+    cancelLoopGapWait();
     state.loopCount = 0;
     if (state.activeSentences && state.activeSentences.length > 0) {
       const idx = findActiveSentenceIndex(targetTime);
@@ -3130,6 +3476,18 @@
   }
 
   function toggleAudioPlayback() {
+    if (isLoopGapWaiting) {
+      cancelLoopGapWait();
+      state.isPlaying = false;
+      if (syncRafId) {
+        cancelAnimationFrame(syncRafId);
+        syncRafId = null;
+      }
+      updatePlayBtnUI();
+      updateHUDDisplay(audio.currentTime || 0);
+      collapsePlayerDock();
+      return;
+    }
     const hasSrc = Boolean(audio.getAttribute('src') || audio.currentSrc);
     if (hasSrc) {
       expandPlayerDock();
@@ -3154,6 +3512,155 @@
     syncRafId = null;
 
     // 60fps 高频毫秒级聚光同步引擎 (彻底消除 timeupdate 的 300ms 滞后与 1s 句子迟滞)
+    function getFirstSentIndexInSection(sec, nextSecStart) {
+      const secUpper = isFinite(nextSecStart) ? (nextSecStart - 0.02) : (sec.end + 0.05);
+      const firstSentIdx = state.activeSentences.findIndex(s => s.start >= sec.start - 0.02 && s.start < secUpper);
+      const fallbackIdx = findActiveSentenceIndex(sec.start);
+      return firstSentIdx !== -1 ? firstSentIdx : (fallbackIdx !== -1 ? fallbackIdx : null);
+    }
+
+    /**
+     * 统一单句 / 考点 / 单段多遍推进与无限循环边界引擎
+     * @returns {'handled'|'waiting'|'finished'|null}
+     */
+    function handleLoopBoundary(cur, isEnded = false) {
+      if (isLoopGapWaiting) {
+        updateHUDDisplay(cur);
+        return 'waiting';
+      }
+      const shouldResume = !audio.paused || isEnded;
+
+      if ((state.playMode === 'sentence' || state.playMode === 'loop3') && state.activeSentences && state.activeSentences.length > 0) {
+        if (state.currentSentIndex < 0 || state.currentSentIndex >= state.activeSentences.length) {
+          const initialIdx = findActiveSentenceIndex(cur);
+          state.currentSentIndex = initialIdx !== -1 ? initialIdx : 0;
+          state.loopCount = 0;
+        }
+        if (!isEnded && isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+          updateHUDDisplay(cur);
+          return 'handled';
+        }
+
+        const sent = state.activeSentences[state.currentSentIndex];
+        const nextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
+        const sStart = typeof sent.start === 'number' ? sent.start : parseFloat(sent.start || 0);
+        const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (nextSent ? nextSent.start : Infinity));
+        const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
+        const loopCutoff = getLoopCutoff(sStart, sEnd, nextStart);
+        const targetReps = state.playMode === 'sentence' ? Infinity : Math.max(2, Number(state.sentenceRepeatCount) || 3);
+
+        if (isEnded || cur >= loopCutoff || cur > sEnd) {
+          if (state.loopCount + 1 < targetReps) {
+            state.loopCount++;
+            performLoopTransition(sStart, {
+              targetSentIdx: state.currentSentIndex,
+              shouldResume,
+              useGap: true
+            });
+            return 'handled';
+          } else {
+            state.loopCount = 0;
+            if (nextSent) {
+              const nextIdx = state.currentSentIndex + 1;
+              performLoopTransition(nextStart, {
+                targetSentIdx: nextIdx,
+                shouldResume,
+                useGap: true
+              });
+              return 'handled';
+            } else {
+              cancelLoopGapWait();
+              state.isPlaying = false;
+              audio.pause();
+              updatePlayBtnUI();
+              updateHUDDisplay(cur);
+              playNextItem();
+              return 'finished';
+            }
+          }
+        } else {
+          highlightSentence(state.currentSentIndex);
+          updateHUDDisplay(cur);
+          return 'handled';
+        }
+      }
+
+      if (state.playMode === 'section' && currentFrameworkSections.length > 0) {
+        if (currentActiveSectionIndex < 0 || currentActiveSectionIndex >= currentFrameworkSections.length) {
+          const matchedSecIdx = findSectionIndexAtTime(cur);
+          currentActiveSectionIndex = matchedSecIdx !== -1 ? matchedSecIdx : 0;
+        }
+        const curSec = currentFrameworkSections[currentActiveSectionIndex];
+        const nextSec = (currentActiveSectionIndex + 1 < currentFrameworkSections.length) ? currentFrameworkSections[currentActiveSectionIndex + 1] : null;
+        if (curSec && typeof curSec.start === 'number' && typeof curSec.end === 'number' && curSec.end > curSec.start) {
+          if (!isEnded && isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+            updateHUDDisplay(cur);
+            return 'handled';
+          }
+          const nextSecStart = nextSec && typeof nextSec.start === 'number' ? nextSec.start : Infinity;
+          const secCutoff = getLoopCutoff(curSec.start, curSec.end, nextSecStart);
+          const secReps = Number(state.sectionRepeatCount) || 0;
+          const targetSecReps = secReps >= 2 ? secReps : Infinity;
+
+          if (isEnded || cur >= secCutoff || cur > curSec.end) {
+            if (state.loopCount + 1 < targetSecReps) {
+              state.loopCount++;
+              const targetIdx = getFirstSentIndexInSection(curSec, nextSecStart);
+              if (!(Number(state.loopGapMs) > 0 && shouldResume)) {
+                triggerLoopSeek(curSec.start, targetIdx);
+                updateHUDDisplay(curSec.start);
+                if (shouldResume && audio.paused) audio.play().catch(e => console.log(e));
+              } else {
+                performLoopTransition(curSec.start, {
+                  targetSentIdx: targetIdx,
+                  targetSecIdx: currentActiveSectionIndex,
+                  shouldResume,
+                  useGap: true
+                });
+              }
+              return 'handled';
+            } else {
+              state.loopCount = 0;
+              if (nextSec) {
+                const nextSecIdx = currentActiveSectionIndex + 1;
+                const nextNextSec = (nextSecIdx + 1 < currentFrameworkSections.length) ? currentFrameworkSections[nextSecIdx + 1] : null;
+                const nextNextStart = nextNextSec && typeof nextNextSec.start === 'number' ? nextNextSec.start : Infinity;
+                performLoopTransition(nextSec.start, {
+                  targetSentIdx: getFirstSentIndexInSection(nextSec, nextNextStart),
+                  targetSecIdx: nextSecIdx,
+                  shouldResume,
+                  useGap: true
+                });
+                return 'handled';
+              } else {
+                cancelLoopGapWait();
+                state.isPlaying = false;
+                audio.pause();
+                updatePlayBtnUI();
+                updateHUDDisplay(cur);
+                playNextItem();
+                return 'finished';
+              }
+            }
+          } else {
+            updateHUDDisplay(cur);
+            const activeIdx = findActiveSentenceIndex(cur);
+            if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
+              const s = state.activeSentences[activeIdx];
+              const secUpper = isFinite(nextSecStart) ? (nextSecStart - 0.02) : (curSec.end + 0.05);
+              if (s && s.start >= curSec.start - 0.05 && s.start < secUpper) {
+                state.currentSentIndex = activeIdx;
+                highlightSentence(activeIdx);
+              }
+            }
+            return 'handled';
+          }
+        }
+      }
+
+      return null;
+    }
+
     function runSyncLoop() {
       if (state.isPlaying && !audio.paused && state.activeSentences && state.activeSentences.length > 0) {
         const cur = audio.currentTime;
@@ -3192,142 +3699,15 @@
           }
         }
 
-        // 1. 单句循环模式 (严格第一性原理闭环：目标句子只能由用户显式指定，绝对锁定不可篡改)
-        if (state.playMode === 'sentence' && state.activeSentences && state.activeSentences.length > 0) {
-          if (state.currentSentIndex < 0 || state.currentSentIndex >= state.activeSentences.length) {
-            const initialIdx = findActiveSentenceIndex(cur);
-            state.currentSentIndex = initialIdx !== -1 ? initialIdx : 0;
-            state.loopCount = 0;
-          }
-
-          const sent = state.activeSentences[state.currentSentIndex];
-          const nextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
-          const sStart = typeof sent.start === 'number' ? sent.start : parseFloat(sent.start || 0);
-          const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (nextSent ? nextSent.start : Infinity));
-          const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
-
-          // 严格闭环截断边界：在下一句发声前精确截断，严禁穿透至下一句语音起始
-          const loopCutoff = getLoopCutoff(sStart, sEnd, nextStart);
-
-          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
-            updateHUDDisplay(cur);
-            syncRafId = requestAnimationFrame(runSyncLoop);
-            return;
-          }
-
-          // 当 cur >= loopCutoff 或 cur > sEnd 时，无条件强制倒回当前句开头 sStart！
-          // 目标句子 state.currentSentIndex 绝对锁定不可篡改，彻底铲除任何篡改指针漂移至下一句的逻辑！
-          if (cur >= loopCutoff || cur > sEnd) {
-            triggerLoopSeek(sStart);
-            if (audio.paused) audio.play().catch(e => console.log(e));
-            syncRafId = requestAnimationFrame(runSyncLoop);
-            return;
-          } else {
-            // 若 cur < sStart - 0.3（倒带稍微过多或刚 seek 落地），保持当前句不变，静待其播放至 sStart
-            highlightSentence(state.currentSentIndex);
-            updateHUDDisplay(cur);
-            syncRafId = requestAnimationFrame(runSyncLoop);
-            return;
-          }
+        const loopState = handleLoopBoundary(cur, false);
+        if (loopState === 'finished') {
+          return;
         }
-        // 2. 单句3遍模式 (满3遍后精准推移至下一句，单句循环期间目标句子绝对锁定不可篡改)
-        else if (state.playMode === 'loop3' && state.activeSentences && state.activeSentences.length > 0) {
-          if (state.currentSentIndex < 0 || state.currentSentIndex >= state.activeSentences.length) {
-            const initialIdx = findActiveSentenceIndex(cur);
-            state.currentSentIndex = initialIdx !== -1 ? initialIdx : 0;
-            state.loopCount = 0;
-          }
-
-          const sent = state.activeSentences[state.currentSentIndex];
-          const nextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
-          const sStart = typeof sent.start === 'number' ? sent.start : parseFloat(sent.start || 0);
-          const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (nextSent ? nextSent.start : Infinity));
-          const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
-          const loopCutoff = getLoopCutoff(sStart, sEnd, nextStart);
-
-          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
-            updateHUDDisplay(cur);
+        if (loopState === 'handled' || loopState === 'waiting') {
+          if (state.isPlaying && !isLoopGapWaiting) {
             syncRafId = requestAnimationFrame(runSyncLoop);
-            return;
           }
-
-          if (cur >= loopCutoff || cur > sEnd) {
-            if (state.loopCount < 2) {
-              state.loopCount++;
-              triggerLoopSeek(sStart);
-              if (audio.paused) audio.play().catch(e => console.log(e));
-              syncRafId = requestAnimationFrame(runSyncLoop);
-              return;
-            } else {
-              state.loopCount = 0;
-              if (nextSent) {
-                state.currentSentIndex++;
-                triggerLoopSeek(nextStart);
-                highlightSentence(state.currentSentIndex);
-                updateHUDDisplay(nextStart);
-                syncRafId = requestAnimationFrame(runSyncLoop);
-                return;
-              } else {
-                state.isPlaying = false;
-                audio.pause();
-                updatePlayBtnUI();
-                playNextItem();
-                return;
-              }
-            }
-          } else {
-            highlightSentence(state.currentSentIndex);
-            updateHUDDisplay(cur);
-            syncRafId = requestAnimationFrame(runSyncLoop);
-            return;
-          }
-        }
-        // 3. 单段循环模式 (严格在当前段落 [curSec.start, curSec.end] 内部无缝闭环回跳，绝对不允许篡改 currentActiveSectionIndex)
-        else if (state.playMode === 'section' && currentFrameworkSections.length > 0) {
-          if (currentActiveSectionIndex < 0 || currentActiveSectionIndex >= currentFrameworkSections.length) {
-            const matchedSecIdx = findSectionIndexAtTime(cur);
-            currentActiveSectionIndex = matchedSecIdx !== -1 ? matchedSecIdx : 0;
-          }
-
-          const curSec = currentFrameworkSections[currentActiveSectionIndex];
-          const nextSec = (currentActiveSectionIndex + 1 < currentFrameworkSections.length) ? currentFrameworkSections[currentActiveSectionIndex + 1] : null;
-          if (curSec && typeof curSec.start === 'number' && typeof curSec.end === 'number' && curSec.end > curSec.start) {
-            const nextSecStart = nextSec && typeof nextSec.start === 'number' ? nextSec.start : Infinity;
-            const secCutoff = getLoopCutoff(curSec.start, curSec.end, nextSecStart);
-
-            if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
-              updateHUDDisplay(cur);
-              syncRafId = requestAnimationFrame(runSyncLoop);
-              return;
-            }
-
-            // 当到达段尾截断点或滑过段尾时，无条件强制倒回当前段开头 curSec.start！
-            // currentActiveSectionIndex 绝对锁定不可被时间篡改！
-            if (cur >= secCutoff || cur > curSec.end) {
-              const secUpper = isFinite(nextSecStart) ? (nextSecStart - 0.02) : (curSec.end + 0.05);
-              const firstSentIdx = state.activeSentences.findIndex(s => s.start >= curSec.start - 0.02 && s.start < secUpper);
-              const fallbackIdx = findActiveSentenceIndex(curSec.start);
-              const targetIdx = firstSentIdx !== -1 ? firstSentIdx : (fallbackIdx !== -1 ? fallbackIdx : null);
-              triggerLoopSeek(curSec.start, targetIdx);
-              if (audio.paused) audio.play().catch(e => console.log(e));
-              syncRafId = requestAnimationFrame(runSyncLoop);
-              return;
-            } else {
-              updateHUDDisplay(cur);
-              const activeIdx = findActiveSentenceIndex(cur);
-              if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
-                const s = state.activeSentences[activeIdx];
-                const secUpper = isFinite(nextSecStart) ? (nextSecStart - 0.02) : (curSec.end + 0.05);
-                // 仅当句子属于当前段落半开区间时高亮，防止越界至下一段首句
-                if (s && s.start >= curSec.start - 0.05 && s.start < secUpper) {
-                  state.currentSentIndex = activeIdx;
-                  highlightSentence(activeIdx);
-                }
-              }
-              syncRafId = requestAnimationFrame(runSyncLoop);
-              return;
-            }
-          }
+          return;
         }
 
         // 4. 常规高光追踪 (寻音跳转锁保护：寻音期间绝不回退至第0句)
@@ -3372,6 +3752,13 @@
     });
 
     audio.addEventListener('pause', () => {
+      if (isLoopGapWaiting) {
+        if (syncRafId) {
+          cancelAnimationFrame(syncRafId);
+          syncRafId = null;
+        }
+        return;
+      }
       clearPendingSeek(true);
       state.isPlaying = false;
       if (syncRafId) {
@@ -3448,93 +3835,8 @@
           }
         }
 
-        // 1. 单句循环模式 (绝对锁定，强制闭环回跳)
-        if (state.playMode === 'sentence' && state.activeSentences && state.activeSentences.length > 0) {
-          if (state.currentSentIndex < 0 || state.currentSentIndex >= state.activeSentences.length) {
-            const initialIdx = findActiveSentenceIndex(cur);
-            state.currentSentIndex = initialIdx !== -1 ? initialIdx : 0;
-            state.loopCount = 0;
-          }
-          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
-            return;
-          }
-          const sent = state.activeSentences[state.currentSentIndex];
-          const nextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
-          const sStart = typeof sent.start === 'number' ? sent.start : parseFloat(sent.start || 0);
-          const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (nextSent ? nextSent.start : Infinity));
-          const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
-          const loopCutoff = getLoopCutoff(sStart, sEnd, nextStart);
-
-          if (cur >= loopCutoff || cur > sEnd) {
-            triggerLoopSeek(sStart);
-            if (audio.paused) audio.play().catch(e => console.log(e));
-          }
-          return;
-        }
-        // 2. 单句3遍模式 (满3遍后推移，期间目标句子绝对锁定)
-        else if (state.playMode === 'loop3' && state.activeSentences && state.activeSentences.length > 0) {
-          if (state.currentSentIndex < 0 || state.currentSentIndex >= state.activeSentences.length) {
-            const initialIdx = findActiveSentenceIndex(cur);
-            state.currentSentIndex = initialIdx !== -1 ? initialIdx : 0;
-            state.loopCount = 0;
-          }
-          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
-            return;
-          }
-          const sent = state.activeSentences[state.currentSentIndex];
-          const nextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
-          const sStart = typeof sent.start === 'number' ? sent.start : parseFloat(sent.start || 0);
-          const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (nextSent ? nextSent.start : Infinity));
-          const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
-          const loopCutoff = getLoopCutoff(sStart, sEnd, nextStart);
-
-          if (cur >= loopCutoff || cur > sEnd) {
-            if (state.loopCount < 2) {
-              state.loopCount++;
-              triggerLoopSeek(sStart);
-              if (audio.paused) audio.play().catch(e => console.log(e));
-              return;
-            } else {
-              state.loopCount = 0;
-              if (nextSent) {
-                state.currentSentIndex++;
-                triggerLoopSeek(nextStart);
-                highlightSentence(state.currentSentIndex);
-                updateHUDDisplay(nextStart);
-                return;
-              } else {
-                triggerLoopSeek(sStart);
-                if (audio.paused) audio.play().catch(e => console.log(e));
-                return;
-              }
-            }
-          }
-          return;
-        }
-        // 3. 单段循环模式 (绝对锁定，强制闭环回跳)
-        else if (state.playMode === 'section' && currentFrameworkSections.length > 0) {
-          if (currentActiveSectionIndex < 0 || currentActiveSectionIndex >= currentFrameworkSections.length) {
-            const matchedSecIdx = findSectionIndexAtTime(cur);
-            currentActiveSectionIndex = matchedSecIdx !== -1 ? matchedSecIdx : 0;
-          }
-          if (isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
-            return;
-          }
-          const curSec = currentFrameworkSections[currentActiveSectionIndex];
-          const nextSec = (currentActiveSectionIndex + 1 < currentFrameworkSections.length) ? currentFrameworkSections[currentActiveSectionIndex + 1] : null;
-          if (curSec && typeof curSec.start === 'number' && typeof curSec.end === 'number' && curSec.end > curSec.start) {
-            const nextSecStart = nextSec && typeof nextSec.start === 'number' ? nextSec.start : Infinity;
-            const secCutoff = getLoopCutoff(curSec.start, curSec.end, nextSecStart);
-            if (cur >= secCutoff || cur > curSec.end) {
-              const secUpper = isFinite(nextSecStart) ? (nextSecStart - 0.02) : (curSec.end + 0.05);
-              const firstSentIdx = state.activeSentences.findIndex(s => s.start >= curSec.start - 0.02 && s.start < secUpper);
-              const fallbackIdx = findActiveSentenceIndex(curSec.start);
-              const targetIdx = firstSentIdx !== -1 ? firstSentIdx : (fallbackIdx !== -1 ? fallbackIdx : null);
-              triggerLoopSeek(curSec.start, targetIdx);
-              if (audio.paused) audio.play().catch(e => console.log(e));
-              return;
-            }
-          }
+        const loopState = handleLoopBoundary(cur, false);
+        if (loopState) {
           return;
         }
 
@@ -3550,36 +3852,15 @@
     });
 
     audio.addEventListener('ended', () => {
-      // 1. 完全循环（整个知识点循环）
       if (state.playMode === 'item') {
-        triggerLoopSeek(0);
-        audio.play().catch(e => console.log(e));
+        performLoopTransition(0, { targetSentIdx: state.activeSentences?.length ? 0 : null, shouldResume: true, useGap: false });
         return;
       }
-      // 2. 单句循环
-      if (state.playMode === 'sentence' && state.currentSentIndex !== -1 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
-        triggerLoopSeek(state.activeSentences[state.currentSentIndex].start);
-        audio.play().catch(e => console.log(e));
+      const loopRes = handleLoopBoundary(audio.duration || audio.currentTime || 0, true);
+      if (loopRes === 'handled' || loopRes === 'waiting' || loopRes === 'finished') {
         return;
       }
-      // 3. 单句3遍模式
-      if (state.playMode === 'loop3' && state.currentSentIndex !== -1 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
-        if (state.loopCount < 2) {
-          state.loopCount++;
-          triggerLoopSeek(state.activeSentences[state.currentSentIndex].start);
-          audio.play().catch(e => console.log(e));
-          return;
-        } else {
-          state.loopCount = 0;
-        }
-      }
-      // 4. 单段循环
-      if (state.playMode === 'section' && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
-        triggerLoopSeek(currentFrameworkSections[currentActiveSectionIndex].start);
-        audio.play().catch(e => console.log(e));
-        return;
-      }
-      // 5. 按顺序依次播放
+      cancelLoopGapWait();
       state.isPlaying = false;
       updatePlayBtnUI();
       playNextItem();
@@ -4363,6 +4644,19 @@
       applyFontSizeState(state.fontSize || 17);
     }
 
+    const savedSentReps = parseInt(localStorage.getItem('kaoyan_sent_repeat_count'), 10);
+    if (REPEAT_COUNT_OPTIONS.includes(savedSentReps)) {
+      state.sentenceRepeatCount = savedSentReps;
+    }
+    const savedSecReps = parseInt(localStorage.getItem('kaoyan_sec_repeat_count'), 10);
+    if (savedSecReps === 0 || REPEAT_COUNT_OPTIONS.includes(savedSecReps)) {
+      state.sectionRepeatCount = savedSecReps;
+    }
+    const savedGapMs = parseInt(localStorage.getItem('kaoyan_loop_gap_ms'), 10);
+    if (LOOP_GAP_OPTIONS.some(o => o.ms === savedGapMs)) {
+      state.loopGapMs = savedGapMs;
+    }
+
     const savedPlayMode = localStorage.getItem('kaoyan_play_mode');
     if (savedPlayMode && PLAY_MODES.some(m => m.id === savedPlayMode)) {
       state.playMode = savedPlayMode;
@@ -4765,7 +5059,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.2.6';
+  const APP_BUILD_ID = '3.2.7';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -5256,6 +5550,7 @@
   }
 
   function selectPolItem(item, autoPlay = false, restoreTime = false) {
+    cancelLoopGapWait();
     state.activeItemId = item.id;
     state.activeItem = item;
     state.currentSentIndex = -1;
@@ -5478,8 +5773,18 @@
     const bodyEl = document.getElementById('polSubcardBody');
     if (bodyEl) {
       bodyEl.querySelectorAll('.card-audio-btn').forEach(btn => {
+        if (!card.audio) {
+          const txtEl = btn.querySelector('.audio-btn-text');
+          if (txtEl) txtEl.textContent = '暂无伴读音频';
+          btn.style.opacity = '0.55';
+          btn.title = '本导论考点为纯图表速览，无伴读音频';
+        }
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
+          if (!card.audio) {
+            showToast('本导论考点为纯图表速览，无伴读音频', 2500);
+            return;
+          }
           const firstSent = (state.activeSentences && state.activeSentences.length > 0) ? state.activeSentences[0] : null;
           const firstSentEl = bodyEl.querySelector('.recite-sentence, .recite-sent, [data-sent-idx]');
           const targetIdx = firstSent ? firstSent.idx : 0;

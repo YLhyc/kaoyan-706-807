@@ -2,57 +2,57 @@
   {
     "id": "sent_p1_s1",
     "text": "Notice: Charity Book Donation Campaign",
-    "start": "0.108",
-    "end": "3.324",
-    "duration": "3.216"
+    "start": "0.045",
+    "end": "3.300",
+    "duration": "3.255"
   },
   {
     "id": "sent_p1_s2",
     "text": "To advocate environmental sustainability and support basic education in impoverished rural areas, our university is launching a campus-wide book donation campaign titled Pass on the Light of Knowledge.",
-    "start": "4.010",
-    "end": "18.675",
-    "duration": "14.665"
+    "start": "3.905",
+    "end": "18.670",
+    "duration": "14.765"
   },
   {
     "id": "sent_p2_s1",
     "text": "We warmly welcome all students and faculty members to donate unused books, particularly academic references, literary classics, and popular science works.",
-    "start": "20.241",
-    "end": "30.723",
-    "duration": "10.482"
+    "start": "20.185",
+    "end": "30.720",
+    "duration": "10.535"
   },
   {
     "id": "sent_p2_s2",
     "text": "Please ensure that the books are clean and complete.",
-    "start": "31.350",
-    "end": "34.123",
-    "duration": "2.773"
+    "start": "31.295",
+    "end": "34.120",
+    "duration": "2.825"
   },
   {
     "id": "sent_p2_s3",
     "text": "Collection stations will be set up at the lobby of the Central Library and Student Activity Center from 9:00 a.m. to 6:00 p.m. this coming weekend.",
-    "start": "34.844",
-    "end": "44.748",
-    "duration": "9.904"
+    "start": "34.750",
+    "end": "44.750",
+    "duration": "10.000"
   },
   {
     "id": "sent_p3_s1",
     "text": "Every donated book delivers a ray of hope to children in need.",
-    "start": "46.367",
-    "end": "50.198",
-    "duration": "3.831"
+    "start": "46.305",
+    "end": "50.200",
+    "duration": "3.895"
   },
   {
     "id": "sent_p3_s2",
     "text": "Let us join hands to share our wisdom and foster social harmony!",
-    "start": "50.895",
-    "end": "54.846",
-    "duration": "3.951"
+    "start": "50.835",
+    "end": "55.370",
+    "duration": "4.535"
   },
   {
     "id": "sent_p3_s3",
     "text": "The Youth League Committee, October 30th",
-    "start": "54.846",
-    "end": "60.523",
-    "duration": "5.677"
+    "start": "56.050",
+    "end": "59.020",
+    "duration": "2.970"
   }
 ]

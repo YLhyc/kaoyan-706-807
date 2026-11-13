@@ -2,92 +2,92 @@
   {
     "id": "t2_intro",
     "text": "下面进入大作文 08 · 英二真题图表（静态占比）：大学毕业生月度消费支出结构分布答题骨架与变体精解。",
-    "start": "0.089",
-    "end": "9.329",
-    "duration": "9.240"
+    "start": "0.030",
+    "end": "9.330",
+    "duration": "9.300"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：饼图总貌概括，使用精准短语描述排序与百分比。",
-    "start": "10.490",
-    "end": "17.750",
-    "duration": "7.260"
+    "start": "10.435",
+    "end": "16.150",
+    "duration": "5.715"
   },
   {
     "id": "t2_p1_en",
     "text": "The pie chart provides a clear breakdown; catering accounts for the largest proportion at 45.0%, closely followed by intellectual enrichment at 25.0%.",
-    "start": "17.750",
-    "end": "32.574",
-    "duration": "14.824"
+    "start": "16.855",
+    "end": "30.380",
+    "duration": "13.525"
   },
   {
     "id": "t2_p1_tip_cn",
     "text": "静态占比排序标配句式：accounts for the largest proportion at ..., closely followed by ... at ...",
-    "start": "32.574",
-    "end": "39.261",
-    "duration": "6.687"
+    "start": "31.075",
+    "end": "39.260",
+    "duration": "8.185"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "Catering accounts for the largest proportion at 45.0%, closely followed by intellectual enrichment.",
-    "start": "40.025",
-    "end": "47.816",
-    "duration": "7.791"
+    "start": "39.965",
+    "end": "47.820",
+    "duration": "7.855"
   },
   {
     "id": "t2_p2_cn",
     "text": "第二段：深入解析各项开支背后的青年生存现状与自我提升追求。",
-    "start": "49.460",
-    "end": "56.981",
-    "duration": "7.521"
+    "start": "49.445",
+    "end": "55.710",
+    "duration": "6.265"
   },
   {
     "id": "t2_p2_en",
     "text": "Allocating the dominant share to catering is inevitable; educational investment demonstrates graduates' acute awareness of professional competitiveness.",
-    "start": "56.981",
-    "end": "67.659",
-    "duration": "10.678"
+    "start": "56.415",
+    "end": "65.790",
+    "duration": "9.375"
   },
   {
     "id": "t2_p2_tip_cn",
     "text": "主语从句高分句式：That educational investment occupies a quarter demonstrates graduates' acute awareness.",
-    "start": "67.659",
-    "end": "75.416",
-    "duration": "7.757"
+    "start": "66.435",
+    "end": "75.420",
+    "duration": "8.985"
   },
   {
     "id": "t2_p2_tip_en",
     "text": "Continuous skill refinement has become an essential stepping stone to career development.",
-    "start": "76.189",
-    "end": "81.291",
-    "duration": "5.102"
+    "start": "76.125",
+    "end": "81.290",
+    "duration": "5.165"
   },
   {
     "id": "t2_p3_cn",
     "text": "第三段：总结青年理性前瞻消费心态，提出稳健财务规划建议。",
-    "start": "82.999",
-    "end": "89.569",
-    "duration": "6.570"
+    "start": "82.985",
+    "end": "89.570",
+    "duration": "6.585"
   },
   {
     "id": "t2_p3_en",
     "text": "The spending pattern is rational and forward-looking; disciplined financial planning will assist youngsters in establishing a solid foundation.",
-    "start": "90.370",
-    "end": "100.834",
-    "duration": "10.464"
+    "start": "90.315",
+    "end": "99.150",
+    "duration": "8.835"
   },
   {
     "id": "t2_p3_tip_cn",
     "text": "理财启示结语：Cultivating disciplined financial planning will assist youngsters in establishing a solid foundation.",
-    "start": "100.855",
-    "end": "106.950",
-    "duration": "6.095"
+    "start": "99.895",
+    "end": "106.970",
+    "duration": "7.075"
   },
   {
     "id": "t2_p3_tip_en",
     "text": "Disciplined financial planning will assist youngsters in establishing a solid foundation.",
-    "start": "107.724",
-    "end": "114.430",
-    "duration": "6.706"
+    "start": "107.665",
+    "end": "112.860",
+    "duration": "5.195"
   }
 ]

@@ -2,57 +2,57 @@
   {
     "id": "sent_p1_s1",
     "text": "Dear Professor Zhang,",
-    "start": "0.109",
-    "end": "1.444",
-    "duration": "1.335"
+    "start": "0.045",
+    "end": "1.450",
+    "duration": "1.405"
   },
   {
     "id": "sent_p1_s2",
     "text": "I am writing this letter with sincere regret to apologize for being unable to attend tomorrow's academic symposium on modern linguistics as previously scheduled.",
-    "start": "2.167",
-    "end": "12.527",
-    "duration": "10.360"
+    "start": "2.145",
+    "end": "12.530",
+    "duration": "10.385"
   },
   {
     "id": "sent_p2_s1",
     "text": "Much to my distress, our laboratory has just been assigned an emergency national research task, and I am designated to handle critical experimental data analysis under an extremely tight deadline.",
-    "start": "14.073",
-    "end": "27.204",
-    "duration": "13.131"
+    "start": "13.995",
+    "end": "27.210",
+    "duration": "13.215"
   },
   {
     "id": "sent_p2_s2",
     "text": "Because of this unanticipated circumstance, it is utterly impossible for me to be absent from the laboratory tomorrow.",
-    "start": "27.819",
-    "end": "34.977",
-    "duration": "7.158"
+    "start": "27.785",
+    "end": "34.990",
+    "duration": "7.205"
   },
   {
     "id": "sent_p2_s3",
     "text": "I fully realize the inconvenience and disappointment my unexpected absence may cause to you and the research group.",
-    "start": "35.704",
-    "end": "42.559",
-    "duration": "6.855"
+    "start": "35.650",
+    "end": "42.580",
+    "duration": "6.930"
   },
   {
     "id": "sent_p3_s1",
     "text": "Would it be possible for us to reschedule our meeting for next Tuesday?",
-    "start": "44.180",
-    "end": "48.071",
-    "duration": "3.891"
+    "start": "44.125",
+    "end": "48.080",
+    "duration": "3.955"
   },
   {
     "id": "sent_p3_s2",
     "text": "Please accept my deepest apologies once again for this regrettable situation.",
-    "start": "48.810",
-    "end": "53.700",
-    "duration": "4.890"
+    "start": "48.785",
+    "end": "53.710",
+    "duration": "4.925"
   },
   {
     "id": "sent_p3_s3",
     "text": "Yours sincerely, Li Ming",
-    "start": "54.389",
-    "end": "58.027",
-    "duration": "3.638"
+    "start": "54.330",
+    "end": "56.590",
+    "duration": "2.260"
   }
 ]

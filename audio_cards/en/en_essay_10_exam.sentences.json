@@ -2,71 +2,71 @@
   {
     "id": "sent_p1_s1",
     "text": "As is vividly delineated in the cartoon above, several family members are sitting around a lavish dinner table; ironically, instead of conversing warmly with one another, each person is staring fixatedly at their smartphone screen.",
-    "start": "0.111",
-    "end": "15.847",
-    "duration": "15.736"
+    "start": "0.055",
+    "end": "15.850",
+    "duration": "15.795"
   },
   {
     "id": "sent_p1_s2",
     "text": "Beneath the drawing, a thought-provoking caption highlights the invisible barrier erected by digital devices in contemporary society.",
-    "start": "16.572",
-    "end": "25.506",
-    "duration": "8.934"
+    "start": "16.515",
+    "end": "25.510",
+    "duration": "8.995"
   },
   {
     "id": "sent_p2_s1",
     "text": "This portrayal reflects an increasingly commonplace dilemma in the modern era.",
-    "start": "27.129",
-    "end": "33.115",
-    "duration": "5.986"
+    "start": "27.075",
+    "end": "31.680",
+    "duration": "4.605"
   },
   {
     "id": "sent_p2_s2",
     "text": "On the one hand, the phenomenal boom of mobile internet has delivered unprecedented convenience, enabling people to access voluminous information and entertainment instantaneously.",
-    "start": "33.115",
-    "end": "44.120",
-    "duration": "11.005"
+    "start": "32.315",
+    "end": "44.130",
+    "duration": "11.815"
   },
   {
     "id": "sent_p2_s3",
     "text": "On the other hand, excessive addiction to virtual networks has inexorably alienated authentic emotional ties between human beings.",
-    "start": "44.827",
-    "end": "53.895",
-    "duration": "9.068"
+    "start": "44.765",
+    "end": "53.900",
+    "duration": "9.135"
   },
   {
     "id": "sent_p2_s4",
     "text": "As people indulge in endless scrolling through short videos and algorithmic feeds, genuine interpersonal dialogue and deep contemplation are gradually supplanted by fragmented trivialities.",
-    "start": "54.562",
+    "start": "54.535",
     "end": "67.820",
-    "duration": "13.258"
+    "duration": "13.285"
   },
   {
     "id": "sent_p2_s5",
     "text": "As the old adage warns, \"All that glitters is not gold.\"",
-    "start": "68.548",
-    "end": "72.587",
-    "duration": "4.039"
+    "start": "68.485",
+    "end": "72.590",
+    "duration": "4.105"
   },
   {
     "id": "sent_p2_s6",
     "text": "Technology should enrich our existence rather than hijack our consciousness.",
-    "start": "73.246",
-    "end": "77.776",
-    "duration": "4.530"
+    "start": "73.155",
+    "end": "77.750",
+    "duration": "4.595"
   },
   {
     "id": "sent_p3_s1",
     "text": "In conclusion, it is high time that we adopted a balanced perspective toward digital innovations.",
-    "start": "79.391",
-    "end": "85.593",
-    "duration": "6.202"
+    "start": "79.335",
+    "end": "85.580",
+    "duration": "6.245"
   },
   {
     "id": "sent_p3_s2",
     "text": "Only by utilizing technology as an empowering servant rather than allowing it to become our tyrannical master can we preserve true warmth and mental autonomy in human relationships.",
-    "start": "86.245",
-    "end": "100.299",
-    "duration": "14.054"
+    "start": "86.190",
+    "end": "98.600",
+    "duration": "12.410"
   }
 ]

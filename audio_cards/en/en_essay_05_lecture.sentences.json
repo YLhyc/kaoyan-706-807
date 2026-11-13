@@ -2,92 +2,92 @@
   {
     "id": "t2_intro",
     "text": "下面进入小作文 05 · 告示 Notice：中外文化交流周学生志愿者招募答题骨架与变体精解。",
-    "start": "0.092",
-    "end": "9.393",
-    "duration": "9.301"
+    "start": "0.030",
+    "end": "9.400",
+    "duration": "9.370"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：交代告示活动背景与明确招募名额。",
-    "start": "10.562",
-    "end": "14.921",
-    "duration": "4.359"
+    "start": "10.505",
+    "end": "14.920",
+    "duration": "4.415"
   },
   {
     "id": "t2_p1_en",
     "text": "In an effort to foster cross-cultural understanding on campus, this notice is issued for the purpose of recruiting 20 energetic and responsible student volunteers.",
-    "start": "15.595",
-    "end": "27.383",
-    "duration": "11.788"
+    "start": "15.645",
+    "end": "25.720",
+    "duration": "10.075"
   },
   {
     "id": "t2_p1_tip_cn",
     "text": "告示开篇标配：This notice is issued for the purpose of doing sth.。",
-    "start": "27.383",
-    "end": "31.872",
-    "duration": "4.489"
+    "start": "26.435",
+    "end": "31.880",
+    "duration": "5.445"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "This notice is issued for the purpose of recruiting student volunteers.",
-    "start": "32.486",
-    "end": "36.774",
-    "duration": "4.288"
+    "start": "32.455",
+    "end": "36.770",
+    "duration": "4.315"
   },
   {
     "id": "t2_p2_cn",
     "text": "第二段：结构化列明应聘门槛与岗位职责。",
-    "start": "38.409",
-    "end": "43.644",
-    "duration": "5.235"
+    "start": "38.395",
+    "end": "42.120",
+    "duration": "3.725"
   },
   {
     "id": "t2_p2_en",
     "text": "Above all, applicants should demonstrate fluent oral English; in addition, the primary responsibilities entail guiding international guests and coordinating booths.",
-    "start": "43.961",
-    "end": "56.734",
-    "duration": "12.773"
+    "start": "42.845",
+    "end": "54.610",
+    "duration": "11.765"
   },
   {
     "id": "t2_p2_tip_cn",
     "text": "逻辑承接词三步法：Above all..., In addition..., The primary responsibilities entail...",
-    "start": "56.734",
-    "end": "62.239",
-    "duration": "5.505"
+    "start": "55.355",
+    "end": "59.320",
+    "duration": "3.965"
   },
   {
     "id": "t2_p2_tip_en",
     "text": "The primary responsibilities entail guiding international guests and coordinating booths.",
-    "start": "62.984",
-    "end": "68.749",
-    "duration": "5.765"
+    "start": "59.725",
+    "end": "68.750",
+    "duration": "9.025"
   },
   {
     "id": "t2_p3_cn",
     "text": "第三段：公布联系邮箱、报名截止时限与署名日期。",
-    "start": "70.409",
-    "end": "75.742",
-    "duration": "5.333"
+    "start": "70.385",
+    "end": "75.750",
+    "duration": "5.365"
   },
   {
     "id": "t2_p3_en",
     "text": "Those who are interested should submit an electronic application before November 20th, and we sincerely look forward to your active participation.",
-    "start": "76.496",
-    "end": "86.997",
-    "duration": "10.501"
+    "start": "76.445",
+    "end": "85.480",
+    "duration": "9.035"
   },
   {
     "id": "t2_p3_tip_cn",
     "text": "告示结语必背句：Those who are interested should do sth. before [Date].",
-    "start": "86.997",
-    "end": "91.353",
-    "duration": "4.356"
+    "start": "86.195",
+    "end": "91.380",
+    "duration": "5.185"
   },
   {
     "id": "t2_p3_tip_en",
     "text": "We sincerely look forward to your active participation.",
-    "start": "92.090",
-    "end": "96.550",
-    "duration": "4.460"
+    "start": "92.035",
+    "end": "95.000",
+    "duration": "2.965"
   }
 ]

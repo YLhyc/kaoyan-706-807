@@ -2,92 +2,92 @@
   {
     "id": "t2_intro",
     "text": "下面进入小作文 01 · 建议信：图书馆设施与自习服务优化答题骨架与变体精解。",
-    "start": "0.093",
-    "end": "7.626",
-    "duration": "7.533"
+    "start": "0.030",
+    "end": "7.630",
+    "duration": "7.600"
   },
   {
     "id": "t2_p1_cn",
     "text": "第一段：表明写信人身份与核心来意。",
-    "start": "8.808",
-    "end": "12.308",
-    "duration": "3.500"
+    "start": "8.755",
+    "end": "12.310",
+    "duration": "3.555"
   },
   {
     "id": "t2_p1_en",
     "text": "As a senior student at this university who spends considerable time reading in the library, I am writing this letter with the aim of putting forward some constructive suggestions to improve the current facilities and services.",
-    "start": "13.077",
-    "end": "27.832",
-    "duration": "14.755"
+    "start": "13.015",
+    "end": "26.500",
+    "duration": "13.485"
   },
   {
     "id": "t2_p1_tip_cn",
     "text": "加分替换词：putting forward suggestions 替换为 offering constructive proposals。",
-    "start": "27.832",
-    "end": "30.814",
-    "duration": "2.982"
+    "start": "27.245",
+    "end": "33.120",
+    "duration": "5.875"
   },
   {
     "id": "t2_p1_tip_en",
     "text": "offering constructive proposals",
-    "start": "30.814",
-    "end": "35.892",
-    "duration": "5.078"
+    "start": "33.795",
+    "end": "35.890",
+    "duration": "2.095"
   },
   {
     "id": "t2_p2_cn",
     "text": "第二段：提出三条具有针对性与可操作性的具体建议。",
-    "start": "37.605",
-    "end": "42.767",
-    "duration": "5.162"
+    "start": "37.595",
+    "end": "42.770",
+    "duration": "5.175"
   },
   {
     "id": "t2_p2_en",
     "text": "In the first place, it is exceedingly advisable that the administration prolong the opening hours during examination weeks to accommodate students' intense revision schedules.",
-    "start": "43.449",
-    "end": "56.253",
-    "duration": "12.804"
+    "start": "43.495",
+    "end": "54.620",
+    "duration": "11.125"
   },
   {
     "id": "t2_p2_tip_cn",
     "text": "核心句型：虚拟语气 It is exceedingly advisable that sb. (should) do sth.。",
-    "start": "56.253",
-    "end": "62.591",
-    "duration": "6.338"
+    "start": "55.275",
+    "end": "62.590",
+    "duration": "7.315"
   },
   {
     "id": "t2_p2_tip_en",
     "text": "It is exceedingly advisable that the administration prolong the opening hours.",
-    "start": "63.372",
-    "end": "67.704",
-    "duration": "4.332"
+    "start": "63.330",
+    "end": "67.700",
+    "duration": "4.370"
   },
   {
     "id": "t2_p3_cn",
     "text": "第三段：礼貌致谢并期待管理部门答复。",
-    "start": "69.363",
-    "end": "73.457",
-    "duration": "4.094"
+    "start": "69.345",
+    "end": "73.460",
+    "duration": "4.115"
   },
   {
     "id": "t2_p3_en",
     "text": "Thank you for your time and favorable consideration of my recommendations, and I am genuinely looking forward to your earliest reply at your convenience.",
-    "start": "74.228",
+    "start": "74.205",
     "end": "83.680",
-    "duration": "9.452"
+    "duration": "9.475"
   },
   {
     "id": "t2_p3_tip_cn",
     "text": "考场名言点睛：千里之行，始于足下。",
-    "start": "84.479",
-    "end": "88.766",
-    "duration": "4.287"
+    "start": "84.425",
+    "end": "88.760",
+    "duration": "4.335"
   },
   {
     "id": "t2_p3_tip_en",
     "text": "A journey of a thousand miles begins with a single step.",
-    "start": "89.521",
-    "end": "94.798",
-    "duration": "5.277"
+    "start": "89.495",
+    "end": "93.090",
+    "duration": "3.595"
   }
 ]
