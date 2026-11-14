@@ -514,6 +514,34 @@
   // ==========================================
   const activeDrawers = new Set();
 
+  let suppressSyncHook = false;
+
+  function hasActiveTextSelection() {
+    try {
+      const sel = window.getSelection ? window.getSelection() : null;
+      return Boolean(sel && !sel.isCollapsed && String(sel).trim().length > 0);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function notifyPaperRendered() {
+    try {
+      if (window.__kaoyanAiHooks && typeof window.__kaoyanAiHooks.onPaperRendered === 'function') {
+        window.__kaoyanAiHooks.onPaperRendered({
+          item: state.activeItem,
+          itemId: state.activeItemId,
+          subject: state.currentSubject,
+          polSubMode: state.polSubMode,
+          track: state.currentTrack,
+          sentences: state.activeSentences || []
+        });
+      }
+    } catch (e) {
+      console.warn('onPaperRendered hook error:', e);
+    }
+  }
+
   function hasAnyOpenDrawer() {
     const isSidebarOpenAsDrawer = !!(el.sidebar && el.sidebar.classList.contains('open') && isSidebarDrawerMode());
     if (isSidebarOpenAsDrawer) return true;
@@ -523,6 +551,7 @@
       el.playModeDrawer,
       el.studyDashboardDrawer,
       document.getElementById('settingsDrawer'),
+      document.getElementById('aiAssistantDrawer'),
       document.getElementById('speedModal'),
       document.getElementById('updateModal'),
       document.querySelector('.appearance-drawer')
@@ -1550,6 +1579,9 @@
   function saveStudyLogs() {
     try {
       localStorage.setItem('kaoyan_study_logs', JSON.stringify(state.studyLogs));
+      if (!suppressSyncHook && window.__kaoyanAiHooks && typeof window.__kaoyanAiHooks.onStudyLogsMutation === 'function') {
+        window.__kaoyanAiHooks.onStudyLogsMutation(state.studyLogs);
+      }
     } catch (e) {
       console.warn('Failed to save kaoyan_study_logs:', e);
     }
@@ -1619,6 +1651,17 @@
     }
   }
 
+  function readJsonStorageSafe(key, fallbackVal) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) return fallbackVal;
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === 'object' ? parsed : fallbackVal;
+    } catch (e) {
+      return fallbackVal;
+    }
+  }
+
   function buildStudyBackupPayload() {
     accumulateListeningTime(true);
     return {
@@ -1626,7 +1669,11 @@
       appVersion: APP_BUILD_ID,
       exportedAt: new Date().toISOString(),
       masteryState: state.masteryState || {},
+      masteryUpdatedAt: readJsonStorageSafe('kaoyan_mastery_meta', {}),
       studyLogs: state.studyLogs || { dates: [], totalCardsCompleted: 0, dailyListenSec: {}, totalListenSec: 0 },
+      studyLogsMeta: readJsonStorageSafe('kaoyan_study_logs_meta', { updatedAt: Date.now() }),
+      aiMemories: readJsonStorageSafe('kaoyan_ai_memories', {}),
+      reciteLogs: readJsonStorageSafe('kaoyan_recite_logs', []),
       settings: {
         theme: localStorage.getItem('kaoyan_theme') || state.theme,
         fontSize: localStorage.getItem('kaoyan_font_size') || String(state.fontSize || 17),
@@ -1751,6 +1798,22 @@
         }
       }
 
+      if (parsed.masteryUpdatedAt && typeof parsed.masteryUpdatedAt === 'object' && !Array.isArray(parsed.masteryUpdatedAt)) {
+        localStorage.setItem('kaoyan_mastery_meta', JSON.stringify(parsed.masteryUpdatedAt));
+      }
+      if (parsed.studyLogsMeta && typeof parsed.studyLogsMeta === 'object' && !Array.isArray(parsed.studyLogsMeta)) {
+        localStorage.setItem('kaoyan_study_logs_meta', JSON.stringify(parsed.studyLogsMeta));
+      }
+      if (parsed.aiMemories && typeof parsed.aiMemories === 'object' && !Array.isArray(parsed.aiMemories)) {
+        localStorage.setItem('kaoyan_ai_memories', JSON.stringify(parsed.aiMemories));
+      }
+      if (Array.isArray(parsed.reciteLogs)) {
+        localStorage.setItem('kaoyan_recite_logs', JSON.stringify(parsed.reciteLogs.slice(0, 500)));
+      }
+      if (window.__kaoyanAiHooks && typeof window.__kaoyanAiHooks.onBackupImported === 'function') {
+        window.__kaoyanAiHooks.onBackupImported();
+      }
+
       updateHeaderMasteryUI();
       renderSidebarList();
       updateBadgeCounts();
@@ -1807,6 +1870,9 @@
     if (!itemId) return;
     state.masteryState[itemId] = newStatus;
     saveMasteryData();
+    if (!suppressSyncHook && window.__kaoyanAiHooks && typeof window.__kaoyanAiHooks.onMasteryMutation === 'function') {
+      window.__kaoyanAiHooks.onMasteryMutation(itemId, newStatus);
+    }
 
     if (newStatus === 'mastered') {
       recordStudyPunch(itemId);
@@ -2479,8 +2545,9 @@
       targetEl.dataset.cardClickBound = '1';
 
       targetEl.addEventListener('click', (e) => {
-        // 若点击的是交互控件（按钮、链接、专属跳转胶囊、或挖空测验模式的填空词），由其自身专属事件接管
-        if (e.target.closest('button, a, input, .seal-btn, .en-audio-jump-pill')) {
+        if (hasActiveTextSelection()) return;
+        // 若点击的是交互控件（按钮、链接、专属跳转胶囊、AI 伴学按钮或挖空测验模式的填空词），由其自身专属事件接管
+        if (e.target.closest('button, a, input, .seal-btn, .en-audio-jump-pill, .card-ai-btn')) {
           return;
         }
         if (state.clozeMode === 'keyword' && (e.target.closest('.cloze') || e.target.closest('.kw-red') || e.target.closest('.stream-kw'))) {
@@ -2684,6 +2751,7 @@
     state.activeSentences = sanitizeSentences(sentences);
     stampSentenceIndices();
     buildFrameworkIndex();
+    notifyPaperRendered();
 
     // 若未命中内置包且有 sFile，发起异步非阻塞 fetch 进行补充校准
     if (sFile && (!window.KAOYAN_SENTENCES || !window.KAOYAN_SENTENCES[sFile])) {
@@ -2696,6 +2764,7 @@
             bindSentenceClickHandlers(el.paperContent);
             bindCardSectionClickHandlers(el.paperContent);
             buildFrameworkIndex();
+            notifyPaperRendered();
           }
         })
         .catch(e => {
@@ -2706,6 +2775,7 @@
             bindSentenceClickHandlers(el.paperContent);
             bindCardSectionClickHandlers(el.paperContent);
             buildFrameworkIndex();
+            notifyPaperRendered();
           }
         });
     }
@@ -2719,6 +2789,8 @@
       if (elItem.dataset.clickBound === '1') return;
       elItem.dataset.clickBound = '1';
       elItem.addEventListener('click', (e) => {
+        if (hasActiveTextSelection()) return;
+        if (e.target.closest('.card-ai-btn')) return;
         if (state.clozeMode === 'keyword' && (e.target.closest('.cloze') || e.target.closest('.kw-red') || e.target.closest('.stream-kw'))) return;
         if (state.clozeMode === 'body') {
           const isAlreadyVisible = elItem.classList.contains('cloze-revealed') || elItem.classList.contains('active-spotlight');
@@ -2857,7 +2929,8 @@
         const enPromptBoxes = el.paperContent.querySelectorAll('.en-task-prompt-box, .en-task-prompt-text, .section-thesis-box');
         enPromptBoxes.forEach(pBox => {
           pBox.addEventListener('click', (e) => {
-            if (e.target.closest('.en-audio-jump-pill')) return;
+            if (hasActiveTextSelection()) return;
+            if (e.target.closest('.en-audio-jump-pill, .card-ai-btn')) return;
             e.stopPropagation();
             const targetCard = pBox.closest('.en-essay-para') || pBox.closest('.exam-section-card') || pBox.nextElementSibling || el.paperContent.querySelector('.en-full-essay-box');
             if (seekToFirstSentenceInCard(targetCard)) {
@@ -2871,6 +2944,8 @@
         const enIntroBadges = el.paperContent.querySelectorAll('.en-intro-badge, .card-intro .section-card-header');
         enIntroBadges.forEach(ib => {
           ib.addEventListener('click', (e) => {
+            if (hasActiveTextSelection()) return;
+            if (e.target.closest('.card-ai-btn')) return;
             e.stopPropagation();
             const targetCard = ib.closest('.en-essay-para') || ib.closest('.exam-section-card') || el.paperContent.querySelector('.en-full-essay-box');
             if (seekToFirstSentenceInCard(targetCard)) {
@@ -4401,6 +4476,7 @@
       activateSubCardAudio(targetCard, autoPlay);
       enhanceClozeKeywords();
       buildFrameworkIndex();
+      notifyPaperRendered();
     }
   }
 
@@ -5443,6 +5519,12 @@
     // 桌面快捷键与全局 Esc 关闭弹窗
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        const aiDrawer = document.getElementById('aiAssistantDrawer');
+        if (aiDrawer && aiDrawer.classList.contains('open') && window.__kaoyanAiHooks && typeof window.__kaoyanAiHooks.closeDrawer === 'function') {
+          window.__kaoyanAiHooks.closeDrawer();
+          syncBodyScrollLock();
+          return;
+        }
         const speedModal = document.getElementById('speedModal');
         if (speedModal && speedModal.classList.contains('open') && typeof window.__closeSpeedModal === 'function') {
           window.__closeSpeedModal();
@@ -5556,7 +5638,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.3.0';
+  const APP_BUILD_ID = '3.4.0';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {
@@ -5684,6 +5766,7 @@
           fetch(`index.html?_t=${Date.now()}`, { cache: 'no-store' }),
           fetch(`version.json?_t=${Date.now()}`, { cache: 'no-store' }),
           fetch(`app.js?v=${targetVer}&_t=${Date.now()}`, { cache: 'no-store' }),
+          fetch(`ai_sync.js?v=${targetVer}&_t=${Date.now()}`, { cache: 'no-store' }),
           fetch(`app.css?v=${targetVer}&_t=${Date.now()}`, { cache: 'no-store' })
         ]);
       } catch (e) {
@@ -5884,6 +5967,8 @@
       '.speed-modal-backdrop',
       '#updateModalBackdrop',
       '.update-modal-backdrop',
+      '#aiDrawerBackdrop',
+      '.ai-drawer-backdrop',
       '.drawer-backdrop'
     ];
 
@@ -5903,8 +5988,8 @@
 
       // 1. 遮罩层直接阻止滚动
       if (e.target && (
-        e.target.matches?.('.sidebar-backdrop, .outline-drawer-backdrop, .mode-drawer-backdrop, .dashboard-drawer-backdrop, .settings-backdrop, .speed-modal-backdrop, .update-modal-backdrop, .drawer-backdrop') ||
-        e.target.closest?.('.sidebar-backdrop, .outline-drawer-backdrop, .mode-drawer-backdrop, .dashboard-drawer-backdrop, .settings-backdrop, .speed-modal-backdrop, .update-modal-backdrop, .drawer-backdrop')
+        e.target.matches?.('.sidebar-backdrop, .outline-drawer-backdrop, .mode-drawer-backdrop, .dashboard-drawer-backdrop, .settings-backdrop, .speed-modal-backdrop, .update-modal-backdrop, .ai-drawer-backdrop, .drawer-backdrop') ||
+        e.target.closest?.('.sidebar-backdrop, .outline-drawer-backdrop, .mode-drawer-backdrop, .dashboard-drawer-backdrop, .settings-backdrop, .speed-modal-backdrop, .update-modal-backdrop, .ai-drawer-backdrop, .drawer-backdrop')
       )) {
         e.preventDefault();
         return;
@@ -5917,7 +6002,7 @@
       }
 
       // 3. 检查是否在允许滚动的抽屉容器内
-      const scrollable = e.target.closest?.('.item-list-container, #item-list, .outline-drawer-body, .mode-drawer-body, #playModeList, .play-mode-list, .dashboard-drawer-body, #studyDashboardBody, .settings-body, .appearance-drawer, .filter-pills, .pol-submode-bar');
+      const scrollable = e.target.closest?.('.item-list-container, #item-list, .outline-drawer-body, .mode-drawer-body, #playModeList, .play-mode-list, .dashboard-drawer-body, #studyDashboardBody, .settings-body, .appearance-drawer, .filter-pills, .pol-submode-bar, .ai-drawer-body, .ai-chat-stream, .ai-recite-result, .ai-memory-body');
       if (!scrollable) {
         if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
           return;
@@ -5943,6 +6028,114 @@
     window.selectItem = selectItem;
     window.seekToSentence = seekToSentence;
     window.getCurrentItemsList = getCurrentItemsList;
+    window.__kaoyanBridge = {
+      getState: () => ({
+        currentSubject: state.currentSubject,
+        polSubMode: state.polSubMode,
+        polCategory: state.polCategory,
+        polXtVoice: state.polXtVoice,
+        polSubCardId: state.polSubCardId,
+        currentTrack: state.currentTrack,
+        activeItemId: state.activeItemId,
+        activeItem: state.activeItem,
+        activeSentences: state.activeSentences || [],
+        currentSentIndex: state.currentSentIndex,
+        isPlaying: state.isPlaying,
+        theme: state.theme,
+        fontSize: state.fontSize
+      }),
+      getActiveItem: () => state.activeItem,
+      getActiveSentences: () => state.activeSentences || [],
+      seekToSentence: (idxOrId, start) => seekToSentence(idxOrId, start),
+      play: () => {
+        if (audio.paused) toggleAudioPlayback();
+      },
+      pause: () => {
+        if (isLoopGapWaiting) {
+          pauseDuringGapWait();
+        } else if (!audio.paused) {
+          audio.pause();
+        }
+      },
+      getMasteryState: () => ({ ...(state.masteryState || {}) }),
+      applyMergedMastery: (mergedMap) => {
+        if (!mergedMap || typeof mergedMap !== 'object' || Array.isArray(mergedMap)) return;
+        const sanitized = {};
+        Object.entries(mergedMap).forEach(([k, v]) => {
+          if (k && (v === 'unlearned' || v === 'familiar' || v === 'mastered')) {
+            sanitized[String(k)] = v;
+          }
+        });
+        suppressSyncHook = true;
+        try {
+          state.masteryState = sanitized;
+          state.masteryMap = state.masteryState;
+          saveMasteryData();
+          updateHeaderMasteryUI();
+          renderSidebarList();
+          updateBadgeCounts();
+          updateStudyDashboardUI();
+          if (el.paperContent && state.activeItemId) {
+            const isM = getMasteryStatus(state.activeItemId) === 'mastered';
+            el.paperContent.querySelectorAll(`[id^="sealBtn_${state.activeItemId}"]`).forEach(btn => {
+              btn.classList.toggle('sealed', isM);
+              const spanList = btn.querySelectorAll('span');
+              if (spanList.length > 1) {
+                spanList[spanList.length - 1].textContent = isM
+                  ? (state.polSubMode === 'recite47' ? '已落印研毕' : '已完成带背')
+                  : (state.polSubMode === 'recite47' ? '落印研毕' : '打卡研毕');
+              }
+            });
+          }
+        } finally {
+          suppressSyncHook = false;
+        }
+      },
+      getStudyLogs: () => JSON.parse(JSON.stringify(state.studyLogs || { dates: [], completedIds: [], totalCardsCompleted: 0, dailyListenSec: {}, totalListenSec: 0 })),
+      applyMergedStudyLogs: (mergedLogs) => {
+        if (!mergedLogs || typeof mergedLogs !== 'object' || Array.isArray(mergedLogs)) return;
+        const cleanDates = Array.isArray(mergedLogs.dates)
+          ? Array.from(new Set(mergedLogs.dates.filter(d => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)))).sort()
+          : [];
+        const cleanCompleted = Array.isArray(mergedLogs.completedIds)
+          ? Array.from(new Set(mergedLogs.completedIds.filter(id => typeof id === 'string')))
+          : [];
+        const cleanDaily = {};
+        if (mergedLogs.dailyListenSec && typeof mergedLogs.dailyListenSec === 'object') {
+          Object.entries(mergedLogs.dailyListenSec).forEach(([d, sec]) => {
+            const val = Number(sec);
+            if (/^\d{4}-\d{2}-\d{2}$/.test(d) && val >= 0) cleanDaily[d] = val;
+          });
+        }
+        suppressSyncHook = true;
+        try {
+          state.studyLogs = {
+            dates: cleanDates,
+            completedIds: cleanCompleted,
+            totalCardsCompleted: Math.max(0, Number(mergedLogs.totalCardsCompleted) || cleanCompleted.length),
+            dailyListenSec: cleanDaily,
+            totalListenSec: Math.max(0, Number(mergedLogs.totalListenSec) || 0)
+          };
+          saveStudyLogs();
+          updateStudyDashboardUI();
+          updateStudyDashboardListenUI();
+        } finally {
+          suppressSyncHook = false;
+        }
+      },
+      openSettings: () => {
+        const navSettings = document.getElementById('nav-tab-settings');
+        const settingsDrawer = document.getElementById('settingsDrawer');
+        if (settingsDrawer && !settingsDrawer.classList.contains('open') && navSettings) {
+          navSettings.click();
+        }
+      },
+      showToast: (msg, duration) => showToast(msg, duration),
+      lockBodyScroll: (name) => lockBodyScroll(name),
+      unlockBodyScroll: (name) => unlockBodyScroll(name),
+      syncBodyScrollLock: () => syncBodyScrollLock(),
+      isBodyScrollLocked: () => isBodyScrollLocked()
+    };
     initElements();
     setupAudioEngine();
     setupEventListeners();
@@ -6190,6 +6383,7 @@
     attachSealButtonListeners(chapter.id);
     buildFrameworkIndex();
     enhanceClozeKeywords();
+    notifyPaperRendered();
   }
 
   function renderPolChapterTrack2(chapter, autoPlay = false, restoreTime = false) {
@@ -6243,6 +6437,7 @@
     });
 
     enhanceClozeKeywords();
+    notifyPaperRendered();
   }
 
   function activateSubCardAudio(card, autoPlay = false, restoreTime = false) {
@@ -6376,6 +6571,8 @@
 
     el.paperContent.querySelectorAll('.xt-day-point-card').forEach(card => {
       card.addEventListener('click', (e) => {
+        if (hasActiveTextSelection()) return;
+        if (e.target.closest('.card-ai-btn')) return;
         if (state.clozeMode === 'keyword' && (e.target.closest('.cloze') || e.target.closest('.kw-red') || e.target.closest('.stream-kw'))) return;
         if (state.clozeMode === 'body') {
           const isAlreadyVisible = card.classList.contains('cloze-revealed') || card.classList.contains('active-spotlight');
@@ -6406,6 +6603,7 @@
     attachSealButtonListeners(dayItem.id);
     buildFrameworkIndex();
     enhanceClozeKeywords();
+    notifyPaperRendered();
   }
 
   function setXutao16Audio(dayItem, voiceType, autoPlay = false, startPointIdx = -1, restoreTime = false) {
@@ -6619,6 +6817,8 @@
 
     el.paperContent.querySelectorAll('.tj-point-card').forEach(pCard => {
       pCard.addEventListener('click', (e) => {
+        if (hasActiveTextSelection()) return;
+        if (e.target.closest('.card-ai-btn')) return;
         if (state.clozeMode === 'keyword' && e.target.closest('.cloze, .kw-red, .stream-kw')) return;
         if (state.clozeMode === 'body' && !pCard.classList.contains('cloze-revealed')) {
           pCard.classList.add('cloze-revealed');
@@ -6641,6 +6841,7 @@
     attachSealButtonListeners(dayItem.id);
     buildFrameworkIndex();
     enhanceClozeKeywords();
+    notifyPaperRendered();
   }
 
   function applyClozeClassToPaper() {

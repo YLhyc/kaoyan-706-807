@@ -1,12 +1,13 @@
-// 考研背诵手卷 · 离线 PWA Service Worker (v3.3.0)
-const CACHE_NAME = 'kaoyan-all-in-one-v3.3.0';
+// 考研背诵手卷 · 离线 PWA Service Worker (v3.4.0)
+const CACHE_NAME = 'kaoyan-all-in-one-v3.4.0';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
-  './app.css?v=3.3.0',
-  './app.js?v=3.3.0',
-  './data/kaoyan_data.js?v=3.3.0',
-  './data/kaoyan_data_pol.js?v=3.3.0',
+  './app.css?v=3.4.0',
+  './app.js?v=3.4.0',
+  './ai_sync.js?v=3.4.0',
+  './data/kaoyan_data.js?v=3.4.0',
+  './data/kaoyan_data_pol.js?v=3.4.0',
   './version.json',
   './manifest.json',
   './favicon.svg',
@@ -54,6 +55,11 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
+
+  // 显式排除跨域请求及同步/AI 接口请求，确保 PWA Service Worker 永不拦截外部同步或 SSE 流式响应
+  if (url.origin !== self.location.origin || url.pathname.startsWith('/api/')) {
+    return;
+  }
 
   // 显式排除音视频大文件和 Range 请求（iOS Safari 依赖 206 Partial Content 进行拖动缓冲，Service Worker 缓存 206 会破坏断点续传）
   const isMedia = url.pathname.endsWith('.mp3') || 
@@ -103,7 +109,8 @@ self.addEventListener('fetch', (event) => {
 
   // 2. 核心样式与脚本（自带版本指纹，Cache-First 快速响应）
   const isStaticCode = url.pathname.endsWith('app.css') || 
-                       url.pathname.endsWith('app.js');
+                       url.pathname.endsWith('app.js') ||
+                       url.pathname.endsWith('ai_sync.js');
 
   if (isStaticCode) {
     event.respondWith(

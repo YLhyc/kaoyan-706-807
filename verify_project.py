@@ -23,7 +23,7 @@ if hasattr(sys.stdout, 'reconfigure'):
 
 def main():
     root = Path(__file__).resolve().parent
-    TARGET_VER = '3.3.0'
+    TARGET_VER = '3.4.0'
     TARGET_CACHE = f"kaoyan-all-in-one-v{TARGET_VER}"
 
     print("=" * 65)
@@ -36,6 +36,7 @@ def main():
     print("\n[1/4] 执行 Node.js 静态语法防白屏检测...")
     js_files = [
         ("app.js", root / "app.js"),
+        ("ai_sync.js", root / "ai_sync.js"),
         ("sw.js", root / "sw.js"),
         ("kubai_icons.js", root / "kubai_icons.js"),
         ("data/kaoyan_data.js", root / "data" / "kaoyan_data.js"),
@@ -123,6 +124,12 @@ def main():
         else:
             print(f"  ✓ index.html: app.css 已接入 ?v={TARGET_VER}")
 
+        if f"ai_sync.js?v={TARGET_VER}" not in html_text:
+            errors.append(f"index.html ai_sync.js 缺失 ?v={TARGET_VER}")
+            print(f"  ❌ index.html: ai_sync.js 未配置 ?v={TARGET_VER}")
+        else:
+            print(f"  ✓ index.html: ai_sync.js 已接入 ?v={TARGET_VER}")
+
         stale_script_vers = set(re.findall(r"\?v=(3\.0\.[0-8])", html_text))
         if stale_script_vers:
             errors.append(f"index.html 存在过期版本参数: {stale_script_vers}")
@@ -146,7 +153,7 @@ def main():
             "btn-subject-807", "btn-subject-706", "btn-subject-pol", "btn-subject-en",
             "dock-play-btn", "dock-prev-btn", "dock-next-btn", "dock-rewind-btn", "dock-forward-btn",
             "btn-speed", "btn-loop-mode", "paper-content", "item-list", "search-input",
-            "progress-bar"
+            "progress-bar", "btn-ai-assistant", "aiSelectionPill", "aiAssistantDrawer"
         ]
         missing_dom = [did for did in required_dom_ids if f'id="{did}"' not in html]
         if missing_dom:
