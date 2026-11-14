@@ -67,6 +67,9 @@
   let polDataLoadPromise = null;
   let syncRafId = null;
   let lastSpotlightEl = null;
+  let lastSpotlightEls = [];
+  let lastLinkedClickInfo = null; // { el, box, idx, ts }
+  let lastAudioErrorRecoverSrc = '';
   let isProgrammaticScrolling = false;
   let programmaticScrollTimer = null;
   let seekToken = 0;
@@ -144,8 +147,10 @@
       if (node.classList.contains('tj-point-card') && node.dataset.pointId) return true;
       return false;
     });
+    const primaryFiltered = filtered.filter(node => !node.classList.contains('t1-linked-sent') && node.dataset.linkedSentIdx === undefined);
+    const effective = primaryFiltered.length > 0 ? primaryFiltered : filtered;
     // 按 0-based sentIdx / 物理起始时间排序，消除政治 47 章卡首徽章与音频栏 DOM 倒序造成的跳句错位
-    return filtered
+    return effective
       .map((node, domOrder) => {
         const idxNum = node.dataset.sentIdx !== undefined ? parseInt(node.dataset.sentIdx, 10) : NaN;
         const startNum = node.dataset.start !== undefined ? parseFloat(node.dataset.start) : NaN;
@@ -217,6 +222,7 @@
     cancelLoopGapWait();
     clearPendingSeek(true);
     xtIntroAutoSkipped = false;
+    lastAudioErrorRecoverSrc = '';
     if (!autoPlay) {
       try {
         if (!audio.paused) audio.pause();
@@ -376,6 +382,7 @@
   function clearAudioSource() {
     cancelLoopGapWait();
     clearPendingSeek(true);
+    lastAudioErrorRecoverSrc = '';
     state.isPlaying = false;
     if (syncRafId) {
       cancelAnimationFrame(syncRafId);
@@ -1252,7 +1259,15 @@
       cancelAnimationFrame(syncRafId);
       syncRafId = null;
     }
+    lastSpotlightEls.forEach(n => {
+      if (n && n.classList) {
+        n.classList.remove('active-spotlight', 'loop-sent-active');
+      }
+    });
+    lastSpotlightEls = [];
     lastSpotlightEl = null;
+    lastLinkedClickInfo = null;
+    lastAudioErrorRecoverSrc = '';
     
     if (el.subject807Btn) el.subject807Btn.classList.toggle('active', sub === '807');
     if (el.subject706Btn) el.subject706Btn.classList.toggle('active', sub === '706');
@@ -2113,9 +2128,10 @@
   // DOM 兜底解析机制：离线或 file:/// 协议无 JSON 缓存时，从当前 DOM 提取
   function extractSentencesFromDOM() {
     if (!el.paperContent) return [];
-    const nodes = el.paperContent.querySelectorAll('.recite-sent, .recite-sent-item, .recite-sentence, .tj-sent-span, [data-sent-id], [data-sent-idx]');
+    const nodes = el.paperContent.querySelectorAll('.recite-sent:not(.t1-linked-sent):not([data-linked-sent-idx]), .recite-sent-item, .recite-sentence, .tj-sent-span, [data-sent-id]:not(.t1-linked-sent):not([data-linked-sent-idx]), [data-sent-idx]');
     const list = [];
     nodes.forEach((node, idx) => {
+      if (node.classList.contains('t1-linked-sent') || node.dataset.linkedSentIdx !== undefined) return;
       const start = parseFloat(node.dataset.start);
       const end = parseFloat(node.dataset.end);
       if (!isNaN(start)) {
@@ -2362,16 +2378,16 @@
       let node = null;
       if (s.id !== undefined && s.id !== null) {
         const escSentId = (typeof CSS !== 'undefined' && CSS.escape) ? CSS.escape(String(s.id)) : String(s.id).replace(/"/g, '\\"');
-        node = el.paperContent.querySelector(`[data-sent-id="${escSentId}"], [data-point-id="${escSentId}"]`);
+        node = el.paperContent.querySelector(`[data-sent-id="${escSentId}"]:not(.t1-linked-sent):not([data-linked-sent-idx]), [data-point-id="${escSentId}"]:not(.t1-linked-sent):not([data-linked-sent-idx])`);
       }
       if (!node && s.domId) {
         try {
           const escId = (typeof CSS !== 'undefined' && CSS.escape) ? CSS.escape(String(s.domId)) : String(s.domId).replace(/([ #;?%&,.+*~\':"!^$[\]()=>|\/@])/g, '\\$1');
-          node = el.paperContent.querySelector(`#${escId}, [data-sent-id="${s.domId}"]`);
+          node = el.paperContent.querySelector(`#${escId}:not(.t1-linked-sent):not([data-linked-sent-idx]), [data-sent-id="${s.domId}"]:not(.t1-linked-sent):not([data-linked-sent-idx])`);
         } catch (e) {}
       }
       if (!node && typeof s.start === 'number' && !isNaN(s.start)) {
-        const timeCandidates = el.paperContent.querySelectorAll('.recite-sent, .recite-sent-item, .recite-sentence, .tj-sent-span');
+        const timeCandidates = el.paperContent.querySelectorAll('.recite-sent:not(.t1-linked-sent):not([data-linked-sent-idx]), .recite-sent-item, .recite-sentence, .tj-sent-span');
         for (let j = 0; j < timeCandidates.length; j++) {
           const tNode = timeCandidates[j];
           const tStart = parseFloat(tNode.dataset.start);
@@ -2390,9 +2406,9 @@
       card.dataset.sentIdx = String(cIdx);
     });
 
-    const unstamped = el.paperContent.querySelectorAll('.recite-sent:not([data-sent-idx]), .recite-sent-item:not([data-sent-idx]), .recite-sentence:not([data-sent-idx])');
+    const unstamped = el.paperContent.querySelectorAll('.recite-sent:not(.t1-linked-sent):not([data-linked-sent-idx]):not([data-sent-idx]), .recite-sent-item:not([data-sent-idx]), .recite-sentence:not([data-sent-idx])');
     if (unstamped.length > 0) {
-      const allEls = el.paperContent.querySelectorAll('.recite-sent, .recite-sent-item, .recite-sentence, .tj-sent-span');
+      const allEls = el.paperContent.querySelectorAll('.recite-sent:not(.t1-linked-sent):not([data-linked-sent-idx]), .recite-sent-item, .recite-sentence, .tj-sent-span');
       if (allEls.length === sents.length) {
         allEls.forEach((elNode, eIdx) => {
           elNode.dataset.sentIdx = String(eIdx);
@@ -2409,6 +2425,13 @@
       const sNorms = sents.map((s) => normText(s.text));
       linkedEls.forEach((lNode) => {
         if (lNode.dataset.linkedSentIdx !== undefined) return;
+        if (lNode.dataset.sentId !== undefined && lNode.dataset.sentId !== '') {
+          const byIdIdx = sents.findIndex((s) => String(s.id) === String(lNode.dataset.sentId));
+          if (byIdIdx !== -1) {
+            lNode.dataset.linkedSentIdx = String(byIdIdx);
+            return;
+          }
+        }
         const lNorm = normText(lNode.textContent);
         if (!lNorm || lNorm.length < 2) return;
         let matchIdx = sNorms.findIndex((sn) => sn && sn === lNorm);
@@ -2463,7 +2486,7 @@
         if (state.clozeMode === 'keyword' && (e.target.closest('.cloze') || e.target.closest('.kw-red') || e.target.closest('.stream-kw'))) {
           return;
         }
-        const clickedTimedSent = e.target.closest('[data-sent-idx], [data-sent-id], .recite-sent[data-start], .recite-sent-item[data-start], .recite-sentence[data-start], .tj-sent-span[data-start]');
+        const clickedTimedSent = e.target.closest('[data-sent-idx], [data-sent-id], [data-linked-sent-idx], .t1-linked-sent, .recite-sent[data-start], .recite-sent-item[data-start], .recite-sentence[data-start], .tj-sent-span[data-start]');
         if (clickedTimedSent) {
           return;
         }
@@ -2531,7 +2554,9 @@
 
     const resolvedId = item.id;
     accumulateListeningTime(true);
+    lastSpotlightEls = [];
     lastSpotlightEl = null; // 切换考题清除旧聚光引用，消除跨题内存残留与同名 sentId 穿透
+    lastLinkedClickInfo = null;
     cancelLoopGapWait();
     state.activeItemId = resolvedId;
     state.activeItem = item;
@@ -2689,7 +2714,7 @@
   // 权威句子点击事件代理绑定器 (优先从 state.activeSentences 读取权威起止时间戳，彻底纠正点击前一句/串音)
   function bindSentenceClickHandlers(container) {
     if (!container) return;
-    const sentEls = container.querySelectorAll('.recite-sent, .recite-sent-item, .recite-sentence, .tj-sent-span, [data-sent-id], [data-sent-idx], [id^="recite_bar_"], [id^="recite_blk_"]');
+    const sentEls = container.querySelectorAll('.recite-sent, .recite-sent-item, .recite-sentence, .tj-sent-span, [data-sent-id], [data-sent-idx], [data-linked-sent-idx], .t1-linked-sent, [id^="recite_bar_"], [id^="recite_blk_"]');
     sentEls.forEach(elItem => {
       if (elItem.dataset.clickBound === '1') return;
       elItem.dataset.clickBound = '1';
@@ -2753,12 +2778,23 @@
 
         if (targetIdx !== -1 && matched && typeof matched.start === 'number' && !isNaN(matched.start)) {
           e.stopPropagation();
+          if (elItem.classList.contains('t1-linked-sent') || elItem.dataset.linkedSentIdx !== undefined) {
+            lastLinkedClickInfo = {
+              el: elItem,
+              box: elItem.closest('.gold-quote-box'),
+              idx: targetIdx,
+              ts: Date.now()
+            };
+          } else {
+            lastLinkedClickInfo = null;
+          }
           seekToSentence(targetIdx, matched.start);
         } else {
           const fallbackStart = parseFloat(elItem.dataset.start);
           const fallbackId = (!isNaN(rawIdx) ? rawIdx : rawId);
           if (!isNaN(fallbackStart) && fallbackId !== null && fallbackId !== undefined) {
             e.stopPropagation();
+            lastLinkedClickInfo = null;
             seekToSentence(fallbackId, fallbackStart);
           } else if (state.clozeMode === 'body') {
             elItem.classList.toggle('cloze-revealed');
@@ -2771,7 +2807,9 @@
 
   function renderPaperContent(trackObj, sentences) {
     if (!el.paperContent) return;
+    lastSpotlightEls = [];
     lastSpotlightEl = null;
+    lastLinkedClickInfo = null;
     el.paperContent.classList.remove('pol-scope');
     el.paperContent.innerHTML = '';
     applyClozeClassToPaper();
@@ -3002,6 +3040,16 @@
       }
     };
 
+    if (audio.error) {
+      const curSrc = audio.getAttribute('src') || audio.src;
+      if (curSrc) {
+        try {
+          audio.src = curSrc;
+          audio.load();
+        } catch (e) {}
+      }
+    }
+
     if (audio.readyState >= 1) {
       applySeek();
       playAndEnforceTarget();
@@ -3033,7 +3081,6 @@
     }
   }
 
-  lastSpotlightEl = null;
   let lastScrollTs = 0;
 
   // 工业级严格区间对齐引擎 (结合 syncOffset 前瞻补偿与 60fps 实时追踪，消除高光滞后)
@@ -3068,11 +3115,14 @@
 
   function highlightSentence(target) {
     if (target === null || target === undefined || target === '') {
-      if (lastSpotlightEl) {
-        lastSpotlightEl.classList.remove('active-spotlight');
-        lastSpotlightEl.classList.remove('loop-sent-active');
-        lastSpotlightEl = null;
-      }
+      lastSpotlightEls.forEach(node => {
+        if (node && node.classList) {
+          node.classList.remove('active-spotlight');
+          node.classList.remove('loop-sent-active');
+        }
+      });
+      lastSpotlightEls = [];
+      lastSpotlightEl = null;
       return;
     }
 
@@ -3085,8 +3135,8 @@
         targetIdx = target;
         sentObj = state.activeSentences[target];
       } else {
-        const found = state.activeSentences.findIndex(s => 
-          String(s.id) === String(target) || 
+        const found = state.activeSentences.findIndex(s =>
+          String(s.id) === String(target) ||
           (s.domId && String(s.domId) === String(target)) ||
           (s.idx !== undefined && String(s.idx) === String(target))
         );
@@ -3098,79 +3148,143 @@
     }
 
     let targetEl = null;
+    const linkedEls = [];
     if (el.paperContent) {
       // 1. 绝对第一优先级：严格以 [data-sent-idx="${targetIdx}"] 查询（100% 音画同拍）
       if (targetIdx !== -1) {
         targetEl = el.paperContent.querySelector(`[data-sent-idx="${targetIdx}"]`);
       }
-      // 2. 备用：按 sentObj.id 或 sentObj.domId 查询
+      // 2. 备用：按 sentObj.id 或 sentObj.domId 查询（排除 .t1-linked-sent 避免抢占主句锚点）
       if (!targetEl && sentObj) {
         if (sentObj.id !== undefined && sentObj.id !== null) {
-          targetEl = el.paperContent.querySelector(`[data-sent-id="${sentObj.id}"], [data-point-id="${sentObj.id}"]`);
+          targetEl = el.paperContent.querySelector(`[data-sent-id="${sentObj.id}"]:not(.t1-linked-sent):not([data-linked-sent-idx]), [data-point-id="${sentObj.id}"]`);
         }
         if (!targetEl && sentObj.domId) {
           try {
             const escId = (typeof CSS !== 'undefined' && CSS.escape) ? CSS.escape(String(sentObj.domId)) : String(sentObj.domId).replace(/([ #;?%&,.+*~\':"!^$[\]()=>|\/@])/g, '\\$1');
-            targetEl = el.paperContent.querySelector(`#${escId}, [data-sent-id="${sentObj.domId}"]`);
+            targetEl = el.paperContent.querySelector(`#${escId}, [data-sent-id="${sentObj.domId}"]:not(.t1-linked-sent):not([data-linked-sent-idx])`);
           } catch (e) {}
         }
       }
       // 3. 备用：全局 getElementById 兜底
       if (!targetEl) {
-        targetEl = el.paperContent.querySelector(`[data-sent-id="${target}"], [data-point-id="${target}"]`);
+        targetEl = el.paperContent.querySelector(`[data-sent-id="${target}"]:not(.t1-linked-sent):not([data-linked-sent-idx]), [data-point-id="${target}"]`);
       }
       if (!targetEl) {
         try {
           targetEl = document.getElementById(String(target));
         } catch (e) {}
       }
+
+      // 4. 同步联动 Track 2 .gold-quote-box 考场原句区（[data-linked-sent-idx]）
+      if (targetIdx !== -1) {
+        el.paperContent.querySelectorAll(`[data-linked-sent-idx="${targetIdx}"]`).forEach(ln => {
+          if (ln && ln !== targetEl && !linkedEls.includes(ln)) {
+            linkedEls.push(ln);
+          }
+        });
+      }
     }
 
-    if (lastSpotlightEl && targetEl === lastSpotlightEl) {
-      if (state.playMode === 'sentence') {
-        targetEl.classList.add('loop-sent-active');
-      } else {
-        targetEl.classList.remove('loop-sent-active');
-      }
+    const newSpotlightEls = [];
+    if (targetEl) newSpotlightEls.push(targetEl);
+    linkedEls.forEach(ln => newSpotlightEls.push(ln));
+
+    const isSameSet = newSpotlightEls.length > 0 &&
+      newSpotlightEls.length === lastSpotlightEls.length &&
+      newSpotlightEls.every((node, i) => node === lastSpotlightEls[i]);
+
+    if (isSameSet) {
+      const isLoopMode = state.playMode === 'sentence';
+      newSpotlightEls.forEach(node => {
+        if (isLoopMode) {
+          node.classList.add('loop-sent-active');
+        } else {
+          node.classList.remove('loop-sent-active');
+        }
+      });
       return;
     }
 
-    if (lastSpotlightEl) {
-      lastSpotlightEl.classList.remove('active-spotlight');
-      lastSpotlightEl.classList.remove('loop-sent-active');
-    }
-
-    if (targetEl) {
-      targetEl.classList.add('active-spotlight');
-      if (state.playMode === 'sentence') {
-        targetEl.classList.add('loop-sent-active');
+    lastSpotlightEls.forEach(node => {
+      if (node && node.classList) {
+        node.classList.remove('active-spotlight');
+        node.classList.remove('loop-sent-active');
       }
-      lastSpotlightEl = targetEl;
+    });
 
-      // 视口舒适视线中心滑动追踪：保持高光处于屏幕黄金阅读线（vh * 0.40），杜绝沉底挤压与反复弹跳
+    if (newSpotlightEls.length > 0) {
+      const isLoopMode = state.playMode === 'sentence';
+      newSpotlightEls.forEach(node => {
+        node.classList.add('active-spotlight');
+        if (isLoopMode) {
+          node.classList.add('loop-sent-active');
+        }
+      });
+      lastSpotlightEls = newSpotlightEls;
+      lastSpotlightEl = targetEl || newSpotlightEls[0];
+
+      // 视口舒适视线中心滑动追踪：保持高光处于屏幕黄金阅读线（vh * 0.40）；若用户正在 .gold-quote-box 点读则不向上强拉视口
       const now = Date.now();
       const rate = (audio && audio.playbackRate > 0) ? audio.playbackRate : (state.speed || 1.0);
       const throttleInterval = Math.max(300, Math.round(700 / rate));
       if (!isBodyScrollLocked() && now - state.lastUserScrollTime > 2000 && now - lastScrollTs > throttleInterval) {
-        const rect = targetEl.getBoundingClientRect();
         const vh = window.innerHeight || 800;
-        const idealTop = vh * 0.40;
-        const delta = rect.top - idealTop;
-        if (Math.abs(delta) > 50) {
-          lastScrollTs = now;
-          isProgrammaticScrolling = true;
-          if (programmaticScrollTimer) clearTimeout(programmaticScrollTimer);
-          programmaticScrollTimer = setTimeout(() => { isProgrammaticScrolling = false; }, 380);
-          const mainStage = document.querySelector('.main-stage');
-          const isStageScrollable = mainStage && mainStage.scrollHeight > mainStage.clientHeight;
-          if (isStageScrollable) {
-            mainStage.scrollBy({ top: delta, behavior: 'smooth' });
-          } else {
-            window.scrollBy({ top: delta, behavior: 'smooth' });
+        let scrollAnchorEl = targetEl || newSpotlightEls[0];
+        let skipScroll = false;
+
+        const isRecentLinkedClick = lastLinkedClickInfo &&
+          (now - lastLinkedClickInfo.ts < 1200) &&
+          lastLinkedClickInfo.idx === targetIdx &&
+          lastLinkedClickInfo.el &&
+          lastLinkedClickInfo.el.isConnected;
+
+        const isSameLinkedBoxContinuation = !isRecentLinkedClick &&
+          lastLinkedClickInfo &&
+          (now - lastLinkedClickInfo.ts < 30000) &&
+          lastLinkedClickInfo.box &&
+          linkedEls.some(ln => ln.closest('.gold-quote-box') === lastLinkedClickInfo.box);
+
+        if (isRecentLinkedClick) {
+          scrollAnchorEl = lastLinkedClickInfo.el;
+          const lRect = scrollAnchorEl.getBoundingClientRect();
+          if (lRect.top >= 72 && lRect.bottom <= vh - 110) {
+            skipScroll = true;
+          }
+        } else if (isSameLinkedBoxContinuation) {
+          const boxLinkedEl = linkedEls.find(ln => ln.closest('.gold-quote-box') === lastLinkedClickInfo.box);
+          if (boxLinkedEl) {
+            scrollAnchorEl = boxLinkedEl;
+            const lRect = scrollAnchorEl.getBoundingClientRect();
+            if (lRect.top >= 72 && lRect.bottom <= vh - 110) {
+              skipScroll = true;
+            }
+          }
+        } else if (lastLinkedClickInfo && (now - lastLinkedClickInfo.ts >= 1200)) {
+          lastLinkedClickInfo = null;
+        }
+
+        if (!skipScroll && scrollAnchorEl) {
+          const rect = scrollAnchorEl.getBoundingClientRect();
+          const idealTop = vh * 0.40;
+          const delta = rect.top - idealTop;
+          if (Math.abs(delta) > 50) {
+            lastScrollTs = now;
+            isProgrammaticScrolling = true;
+            if (programmaticScrollTimer) clearTimeout(programmaticScrollTimer);
+            programmaticScrollTimer = setTimeout(() => { isProgrammaticScrolling = false; }, 380);
+            const mainStage = document.querySelector('.main-stage');
+            const isStageScrollable = mainStage && mainStage.scrollHeight > mainStage.clientHeight;
+            if (isStageScrollable) {
+              mainStage.scrollBy({ top: delta, behavior: 'smooth' });
+            } else {
+              window.scrollBy({ top: delta, behavior: 'smooth' });
+            }
           }
         }
       }
     } else {
+      lastSpotlightEls = [];
       lastSpotlightEl = null;
     }
 
@@ -3793,6 +3907,18 @@
           loadTrackData(state.currentTrack, true);
         }
       } else {
+        if (audio.error) {
+          const resumeIdx = (state.currentSentIndex >= 0 && state.activeSentences?.[state.currentSentIndex]) ? state.currentSentIndex : 0;
+          if (state.activeSentences && state.activeSentences[resumeIdx]) {
+            seekToSentence(resumeIdx, state.activeSentences[resumeIdx].start);
+            return;
+          }
+          const curSrc = audio.getAttribute('src') || audio.src;
+          if (curSrc) {
+            audio.src = curSrc;
+            audio.load();
+          }
+        }
         audio.play().catch(e => console.log('Play failed:', e));
       }
     } else {
@@ -4160,6 +4286,48 @@
       audio.playbackRate = state.speed;
       if (el.timeTotal) el.timeTotal.textContent = formatTime(audio.duration || 0);
       renderProgressTicks();
+    });
+
+    audio.addEventListener('error', () => {
+      if (!hasAudioSource() || !audio.error) return;
+      const errCode = audio.error.code;
+      const curSrc = audio.getAttribute('src') || audio.src || '';
+      const resumeTime = (pendingSeekTarget && pendingSeekTarget.token === seekToken)
+        ? pendingSeekTarget.time
+        : (audio.currentTime || 0);
+      console.warn('Audio decode/pipeline error:', errCode, audio.error.message || '', curSrc);
+      cancelLoopGapWait();
+      clearPendingSeek(true);
+      isLoopSeeking = false;
+      if (loopSeekTimer) {
+        clearTimeout(loopSeekTimer);
+        loopSeekTimer = null;
+      }
+      if (syncRafId) {
+        cancelAnimationFrame(syncRafId);
+        syncRafId = null;
+      }
+      state.isPlaying = false;
+      updatePlayBtnUI();
+      collapsePlayerDock();
+      // 对同一音频源最多自动尝试一次无感重载恢复，防止死循环
+      if (curSrc && lastAudioErrorRecoverSrc !== curSrc && (errCode === 2 || errCode === 3)) {
+        lastAudioErrorRecoverSrc = curSrc;
+        try {
+          audio.load();
+          if (resumeTime > 0.2) {
+            const recoverEpoch = manualSeekEpoch;
+            audio.addEventListener('loadedmetadata', () => {
+              if (recoverEpoch !== manualSeekEpoch || audio.error) return;
+              try {
+                const dur = audio.duration || 0;
+                audio.currentTime = dur > 0 ? Math.min(resumeTime, Math.max(0, dur - 0.1)) : resumeTime;
+              } catch (e) {}
+            }, { once: true });
+          }
+        } catch (e) {}
+      }
+      showToast('音频加载或解码异常，点击句子或播放键可重试', 2600);
     });
   }
 
@@ -5388,7 +5556,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.2.9';
+  const APP_BUILD_ID = '3.3.0';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500) {

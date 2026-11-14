@@ -877,6 +877,7 @@ body {
 .tj-sent-span.active-spotlight,
 .recite-part-badge.active-spotlight,
 [data-sent-idx].active-spotlight,
+[data-linked-sent-idx].active-spotlight,
 .recite-sent-item.active-spotlight,
 .recite-sentence.active-spotlight,
 .xt-day-point-card.active-spotlight {
@@ -892,6 +893,7 @@ body {
 [data-theme="dark"] .tj-sent-span.active-spotlight,
 [data-theme="dark"] .recite-part-badge.active-spotlight,
 [data-theme="dark"] [data-sent-idx].active-spotlight,
+[data-theme="dark"] [data-linked-sent-idx].active-spotlight,
 [data-theme="dark"] .recite-sent-item.active-spotlight,
 [data-theme="dark"] .recite-sentence.active-spotlight,
 [data-theme="dark"] .xt-day-point-card.active-spotlight {
@@ -1872,6 +1874,7 @@ body,
 .logic-block-card,
 .logic-block-body,
 .framework-qa-card,
+.framework-subtitle-text,
 .gold-quote-box,
 .gold-quote-body,
 .teacher-explain-row,
@@ -8185,6 +8188,7 @@ body.dock-expanded .dock-fab-play {
 .tj-point-card,
 .tj-point-label,
 .tj-point-text,
+.framework-subtitle-text,
 .recite-sent,
 .recite-sent-item,
 .recite-sentence,
@@ -8868,7 +8872,7 @@ body.dock-expanded .dock-fab-play {
 }
 
 /* 移动端点词朗读与触摸增强 (v3.0.6) */
-.recite-sent, .recite-sent-item, .recite-sentence, .xt-day-point-card, .tj-sent-span {
+.recite-sent, .recite-sent-item, .recite-sentence, .xt-day-point-card, .tj-sent-span, .t1-linked-sent, [data-linked-sent-idx] {
   cursor: pointer !important;
   -webkit-tap-highlight-color: rgba(184, 51, 42, 0.15) !important;
   touch-action: manipulation !important;
