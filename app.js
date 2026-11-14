@@ -82,6 +82,8 @@
   let speedModalCloseTimer = null;
   let lastListenTickTs = 0;
   let lastListenSaveTs = 0;
+  let currentPassItemId = '';
+  let currentPassCoveredAudioSec = 0;
 
   // 严密循环闭环与寻音防重入锁引擎 (Anti-Reentry & Drift-Prevention Engine)
   let isLoopSeeking = false;
@@ -219,6 +221,12 @@
   }
 
   function resetAudioTrackPlayback(autoPlay = false) {
+    accumulateListeningTime(true);
+    if (currentPassItemId && currentPassItemId === state.activeItemId && currentPassCoveredAudioSec > 0) {
+      settleCurrentAudioPass({ minRatio: 0.85, source: 'auto' });
+    }
+    currentPassItemId = state.activeItemId || '';
+    currentPassCoveredAudioSec = 0;
     cancelLoopGapWait();
     clearPendingSeek(true);
     xtIntroAutoSkipped = false;
@@ -914,6 +922,8 @@
     el.btnMasteryToggle = document.getElementById('btn-mastery-toggle');
     el.masteryBtnIcon = document.getElementById('masteryBtnIcon');
     el.masteryBtnText = document.getElementById('masteryBtnText');
+    el.btnListenCountAdd = document.getElementById('btn-listen-count-add');
+    el.paperListenText = document.getElementById('paperListenText');
     
     el.btnStudyDashboard = document.getElementById('btn-study-dashboard');
     el.studyDashboardBackdrop = document.getElementById('studyDashboardBackdrop');
@@ -962,6 +972,10 @@
     el.btnDashRandomPick = document.getElementById('btnDashRandomPick');
     el.dashTodayListenMin = document.getElementById('dashTodayListenMin');
     el.dashTotalListenMin = document.getElementById('dashTotalListenMin');
+    el.dashTotalListenPasses = document.getElementById('dashTotalListenPasses');
+    el.dashSealPassCount = document.getElementById('dashSealPassCount');
+    el.dashZeroPassCount = document.getElementById('dashZeroPassCount');
+    el.dashTopListenedList = document.getElementById('dashTopListenedList');
     el.btnDashExportData = document.getElementById('btnDashExportData');
     el.btnDashImportData = document.getElementById('btnDashImportData');
     el.dashImportFileInput = document.getElementById('dashImportFileInput');
@@ -1449,6 +1463,7 @@
       } else {
         masteryBadgeHtml = `<span class="card-mastery-badge badge-unlearned" title="未背诵待攻克">待攻克</span>`;
       }
+      const listenBadgeHtml = renderListenCountBadgeHtml(getItemListenCount(item.id));
 
       if (state.currentSubject === 'pol') {
         const isRecite47 = state.polSubMode === 'recite47';
@@ -1475,7 +1490,8 @@
           </div>
           <div class="card-title">${item.title}</div>
           <div class="card-desc-meta">
-            <span>${descText}</span>
+            <span class="card-desc-text">${descText}</span>
+            ${listenBadgeHtml}
           </div>
         `;
       } else {
@@ -1507,8 +1523,8 @@
           </div>
           <div class="card-title">${item.title}</div>
           <div class="card-desc-meta">
-            <span>考点 #${idx + 1}</span>
-            <span>${item.author || ''}</span>
+            <span class="card-desc-text">考点 #${idx + 1}${item.author ? ' · ' + item.author : ''}</span>
+            ${listenBadgeHtml}
           </div>
         `;
       }
@@ -1556,16 +1572,145 @@
         state.studyLogs = JSON.parse(savedLogs);
         if (!Array.isArray(state.studyLogs.dates)) state.studyLogs.dates = [];
       } else {
-        state.studyLogs = { dates: [], totalCardsCompleted: 0, dailyListenSec: {}, totalListenSec: 0 };
+        state.studyLogs = { dates: [], totalCardsCompleted: 0, dailyListenSec: {}, totalListenSec: 0, itemListenCounts: {} };
       }
     } catch (e) {
       console.warn('Failed to parse kaoyan_study_logs:', e);
-      state.studyLogs = { dates: [], totalCardsCompleted: 0, dailyListenSec: {}, totalListenSec: 0 };
+      state.studyLogs = { dates: [], totalCardsCompleted: 0, dailyListenSec: {}, totalListenSec: 0, itemListenCounts: {} };
     }
     if (!state.studyLogs.dailyListenSec || typeof state.studyLogs.dailyListenSec !== 'object') {
       state.studyLogs.dailyListenSec = {};
     }
     state.studyLogs.totalListenSec = Math.max(0, Number(state.studyLogs.totalListenSec) || 0);
+    state.studyLogs.itemListenCounts = normalizeItemListenCounts(state.studyLogs.itemListenCounts);
+  }
+
+  function escapeHtml(str) {
+    return String(str || '').replace(/[&<>"']/g, (ch) => (
+      ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch === '"' ? '&quot;' : '&#39;'
+    ));
+  }
+
+  function normalizeItemListenCounts(raw) {
+    const clean = {};
+    if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
+      Object.entries(raw).forEach(([k, v]) => {
+        const val = Math.floor(Number(v) || 0);
+        if (k && val > 0) clean[String(k)] = val;
+      });
+    }
+    return clean;
+  }
+
+  function getItemListenCount(itemId) {
+    if (!itemId || !state.studyLogs || !state.studyLogs.itemListenCounts) return 0;
+    return Math.max(0, Math.floor(Number(state.studyLogs.itemListenCounts[itemId]) || 0));
+  }
+
+  function getListenTierInfo(count) {
+    const n = Math.max(0, Math.floor(Number(count) || 0));
+    if (n <= 0) return { tier: 'none', label: '', shortLabel: '' };
+    if (n <= 2) return { tier: 'ink', label: `已听 ${n} 遍`, shortLabel: `${n}遍` };
+    if (n <= 5) return { tier: 'pine', label: `已听 ${n} 遍`, shortLabel: `${n}遍` };
+    if (n <= 9) return { tier: 'amber', label: `已听 ${n} 遍`, shortLabel: `${n}遍` };
+    return { tier: 'seal', label: `已听 ${n} 遍`, shortLabel: `${n}遍` };
+  }
+
+  function renderListenCountBadgeHtml(count) {
+    const info = getListenTierInfo(count);
+    if (info.tier === 'none') return '';
+    return `<span class="card-listen-badge tier-${info.tier}" title="累计精听 ${count} 遍">${info.shortLabel}</span>`;
+  }
+
+  function findStudyItemTitleById(itemId) {
+    if (!itemId) return '';
+    const collections = [
+      ...(state.allData?.items_807 || []),
+      ...(state.allData?.items_706 || []),
+      ...(state.allData?.items_en || []),
+      ...(window.KAOYAN_POL_DATA?.chapters47 || []),
+      ...(window.KAOYAN_POL_DATA?.xutao16 || []),
+      ...(window.KAOYAN_POL_DATA?.tuijie11 || [])
+    ];
+    const hit = collections.find(it => it && it.id === itemId);
+    return hit ? (hit.title || '') : '';
+  }
+
+  function refreshSidebarListenBadge(itemId) {
+    if (!el.itemList || !itemId) return;
+    const card = Array.from(el.itemList.querySelectorAll('.question-card-item')).find(c => c.dataset.id === itemId);
+    if (!card) return;
+    const meta = card.querySelector('.card-desc-meta');
+    if (!meta) return;
+    const existing = meta.querySelector('.card-listen-badge');
+    if (existing) existing.remove();
+    const html = renderListenCountBadgeHtml(getItemListenCount(itemId));
+    if (html) {
+      meta.insertAdjacentHTML('beforeend', html);
+    }
+  }
+
+  function setItemListenCount(itemId, nextCount) {
+    if (!itemId || !state.studyLogs) return 0;
+    if (!state.studyLogs.itemListenCounts || typeof state.studyLogs.itemListenCounts !== 'object' || Array.isArray(state.studyLogs.itemListenCounts)) {
+      state.studyLogs.itemListenCounts = {};
+    }
+    const clean = Math.max(0, Math.floor(Number(nextCount) || 0));
+    if (clean > 0) {
+      state.studyLogs.itemListenCounts[itemId] = clean;
+    } else {
+      delete state.studyLogs.itemListenCounts[itemId];
+    }
+    saveStudyLogs();
+    updateHeaderListenBadgeUI();
+    refreshSidebarListenBadge(itemId);
+    if (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) {
+      updateStudyDashboardUI();
+    }
+    return clean;
+  }
+
+  function incrementItemListenCount(itemId, options = {}) {
+    if (!itemId) return 0;
+    const { source = 'auto', silentToast = false } = options;
+    const prev = getItemListenCount(itemId);
+    const next = setItemListenCount(itemId, prev + 1);
+    if (!silentToast) {
+      const rawTitle = findStudyItemTitleById(itemId) || '当前篇目';
+      const shortTitle = rawTitle.length > 14 ? rawTitle.slice(0, 14) + '…' : rawTitle;
+      if (source === 'manual') {
+        showToast(`《${shortTitle}》已补记 1 遍（共 ${next} 遍）`, 4000, {
+          label: '撤销',
+          replaceKey: 'listen-undo',
+          onClick: () => {
+            setItemListenCount(itemId, Math.max(0, getItemListenCount(itemId) - 1));
+            showToast(`已撤销《${shortTitle}》补记`, 1600);
+          }
+        });
+      } else {
+        showToast(`《${shortTitle}》已精听第 ${next} 遍`, 2200);
+      }
+    }
+    return next;
+  }
+
+  function settleCurrentAudioPass(options = {}) {
+    const { minRatio = 0.75, source = 'ended', silentToast = false } = options;
+    const itemId = currentPassItemId || state.activeItemId;
+    const covered = currentPassCoveredAudioSec;
+    currentPassCoveredAudioSec = 0;
+    if (!itemId || !hasAudioSource()) return false;
+    const dur = Number(audio && audio.duration) || 0;
+    let passed = false;
+    if (isFinite(dur) && dur > 0) {
+      const requiredSec = Math.max(Math.min(5, dur * 0.6), dur * minRatio);
+      passed = covered >= requiredSec;
+    } else {
+      passed = covered >= 15;
+    }
+    if (!passed) return false;
+    incrementItemListenCount(itemId, { source, silentToast });
+    return true;
   }
 
   function saveMasteryData() {
@@ -1637,6 +1782,14 @@
         }
         state.studyLogs.dailyListenSec[today] = (Number(state.studyLogs.dailyListenSec[today]) || 0) + deltaSec;
         state.studyLogs.totalListenSec = (Number(state.studyLogs.totalListenSec) || 0) + deltaSec;
+        if (state.activeItemId) {
+          if (currentPassItemId !== state.activeItemId) {
+            currentPassItemId = state.activeItemId;
+            currentPassCoveredAudioSec = 0;
+          }
+          const rate = Math.max(0.5, Math.min(3.0, Number(audio && audio.playbackRate) || 1));
+          currentPassCoveredAudioSec += deltaSec * rate;
+        }
         if (forceFlush || (now - lastListenSaveTs >= 5000)) {
           lastListenSaveTs = now;
           saveStudyLogs();
@@ -1648,6 +1801,10 @@
       lastListenTickTs = isActivelyListening ? now : 0;
     } else if (isActivelyListening) {
       lastListenTickTs = now;
+      if (state.activeItemId && currentPassItemId !== state.activeItemId) {
+        currentPassItemId = state.activeItemId;
+        currentPassCoveredAudioSec = 0;
+      }
     }
   }
 
@@ -1670,7 +1827,7 @@
       exportedAt: new Date().toISOString(),
       masteryState: state.masteryState || {},
       masteryUpdatedAt: readJsonStorageSafe('kaoyan_mastery_meta', {}),
-      studyLogs: state.studyLogs || { dates: [], totalCardsCompleted: 0, dailyListenSec: {}, totalListenSec: 0 },
+      studyLogs: state.studyLogs || { dates: [], totalCardsCompleted: 0, dailyListenSec: {}, totalListenSec: 0, itemListenCounts: {} },
       studyLogsMeta: readJsonStorageSafe('kaoyan_study_logs_meta', { updatedAt: Date.now() }),
       aiMemories: readJsonStorageSafe('kaoyan_ai_memories', {}),
       reciteLogs: readJsonStorageSafe('kaoyan_recite_logs', []),
@@ -1749,7 +1906,8 @@
           completedIds: cleanCompleted,
           totalCardsCompleted: Math.max(0, Number(rawLogs.totalCardsCompleted) || cleanCompleted.length),
           dailyListenSec: cleanDaily,
-          totalListenSec: Math.max(0, Number(rawLogs.totalListenSec) || 0)
+          totalListenSec: Math.max(0, Number(rawLogs.totalListenSec) || 0),
+          itemListenCounts: normalizeItemListenCounts(rawLogs.itemListenCounts)
         };
         saveStudyLogs();
       }
@@ -1898,6 +2056,19 @@
     setMasteryStatus(state.activeItemId, next);
   }
 
+  function updateHeaderListenBadgeUI() {
+    if (!el.btnListenCountAdd) return;
+    const count = getItemListenCount(state.activeItemId);
+    const info = getListenTierInfo(count);
+    el.btnListenCountAdd.className = `paper-listen-badge tier-${info.tier}`;
+    if (el.paperListenText) {
+      el.paperListenText.textContent = count > 0 ? `已听 ${count} 遍 · +1` : '补记 +1';
+    }
+    el.btnListenCountAdd.title = count > 0
+      ? `当前篇目累计精听 ${count} 遍（完整听完 ≥75% 自动 +1，点击可手动补记 +1）`
+      : '尚未计入精听遍数（完整听完 ≥75% 自动 +1，点击可手动补记 +1）';
+  }
+
   function updateHeaderMasteryUI() {
     if (!el.btnMasteryToggle || !state.activeItemId) return;
     const status = getMasteryStatus(state.activeItemId);
@@ -1935,6 +2106,7 @@
         }
       });
     }
+    updateHeaderListenBadgeUI();
   }
 
   function openStudyDashboard() {
@@ -2085,6 +2257,76 @@
     if (el.dashT1Percent) el.dashT1Percent.textContent = `${t1Pct}%`;
     if (el.dashBarT1Mastered) el.dashBarT1Mastered.style.width = `${t1Pct}%`;
     if (el.dashT1Ratio) el.dashT1Ratio.textContent = `已背熟 ${t1Mastered} / ${t1Items.length} 题`;
+
+    // 4. 精听遍数与火候成就统计
+    const taggedAllItems = [
+      ...items807.map(it => ({ ...it, subj: '807', subjLabel: '807' })),
+      ...items706.map(it => ({ ...it, subj: '706', subjLabel: '706' })),
+      ...itemsEn.map(it => ({ ...it, subj: 'en', subjLabel: '英语' })),
+      ...(window.KAOYAN_POL_DATA ? [
+        ...(window.KAOYAN_POL_DATA.chapters47 || []).map(it => ({ ...it, subj: 'pol', polMode: 'recite47', subjLabel: '政治' })),
+        ...(window.KAOYAN_POL_DATA.xutao16 || []).map(it => ({ ...it, subj: 'pol', polMode: 'xutao16', subjLabel: '政治' })),
+        ...(window.KAOYAN_POL_DATA.tuijie11 || []).map(it => ({ ...it, subj: 'pol', polMode: 'tuijie11', subjLabel: '政治' }))
+      ] : [])
+    ];
+    let totalListenPasses = 0;
+    let sealPassCount = 0;
+    let zeroPassCount = 0;
+    const listenedItems = [];
+    taggedAllItems.forEach((it) => {
+      const c = getItemListenCount(it.id);
+      totalListenPasses += c;
+      if (c >= 10) sealPassCount++;
+      if (c === 0) zeroPassCount++;
+      if (c > 0) listenedItems.push({ item: it, count: c });
+    });
+    if (el.dashTotalListenPasses) el.dashTotalListenPasses.textContent = String(totalListenPasses);
+    if (el.dashSealPassCount) el.dashSealPassCount.textContent = String(sealPassCount);
+    if (el.dashZeroPassCount) el.dashZeroPassCount.textContent = String(zeroPassCount);
+    if (el.dashTopListenedList) {
+      listenedItems.sort((a, b) => b.count - a.count);
+      const top5 = listenedItems.slice(0, 5);
+      if (top5.length === 0) {
+        el.dashTopListenedList.innerHTML = '<div class="dash-top-empty">暂无精听遍数记录 · 完整听读 ≥75% 或点击题头「补记 +1」即可点亮金石印记</div>';
+      } else {
+        el.dashTopListenedList.innerHTML = `<div class="dash-top-subhead">精听熟读 Top ${top5.length}</div>` + top5.map((entry, i) => {
+          const tier = getListenTierInfo(entry.count).tier;
+          return `
+            <button type="button" class="dash-top-item-btn" data-jump-id="${escapeHtml(entry.item.id)}" data-jump-subj="${escapeHtml(entry.item.subj)}" data-jump-polmode="${escapeHtml(entry.item.polMode || '')}">
+              <span class="dash-top-rank">${i + 1}</span>
+              <span class="dash-top-subj sub-${escapeHtml(entry.item.subj)}">${escapeHtml(entry.item.subjLabel)}</span>
+              <span class="dash-top-title">${escapeHtml(entry.item.title || '')}</span>
+              <span class="card-listen-badge tier-${tier}">${entry.count}遍</span>
+            </button>`;
+        }).join('');
+        el.dashTopListenedList.querySelectorAll('.dash-top-item-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const targetId = btn.dataset.jumpId;
+            const targetSubj = btn.dataset.jumpSubj;
+            const targetPolMode = btn.dataset.jumpPolmode;
+            closeStudyDashboard();
+            if (targetSubj === 'pol') {
+              state.polCategory = 'all';
+              localStorage.setItem('kaoyan_pol_cat', 'all');
+              if (targetPolMode) {
+                state.polSubMode = targetPolMode;
+                localStorage.setItem('kaoyan_pol_submode', targetPolMode);
+              }
+              if (state.currentSubject !== 'pol') await switchSubject('pol');
+              document.querySelectorAll('.pol-submode-btn').forEach(b => b.classList.toggle('active', b.dataset.polSubmode === state.polSubMode));
+              document.querySelectorAll('[data-pol-cat]').forEach(b => b.classList.toggle('active', b.dataset.polCat === 'all'));
+              const showCats = state.polSubMode === 'recite47' ? 'flex' : 'none';
+              if (el.polCategoryPills) el.polCategoryPills.style.display = showCats;
+              if (el.stagePolCategoryPills) el.stagePolCategoryPills.style.display = showCats;
+              renderSidebarList();
+            } else if (targetSubj && state.currentSubject !== targetSubj) {
+              await switchSubject(targetSubj);
+            }
+            if (targetId) selectItem(targetId, false);
+          });
+        });
+      }
+    }
   }
 
   async function randomPickUnmasteredT0T1() {
@@ -2621,6 +2863,11 @@
 
     const resolvedId = item.id;
     accumulateListeningTime(true);
+    if (currentPassItemId && currentPassItemId !== resolvedId && currentPassCoveredAudioSec > 0) {
+      settleCurrentAudioPass({ minRatio: 0.85, source: 'auto' });
+    }
+    currentPassItemId = resolvedId;
+    currentPassCoveredAudioSec = 0;
     lastSpotlightEls = [];
     lastSpotlightEl = null; // 切换考题清除旧聚光引用，消除跨题内存残留与同名 sentId 穿透
     lastLinkedClickInfo = null;
@@ -4063,6 +4310,8 @@
               });
               return 'handled';
             } else {
+              accumulateListeningTime(true);
+              settleCurrentAudioPass({ minRatio: 0.75, source: 'ended' });
               cancelLoopGapWait();
               state.isPlaying = false;
               audio.pause();
@@ -4131,6 +4380,8 @@
                 });
                 return 'handled';
               } else {
+                accumulateListeningTime(true);
+                settleCurrentAudioPass({ minRatio: 0.75, source: 'ended' });
                 cancelLoopGapWait();
                 state.isPlaying = false;
                 audio.pause();
@@ -4343,6 +4594,8 @@
     });
 
     audio.addEventListener('ended', () => {
+      accumulateListeningTime(true);
+      settleCurrentAudioPass({ minRatio: 0.75, source: 'ended' });
       if (state.playMode === 'item') {
         performLoopTransition(0, { targetSentIdx: state.activeSentences?.length ? 0 : null, shouldResume: true, useGap: false });
         return;
@@ -4570,6 +4823,13 @@
       el.btnMasteryToggle.addEventListener('click', (e) => {
         e.stopPropagation();
         cycleCurrentItemMastery();
+      });
+    }
+    if (el.btnListenCountAdd) {
+      el.btnListenCountAdd.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!state.activeItemId) return;
+        incrementItemListenCount(state.activeItemId, { source: 'manual' });
       });
     }
 
@@ -5638,10 +5898,10 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.4.1';
+  const APP_BUILD_ID = '3.4.2';
   let latestUpdatePayload = null;
 
-  function showToast(msg, duration = 2500) {
+  function showToast(msg, duration = 2500, actionOpt = null) {
     let container = document.getElementById('toast-container');
     if (!container) {
       container = document.querySelector('.toast-container');
@@ -5653,13 +5913,38 @@
       document.body.appendChild(container);
     }
 
-    // 清理任何残留的历史游离 toastPrompt 节点
+    // 清理任何残留的历史游离 toastPrompt 节点；若指定 replaceKey 则先替换同类提示
     const oldPrompt = document.getElementById('toastPrompt');
     if (oldPrompt) oldPrompt.remove();
+    if (actionOpt && actionOpt.replaceKey) {
+      container.querySelectorAll(`.toast-msg[data-replace-key="${actionOpt.replaceKey}"]`).forEach(n => n.remove());
+    }
 
     const toast = document.createElement('div');
     toast.className = 'toast-msg';
-    toast.textContent = msg;
+    if (actionOpt && actionOpt.replaceKey) {
+      toast.dataset.replaceKey = String(actionOpt.replaceKey);
+    }
+    if (actionOpt && typeof actionOpt.onClick === 'function' && actionOpt.label) {
+      const span = document.createElement('span');
+      span.textContent = msg;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'toast-action-btn';
+      btn.textContent = actionOpt.label;
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        try {
+          actionOpt.onClick();
+        } finally {
+          if (toast.parentNode) toast.remove();
+        }
+      });
+      toast.appendChild(span);
+      toast.appendChild(btn);
+    } else {
+      toast.textContent = msg;
+    }
     const fadeOutDelay = Math.max(0.1, (duration - 300) / 1000);
     toast.style.animation = `toastFadeIn 0.25s ease, toastFadeOut 0.25s ease ${fadeOutDelay}s forwards`;
 
@@ -6091,7 +6376,7 @@
           suppressSyncHook = false;
         }
       },
-      getStudyLogs: () => JSON.parse(JSON.stringify(state.studyLogs || { dates: [], completedIds: [], totalCardsCompleted: 0, dailyListenSec: {}, totalListenSec: 0 })),
+      getStudyLogs: () => JSON.parse(JSON.stringify(state.studyLogs || { dates: [], completedIds: [], totalCardsCompleted: 0, dailyListenSec: {}, totalListenSec: 0, itemListenCounts: {} })),
       applyMergedStudyLogs: (mergedLogs) => {
         if (!mergedLogs || typeof mergedLogs !== 'object' || Array.isArray(mergedLogs)) return;
         const cleanDates = Array.isArray(mergedLogs.dates)
@@ -6107,6 +6392,7 @@
             if (/^\d{4}-\d{2}-\d{2}$/.test(d) && val >= 0) cleanDaily[d] = val;
           });
         }
+        const cleanCounts = normalizeItemListenCounts(mergedLogs.itemListenCounts);
         suppressSyncHook = true;
         try {
           state.studyLogs = {
@@ -6114,9 +6400,12 @@
             completedIds: cleanCompleted,
             totalCardsCompleted: Math.max(0, Number(mergedLogs.totalCardsCompleted) || cleanCompleted.length),
             dailyListenSec: cleanDaily,
-            totalListenSec: Math.max(0, Number(mergedLogs.totalListenSec) || 0)
+            totalListenSec: Math.max(0, Number(mergedLogs.totalListenSec) || 0),
+            itemListenCounts: cleanCounts
           };
           saveStudyLogs();
+          updateHeaderListenBadgeUI();
+          renderSidebarList();
           updateStudyDashboardUI();
           updateStudyDashboardListenUI();
         } finally {

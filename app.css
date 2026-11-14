@@ -716,6 +716,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
+}
+
+.card-desc-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* 右侧核心研读与听读舞台 */
@@ -2587,6 +2595,10 @@ body,
 
 .toast-msg,
 .toast-prompt {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   background: rgba(30, 24, 20, 0.92);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -2601,6 +2613,23 @@ body,
   text-align: center;
   word-break: break-word;
   pointer-events: auto;
+}
+
+.toast-action-btn {
+  padding: 2px 9px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff3e6;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+
+.toast-action-btn:hover {
+  background: rgba(255, 255, 255, 0.26);
 }
 
 @keyframes toastFadeIn {
@@ -4654,6 +4683,286 @@ body {
   background: #23211e;
   color: #8a7c6f;
   border-color: #383430;
+}
+
+/* 听读遍数记录徽章与金石朱墨色阶 (题头可手动 +1 · 侧栏列表 · 看板榜) */
+.paper-listen-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px dashed var(--line-strong);
+  background: var(--bg-card);
+  color: var(--ink-muted);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  margin-left: 4px;
+}
+
+.paper-listen-badge:hover {
+  transform: translateY(-1px);
+  border-style: solid;
+}
+
+.paper-listen-badge.tier-ink {
+  border-style: solid;
+  border-color: var(--line-strong);
+  background: rgba(90, 82, 74, 0.08);
+  color: var(--ink-secondary);
+}
+
+.paper-listen-badge.tier-pine {
+  border-style: solid;
+  border-color: rgba(33, 107, 88, 0.35);
+  background: rgba(33, 107, 88, 0.1);
+  color: #1f6755;
+}
+
+.paper-listen-badge.tier-amber {
+  border-style: solid;
+  border-color: var(--amber);
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+
+.paper-listen-badge.tier-seal {
+  border-style: solid;
+  border-color: var(--vermilion);
+  background: var(--vermilion-soft);
+  color: var(--vermilion);
+  box-shadow: 0 1px 4px rgba(166, 58, 36, 0.16);
+}
+
+[data-theme="dark"] .paper-listen-badge.tier-none {
+  background: #23211e;
+  border-color: #443e38;
+  color: #a89f91;
+}
+
+[data-theme="dark"] .paper-listen-badge.tier-ink {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: #524b44;
+  color: #d7cfc3;
+}
+
+[data-theme="dark"] .paper-listen-badge.tier-pine {
+  background: rgba(58, 168, 138, 0.18);
+  border-color: rgba(78, 198, 165, 0.45);
+  color: #79e0c3;
+}
+
+[data-theme="dark"] .paper-listen-badge.tier-amber {
+  background: rgba(176, 105, 23, 0.2);
+  border-color: #f5b041;
+  color: #f5b041;
+}
+
+[data-theme="dark"] .paper-listen-badge.tier-seal {
+  background: rgba(209, 86, 61, 0.22);
+  border-color: #ff7b63;
+  color: #ff7b63;
+}
+
+.card-listen-badge {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 2px 7px;
+  border-radius: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border: 1px solid transparent;
+}
+
+.card-listen-badge.tier-ink {
+  background: rgba(90, 82, 74, 0.1);
+  color: var(--ink-secondary);
+  border-color: var(--line-main);
+}
+
+.card-listen-badge.tier-pine {
+  background: rgba(33, 107, 88, 0.12);
+  color: #1f6755;
+  border-color: rgba(33, 107, 88, 0.28);
+}
+
+.card-listen-badge.tier-amber {
+  background: var(--amber-soft);
+  color: var(--amber);
+  border-color: #f2dbb8;
+}
+
+.card-listen-badge.tier-seal {
+  background: var(--vermilion-soft);
+  color: var(--vermilion);
+  border-color: var(--vermilion-border);
+}
+
+[data-theme="dark"] .card-listen-badge.tier-ink {
+  background: rgba(255, 255, 255, 0.08);
+  color: #cfc6b9;
+  border-color: #46403a;
+}
+
+[data-theme="dark"] .card-listen-badge.tier-pine {
+  background: rgba(58, 168, 138, 0.2);
+  color: #79e0c3;
+  border-color: rgba(78, 198, 165, 0.35);
+}
+
+[data-theme="dark"] .card-listen-badge.tier-amber {
+  background: rgba(176, 105, 23, 0.22);
+  color: #f5b041;
+  border-color: rgba(245, 176, 65, 0.38);
+}
+
+[data-theme="dark"] .card-listen-badge.tier-seal {
+  background: rgba(209, 86, 61, 0.24);
+  color: #ff8670;
+  border-color: rgba(255, 123, 99, 0.42);
+}
+
+/* 看板：精听遍数与火候成就卡 */
+.dash-listen-ach-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-main);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dash-listen-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.dash-listen-kpi-item {
+  background: var(--bg-body);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-sm);
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.dash-listen-kpi-val {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ink-primary);
+  line-height: 1.2;
+}
+
+.dash-listen-kpi-val.is-seal {
+  color: var(--vermilion);
+}
+
+.dash-listen-kpi-val.is-muted {
+  color: var(--ink-muted);
+}
+
+.dash-listen-kpi-label {
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+
+.dash-top-listened-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dash-top-subhead {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--ink-muted);
+  letter-spacing: 0.4px;
+}
+
+.dash-top-empty {
+  font-size: 12px;
+  color: var(--ink-muted);
+  text-align: center;
+  padding: 8px 6px;
+  border: 1px dashed var(--line-main);
+  border-radius: var(--radius-sm);
+}
+
+.dash-top-item-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line-subtle);
+  background: var(--bg-body);
+  color: var(--ink-primary);
+  font-size: 12.5px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.16s ease;
+}
+
+.dash-top-item-btn:hover {
+  border-color: var(--vermilion-border);
+  background: var(--vermilion-soft);
+}
+
+.dash-top-rank {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-muted);
+  width: 14px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.dash-top-subj {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgba(90, 82, 74, 0.1);
+  color: var(--ink-secondary);
+  flex-shrink: 0;
+}
+
+.dash-top-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .dash-listen-ach-card {
+  background: #23211e;
+  border-color: #383430;
+}
+
+[data-theme="dark"] .dash-listen-kpi-item,
+[data-theme="dark"] .dash-top-item-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: #383430;
+}
+
+[data-theme="dark"] .dash-top-item-btn:hover {
+  background: rgba(209, 86, 61, 0.16);
+  border-color: rgba(255, 123, 99, 0.45);
 }
 
 /* 侧边栏掌握度二级筛选行 */

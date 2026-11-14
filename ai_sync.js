@@ -248,11 +248,18 @@
     const logs = b ? b.getStudyLogs() : readJson('kaoyan_study_logs', {});
     const meta = getStudyLogsMeta();
     const daily = (logs && logs.dailyListenSec && typeof logs.dailyListenSec === 'object') ? logs.dailyListenSec : {};
+    const rawCounts = (logs && logs.itemListenCounts && typeof logs.itemListenCounts === 'object') ? logs.itemListenCounts : {};
+    const cleanCounts = {};
+    Object.entries(rawCounts).forEach(([id, c]) => {
+      const val = Math.floor(Number(c) || 0);
+      if (id && val > 0) cleanCounts[String(id)] = val;
+    });
     return {
       dates: Array.isArray(logs.dates) ? logs.dates : [],
       completedIds: Array.isArray(logs.completedIds) ? logs.completedIds : [],
       dailyListenSec: daily,
       totalListenSec: Math.max(0, Number(logs.totalListenSec) || 0),
+      itemListenCounts: cleanCounts,
       updatedAt: Number(meta && meta.updatedAt) || 0
     };
   }
@@ -323,6 +330,7 @@
       : [];
     const remDaily = (remoteLogs.dailyListenSec ?? remoteLogs.daily_listen_sec) || {};
     const remTotal = Math.max(0, Number(remoteLogs.totalListenSec ?? remoteLogs.total_listen_sec ?? 0) || 0);
+    const remCounts = (remoteLogs.itemListenCounts ?? remoteLogs.item_listen_counts) || {};
     const remUpdated = Number(remoteLogs.updatedAt ?? remoteLogs.updated_at ?? 0) || 0;
 
     const mergedDates = Array.from(new Set([...(loc.dates || []), ...remDates]))
@@ -343,12 +351,25 @@
       }
     });
 
+    const mergedCounts = {};
+    let countsLocalNewer = false;
+    const allCountIds = new Set([...Object.keys(loc.itemListenCounts || {}), ...Object.keys(remCounts || {})]);
+    allCountIds.forEach((id) => {
+      if (!id) return;
+      const lv = Math.max(0, Math.floor(Number((loc.itemListenCounts || {})[id]) || 0));
+      const rv = Math.max(0, Math.floor(Number(remCounts[id]) || 0));
+      const mv = Math.max(lv, rv);
+      if (mv > 0) mergedCounts[id] = mv;
+      if (lv > rv) countsLocalNewer = true;
+    });
+
     const mergedTotal = Math.max(dailySum, loc.totalListenSec || 0, remTotal);
     const mergedUpdated = Math.max(loc.updatedAt || 0, remUpdated);
     const localHasNewer = (
       mergedDates.length > remDates.length ||
       mergedCompleted.length > remCompleted.length ||
       mergedTotal > remTotal + 0.5 ||
+      countsLocalNewer ||
       (loc.updatedAt || 0) > remUpdated
     );
 
@@ -359,7 +380,8 @@
       completedIds: mergedCompleted,
       totalCardsCompleted: Math.max(mergedCompleted.length, masteryCount),
       dailyListenSec: mergedDaily,
-      totalListenSec: mergedTotal
+      totalListenSec: mergedTotal,
+      itemListenCounts: mergedCounts
     };
 
     setStudyLogsMeta({ updatedAt: mergedUpdated });

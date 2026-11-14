@@ -15,7 +15,7 @@
   <!-- 异步/非阻塞字体加载：优先采用 iOS/Android/Win 原生高清字系 (Songti SC / Kaiti SC / 苹方)，离线或无外网时 0 白屏首屏秒开 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="app.css?v=3.4.1">
+  <link rel="stylesheet" href="app.css?v=3.4.2">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css" media="print" onload="this.media='all'">
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=3.4.1" defer></script>
+  <script src="data/kaoyan_data.js?v=3.4.2" defer></script>
 </head>
 <body>
 
@@ -267,7 +267,7 @@
       <div class="sidebar-footer">
         <div class="app-version-badge" id="appVersionBadge" title="点击检查更新">
           <span class="version-dot"></span>
-          <span id="versionText">版本 v3.4.1 · 金石朱墨全科双轨典藏版</span>
+          <span id="versionText">版本 v3.4.2 · 金石朱墨全科双轨典藏版</span>
         </div>
         <button id="btn-force-refresh" class="refresh-cache-btn" title="强制清除缓存并拉取最新版本">
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -311,6 +311,13 @@
                 <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"></circle></svg>
               </span>
               <span class="mastery-btn-text" id="masteryBtnText">未背诵</span>
+            </button>
+            <button type="button" class="paper-listen-badge tier-none" id="btn-listen-count-add" title="点击手动补记 1 遍听读（完整听完 ≥75% 自动 +1）">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+              </svg>
+              <span id="paperListenText">补记 +1</span>
             </button>
           </div>
 
@@ -542,8 +549,8 @@
   </nav>
 
 
-  <script src="app.js?v=3.4.1" defer></script>
-  <script src="ai_sync.js?v=3.4.1" defer></script>
+  <script src="app.js?v=3.4.2" defer></script>
+  <script src="ai_sync.js?v=3.4.2" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -761,6 +768,29 @@
           </div>
           <div class="dash-tier-desc" id="dashT1Ratio">已背熟 0 / 0 题</div>
         </div>
+      </div>
+
+      <!-- 3.5 精听遍数与火候成就 -->
+      <div class="dash-section-title">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+        <span>精听遍数成就 · 金石印记</span>
+      </div>
+      <div class="dash-listen-ach-card" id="dashListenAchCard">
+        <div class="dash-listen-kpi-grid">
+          <div class="dash-listen-kpi-item">
+            <span class="dash-listen-kpi-val" id="dashTotalListenPasses">0</span>
+            <span class="dash-listen-kpi-label">累计精听遍数</span>
+          </div>
+          <div class="dash-listen-kpi-item">
+            <span class="dash-listen-kpi-val is-seal" id="dashSealPassCount">0</span>
+            <span class="dash-listen-kpi-label">10+遍朱砂火候</span>
+          </div>
+          <div class="dash-listen-kpi-item">
+            <span class="dash-listen-kpi-val is-muted" id="dashZeroPassCount">0</span>
+            <span class="dash-listen-kpi-label">0遍未开荒篇目</span>
+          </div>
+        </div>
+        <div class="dash-top-listened-wrap" id="dashTopListenedList"></div>
       </div>
 
       <!-- 4. 随机抽查与学习记录备份 -->
@@ -1031,11 +1061,11 @@
     </div>
     <h3 class="update-modal-title">正在同步云端新版本</h3>
     <div class="update-modal-badges">
-      <span class="update-badge-old" id="updateModalOldVer">v3.4.1</span>
+      <span class="update-badge-old" id="updateModalOldVer">v3.4.2</span>
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5 12h14M12 5l7 7-7 7"/>
       </svg>
-      <span class="update-badge-new" id="updateModalNewVer">v3.4.1</span>
+      <span class="update-badge-new" id="updateModalNewVer">v3.4.2</span>
     </div>
     <p class="update-modal-status" id="updateModalStatus">正在连接云端节点并校验资源清单...</p>
     <div class="update-progress-container">
