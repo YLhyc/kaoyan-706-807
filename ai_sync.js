@@ -21,7 +21,22 @@
 
   const DEFAULT_SYNC_URL = 'https://sync.2026706.xyz';
   const LEGACY_SYNC_URLS = ['https://sync.2026706.xyz:8443', 'https://sync.2026706.xyz:8443/'];
-  const ALLOWED_MODELS = ['deepseek-chat', 'deepseek-reasoner'];
+  const DEFAULT_AI_MODEL = 'deepseek-flash';
+  const ALLOWED_MODELS = ['deepseek-flash', 'deepseek-v4-pro'];
+  const LEGACY_MODEL_MAP = {
+    'deepseek-chat': 'deepseek-flash',
+    'deepseek-reasoner': 'deepseek-v4-pro',
+    'deepseek-v4-flash': 'deepseek-flash',
+    'deepseek-v4.1-flash': 'deepseek-flash',
+    'deepseek-v4.1-flash-1017': 'deepseek-flash',
+    'deepseek-v4.1 flash-1017': 'deepseek-flash'
+  };
+  function normalizeAiModel(raw) {
+    const val = String(raw || '').trim();
+    if (ALLOWED_MODELS.includes(val)) return val;
+    if (Object.prototype.hasOwnProperty.call(LEGACY_MODEL_MAP, val)) return LEGACY_MODEL_MAP[val];
+    return DEFAULT_AI_MODEL;
+  }
   const CARD_SELECTORS = [
     '.logic-block-card',
     '.exam-section-card',
@@ -106,8 +121,11 @@
     if (LEGACY_SYNC_URLS.includes(url)) url = DEFAULT_SYNC_URL;
     const pin = (localStorage.getItem(STORAGE_KEYS.syncPin) || '').trim();
     const deepseekKey = (localStorage.getItem(STORAGE_KEYS.deepseekKey) || '').trim();
-    const rawModel = (localStorage.getItem(STORAGE_KEYS.aiModel) || 'deepseek-chat').trim();
-    const model = ALLOWED_MODELS.includes(rawModel) ? rawModel : 'deepseek-chat';
+    const rawModel = (localStorage.getItem(STORAGE_KEYS.aiModel) || DEFAULT_AI_MODEL).trim();
+    const model = normalizeAiModel(rawModel);
+    if (rawModel && rawModel !== model) {
+      try { localStorage.setItem(STORAGE_KEYS.aiModel, model); } catch (e) {}
+    }
     return { url, pin, deepseekKey, model };
   }
 
@@ -1633,7 +1651,7 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
     if (dom.aiModelSelect) {
       dom.aiModelSelect.value = cfg.model;
       dom.aiModelSelect.addEventListener('change', () => {
-        const nextModel = ALLOWED_MODELS.includes(dom.aiModelSelect.value) ? dom.aiModelSelect.value : 'deepseek-chat';
+        const nextModel = normalizeAiModel(dom.aiModelSelect.value);
         localStorage.setItem(STORAGE_KEYS.aiModel, nextModel);
         if (dom.drawerModelBadge) dom.drawerModelBadge.textContent = nextModel;
         showToast(`已切换模型为 ${nextModel}`, 1800);
