@@ -915,20 +915,55 @@
     renderChatStream();
   }
 
+  function setMemoryBoxOpen(open) {
+    if (!dom.memoryBox) return;
+    const isOpen = Boolean(open);
+    dom.memoryBox.style.display = isOpen ? 'block' : 'none';
+    if (dom.memoryToggleBtn) {
+      dom.memoryToggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
+  }
+
+  function abortActiveStream() {
+    if (aiState.abortController) {
+      const ctrl = aiState.abortController;
+      aiState.abortController = null;
+      try { ctrl.abort(); } catch (e) {}
+    }
+    aiState.isStreaming = false;
+    if (dom.askSendBtn) dom.askSendBtn.disabled = false;
+    // 清理尚未输出任何正文的空占位气泡，避免永久卡在“正在思考...”
+    for (const [, thread] of aiState.chatThreads.entries()) {
+      if (Array.isArray(thread) && thread.length > 0) {
+        const last = thread[thread.length - 1];
+        if (last && last.role === 'assistant' && !last.content && !last.reasoning) {
+          thread.pop();
+        }
+      }
+    }
+  }
+
   function openAiDrawer({ cardEl = null, quote = '', tab = null } = {}) {
     if (!dom.drawer || !dom.backdrop) return;
     hideSelectionPill();
 
+    const prevCardEl = aiState.scopedCardEl;
     if (cardEl) {
+      if (prevCardEl && prevCardEl !== cardEl) {
+        abortActiveStream();
+        if (!quote) aiState.quotedText = '';
+      }
       aiState.scopedCardEl = cardEl;
       aiState.scopedCardLabel = extractCardLabel(cardEl);
       aiState.scopedCardText = extractCleanTextFromElement(cardEl);
       aiState.scopedSentences = collectScopedSentences(cardEl);
     } else if (aiState.scopedCardEl && !document.body.contains(aiState.scopedCardEl)) {
+      abortActiveStream();
       aiState.scopedCardEl = null;
       aiState.scopedCardLabel = '';
       aiState.scopedCardText = '';
       aiState.scopedSentences = [];
+      if (!quote) aiState.quotedText = '';
     }
 
     if (quote) {
@@ -937,11 +972,9 @@
 
     aiState.isOpen = true;
     dom.backdrop.style.display = 'block';
-    requestAnimationFrame(() => {
-      dom.backdrop.classList.add('open');
-      dom.drawer.classList.add('open');
-      dom.drawer.setAttribute('aria-hidden', 'false');
-    });
+    dom.drawer.classList.add('open');
+    dom.backdrop.classList.add('open');
+    dom.drawer.setAttribute('aria-hidden', 'false');
 
     const b = getBridge();
     if (b && typeof b.lockBodyScroll === 'function') {
@@ -955,6 +988,7 @@
   function closeAiDrawer() {
     if (!dom.drawer || !dom.backdrop) return;
     aiState.isOpen = false;
+    setMemoryBoxOpen(false);
     dom.drawer.classList.remove('open');
     dom.drawer.setAttribute('aria-hidden', 'true');
     dom.backdrop.classList.remove('open');
@@ -1106,34 +1140,6 @@
     return out.join('');
   }
 
-  function bindSentJumpButtons(containerEl) {
-    if (!containerEl) return;
-    containerEl.querySelectorAll('.ai-sent-jump-btn').forEach((btn) => {
-      if (btn.dataset.jumpBound === '1') return;
-      btn.dataset.jumpBound = '1';
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const idx = parseInt(btn.dataset.sentIdx, 10);
-        const b = getBridge();
-        if (!b) return;
-        const sents = b.getActiveSentences() || [];
-        const sent = sents[idx];
-        // 临时揭开盲背遮罩以便核对原句
-        applyBlindMask(false);
-        if (dom.blindMaskToggle && dom.blindMaskToggle.checked) {
-          dom.blindMaskToggle.checked = false;
-          localStorage.setItem(STORAGE_KEYS.blindMask, '0');
-        }
-        if (sent && typeof sent.start === 'number') {
-          b.seekToSentence(idx, sent.start);
-          showToast(`正在点听原句 #${idx + 1}`, 1600);
-        } else if (!isNaN(idx)) {
-          b.seekToSentence(idx, 0);
-        }
-      });
-    });
-  }
-
   // ==========================================
   // 6. DeepSeek 流式请求封装 (VPS 代理 / BYOK 兜底)
   // ==========================================
@@ -1253,21 +1259,13 @@
   }
 
   // ==========================================
-  // 7. Tab 1: AI 伴学答疑
+  // 7. AI 伴学答疑
   // ==========================================
-  function buildSentenceIndexPromptBlock(sentences) {
-    if (!sentences || sentences.length === 0) return '（本卡片暂无逐句时间戳索引）';
-    return sentences
-      .slice(0, 80)
-      .map(s => `[SENT:${s.idx}] ${(s.text || '').replace(/\s+/g, ' ').trim()}`)
-      .join('\n');
-  }
-
   function buildAskSystemPrompt(ctx) {
     const memories = getAiMemories();
     const mem = normalizeMemoryEntry(memories[ctx.itemId]);
     const memoryBlock = mem && mem.summary
-      ? `\n【历史薄弱卡点记忆（已抽背 ${mem.reciteCount} 次${mem.lastScore !== null ? `，最近得分 ${mem.lastScore} 分` : ''}）】：\n${mem.summary}\n`
+      ? `\n【历史卡点记忆档案】：\n${mem.summary}\n`
       : '';
 
     return `你是「2027 考研全科双轨背诵手卷」的专属高分研学助教，精通文学考研（807 现当代文学、706 中国古代文学）、考研政治与考研英语写作。
@@ -1370,7 +1368,13 @@ ${ctx.refText}
       });
       renderChatStream();
     } catch (err) {
-      if (err && err.name === 'AbortError') return;
+      if (err && err.name === 'AbortError') {
+        if (!assistantMsg.content && !assistantMsg.reasoning && thread[thread.length - 1] === assistantMsg) {
+          thread.pop();
+        }
+        renderChatStream();
+        return;
+      }
       if (err && err.message === 'NO_AUTH_CONFIGURED') {
         assistantMsg.content = '尚未配置云端同步口令或 DeepSeek API Key。请点击右上角齿轮图标进入「设置 → AI 伴学与云端同步」填写 `Sync PIN`（或个人 Key）。';
       } else {
@@ -1383,87 +1387,8 @@ ${ctx.refText}
   }
 
   // ==========================================
-  // 8. Tab 2: 微信语音抽背批改
+  // 8. 卡点记忆持久化辅助
   // ==========================================
-  function updateReciteCharCount() {
-    if (!dom.reciteTextarea || !dom.reciteCharCount) return;
-    const val = dom.reciteTextarea.value || '';
-    const nonWs = val.replace(/\s+/g, '').length;
-    dom.reciteCharCount.textContent = `已输入 ${nonWs} 字`;
-  }
-
-  function pushReciteSnapshot(textVal) {
-    const stack = aiState.reciteSnapshots;
-    if (stack.length > 0 && stack[stack.length - 1] === textVal) return;
-    stack.push(textVal);
-    if (stack.length > 25) stack.shift();
-  }
-
-  function handleReciteInputBurst() {
-    if (!dom.reciteTextarea) return;
-    const now = Date.now();
-    const cur = dom.reciteTextarea.value || '';
-    const prevLen = aiState.lastReciteLen || 0;
-    // 检测微信语音连续插入：停顿超过 1.2s 且一次性增加 >= 4 字时记录前一状态，便于「撤销上一段」
-    if (cur.length - prevLen >= 4 && now - aiState.lastReciteEditTs > 1200) {
-      pushReciteSnapshot(cur.slice(0, prevLen));
-    }
-    aiState.lastReciteEditTs = now;
-    aiState.lastReciteLen = cur.length;
-    updateReciteCharCount();
-  }
-
-  function buildGradingSystemPrompt(ctx) {
-    const memories = getAiMemories();
-    const mem = normalizeMemoryEntry(memories[ctx.itemId]);
-    const memoryBlock = mem && mem.summary
-      ? `\n【既往卡点记忆档案（本次需重点检验是否克服）】：\n${mem.summary}\n`
-      : '';
-
-    return `你是考研专业课（807/706/政治/英语）严格而友善的「微信语音抽背阅卷官」。
-考生使用「微信输入法 60 秒语音转文字」进行盲背口述。
-
-【核心语音听写容错规则】：
-1. 必须宽容语音识别常见的**同音/近音错别字**与**完全缺失标点**（例如：“诗史”听成“实施/时事”、“繁漪”听成“樊篱/凡依”、“形神兼备”听成“行神兼备”、“唯物辩证法”听成“威武变证法”、“创作”听成“创做”等），只要读音相近且符合语境，一律视为**同义/语音命中过关**，绝不因错别字扣分！
-2. 英文单词若有轻度语音连读误识或大小写差异，只要能辨认出对应词根/句式，也宽容判定并通过括号提示拼写即可。
-3. 重点核查：**核心论点、采分术语、作家作品/理论要点、逻辑层次**是否漏背或混淆。
-${memoryBlock}
-【当前考核范围】：${ctx.subjectLabel} · ${ctx.itemTitle} · ${ctx.blockId}
-【对照标准原文】：
-${ctx.refText}
-
-请严格按以下 4 个结构化模块输出纯文字批改报告（不要输出 [SENT] 标记或任何音频引用）：
-### 1. 整体掌握度评分与简评
-首行明确给出：\`掌握度评分：XX分\`（0-100 整数），随后 2 句精准点明背诵完整度与主要失分方向。
-
-### 2. ✅ 命中与同义过关要点
-分条列出考生已准确背出（含语音同音/同义替换过关）的采分点。
-
-### 3. ❌ 漏背 / 混淆卡点
-逐条指出遗漏或张冠李戴的关键点，并用 \`>\` 引用块给出精确标准原文对照以便记忆。
-
-### 4. 逻辑拆解速记法
-针对本次漏背卡点，提炼 2-3 条极简逻辑链条或关键词口诀。
-
-[CARD_SUMMARY]用 1~2 句话极简浓缩本次暴露的漏背卡点与易混处（不超过 120 字），供长期记忆档案合并存档。[/CARD_SUMMARY]`;
-  }
-
-  function extractGradingMeta(replyText) {
-    let cardSummary = '';
-    const sumMatch = replyText.match(/\[CARD_SUMMARY\]([\s\S]*?)(?:\[\/CARD_SUMMARY\]|$)/i);
-    if (sumMatch && sumMatch[1]) {
-      cardSummary = sumMatch[1].trim().slice(0, 320);
-    }
-
-    let score = null;
-    const scoreMatch = replyText.match(/(?:掌握度评分|整体评分|综合得分|评分|得分)[：:\s\*`]*(\d{1,3})\s*(?:分|\/\s*100)?/i);
-    if (scoreMatch) {
-      const n = parseInt(scoreMatch[1], 10);
-      if (!isNaN(n) && n >= 0 && n <= 100) score = n;
-    }
-    return { cardSummary, score };
-  }
-
   function saveMemorySummary(itemId, { summary, score = null, incrementRecite = false }) {
     if (!itemId) return;
     const memories = getAiMemories();
@@ -1484,130 +1409,6 @@ ${ctx.refText}
     setAiMemories(memories);
     refreshMemoryBoxUI();
     scheduleDebouncedPush();
-  }
-
-  function appendReciteLog({ itemId, blockId, userText, aiReply, cardSummary, score }) {
-    const now = Date.now();
-    const logs = getReciteLogs();
-    logs.unshift({
-      id: `rl_${now}_${Math.random().toString(36).slice(2, 8)}`,
-      itemId,
-      blockId,
-      mode: 'recite',
-      userText,
-      aiReply,
-      cardSummary,
-      score,
-      createdAt: now,
-      updatedAt: now,
-      device: getDeviceLabel()
-    });
-    setReciteLogs(logs);
-    scheduleDebouncedPush();
-  }
-
-  function renderReciteHistoryIfIdle() {
-    if (!dom.reciteResult || aiState.isStreaming) return;
-    if (dom.reciteResult.dataset.hasLiveResult === '1') return;
-
-    const ctx = getScopeContext();
-    const itemLogs = getReciteLogs().filter(l => l.itemId === ctx.itemId).slice(0, 3);
-    if (itemLogs.length === 0) {
-      dom.reciteResult.innerHTML = `
-        <div class="ai-empty-hint">
-          口述或键入你的背诵内容后点击「交卷批改」，DeepSeek 将对照当前卡片原文逐点核验命中要点与漏背细节，并给出高分记忆口诀。
-        </div>
-      `;
-      return;
-    }
-
-    dom.reciteResult.innerHTML = `
-      <div class="ai-recite-history-title">本题最近抽背记录（点击可展开复盘）</div>
-      <div class="ai-recite-history-list">
-        ${itemLogs.map((log) => `
-          <details class="ai-history-item">
-            <summary>
-              <span class="ai-history-score">${log.score !== null ? `${log.score} 分` : '已批改'}</span>
-              <span class="ai-history-block">${escapeHtml(log.blockId || '全篇')}</span>
-              <span class="ai-history-time">${new Date(log.createdAt).toLocaleString()}</span>
-            </summary>
-            <div class="ai-history-body">${renderAiMarkdown(log.aiReply, ctx.sentences)}</div>
-          </details>
-        `).join('')}
-      </div>
-    `;
-  }
-
-  async function submitReciteGrading() {
-    if (aiState.isStreaming) {
-      showToast('DeepSeek 正在批改中，请稍候', 1600);
-      return;
-    }
-    const userText = dom.reciteTextarea ? dom.reciteTextarea.value.trim() : '';
-    if (!userText || userText.replace(/\s+/g, '').length < 4) {
-      showToast('请先用语音输入法口述或输入至少 4 个字再交卷批改', 2200);
-      return;
-    }
-
-    const ctx = getScopeContext();
-    if (dom.reciteSubmitBtn) dom.reciteSubmitBtn.disabled = true;
-    setReciteViewMode('graded', userText);
-    dom.reciteResult.dataset.hasLiveResult = '1';
-    dom.reciteResult.innerHTML = '<div class="ai-grading-card"><div class="ai-typing-dots">正在逐字比对原文并容错核验语音同音字...</div></div>';
-
-    const messages = [
-      { role: 'system', content: buildGradingSystemPrompt(ctx) },
-      { role: 'user', content: `【我的语音默背口述稿】：\n${userText}` }
-    ];
-
-    try {
-      const result = await streamDeepSeek({
-        messages,
-        temperature: 0.3,
-        maxTokens: 2500,
-        onDelta: ({ content, reasoning }) => {
-          const reasoningHtml = reasoning
-            ? `<details class="ai-reasoning-block"><summary>DeepSeek 核验思考过程</summary><div class="ai-reasoning-body">${escapeHtml(reasoning).replace(/\n/g, '<br>')}</div></details>`
-            : '';
-          dom.reciteResult.innerHTML = `<div class="ai-grading-card">${reasoningHtml}${renderAiMarkdown(content, ctx.sentences)}</div>`;
-          dom.reciteResult.scrollTop = dom.reciteResult.scrollHeight;
-        }
-      });
-
-      const finalText = result.content || '';
-      if (finalText) {
-        const { cardSummary, score } = extractGradingMeta(finalText);
-        const existingMem = normalizeMemoryEntry(getAiMemories()[ctx.itemId]);
-        const mergedSummary = cardSummary
-          ? (existingMem && existingMem.summary && !existingMem.summary.includes(cardSummary)
-            ? `${cardSummary}\n[历史] ${existingMem.summary}`.slice(0, 500)
-            : cardSummary)
-          : (existingMem ? existingMem.summary : '');
-
-        saveMemorySummary(ctx.itemId, {
-          summary: mergedSummary,
-          score,
-          incrementRecite: true
-        });
-        appendReciteLog({
-          itemId: ctx.itemId,
-          blockId: ctx.blockId,
-          userText,
-          aiReply: finalText,
-          cardSummary,
-          score
-        });
-        showToast(score !== null ? `批改完成：${score} 分，卡点已自动存档！` : '批改完成，卡点已自动存档！', 2400);
-      }
-    } catch (err) {
-      if (err && err.name === 'AbortError') return;
-      const errText = (err && err.message === 'NO_AUTH_CONFIGURED')
-        ? '尚未配置同步口令或 DeepSeek API Key，请点击右上角齿轮图标进入设置配置。'
-        : `批改请求失败：${err && err.message ? err.message : '网络错误'}`;
-      dom.reciteResult.innerHTML = `<div class="ai-grading-card ai-error-box">${escapeHtml(errText)}</div>`;
-    } finally {
-      if (dom.reciteSubmitBtn) dom.reciteSubmitBtn.disabled = false;
-    }
   }
 
   // ==========================================
@@ -1696,10 +1497,7 @@ ${ctx.refText}
     dom.scopeBadge = document.getElementById('aiScopeBadge');
     dom.clearScopeBtn = document.getElementById('aiClearScopeBtn');
 
-    dom.tabAsk = document.getElementById('aiTabAsk');
-    dom.tabRecite = document.getElementById('aiTabRecite');
     dom.panelAsk = document.getElementById('aiPanelAsk');
-    dom.panelRecite = document.getElementById('aiPanelRecite');
 
     dom.memoryBox = document.getElementById('aiMemoryBox');
     dom.memoryToggleBtn = document.getElementById('aiMemoryToggleBtn');
@@ -1712,7 +1510,6 @@ ${ctx.refText}
     dom.quoteText = document.getElementById('aiQuoteText');
     dom.quoteClearBtn = document.getElementById('aiQuoteClearBtn');
 
-    dom.chipQuoteCurrent = document.getElementById('aiChipQuoteCurrentSent');
     dom.chipMnemonic = document.getElementById('aiChipMnemonic');
     dom.chipContrast = document.getElementById('aiChipContrast');
     dom.chipFormula = document.getElementById('aiChipFormula');
@@ -1721,19 +1518,6 @@ ${ctx.refText}
     dom.chatStream = document.getElementById('aiChatStream');
     dom.askInput = document.getElementById('aiAskInput');
     dom.askSendBtn = document.getElementById('aiAskSendBtn');
-
-    dom.blindMaskToggle = document.getElementById('aiBlindMaskToggle');
-    dom.reciteCharCount = document.getElementById('aiReciteCharCount');
-    dom.reciteDraftBar = document.getElementById('aiReciteDraftBar');
-    dom.reciteDraftPreview = document.getElementById('aiReciteDraftPreview');
-    dom.reciteEditDraftBtn = document.getElementById('aiReciteEditDraftBtn');
-    dom.reciteInputCard = document.getElementById('aiReciteInputCard');
-    dom.reciteTextarea = document.getElementById('aiReciteTextarea');
-    dom.reciteSnapshotBtn = document.getElementById('aiReciteSnapshotBtn');
-    dom.reciteUndoDropBtn = document.getElementById('aiReciteUndoDropBtn');
-    dom.reciteClearBtn = document.getElementById('aiReciteClearBtn');
-    dom.reciteSubmitBtn = document.getElementById('aiReciteSubmitBtn');
-    dom.reciteResult = document.getElementById('aiReciteResult');
 
     if (dom.headerBtn) {
       dom.headerBtn.addEventListener('click', (e) => {
@@ -1765,28 +1549,29 @@ ${ctx.refText}
 
     if (dom.clearScopeBtn) {
       dom.clearScopeBtn.addEventListener('click', () => {
+        if (aiState.scopedCardEl) {
+          abortActiveStream();
+        }
         aiState.scopedCardEl = null;
         aiState.scopedCardLabel = '';
         aiState.scopedCardText = '';
         aiState.scopedSentences = [];
+        aiState.quotedText = '';
+        setMemoryBoxOpen(false);
         updateScopeHeaderUI();
-        if (aiState.activeTab === 'ask') renderChatStream();
-        else renderReciteHistoryIfIdle();
+        renderChatStream();
       });
     }
-
-    if (dom.tabAsk) dom.tabAsk.addEventListener('click', () => switchAiTab('ask'));
-    if (dom.tabRecite) dom.tabRecite.addEventListener('click', () => switchAiTab('recite'));
 
     if (dom.memoryToggleBtn && dom.memoryBox) {
       dom.memoryToggleBtn.addEventListener('click', () => {
         const isShown = dom.memoryBox.style.display !== 'none';
-        dom.memoryBox.style.display = isShown ? 'none' : 'block';
+        setMemoryBoxOpen(!isShown);
       });
     }
     if (dom.memoryCloseBtn && dom.memoryBox) {
       dom.memoryCloseBtn.addEventListener('click', () => {
-        dom.memoryBox.style.display = 'none';
+        setMemoryBoxOpen(false);
       });
     }
 
@@ -1797,7 +1582,7 @@ ${ctx.refText}
           summary: dom.memorySummaryInput.value,
           incrementRecite: false
         });
-        if (dom.memoryBox) dom.memoryBox.style.display = 'none';
+        setMemoryBoxOpen(false);
         showToast('本题卡点记忆已保存并加入云端同步队列', 1800);
       });
     }
@@ -1847,6 +1632,7 @@ ${ctx.refText}
 
     if (dom.chipClearChat) {
       dom.chipClearChat.addEventListener('click', () => {
+        abortActiveStream();
         const ctx = getScopeContext();
         aiState.chatThreads.delete(ctx.scopeKey);
         renderChatStream();
@@ -1886,12 +1672,6 @@ ${ctx.refText}
         }
       });
     }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && aiState.isOpen) {
-        closeAiDrawer();
-      }
-    });
 
     if (dom.askSendBtn) {
       dom.askSendBtn.addEventListener('click', () => sendAskMessage(null));
@@ -1935,75 +1715,6 @@ ${ctx.refText}
     document.addEventListener('selectionchange', () => scheduleSelectionEval(180));
     document.addEventListener('mouseup', () => scheduleSelectionEval(80));
     document.addEventListener('touchend', () => scheduleSelectionEval(140), { passive: true });
-
-    // Tab 2: 微信语音抽背批改
-    if (dom.blindMaskToggle) {
-      dom.blindMaskToggle.checked = localStorage.getItem(STORAGE_KEYS.blindMask) === '1';
-      dom.blindMaskToggle.addEventListener('change', () => {
-        const on = Boolean(dom.blindMaskToggle.checked);
-        localStorage.setItem(STORAGE_KEYS.blindMask, on ? '1' : '0');
-        applyBlindMask(on);
-      });
-    }
-
-    if (dom.reciteTextarea) {
-      // 严禁回车误提交：Enter 永远保持换行追加多段语音
-      dom.reciteTextarea.addEventListener('input', handleReciteInputBurst);
-      updateReciteCharCount();
-    }
-
-    if (dom.reciteSnapshotBtn && dom.reciteTextarea) {
-      dom.reciteSnapshotBtn.addEventListener('click', () => {
-        const val = dom.reciteTextarea.value || '';
-        pushReciteSnapshot(val);
-        if (val && !val.endsWith('\n')) {
-          dom.reciteTextarea.value = val + '\n';
-        }
-        aiState.lastReciteLen = dom.reciteTextarea.value.length;
-        aiState.lastReciteEditTs = Date.now();
-        dom.reciteTextarea.focus();
-        updateReciteCharCount();
-        showToast('已标记分段，可继续语音追加下一段', 1600);
-      });
-    }
-
-    if (dom.reciteUndoDropBtn && dom.reciteTextarea) {
-      dom.reciteUndoDropBtn.addEventListener('click', () => {
-        if (aiState.reciteSnapshots.length === 0) {
-          showToast('暂无可撤销的上一段记录', 1600);
-          return;
-        }
-        const prev = aiState.reciteSnapshots.pop();
-        dom.reciteTextarea.value = prev;
-        aiState.lastReciteLen = prev.length;
-        aiState.lastReciteEditTs = Date.now();
-        updateReciteCharCount();
-        showToast('已撤回至上一段状态', 1500);
-      });
-    }
-
-    if (dom.reciteClearBtn && dom.reciteTextarea) {
-      dom.reciteClearBtn.addEventListener('click', () => {
-        if (dom.reciteTextarea.value) {
-          pushReciteSnapshot(dom.reciteTextarea.value);
-        }
-        dom.reciteTextarea.value = '';
-        aiState.lastReciteLen = 0;
-        aiState.lastReciteEditTs = Date.now();
-        updateReciteCharCount();
-      });
-    }
-
-    if (dom.reciteSubmitBtn) {
-      dom.reciteSubmitBtn.addEventListener('click', submitReciteGrading);
-    }
-
-    if (dom.reciteEditDraftBtn) {
-      dom.reciteEditDraftBtn.addEventListener('click', () => {
-        setReciteViewMode('input');
-        if (dom.reciteTextarea) dom.reciteTextarea.focus();
-      });
-    }
   }
 
   // ==========================================
@@ -2013,14 +1724,16 @@ ${ctx.refText}
     onPaperRendered: () => {
       hideSelectionPill();
       injectCardAiButtons();
+      abortActiveStream();
+      aiState.scopedCardEl = null;
+      aiState.scopedCardLabel = '';
+      aiState.scopedCardText = '';
+      aiState.scopedSentences = [];
+      aiState.quotedText = '';
+      setMemoryBoxOpen(false);
       if (aiState.isOpen) {
-        aiState.scopedCardEl = null;
-        aiState.scopedCardLabel = '';
-        aiState.scopedCardText = '';
-        aiState.scopedSentences = [];
         updateScopeHeaderUI();
-        if (aiState.activeTab === 'ask') renderChatStream();
-        else renderReciteHistoryIfIdle();
+        renderChatStream();
       }
     },
     onMasteryMutation: (itemId) => {
