@@ -774,12 +774,12 @@
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = card.classList.contains('en-essay-para') ? 'card-ai-btn card-ai-btn-inline' : 'card-ai-btn';
-      btn.title = '针对本卡片内容向 DeepSeek 提问或发起语音抽背批改';
+      btn.title = '针对本卡片内容向 DeepSeek 提问';
       btn.innerHTML = `
         <svg class="ai-ds-icon" fill="currentColor" fill-rule="evenodd" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
           <path d="M23.748 4.482c-.254-.124-.364.113-.512.234-.051.039-.094.09-.137.136-.372.397-.806.657-1.373.626-.829-.046-1.537.214-2.163.848-.133-.782-.575-1.248-1.247-1.548-.352-.156-.708-.311-.955-.65-.172-.241-.219-.51-.305-.774-.055-.16-.11-.323-.293-.35-.2-.031-.278.136-.356.276-.313.572-.434 1.202-.422 1.84.027 1.436.633 2.58 1.838 3.393.137.093.172.187.129.323-.082.28-.18.552-.266.833-.055.179-.137.217-.329.14a5.526 5.526 0 01-1.736-1.18c-.857-.828-1.631-1.742-2.597-2.458a11.365 11.365 0 00-.689-.471c-.985-.957.13-1.743.388-1.836.27-.098.093-.432-.779-.428-.872.004-1.67.295-2.687.684a3.055 3.055 0 01-.465.137 9.597 9.597 0 00-2.883-.102c-1.885.21-3.39 1.102-4.497 2.623C.082 8.606-.231 10.684.152 12.85c.403 2.284 1.569 4.175 3.36 5.653 1.858 1.533 3.997 2.284 6.438 2.14 1.482-.085 3.133-.284 4.994-1.86.47.234.962.327 1.78.397.63.059 1.236-.03 1.705-.128.735-.156.684-.837.419-.961-2.155-1.004-1.682-.595-2.113-.926 1.096-1.296 2.746-2.642 3.392-7.003.05-.347.007-.565 0-.845-.004-.17.035-.237.23-.256a4.173 4.173 0 001.545-.475c1.396-.763 1.96-2.015 2.093-3.517.02-.23-.004-.467-.247-.588zM11.581 18c-2.089-1.642-3.102-2.183-3.52-2.16-.392.024-.321.471-.235.763.09.288.207.486.371.739.114.167.192.416-.113.603-.673.416-1.842-.14-1.897-.167-1.361-.802-2.5-1.86-3.301-3.307-.774-1.393-1.224-2.887-1.298-4.482-.02-.386.093-.522.477-.592a4.696 4.696 0 011.529-.039c2.132.312 3.946 1.265 5.468 2.774.868.86 1.525 1.887 2.202 2.891.72 1.066 1.494 2.082 2.48 2.914.348.292.625.514.891.677-.802.09-2.14.11-3.054-.614zm1-6.44a.306.306 0 01.415-.287.302.302 0 01.2.288.306.306 0 01-.31.307.303.303 0 01-.304-.308zm3.11 1.596c-.2.081-.399.151-.59.16a1.245 1.245 0 01-.798-.254c-.274-.23-.47-.358-.552-.758a1.73 1.73 0 01.016-.588c.07-.327-.008-.537-.239-.727-.187-.156-.426-.199-.688-.199a.559.559 0 01-.254-.078c-.11-.054-.2-.19-.114-.358.028-.054.16-.186.192-.21.356-.202.767-.136 1.146.016.352.144.618.408 1.001.782.391.451.462.576.685.914.176.265.336.537.445.848.067.195-.019.354-.25.452z"></path>
         </svg>
-        <span>AI 伴学 / 抽背</span>
+        <span>AI 伴学</span>
       `;
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -868,13 +868,20 @@
     }
     if (dom.memoryStats) {
       if (mem && (mem.reciteCount > 0 || mem.lastScore !== null)) {
-        const scorePart = mem.lastScore !== null ? `最近得分 ${mem.lastScore} 分` : '已记录';
-        dom.memoryStats.textContent = `已抽背 ${mem.reciteCount} 次 · ${scorePart}`;
+        const scorePart = mem.lastScore !== null ? `${mem.lastScore}分` : '已记录';
+        dom.memoryStats.textContent = `${mem.reciteCount}次 · ${scorePart}`;
+      } else if (mem && mem.summary) {
+        dom.memoryStats.textContent = '已记录';
       } else {
-        dom.memoryStats.textContent = '尚未抽背 · 自动注入对话上下文';
+        dom.memoryStats.textContent = '暂无笔记';
       }
     }
+    if (dom.memoryToggleBtn) {
+      dom.memoryToggleBtn.classList.toggle('has-memory', Boolean(mem && (mem.summary || mem.reciteCount > 0)));
+    }
   }
+
+  function setReciteViewMode() {}
 
   function updateScopeHeaderUI() {
     const ctx = getScopeContext();
@@ -901,30 +908,11 @@
     refreshMemoryBoxUI();
   }
 
-  function switchAiTab(tabName) {
-    aiState.activeTab = tabName === 'recite' ? 'recite' : 'ask';
-    if (dom.tabAsk) {
-      const isAsk = aiState.activeTab === 'ask';
-      dom.tabAsk.classList.toggle('active', isAsk);
-      dom.tabAsk.setAttribute('aria-selected', isAsk ? 'true' : 'false');
-    }
-    if (dom.tabRecite) {
-      const isRecite = aiState.activeTab === 'recite';
-      dom.tabRecite.classList.toggle('active', isRecite);
-      dom.tabRecite.setAttribute('aria-selected', isRecite ? 'true' : 'false');
-    }
-    if (dom.panelAsk) dom.panelAsk.style.display = aiState.activeTab === 'ask' ? 'flex' : 'none';
-    if (dom.panelRecite) dom.panelRecite.style.display = aiState.activeTab === 'recite' ? 'flex' : 'none';
-
-    const blindEnabled = localStorage.getItem(STORAGE_KEYS.blindMask) === '1';
-    if (dom.blindMaskToggle) dom.blindMaskToggle.checked = blindEnabled;
-    applyBlindMask(blindEnabled);
-
-    if (aiState.activeTab === 'ask') {
-      renderChatStream();
-    } else {
-      renderReciteHistoryIfIdle();
-    }
+  function switchAiTab() {
+    aiState.activeTab = 'ask';
+    if (dom.panelAsk) dom.panelAsk.style.display = 'flex';
+    applyBlindMask(false);
+    renderChatStream();
   }
 
   function openAiDrawer({ cardEl = null, quote = '', tab = null } = {}) {
@@ -1007,43 +995,30 @@
     return bestIdx;
   }
 
-  function renderAiMarkdown(rawMarkdown, sentences = []) {
+  function renderAiMarkdown(rawMarkdown) {
     // 1. 剥离 [CARD_SUMMARY]...[/CARD_SUMMARY] 并在底部渲染为归档卡片
     let summaryText = '';
-    const cleaned = String(rawMarkdown || '').replace(/\[CARD_SUMMARY\]([\s\S]*?)(?:\[\/CARD_SUMMARY\]|$)/g, (_, inner) => {
-      summaryText = (inner || '').trim();
-      return '';
-    }).trim();
-
-    const sentByIdx = new Map();
-    (sentences || []).forEach(s => sentByIdx.set(Number(s.idx), s));
-
-    const makeSentBtn = (idxNum) => {
-      const sent = sentByIdx.get(idxNum);
-      const preview = sent && sent.text ? sent.text.replace(/\s+/g, ' ').slice(0, 18) : `第 ${idxNum + 1} 句`;
-      const safeTitle = escapeHtml(sent && sent.text ? sent.text : `跳转朗读第 ${idxNum + 1} 句`);
-      return `<button type="button" class="ai-sent-jump-btn" data-sent-idx="${idxNum}" title="${safeTitle}">▶ 点听漏背原句 · ${escapeHtml(preview)}${sent && sent.text && sent.text.length > 18 ? '…' : ''}</button>`;
-    };
+    const cleaned = String(rawMarkdown || '')
+      .replace(/\[CARD_SUMMARY\]([\s\S]*?)(?:\[\/CARD_SUMMARY\]|$)/g, (_, inner) => {
+        summaryText = (inner || '').trim();
+        return '';
+      })
+      .replace(/\s*\[SENT:\d+\]/g, '')
+      .trim();
 
     const formatInline = (line) => {
       let html = escapeHtml(line);
       html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
       html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-      html = html.replace(/\[SENT:(\d+)\]/g, (_, idxStr) => makeSentBtn(parseInt(idxStr, 10)));
-
-      // 若本行未显式含 [SENT:idx] 但有错点引号对照，尝试自动模糊匹配原句附带点听胶囊
-      if (!/class="ai-sent-jump-btn"/.test(html) && /❌|漏背|混淆|原句|原文/.test(line)) {
-        const quotes = line.match(/[「“"《]([^」”"》]{6,80})[」”"》]/g) || [];
-        for (const q of quotes) {
-          const innerQ = q.slice(1, -1);
-          const matchedIdx = findSentenceIndexByQuote(innerQ, sentences);
-          if (matchedIdx !== -1) {
-            html += ` ${makeSentBtn(matchedIdx)}`;
-            break;
-          }
-        }
-      }
       return html;
+    };
+
+    const parseTableRow = (rowLine) => {
+      return rowLine.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim());
+    };
+    const isTableSep = (rowLine) => {
+      const cells = parseTableRow(rowLine);
+      return cells.length > 0 && cells.every(c => /^:?-{2,}:?$/.test(c));
     };
 
     const lines = cleaned.split(/\r?\n/);
@@ -1057,19 +1032,53 @@
       }
     };
 
-    lines.forEach((rawLine) => {
-      const line = rawLine.trimEnd();
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trimEnd();
       if (!line.trim()) {
         closeList();
-        return;
+        continue;
       }
+
+      // Markdown 表格支持：| 列1 | 列2 |
+      if (line.trim().startsWith('|') && i + 1 < lines.length && lines[i + 1].trim().startsWith('|') && isTableSep(lines[i + 1])) {
+        closeList();
+        const headers = parseTableRow(line);
+        i += 2;
+        const rows = [];
+        while (i < lines.length && lines[i].trim().startsWith('|')) {
+          rows.push(parseTableRow(lines[i]));
+          i++;
+        }
+        i--;
+        out.push('<div class="ai-md-table-wrap"><table class="ai-md-table"><thead><tr>' +
+          headers.map(h => `<th>${formatInline(h)}</th>`).join('') +
+          '</tr></thead><tbody>' +
+          rows.map(r => '<tr>' + headers.map((_, idx) => `<td>${formatInline(r[idx] || '')}</td>`).join('') + '</tr>').join('') +
+          '</tbody></table></div>');
+        continue;
+      }
+
+      // 引用块支持：> 原文摘录
+      const bqMatch = line.match(/^\s*>\s?(.*)$/);
+      if (bqMatch) {
+        closeList();
+        const quoteLines = [formatInline(bqMatch[1])];
+        while (i + 1 < lines.length && /^\s*>\s?/.test(lines[i + 1])) {
+          i++;
+          quoteLines.push(formatInline(lines[i].replace(/^\s*>\s?/, '')));
+        }
+        out.push(`<blockquote class="ai-md-quote">${quoteLines.join('<br>')}</blockquote>`);
+        continue;
+      }
+
       const hMatch = line.match(/^(#{1,4})\s+(.+)$/);
       if (hMatch) {
         closeList();
         const level = Math.min(4, Math.max(2, hMatch[1].length));
         out.push(`<h${level + 1} class="ai-md-h">${formatInline(hMatch[2])}</h${level + 1}>`);
-        return;
+        continue;
       }
+
       const liMatch = line.match(/^\s*(?:[-*•]|\d+[.)、])\s+(.+)$/);
       if (liMatch) {
         if (!inList) {
@@ -1077,11 +1086,12 @@
           inList = true;
         }
         out.push(`<li>${formatInline(liMatch[1])}</li>`);
-        return;
+        continue;
       }
+
       closeList();
       out.push(`<p class="ai-md-p">${formatInline(line)}</p>`);
-    });
+    }
     closeList();
 
     if (summaryText) {
@@ -1269,13 +1279,10 @@ ${memoryBlock}
 【参考原文】：
 ${ctx.refText}
 
-【带编号原句列表（引用原句时请附上对应 [SENT:序号] 标记，前端会自动渲染为点听按钮）】：
-${buildSentenceIndexPromptBlock(ctx.sentences)}
-
 回答规范：
 1. 紧扣上述参考原文与考研答题采分点作答，语言凝练有条理，避免空泛套话。
-2. 当提示考生注意某个核心原句或易漏句时，在句末带上对应 [SENT:idx] 标记（例如 [SENT:4]）。
-3. 可适当给出结构化框架、关键词记忆抓手或跨作家/跨考点对比，帮助快速成诵。`;
+2. 遇到多流派、多作家或多概念区分时，优先使用清晰的 Markdown 对比表格呈现；引用核心原句时请使用 \`>\` 引用块或双引号纯文本，不要输出任何音频编号、时间戳或 [SENT] 标记。
+3. 适当给出答题骨架、采分关键词或 50 字以内记忆口诀，帮助考场高效成诵。`;
   }
 
   function renderChatStream() {
@@ -1286,13 +1293,13 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
     if (msgs.length === 0) {
       dom.chatStream.innerHTML = `
         <div class="ai-empty-hint">
-          已锁定「${escapeHtml(ctx.blockId)}」。你可以划词提问、点击上方「引用当前正在听的句子」，或直接向 DeepSeek 提问答题逻辑与采分点。
+          已锁定「${escapeHtml(ctx.blockId)}」。你可以直接在下方提问，或点击建议标签生成<strong>答题骨架 / 横向对比表 / 速记口诀</strong>（全纯文字学术排版，无音频跳转干扰）。
         </div>
       `;
       return;
     }
 
-    dom.chatStream.innerHTML = msgs.map((m) => {
+    dom.chatStream.innerHTML = msgs.map((m, idx) => {
       if (m.role === 'user') {
         return `<div class="ai-msg ai-msg-user"><div class="ai-msg-bubble">${escapeHtml(m.content).replace(/\n/g, '<br>')}</div></div>`;
       }
@@ -1302,10 +1309,16 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
       const bodyHtml = m.content
         ? renderAiMarkdown(m.content, ctx.sentences)
         : '<span class="ai-typing-dots">正在思考并检索原文...</span>';
-      return `<div class="ai-msg ai-msg-assistant"><div class="ai-msg-bubble">${reasoningHtml}${bodyHtml}</div></div>`;
+      const isLastStreaming = aiState.isStreaming && idx === msgs.length - 1;
+      const actionsHtml = (m.content && !isLastStreaming)
+        ? `<div class="ai-msg-actions">
+            <button type="button" class="ai-msg-action-btn js-ai-copy-btn" data-msg-idx="${idx}">复制解析</button>
+            <button type="button" class="ai-msg-action-btn js-ai-save-mem-btn" data-msg-idx="${idx}">存入卡点记忆</button>
+          </div>`
+        : '';
+      return `<div class="ai-msg ai-msg-assistant"><div class="ai-msg-bubble">${reasoningHtml}${bodyHtml}${actionsHtml}</div></div>`;
     }).join('');
 
-    bindSentJumpButtons(dom.chatStream);
     dom.chatStream.scrollTop = dom.chatStream.scrollHeight;
   }
 
@@ -1355,6 +1368,7 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
           renderChatStream();
         }
       });
+      renderChatStream();
     } catch (err) {
       if (err && err.name === 'AbortError') return;
       if (err && err.message === 'NO_AUTH_CONFIGURED') {
@@ -1418,10 +1432,7 @@ ${memoryBlock}
 【对照标准原文】：
 ${ctx.refText}
 
-【带编号原句清单（用于生成点听按钮）】：
-${buildSentenceIndexPromptBlock(ctx.sentences)}
-
-请严格按以下 5 个结构化模块输出批改报告：
+请严格按以下 4 个结构化模块输出纯文字批改报告（不要输出 [SENT] 标记或任何音频引用）：
 ### 1. 整体掌握度评分与简评
 首行明确给出：\`掌握度评分：XX分\`（0-100 整数），随后 2 句精准点明背诵完整度与主要失分方向。
 
@@ -1429,7 +1440,7 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
 分条列出考生已准确背出（含语音同音/同义替换过关）的采分点。
 
 ### 3. ❌ 漏背 / 混淆卡点
-逐条指出遗漏或张冠李戴的关键点，必须给出精确原文对照，并在该句末尾附上对应的 \`[SENT:idx]\` 编号（例如 \`[SENT:5]\`），让前端生成「▶ 点听漏背原句」按钮！
+逐条指出遗漏或张冠李戴的关键点，并用 \`>\` 引用块给出精确标准原文对照以便记忆。
 
 ### 4. 逻辑拆解速记法
 针对本次漏背卡点，提炼 2-3 条极简逻辑链条或关键词口诀。
@@ -1504,7 +1515,7 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
     if (itemLogs.length === 0) {
       dom.reciteResult.innerHTML = `
         <div class="ai-empty-hint">
-          口述或键入你的背诵内容后点击「交卷批改」，DeepSeek 将对照当前卡片原文逐点核验，并为你生成可一键点听漏背原句的错点导航。
+          口述或键入你的背诵内容后点击「交卷批改」，DeepSeek 将对照当前卡片原文逐点核验命中要点与漏背细节，并给出高分记忆口诀。
         </div>
       `;
       return;
@@ -1525,7 +1536,6 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
         `).join('')}
       </div>
     `;
-    bindSentJumpButtons(dom.reciteResult);
   }
 
   async function submitReciteGrading() {
@@ -1541,6 +1551,7 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
 
     const ctx = getScopeContext();
     if (dom.reciteSubmitBtn) dom.reciteSubmitBtn.disabled = true;
+    setReciteViewMode('graded', userText);
     dom.reciteResult.dataset.hasLiveResult = '1';
     dom.reciteResult.innerHTML = '<div class="ai-grading-card"><div class="ai-typing-dots">正在逐字比对原文并容错核验语音同音字...</div></div>';
 
@@ -1559,7 +1570,6 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
             ? `<details class="ai-reasoning-block"><summary>DeepSeek 核验思考过程</summary><div class="ai-reasoning-body">${escapeHtml(reasoning).replace(/\n/g, '<br>')}</div></details>`
             : '';
           dom.reciteResult.innerHTML = `<div class="ai-grading-card">${reasoningHtml}${renderAiMarkdown(content, ctx.sentences)}</div>`;
-          bindSentJumpButtons(dom.reciteResult);
           dom.reciteResult.scrollTop = dom.reciteResult.scrollHeight;
         }
       });
@@ -1691,6 +1701,9 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
     dom.panelAsk = document.getElementById('aiPanelAsk');
     dom.panelRecite = document.getElementById('aiPanelRecite');
 
+    dom.memoryBox = document.getElementById('aiMemoryBox');
+    dom.memoryToggleBtn = document.getElementById('aiMemoryToggleBtn');
+    dom.memoryCloseBtn = document.getElementById('aiMemoryCloseBtn');
     dom.memorySummaryInput = document.getElementById('aiMemorySummaryInput');
     dom.memoryStats = document.getElementById('aiMemoryStats');
     dom.saveMemoryBtn = document.getElementById('aiSaveMemoryBtn');
@@ -1702,6 +1715,7 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
     dom.chipQuoteCurrent = document.getElementById('aiChipQuoteCurrentSent');
     dom.chipMnemonic = document.getElementById('aiChipMnemonic');
     dom.chipContrast = document.getElementById('aiChipContrast');
+    dom.chipFormula = document.getElementById('aiChipFormula');
     dom.chipClearChat = document.getElementById('aiChipClearChat');
 
     dom.chatStream = document.getElementById('aiChatStream');
@@ -1710,6 +1724,10 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
 
     dom.blindMaskToggle = document.getElementById('aiBlindMaskToggle');
     dom.reciteCharCount = document.getElementById('aiReciteCharCount');
+    dom.reciteDraftBar = document.getElementById('aiReciteDraftBar');
+    dom.reciteDraftPreview = document.getElementById('aiReciteDraftPreview');
+    dom.reciteEditDraftBtn = document.getElementById('aiReciteEditDraftBtn');
+    dom.reciteInputCard = document.getElementById('aiReciteInputCard');
     dom.reciteTextarea = document.getElementById('aiReciteTextarea');
     dom.reciteSnapshotBtn = document.getElementById('aiReciteSnapshotBtn');
     dom.reciteUndoDropBtn = document.getElementById('aiReciteUndoDropBtn');
@@ -1760,6 +1778,18 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
     if (dom.tabAsk) dom.tabAsk.addEventListener('click', () => switchAiTab('ask'));
     if (dom.tabRecite) dom.tabRecite.addEventListener('click', () => switchAiTab('recite'));
 
+    if (dom.memoryToggleBtn && dom.memoryBox) {
+      dom.memoryToggleBtn.addEventListener('click', () => {
+        const isShown = dom.memoryBox.style.display !== 'none';
+        dom.memoryBox.style.display = isShown ? 'none' : 'block';
+      });
+    }
+    if (dom.memoryCloseBtn && dom.memoryBox) {
+      dom.memoryCloseBtn.addEventListener('click', () => {
+        dom.memoryBox.style.display = 'none';
+      });
+    }
+
     if (dom.saveMemoryBtn && dom.memorySummaryInput) {
       dom.saveMemoryBtn.addEventListener('click', () => {
         const ctx = getScopeContext();
@@ -1767,6 +1797,7 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
           summary: dom.memorySummaryInput.value,
           incrementRecite: false
         });
+        if (dom.memoryBox) dom.memoryBox.style.display = 'none';
         showToast('本题卡点记忆已保存并加入云端同步队列', 1800);
       });
     }
@@ -1804,7 +1835,13 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
 
     if (dom.chipContrast) {
       dom.chipContrast.addEventListener('click', () => {
-        sendAskMessage('请梳理本考点的核心采分关键词与考研常考易混淆辨析点。');
+        sendAskMessage('请梳理本考点的核心采分关键词与考研常考易混淆辨析点，优先用 Markdown 对比表格输出。');
+      });
+    }
+
+    if (dom.chipFormula) {
+      dom.chipFormula.addEventListener('click', () => {
+        sendAskMessage('请把当前范围原文浓缩成不超过 50 字的考场顺口溜与关键词记忆链。');
       });
     }
 
@@ -1816,6 +1853,45 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
         showToast('已清空当前范围对话', 1500);
       });
     }
+
+    if (dom.chatStream) {
+      dom.chatStream.addEventListener('click', (e) => {
+        const copyBtn = e.target.closest('.js-ai-copy-btn');
+        const saveBtn = e.target.closest('.js-ai-save-mem-btn');
+        if (!copyBtn && !saveBtn) return;
+        const idx = parseInt((copyBtn || saveBtn).dataset.msgIdx, 10);
+        const ctx = getScopeContext();
+        const msgs = aiState.chatThreads.get(ctx.scopeKey) || [];
+        const msg = msgs[idx];
+        if (!msg || !msg.content) return;
+
+        if (copyBtn) {
+          const cleanCopy = msg.content
+            .replace(/\[CARD_SUMMARY\][\s\S]*?\[\/CARD_SUMMARY\]/gi, '')
+            .replace(/\s*\[SENT:\d+\]/g, '')
+            .trim();
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(cleanCopy).then(() => showToast('已复制解析内容', 1500)).catch(() => showToast('复制失败，请手动选中', 1600));
+          }
+          return;
+        }
+        if (saveBtn) {
+          const snippet = msg.content.replace(/[#>*`]/g, '').replace(/\s+/g, ' ').trim().slice(0, 140);
+          const existing = normalizeMemoryEntry(getAiMemories()[ctx.itemId]);
+          const merged = existing && existing.summary
+            ? `${snippet}\n${existing.summary}`.slice(0, 500)
+            : snippet;
+          saveMemorySummary(ctx.itemId, { summary: merged, incrementRecite: false });
+          showToast('已提炼存入本题卡点记忆档案', 1600);
+        }
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && aiState.isOpen) {
+        closeAiDrawer();
+      }
+    });
 
     if (dom.askSendBtn) {
       dom.askSendBtn.addEventListener('click', () => sendAskMessage(null));
@@ -1920,6 +1996,13 @@ ${buildSentenceIndexPromptBlock(ctx.sentences)}
 
     if (dom.reciteSubmitBtn) {
       dom.reciteSubmitBtn.addEventListener('click', submitReciteGrading);
+    }
+
+    if (dom.reciteEditDraftBtn) {
+      dom.reciteEditDraftBtn.addEventListener('click', () => {
+        setReciteViewMode('input');
+        if (dom.reciteTextarea) dom.reciteTextarea.focus();
+      });
     }
   }
 
