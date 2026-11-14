@@ -588,12 +588,15 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 6px;
+  flex-wrap: wrap;
 }
 
 .card-tag-group {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 5px;
+  min-width: 0;
 }
 
 .tier-badge {
@@ -602,6 +605,12 @@ body {
   border-radius: 4px;
   font-weight: 700;
   letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* 正文顶部分级胶囊可点击交互 (T0 / T1 / 题眼) */
@@ -2470,13 +2479,17 @@ body,
   border: 1px solid var(--line-main);
   background: var(--bg-card);
   color: var(--ink-secondary);
-  padding: 4px 9px;
+  padding: 4px 10px;
   border-radius: 14px;
   font-size: 11.5px;
   font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  flex-shrink: 0;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   transition: all 0.15s ease;
 }
@@ -3852,13 +3865,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px 6px;
+  padding: 10px 20px;
 }
 
 .outline-drawer-title-row {
   display: flex;
   align-items: center;
   gap: 8px;
+  line-height: 1.25;
 }
 
 .outline-drawer-title {
@@ -4160,7 +4174,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px 6px;
+  padding: 10px 20px;
 }
 
 .mode-drawer-title-row {
@@ -4593,12 +4607,16 @@ body {
 /* 侧边栏题目卡片掌握状态印章 */
 .card-mastery-badge {
   font-size: 11px;
-  padding: 1px 6px;
+  padding: 2px 7px;
   border-radius: 4px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 3px;
   font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .card-mastery-badge.seal-mastered {
@@ -4715,7 +4733,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px 4px;
+  padding: 10px 20px;
 }
 
 .dashboard-drawer-title-row {
@@ -6075,7 +6093,7 @@ body.dock-expanded .dock-fab-play {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 18px 12px;
+  padding: 12px 18px;
   border-bottom: 1px solid var(--line-subtle);
 }
 
@@ -7075,6 +7093,12 @@ body.dock-expanded .dock-fab-play {
 
 /* 考点卡片内部小微晶胶囊 */
 .tier-badge, .score-badge, .card-mastery-badge, .card-audio-status {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
   border-radius: 12px !important;
   padding: 2px 8px !important;
   font-size: 11px !important;
@@ -9965,7 +9989,10 @@ body.drawer-scroll-locked #mainStage {
 .header-actions .ai-assistant-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
+  line-height: 1;
+  white-space: nowrap;
   color: var(--vermilion);
   border-color: var(--vermilion-border);
   background: var(--vermilion-soft);
@@ -9978,16 +10005,40 @@ body.drawer-scroll-locked #mainStage {
   border-color: var(--vermilion);
 }
 
+.ai-ds-icon {
+  flex: none;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.header-actions .ai-assistant-btn .ai-ds-icon {
+  width: 17px;
+  height: 17px;
+}
+
+.ai-drawer-title-row .ai-ds-icon {
+  width: 20px;
+  height: 20px;
+  color: #4d6bfe;
+}
+
+[data-theme="dark"] .ai-drawer-title-row .ai-ds-icon {
+  color: #708bff;
+}
+
 @media (max-width: 768px) {
   .header-actions {
     gap: 5px !important;
   }
   .header-actions #btn-ai-assistant {
     display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     height: 30px !important;
-    padding: 0 8px !important;
+    padding: 0 9px !important;
     border-radius: 9999px !important;
     font-size: 12px !important;
+    line-height: 1 !important;
     white-space: nowrap !important;
   }
   .header-actions #btn-ai-assistant .ai-btn-text {
@@ -10021,9 +10072,10 @@ body.drawer-scroll-locked #mainStage {
 .card-ai-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   margin-left: auto;
-  padding: 3px 9px;
+  padding: 4px 10px;
   border-radius: 999px;
   border: 0.5px solid var(--vermilion-border);
   background: var(--vermilion-soft);
@@ -10031,7 +10083,7 @@ body.drawer-scroll-locked #mainStage {
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 600;
-  line-height: 1.3;
+  line-height: 1.2;
   cursor: pointer;
   flex-shrink: 0;
   white-space: nowrap;
@@ -10045,8 +10097,8 @@ body.drawer-scroll-locked #mainStage {
 }
 
 .card-ai-btn svg {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   flex-shrink: 0;
 }
 
@@ -10078,8 +10130,8 @@ body.drawer-scroll-locked #mainStage {
   z-index: 1080;
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 5px 8px 5px 12px;
+  gap: 6px;
+  padding: 6px 8px 6px 12px;
   border-radius: 999px;
   background: var(--ink-primary);
   color: var(--bg-canvas);
@@ -10104,6 +10156,7 @@ body.dock-expanded .ai-selection-pill {
 .ai-selection-ask-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   border: none;
   background: transparent;
@@ -10111,8 +10164,9 @@ body.dock-expanded .ai-selection-pill {
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
+  line-height: 1.2;
   cursor: pointer;
-  padding: 3px 4px;
+  padding: 3px 6px;
   white-space: nowrap;
 }
 
@@ -10126,6 +10180,8 @@ body.dock-expanded .ai-selection-pill {
   justify-content: center;
   width: 24px;
   height: 24px;
+  padding: 0;
+  line-height: 1;
   border-radius: 50%;
   border: none;
   background: rgba(128, 128, 128, 0.22);
@@ -10232,10 +10288,10 @@ body.dock-expanded .ai-selection-pill {
 
 .ai-drawer-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 10px 16px 10px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--line-subtle);
   flex-shrink: 0;
 }
@@ -10248,8 +10304,9 @@ body.dock-expanded .ai-selection-pill {
 .ai-drawer-title-row {
   display: flex;
   align-items: center;
-  gap: 7px;
-  flex-wrap: wrap;
+  gap: 6px;
+  flex-wrap: nowrap;
+  min-width: 0;
 }
 
 .ai-drawer-title {
@@ -10257,17 +10314,27 @@ body.dock-expanded .ai-selection-pill {
   font-family: var(--font-serif);
   font-size: 16px;
   font-weight: 700;
+  line-height: 1.25;
   color: var(--ink-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ai-model-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-mono);
   font-size: 11px;
-  padding: 2px 7px;
+  line-height: 1.2;
+  padding: 2px 8px;
   border-radius: 999px;
   background: var(--bg-card);
   border: 0.5px solid var(--line-strong);
   color: var(--ink-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .ai-drawer-scope-row {
@@ -10275,7 +10342,8 @@ body.dock-expanded .ai-selection-pill {
   align-items: center;
   gap: 6px;
   margin-top: 4px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  min-width: 0;
 }
 
 .ai-scope-badge {
@@ -10285,18 +10353,25 @@ body.dock-expanded .ai-selection-pill {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 280px;
+  flex: 0 1 auto;
+  min-width: 0;
 }
 
 .ai-scope-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 600;
+  line-height: 1.2;
   color: var(--vermilion);
   background: var(--vermilion-soft);
   border: 0.5px solid var(--vermilion-border);
   border-radius: 999px;
-  padding: 1px 8px;
+  padding: 2px 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
   cursor: pointer;
 }
 
@@ -10311,6 +10386,8 @@ body.dock-expanded .ai-selection-pill {
 .ai-drawer-close {
   width: 32px;
   height: 32px;
+  padding: 0;
+  line-height: 1;
   border-radius: 50%;
   border: 0.5px solid transparent;
   background: transparent;
@@ -10318,6 +10395,7 @@ body.dock-expanded .ai-selection-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   cursor: pointer;
 }
 
@@ -10344,7 +10422,7 @@ body.dock-expanded .ai-selection-pill {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 7px 10px;
+  padding: 8px 10px;
   border-radius: 8px;
   border: 0.5px solid transparent;
   background: transparent;
@@ -10352,6 +10430,7 @@ body.dock-expanded .ai-selection-pill {
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
+  line-height: 1.25;
   cursor: pointer;
   transition: background-color 0.16s ease, color 0.16s ease, border-color 0.16s ease;
 }
@@ -10457,10 +10536,15 @@ body.dock-expanded .ai-selection-pill {
 }
 
 .ai-quote-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   background: transparent;
   color: var(--ink-secondary);
   font-size: 12px;
+  line-height: 1.2;
+  padding: 2px 4px;
   cursor: pointer;
 }
 
@@ -10476,21 +10560,26 @@ body.dock-expanded .ai-selection-pill {
 .ai-quick-chips {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 6px;
   padding: 10px 16px 6px;
-  overflow-x: auto;
+  overflow-x: visible;
   flex-shrink: 0;
 }
 
 .ai-chip-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 0.5px solid var(--line-strong);
   background: var(--bg-card);
   color: var(--ink-primary);
   border-radius: 999px;
-  padding: 4px 10px;
+  padding: 5px 11px;
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 500;
+  line-height: 1.25;
   white-space: nowrap;
   cursor: pointer;
 }
@@ -10563,7 +10652,7 @@ body.dock-expanded .ai-selection-pill {
 
 .ai-ask-composer {
   display: flex;
-  align-items: flex-end;
+  align-items: stretch;
   gap: 8px;
   padding: 10px 16px 12px;
   border-top: 1px solid var(--line-subtle);
@@ -10578,7 +10667,7 @@ body.dock-expanded .ai-selection-pill {
   max-height: 110px;
   border: 1px solid var(--line-main);
   border-radius: 10px;
-  padding: 8px 11px;
+  padding: 9px 11px;
   background: var(--bg-card);
   color: var(--ink-primary);
   font-family: var(--font-sans);
@@ -10587,8 +10676,12 @@ body.dock-expanded .ai-selection-pill {
 }
 
 .ai-send-btn {
-  height: 40px;
-  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  height: auto;
+  padding: 0 18px;
   border-radius: 10px;
   border: none;
   background: var(--vermilion);
@@ -10596,6 +10689,8 @@ body.dock-expanded .ai-selection-pill {
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
   cursor: pointer;
   flex-shrink: 0;
 }
@@ -10623,6 +10718,7 @@ body.dock-expanded .ai-selection-pill {
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
+  line-height: 1.2;
   color: var(--ink-primary);
   cursor: pointer;
 }
@@ -10631,6 +10727,8 @@ body.dock-expanded .ai-selection-pill {
   accent-color: var(--vermilion);
   width: 16px;
   height: 16px;
+  margin: 0;
+  flex-shrink: 0;
 }
 
 .ai-recite-char-count {
@@ -10653,12 +10751,12 @@ body.dock-expanded .ai-selection-pill {
 
 .ai-recite-input-card textarea {
   width: 100%;
-  min-height: 110px;
-  max-height: 220px;
+  min-height: 136px;
+  max-height: 240px;
   resize: vertical;
   border: 1px solid var(--line-main);
   border-radius: 8px;
-  padding: 9px 10px;
+  padding: 10px 12px;
   background: var(--bg-canvas);
   color: var(--ink-primary);
   font-family: var(--font-sans);
@@ -10682,7 +10780,10 @@ body.dock-expanded .ai-selection-pill {
 }
 
 .ai-mini-btn {
-  padding: 5px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
   border-radius: 7px;
   border: 0.5px solid var(--line-strong);
   background: var(--bg-canvas);
@@ -10690,6 +10791,8 @@ body.dock-expanded .ai-selection-pill {
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
   cursor: pointer;
 }
 
@@ -10704,7 +10807,10 @@ body.dock-expanded .ai-selection-pill {
 }
 
 .ai-grade-submit-btn {
-  padding: 7px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
   border-radius: 8px;
   border: none;
   background: var(--vermilion);
@@ -10712,6 +10818,8 @@ body.dock-expanded .ai-selection-pill {
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
   cursor: pointer;
 }
 
@@ -10945,6 +11053,8 @@ body.dock-expanded .ai-selection-pill {
   right: 6px;
   width: 28px;
   height: 28px;
+  padding: 0;
+  line-height: 1;
   border: none;
   background: transparent;
   color: var(--ink-muted);
@@ -10968,6 +11078,9 @@ body.dock-expanded .ai-selection-pill {
 
 .ai-sync-btn {
   flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   height: 36px;
   padding: 0 12px;
   border-radius: 8px;
@@ -10977,6 +11090,8 @@ body.dock-expanded .ai-selection-pill {
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
   cursor: pointer;
 }
 
@@ -10991,6 +11106,21 @@ body.dock-expanded .ai-selection-pill {
 .sync-tone-error { color: var(--vermilion) !important; font-weight: 600 !important; }
 .sync-tone-busy { color: var(--accent-slate) !important; font-weight: 600 !important; }
 
+/* 窄屏 AI 抽屉顶栏紧凑对齐：防止模型徽章换行错位 */
+@media (max-width: 420px) {
+  .ai-drawer-header {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+  .ai-drawer-title {
+    font-size: 15px;
+  }
+  .ai-model-pill {
+    font-size: 10.5px;
+    padding: 2px 6px;
+  }
+}
+
 /* iOS Safari 防自动放大：移动端输入框强制 >= 16px */
 @media (max-width: 767px) {
   .ai-assistant-drawer input,
@@ -10999,5 +11129,8 @@ body.dock-expanded .ai-selection-pill {
   #settingsAiSyncSection input,
   #settingsAiSyncSection select {
     font-size: 16px !important;
+  }
+  .ai-recite-input-card textarea {
+    min-height: 168px;
   }
 }
