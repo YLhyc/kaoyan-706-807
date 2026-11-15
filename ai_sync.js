@@ -10,6 +10,8 @@
     syncPin: 'kaoyan_sync_pin',
     deepseekKey: 'kaoyan_deepseek_key',
     aiModel: 'kaoyan_ai_model',
+    reasoningEffort: 'kaoyan_ai_reasoning_effort',
+    learningProfile: 'kaoyan_learning_profile',
     masteryMeta: 'kaoyan_mastery_meta',
     studyLogsMeta: 'kaoyan_study_logs_meta',
     aiMemories: 'kaoyan_ai_memories',
@@ -23,6 +25,8 @@
   const LEGACY_SYNC_URLS = ['https://sync.2026706.xyz:8443', 'https://sync.2026706.xyz:8443/'];
   const DEFAULT_AI_MODEL = 'deepseek-flash';
   const ALLOWED_MODELS = ['deepseek-flash', 'deepseek-v4-pro'];
+  const DEFAULT_REASONING_EFFORT = 'high';
+  const ALLOWED_EFFORTS = ['low', 'high', 'max'];
   const LEGACY_MODEL_MAP = {
     'deepseek-chat': 'deepseek-flash',
     'deepseek-reasoner': 'deepseek-v4-pro',
@@ -36,6 +40,10 @@
     if (ALLOWED_MODELS.includes(val)) return val;
     if (Object.prototype.hasOwnProperty.call(LEGACY_MODEL_MAP, val)) return LEGACY_MODEL_MAP[val];
     return DEFAULT_AI_MODEL;
+  }
+  function normalizeReasoningEffort(raw) {
+    const val = String(raw || '').trim().toLowerCase();
+    return ALLOWED_EFFORTS.includes(val) ? val : DEFAULT_REASONING_EFFORT;
   }
   const CARD_SELECTORS = [
     '.logic-block-card',
@@ -66,7 +74,11 @@
     lastVisibleSyncAt: 0,
     reciteSnapshots: [],
     lastReciteEditTs: 0,
-    lastReciteLen: 0
+    lastReciteLen: 0,
+    memoryTab: 'item',
+    lastCacheUsage: null,
+    isDistilling: false,
+    lastAutoDistillAt: 0
   };
 
   const dom = {};
@@ -126,7 +138,8 @@
     if (rawModel && rawModel !== model) {
       try { localStorage.setItem(STORAGE_KEYS.aiModel, model); } catch (e) {}
     }
-    return { url, pin, deepseekKey, model };
+    const effort = normalizeReasoningEffort(localStorage.getItem(STORAGE_KEYS.reasoningEffort) || DEFAULT_REASONING_EFFORT);
+    return { url, pin, deepseekKey, model, effort };
   }
 
   function isSyncConfigured(cfg = getSyncConfig()) {
@@ -183,6 +196,25 @@
 
   function setAiMemories(map) {
     writeJson(STORAGE_KEYS.aiMemories, map || {});
+  }
+
+  function normalizeLearningProfile(raw) {
+    const obj = (raw && typeof raw === 'object' && !Array.isArray(raw)) ? raw : {};
+    const wpRaw = Array.isArray(obj.weakPatterns) ? obj.weakPatterns : (Array.isArray(obj.weak_patterns) ? obj.weak_patterns : []);
+    return {
+      summary: String(obj.summary || '').trim().slice(0, 1200),
+      weakPatterns: wpRaw.map(x => String(x || '').trim()).filter(Boolean).slice(0, 20),
+      preferences: (obj.preferences && typeof obj.preferences === 'object' && !Array.isArray(obj.preferences)) ? obj.preferences : {},
+      updatedAt: Math.max(0, Number(obj.updatedAt || obj.updated_at) || 0)
+    };
+  }
+
+  function getLearningProfile() {
+    return normalizeLearningProfile(readJson(STORAGE_KEYS.learningProfile, {}));
+  }
+
+  function setLearningProfile(profile) {
+    writeJson(STORAGE_KEYS.learningProfile, normalizeLearningProfile(profile));
   }
 
   function getReciteLogs() {
@@ -452,6 +484,18 @@
     return { localHasNewer };
   }
 
+  function mergeLearningProfileWithRemote(remoteLp) {
+    const loc = getLearningProfile();
+    const rem = normalizeLearningProfile(remoteLp);
+    let localHasNewer = false;
+    if (rem.updatedAt > loc.updatedAt || (loc.updatedAt === 0 && !loc.summary && rem.summary)) {
+      setLearningProfile(rem);
+    } else if (loc.updatedAt > rem.updatedAt || (loc.summary && !rem.summary)) {
+      localHasNewer = true;
+    }
+    return { localHasNewer };
+  }
+
   function markSyncDirty() {
     try {
       localStorage.setItem(STORAGE_KEYS.syncDirty, '1');
@@ -513,7 +557,8 @@
       mastery: buildLocalMasteryPayload(),
       studyLogs: buildLocalStudyLogsPayload(),
       aiMemories: getAiMemories(),
-      reciteLogs: getReciteLogs()
+      reciteLogs: getReciteLogs(),
+      learningProfile: getLearningProfile()
     };
     const res = await fetch(`${cfg.url}/api/sync/push`, {
       method: 'POST',
@@ -554,7 +599,8 @@
         const r2 = mergeStudyLogsWithRemote(pullData.studyLogs);
         const r3 = mergeAiMemoriesWithRemote(pullData.aiMemories);
         const r4 = mergeReciteLogsWithRemote(pullData.reciteLogs);
-        if (r1.localHasNewer || r2.localHasNewer || r3.localHasNewer || r4.localHasNewer) {
+        const r5 = mergeLearningProfileWithRemote(pullData.learningProfile);
+        if (r1.localHasNewer || r2.localHasNewer || r3.localHasNewer || r4.localHasNewer || r5.localHasNewer) {
           needPush = true;
         }
       }
@@ -567,6 +613,7 @@
           mergeStudyLogsWithRemote(merged.studyLogs);
           mergeAiMemoriesWithRemote(merged.aiMemories);
           mergeReciteLogsWithRemote(merged.reciteLogs);
+          mergeLearningProfileWithRemote(merged.learningProfile);
         }
       }
 
@@ -881,6 +928,54 @@
     }
   }
 
+  function setReasoningEffort(nextEffort, showFeedback = false) {
+    const clean = normalizeReasoningEffort(nextEffort);
+    try { localStorage.setItem(STORAGE_KEYS.reasoningEffort, clean); } catch (e) {}
+    if (dom.aiEffortSelect) dom.aiEffortSelect.value = clean;
+    if (dom.effortSeg) {
+      dom.effortSeg.querySelectorAll('.ai-effort-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.effort === clean);
+      });
+    }
+    if (showFeedback) {
+      const labelMap = { low: '极速 Low', high: '标准 High', max: '深思 Max' };
+      showToast(`思考强度已设为：${labelMap[clean] || clean}`, 1600);
+    }
+    return clean;
+  }
+
+  function updateCacheBadgeUI(usage) {
+    if (!dom.cacheBadge) return;
+    if (!usage || typeof usage !== 'object') {
+      dom.cacheBadge.style.display = 'none';
+      return;
+    }
+    const totalP = Number(usage.prompt_tokens) || 0;
+    const hit = Number(usage.prompt_cache_hit_tokens) || 0;
+    if (totalP <= 0) {
+      dom.cacheBadge.style.display = 'none';
+      return;
+    }
+    const pct = Math.min(100, Math.round((hit / totalP) * 100));
+    dom.cacheBadge.style.display = 'inline-flex';
+    if (hit > 0) {
+      dom.cacheBadge.textContent = `⚡ 缓存命中 ${pct}%`;
+      dom.cacheBadge.title = `命中前缀缓存 ${hit} / ${totalP} tokens`;
+    } else {
+      dom.cacheBadge.textContent = `⚡ 已建缓存`;
+      dom.cacheBadge.title = `首轮提示词 ${totalP} tokens 已写入前缀缓存，追问可直接复用`;
+    }
+  }
+
+  function switchMemoryTab(tabName) {
+    const tab = tabName === 'global' ? 'global' : 'item';
+    aiState.memoryTab = tab;
+    if (dom.memTabItem) dom.memTabItem.classList.toggle('active', tab === 'item');
+    if (dom.memTabGlobal) dom.memTabGlobal.classList.toggle('active', tab === 'global');
+    if (dom.memPaneItem) dom.memPaneItem.style.display = tab === 'item' ? 'block' : 'none';
+    if (dom.memPaneGlobal) dom.memPaneGlobal.style.display = tab === 'global' ? 'block' : 'none';
+  }
+
   function refreshMemoryBoxUI() {
     const ctx = getScopeContext();
     const memories = getAiMemories();
@@ -895,11 +990,32 @@
       } else if (mem && mem.summary) {
         dom.memoryStats.textContent = '已记录';
       } else {
-        dom.memoryStats.textContent = '暂无笔记';
+        const lp = getLearningProfile();
+        dom.memoryStats.textContent = lp.summary ? '已建画像' : '暂无笔记';
       }
     }
     if (dom.memoryToggleBtn) {
-      dom.memoryToggleBtn.classList.toggle('has-memory', Boolean(mem && (mem.summary || mem.reciteCount > 0)));
+      const lp = getLearningProfile();
+      dom.memoryToggleBtn.classList.toggle('has-memory', Boolean((mem && (mem.summary || mem.reciteCount > 0)) || lp.summary));
+    }
+
+    const snap = buildGlobalProgressSnapshot();
+    if (dom.globalStatsLine) {
+      dom.globalStatsLine.textContent = snap.statsLine;
+    }
+    const lp = getLearningProfile();
+    if (dom.globalProfileInput && document.activeElement !== dom.globalProfileInput) {
+      dom.globalProfileInput.value = lp.summary || '';
+    }
+    if (dom.globalProfileMeta) {
+      if (lp.updatedAt > 0) {
+        const dt = new Date(lp.updatedAt);
+        const hh = String(dt.getHours()).padStart(2, '0');
+        const mm = String(dt.getMinutes()).padStart(2, '0');
+        dom.globalProfileMeta.textContent = `更新于 ${dt.getMonth() + 1}/${dt.getDate()} ${hh}:${mm}`;
+      } else {
+        dom.globalProfileMeta.textContent = '尚未提炼画像';
+      }
     }
   }
 
@@ -910,6 +1026,11 @@
     const cfg = getSyncConfig();
     if (dom.drawerModelBadge) {
       dom.drawerModelBadge.textContent = cfg.model;
+    }
+    if (dom.effortSeg) {
+      dom.effortSeg.querySelectorAll('.ai-effort-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.effort === cfg.effort);
+      });
     }
     if (dom.scopeBadge) {
       dom.scopeBadge.textContent = aiState.scopedCardEl
@@ -1165,14 +1286,16 @@
   // ==========================================
   // 6. DeepSeek 流式请求封装 (VPS 代理 / BYOK 兜底)
   // ==========================================
-  async function streamDeepSeek({ messages, temperature = 0.4, maxTokens = 2048, onDelta }) {
+  async function streamDeepSeek({ messages, temperature = 0.4, maxTokens = 2048, modelOverride = null, effort = null, background = false, onDelta }) {
     const cfg = getSyncConfig();
-    if (aiState.abortController) {
+    if (!background && aiState.abortController) {
       try { aiState.abortController.abort(); } catch (e) {}
     }
     const controller = new AbortController();
-    aiState.abortController = controller;
-    aiState.isStreaming = true;
+    if (!background) {
+      aiState.abortController = controller;
+      aiState.isStreaming = true;
+    }
 
     let endpoint = '';
     const headers = { 'Content-Type': 'application/json' };
@@ -1185,17 +1308,20 @@
       endpoint = 'https://api.deepseek.com/chat/completions';
       headers['Authorization'] = `Bearer ${cfg.deepseekKey}`;
     } else {
-      aiState.isStreaming = false;
+      if (!background) aiState.isStreaming = false;
       throw new Error('NO_AUTH_CONFIGURED');
     }
 
+    const activeModel = modelOverride ? normalizeAiModel(modelOverride) : cfg.model;
+    const activeEffort = normalizeReasoningEffort(effort || cfg.effort);
     const body = {
-      model: cfg.model,
+      model: activeModel,
       messages,
       stream: true,
-      max_tokens: maxTokens
+      max_tokens: maxTokens,
+      reasoning_effort: activeEffort
     };
-    if (cfg.model !== 'deepseek-reasoner') {
+    if (activeModel !== 'deepseek-reasoner') {
       body.temperature = temperature;
     }
 
@@ -1229,8 +1355,15 @@
         const msgObj = data && data.choices && data.choices[0] && data.choices[0].message;
         const fullContent = (msgObj && msgObj.content) || '';
         const fullReasoning = (msgObj && msgObj.reasoning_content) || '';
-        onDelta({ content: fullContent, reasoning: fullReasoning, done: true });
-        return { content: fullContent, reasoning: fullReasoning };
+        const usage = (data && data.usage) || null;
+        if (!background && usage) {
+          aiState.lastCacheUsage = usage;
+          updateCacheBadgeUI(usage);
+        }
+        if (typeof onDelta === 'function') {
+          onDelta({ content: fullContent, reasoning: fullReasoning, usage, done: true });
+        }
+        return { content: fullContent, reasoning: fullReasoning, usage };
       }
 
       if (!res.body || !res.body.getReader) {
@@ -1242,6 +1375,7 @@
       let buffer = '';
       let fullContent = '';
       let fullReasoning = '';
+      let usageData = null;
 
       while (true) {
         const { done, value } = await reader.read();
@@ -1258,11 +1392,14 @@
           if (payloadStr === '[DONE]') continue;
           try {
             const parsed = JSON.parse(payloadStr);
+            if (parsed && parsed.usage) usageData = parsed.usage;
             const delta = parsed && parsed.choices && parsed.choices[0] && parsed.choices[0].delta;
             if (delta) {
               if (delta.reasoning_content) fullReasoning += delta.reasoning_content;
               if (delta.content) fullContent += delta.content;
-              onDelta({ content: fullContent, reasoning: fullReasoning, done: false });
+              if (typeof onDelta === 'function') {
+                onDelta({ content: fullContent, reasoning: fullReasoning, usage: usageData, done: false });
+              }
             }
           } catch (e) {
             // 忽略半包行或心跳注释
@@ -1270,39 +1407,248 @@
         }
       }
 
-      onDelta({ content: fullContent, reasoning: fullReasoning, done: true });
-      return { content: fullContent, reasoning: fullReasoning };
-    } finally {
-      if (aiState.abortController === controller) {
-        aiState.abortController = null;
+      if (!background && usageData) {
+        aiState.lastCacheUsage = usageData;
+        updateCacheBadgeUI(usageData);
       }
-      aiState.isStreaming = false;
+      if (typeof onDelta === 'function') {
+        onDelta({ content: fullContent, reasoning: fullReasoning, usage: usageData, done: true });
+      }
+      return { content: fullContent, reasoning: fullReasoning, usage: usageData };
+    } finally {
+      if (!background) {
+        if (aiState.abortController === controller) {
+          aiState.abortController = null;
+        }
+        aiState.isStreaming = false;
+      }
     }
   }
 
   // ==========================================
-  // 7. AI 伴学答疑
+  // 7. AI 伴学答疑 & 三层全局长久记忆
   // ==========================================
-  function buildAskSystemPrompt(ctx) {
+  const AI_STATIC_SYSTEM_PREFIX = [
+    '你是「2027 考研全科双轨背诵手卷」的专属高分研学助教，精通文学考研（807 现当代文学、706 中国古代文学）、考研政治与考研英语写作。',
+    '核心工作原则：',
+    '1. 紧扣下方【当前科目标题与参考原文】及考纲采分点作答，语言凝练精准、逻辑层次分明，绝不输出空泛套话或无依据的臆测。',
+    '2. 遇到多流派、多作家、多理论或跨专题概念辨析时，优先使用清晰的 Markdown 对比表格呈现；引用参考原文核心原句时使用 `>` 引用块或双引号纯文本，严禁输出任何音频时间戳、句子编号或 [SENT] 标记。',
+    '3. 每题尽量凝练「考场答题骨架（关键词链）」或「不超过 50 字的顺口溜/记忆口诀」，帮助用户在高强度背诵中迅速提取。',
+    '4. 请结合系统末尾注入的【三层全局记忆上下文】（全站实时复习进度与盲区、长期认知画像、相关跨篇历史卡点）：若当前篇目涉及用户高频听读却仍未掌握的顽固点、零遍高优盲区或历史易混点，请主动点出关联与避坑提醒。'
+  ].join('\n');
+
+  function getTodayLocalStr() {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  function buildGlobalProgressSnapshot() {
+    const b = getBridge();
+    const allItems = (b && typeof b.getAllStudyItems === 'function') ? b.getAllStudyItems() : [];
+    const logs = (b && typeof b.getStudyLogs === 'function') ? b.getStudyLogs() : {};
+    const subjNames = { '807': '807现当代', '706': '706古代', 'pol': '政治', 'en': '英语' };
+    const subjStats = { '807': { t: 0, m: 0, f: 0 }, '706': { t: 0, m: 0, f: 0 }, 'pol': { t: 0, m: 0, f: 0 }, 'en': { t: 0, m: 0, f: 0 } };
+    const priorityBlind = [];
+    const stubbornItems = [];
+
+    allItems.forEach((it) => {
+      const s = subjStats[it.subject];
+      if (s) {
+        s.t++;
+        if (it.status === 'mastered') s.m++;
+        else if (it.status === 'familiar') s.f++;
+      }
+      if ((it.level === 'T0' || it.level === 'T1') && it.status === 'unlearned' && it.listenCount === 0) {
+        priorityBlind.push(it.title);
+      } else if (it.status !== 'mastered' && it.listenCount >= 2) {
+        stubbornItems.push(it);
+      }
+    });
+
+    stubbornItems.sort((a, b2) => b2.listenCount - a.listenCount);
+    const todayMin = Math.floor(Math.max(0, Number(logs?.dailyListenSec?.[getTodayLocalStr()]) || 0) / 60);
+    const totalMin = Math.floor(Math.max(0, Number(logs?.totalListenSec) || 0) / 60);
+    const memCount = Object.keys(getAiMemories()).length;
+    const progParts = Object.entries(subjStats)
+      .filter(([, st]) => st.t > 0)
+      .map(([k, st]) => `${subjNames[k]} ${st.m}/${st.t}(熟${st.f})`);
+
+    const lines = [
+      `全科掌握：${progParts.join(' · ') || '加载中'}；今日精听 ${todayMin}m，累计 ${totalMin}m，笔记 ${memCount} 篇。`
+    ];
+    if (stubbornItems.length > 0) {
+      lines.push(`高频待破（听>=2遍未掌握）：${stubbornItems.slice(0, 5).map(x => `${x.title}(${x.listenCount}遍)`).join('、')}`);
+    }
+    if (priorityBlind.length > 0) {
+      lines.push(`T0/T1零遍盲区示例(${priorityBlind.length}题)：${priorityBlind.slice(0, 5).join('、')}`);
+    }
+    const statsLine = `各科：${progParts.join(' | ') || '暂无'} · 今日 ${todayMin}分钟`;
+    return { promptBlock: lines.join('\n'), statsLine, stubbornItems, priorityBlind, allItems };
+  }
+
+  function extractRecallTokens(text) {
+    const raw = String(text || '').trim();
+    const tokens = new Set();
+    const asciiMatches = raw.match(/[A-Za-z0-9]{3,}/g) || [];
+    asciiMatches.forEach(w => tokens.add(w.toLowerCase()));
+    const cjkRuns = raw.match(/[\u4e00-\u9fa5]{2,}/g) || [];
+    const stopSet = new Set(['什么', '如何', '怎么', '哪些', '为什么', '对比', '分析', '简述', '论述', '考题', '背诵', '当前', '范围', '原文', '记忆', '口诀', '表格', '一下', '这个', '那个']);
+    cjkRuns.forEach((run) => {
+      if (run.length <= 4 && !stopSet.has(run)) tokens.add(run);
+      for (let i = 0; i + 2 <= run.length && tokens.size < 28; i++) {
+        const bi = run.slice(i, i + 2);
+        if (!stopSet.has(bi)) tokens.add(bi);
+      }
+    });
+    return Array.from(tokens).slice(0, 24);
+  }
+
+  function recallRelevantCrossMemories(ctx, userQuery = '') {
+    const memories = getAiMemories();
+    const tokens = extractRecallTokens(`${ctx.itemTitle} ${userQuery}`);
+    if (tokens.length === 0) return [];
+    const b = getBridge();
+    const titleById = new Map();
+    if (b && typeof b.getAllStudyItems === 'function') {
+      b.getAllStudyItems().forEach(it => titleById.set(it.id, it.title));
+    }
+    const scored = [];
+    Object.entries(memories).forEach(([id, rawMem]) => {
+      if (id === ctx.itemId) return;
+      const mem = normalizeMemoryEntry(rawMem);
+      if (!mem || !mem.summary) return;
+      const title = titleById.get(id) || id;
+      const hay = `${title} ${mem.summary}`.toLowerCase();
+      let hits = 0;
+      tokens.forEach(tk => {
+        if (hay.includes(tk)) hits += tk.length >= 3 ? 2 : 1;
+      });
+      if (hits >= 2) {
+        scored.push({ id, title, summary: mem.summary, hits, updatedAt: mem.updatedAt || 0 });
+      }
+    });
+    scored.sort((a, b2) => b2.hits - a.hits || b2.updatedAt - a.updatedAt);
+    return scored.slice(0, 2);
+  }
+
+  function buildAskSystemPrompt(ctx, userQuery = '') {
     const memories = getAiMemories();
     const mem = normalizeMemoryEntry(memories[ctx.itemId]);
-    const memoryBlock = mem && mem.summary
-      ? `\n【历史卡点记忆档案】：\n${mem.summary}\n`
+    const lp = getLearningProfile();
+    const snap = buildGlobalProgressSnapshot();
+    const crossList = recallRelevantCrossMemories(ctx, userQuery);
+
+    const dynamicParts = [];
+    if (mem && mem.summary) {
+      dynamicParts.push(`- 本题历史卡点记忆：${mem.summary}`);
+    }
+    if (lp.summary) {
+      dynamicParts.push(`- 用户长期学习画像：${lp.summary}`);
+    }
+    if (snap.promptBlock) {
+      dynamicParts.push(`- 全站实时复习快照：\n${snap.promptBlock}`);
+    }
+    if (crossList.length > 0) {
+      dynamicParts.push(`- 跨篇关联卡点召回：\n${crossList.map(c => `  * [${c.title}] ${c.summary}`).join('\n')}`);
+    }
+
+    const tailSection = dynamicParts.length > 0
+      ? `\n\n【三层全局记忆与当前动态状态】\n${dynamicParts.join('\n')}`
       : '';
 
-    return `你是「2027 考研全科双轨背诵手卷」的专属高分研学助教，精通文学考研（807 现当代文学、706 中国古代文学）、考研政治与考研英语写作。
-当前学习上下文：
+    return `${AI_STATIC_SYSTEM_PREFIX}
+
+【当前科目标题与参考原文】
 - 科目：${ctx.subjectLabel}
 - 考题：${ctx.itemTitle}（轨道 ${ctx.track}）
 - 聚焦范围：${ctx.blockId}
-${memoryBlock}
-【参考原文】：
-${ctx.refText}
+- 参考原文：
+${ctx.refText}${tailSection}`;
+  }
 
-回答规范：
-1. 紧扣上述参考原文与考研答题采分点作答，语言凝练有条理，避免空泛套话。
-2. 遇到多流派、多作家或多概念区分时，优先使用清晰的 Markdown 对比表格呈现；引用核心原句时请使用 \`>\` 引用块或双引号纯文本，不要输出任何音频编号、时间戳或 [SENT] 标记。
-3. 适当给出答题骨架、采分关键词或 50 字以内记忆口诀，帮助考场高效成诵。`;
+  function trimHistoryForCache(msgs) {
+    if (!Array.isArray(msgs) || msgs.length <= 18) return msgs || [];
+    const dropCount = Math.floor((msgs.length - 12) / 6) * 6;
+    return msgs.slice(dropCount);
+  }
+
+  async function distillLearningProfile({ manual = false } = {}) {
+    if (aiState.isDistilling) {
+      if (manual) showToast('正在提炼全站档案，请稍候...', 1600);
+      return false;
+    }
+    const cfg = getSyncConfig();
+    if (!isSyncConfigured(cfg) && !cfg.deepseekKey) {
+      if (manual) showToast('请先配置 Sync PIN 或 DeepSeek Key', 2000);
+      return false;
+    }
+
+    aiState.isDistilling = true;
+    aiState.lastAutoDistillAt = Date.now();
+    if (dom.distillProfileBtn) {
+      dom.distillProfileBtn.disabled = true;
+      dom.distillProfileBtn.textContent = '提炼中...';
+    }
+    try {
+      const snap = buildGlobalProgressSnapshot();
+      const memEntries = Object.entries(getAiMemories())
+        .map(([id, raw]) => ({ id, ...normalizeMemoryEntry(raw) }))
+        .filter(x => x && x.summary)
+        .sort((a, b2) => (b2.updatedAt || 0) - (a.updatedAt || 0))
+        .slice(0, 10);
+      const recentQuestions = [];
+      for (const [, th] of aiState.chatThreads.entries()) {
+        (th || []).forEach(m => {
+          if (m.role === 'user' && m.content) recentQuestions.push(m.content.slice(0, 80));
+        });
+      }
+      const curProfile = getLearningProfile();
+      const prompt = [
+        '请基于以下考研背诵数据，为用户提炼一份「全站长期学习认知画像」（纯文本，严格控制在 240 字以内，不要套话，分 3 行简洁总结：1.学科进度短板与高优先盲区；2.高频卡点/易混淆知识模式；3.后续AI讲解应优先采用的策略）：',
+        `已有画像：${curProfile.summary || '无'}`,
+        snap.promptBlock,
+        memEntries.length ? `近期各题卡点：\n${memEntries.map(m => `- ${m.id}: ${m.summary.slice(0, 90)}`).join('\n')}` : '近期各题卡点：暂无',
+        recentQuestions.length ? `近期追问：\n${recentQuestions.slice(-6).join('；')}` : ''
+      ].filter(Boolean).join('\n\n');
+
+      const res = await streamDeepSeek({
+        modelOverride: 'deepseek-flash',
+        effort: 'low',
+        background: true,
+        temperature: 0.3,
+        maxTokens: 320,
+        messages: [
+          { role: 'system', content: '你是考研学习数据分析助手，只输出简洁精准的用户长期学习画像（纯文本，<=240字）。' },
+          { role: 'user', content: prompt }
+        ]
+      });
+
+      const nextSummary = String((res && res.content) || '').trim().slice(0, 600);
+      if (nextSummary) {
+        setLearningProfile({
+          ...curProfile,
+          summary: nextSummary,
+          updatedAt: Date.now()
+        });
+        refreshMemoryBoxUI();
+        scheduleDebouncedPush();
+        if (manual) showToast('全站长期学习画像已更新并同步云端', 2000);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      if (manual) showToast(`提炼失败：${e && e.message ? e.message : '网络异常'}`, 2200);
+      return false;
+    } finally {
+      aiState.isDistilling = false;
+      if (dom.distillProfileBtn) {
+        dom.distillProfileBtn.disabled = false;
+        dom.distillProfileBtn.textContent = 'AI 自动提炼';
+      }
+    }
   }
 
   function renderChatStream() {
@@ -1372,8 +1718,8 @@ ${ctx.refText}
     renderChatStream();
 
     const apiMessages = [
-      { role: 'system', content: buildAskSystemPrompt(ctx) },
-      ...thread.slice(0, -1).slice(-10).map(m => ({ role: m.role, content: m.content }))
+      { role: 'system', content: buildAskSystemPrompt(ctx, rawInput) },
+      ...trimHistoryForCache(thread.slice(0, -1)).map(m => ({ role: m.role, content: m.content }))
     ];
 
     if (dom.askSendBtn) dom.askSendBtn.disabled = true;
@@ -1389,6 +1735,11 @@ ${ctx.refText}
         }
       });
       renderChatStream();
+
+      const userTurns = thread.filter(m => m.role === 'user').length;
+      if (userTurns >= 4 && Date.now() - aiState.lastAutoDistillAt > 25 * 60 * 1000) {
+        setTimeout(() => { distillLearningProfile({ manual: false }); }, 800);
+      }
     } catch (err) {
       if (err && err.name === 'AbortError') {
         if (!assistantMsg.content && !assistantMsg.reasoning && thread[thread.length - 1] === assistantMsg) {
@@ -1443,6 +1794,7 @@ ${ctx.refText}
     dom.deepseekKeyInput = document.getElementById('deepseekKeyInput');
     dom.deepseekKeyToggleBtn = document.getElementById('deepseekKeyToggleBtn');
     dom.aiModelSelect = document.getElementById('aiModelSelect');
+    dom.aiEffortSelect = document.getElementById('aiEffortSelect');
     dom.syncStatusBadge = document.getElementById('syncStatusBadge');
     dom.syncStatusMeta = document.getElementById('syncStatusMeta');
     dom.btnCloudSyncNow = document.getElementById('btnCloudSyncNow');
@@ -1490,6 +1842,12 @@ ${ctx.refText}
         showToast(`已切换模型为 ${nextModel}`, 1800);
       });
     }
+    if (dom.aiEffortSelect) {
+      dom.aiEffortSelect.value = cfg.effort;
+      dom.aiEffortSelect.addEventListener('change', () => {
+        setReasoningEffort(dom.aiEffortSelect.value, true);
+      });
+    }
     if (dom.btnCloudSyncNow) {
       dom.btnCloudSyncNow.addEventListener('click', () => {
         syncBidirectional({ quiet: false, pushFirst: false });
@@ -1516,6 +1874,8 @@ ${ctx.refText}
     dom.drawerClose = document.getElementById('aiDrawerClose');
     dom.openSettingsBtn = document.getElementById('aiOpenSettingsBtn');
     dom.drawerModelBadge = document.getElementById('aiDrawerModelBadge');
+    dom.effortSeg = document.getElementById('aiEffortSeg');
+    dom.cacheBadge = document.getElementById('aiCacheBadge');
     dom.scopeBadge = document.getElementById('aiScopeBadge');
     dom.clearScopeBtn = document.getElementById('aiClearScopeBtn');
 
@@ -1527,6 +1887,15 @@ ${ctx.refText}
     dom.memorySummaryInput = document.getElementById('aiMemorySummaryInput');
     dom.memoryStats = document.getElementById('aiMemoryStats');
     dom.saveMemoryBtn = document.getElementById('aiSaveMemoryBtn');
+    dom.memTabItem = document.getElementById('aiMemTabItem');
+    dom.memTabGlobal = document.getElementById('aiMemTabGlobal');
+    dom.memPaneItem = document.getElementById('aiMemPaneItem');
+    dom.memPaneGlobal = document.getElementById('aiMemPaneGlobal');
+    dom.globalStatsLine = document.getElementById('aiGlobalStatsLine');
+    dom.globalProfileInput = document.getElementById('aiGlobalProfileInput');
+    dom.globalProfileMeta = document.getElementById('aiGlobalProfileMeta');
+    dom.distillProfileBtn = document.getElementById('aiDistillProfileBtn');
+    dom.saveGlobalProfileBtn = document.getElementById('aiSaveGlobalProfileBtn');
 
     dom.quoteBox = document.getElementById('aiQuoteBox');
     dom.quoteText = document.getElementById('aiQuoteText');
@@ -1588,7 +1957,42 @@ ${ctx.refText}
     if (dom.memoryToggleBtn && dom.memoryBox) {
       dom.memoryToggleBtn.addEventListener('click', () => {
         const isShown = dom.memoryBox.style.display !== 'none';
+        if (!isShown) refreshMemoryBoxUI();
         setMemoryBoxOpen(!isShown);
+      });
+    }
+    if (dom.effortSeg) {
+      dom.effortSeg.addEventListener('click', (e) => {
+        const btn = e.target.closest('.ai-effort-btn');
+        if (!btn) return;
+        setReasoningEffort(btn.dataset.effort, true);
+      });
+    }
+    if (dom.memTabItem) {
+      dom.memTabItem.addEventListener('click', () => switchMemoryTab('item'));
+    }
+    if (dom.memTabGlobal) {
+      dom.memTabGlobal.addEventListener('click', () => {
+        refreshMemoryBoxUI();
+        switchMemoryTab('global');
+      });
+    }
+    if (dom.distillProfileBtn) {
+      dom.distillProfileBtn.addEventListener('click', () => {
+        distillLearningProfile({ manual: true });
+      });
+    }
+    if (dom.saveGlobalProfileBtn && dom.globalProfileInput) {
+      dom.saveGlobalProfileBtn.addEventListener('click', () => {
+        const cur = getLearningProfile();
+        setLearningProfile({
+          ...cur,
+          summary: dom.globalProfileInput.value.trim().slice(0, 1200),
+          updatedAt: Date.now()
+        });
+        refreshMemoryBoxUI();
+        scheduleDebouncedPush();
+        showToast('全站长期认知画像已保存并加入同步队列', 1800);
       });
     }
     if (dom.memoryCloseBtn && dom.memoryBox) {

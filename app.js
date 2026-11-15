@@ -93,6 +93,9 @@
   let isLoopGapWaiting = false;
   let loopGapTimer = null;
   let loopGapEpoch = 0;
+  let loopGapAudioCtx = null;
+  let loopGapKeepaliveNode = null;
+  let loopMuteGuard = null; // { wasMuted, timer }
   let lastLiveRepeatText = '';
   let lastLiveRepeatHost = null;
   let lastLiveRepeatWaiting = false;
@@ -133,9 +136,14 @@
     const hasNext = typeof nextStart === 'number' && isFinite(nextStart) && nextStart > safeStart;
     const safeEnd = hasEnd ? end : (hasNext ? nextStart : Infinity);
     if (!isFinite(safeEnd)) return Infinity;
+    const span = Math.max(0, safeEnd - safeStart);
+    const rate = Math.max(0.8, Math.min(2.5, Number((typeof audio !== 'undefined' && audio && audio.playbackRate) || (state && state.speed) || 1)));
+    // 按倍速自适应预留 DAC 硬件输出缓冲与 RAF 帧间隔，杜绝循环末尾念到下一段首字（如“第一…第”）
+    const endGuard = Math.min(0.14, 0.055 * rate, span * 0.22);
+    const nextGuard = Math.min(0.22, 0.115 * rate, span * 0.28);
     const rawCutoff = hasNext
-      ? Math.min(safeEnd - 0.03, nextStart - 0.05)
-      : (safeEnd - 0.03);
+      ? Math.min(safeEnd - endGuard, nextStart - nextGuard)
+      : (safeEnd - endGuard);
     return Math.max(safeStart + 0.06, rawCutoff);
   }
 
@@ -199,6 +207,55 @@
 
   const el = {};
 
+  function engageLoopMuteGuard(maxMs = 150) {
+    if (loopMuteGuard) {
+      clearTimeout(loopMuteGuard.timer);
+      loopMuteGuard.timer = setTimeout(releaseLoopMuteGuard, maxMs);
+      return;
+    }
+    loopMuteGuard = {
+      wasMuted: Boolean(audio.muted),
+      timer: setTimeout(releaseLoopMuteGuard, maxMs)
+    };
+    try { audio.muted = true; } catch (e) {}
+  }
+
+  function releaseLoopMuteGuard() {
+    if (!loopMuteGuard) return;
+    clearTimeout(loopMuteGuard.timer);
+    const restoreTo = (pendingSeekTarget && pendingSeekTarget.mutedForSeek) ? true : Boolean(loopMuteGuard.wasMuted);
+    loopMuteGuard = null;
+    try { audio.muted = restoreTo; } catch (e) {}
+  }
+
+  function startLoopGapKeepalive() {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      if (!loopGapAudioCtx) loopGapAudioCtx = new Ctx();
+      if (loopGapAudioCtx.state === 'suspended') {
+        loopGapAudioCtx.resume().catch(() => {});
+      }
+      if (loopGapKeepaliveNode) return;
+      const osc = loopGapAudioCtx.createOscillator();
+      const gain = loopGapAudioCtx.createGain();
+      gain.gain.value = 0.00001;
+      osc.frequency.value = 1;
+      osc.connect(gain);
+      gain.connect(loopGapAudioCtx.destination);
+      osc.start();
+      loopGapKeepaliveNode = { osc, gain };
+    } catch (e) {}
+  }
+
+  function stopLoopGapKeepalive() {
+    if (!loopGapKeepaliveNode) return;
+    try { loopGapKeepaliveNode.osc.stop(); } catch (e) {}
+    try { loopGapKeepaliveNode.osc.disconnect(); } catch (e) {}
+    try { loopGapKeepaliveNode.gain.disconnect(); } catch (e) {}
+    loopGapKeepaliveNode = null;
+  }
+
   function cancelLoopGapWait() {
     isLoopGapWaiting = false;
     loopGapEpoch++;
@@ -206,6 +263,8 @@
       clearTimeout(loopGapTimer);
       loopGapTimer = null;
     }
+    stopLoopGapKeepalive();
+    releaseLoopMuteGuard();
   }
 
   function pauseDuringGapWait() {
@@ -217,7 +276,6 @@
     }
     updatePlayBtnUI();
     updateHUDDisplay(audio.currentTime || 0);
-    collapsePlayerDock();
   }
 
   function resetAudioTrackPlayback(autoPlay = false) {
@@ -274,7 +332,6 @@
     if (typeof targetSecIdx === 'number' && targetSecIdx >= 0 && targetSecIdx < currentFrameworkSections.length) {
       currentActiveSectionIndex = targetSecIdx;
     }
-    triggerLoopSeek(targetTime, targetSentIdx);
 
     if (el.timeCurrent) el.timeCurrent.textContent = formatTime(targetTime);
     const dur = audio.duration || 0;
@@ -287,8 +344,11 @@
       const myEpoch = ++loopGapEpoch;
       isLoopGapWaiting = true;
       state.isPlaying = true;
+      engageLoopMuteGuard(Math.max(150, Math.min(250, gapMs)));
+      startLoopGapKeepalive();
+      triggerLoopSeek(targetTime, targetSentIdx);
       try {
-        audio.pause();
+        if (!audio.paused) audio.pause();
       } catch (e) {}
       updatePlayBtnUI();
       updateHUDDisplay(targetTime);
@@ -296,11 +356,20 @@
         if (myEpoch !== loopGapEpoch) return;
         isLoopGapWaiting = false;
         loopGapTimer = null;
+        stopLoopGapKeepalive();
+        releaseLoopMuteGuard();
         if (!state.isPlaying || !hasAudioSource()) return;
+        try {
+          if (Math.abs((audio.currentTime || 0) - targetTime) > 0.05) {
+            audio.currentTime = targetTime;
+          }
+        } catch (e) {}
         updateHUDDisplay(audio.currentTime || targetTime);
         audio.play().catch(err => console.log('Loop gap resume failed:', err));
       }, gapMs);
     } else {
+      engageLoopMuteGuard(120);
+      triggerLoopSeek(targetTime, targetSentIdx);
       updateHUDDisplay(targetTime);
       if (shouldResume && audio.paused) {
         audio.play().catch(err => console.log('Loop transition play failed:', err));
@@ -1831,6 +1900,7 @@
       studyLogsMeta: readJsonStorageSafe('kaoyan_study_logs_meta', { updatedAt: Date.now() }),
       aiMemories: readJsonStorageSafe('kaoyan_ai_memories', {}),
       reciteLogs: readJsonStorageSafe('kaoyan_recite_logs', []),
+      learningProfile: readJsonStorageSafe('kaoyan_learning_profile', null),
       settings: {
         theme: localStorage.getItem('kaoyan_theme') || state.theme,
         fontSize: localStorage.getItem('kaoyan_font_size') || String(state.fontSize || 17),
@@ -1967,6 +2037,9 @@
       }
       if (Array.isArray(parsed.reciteLogs)) {
         localStorage.setItem('kaoyan_recite_logs', JSON.stringify(parsed.reciteLogs.slice(0, 500)));
+      }
+      if (parsed.learningProfile && typeof parsed.learningProfile === 'object' && !Array.isArray(parsed.learningProfile)) {
+        localStorage.setItem('kaoyan_learning_profile', JSON.stringify(parsed.learningProfile));
       }
       if (window.__kaoyanAiHooks && typeof window.__kaoyanAiHooks.onBackupImported === 'function') {
         window.__kaoyanAiHooks.onBackupImported();
@@ -4354,6 +4427,7 @@
               state.loopCount++;
               const targetIdx = getFirstSentIndexInSection(curSec, nextSecStart);
               if (!(Number(state.loopGapMs) > 0 && shouldResume)) {
+                engageLoopMuteGuard(110);
                 triggerLoopSeek(curSec.start, targetIdx);
                 updateHUDDisplay(curSec.start);
                 if (shouldResume && audio.paused) audio.play().catch(e => console.log(e));
@@ -4477,6 +4551,7 @@
 
     audio.addEventListener('play', () => {
       state.isPlaying = true;
+      if (audio.preload !== 'auto') audio.preload = 'auto';
       audio.playbackRate = state.speed;
       if (!lastListenTickTs) lastListenTickTs = Date.now();
 
@@ -4502,16 +4577,19 @@
         return;
       }
       clearPendingSeek(true);
+      releaseLoopMuteGuard();
       state.isPlaying = false;
       if (syncRafId) {
         cancelAnimationFrame(syncRafId);
         syncRafId = null;
       }
       updatePlayBtnUI();
-      collapsePlayerDock(); // 暂停即自动收起为底栏
     });
 
     audio.addEventListener('seeked', () => {
+      if (!isLoopGapWaiting) {
+        releaseLoopMuteGuard();
+      }
       if (pendingSeekTarget && pendingSeekTarget.token === seekToken) {
         if (Math.abs(audio.currentTime - pendingSeekTarget.time) <= 0.45 && audio.readyState >= 2 && !audio.seeking) {
           clearPendingSeek(true);
@@ -5898,7 +5976,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.4.2';
+  const APP_BUILD_ID = '3.4.3';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
@@ -6331,6 +6409,32 @@
       }),
       getActiveItem: () => state.activeItem,
       getActiveSentences: () => state.activeSentences || [],
+      getAllStudyItems: () => {
+        const res = [];
+        const pushList = (arr, subject, category = '') => {
+          if (!Array.isArray(arr)) return;
+          arr.forEach(it => {
+            if (!it || !it.id) return;
+            res.push({
+              id: String(it.id),
+              title: String(it.title || it.id),
+              subject,
+              category: String(category || it.category || ''),
+              level: String(it.level || ''),
+              score: Number(it.score) || 0,
+              status: getMasteryStatus(it.id),
+              listenCount: getItemListenCount(it.id)
+            });
+          });
+        };
+        pushList(state.allData?.items_807, '807');
+        pushList(state.allData?.items_706, '706');
+        pushList(state.allData?.items_en, 'en');
+        pushList(window.KAOYAN_POL_DATA?.chapters47, 'pol', '47题背诵');
+        pushList(window.KAOYAN_POL_DATA?.xutao16, 'pol', '徐涛16天');
+        pushList(window.KAOYAN_POL_DATA?.tuijie11, 'pol', '腿姐11页');
+        return res;
+      },
       seekToSentence: (idxOrId, start) => seekToSentence(idxOrId, start),
       play: () => {
         if (audio.paused) toggleAudioPlayback();

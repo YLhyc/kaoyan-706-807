@@ -15,7 +15,7 @@
   <!-- 异步/非阻塞字体加载：优先采用 iOS/Android/Win 原生高清字系 (Songti SC / Kaiti SC / 苹方)，离线或无外网时 0 白屏首屏秒开 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="app.css?v=3.4.2">
+  <link rel="stylesheet" href="app.css?v=3.4.3">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css" media="print" onload="this.media='all'">
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=3.4.2" defer></script>
+  <script src="data/kaoyan_data.js?v=3.4.3" defer></script>
 </head>
 <body>
 
@@ -267,7 +267,7 @@
       <div class="sidebar-footer">
         <div class="app-version-badge" id="appVersionBadge" title="点击检查更新">
           <span class="version-dot"></span>
-          <span id="versionText">版本 v3.4.2 · 金石朱墨全科双轨典藏版</span>
+          <span id="versionText">版本 v3.4.3 · 金石朱墨全科双轨典藏版</span>
         </div>
         <button id="btn-force-refresh" class="refresh-cache-btn" title="强制清除缓存并拉取最新版本">
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -387,12 +387,16 @@
           <span class="hud-title-text" id="hudTitleText">曹禺《雷雨》· 繁漪复杂性格剖析与悲剧成因</span>
         </div>
 
-        <!-- 右侧：仅大纲框架指示 -->
+        <!-- 右侧：大纲框架指示 + 收起播放栏按钮 -->
         <div class="dock-meta-right">
           <span id="hudRepeatBadge" class="hud-repeat-pill" style="display: none;"></span>
           <button type="button" class="hud-drawer-btn hud-outline-pill-btn" id="btnOpenOutline" title="展开答题框架大纲">
             <svg class="hud-framework-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6h16M4 12h10M4 18h14"/></svg>
             <span id="hudFrameworkText">大纲 [1/4]</span>
+          </button>
+          <button type="button" class="dock-collapse-close-btn" id="btnCollapseDock" title="收起播放栏到底部导航">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            <span>收起</span>
           </button>
         </div>
       </div>
@@ -549,8 +553,8 @@
   </nav>
 
 
-  <script src="app.js?v=3.4.2" defer></script>
-  <script src="ai_sync.js?v=3.4.2" defer></script>
+  <script src="app.js?v=3.4.3" defer></script>
+  <script src="ai_sync.js?v=3.4.3" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -1040,6 +1044,14 @@
               <option value="deepseek-v4-pro">deepseek-v4-pro (V4-Pro · 深度推理)</option>
             </select>
           </div>
+          <div class="ai-sync-field">
+            <label for="aiEffortSelect">思考强度 (reasoning_effort)</label>
+            <select id="aiEffortSelect">
+              <option value="low">极速 Low（秒回 / 省配额）</option>
+              <option value="high">标准 High（均衡推荐）</option>
+              <option value="max">深思 Max（易混长题/跨科深挖）</option>
+            </select>
+          </div>
           <div class="ai-sync-status-meta" id="syncStatusMeta">配置 Sync PIN 后支持 iPhone / iPad / Windows 多端自动合并同步</div>
           <div class="ai-sync-actions-row">
             <button type="button" class="ai-sync-btn primary" id="btnCloudSyncNow">立即云端双向同步</button>
@@ -1061,11 +1073,11 @@
     </div>
     <h3 class="update-modal-title">正在同步云端新版本</h3>
     <div class="update-modal-badges">
-      <span class="update-badge-old" id="updateModalOldVer">v3.4.2</span>
+      <span class="update-badge-old" id="updateModalOldVer">v3.4.3</span>
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5 12h14M12 5l7 7-7 7"/>
       </svg>
-      <span class="update-badge-new" id="updateModalNewVer">v3.4.2</span>
+      <span class="update-badge-new" id="updateModalNewVer">v3.4.3</span>
     </div>
     <p class="update-modal-status" id="updateModalStatus">正在连接云端节点并校验资源清单...</p>
     <div class="update-progress-container">
@@ -1106,10 +1118,16 @@
           </svg>
           <h3 class="ai-drawer-title">DeepSeek 伴学工作台</h3>
           <span class="ai-model-pill" id="aiDrawerModelBadge">deepseek-flash</span>
+          <div class="ai-effort-seg" id="aiEffortSeg" role="group" aria-label="思考强度">
+            <button type="button" class="ai-effort-btn" data-effort="low" title="极速思考 (low)">Low</button>
+            <button type="button" class="ai-effort-btn active" data-effort="high" title="标准思考 (high)">High</button>
+            <button type="button" class="ai-effort-btn" data-effort="max" title="深度思考 (max)">Max</button>
+          </div>
+          <span class="ai-cache-badge" id="aiCacheBadge" style="display: none;" title="上下文前缀缓存命中率"></span>
         </div>
         <div class="ai-drawer-header-actions">
-          <button type="button" class="ai-memory-pill-btn" id="aiMemoryToggleBtn" title="查看或编辑本题卡点记忆档案">
-            <span>卡点记忆</span>
+          <button type="button" class="ai-memory-pill-btn" id="aiMemoryToggleBtn" title="查看或编辑本题卡点记忆与全站长期学习档案">
+            <span>记忆档案</span>
             <span class="ai-memory-stats" id="aiMemoryStats">暂无笔记</span>
           </button>
           <button type="button" class="ai-header-icon-btn" id="aiOpenSettingsBtn" title="配置同步与模型">
@@ -1145,17 +1163,31 @@
       </div>
     </div>
 
-    <!-- 按需展开的卡点记忆面板（默认收起不占正文空间） -->
+    <!-- 按需展开的卡点与全站长期记忆档案（默认收起不占正文空间） -->
     <div class="ai-memory-box" id="aiMemoryBox" style="display: none;">
       <div class="ai-memory-inner">
         <div class="ai-memory-head">
-          <span class="ai-memory-title">本题卡点记忆档案（自动注入 DeepSeek 上下文）</span>
+          <div class="ai-memory-tabs" role="tablist">
+            <button type="button" class="ai-memory-tab active" data-mem-tab="item" id="aiMemTabItem">本题卡点</button>
+            <button type="button" class="ai-memory-tab" data-mem-tab="global" id="aiMemTabGlobal">全站画像</button>
+          </div>
           <button type="button" class="ai-quote-clear" id="aiMemoryCloseBtn">收起</button>
         </div>
-        <div class="ai-memory-body">
+        <div class="ai-memory-body" id="aiMemPaneItem">
           <textarea id="aiMemorySummaryInput" rows="3" placeholder="记录本题易错点与核心区分要点（自动注入 DeepSeek 上下文，也可一键存入答疑解析）..."></textarea>
           <div class="ai-memory-actions">
-            <button type="button" class="ai-mini-btn" id="aiSaveMemoryBtn">保存记忆</button>
+            <button type="button" class="ai-mini-btn" id="aiSaveMemoryBtn">保存本题记忆</button>
+          </div>
+        </div>
+        <div class="ai-memory-body" id="aiMemPaneGlobal" style="display: none;">
+          <div class="ai-global-stats-line" id="aiGlobalStatsLine">正在汇总全站进度...</div>
+          <textarea id="aiGlobalProfileInput" rows="3" placeholder="全站长期认知画像：AI 会根据你的背诵听读与答疑对话自动提炼易混习惯、薄弱模块与偏好的助记风格；也可手动微调并云端同步..."></textarea>
+          <div class="ai-memory-actions">
+            <span class="ai-global-updated" id="aiGlobalProfileMeta">未同步</span>
+            <div class="ai-memory-btn-group">
+              <button type="button" class="ai-mini-btn subtle" id="aiDistillProfileBtn">AI 自动提炼</button>
+              <button type="button" class="ai-mini-btn" id="aiSaveGlobalProfileBtn">保存全站画像</button>
+            </div>
           </div>
         </div>
       </div>
