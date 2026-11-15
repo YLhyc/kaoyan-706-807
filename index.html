@@ -15,7 +15,7 @@
   <!-- 异步/非阻塞字体加载：优先采用 iOS/Android/Win 原生高清字系 (Songti SC / Kaiti SC / 苹方)，离线或无外网时 0 白屏首屏秒开 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="app.css?v=3.4.3">
+  <link rel="stylesheet" href="app.css?v=3.4.4">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css" media="print" onload="this.media='all'">
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=3.4.3" defer></script>
+  <script src="data/kaoyan_data.js?v=3.4.4" defer></script>
 </head>
 <body>
 
@@ -267,7 +267,7 @@
       <div class="sidebar-footer">
         <div class="app-version-badge" id="appVersionBadge" title="点击检查更新">
           <span class="version-dot"></span>
-          <span id="versionText">版本 v3.4.3 · 金石朱墨全科双轨典藏版</span>
+          <span id="versionText">版本 v3.4.4 · 金石朱墨全科双轨典藏版</span>
         </div>
         <button id="btn-force-refresh" class="refresh-cache-btn" title="强制清除缓存并拉取最新版本">
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -349,6 +349,16 @@
             <div class="track-meta-tip">
               <span class="track-voice-pill" id="trackVoicePill">龙安朗 · 通读</span>
               <span>点击任意句立即跳转试听</span>
+            </div>
+          </div>
+
+          <!-- AI 采分眼分层挖空筛选条（仅自测挖空模式激活时显示） -->
+          <div id="clozeFilterBar" class="cloze-filter-bar" hidden role="toolbar" aria-label="挖空层级筛选">
+            <span class="cloze-filter-label">挖空层级</span>
+            <div class="cloze-filter-pills">
+              <button type="button" class="cloze-filter-pill active" data-cloze-filter="all">全部挖空</button>
+              <button type="button" class="cloze-filter-pill" data-cloze-filter="skeleton">骨架词</button>
+              <button type="button" class="cloze-filter-pill" data-cloze-filter="scoring">采分眼</button>
             </div>
           </div>
         </div>
@@ -553,8 +563,8 @@
   </nav>
 
 
-  <script src="app.js?v=3.4.3" defer></script>
-  <script src="ai_sync.js?v=3.4.3" defer></script>
+  <script src="app.js?v=3.4.4" defer></script>
+  <script src="ai_sync.js?v=3.4.4" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -1073,11 +1083,11 @@
     </div>
     <h3 class="update-modal-title">正在同步云端新版本</h3>
     <div class="update-modal-badges">
-      <span class="update-badge-old" id="updateModalOldVer">v3.4.3</span>
+      <span class="update-badge-old" id="updateModalOldVer">v3.4.4</span>
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5 12h14M12 5l7 7-7 7"/>
       </svg>
-      <span class="update-badge-new" id="updateModalNewVer">v3.4.3</span>
+      <span class="update-badge-new" id="updateModalNewVer">v3.4.4</span>
     </div>
     <p class="update-modal-status" id="updateModalStatus">正在连接云端节点并校验资源清单...</p>
     <div class="update-progress-container">
@@ -1160,6 +1170,18 @@
           <span class="ai-scope-badge" id="aiScopeBadge">当前范围：加载中...</span>
           <button type="button" class="ai-scope-reset-btn" id="aiClearScopeBtn" style="display: none;" title="切回整题范围">切回全篇</button>
         </div>
+        <div class="ai-subbar-tools">
+          <button type="button" class="ai-subbar-btn ai-subbar-btn-accent" id="aiBriefingBtn" title="生成跨科复盘作战简报">作战简报</button>
+          <button type="button" class="ai-subbar-btn" id="aiUsageBtn" aria-expanded="false" title="查看本次会话 Token 用量与缓存命中统计">用量/缓存</button>
+          <button type="button" class="ai-subbar-btn subtle" id="aiClearThreadBtn" title="清空当前对话记录">清空对话</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 按需展开的会话用量与前缀缓存统计面板 -->
+    <div class="ai-usage-panel" id="aiUsagePanel" hidden>
+      <div class="ai-usage-panel-inner" id="aiUsagePanelBody">
+        <div class="ai-usage-empty">暂无本次会话用量统计</div>
       </div>
     </div>
 
@@ -1210,6 +1232,9 @@
           <button type="button" class="ai-chip-btn" id="aiChipMnemonic">提炼答题骨架</button>
           <button type="button" class="ai-chip-btn" id="aiChipContrast">核心考点对比表</button>
           <button type="button" class="ai-chip-btn" id="aiChipFormula">50字口诀速记</button>
+          <button type="button" class="ai-chip-btn ai-chip-preset" data-ai-preset="exam-twist" id="aiChipExamTwist">换考法考我</button>
+          <button type="button" class="ai-chip-btn ai-chip-preset" data-ai-preset="cross-link" id="aiChipCrossLink">跨科串联</button>
+          <button type="button" class="ai-chip-btn ai-chip-cloze" id="aiClozeGenBtn" title="AI 提取骨架词与采分眼并注入分层挖空">AI采分眼</button>
           <button type="button" class="ai-chip-btn subtle" id="aiChipClearChat">清空对话</button>
         </div>
         <div class="ai-ask-composer">

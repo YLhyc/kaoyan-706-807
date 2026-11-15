@@ -1,5 +1,5 @@
 /**
- * 2027 考研全科双轨背诵手卷 · DeepSeek AI 伴学抽背与多端云同步引擎 (v3.4.0)
+ * 2027 考研全科双轨背诵手卷 · DeepSeek AI 伴学抽背与多端云同步引擎 (v3.4.4)
  * 模块化独立挂载于 window.__kaoyanBridge，不侵入主播放与排版主路径
  */
 (function () {
@@ -16,6 +16,8 @@
     studyLogsMeta: 'kaoyan_study_logs_meta',
     aiMemories: 'kaoyan_ai_memories',
     reciteLogs: 'kaoyan_recite_logs',
+    chatThreads: 'kaoyan_ai_chat_threads_v1',
+    aiClozeCache: 'kaoyan_ai_cloze_cache_v1',
     syncDirty: 'kaoyan_sync_dirty',
     syncLastAt: 'kaoyan_sync_last_at',
     blindMask: 'kaoyan_ai_blind_mask'
@@ -64,9 +66,11 @@
     scopedCardText: '',
     scopedSentences: [],
     quotedText: '',
-    chatThreads: new Map(), // scopeKey -> Array<{ role, content, reasoning? }>
+    chatThreads: new Map(), // scopeKey -> Array<{ role, content, reasoning?, toolStatus? }>
     isStreaming: false,
     abortController: null,
+    _activeAssistantMsg: null,
+    _activeScopeKey: '',
     pendingSelection: null, // { text, cardEl }
     selectionTimer: null,
     syncTimer: null,
@@ -78,7 +82,8 @@
     memoryTab: 'item',
     lastCacheUsage: null,
     isDistilling: false,
-    lastAutoDistillAt: 0
+    lastAutoDistillAt: 0,
+    isGeneratingCloze: false
   };
 
   const dom = {};
@@ -168,7 +173,7 @@
   function normalizeForMatch(text) {
     return String(text || '')
       .toLowerCase()
-      .replace(/[，。！？；：、“”""''（）()《》【】\[\]·—\-…,.;:!?'"\s]/g, '');
+      .replace(/[，。！？；：、“”""''「」『』（）()《》【】\[\]·—\-…,.;:!?'"\s]/g, '');
   }
 
   // ==========================================
@@ -225,6 +230,161 @@
   function setReciteLogs(arr) {
     const cleaned = Array.isArray(arr) ? arr.slice(0, 500) : [];
     writeJson(STORAGE_KEYS.reciteLogs, cleaned);
+  }
+
+  // ==========================================
+  // 1B. 对话线程 LRU 持久化 (最多 30 个范围, 每范围 40 条)
+  // ==========================================
+  const CHAT_THREADS_MAX_SCOPES = 30;
+  const CHAT_THREADS_MAX_MSGS = 40;
+
+  function sanitizeThreadMessages(msgs) {
+    if (!Array.isArray(msgs)) return [];
+    const out = [];
+    msgs.forEach((m) => {
+      if (!m || typeof m !== 'object') return;
+      const role = m.role === 'user' || m.role === 'assistant' ? m.role : '';
+      if (!role) return;
+      const content = typeof m.content === 'string' ? m.content : '';
+      const reasoning = typeof m.reasoning === 'string' ? m.reasoning : '';
+      if (role === 'assistant' && !content && !reasoning) return;
+      const cleanMsg = { role, content };
+      if (reasoning) cleanMsg.reasoning = reasoning;
+      out.push(cleanMsg);
+    });
+    return out.slice(-CHAT_THREADS_MAX_MSGS);
+  }
+
+  function loadChatThreadsFromStorage() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEYS.chatThreads);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      const nextMap = new Map();
+      const entries = (parsed && Array.isArray(parsed.entries))
+        ? parsed.entries
+        : (Array.isArray(parsed) ? parsed : (parsed && typeof parsed === 'object' ? Object.entries(parsed) : []));
+      entries.forEach((pair) => {
+        if (!Array.isArray(pair) || pair.length < 2) return;
+        const scopeKey = String(pair[0] || '').trim();
+        if (!scopeKey) return;
+        const msgs = sanitizeThreadMessages(pair[1]);
+        if (msgs.length > 0) {
+          nextMap.delete(scopeKey);
+          nextMap.set(scopeKey, msgs);
+        }
+      });
+      while (nextMap.size > CHAT_THREADS_MAX_SCOPES) {
+        const oldestKey = nextMap.keys().next().value;
+        nextMap.delete(oldestKey);
+      }
+      aiState.chatThreads = nextMap;
+    } catch (e) {
+      console.warn('loadChatThreadsFromStorage failed:', e);
+    }
+  }
+
+  function persistChatThreadsToStorage() {
+    try {
+      const entries = [];
+      for (const [scopeKey, msgs] of aiState.chatThreads.entries()) {
+        if (!scopeKey) continue;
+        const cleanMsgs = sanitizeThreadMessages(msgs);
+        if (cleanMsgs.length > 0) {
+          entries.push([scopeKey, cleanMsgs]);
+        }
+      }
+      const trimmed = entries.slice(-CHAT_THREADS_MAX_SCOPES);
+      localStorage.setItem(STORAGE_KEYS.chatThreads, JSON.stringify({
+        version: 1,
+        entries: trimmed
+      }));
+    } catch (e) {
+      console.warn('persistChatThreadsToStorage failed:', e);
+    }
+  }
+
+  function touchChatThread(scopeKey, msgs) {
+    if (!scopeKey) return [];
+    const list = Array.isArray(msgs) ? msgs.slice(-CHAT_THREADS_MAX_MSGS) : [];
+    aiState.chatThreads.delete(scopeKey);
+    aiState.chatThreads.set(scopeKey, list);
+    while (aiState.chatThreads.size > CHAT_THREADS_MAX_SCOPES) {
+      const oldestKey = aiState.chatThreads.keys().next().value;
+      aiState.chatThreads.delete(oldestKey);
+    }
+    return list;
+  }
+
+  // ==========================================
+  // 1C. AI 采分眼挖空缓存规范化与 LWW 合并
+  // ==========================================
+  function parseTimestampMs(val) {
+    if (typeof val === 'number' && !isNaN(val)) return Math.max(0, val);
+    const s = String(val || '').trim();
+    if (!s) return 0;
+    if (/^\d+$/.test(s)) return Math.max(0, Number(s) || 0);
+    const ms = Date.parse(s);
+    return isNaN(ms) ? 0 : Math.max(0, ms);
+  }
+
+  function cleanClozePhraseList(arr) {
+    if (!Array.isArray(arr)) return [];
+    const seen = new Set();
+    const out = [];
+    arr.forEach((raw) => {
+      const txt = String(raw || '').trim();
+      if (txt.length >= 2 && txt.length <= 48 && !seen.has(txt)) {
+        seen.add(txt);
+        out.push(txt);
+      }
+    });
+    return out.slice(0, 32);
+  }
+
+  function normalizeClozeEntry(entry) {
+    if (!entry || typeof entry !== 'object') return null;
+    const skeleton = cleanClozePhraseList(entry.skeleton);
+    const scoring = cleanClozePhraseList(entry.scoring);
+    if (skeleton.length === 0 && scoring.length === 0) return null;
+    const rawUpdated = entry.updated_at ?? entry.updatedAt ?? '';
+    const updatedMs = parseTimestampMs(rawUpdated);
+    const updatedAtIso = (typeof rawUpdated === 'string' && rawUpdated.trim() && isNaN(Number(rawUpdated)))
+      ? rawUpdated.trim()
+      : (updatedMs > 0 ? new Date(updatedMs).toISOString() : '');
+    return {
+      skeleton,
+      scoring,
+      model: String(entry.model || DEFAULT_AI_MODEL).trim() || DEFAULT_AI_MODEL,
+      updated_at: updatedAtIso,
+      updatedAt: updatedMs
+    };
+  }
+
+  function getAiClozeCacheMap() {
+    const raw = readJson(STORAGE_KEYS.aiClozeCache, {});
+    const out = {};
+    Object.entries(raw || {}).forEach(([itemId, val]) => {
+      const norm = normalizeClozeEntry(val);
+      if (itemId && norm) out[String(itemId)] = norm;
+    });
+    return out;
+  }
+
+  function setAiClozeCacheMap(map) {
+    const clean = {};
+    Object.entries(map || {}).forEach(([itemId, val]) => {
+      const norm = normalizeClozeEntry(val);
+      if (itemId && norm) {
+        clean[String(itemId)] = {
+          skeleton: norm.skeleton,
+          scoring: norm.scoring,
+          model: norm.model,
+          updated_at: norm.updated_at || new Date(norm.updatedAt || Date.now()).toISOString()
+        };
+      }
+    });
+    writeJson(STORAGE_KEYS.aiClozeCache, clean);
   }
 
   function normalizeMemoryEntry(entry) {
@@ -496,6 +656,53 @@
     return { localHasNewer };
   }
 
+  function mergeAiClozeCacheWithRemote(remoteCloze) {
+    const localMap = getAiClozeCacheMap();
+    const remoteMap = (remoteCloze && typeof remoteCloze === 'object' && !Array.isArray(remoteCloze)) ? remoteCloze : {};
+    const merged = {};
+    let localHasNewer = false;
+    let activeUpdated = false;
+    const b = getBridge();
+    const activeId = b && b.getState ? b.getState().activeItemId : '';
+
+    const allIds = new Set([...Object.keys(localMap), ...Object.keys(remoteMap)]);
+    allIds.forEach((itemId) => {
+      const loc = normalizeClozeEntry(localMap[itemId]);
+      const rem = normalizeClozeEntry(remoteMap[itemId]);
+      if (loc && rem) {
+        if ((loc.updatedAt || 0) > (rem.updatedAt || 0)) {
+          merged[itemId] = loc;
+          localHasNewer = true;
+        } else {
+          merged[itemId] = rem;
+          if (itemId === activeId) activeUpdated = true;
+        }
+      } else if (loc) {
+        merged[itemId] = loc;
+        localHasNewer = true;
+      } else if (rem) {
+        merged[itemId] = rem;
+        if (itemId === activeId) activeUpdated = true;
+      }
+    });
+
+    setAiClozeCacheMap(merged);
+    if (b && typeof b.setAiClozeData === 'function') {
+      Object.entries(merged).forEach(([itemId, entry]) => {
+        b.setAiClozeData(itemId, {
+          skeleton: entry.skeleton,
+          scoring: entry.scoring,
+          model: entry.model,
+          updated_at: entry.updated_at || new Date(entry.updatedAt || Date.now()).toISOString()
+        });
+      });
+    }
+    if (activeUpdated && b && typeof b.refreshCloze === 'function') {
+      b.refreshCloze();
+    }
+    return { localHasNewer };
+  }
+
   function markSyncDirty() {
     try {
       localStorage.setItem(STORAGE_KEYS.syncDirty, '1');
@@ -552,13 +759,28 @@
     return res.json();
   }
 
+  function buildRemoteClozePayload() {
+    const map = getAiClozeCacheMap();
+    const out = {};
+    Object.entries(map).forEach(([itemId, entry]) => {
+      out[itemId] = {
+        skeleton: entry.skeleton,
+        scoring: entry.scoring,
+        model: entry.model,
+        updated_at: entry.updated_at || new Date(entry.updatedAt || Date.now()).toISOString()
+      };
+    });
+    return out;
+  }
+
   async function syncPushOnly(cfg) {
     const payload = {
       mastery: buildLocalMasteryPayload(),
       studyLogs: buildLocalStudyLogsPayload(),
       aiMemories: getAiMemories(),
       reciteLogs: getReciteLogs(),
-      learningProfile: getLearningProfile()
+      learningProfile: getLearningProfile(),
+      ai_cloze_cache: buildRemoteClozePayload()
     };
     const res = await fetch(`${cfg.url}/api/sync/push`, {
       method: 'POST',
@@ -600,7 +822,8 @@
         const r3 = mergeAiMemoriesWithRemote(pullData.aiMemories);
         const r4 = mergeReciteLogsWithRemote(pullData.reciteLogs);
         const r5 = mergeLearningProfileWithRemote(pullData.learningProfile);
-        if (r1.localHasNewer || r2.localHasNewer || r3.localHasNewer || r4.localHasNewer || r5.localHasNewer) {
+        const r6 = mergeAiClozeCacheWithRemote(pullData.ai_cloze_cache ?? pullData.aiClozeCache);
+        if (r1.localHasNewer || r2.localHasNewer || r3.localHasNewer || r4.localHasNewer || r5.localHasNewer || r6.localHasNewer) {
           needPush = true;
         }
       }
@@ -614,6 +837,7 @@
           mergeAiMemoriesWithRemote(merged.aiMemories);
           mergeReciteLogsWithRemote(merged.reciteLogs);
           mergeLearningProfileWithRemote(merged.learningProfile);
+          mergeAiClozeCacheWithRemote(merged.ai_cloze_cache ?? merged.aiClozeCache);
         }
       }
 
@@ -778,13 +1002,12 @@
           ? '考研英语写作'
           : '考研政治';
 
-    let refText = aiState.scopedCardText;
-    let sentences = aiState.scopedSentences;
-    if (!aiState.scopedCardEl) {
-      const paperEl = document.getElementById('paper-content');
-      refText = extractCleanTextFromElement(paperEl);
-      sentences = collectScopedSentences(null);
-    }
+    const paperEl = document.getElementById('paper-content');
+    const paperText = extractCleanTextFromElement(paperEl);
+    const fullSentences = collectScopedSentences(null);
+    const fullRefText = (paperText || aiState.scopedCardText || '').slice(0, 12000);
+    const focusedCardText = aiState.scopedCardEl ? (aiState.scopedCardText || '').slice(0, 4000) : '';
+    const sentences = aiState.scopedCardEl ? aiState.scopedSentences : fullSentences;
     const blockId = aiState.scopedCardEl ? aiState.scopedCardLabel : 'FULL_ITEM';
     const scopeKey = `${itemId}::${blockId}`;
 
@@ -796,8 +1019,11 @@
       track: st.currentTrack || 1,
       blockId,
       scopeKey,
-      refText: (refText || '').slice(0, 6000),
-      sentences: (sentences || []).slice(0, 120)
+      refText: fullRefText,
+      fullRefText,
+      focusedCardText,
+      sentences: (sentences || []).slice(0, 160),
+      allSentences: (fullSentences || []).slice(0, 300)
     };
   }
 
@@ -1067,22 +1293,54 @@
     }
   }
 
-  function abortActiveStream() {
+  function setAskSendBtnStreaming(streaming) {
+    if (!dom.askSendBtn) return;
+    const isActive = Boolean(streaming);
+    dom.askSendBtn.disabled = false;
+    dom.askSendBtn.classList.toggle('is-streaming', isActive);
+    dom.askSendBtn.textContent = isActive ? '停止' : '发送';
+    dom.askSendBtn.setAttribute('aria-label', isActive ? '停止生成' : '发送');
+    dom.askSendBtn.title = isActive ? '点击停止生成' : '发送 (Enter)';
+  }
+
+  function abortActiveStream({ markStopped = true } = {}) {
     if (aiState.abortController) {
       const ctrl = aiState.abortController;
       aiState.abortController = null;
       try { ctrl.abort(); } catch (e) {}
     }
     aiState.isStreaming = false;
-    if (dom.askSendBtn) dom.askSendBtn.disabled = false;
-    // 清理尚未输出任何正文的空占位气泡，避免永久卡在“正在思考...”
+    setAskSendBtnStreaming(false);
+
+    let changed = false;
     for (const [, thread] of aiState.chatThreads.entries()) {
       if (Array.isArray(thread) && thread.length > 0) {
         const last = thread[thread.length - 1];
-        if (last && last.role === 'assistant' && !last.content && !last.reasoning) {
-          thread.pop();
+        if (last && last.role === 'assistant') {
+          if (last.toolStatus) {
+            last.toolStatus = '';
+            changed = true;
+          }
+          if (!last.content && !last.reasoning) {
+            thread.pop();
+            changed = true;
+          } else if (markStopped && last === aiState._activeAssistantMsg) {
+            if (last.content && !last.content.endsWith('（已停止生成）')) {
+              last.content = `${last.content.trimEnd()}\n\n（已停止生成）`;
+              changed = true;
+            } else if (!last.content && last.reasoning) {
+              last.content = '（已停止生成）';
+              changed = true;
+            }
+          }
         }
       }
+    }
+    aiState._activeAssistantMsg = null;
+    aiState._activeScopeKey = '';
+    if (changed) {
+      persistChatThreadsToStorage();
+      if (aiState.isOpen) renderChatStream();
     }
   }
 
@@ -1165,17 +1423,39 @@
         const lenScore = Math.min(normS.length, normQ.length) / Math.max(normS.length, normQ.length, 1) + 1;
         if (lenScore > bestScore) {
           bestScore = lenScore;
-          bestIdx = s.idx;
+          bestIdx = typeof s.idx === 'number' ? s.idx : -1;
         }
       }
     });
     return bestIdx;
   }
 
-  function renderAiMarkdown(rawMarkdown) {
+  function findMatchingSentenceForQuote(combinedQuote, rawLines, primarySentences, fallbackSentences) {
+    const pools = [];
+    if (Array.isArray(primarySentences) && primarySentences.length > 0) pools.push(primarySentences);
+    if (Array.isArray(fallbackSentences) && fallbackSentences.length > 0 && fallbackSentences !== primarySentences) {
+      pools.push(fallbackSentences);
+    }
+    const candidates = [combinedQuote, ...(Array.isArray(rawLines) ? rawLines : [])]
+      .map(s => String(s || '').trim())
+      .filter(Boolean);
+
+    for (const pool of pools) {
+      for (const cand of candidates) {
+        const idx = findSentenceIndexByQuote(cand, pool);
+        if (idx >= 0) {
+          const found = pool.find(s => s.idx === idx);
+          return { idx, start: found ? found.start : undefined };
+        }
+      }
+    }
+    return null;
+  }
+
+  function renderAiMarkdown(rawMarkdown, sentences = []) {
     // 1. 剥离 [CARD_SUMMARY]...[/CARD_SUMMARY] 并在底部渲染为归档卡片
     let summaryText = '';
-    const cleaned = String(rawMarkdown || '')
+    let cleaned = String(rawMarkdown || '')
       .replace(/\[CARD_SUMMARY\]([\s\S]*?)(?:\[\/CARD_SUMMARY\]|$)/g, (_, inner) => {
         summaryText = (inner || '').trim();
         return '';
@@ -1183,10 +1463,33 @@
       .replace(/\s*\[SENT:\d+\]/g, '')
       .trim();
 
+    const b = getBridge();
+    const rawBridgeSents = (b && typeof b.getActiveSentences === 'function') ? (b.getActiveSentences() || []) : [];
+    const fallbackSentences = rawBridgeSents.map((s, i) => ({
+      idx: typeof s.idx === 'number' ? s.idx : i,
+      start: s.start,
+      text: s.text || ''
+    }));
+    const primarySentences = (Array.isArray(sentences) && sentences.length > 0) ? sentences : fallbackSentences;
+
     const formatInline = (line) => {
       let html = escapeHtml(line);
+      const itemTokens = [];
+      html = html.replace(/\[\[item:([^|\]]+)\|([^\]]+)\]\]/g, (_, rawId, rawTitle) => {
+        const cleanId = rawId.trim();
+        const cleanTitle = rawTitle.trim() || cleanId;
+        if (!cleanId) return cleanTitle;
+        const token = `@@AI_ITEM_${itemTokens.length}@@`;
+        itemTokens.push(
+          `<button type="button" class="ai-item-jump" data-item-id="${cleanId}" title="跳转到：${cleanTitle}">📖 ${cleanTitle}</button>`
+        );
+        return token;
+      });
       html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
       html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      itemTokens.forEach((pillHtml, idx) => {
+        html = html.split(`@@AI_ITEM_${idx}@@`).join(pillHtml);
+      });
       return html;
     };
 
@@ -1198,81 +1501,131 @@
       return cells.length > 0 && cells.every(c => /^:?-{2,}:?$/.test(c));
     };
 
-    const lines = cleaned.split(/\r?\n/);
-    const out = [];
-    let inList = false;
-
-    const closeList = () => {
-      if (inList) {
-        out.push('</ul>');
-        inList = false;
+    const renderMarkdownCore = (text, allowFolds) => {
+      const foldBlocks = [];
+      let working = String(text || '');
+      if (allowFolds) {
+        working = working.replace(/<details(?:\s+class=["'][^"']*["'])?\s*>\s*<summary>([\s\S]*?)<\/summary>([\s\S]*?)<\/details>/gi, (_, sumText, bodyText) => {
+          const idx = foldBlocks.length;
+          foldBlocks.push({
+            summary: String(sumText || '').trim() || '点击展开提示',
+            body: String(bodyText || '').trim()
+          });
+          return `\n@@AI_FOLD_${idx}@@\n`;
+        });
+        working = working.replace(/^[ \t]*:::fold(?:[ \t]+([^\r\n]*))?\r?\n([\s\S]*?)\r?\n[ \t]*:::[ \t]*$/gm, (_, sumText, bodyText) => {
+          const idx = foldBlocks.length;
+          foldBlocks.push({
+            summary: String(sumText || '').trim() || '点击展开提示',
+            body: String(bodyText || '').trim()
+          });
+          return `\n@@AI_FOLD_${idx}@@\n`;
+        });
       }
+
+      const lines = working.split(/\r?\n/);
+      const out = [];
+      let inList = false;
+
+      const closeList = () => {
+        if (inList) {
+          out.push('</ul>');
+          inList = false;
+        }
+      };
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trimEnd();
+        if (!line.trim()) {
+          closeList();
+          continue;
+        }
+
+        const foldMatch = allowFolds ? line.trim().match(/^@@AI_FOLD_(\d+)@@$/) : null;
+        if (foldMatch) {
+          closeList();
+          const block = foldBlocks[Number(foldMatch[1])];
+          if (block) {
+            out.push(
+              `<details class="ai-fold"><summary>${formatInline(block.summary)}</summary><div class="ai-fold-body">${renderMarkdownCore(block.body, false)}</div></details>`
+            );
+          }
+          continue;
+        }
+
+        // Markdown 表格支持：| 列1 | 列2 |
+        if (line.trim().startsWith('|') && i + 1 < lines.length && lines[i + 1].trim().startsWith('|') && isTableSep(lines[i + 1])) {
+          closeList();
+          const headers = parseTableRow(line);
+          i += 2;
+          const rows = [];
+          while (i < lines.length && lines[i].trim().startsWith('|')) {
+            rows.push(parseTableRow(lines[i]));
+            i++;
+          }
+          i--;
+          out.push('<div class="ai-md-table-wrap"><table class="ai-md-table"><thead><tr>' +
+            headers.map(h => `<th>${formatInline(h)}</th>`).join('') +
+            '</tr></thead><tbody>' +
+            rows.map(r => '<tr>' + headers.map((_, idx) => `<td>${formatInline(r[idx] || '')}</td>`).join('') + '</tr>').join('') +
+            '</tbody></table></div>');
+          continue;
+        }
+
+        // 引用块支持：> 原文摘录（自动匹配原句并附带跳听按钮）
+        const bqMatch = line.match(/^\s*>\s?(.*)$/);
+        if (bqMatch) {
+          closeList();
+          const rawQuoteLines = [bqMatch[1]];
+          const quoteLines = [formatInline(bqMatch[1])];
+          while (i + 1 < lines.length && /^\s*>\s?/.test(lines[i + 1])) {
+            i++;
+            const nextRaw = lines[i].replace(/^\s*>\s?/, '');
+            rawQuoteLines.push(nextRaw);
+            quoteLines.push(formatInline(nextRaw));
+          }
+          const matchedSent = findMatchingSentenceForQuote(
+            rawQuoteLines.join(' ').trim(),
+            rawQuoteLines,
+            primarySentences,
+            fallbackSentences
+          );
+          const jumpHtml = matchedSent
+            ? ` <button type="button" class="ai-quote-jump" data-sent-idx="${matchedSent.idx}" data-sent-start="${matchedSent.start !== undefined && matchedSent.start !== null ? escapeHtml(String(matchedSent.start)) : ''}" title="点击跳转并播放该句音频">🔊 跳听</button>`
+            : '';
+          out.push(`<blockquote class="ai-md-quote">${quoteLines.join('<br>')}${jumpHtml}</blockquote>`);
+          continue;
+        }
+
+        const hMatch = line.match(/^(#{1,4})\s+(.+)$/);
+        if (hMatch) {
+          closeList();
+          const level = Math.min(4, Math.max(2, hMatch[1].length));
+          out.push(`<h${level + 1} class="ai-md-h">${formatInline(hMatch[2])}</h${level + 1}>`);
+          continue;
+        }
+
+        const liMatch = line.match(/^\s*(?:[-*•]|\d+[.)、])\s+(.+)$/);
+        if (liMatch) {
+          if (!inList) {
+            out.push('<ul class="ai-md-list">');
+            inList = true;
+          }
+          out.push(`<li>${formatInline(liMatch[1])}</li>`);
+          continue;
+        }
+
+        closeList();
+        out.push(`<p class="ai-md-p">${formatInline(line)}</p>`);
+      }
+      closeList();
+      return out.join('');
     };
 
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trimEnd();
-      if (!line.trim()) {
-        closeList();
-        continue;
-      }
-
-      // Markdown 表格支持：| 列1 | 列2 |
-      if (line.trim().startsWith('|') && i + 1 < lines.length && lines[i + 1].trim().startsWith('|') && isTableSep(lines[i + 1])) {
-        closeList();
-        const headers = parseTableRow(line);
-        i += 2;
-        const rows = [];
-        while (i < lines.length && lines[i].trim().startsWith('|')) {
-          rows.push(parseTableRow(lines[i]));
-          i++;
-        }
-        i--;
-        out.push('<div class="ai-md-table-wrap"><table class="ai-md-table"><thead><tr>' +
-          headers.map(h => `<th>${formatInline(h)}</th>`).join('') +
-          '</tr></thead><tbody>' +
-          rows.map(r => '<tr>' + headers.map((_, idx) => `<td>${formatInline(r[idx] || '')}</td>`).join('') + '</tr>').join('') +
-          '</tbody></table></div>');
-        continue;
-      }
-
-      // 引用块支持：> 原文摘录
-      const bqMatch = line.match(/^\s*>\s?(.*)$/);
-      if (bqMatch) {
-        closeList();
-        const quoteLines = [formatInline(bqMatch[1])];
-        while (i + 1 < lines.length && /^\s*>\s?/.test(lines[i + 1])) {
-          i++;
-          quoteLines.push(formatInline(lines[i].replace(/^\s*>\s?/, '')));
-        }
-        out.push(`<blockquote class="ai-md-quote">${quoteLines.join('<br>')}</blockquote>`);
-        continue;
-      }
-
-      const hMatch = line.match(/^(#{1,4})\s+(.+)$/);
-      if (hMatch) {
-        closeList();
-        const level = Math.min(4, Math.max(2, hMatch[1].length));
-        out.push(`<h${level + 1} class="ai-md-h">${formatInline(hMatch[2])}</h${level + 1}>`);
-        continue;
-      }
-
-      const liMatch = line.match(/^\s*(?:[-*•]|\d+[.)、])\s+(.+)$/);
-      if (liMatch) {
-        if (!inList) {
-          out.push('<ul class="ai-md-list">');
-          inList = true;
-        }
-        out.push(`<li>${formatInline(liMatch[1])}</li>`);
-        continue;
-      }
-
-      closeList();
-      out.push(`<p class="ai-md-p">${formatInline(line)}</p>`);
-    }
-    closeList();
+    const htmlParts = [renderMarkdownCore(cleaned, true)];
 
     if (summaryText) {
-      out.push(`
+      htmlParts.push(`
         <div class="ai-summary-archived-card">
           <div class="ai-summary-archived-tag">已自动归档本题卡点记忆</div>
           <div class="ai-summary-archived-text">${escapeHtml(summaryText)}</div>
@@ -1280,13 +1633,26 @@
       `);
     }
 
-    return out.join('');
+    return htmlParts.join('');
   }
 
   // ==========================================
-  // 6. DeepSeek 流式请求封装 (VPS 代理 / BYOK 兜底)
+  // 6. DeepSeek 流式请求封装 (VPS 代理 / BYOK 兜底 + Tools / JSON)
   // ==========================================
-  async function streamDeepSeek({ messages, temperature = 0.4, maxTokens = 2048, modelOverride = null, effort = null, background = false, onDelta }) {
+  async function streamDeepSeek({
+    messages,
+    temperature = 0.4,
+    maxTokens = 2048,
+    modelOverride = null,
+    effort = null,
+    background = false,
+    responseFormat = null,
+    tools = null,
+    toolChoice = null,
+    stream = true,
+    manageStreamUi = true,
+    onDelta
+  }) {
     const cfg = getSyncConfig();
     if (!background && aiState.abortController) {
       try { aiState.abortController.abort(); } catch (e) {}
@@ -1295,6 +1661,7 @@
     if (!background) {
       aiState.abortController = controller;
       aiState.isStreaming = true;
+      if (manageStreamUi) setAskSendBtnStreaming(true);
     }
 
     let endpoint = '';
@@ -1308,7 +1675,10 @@
       endpoint = 'https://api.deepseek.com/chat/completions';
       headers['Authorization'] = `Bearer ${cfg.deepseekKey}`;
     } else {
-      if (!background) aiState.isStreaming = false;
+      if (!background) {
+        aiState.isStreaming = false;
+        if (manageStreamUi) setAskSendBtnStreaming(false);
+      }
       throw new Error('NO_AUTH_CONFIGURED');
     }
 
@@ -1317,12 +1687,21 @@
     const body = {
       model: activeModel,
       messages,
-      stream: true,
+      stream: Boolean(stream),
       max_tokens: maxTokens,
       reasoning_effort: activeEffort
     };
     if (activeModel !== 'deepseek-reasoner') {
       body.temperature = temperature;
+    }
+    if (responseFormat && typeof responseFormat === 'object') {
+      body.response_format = responseFormat;
+    }
+    if (Array.isArray(tools) && tools.length > 0) {
+      body.tools = tools;
+      if (toolChoice !== null && toolChoice !== undefined) {
+        body.tool_choice = toolChoice;
+      }
     }
 
     try {
@@ -1347,23 +1726,26 @@
       }
 
       // 非流式 JSON 兼容
-      if (contentType.includes('application/json')) {
+      if (contentType.includes('application/json') || !stream) {
         const data = await res.json();
         if (data && data.ok === false) {
           throw new Error(data.message || data.error || '服务端返回异常');
         }
-        const msgObj = data && data.choices && data.choices[0] && data.choices[0].message;
+        const choice = data && data.choices && data.choices[0];
+        const msgObj = choice && choice.message;
         const fullContent = (msgObj && msgObj.content) || '';
         const fullReasoning = (msgObj && msgObj.reasoning_content) || '';
+        const toolCalls = Array.isArray(msgObj && msgObj.tool_calls) ? msgObj.tool_calls : [];
+        const finishReason = (choice && choice.finish_reason) || '';
         const usage = (data && data.usage) || null;
         if (!background && usage) {
           aiState.lastCacheUsage = usage;
           updateCacheBadgeUI(usage);
         }
         if (typeof onDelta === 'function') {
-          onDelta({ content: fullContent, reasoning: fullReasoning, usage, done: true });
+          onDelta({ content: fullContent, reasoning: fullReasoning, toolCalls, finishReason, usage, done: true });
         }
-        return { content: fullContent, reasoning: fullReasoning, usage };
+        return { content: fullContent, reasoning: fullReasoning, toolCalls, finishReason, usage };
       }
 
       if (!res.body || !res.body.getReader) {
@@ -1376,6 +1758,22 @@
       let fullContent = '';
       let fullReasoning = '';
       let usageData = null;
+      let finishReason = '';
+      const toolCallsMap = new Map();
+
+      const buildToolCallsArray = () => {
+        if (toolCallsMap.size === 0) return [];
+        return Array.from(toolCallsMap.entries())
+          .sort((a, b2) => a[0] - b2[0])
+          .map(([, entry]) => ({
+            id: entry.id,
+            type: entry.type || 'function',
+            function: {
+              name: entry.function.name,
+              arguments: entry.function.arguments
+            }
+          }));
+      };
 
       while (true) {
         const { done, value } = await reader.read();
@@ -1393,12 +1791,50 @@
           try {
             const parsed = JSON.parse(payloadStr);
             if (parsed && parsed.usage) usageData = parsed.usage;
-            const delta = parsed && parsed.choices && parsed.choices[0] && parsed.choices[0].delta;
+            const choice = parsed && parsed.choices && parsed.choices[0];
+            if (choice && choice.finish_reason) {
+              finishReason = choice.finish_reason;
+            }
+            const delta = choice && choice.delta;
             if (delta) {
               if (delta.reasoning_content) fullReasoning += delta.reasoning_content;
               if (delta.content) fullContent += delta.content;
+              if (Array.isArray(delta.tool_calls)) {
+                delta.tool_calls.forEach((tc, pos) => {
+                  const tcIdx = typeof tc.index === 'number' ? tc.index : pos;
+                  if (!toolCallsMap.has(tcIdx)) {
+                    toolCallsMap.set(tcIdx, {
+                      id: tc.id || '',
+                      type: tc.type || 'function',
+                      function: { name: '', arguments: '' }
+                    });
+                  }
+                  const entry = toolCallsMap.get(tcIdx);
+                  if (tc.id) entry.id = tc.id;
+                  if (tc.type) entry.type = tc.type;
+                  if (tc.function) {
+                    if (typeof tc.function.name === 'string' && tc.function.name) {
+                      if (!entry.function.name) {
+                        entry.function.name = tc.function.name;
+                      } else if (entry.function.name !== tc.function.name) {
+                        entry.function.name += tc.function.name;
+                      }
+                    }
+                    if (typeof tc.function.arguments === 'string') {
+                      entry.function.arguments += tc.function.arguments;
+                    }
+                  }
+                });
+              }
               if (typeof onDelta === 'function') {
-                onDelta({ content: fullContent, reasoning: fullReasoning, usage: usageData, done: false });
+                onDelta({
+                  content: fullContent,
+                  reasoning: fullReasoning,
+                  toolCalls: buildToolCallsArray(),
+                  finishReason,
+                  usage: usageData,
+                  done: false
+                });
               }
             }
           } catch (e) {
@@ -1407,21 +1843,270 @@
         }
       }
 
+      const finalToolCalls = buildToolCallsArray();
       if (!background && usageData) {
         aiState.lastCacheUsage = usageData;
         updateCacheBadgeUI(usageData);
       }
       if (typeof onDelta === 'function') {
-        onDelta({ content: fullContent, reasoning: fullReasoning, usage: usageData, done: true });
+        onDelta({
+          content: fullContent,
+          reasoning: fullReasoning,
+          toolCalls: finalToolCalls,
+          finishReason,
+          usage: usageData,
+          done: true
+        });
       }
-      return { content: fullContent, reasoning: fullReasoning, usage: usageData };
+      return {
+        content: fullContent,
+        reasoning: fullReasoning,
+        toolCalls: finalToolCalls,
+        finishReason,
+        usage: usageData
+      };
     } finally {
       if (!background) {
         if (aiState.abortController === controller) {
           aiState.abortController = null;
         }
-        aiState.isStreaming = false;
+        if (manageStreamUi) {
+          aiState.isStreaming = false;
+          setAskSendBtnStreaming(false);
+        }
       }
+    }
+  }
+
+  const AI_CLIENT_TOOLS = [
+    {
+      type: 'function',
+      function: {
+        name: 'search_knowledge_base',
+        description: '检索全科考研背诵题库（807 现当代文学、706 古代文学、考研政治、考研英语写作）中的相关篇目与原文片段，用于跨篇/跨科串联对比与精准引用。',
+        parameters: {
+          type: 'object',
+          properties: {
+            query: {
+              type: 'string',
+              description: '检索关键词（多个词可用空格分隔，如 "鲁迅 呐喊" 或 "红楼梦 悲剧"）'
+            },
+            subject: {
+              type: 'string',
+              enum: ['all', '807', '706', 'pol', 'en'],
+              description: '限定科目，默认 all'
+            }
+          },
+          required: ['query']
+        }
+      }
+    },
+    {
+      type: 'function',
+      function: {
+        name: 'get_weak_items',
+        description: '获取当前薄弱或高优先级的未掌握考点列表（综合考纲等级、掌握状态、听读次数），用于规划复盘重点与今日作战简报。',
+        parameters: {
+          type: 'object',
+          properties: {
+            subject: {
+              type: 'string',
+              enum: ['all', '807', '706', 'pol', 'en'],
+              description: '限定科目，默认 all'
+            }
+          }
+        }
+      }
+    },
+    {
+      type: 'function',
+      function: {
+        name: 'get_learning_profile',
+        description: '读取用户 Layer 2 长期学习认知画像及 Layer 3 相关跨篇历史卡点记忆档案。',
+        parameters: {
+          type: 'object',
+          properties: {}
+        }
+      }
+    }
+  ];
+
+  function parseToolArgumentsSafe(rawArgs) {
+    if (rawArgs && typeof rawArgs === 'object') return rawArgs;
+    const text = String(rawArgs || '').trim();
+    if (!text) return {};
+    try {
+      const parsed = JSON.parse(text);
+      return (parsed && typeof parsed === 'object') ? parsed : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function executeClientTool(toolName, rawArgs, ctx) {
+    const b = getBridge();
+    const args = parseToolArgumentsSafe(rawArgs);
+
+    if (toolName === 'search_knowledge_base') {
+      const query = String(args.query || '').trim();
+      const subject = String(args.subject || 'all').trim() || 'all';
+      if (b && typeof b.searchKnowledgeBase === 'function') {
+        const hits = b.searchKnowledgeBase(query, subject, 6) || [];
+        return {
+          statusText: `检索题库「${query || subject}」(${hits.length} 条)`,
+          result: JSON.stringify({ query, subject, results: hits })
+        };
+      }
+      const all = (b && typeof b.getAllStudyItems === 'function') ? b.getAllStudyItems() : [];
+      const kw = query.toLowerCase();
+      const fallbackHits = all
+        .filter(it => (subject === 'all' || it.subject === subject) && (!kw || `${it.title} ${it.category}`.toLowerCase().includes(kw)))
+        .slice(0, 6);
+      return {
+        statusText: `检索题库「${query || subject}」(${fallbackHits.length} 条)`,
+        result: JSON.stringify({ query, subject, results: fallbackHits })
+      };
+    }
+
+    if (toolName === 'get_weak_items') {
+      const subject = String(args.subject || 'all').trim() || 'all';
+      if (b && typeof b.getWeakItems === 'function') {
+        const weak = b.getWeakItems(subject, 8) || [];
+        return {
+          statusText: `排查薄弱考点 (${weak.length} 项)`,
+          result: JSON.stringify({ subject, items: weak })
+        };
+      }
+      const all = (b && typeof b.getAllStudyItems === 'function') ? b.getAllStudyItems() : [];
+      const fallbackWeak = all
+        .filter(it => (subject === 'all' || it.subject === subject) && it.status !== 'mastered')
+        .slice(0, 8);
+      return {
+        statusText: `排查薄弱考点 (${fallbackWeak.length} 项)`,
+        result: JSON.stringify({ subject, items: fallbackWeak })
+      };
+    }
+
+    if (toolName === 'get_learning_profile') {
+      const lp = getLearningProfile();
+      const allMem = getAiMemories();
+      const titleById = new Map();
+      if (b && typeof b.getAllStudyItems === 'function') {
+        b.getAllStudyItems().forEach(it => titleById.set(it.id, it.title));
+      }
+      const recentMemories = Object.entries(allMem)
+        .map(([id, raw]) => ({ id, title: titleById.get(id) || id, ...normalizeMemoryEntry(raw) }))
+        .filter(x => x && x.summary)
+        .sort((a, b2) => (b2.updatedAt || 0) - (a.updatedAt || 0))
+        .slice(0, 6);
+      const crossMemories = ctx ? recallRelevantCrossMemories(ctx, '') : [];
+      return {
+        statusText: '读取学习画像与卡点档案',
+        result: JSON.stringify({
+          learningProfile: lp,
+          recentMemories,
+          crossMemories
+        })
+      };
+    }
+
+    return {
+      statusText: `未知工具 ${toolName}`,
+      result: JSON.stringify({ error: `Unsupported tool: ${toolName}` })
+    };
+  }
+
+  async function runDeepSeekWithTools({
+    messages,
+    temperature = 0.45,
+    maxTokens = 2048,
+    modelOverride = null,
+    effort = null,
+    tools = AI_CLIENT_TOOLS,
+    toolChoice = 'auto',
+    maxRounds = 3,
+    ctx = null,
+    onDelta,
+    onToolStatus
+  }) {
+    const loopMessages = Array.isArray(messages) ? messages.slice() : [];
+    aiState.isStreaming = true;
+    setAskSendBtnStreaming(true);
+
+    try {
+      for (let round = 0; round <= maxRounds; round++) {
+        const allowTools = round < maxRounds && Array.isArray(tools) && tools.length > 0;
+        const roundRes = await streamDeepSeek({
+          messages: loopMessages,
+          temperature,
+          maxTokens,
+          modelOverride,
+          effort,
+          tools: allowTools ? tools : undefined,
+          toolChoice: allowTools ? toolChoice : undefined,
+          manageStreamUi: false,
+          onDelta: (deltaObj) => {
+            if (typeof onDelta === 'function') {
+              onDelta(deltaObj);
+            }
+          }
+        });
+
+        const requestedTools = Array.isArray(roundRes.toolCalls) ? roundRes.toolCalls : [];
+        const wantsToolLoop = allowTools && requestedTools.length > 0 && (roundRes.finishReason === 'tool_calls' || !roundRes.content);
+
+        if (!wantsToolLoop) {
+          if (typeof onToolStatus === 'function') onToolStatus('', true);
+          return roundRes;
+        }
+
+        // 记录助手发起的 tool_calls 轮次
+        const assistantToolMsg = {
+          role: 'assistant',
+          content: roundRes.content || '',
+          tool_calls: requestedTools.map((tc, idx) => ({
+            id: tc.id || `call_${round}_${idx}`,
+            type: 'function',
+            function: {
+              name: tc.function ? tc.function.name : '',
+              arguments: tc.function ? tc.function.arguments : '{}'
+            }
+          }))
+        };
+        if (roundRes.reasoning) {
+          assistantToolMsg.reasoning_content = roundRes.reasoning;
+        }
+        loopMessages.push(assistantToolMsg);
+
+        for (let i = 0; i < assistantToolMsg.tool_calls.length; i++) {
+          if (!aiState.isStreaming) {
+            const abortErr = new Error('Aborted');
+            abortErr.name = 'AbortError';
+            throw abortErr;
+          }
+          const tc = assistantToolMsg.tool_calls[i];
+          const fnName = tc.function.name;
+          if (typeof onToolStatus === 'function') {
+            onToolStatus(`正在调用 ${fnName}…`, false);
+          }
+          const exec = executeClientTool(fnName, tc.function.arguments, ctx);
+          if (typeof onToolStatus === 'function') {
+            onToolStatus(exec.statusText, false);
+          }
+          loopMessages.push({
+            role: 'tool',
+            tool_call_id: tc.id,
+            content: exec.result
+          });
+        }
+      }
+
+      if (typeof onToolStatus === 'function') onToolStatus('', true);
+      return { content: '', reasoning: '', toolCalls: [], finishReason: 'stop', usage: null };
+    } finally {
+      aiState.isStreaming = false;
+      aiState.abortController = null;
+      setAskSendBtnStreaming(false);
     }
   }
 
@@ -1432,9 +2117,10 @@
     '你是「2027 考研全科双轨背诵手卷」的专属高分研学助教，精通文学考研（807 现当代文学、706 中国古代文学）、考研政治与考研英语写作。',
     '核心工作原则：',
     '1. 紧扣下方【当前科目标题与参考原文】及考纲采分点作答，语言凝练精准、逻辑层次分明，绝不输出空泛套话或无依据的臆测。',
-    '2. 遇到多流派、多作家、多理论或跨专题概念辨析时，优先使用清晰的 Markdown 对比表格呈现；引用参考原文核心原句时使用 `>` 引用块或双引号纯文本，严禁输出任何音频时间戳、句子编号或 [SENT] 标记。',
-    '3. 每题尽量凝练「考场答题骨架（关键词链）」或「不超过 50 字的顺口溜/记忆口诀」，帮助用户在高强度背诵中迅速提取。',
-    '4. 请结合系统末尾注入的【三层全局记忆上下文】（全站实时复习进度与盲区、长期认知画像、相关跨篇历史卡点）：若当前篇目涉及用户高频听读却仍未掌握的顽固点、零遍高优盲区或历史易混点，请主动点出关联与避坑提醒。'
+    '2. 遇到多流派、多作家、多理论或跨专题概念辨析时，优先使用清晰的 Markdown 对比表格呈现；需要引导用户回听音频原句时，务必单独成行使用 `> 原句` 引用块摘录原文（前端会自动渲染跳听按钮），严禁输出音频时间戳或 `[SENT]` 标记。',
+    '3. 引用或串联其他考研篇目时，请使用 `[[item:ITEM_ID|标题]]` 格式标注以便一键跳转；需要给出可自测的答题提示、变式参考答案或采分点解析时，使用 `<details class="ai-fold"><summary>点击展开解析/提示</summary>...</details>` 折叠呈现。',
+    '4. 每题尽量凝练「考场答题骨架（关键词链）」或「不超过 50 字的顺口溜/记忆口诀」；如需跨科/跨篇检索题库或核对薄弱考点，可主动调用可用工具（search_knowledge_base / get_weak_items / get_learning_profile）。',
+    '5. 请结合系统末尾注入的【三层全局记忆与当前动态状态】（全站实时复习进度、长期认知画像、跨篇历史卡点）：若当前篇目涉及顽固未掌握点或零遍高优盲区，请主动给出避坑提醒。'
   ].join('\n');
 
   function getTodayLocalStr() {
@@ -1555,6 +2241,13 @@
       dynamicParts.push(`- 跨篇关联卡点召回：\n${crossList.map(c => `  * [${c.title}] ${c.summary}`).join('\n')}`);
     }
 
+    const fullText = ctx.fullRefText || ctx.refText || '';
+    const focusLines = [`- 聚焦范围：${ctx.blockId}`];
+    if (ctx.blockId && ctx.blockId !== 'FULL_ITEM' && ctx.focusedCardText) {
+      focusLines.push(`- 子卡片摘录：\n${ctx.focusedCardText}`);
+    }
+    const focusSection = `\n\n【当前聚焦子卡片】\n${focusLines.join('\n')}`;
+
     const tailSection = dynamicParts.length > 0
       ? `\n\n【三层全局记忆与当前动态状态】\n${dynamicParts.join('\n')}`
       : '';
@@ -1563,10 +2256,9 @@
 
 【当前科目标题与参考原文】
 - 科目：${ctx.subjectLabel}
-- 考题：${ctx.itemTitle}（轨道 ${ctx.track}）
-- 聚焦范围：${ctx.blockId}
-- 参考原文：
-${ctx.refText}${tailSection}`;
+- 考题：${ctx.itemTitle}（ID: ${ctx.itemId}，轨道 ${ctx.track}）
+- 完整参考原文：
+${fullText}${focusSection}${tailSection}`;
   }
 
   function trimHistoryForCache(msgs) {
@@ -1659,7 +2351,7 @@ ${ctx.refText}${tailSection}`;
     if (msgs.length === 0) {
       dom.chatStream.innerHTML = `
         <div class="ai-empty-hint">
-          已锁定「${escapeHtml(ctx.blockId)}」。你可以直接在下方提问，或点击建议标签生成<strong>答题骨架 / 横向对比表 / 速记口诀</strong>（全纯文字学术排版，无音频跳转干扰）。
+          已锁定「${escapeHtml(ctx.blockId)}」。你可以直接在下方提问，或点击建议标签生成<strong>答题骨架 / 对比表 / 换考法 / 跨科串联</strong>（支持引用原句「🔊 跳听」与篇目一键跳转）。
         </div>
       `;
       return;
@@ -1672,9 +2364,12 @@ ${ctx.refText}${tailSection}`;
       const reasoningHtml = m.reasoning
         ? `<details class="ai-reasoning-block"><summary>DeepSeek 深度推理过程</summary><div class="ai-reasoning-body">${escapeHtml(m.reasoning).replace(/\n/g, '<br>')}</div></details>`
         : '';
+      const toolStatusHtml = m.toolStatus
+        ? `<div class="ai-tool-status${m.toolDone ? ' is-done' : ''}">${escapeHtml(m.toolStatus)}</div>`
+        : '';
       const bodyHtml = m.content
         ? renderAiMarkdown(m.content, ctx.sentences)
-        : '<span class="ai-typing-dots">正在思考并检索原文...</span>';
+        : (m.toolStatus ? '' : '<span class="ai-typing-dots">正在思考并检索原文...</span>');
       const isLastStreaming = aiState.isStreaming && idx === msgs.length - 1;
       const actionsHtml = (m.content && !isLastStreaming)
         ? `<div class="ai-msg-actions">
@@ -1682,15 +2377,15 @@ ${ctx.refText}${tailSection}`;
             <button type="button" class="ai-msg-action-btn js-ai-save-mem-btn" data-msg-idx="${idx}">存入卡点记忆</button>
           </div>`
         : '';
-      return `<div class="ai-msg ai-msg-assistant"><div class="ai-msg-bubble">${reasoningHtml}${bodyHtml}${actionsHtml}</div></div>`;
+      return `<div class="ai-msg ai-msg-assistant"><div class="ai-msg-bubble">${reasoningHtml}${toolStatusHtml}${bodyHtml}${actionsHtml}</div></div>`;
     }).join('');
 
     dom.chatStream.scrollTop = dom.chatStream.scrollHeight;
   }
 
-  async function sendAskMessage(presetPrompt = null) {
+  async function sendAskMessage(presetPrompt = null, options = {}) {
     if (aiState.isStreaming) {
-      showToast('DeepSeek 正在回复中，请稍候', 1600);
+      showToast('DeepSeek 正在回复中，请点击「停止」后再发起新提问', 1600);
       return;
     }
     const rawInput = presetPrompt !== null ? presetPrompt : (dom.askInput ? dom.askInput.value.trim() : '');
@@ -1701,39 +2396,66 @@ ${ctx.refText}${tailSection}`;
 
     const ctx = getScopeContext();
     const thread = aiState.chatThreads.get(ctx.scopeKey) || [];
+    const baseDisplay = options.displayContent || rawInput;
     const userDisplay = aiState.quotedText
-      ? `【引用原文】“${aiState.quotedText}”\n\n${rawInput}`
-      : rawInput;
+      ? `【引用原文】“${aiState.quotedText}”\n\n${baseDisplay}`
+      : baseDisplay;
 
     if (presetPrompt === null && dom.askInput) {
       dom.askInput.value = '';
     }
+    const apiUserText = aiState.quotedText
+      ? `【引用原文】“${aiState.quotedText}”\n\n${options.apiPromptOverride || rawInput}`
+      : (options.apiPromptOverride || rawInput);
     aiState.quotedText = '';
     updateScopeHeaderUI();
 
     thread.push({ role: 'user', content: userDisplay });
-    const assistantMsg = { role: 'assistant', content: '', reasoning: '' };
+    const assistantMsg = { role: 'assistant', content: '', reasoning: '', toolStatus: '', toolDone: false };
     thread.push(assistantMsg);
-    aiState.chatThreads.set(ctx.scopeKey, thread);
+    touchChatThread(ctx.scopeKey, thread);
+    persistChatThreadsToStorage();
+    aiState._activeAssistantMsg = assistantMsg;
+    aiState._activeScopeKey = ctx.scopeKey;
     renderChatStream();
 
+    const historyMsgs = trimHistoryForCache(thread.slice(0, -2)).map(m => ({ role: m.role, content: m.content }));
     const apiMessages = [
       { role: 'system', content: buildAskSystemPrompt(ctx, rawInput) },
-      ...trimHistoryForCache(thread.slice(0, -1)).map(m => ({ role: m.role, content: m.content }))
+      ...historyMsgs,
+      { role: 'user', content: apiUserText }
     ];
 
-    if (dom.askSendBtn) dom.askSendBtn.disabled = true;
+    setAskSendBtnStreaming(true);
     try {
-      await streamDeepSeek({
+      const useTools = options.useTools !== false;
+      await runDeepSeekWithTools({
         messages: apiMessages,
-        temperature: 0.45,
-        maxTokens: 2048,
+        temperature: options.temperature !== undefined ? options.temperature : 0.45,
+        maxTokens: options.maxTokens || 2048,
+        modelOverride: options.modelOverride || null,
+        effort: options.effort || null,
+        tools: useTools ? AI_CLIENT_TOOLS : [],
+        toolChoice: useTools ? 'auto' : undefined,
+        maxRounds: 3,
+        ctx,
+        onToolStatus: (statusText, isDone) => {
+          assistantMsg.toolStatus = statusText || '';
+          assistantMsg.toolDone = Boolean(isDone);
+          renderChatStream();
+        },
         onDelta: ({ content, reasoning }) => {
           assistantMsg.content = content;
           assistantMsg.reasoning = reasoning;
+          if (content) {
+            assistantMsg.toolStatus = '';
+          }
           renderChatStream();
         }
       });
+      assistantMsg.toolStatus = '';
+      touchChatThread(ctx.scopeKey, thread);
+      persistChatThreadsToStorage();
       renderChatStream();
 
       const userTurns = thread.filter(m => m.role === 'user').length;
@@ -1741,10 +2463,19 @@ ${ctx.refText}${tailSection}`;
         setTimeout(() => { distillLearningProfile({ manual: false }); }, 800);
       }
     } catch (err) {
+      assistantMsg.toolStatus = '';
       if (err && err.name === 'AbortError') {
-        if (!assistantMsg.content && !assistantMsg.reasoning && thread[thread.length - 1] === assistantMsg) {
-          thread.pop();
+        if (thread[thread.length - 1] === assistantMsg) {
+          if (!assistantMsg.content && !assistantMsg.reasoning) {
+            thread.pop();
+          } else if (assistantMsg.content && !assistantMsg.content.endsWith('（已停止生成）')) {
+            assistantMsg.content = `${assistantMsg.content.trimEnd()}\n\n（已停止生成）`;
+          } else if (!assistantMsg.content && assistantMsg.reasoning) {
+            assistantMsg.content = '（已停止生成）';
+          }
         }
+        touchChatThread(ctx.scopeKey, thread);
+        persistChatThreadsToStorage();
         renderChatStream();
         return;
       }
@@ -1753,9 +2484,277 @@ ${ctx.refText}${tailSection}`;
       } else {
         assistantMsg.content = `请求出错：${err && err.message ? err.message : '未知网络错误'}`;
       }
+      touchChatThread(ctx.scopeKey, thread);
+      persistChatThreadsToStorage();
       renderChatStream();
     } finally {
-      if (dom.askSendBtn) dom.askSendBtn.disabled = false;
+      aiState._activeAssistantMsg = null;
+      aiState._activeScopeKey = '';
+      setAskSendBtnStreaming(false);
+    }
+  }
+
+  function clearCurrentThread() {
+    abortActiveStream({ markStopped: false });
+    const ctx = getScopeContext();
+    aiState.chatThreads.delete(ctx.scopeKey);
+    persistChatThreadsToStorage();
+    renderChatStream();
+    showToast('已清空当前范围对话', 1500);
+  }
+
+  // ==========================================
+  // 7B. 高 ROI 功能：AI 采分眼挖空 / 作战简报 / 用量看板
+  // ==========================================
+  function parseJsonFromAiContent(rawText) {
+    const cleaned = String(rawText || '')
+      .trim()
+      .replace(/^```(?:json)?\s*/i, '')
+      .replace(/\s*```$/i, '')
+      .trim();
+    return JSON.parse(cleaned);
+  }
+
+  async function generateAiClozeForCurrentItem() {
+    if (aiState.isGeneratingCloze) {
+      showToast('正在提炼本题采分眼，请稍候...', 1600);
+      return;
+    }
+    const cfg = getSyncConfig();
+    if (!isSyncConfigured(cfg) && !cfg.deepseekKey) {
+      showToast('请先配置 Sync PIN 或 DeepSeek Key', 2000);
+      return;
+    }
+    const ctx = getScopeContext();
+    const sourceText = (ctx.fullRefText || ctx.refText || '').trim();
+    if (!sourceText || sourceText.length < 20) {
+      showToast('当前篇目正文过短，暂无可提取的采分眼', 1800);
+      return;
+    }
+
+    aiState.isGeneratingCloze = true;
+    const origText = dom.clozeGenBtn ? dom.clozeGenBtn.textContent : 'AI采分眼';
+    if (dom.clozeGenBtn) {
+      dom.clozeGenBtn.disabled = true;
+      dom.clozeGenBtn.textContent = '提炼中...';
+    }
+
+    try {
+      const prompt = [
+        `请针对以下考研考点「${ctx.itemTitle}」（${ctx.subjectLabel}），精准提取用于背诵挖空的双层级短语，严格以 JSON 对象返回：`,
+        '{"skeleton": ["骨架词1", "..."], "scoring": ["采分眼1", "..."]}',
+        '要求：',
+        '1. skeleton（5~12个）：表示答题结构骨架、核心脉络、时期/流派/代表作或段落主干的短词（2~10字）。',
+        '2. scoring（6~16个）：表示阅卷老师重点盯防的专业术语、核心评语、艺术特征或关键论断（2~14字）。',
+        '3. 所有词条必须**原字不差地出自下方参考原文**（连续子串），不要改写或加标点，不要与另一组重复。',
+        '',
+        '参考原文：',
+        sourceText.slice(0, 8000)
+      ].join('\n');
+
+      const res = await streamDeepSeek({
+        modelOverride: 'deepseek-flash',
+        effort: 'low',
+        background: true,
+        stream: false,
+        responseFormat: { type: 'json_object' },
+        temperature: 0.2,
+        maxTokens: 1600,
+        messages: [
+          { role: 'system', content: '你是考研命题与阅卷专家，只输出合法 JSON：{"skeleton": string[], "scoring": string[]}，所有词条必须是原文中的精确连续子串。' },
+          { role: 'user', content: prompt }
+        ]
+      });
+
+      const parsed = parseJsonFromAiContent(res && res.content);
+      const skeleton = cleanClozePhraseList(parsed && parsed.skeleton);
+      const scoring = cleanClozePhraseList(parsed && parsed.scoring);
+      if (skeleton.length === 0 && scoring.length === 0) {
+        throw new Error('AI 未返回有效的采分眼词条');
+      }
+
+      const nowIso = new Date().toISOString();
+      const clozeEntry = {
+        skeleton,
+        scoring,
+        model: 'deepseek-flash',
+        updated_at: nowIso,
+        updatedAt: Date.now()
+      };
+
+      const cacheMap = getAiClozeCacheMap();
+      cacheMap[ctx.itemId] = clozeEntry;
+      setAiClozeCacheMap(cacheMap);
+
+      const b = getBridge();
+      if (b && typeof b.setAiClozeData === 'function') {
+        b.setAiClozeData(ctx.itemId, clozeEntry);
+      }
+      if (b && typeof b.refreshCloze === 'function') {
+        b.refreshCloze();
+      }
+
+      if (isSyncConfigured(cfg)) {
+        try {
+          await fetch(`${cfg.url}/api/ai/cloze`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Sync-Pin': cfg.pin
+            },
+            body: JSON.stringify({
+              item_id: ctx.itemId,
+              skeleton,
+              scoring,
+              model: clozeEntry.model,
+              updated_at: nowIso
+            })
+          });
+        } catch (syncErr) {
+          console.warn('POST /api/ai/cloze failed:', syncErr);
+          markSyncDirty();
+        }
+      }
+
+      showToast(`已生成 ${skeleton.length} 骨架词 + ${scoring.length} 采分眼并刷新挖空`, 2400);
+    } catch (err) {
+      showToast(`AI 采分眼提取失败：${err && err.message ? err.message : '请求异常'}`, 2400);
+    } finally {
+      aiState.isGeneratingCloze = false;
+      if (dom.clozeGenBtn) {
+        dom.clozeGenBtn.disabled = false;
+        dom.clozeGenBtn.textContent = origText;
+      }
+    }
+  }
+
+  function triggerDailyBriefing() {
+    const b = getBridge();
+    const weakItems = (b && typeof b.getWeakItems === 'function') ? (b.getWeakItems('all', 8) || []) : [];
+    const lp = getLearningProfile();
+    const snap = buildGlobalProgressSnapshot();
+
+    const weakListText = weakItems.length > 0
+      ? weakItems.map((it, i) => `${i + 1}. id=${it.id} | 标题=${it.title} | 科目=${it.subject} | 等级=${it.level || '-'} | 分值=${it.score || '-'} | 状态=${it.status} | 听读=${it.listenCount}遍`).join('\n')
+      : '暂无外部 weakItems 列表（可调用 get_weak_items 工具进一步检查）。';
+
+    const apiPrompt = [
+      '请为我制定今日考研背诵【最高 ROI 作战简报】：',
+      '1. 基于下方薄弱高优篇目列表、我的长期学习画像与全站实时快照，精准筛选并推荐今日最值得优先攻克的 **Top 3 行动项**。',
+      '2. 每个行动项必须附带可点击的跳转链接，严格使用 `[[item:ITEM_ID|篇目标题]]` 格式（直接使用下方列表中的精确 `id` 和 `标题`）。',
+      '3. 说明推荐理由（分值/盲区/顽固卡点）与具体复习打法（听读轮次/挖空/口诀自测）。',
+      '',
+      `【长期学习画像】${lp.summary || '暂未建立（可先参考当前薄弱点）'}`,
+      `【全站快照】\n${snap.promptBlock}`,
+      `【薄弱高优候选篇目】\n${weakListText}`
+    ].join('\n');
+
+    sendAskMessage('生成今日最高 ROI 考研背诵作战简报', {
+      displayContent: '生成今日最高 ROI 考研背诵作战简报（基于薄弱考点与学习画像）',
+      apiPromptOverride: apiPrompt,
+      effort: 'low',
+      useTools: true
+    });
+  }
+
+  function formatUsageTokenCount(num) {
+    const n = Math.max(0, Number(num) || 0);
+    if (n >= 1000000) return `${(n / 1000000).toFixed(2)}M`;
+    if (n >= 1000) return `${(n / 1000).toFixed(1)}k`;
+    return String(Math.round(n));
+  }
+
+  function renderUsagePanelData(data) {
+    if (!dom.usagePanelBody) return;
+    const summary = (data && data.summary) || {};
+    const totalCalls = Number(summary.total_calls) || 0;
+    const hitTokens = Number(summary.cache_hit_tokens) || 0;
+    const missTokens = Number(summary.cache_miss_tokens) || 0;
+    const compTokens = Number(summary.completion_tokens) || 0;
+    const rawRate = Number(summary.cache_hit_rate);
+    let hitRatePct = '0%';
+    if (!isNaN(rawRate) && rawRate > 0) {
+      const pctVal = rawRate <= 1 ? rawRate * 100 : rawRate;
+      hitRatePct = `${pctVal.toFixed(1)}%`;
+    } else if (hitTokens + missTokens > 0) {
+      hitRatePct = `${((hitTokens / (hitTokens + missTokens)) * 100).toFixed(1)}%`;
+    }
+
+    const byModel = Array.isArray(data && data.by_model) ? data.by_model : [];
+    const modelLine = byModel.length > 0
+      ? byModel.map(m => `${escapeHtml(m.model || 'unknown')}: ${Number(m.calls ?? m.total_calls ?? 0)}次`).join(' · ')
+      : '暂无分模型记录';
+    const last24 = data && data.last_24h ? `近 24h：${Number(data.last_24h.total_calls ?? data.last_24h.calls ?? 0)} 次调用` : '';
+
+    dom.usagePanelBody.innerHTML = `
+      <div class="ai-usage-grid">
+        <div class="ai-usage-stat">
+          <span class="ai-usage-stat-label">累计调用</span>
+          <span class="ai-usage-stat-val">${totalCalls} 次</span>
+        </div>
+        <div class="ai-usage-stat">
+          <span class="ai-usage-stat-label">缓存命中率</span>
+          <span class="ai-usage-stat-val is-hit">${hitRatePct}</span>
+        </div>
+        <div class="ai-usage-stat">
+          <span class="ai-usage-stat-label">Hit / Miss</span>
+          <span class="ai-usage-stat-val">${formatUsageTokenCount(hitTokens)} / ${formatUsageTokenCount(missTokens)}</span>
+        </div>
+        <div class="ai-usage-stat">
+          <span class="ai-usage-stat-label">输出 Tokens</span>
+          <span class="ai-usage-stat-val">${formatUsageTokenCount(compTokens)}</span>
+        </div>
+      </div>
+      <div class="ai-usage-meta">
+        <span>模型分布：${modelLine}</span>
+        <span>${escapeHtml(last24)}</span>
+      </div>
+    `;
+  }
+
+  async function toggleAndLoadUsagePanel() {
+    if (!dom.usagePanel) return;
+    const isCurrentlyHidden = dom.usagePanel.hidden;
+    if (!isCurrentlyHidden) {
+      dom.usagePanel.hidden = true;
+      if (dom.usageBtn) dom.usageBtn.setAttribute('aria-expanded', 'false');
+      return;
+    }
+
+    dom.usagePanel.hidden = false;
+    if (dom.usageBtn) dom.usageBtn.setAttribute('aria-expanded', 'true');
+    if (!dom.usagePanelBody) return;
+
+    const cfg = getSyncConfig();
+    if (!isSyncConfigured(cfg)) {
+      dom.usagePanelBody.innerHTML = '<div class="ai-usage-empty">请先在设置中填写 Sync PIN 后查看云端 Token 与前缀缓存看板</div>';
+      return;
+    }
+
+    dom.usagePanelBody.innerHTML = '<div class="ai-usage-empty">正在拉取 DeepSeek Token 与缓存命中统计...</div>';
+    try {
+      const res = await fetch(`${cfg.url}/api/ai/usage`, {
+        method: 'GET',
+        headers: { 'X-Sync-Pin': cfg.pin }
+      });
+      if (res.status === 401) throw new Error('Sync PIN 校验失败 (401)');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      renderUsagePanelData(data);
+    } catch (err) {
+      dom.usagePanelBody.innerHTML = `<div class="ai-usage-empty">加载用量统计失败：${escapeHtml(err && err.message ? err.message : '网络异常')}</div>`;
+    }
+  }
+
+  function hydrateBridgeClozeCache() {
+    const b = getBridge();
+    if (!b || typeof b.setAiClozeData !== 'function') return;
+    const map = getAiClozeCacheMap();
+    Object.entries(map).forEach(([itemId, entry]) => {
+      b.setAiClozeData(itemId, entry);
+    });
+    if (typeof b.refreshCloze === 'function') {
+      b.refreshCloze();
     }
   }
 
@@ -1905,6 +2904,13 @@ ${ctx.refText}${tailSection}`;
     dom.chipContrast = document.getElementById('aiChipContrast');
     dom.chipFormula = document.getElementById('aiChipFormula');
     dom.chipClearChat = document.getElementById('aiChipClearChat');
+    dom.clearThreadBtn = document.getElementById('aiClearThreadBtn');
+    dom.briefingBtn = document.getElementById('aiBriefingBtn');
+    dom.usageBtn = document.getElementById('aiUsageBtn');
+    dom.usagePanel = document.getElementById('aiUsagePanel');
+    dom.usagePanelBody = document.getElementById('aiUsagePanelBody');
+    dom.clozeGenBtn = document.getElementById('aiClozeGenBtn');
+    dom.quickChipsWrap = dom.drawer ? dom.drawer.querySelector('.ai-quick-chips') : null;
 
     dom.chatStream = document.getElementById('aiChatStream');
     dom.askInput = document.getElementById('aiAskInput');
@@ -2057,17 +3063,72 @@ ${ctx.refText}${tailSection}`;
     }
 
     if (dom.chipClearChat) {
-      dom.chipClearChat.addEventListener('click', () => {
-        abortActiveStream();
+      dom.chipClearChat.addEventListener('click', clearCurrentThread);
+    }
+    if (dom.clearThreadBtn) {
+      dom.clearThreadBtn.addEventListener('click', clearCurrentThread);
+    }
+    if (dom.briefingBtn) {
+      dom.briefingBtn.addEventListener('click', triggerDailyBriefing);
+    }
+    if (dom.usageBtn) {
+      dom.usageBtn.addEventListener('click', toggleAndLoadUsagePanel);
+    }
+    if (dom.clozeGenBtn) {
+      dom.clozeGenBtn.addEventListener('click', generateAiClozeForCurrentItem);
+    }
+    if (dom.drawer) {
+      dom.drawer.addEventListener('click', (e) => {
+        const presetBtn = e.target.closest('[data-ai-preset]');
+        if (!presetBtn) return;
+        const preset = presetBtn.dataset.aiPreset;
         const ctx = getScopeContext();
-        aiState.chatThreads.delete(ctx.scopeKey);
-        renderChatStream();
-        showToast('已清空当前范围对话', 1500);
+        if (preset === 'exam-twist') {
+          sendAskMessage(
+            `请针对「${ctx.itemTitle}」【换考法考我】：设计 1～2 道高仿真考研变式题（如材料分析、概念辨析、视角转换论述），并在每道题后使用 <details class="ai-fold"><summary>点击展开答题提示与采分点</summary>...</details> 折叠给出答题骨架、采分关键词与避坑提示。`,
+            {
+              displayContent: `换考法考我：针对「${ctx.itemTitle}」生成考研变式题与折叠采分点`
+            }
+          );
+        } else if (preset === 'cross-link') {
+          sendAskMessage(
+            `请围绕「${ctx.itemTitle}」进行【跨科/跨篇串联】：先调用 search_knowledge_base 工具检索全库（706 古代文学 / 807 现当代文学 / 考研政治 / 考研英语）中关联度最高的 2～3 个篇目，对比学理脉络或命题角度，并用 [[item:ITEM_ID|标题]] 格式输出可跳转链接。`,
+            {
+              displayContent: `跨科串联：检索全库关联篇目并梳理「${ctx.itemTitle}」知识脉络`
+            }
+          );
+        }
       });
     }
 
     if (dom.chatStream) {
       dom.chatStream.addEventListener('click', (e) => {
+        const quoteJump = e.target.closest('.ai-quote-jump');
+        if (quoteJump) {
+          const sentIdx = parseInt(quoteJump.dataset.sentIdx, 10);
+          const rawStart = quoteJump.dataset.sentStart;
+          const start = (rawStart !== undefined && rawStart !== '' && !isNaN(Number(rawStart)))
+            ? Number(rawStart)
+            : undefined;
+          const b = getBridge();
+          if (!isNaN(sentIdx) && b && typeof b.seekToSentence === 'function') {
+            b.seekToSentence(sentIdx, start);
+            showToast('已跳转定位原句音频', 1400);
+          }
+          return;
+        }
+
+        const itemJump = e.target.closest('.ai-item-jump');
+        if (itemJump) {
+          const targetId = itemJump.dataset.itemId;
+          const b = getBridge();
+          if (targetId && b && typeof b.openStudyItem === 'function') {
+            b.openStudyItem(targetId);
+            closeAiDrawer();
+          }
+          return;
+        }
+
         const copyBtn = e.target.closest('.js-ai-copy-btn');
         const saveBtn = e.target.closest('.js-ai-save-mem-btn');
         if (!copyBtn && !saveBtn) return;
@@ -2100,7 +3161,13 @@ ${ctx.refText}${tailSection}`;
     }
 
     if (dom.askSendBtn) {
-      dom.askSendBtn.addEventListener('click', () => sendAskMessage(null));
+      dom.askSendBtn.addEventListener('click', () => {
+        if (aiState.isStreaming || dom.askSendBtn.classList.contains('is-streaming')) {
+          abortActiveStream({ markStopped: true });
+          return;
+        }
+        sendAskMessage(null);
+      });
     }
     if (dom.askInput) {
       dom.askInput.addEventListener('keydown', (e) => {
@@ -2151,6 +3218,9 @@ ${ctx.refText}${tailSection}`;
       hideSelectionPill();
       injectCardAiButtons();
       abortActiveStream();
+      if (aiState.chatThreads.size === 0) {
+        loadChatThreadsFromStorage();
+      }
       aiState.scopedCardEl = null;
       aiState.scopedCardLabel = '';
       aiState.scopedCardText = '';
@@ -2179,11 +3249,16 @@ ${ctx.refText}${tailSection}`;
     },
     closeDrawer: () => {
       closeAiDrawer();
-    }
+    },
+    renderAiMarkdown: (rawMarkdown, sentences) => renderAiMarkdown(rawMarkdown, sentences),
+    getScopeContext: () => getScopeContext(),
+    buildAskSystemPrompt: (ctx, userQuery = '') => buildAskSystemPrompt(ctx || getScopeContext(), userQuery)
   };
 
   function initAiSyncModule() {
     migrateLegacySyncUrl();
+    loadChatThreadsFromStorage();
+    hydrateBridgeClozeCache();
     bindSettingsSyncControls();
     bindAiDrawerAndTriggers();
     injectCardAiButtons();
