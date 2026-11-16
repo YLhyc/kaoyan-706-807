@@ -72,6 +72,8 @@
   let isPolDataLoading = false;
   let polDataLoadPromise = null;
   let syncRafId = null;
+  let lastRafRunTs = 0;
+  let lastMediaPosSyncTs = 0;
   let lastSpotlightEl = null;
   let lastSpotlightEls = [];
   let lastLinkedClickInfo = null; // { el, box, idx, ts }
@@ -345,7 +347,7 @@
       el.progressFill.style.width = Math.min(100, (targetTime / dur) * 100) + '%';
     }
 
-    const gapMs = useGap ? (Number(state.loopGapMs) || 0) : 0;
+    const gapMs = (useGap && !document.hidden) ? (Number(state.loopGapMs) || 0) : 0;
     if (gapMs > 0 && shouldResume && hasAudioSource()) {
       const myEpoch = ++loopGapEpoch;
       isLoopGapWaiting = true;
@@ -4116,6 +4118,27 @@
     }
   }
 
+  function updateMediaSessionState(forcePos = false) {
+    if (!('mediaSession' in navigator)) return;
+    try {
+      navigator.mediaSession.playbackState = (state.isPlaying && (!audio.paused || isLoopGapWaiting)) ? 'playing' : 'paused';
+      const now = Date.now();
+      if ((forcePos || now - lastMediaPosSyncTs >= 900) && typeof navigator.mediaSession.setPositionState === 'function') {
+        const dur = audio.duration;
+        if (dur && isFinite(dur) && dur > 0) {
+          const rate = (audio.playbackRate && isFinite(audio.playbackRate) && audio.playbackRate > 0) ? audio.playbackRate : 1;
+          const pos = Math.max(0, Math.min(dur, Number(audio.currentTime) || 0));
+          navigator.mediaSession.setPositionState({
+            duration: dur,
+            playbackRate: rate,
+            position: pos
+          });
+          lastMediaPosSyncTs = now;
+        }
+      }
+    } catch (e) {}
+  }
+
   function updateSystemMediaSession(currentSec, totalSec) {
     if (!('mediaSession' in navigator) || !state.activeItem) return;
 
@@ -4134,15 +4157,18 @@
     const subjName = state.currentSubject === 'pol' ? '考研政治' : (state.currentSubject === '807' ? '807 现代文学' : (state.currentSubject === '706' ? '706 古代文学' : '考研英语写作'));
 
     try {
+      const icon256Url = new URL('icon-256.png', window.location.href).href;
+      const icon512Url = new URL('icon-512.png', window.location.href).href;
       navigator.mediaSession.metadata = new MediaMetadata({
         title: `[${trackLabel}] ${item.title}`,
         artist: `${secTitle}${subjName} · ${item.score || ''}`,
-        album: '2027 考研全科双轨随身背诵手卷 (龙安立师资朗读)',
+        album: '2027 考研全科双轨手卷 (706·807·政·英)',
         artwork: [
-          { src: 'icon-256.png', sizes: '256x256', type: 'image/png' },
-          { src: 'favicon.svg', sizes: 'any', type: 'image/svg+xml' }
+          { src: icon256Url, sizes: '256x256', type: 'image/png' },
+          { src: icon512Url, sizes: '512x512', type: 'image/png' }
         ]
       });
+      updateMediaSessionState(false);
     } catch (e) {
       // Ignore mediaSession metadata errors in unsupported environments
     }
@@ -4398,6 +4424,9 @@
           state.currentSentIndex = initialIdx !== -1 ? initialIdx : 0;
           state.loopCount = 0;
         }
+        if (isLoopSeeking && (Date.now() - lastSeekTs >= 350)) {
+          isLoopSeeking = false;
+        }
         if (!isEnded && isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
           updateHUDDisplay(cur);
           return 'handled';
@@ -4461,6 +4490,9 @@
         const curSec = currentFrameworkSections[currentActiveSectionIndex];
         const nextSec = (currentActiveSectionIndex + 1 < currentFrameworkSections.length) ? currentFrameworkSections[currentActiveSectionIndex + 1] : null;
         if (curSec && typeof curSec.start === 'number' && typeof curSec.end === 'number' && curSec.end > curSec.start) {
+          if (isLoopSeeking && (Date.now() - lastSeekTs >= 350)) {
+            isLoopSeeking = false;
+          }
           if (!isEnded && isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
             updateHUDDisplay(cur);
             return 'handled';
@@ -4474,7 +4506,7 @@
             if (state.loopCount + 1 < targetSecReps) {
               state.loopCount++;
               const targetIdx = getFirstSentIndexInSection(curSec, nextSecStart);
-              if (!(Number(state.loopGapMs) > 0 && shouldResume)) {
+              if (!(Number(state.loopGapMs) > 0 && shouldResume && !document.hidden)) {
                 engageLoopMuteGuard(110);
                 triggerLoopSeek(curSec.start, targetIdx);
                 updateHUDDisplay(curSec.start);
@@ -4534,6 +4566,7 @@
 
     function runSyncLoop() {
       if (state.isPlaying && !audio.paused && state.activeSentences && state.activeSentences.length > 0) {
+        lastRafRunTs = Date.now();
         const cur = audio.currentTime;
 
         // 寻音着陆守卫：音频未实际跳转到位前锁定目标句高亮与时间戳，必要时二次补跳，彻底杜绝跳回第 0 句
@@ -4611,6 +4644,8 @@
 
       updatePlayBtnUI();
       expandPlayerDock();
+      updateMediaSessionState(true);
+      lastRafRunTs = Date.now();
       if (syncRafId) cancelAnimationFrame(syncRafId);
       syncRafId = requestAnimationFrame(runSyncLoop);
     });
@@ -4622,6 +4657,7 @@
           cancelAnimationFrame(syncRafId);
           syncRafId = null;
         }
+        updateMediaSessionState(true);
         return;
       }
       clearPendingSeek(true);
@@ -4632,12 +4668,14 @@
         syncRafId = null;
       }
       updatePlayBtnUI();
+      updateMediaSessionState(true);
     });
 
     audio.addEventListener('seeked', () => {
       if (!isLoopGapWaiting) {
         releaseLoopMuteGuard();
       }
+      updateMediaSessionState(true);
       if (pendingSeekTarget && pendingSeekTarget.token === seekToken) {
         if (Math.abs(audio.currentTime - pendingSeekTarget.time) <= 0.45 && audio.readyState >= 2 && !audio.seeking) {
           clearPendingSeek(true);
@@ -4675,6 +4713,7 @@
 
       if (!audio.paused && state.isPlaying && !isLoopGapWaiting) {
         accumulateListeningTime(false);
+        updateMediaSessionState(false);
       }
 
       if (cur > 1 && Date.now() - lastTimeSaveTs > 2000) {
@@ -4692,9 +4731,14 @@
 
       updateHUDDisplay(cur);
 
-      // 仅当未运行 60fps RAF 引擎（例如暂停或降级情况）时才由 timeupdate 补位判断边界，避免 loop3 双重累加
-      if (state.isPlaying && !audio.paused && syncRafId) {
+      // 仅当前台 60fps RAF 引擎真实活跃（120ms 内有帧回调且页面可见）时才跳过，切入后台或息屏立即由 timeupdate 接管循环推进
+      const rafActive = Boolean(syncRafId) && !document.hidden && (Date.now() - lastRafRunTs <= 120);
+      if (state.isPlaying && !audio.paused && rafActive) {
         return;
+      }
+
+      if (isLoopSeeking && (Date.now() - lastSeekTs >= 350)) {
+        isLoopSeeking = false;
       }
 
       if (state.activeSentences && state.activeSentences.length > 0) {
@@ -4733,6 +4777,7 @@
       cancelLoopGapWait();
       state.isPlaying = false;
       updatePlayBtnUI();
+      updateMediaSessionState(true);
       playNextItem();
     });
 
@@ -4740,6 +4785,36 @@
       audio.playbackRate = state.speed;
       if (el.timeTotal) el.timeTotal.textContent = formatTime(audio.duration || 0);
       renderProgressTicks();
+      updateMediaSessionState(true);
+    });
+
+    audio.addEventListener('ratechange', () => {
+      updateMediaSessionState(true);
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        lastRafRunTs = 0;
+        if (isLoopSeeking && (Date.now() - lastSeekTs >= 350)) {
+          isLoopSeeking = false;
+        }
+        if (state.isPlaying && !audio.paused && state.activeSentences && state.activeSentences.length > 0) {
+          const cur = audio.currentTime || 0;
+          if (state.playMode === 'sequence' || state.playMode === 'item') {
+            const activeIdx = findActiveSentenceIndex(cur);
+            if (activeIdx !== -1) {
+              state.currentSentIndex = activeIdx;
+            }
+          }
+          if (state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
+            highlightSentence(state.currentSentIndex, { forceScroll: true });
+          }
+          updateHUDDisplay(cur);
+          updateMediaSessionState(true);
+          if (syncRafId) cancelAnimationFrame(syncRafId);
+          syncRafId = requestAnimationFrame(runSyncLoop);
+        }
+      }
     });
 
     audio.addEventListener('error', () => {
@@ -6043,7 +6118,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.4.4';
+  const APP_BUILD_ID = '3.4.6';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
