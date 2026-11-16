@@ -5,7 +5,7 @@
 1. 静态语法校验: node --check
 2. 版本清单一致性: version.json, sw.js, app.js, index.html
 3. DOM 关键锚点与 CSS 规则完整性
-4. 考题数据完整性: 807 (35) + 706 (37) + 英语 (16) = 88 篇
+4. 考题数据完整性: 807 (40) + 706 (42) + 英语 (16) = 98 篇
 """
 
 import sys
@@ -23,7 +23,7 @@ if hasattr(sys.stdout, 'reconfigure'):
 
 def main():
     root = Path(__file__).resolve().parent
-    TARGET_VER = '3.4.6'
+    TARGET_VER = '3.4.7'
     TARGET_CACHE = f"kaoyan-all-in-one-v{TARGET_VER}"
 
     print("=" * 65)
@@ -174,15 +174,15 @@ def main():
         ien = manifest.get("items_en", [])
         total = len(i807) + len(i706) + len(ien)
 
-        print(f"  • 807 现当代文学: {len(i807)} 题 (预期 35)")
-        print(f"  • 706 古代文学:   {len(i706)} 题 (预期 37)")
+        print(f"  • 807 现当代文学: {len(i807)} 题 (预期 40)")
+        print(f"  • 706 古代文学:   {len(i706)} 题 (预期 42)")
         print(f"  • 考研英语写作:   {len(ien)} 篇 (预期 16)")
-        print(f"  • 全科题目总计:   {total} 题/篇 (预期 88)")
+        print(f"  • 全科题目总计:   {total} 题/篇 (预期 98)")
 
-        if len(i807) != 35 or len(i706) != 37 or len(ien) != 16 or total != 88:
+        if len(i807) != 40 or len(i706) != 42 or len(ien) != 16 or total != 98:
             errors.append(f"考题数量与预期不一致: 807={len(i807)}, 706={len(i706)}, en={len(ien)}, total={total}")
         else:
-            print("  ✓ 全科 88 道题目清单数据结构完整一致！")
+            print("  ✓ 全科 98 道题目清单数据结构完整一致！")
 
     print("\n" + "=" * 65)
     if errors:
