@@ -1,13 +1,13 @@
-// 考研背诵手卷 · 离线 PWA Service Worker (v3.4.9)
-const CACHE_NAME = 'kaoyan-all-in-one-v3.4.9';
+// 考研背诵手卷 · 离线 PWA Service Worker (v3.4.10)
+const CACHE_NAME = 'kaoyan-all-in-one-v3.4.10';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
-  './app.css?v=3.4.9',
-  './app.js?v=3.4.9',
-  './ai_sync.js?v=3.4.9',
-  './data/kaoyan_data.js?v=3.4.9',
-  './data/kaoyan_data_pol.js?v=3.4.9',
+  './app.css?v=3.4.10',
+  './app.js?v=3.4.10',
+  './ai_sync.js?v=3.4.10',
+  './data/kaoyan_data.js?v=3.4.10',
+  './data/kaoyan_data_pol.js?v=3.4.10',
   './version.json',
   './manifest.json',
   './favicon.svg',
