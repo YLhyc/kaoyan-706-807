@@ -39,7 +39,7 @@
     // 播放状态
     isPlaying: false,
     speed: 1.0,
-    playMode: 'sequence', // 'sequence', 'item', 'section', 'loop3', 'sentence'
+    playMode: 'sequence', // 'sequence', 'item', 'section', 'loop3', 'sentence', 'range'
     clozeMode: 'off', // 'off' | 'keyword' | 'body'
     clozeFilterMode: (function () {
       try {
@@ -49,8 +49,10 @@
     })(),
     reciteMode: 'normal',
     loopCount: 0,
-    sentenceRepeatCount: 3, // 2 | 3 | 4 | 5
-    sectionRepeatCount: 0,  // 0 (∞) | 2 | 3 | 4 | 5
+    sentenceRepeatCount: 3, // 2..10
+    sectionRepeatCount: 0,  // 0 (∞) | 2..10
+    rangeRepeatCount: 0,    // 0 (∞) | 2..10
+    rangeSelection: { itemKey: '', startIdx: -1, endIdx: -1, step: 'idle' }, // step: 'idle' | 'pick-start' | 'pick-end' | 'ready'
     loopGapMs: 500,         // 0 | 500 | 800 | 1200
     fontSize: 17,
     theme: 'parchment',
@@ -385,7 +387,7 @@
     }
   }
 
-  const REPEAT_COUNT_OPTIONS = [2, 3, 4, 5];
+  const REPEAT_COUNT_OPTIONS = [2, 3, 4, 5, 6, 7, 8, 9, 10];
   const SPEED_OPTIONS = [0.8, 0.9, 1.0, 1.1, 1.2, 1.4, 1.5, 2.0];
   const LOOP_GAP_OPTIONS = [
     { ms: 0, label: '0s 无停顿' },
@@ -402,6 +404,10 @@
       const secReps = Number(state.sectionRepeatCount) || 0;
       return secReps >= 2 ? secReps : Infinity;
     }
+    if (state.playMode === 'range') {
+      const rReps = Number(state.rangeRepeatCount) || 0;
+      return rReps >= 2 ? rReps : Infinity;
+    }
     if (state.playMode === 'sentence') {
       return Infinity;
     }
@@ -409,7 +415,7 @@
   }
 
   // ==========================================
-  // 听读背诵循环模式配置 (按顺序依次播放 / 完全循环 / 单段循环 / 单句循环)
+  // 听读背诵循环模式配置 (按顺序依次播放 / 完全循环 / 单段循环 / 单句循环 / 区间循环)
   // ==========================================
   const PLAY_MODES = [
     {
@@ -456,6 +462,15 @@
       desc: '在当前单句内循环跟读背诵，点击任意句子即可循环该句',
       toast: '已开启【单句循环】· 点击任意句子即无限循环朗读',
       iconSvg: '<polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path><line x1="12" y1="9.2" x2="12" y2="14.8"></line>'
+    },
+    {
+      id: 'range',
+      label: '区间',
+      name: '区间循环（框选连续分句）',
+      badge: 'A-B 区间',
+      desc: '自由点选起始句 A 与结束句 B，整句包络无限或 2~10 遍复读',
+      toast: '已进入【区间循环】· 请在正文依次点选起始分句 A 与结束分句 B',
+      iconSvg: '<path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3"></path><path d="M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3"></path><polyline points="9 12 12 9 15 12"></polyline><line x1="12" y1="9" x2="12" y2="16"></line>'
     }
   ];
 
@@ -550,7 +565,207 @@
         };
       }
     }
+    if (state.playMode === 'range') {
+      const rReps = Number(state.rangeRepeatCount) || 0;
+      return {
+        ...modeConfig,
+        label: rReps >= 2 ? `区间×${rReps}` : '区间∞',
+        name: rReps >= 2 ? `分句区间循环（${rReps}遍）` : '分句区间循环（∞ 无限）',
+        toast: rReps >= 2
+          ? `已开启【区间循环 · ${rReps}遍】· 播完自动停在当前区间`
+          : '已开启【区间循环 · ∞ 无限】· 将在框选分句内循环复读'
+      };
+    }
     return modeConfig;
+  }
+
+  function getCurrentRangeItemKey() {
+    return `${state.currentSubject || ''}_${state.polSubMode || ''}_${state.activeItemId || ''}_${state.currentTrack || 1}`;
+  }
+
+  function hasValidRangeSelection() {
+    const rs = state.rangeSelection;
+    return Boolean(
+      rs &&
+      rs.step === 'ready' &&
+      rs.itemKey === getCurrentRangeItemKey() &&
+      rs.startIdx >= 0 &&
+      rs.endIdx >= rs.startIdx &&
+      state.activeSentences &&
+      rs.endIdx < state.activeSentences.length
+    );
+  }
+
+  function applyRangeHighlightToDOM() {
+    if (!el.paperContent) return;
+    const rs = state.rangeSelection;
+    const isPicking = rs && (rs.step === 'pick-start' || rs.step === 'pick-end');
+    el.paperContent.classList.toggle('range-picking-active', Boolean(isPicking));
+
+    el.paperContent.querySelectorAll('.range-loop-selected, .range-anchor-start, .range-anchor-end').forEach(node => {
+      node.classList.remove('range-loop-selected', 'range-anchor-start', 'range-anchor-end');
+    });
+
+    if (!rs || rs.itemKey !== getCurrentRangeItemKey() || rs.step === 'idle' || rs.startIdx < 0) {
+      return;
+    }
+
+    const startIdx = rs.startIdx;
+    const endIdx = (rs.step === 'ready' && rs.endIdx >= startIdx) ? rs.endIdx : startIdx;
+    const matchSel = (idx) => `[data-sent-idx="${idx}"], [data-linked-sent-idx="${idx}"]`;
+
+    for (let idx = startIdx; idx <= endIdx; idx++) {
+      el.paperContent.querySelectorAll(matchSel(idx)).forEach(node => {
+        node.classList.add('range-loop-selected');
+        if (idx === startIdx) node.classList.add('range-anchor-start');
+        if (idx === endIdx && rs.step === 'ready') node.classList.add('range-anchor-end');
+      });
+    }
+  }
+
+  function renderRangeLoopUI() {
+    const bar = document.getElementById('rangeLoopBar');
+    const statusText = document.getElementById('rangeLoopStatusText');
+    const repickBtn = document.getElementById('btn-range-repick');
+    const exitBtn = document.getElementById('btn-range-exit');
+    const repsRow = document.getElementById('rangeLoopRepsRow');
+    const repsPills = document.getElementById('rangeLoopRepsPills');
+    const triggerBtn = document.getElementById('btn-range-pick');
+    const triggerLabel = document.getElementById('rangePickBtnLabel');
+
+    const rs = state.rangeSelection;
+    const active = rs && rs.step !== 'idle' && rs.itemKey === getCurrentRangeItemKey();
+    const isPicking = active && (rs.step === 'pick-start' || rs.step === 'pick-end');
+    const isReady = active && rs.step === 'ready' && hasValidRangeSelection();
+
+    if (triggerBtn) {
+      triggerBtn.classList.toggle('is-picking', Boolean(isPicking));
+      triggerBtn.classList.toggle('is-active', Boolean(isReady && state.playMode === 'range'));
+    }
+    if (triggerLabel) {
+      if (isPicking) triggerLabel.textContent = '选句中…';
+      else if (isReady && state.playMode === 'range') triggerLabel.textContent = `区间 ${rs.startIdx + 1}~${rs.endIdx + 1}`;
+      else triggerLabel.textContent = '区间循环';
+    }
+
+    if (!bar) return;
+    if (!active) {
+      bar.hidden = true;
+      applyRangeHighlightToDOM();
+      return;
+    }
+
+    bar.hidden = false;
+    if (rs.step === 'pick-start') {
+      if (statusText) statusText.textContent = '① 请轻点正文【起始分句 A】';
+      if (repickBtn) repickBtn.hidden = true;
+      if (exitBtn) exitBtn.textContent = '取消';
+      if (repsRow) repsRow.hidden = true;
+    } else if (rs.step === 'pick-end') {
+      if (statusText) statusText.textContent = `② 已定起点 第 ${rs.startIdx + 1} 句 · 请轻点【结束分句 B】`;
+      if (repickBtn) {
+        repickBtn.hidden = false;
+        repickBtn.textContent = '重选起点';
+      }
+      if (exitBtn) exitBtn.textContent = '取消';
+      if (repsRow) repsRow.hidden = true;
+    } else if (isReady) {
+      const spanCount = rs.endIdx - rs.startIdx + 1;
+      const rReps = Number(state.rangeRepeatCount) || 0;
+      const curRepText = rReps >= 2 ? `${rReps}遍` : '∞ 无限';
+      if (statusText) {
+        statusText.textContent = `区间循环：第 ${rs.startIdx + 1}~${rs.endIdx + 1} 句（共 ${spanCount} 句 · ${curRepText}）`;
+      }
+      if (repickBtn) {
+        repickBtn.hidden = false;
+        repickBtn.textContent = '重选区间';
+      }
+      if (exitBtn) exitBtn.textContent = '退出区间';
+      if (repsRow && repsPills) {
+        repsRow.hidden = false;
+        const opts = [{ val: 0, label: '∞ 无限' }, ...REPEAT_COUNT_OPTIONS.map(n => ({ val: n, label: `${n}遍` }))];
+        repsPills.innerHTML = opts.map(o =>
+          `<button type="button" class="range-loop-rep-pill ${rReps === o.val ? 'active' : ''}" data-range-rep="${o.val}">${o.label}</button>`
+        ).join('');
+        repsPills.querySelectorAll('.range-loop-rep-pill').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const v = parseInt(btn.dataset.rangeRep, 10);
+            state.rangeRepeatCount = isNaN(v) ? 0 : v;
+            state.loopCount = 0;
+            localStorage.setItem('kaoyan_range_repeat_count', String(state.rangeRepeatCount));
+            if (state.playMode !== 'range') {
+              state.playMode = 'range';
+              localStorage.setItem('kaoyan_play_mode', 'range');
+            }
+            updatePlayModeUI(false);
+            renderRangeLoopUI();
+            updateHUDDisplay(audio.currentTime || 0);
+          });
+        });
+      }
+    }
+    applyRangeHighlightToDOM();
+  }
+
+  function clearRangeLoop(restoreMode = true) {
+    state.rangeSelection = { itemKey: '', startIdx: -1, endIdx: -1, step: 'idle' };
+    if (restoreMode && state.playMode === 'range') {
+      state.playMode = 'sequence';
+      state.loopCount = 0;
+      localStorage.setItem('kaoyan_play_mode', 'sequence');
+      updatePlayModeUI(false);
+    }
+    renderRangeLoopUI();
+  }
+
+  function startRangePicking() {
+    if (!state.activeSentences || state.activeSentences.length === 0) {
+      showToast('当前篇目暂无可框选的分句音频', 2000);
+      return;
+    }
+    cancelLoopGapWait();
+    state.rangeSelection = {
+      itemKey: getCurrentRangeItemKey(),
+      startIdx: -1,
+      endIdx: -1,
+      step: 'pick-start'
+    };
+    renderRangeLoopUI();
+    showToast('请依次点击起始分句 A 与结束分句 B', 2200);
+  }
+
+  function handleRangeSentencePick(sentIdx) {
+    const len = state.activeSentences ? state.activeSentences.length : 0;
+    if (sentIdx < 0 || sentIdx >= len) return;
+    const rs = state.rangeSelection;
+    if (!rs || rs.itemKey !== getCurrentRangeItemKey()) return;
+
+    if (rs.step === 'pick-start') {
+      rs.startIdx = sentIdx;
+      rs.endIdx = sentIdx;
+      rs.step = 'pick-end';
+      renderRangeLoopUI();
+      return;
+    }
+
+    if (rs.step === 'pick-end') {
+      const a = Math.min(rs.startIdx, sentIdx);
+      const b = Math.max(rs.startIdx, sentIdx);
+      rs.startIdx = a;
+      rs.endIdx = b;
+      rs.step = 'ready';
+      state.playMode = 'range';
+      state.loopCount = 0;
+      localStorage.setItem('kaoyan_play_mode', 'range');
+      updatePlayModeUI(false);
+      renderRangeLoopUI();
+      const targetSent = state.activeSentences[a];
+      seekToSentence(a, targetSent ? targetSent.start : 0);
+      const spanCount = b - a + 1;
+      const rReps = Number(state.rangeRepeatCount) || 0;
+      showToast(`已锁定第 ${a + 1}~${b + 1} 句（共 ${spanCount} 句）· ${rReps >= 2 ? `${rReps}遍循环` : '∞ 无限循环'}`, 2400);
+    }
   }
 
   function updatePlayModeUI(showToastNotice = false) {
@@ -572,10 +787,18 @@
 
   function setPlayMode(modeId, showToastNotice = true) {
     cancelLoopGapWait();
+    if (modeId !== 'range' && state.rangeSelection && state.rangeSelection.step !== 'idle') {
+      state.rangeSelection = { itemKey: '', startIdx: -1, endIdx: -1, step: 'idle' };
+      renderRangeLoopUI();
+    }
     state.playMode = modeId;
     state.loopCount = 0;
     localStorage.setItem('kaoyan_play_mode', modeId);
     updatePlayModeUI(showToastNotice);
+    if (modeId === 'range' && !hasValidRangeSelection()) {
+      startRangePicking();
+      return;
+    }
 
     // 智能校准当前高光与指针
     if (state.activeSentences && state.activeSentences.length > 0) {
@@ -749,9 +972,11 @@
     const seqMode = PLAY_MODES.find(m => m.id === 'sequence');
     const itemMode = PLAY_MODES.find(m => m.id === 'item');
     const loop3Mode = PLAY_MODES.find(m => m.id === 'loop3');
+    const rangeMode = PLAY_MODES.find(m => m.id === 'range');
 
     const sentReps = Math.max(2, Number(state.sentenceRepeatCount) || 3);
     const secReps = Number(state.sectionRepeatCount) || 0;
+    const rangeReps = Number(state.rangeRepeatCount) || 0;
 
     const drawerCards = [
       {
@@ -777,7 +1002,7 @@
         isCurrent: state.playMode === 'section',
         name: '单段循环 / 多遍推进',
         badge: secReps >= 2 ? `${secReps}遍推进` : '∞ 无限循环',
-        desc: '按板块/分论点背诵：选 2~5 遍读完自动推向下一段，或选 ∞ 在当前段内无限循环',
+        desc: '按板块/分论点背诵：选 2~10 遍读完自动推向下一段，或选 ∞ 在当前段内无限循环',
         iconSvg: secMode.iconSvg,
         pills: [
           { val: 0, label: '∞ 无限', active: state.playMode === 'section' && secReps === 0 },
@@ -799,7 +1024,7 @@
         isCurrent: state.playMode === 'loop3' || state.playMode === 'sentence',
         name: '单句循环 / 考点精听',
         badge: state.playMode === 'sentence' ? '∞ 无限单句' : `${sentReps}遍推进`,
-        desc: '徐涛考点 / 正文单句：选 2遍(AABBCC)、三遍(AAABBBCCC) 等逐条推进，或选 ∞ 无限单句循环',
+        desc: '徐涛考点 / 正文单句：选 2~10 遍逐条推进，或选 ∞ 无限单句循环',
         iconSvg: loop3Mode.iconSvg,
         pills: [
           ...REPEAT_COUNT_OPTIONS.map(n => ({ val: n, label: `${n}遍`, active: state.playMode === 'loop3' && sentReps === n })),
@@ -818,6 +1043,34 @@
         onCardClick: () => {
           setPlayMode(state.playMode === 'sentence' ? 'sentence' : 'loop3', true);
           closePlayModeDrawer();
+        }
+      },
+      {
+        modeId: 'range',
+        isCurrent: state.playMode === 'range',
+        name: '区间循环（框选连续分句）',
+        badge: rangeReps >= 2 ? `${rangeReps}遍循环` : '∞ 无限循环',
+        desc: '点击卡片进入选区：依次轻点起点句 A 与结束句 B，整句包络循环所选区间',
+        iconSvg: rangeMode.iconSvg,
+        pills: [
+          { val: 0, label: '∞ 无限', active: rangeReps === 0 },
+          ...REPEAT_COUNT_OPTIONS.map(n => ({ val: n, label: `${n}遍`, active: rangeReps === n }))
+        ],
+        onPillClick: (val) => {
+          state.rangeRepeatCount = val;
+          localStorage.setItem('kaoyan_range_repeat_count', String(val));
+          if (hasValidRangeSelection()) {
+            state.loopCount = 0;
+            setPlayMode('range', true);
+            renderRangeLoopUI();
+          } else {
+            showToast(`区间默认遍数已设为 ${val === 0 ? '∞ 无限' : `${val}遍`}，点击卡片开始框选分句`, 2200);
+          }
+          renderPlayModeList();
+        },
+        onCardClick: () => {
+          closePlayModeDrawer();
+          startRangePicking();
         }
       }
     ];
@@ -1369,6 +1622,9 @@
     state.currentSubject = sub;
     cancelLoopGapWait();
     clearPendingSeek(true);
+    if (state.rangeSelection && state.rangeSelection.step !== 'idle') {
+      clearRangeLoop(state.playMode === 'range');
+    }
     
     // 跨科切换状态隔离：立即暂停原音频并注销帧循环与残余焦点，杜绝幽灵音频与回调穿透
     if (audio && !audio.paused) {
@@ -1917,6 +2173,7 @@
         playMode: localStorage.getItem('kaoyan_play_mode') || state.playMode,
         sentenceRepeatCount: localStorage.getItem('kaoyan_sent_repeat_count') || String(state.sentenceRepeatCount || 3),
         sectionRepeatCount: localStorage.getItem('kaoyan_sec_repeat_count') || String(state.sectionRepeatCount || 0),
+        rangeRepeatCount: localStorage.getItem('kaoyan_range_repeat_count') || String(state.rangeRepeatCount || 0),
         loopGapMs: localStorage.getItem('kaoyan_loop_gap_ms') || String(state.loopGapMs || 500),
         polXtVoice: localStorage.getItem('kaoyan_pol_xt_voice') || state.polXtVoice
       }
@@ -2008,6 +2265,11 @@
         if (importedSecReps === 0 || REPEAT_COUNT_OPTIONS.includes(importedSecReps)) {
           state.sectionRepeatCount = importedSecReps;
           localStorage.setItem('kaoyan_sec_repeat_count', String(importedSecReps));
+        }
+        const importedRangeReps = parseInt(s.rangeRepeatCount, 10);
+        if (importedRangeReps === 0 || REPEAT_COUNT_OPTIONS.includes(importedRangeReps)) {
+          state.rangeRepeatCount = importedRangeReps;
+          localStorage.setItem('kaoyan_range_repeat_count', String(importedRangeReps));
         }
         const importedGapMs = parseInt(s.loopGapMs, 10);
         if (LOOP_GAP_OPTIONS.some(o => o.ms === importedGapMs)) {
@@ -2839,6 +3101,7 @@
         }
       });
     }
+    applyRangeHighlightToDOM();
   }
 
   // 板块/卡片级点读交互引擎：点击任意板块头部或卡片背景，自动定位并起音朗读该板块的第一句话（杜绝落空或归零）
@@ -2870,6 +3133,9 @@
 
       targetEl.addEventListener('click', (e) => {
         if (hasActiveTextSelection()) return;
+        if (state.rangeSelection && (state.rangeSelection.step === 'pick-start' || state.rangeSelection.step === 'pick-end')) {
+          return;
+        }
         // 若点击的是交互控件（按钮、链接、专属跳转胶囊、AI 伴学按钮或挖空测验模式的填空词），由其自身专属事件接管
         if (e.target.closest('button, a, input, .seal-btn, .en-audio-jump-pill, .card-ai-btn')) {
           return;
@@ -2958,6 +3224,9 @@
     state.activeItem = item;
     state.currentSentIndex = -1;
     state.loopCount = 0;
+    if (state.rangeSelection && state.rangeSelection.step !== 'idle' && state.rangeSelection.itemKey !== getCurrentRangeItemKey()) {
+      clearRangeLoop(state.playMode === 'range');
+    }
 
     localStorage.setItem(`kaoyan_last_item_${state.currentSubject}`, resolvedId);
     localStorage.setItem('kaoyan_last_item_id', resolvedId);
@@ -3020,6 +3289,9 @@
     state.currentTrack = trackNum;
     state.currentSentIndex = -1;
     state.loopCount = 0;
+    if (state.rangeSelection && state.rangeSelection.step !== 'idle' && state.rangeSelection.itemKey !== getCurrentRangeItemKey()) {
+      clearRangeLoop(state.playMode === 'range');
+    }
     localStorage.setItem('kaoyan_last_track', String(trackNum));
 
     if (el.tabTrack1) el.tabTrack1.classList.toggle('active', trackNum === 1);
@@ -3080,6 +3352,7 @@
     state.activeSentences = sanitizeSentences(sentences);
     stampSentenceIndices();
     buildFrameworkIndex();
+    renderRangeLoopUI();
     notifyPaperRendered();
 
     // 若未命中内置包且有 sFile，发起异步非阻塞 fetch 进行补充校准
@@ -3179,6 +3452,10 @@
 
         if (targetIdx !== -1 && matched && typeof matched.start === 'number' && !isNaN(matched.start)) {
           e.stopPropagation();
+          if (state.rangeSelection && (state.rangeSelection.step === 'pick-start' || state.rangeSelection.step === 'pick-end')) {
+            handleRangeSentencePick(targetIdx);
+            return;
+          }
           if (elItem.classList.contains('t1-linked-sent') || elItem.dataset.linkedSentIdx !== undefined) {
             lastLinkedClickInfo = {
               el: elItem,
@@ -4418,6 +4695,63 @@
       }
       const shouldResume = !audio.paused || isEnded;
 
+      if (state.playMode === 'range' && hasValidRangeSelection()) {
+        const rs = state.rangeSelection;
+        const startIdx = rs.startIdx;
+        const endIdx = rs.endIdx;
+        const startSent = state.activeSentences[startIdx];
+        const endSent = state.activeSentences[endIdx];
+        const afterSent = (endIdx + 1 < state.activeSentences.length) ? state.activeSentences[endIdx + 1] : null;
+        const rStart = typeof startSent.start === 'number' ? startSent.start : parseFloat(startSent.start || 0);
+        const rEnd = typeof endSent.end === 'number' ? endSent.end : parseFloat(endSent.end || (afterSent ? afterSent.start : Infinity));
+        const afterStart = afterSent ? (typeof afterSent.start === 'number' ? afterSent.start : parseFloat(afterSent.start)) : Infinity;
+        const rangeCutoff = getLoopCutoff(rStart, rEnd, afterStart);
+        const rReps = Number(state.rangeRepeatCount) || 0;
+        const targetRangeReps = rReps >= 2 ? rReps : Infinity;
+
+        if (isLoopSeeking && (Date.now() - lastSeekTs >= 350)) {
+          isLoopSeeking = false;
+        }
+        if (!isEnded && isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+          updateHUDDisplay(cur);
+          return 'handled';
+        }
+
+        if (isEnded || cur >= rangeCutoff || cur > rEnd) {
+          if (state.loopCount + 1 < targetRangeReps) {
+            state.loopCount++;
+            performLoopTransition(rStart, {
+              targetSentIdx: startIdx,
+              shouldResume,
+              useGap: true
+            });
+            return 'handled';
+          } else {
+            state.loopCount = 0;
+            cancelLoopGapWait();
+            state.isPlaying = false;
+            try { audio.pause(); } catch (e) {}
+            updatePlayBtnUI();
+            updateHUDDisplay(cur);
+            showToast(`已完成 ${targetRangeReps} 遍区间循环，已停留在当前区间`, 2400);
+            return 'handled';
+          }
+        } else {
+          if (cur < rStart - 0.15 && !isLoopSeeking && shouldResume) {
+            performLoopTransition(rStart, { targetSentIdx: startIdx, shouldResume: true, useGap: false });
+            return 'handled';
+          }
+          const rawActive = findActiveSentenceIndex(cur);
+          const clampedIdx = (rawActive !== -1) ? Math.max(startIdx, Math.min(endIdx, rawActive)) : startIdx;
+          if (clampedIdx !== state.currentSentIndex || !lastSpotlightEl) {
+            state.currentSentIndex = clampedIdx;
+            highlightSentence(clampedIdx);
+          }
+          updateHUDDisplay(cur);
+          return 'handled';
+        }
+      }
+
       if ((state.playMode === 'sentence' || state.playMode === 'loop3') && state.activeSentences && state.activeSentences.length > 0) {
         if (state.currentSentIndex < 0 || state.currentSentIndex >= state.activeSentences.length) {
           const initialIdx = findActiveSentenceIndex(cur);
@@ -4612,7 +4946,10 @@
 
         // 4. 常规高光追踪 (寻音跳转锁保护：寻音期间绝不回退至第0句)
         if (!isLoopSeeking) {
-          const activeIdx = findActiveSentenceIndex(cur);
+          let activeIdx = findActiveSentenceIndex(cur);
+          if (state.playMode === 'range' && hasValidRangeSelection() && activeIdx !== -1) {
+            activeIdx = Math.max(state.rangeSelection.startIdx, Math.min(state.rangeSelection.endIdx, activeIdx));
+          }
           if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
             if (lastClickedSentGuard && Date.now() < lastClickedSentGuard.until && cur < lastClickedSentGuard.time + 0.12 && activeIdx !== lastClickedSentGuard.idx) {
               syncRafId = requestAnimationFrame(runSyncLoop);
@@ -4743,17 +5080,22 @@
 
       if (state.activeSentences && state.activeSentences.length > 0) {
         // 徐涛16天带背原声前奏导言区自动跳至第一考点
-        if (maybeSkipXutaoIntro(cur)) {
+        if (!audio.paused && state.isPlaying && maybeSkipXutaoIntro(cur)) {
           return;
         }
 
-        const loopState = handleLoopBoundary(cur, false);
-        if (loopState) {
-          return;
+        if (!audio.paused && state.isPlaying) {
+          const loopState = handleLoopBoundary(cur, false);
+          if (loopState) {
+            return;
+          }
         }
 
         if (!isLoopSeeking) {
-          const activeIdx = findActiveSentenceIndex(cur);
+          let activeIdx = findActiveSentenceIndex(cur);
+          if (state.playMode === 'range' && hasValidRangeSelection() && activeIdx !== -1) {
+            activeIdx = Math.max(state.rangeSelection.startIdx, Math.min(state.rangeSelection.endIdx, activeIdx));
+          }
           if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
             state.currentSentIndex = activeIdx;
             state.loopCount = 0;
@@ -5683,16 +6025,47 @@
     if (savedSecReps === 0 || REPEAT_COUNT_OPTIONS.includes(savedSecReps)) {
       state.sectionRepeatCount = savedSecReps;
     }
+    const savedRangeReps = parseInt(localStorage.getItem('kaoyan_range_repeat_count'), 10);
+    if (savedRangeReps === 0 || REPEAT_COUNT_OPTIONS.includes(savedRangeReps)) {
+      state.rangeRepeatCount = savedRangeReps;
+    }
     const savedGapMs = parseInt(localStorage.getItem('kaoyan_loop_gap_ms'), 10);
     if (LOOP_GAP_OPTIONS.some(o => o.ms === savedGapMs)) {
       state.loopGapMs = savedGapMs;
     }
 
     const savedPlayMode = localStorage.getItem('kaoyan_play_mode');
-    if (savedPlayMode && PLAY_MODES.some(m => m.id === savedPlayMode)) {
+    if (savedPlayMode && savedPlayMode !== 'range' && PLAY_MODES.some(m => m.id === savedPlayMode)) {
       state.playMode = savedPlayMode;
     }
     updatePlayModeUI(false);
+
+    const rangePickBtn = document.getElementById('btn-range-pick');
+    if (rangePickBtn) {
+      rangePickBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const rs = state.rangeSelection;
+        if (rs && (rs.step === 'pick-start' || rs.step === 'pick-end')) {
+          clearRangeLoop(true);
+        } else {
+          startRangePicking();
+        }
+      });
+    }
+    const rangeRepickBtn = document.getElementById('btn-range-repick');
+    if (rangeRepickBtn) {
+      rangeRepickBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        startRangePicking();
+      });
+    }
+    const rangeExitBtn = document.getElementById('btn-range-exit');
+    if (rangeExitBtn) {
+      rangeExitBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        clearRangeLoop(true);
+      });
+    }
 
     const savedSpeed = parseFloat(localStorage.getItem('kaoyan_speed'));
     if (!isNaN(savedSpeed) && SPEED_OPTIONS.includes(savedSpeed)) {
@@ -6118,7 +6491,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.4.7';
+  const APP_BUILD_ID = '3.4.8';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
@@ -6629,14 +7002,29 @@
   function getAiClozeData(itemId) {
     ensureAiClozeCacheLoaded();
     if (!itemId) return null;
-    const entry = aiClozeCache.get(String(itemId));
-    if (!entry) return null;
-    return {
-      skeleton: [...entry.skeleton],
-      scoring: [...entry.scoring],
-      model: entry.model,
-      updated_at: entry.updated_at
-    };
+    const key = String(itemId);
+    const entry = aiClozeCache.get(key);
+    if (entry) {
+      return {
+        skeleton: [...entry.skeleton],
+        scoring: [...entry.scoring],
+        model: entry.model,
+        updated_at: entry.updated_at
+      };
+    }
+    const builtinMap = (typeof window !== 'undefined' && window.KAOYAN_BUILTIN_CLOZE) ? window.KAOYAN_BUILTIN_CLOZE : null;
+    const rawBuiltin = builtinMap ? builtinMap[key] : null;
+    const normBuiltin = rawBuiltin ? normalizeAiClozeEntry(rawBuiltin) : null;
+    if (normBuiltin && (normBuiltin.skeleton.length > 0 || normBuiltin.scoring.length > 0)) {
+      return {
+        skeleton: [...normBuiltin.skeleton],
+        scoring: [...normBuiltin.scoring],
+        model: normBuiltin.model || 'builtin-curated',
+        updated_at: '',
+        isBuiltin: true
+      };
+    }
+    return null;
   }
 
   function setAiClozeData(itemId, clozeObj) {
@@ -7354,6 +7742,12 @@
     state.currentTrack = trackNum;
     state.currentSentIndex = -1;
     state.loopCount = 0;
+    if (state.rangeSelection && state.rangeSelection.step !== 'idle' && state.rangeSelection.itemKey !== getCurrentRangeItemKey()) {
+      clearRangeLoop(state.playMode === 'range');
+    }
+    if (state.rangeSelection && state.rangeSelection.step !== 'idle' && state.rangeSelection.itemKey !== getCurrentRangeItemKey()) {
+      clearRangeLoop(state.playMode === 'range');
+    }
     localStorage.setItem('kaoyan_last_track', String(trackNum));
 
     if (el.tabTrack1) el.tabTrack1.classList.toggle('active', trackNum === 1);
