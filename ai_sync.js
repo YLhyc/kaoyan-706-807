@@ -67,6 +67,7 @@
     scopedSentences: [],
     quotedText: '',
     chatThreads: new Map(), // scopeKey -> Array<{ role, content, reasoning?, toolStatus? }>
+    chatThreadMeta: new Map(), // scopeKey -> { updatedAt: number, deleted?: boolean }
     isStreaming: false,
     abortController: null,
     _activeAssistantMsg: null,
@@ -261,6 +262,15 @@
       if (!raw) return;
       const parsed = JSON.parse(raw);
       const nextMap = new Map();
+      const nextMeta = new Map();
+      const rawMeta = (parsed && parsed.meta && typeof parsed.meta === 'object' && !Array.isArray(parsed.meta)) ? parsed.meta : {};
+      Object.entries(rawMeta).forEach(([k, m]) => {
+        if (!k || !m || typeof m !== 'object') return;
+        nextMeta.set(String(k), {
+          updatedAt: Math.max(0, Number(m.updatedAt) || 0),
+          deleted: Boolean(m.deleted)
+        });
+      });
       const entries = (parsed && Array.isArray(parsed.entries))
         ? parsed.entries
         : (Array.isArray(parsed) ? parsed : (parsed && typeof parsed === 'object' ? Object.entries(parsed) : []));
@@ -272,6 +282,9 @@
         if (msgs.length > 0) {
           nextMap.delete(scopeKey);
           nextMap.set(scopeKey, msgs);
+          if (!nextMeta.has(scopeKey)) {
+            nextMeta.set(scopeKey, { updatedAt: 1, deleted: false });
+          }
         }
       });
       while (nextMap.size > CHAT_THREADS_MAX_SCOPES) {
@@ -279,12 +292,13 @@
         nextMap.delete(oldestKey);
       }
       aiState.chatThreads = nextMap;
+      aiState.chatThreadMeta = nextMeta;
     } catch (e) {
       console.warn('loadChatThreadsFromStorage failed:', e);
     }
   }
 
-  function persistChatThreadsToStorage() {
+  function persistChatThreadsToStorage(options = {}) {
     try {
       const entries = [];
       for (const [scopeKey, msgs] of aiState.chatThreads.entries()) {
@@ -295,10 +309,21 @@
         }
       }
       const trimmed = entries.slice(-CHAT_THREADS_MAX_SCOPES);
+      const keepKeys = new Set(trimmed.map(e => e[0]));
+      const metaObj = {};
+      for (const [k, m] of aiState.chatThreadMeta.entries()) {
+        if (keepKeys.has(k) || m.deleted) {
+          metaObj[k] = { updatedAt: Math.max(0, Number(m.updatedAt) || 0), deleted: Boolean(m.deleted) };
+        }
+      }
       localStorage.setItem(STORAGE_KEYS.chatThreads, JSON.stringify({
         version: 1,
-        entries: trimmed
+        entries: trimmed,
+        meta: metaObj
       }));
+      if (options && options.sync) {
+        scheduleDebouncedPush();
+      }
     } catch (e) {
       console.warn('persistChatThreadsToStorage failed:', e);
     }
@@ -309,11 +334,123 @@
     const list = Array.isArray(msgs) ? msgs.slice(-CHAT_THREADS_MAX_MSGS) : [];
     aiState.chatThreads.delete(scopeKey);
     aiState.chatThreads.set(scopeKey, list);
+    aiState.chatThreadMeta.set(scopeKey, { updatedAt: Date.now(), deleted: false });
     while (aiState.chatThreads.size > CHAT_THREADS_MAX_SCOPES) {
       const oldestKey = aiState.chatThreads.keys().next().value;
       aiState.chatThreads.delete(oldestKey);
     }
     return list;
+  }
+
+  function buildChatThreadsSyncPayload() {
+    const out = {};
+    const pairs = Array.from(aiState.chatThreads.entries()).slice(-20);
+    pairs.forEach(([scopeKey, msgs]) => {
+      const clean = sanitizeThreadMessages(msgs).slice(-12).map(m => ({
+        role: m.role,
+        content: m.content,
+        reasoning: m.reasoning || ''
+      }));
+      if (clean.length > 0) {
+        const meta = aiState.chatThreadMeta.get(scopeKey);
+        out[scopeKey] = {
+          msgs: clean,
+          updatedAt: Math.max(1, Number(meta && meta.updatedAt) || 1)
+        };
+      }
+    });
+    for (const [scopeKey, meta] of aiState.chatThreadMeta.entries()) {
+      if (meta && meta.deleted && !out[scopeKey]) {
+        out[scopeKey] = {
+          msgs: [],
+          deleted: true,
+          updatedAt: Math.max(1, Number(meta.updatedAt) || Date.now())
+        };
+      }
+    }
+    return out;
+  }
+
+  function extractChatThreadsFromMemories(remoteMemories) {
+    if (!remoteMemories || typeof remoteMemories !== 'object') return null;
+    const rawEntry = remoteMemories.__sys_chat_threads__;
+    if (!rawEntry || typeof rawEntry !== 'object' || typeof rawEntry.text !== 'string') return null;
+    try {
+      const parsed = JSON.parse(rawEntry.text);
+      return (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) ? parsed : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function mergeChatThreadsWithRemote(remoteThreads) {
+    if (!remoteThreads || typeof remoteThreads !== 'object' || Array.isArray(remoteThreads)) {
+      return { localHasNewer: aiState.chatThreads.size > 0, activeUpdated: false };
+    }
+    let localHasNewer = false;
+    let activeUpdated = false;
+    const activeScopeKey = aiState._activeScopeKey || (dom.scopeTitle ? getScopeContext().scopeKey : '');
+    const allScopes = new Set([
+      ...Array.from(aiState.chatThreads.keys()),
+      ...Array.from(aiState.chatThreadMeta.keys()),
+      ...Object.keys(remoteThreads)
+    ]);
+
+    allScopes.forEach((scopeKey) => {
+      if (!scopeKey) return;
+      const locMsgs = aiState.chatThreads.get(scopeKey) || null;
+      const locMeta = aiState.chatThreadMeta.get(scopeKey) || null;
+      const locTs = Math.max(0, Number(locMeta && locMeta.updatedAt) || (locMsgs ? 1 : 0));
+      const locDeleted = Boolean(locMeta && locMeta.deleted && !locMsgs);
+
+      const rawRem = remoteThreads[scopeKey];
+      const remObj = Array.isArray(rawRem)
+        ? { msgs: rawRem, updatedAt: 1, deleted: false }
+        : (rawRem && typeof rawRem === 'object' ? rawRem : null);
+      const remMsgs = remObj && !remObj.deleted ? sanitizeThreadMessages(remObj.msgs || []) : [];
+      const remTs = remObj ? Math.max(0, Number(remObj.updatedAt) || (remMsgs.length ? 1 : 0)) : 0;
+      const remDeleted = Boolean(remObj && remObj.deleted);
+
+      if ((locMsgs || locDeleted) && !remObj) {
+        localHasNewer = true;
+        return;
+      }
+      if (remObj && !(locMsgs || locDeleted)) {
+        if (remDeleted) {
+          aiState.chatThreads.delete(scopeKey);
+          aiState.chatThreadMeta.set(scopeKey, { updatedAt: remTs, deleted: true });
+        } else if (remMsgs.length > 0) {
+          aiState.chatThreads.set(scopeKey, remMsgs);
+          aiState.chatThreadMeta.set(scopeKey, { updatedAt: remTs, deleted: false });
+          if (scopeKey === activeScopeKey) activeUpdated = true;
+        }
+        return;
+      }
+      if (remObj && (locMsgs || locDeleted)) {
+        if (locTs > remTs || (locTs === remTs && (locMsgs ? locMsgs.length : 0) > remMsgs.length)) {
+          localHasNewer = true;
+        } else if (remTs > locTs || (remTs === locTs && remMsgs.length > (locMsgs ? locMsgs.length : 0))) {
+          if (remDeleted) {
+            aiState.chatThreads.delete(scopeKey);
+            aiState.chatThreadMeta.set(scopeKey, { updatedAt: remTs, deleted: true });
+          } else {
+            aiState.chatThreads.set(scopeKey, remMsgs);
+            aiState.chatThreadMeta.set(scopeKey, { updatedAt: remTs, deleted: false });
+          }
+          if (scopeKey === activeScopeKey) activeUpdated = true;
+        }
+      }
+    });
+
+    while (aiState.chatThreads.size > CHAT_THREADS_MAX_SCOPES) {
+      const oldestKey = aiState.chatThreads.keys().next().value;
+      aiState.chatThreads.delete(oldestKey);
+    }
+    persistChatThreadsToStorage({ sync: false });
+    if (activeUpdated && aiState.isOpen && aiState.activeTab === 'ask' && !aiState.isStreaming) {
+      renderChatStream();
+    }
+    return { localHasNewer, activeUpdated };
   }
 
   // ==========================================
@@ -446,7 +583,7 @@
       const val = Math.floor(Number(c) || 0);
       if (id && val > 0) cleanCounts[String(id)] = val;
     });
-    return {
+    const out = {
       dates: Array.isArray(logs.dates) ? logs.dates : [],
       completedIds: Array.isArray(logs.completedIds) ? logs.completedIds : [],
       dailyListenSec: daily,
@@ -454,6 +591,15 @@
       itemListenCounts: cleanCounts,
       updatedAt: Number(meta && meta.updatedAt) || 0
     };
+    if (logs && logs.deviceBuckets && typeof logs.deviceBuckets === 'object' && !Array.isArray(logs.deviceBuckets)) {
+      out.legacyListen = (logs.legacyListen && typeof logs.legacyListen === 'object') ? logs.legacyListen : {
+        dailyListenSec: {},
+        totalListenSec: 0,
+        itemListenCounts: {}
+      };
+      out.deviceBuckets = logs.deviceBuckets;
+    }
+    return out;
   }
 
   function mergeMasteryWithRemote(remoteMastery) {
@@ -512,6 +658,64 @@
     return { localHasNewer };
   }
 
+  function normalizeSyncListenBucket(raw) {
+    const src = (raw && typeof raw === 'object' && !Array.isArray(raw)) ? raw : {};
+    const daily = {};
+    if (src.dailyListenSec && typeof src.dailyListenSec === 'object' && !Array.isArray(src.dailyListenSec)) {
+      Object.entries(src.dailyListenSec).forEach(([d, sec]) => {
+        const v = Number(sec);
+        if (/^\d{4}-\d{2}-\d{2}$/.test(d) && v > 0) daily[d] = v;
+      });
+    }
+    const counts = {};
+    if (src.itemListenCounts && typeof src.itemListenCounts === 'object' && !Array.isArray(src.itemListenCounts)) {
+      Object.entries(src.itemListenCounts).forEach(([id, c]) => {
+        const v = Math.floor(Number(c) || 0);
+        if (id && v > 0) counts[String(id)] = v;
+      });
+    }
+    const dailySum = Object.values(daily).reduce((a, b) => a + b, 0);
+    return {
+      dailyListenSec: daily,
+      totalListenSec: Math.max(dailySum, Number(src.totalListenSec) || 0),
+      itemListenCounts: counts,
+      updatedAt: Math.max(0, Number(src.updatedAt) || 0)
+    };
+  }
+
+  function mergeSyncBucketPair(locB, remB) {
+    const a = normalizeSyncListenBucket(locB);
+    const b = normalizeSyncListenBucket(remB);
+    const daily = {};
+    let localNewer = false;
+    new Set([...Object.keys(a.dailyListenSec), ...Object.keys(b.dailyListenSec)]).forEach((d) => {
+      const av = a.dailyListenSec[d] || 0;
+      const bv = b.dailyListenSec[d] || 0;
+      if (av > bv + 0.5) localNewer = true;
+      const mv = Math.max(av, bv);
+      if (mv > 0) daily[d] = mv;
+    });
+    const counts = {};
+    new Set([...Object.keys(a.itemListenCounts), ...Object.keys(b.itemListenCounts)]).forEach((id) => {
+      const ac = a.itemListenCounts[id] || 0;
+      const bc = b.itemListenCounts[id] || 0;
+      if (ac > bc) localNewer = true;
+      const mc = Math.max(ac, bc);
+      if (mc > 0) counts[id] = mc;
+    });
+    const dailySum = Object.values(daily).reduce((acc, v) => acc + v, 0);
+    if (a.totalListenSec > b.totalListenSec + 0.5) localNewer = true;
+    return {
+      bucket: {
+        dailyListenSec: daily,
+        totalListenSec: Math.max(dailySum, a.totalListenSec, b.totalListenSec),
+        itemListenCounts: counts,
+        updatedAt: Math.max(a.updatedAt, b.updatedAt)
+      },
+      localNewer
+    };
+  }
+
   function mergeStudyLogsWithRemote(remoteLogs) {
     const loc = buildLocalStudyLogsPayload();
     if (!remoteLogs || typeof remoteLogs !== 'object') return { localHasNewer: false };
@@ -524,6 +728,10 @@
     const remTotal = Math.max(0, Number(remoteLogs.totalListenSec ?? remoteLogs.total_listen_sec ?? 0) || 0);
     const remCounts = (remoteLogs.itemListenCounts ?? remoteLogs.item_listen_counts) || {};
     const remUpdated = Number(remoteLogs.updatedAt ?? remoteLogs.updated_at ?? 0) || 0;
+    const remBuckets = (remoteLogs.deviceBuckets && typeof remoteLogs.deviceBuckets === 'object' && !Array.isArray(remoteLogs.deviceBuckets))
+      ? remoteLogs.deviceBuckets
+      : null;
+    const remLegacyRaw = (remoteLogs.legacyListen && typeof remoteLogs.legacyListen === 'object') ? remoteLogs.legacyListen : null;
 
     const mergedDates = Array.from(new Set([...(loc.dates || []), ...remDates]))
       .filter(d => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d))
@@ -531,12 +739,56 @@
     const mergedCompleted = Array.from(new Set([...(loc.completedIds || []), ...remCompleted]))
       .filter(id => typeof id === 'string' && id.length > 0);
 
+    const locBuckets = (loc.deviceBuckets && typeof loc.deviceBuckets === 'object') ? loc.deviceBuckets : {};
+    const mergedBuckets = {};
+    let bucketsLocalNewer = false;
+    new Set([...Object.keys(locBuckets), ...Object.keys(remBuckets || {})]).forEach((devId) => {
+      if (!devId) return;
+      const res = mergeSyncBucketPair(locBuckets[devId], remBuckets ? remBuckets[devId] : null);
+      if (
+        Object.keys(res.bucket.dailyListenSec).length > 0 ||
+        res.bucket.totalListenSec > 0 ||
+        Object.keys(res.bucket.itemListenCounts).length > 0
+      ) {
+        mergedBuckets[devId] = res.bucket;
+      }
+      if (res.localNewer || (locBuckets[devId] && !(remBuckets && remBuckets[devId]))) {
+        bucketsLocalNewer = true;
+      }
+    });
+
+    const legacyRes = mergeSyncBucketPair(
+      loc.legacyListen || { dailyListenSec: {}, totalListenSec: 0, itemListenCounts: {} },
+      remLegacyRaw || {}
+    );
+    const mergedLegacy = legacyRes.bucket;
+
+    // 汇总 legacy 基线 + 全部端设备增量桶，并用旧版扁平字段作安全下界（兼容未升级旧端）
+    const sumDaily = {};
+    const sumCounts = {};
+    let sumTotal = Math.max(0, Number(mergedLegacy.totalListenSec) || 0);
+    Object.entries(mergedLegacy.dailyListenSec || {}).forEach(([d, v]) => {
+      sumDaily[d] = (sumDaily[d] || 0) + v;
+    });
+    Object.entries(mergedLegacy.itemListenCounts || {}).forEach(([id, c]) => {
+      sumCounts[id] = (sumCounts[id] || 0) + c;
+    });
+    Object.values(mergedBuckets).forEach((bk) => {
+      Object.entries(bk.dailyListenSec || {}).forEach(([d, v]) => {
+        sumDaily[d] = (sumDaily[d] || 0) + v;
+      });
+      Object.entries(bk.itemListenCounts || {}).forEach(([id, c]) => {
+        sumCounts[id] = (sumCounts[id] || 0) + c;
+      });
+      sumTotal += Math.max(0, Number(bk.totalListenSec) || 0);
+    });
+
     const mergedDaily = {};
-    const allDays = new Set([...Object.keys(loc.dailyListenSec || {}), ...Object.keys(remDaily || {})]);
+    const allDays = new Set([...Object.keys(sumDaily), ...Object.keys(remDaily || {})]);
     let dailySum = 0;
     allDays.forEach((d) => {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return;
-      const v = Math.max(Number(loc.dailyListenSec[d]) || 0, Number(remDaily[d]) || 0);
+      const v = Math.max(Number(sumDaily[d]) || 0, Number(remDaily[d]) || 0);
       if (v > 0) {
         mergedDaily[d] = v;
         dailySum += v;
@@ -545,23 +797,25 @@
 
     const mergedCounts = {};
     let countsLocalNewer = false;
-    const allCountIds = new Set([...Object.keys(loc.itemListenCounts || {}), ...Object.keys(remCounts || {})]);
+    const allCountIds = new Set([...Object.keys(sumCounts), ...Object.keys(remCounts || {})]);
     allCountIds.forEach((id) => {
       if (!id) return;
-      const lv = Math.max(0, Math.floor(Number((loc.itemListenCounts || {})[id]) || 0));
+      const sv = Math.max(0, Math.floor(Number(sumCounts[id]) || 0));
       const rv = Math.max(0, Math.floor(Number(remCounts[id]) || 0));
-      const mv = Math.max(lv, rv);
+      const mv = Math.max(sv, rv);
       if (mv > 0) mergedCounts[id] = mv;
-      if (lv > rv) countsLocalNewer = true;
+      if (sv > rv) countsLocalNewer = true;
     });
 
-    const mergedTotal = Math.max(dailySum, loc.totalListenSec || 0, remTotal);
+    const mergedTotal = Math.max(dailySum, sumTotal, remTotal);
     const mergedUpdated = Math.max(loc.updatedAt || 0, remUpdated);
     const localHasNewer = (
       mergedDates.length > remDates.length ||
       mergedCompleted.length > remCompleted.length ||
       mergedTotal > remTotal + 0.5 ||
       countsLocalNewer ||
+      bucketsLocalNewer ||
+      legacyRes.localNewer ||
       (loc.updatedAt || 0) > remUpdated
     );
 
@@ -573,7 +827,9 @@
       totalCardsCompleted: Math.max(mergedCompleted.length, masteryCount),
       dailyListenSec: mergedDaily,
       totalListenSec: mergedTotal,
-      itemListenCounts: mergedCounts
+      itemListenCounts: mergedCounts,
+      legacyListen: mergedLegacy,
+      deviceBuckets: mergedBuckets
     };
 
     setStudyLogsMeta({ updatedAt: mergedUpdated });
@@ -593,6 +849,7 @@
 
     const allIds = new Set([...Object.keys(localMap), ...Object.keys(remoteMap)]);
     allIds.forEach((itemId) => {
+      if (!itemId || itemId === '__sys_chat_threads__') return;
       const loc = normalizeMemoryEntry(localMap[itemId]);
       const rem = normalizeMemoryEntry(remoteMap[itemId]);
       if (loc && rem) {
@@ -687,7 +944,18 @@
     });
 
     setAiClozeCacheMap(merged);
-    if (b && typeof b.setAiClozeData === 'function') {
+    if (b && typeof b.setAiClozeDataBatch === 'function') {
+      const batchObj = {};
+      Object.entries(merged).forEach(([itemId, entry]) => {
+        batchObj[itemId] = {
+          skeleton: entry.skeleton,
+          scoring: entry.scoring,
+          model: entry.model,
+          updated_at: entry.updated_at || new Date(entry.updatedAt || Date.now()).toISOString()
+        };
+      });
+      b.setAiClozeDataBatch(batchObj);
+    } else if (b && typeof b.setAiClozeData === 'function') {
       Object.entries(merged).forEach(([itemId, entry]) => {
         b.setAiClozeData(itemId, {
           skeleton: entry.skeleton,
@@ -703,17 +971,49 @@
     return { localHasNewer };
   }
 
+  let syncMutationSeq = 0;
+  let queuedSyncOptions = null;
+
+  function fetchWithTimeout(url, options = {}, timeoutMs = 15000) {
+    if (typeof AbortController === 'undefined') {
+      return fetch(url, options);
+    }
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => {
+      try { ctrl.abort(); } catch (e) {}
+    }, timeoutMs);
+    const parentSignal = options && options.signal;
+    const onParentAbort = () => {
+      try { ctrl.abort(); } catch (e) {}
+    };
+    if (parentSignal) {
+      if (parentSignal.aborted) onParentAbort();
+      else parentSignal.addEventListener('abort', onParentAbort, { once: true });
+    }
+    return fetch(url, { ...options, signal: ctrl.signal }).finally(() => {
+      clearTimeout(timer);
+      if (parentSignal) {
+        try { parentSignal.removeEventListener('abort', onParentAbort); } catch (e) {}
+      }
+    });
+  }
+
   function markSyncDirty() {
+    syncMutationSeq++;
     try {
       localStorage.setItem(STORAGE_KEYS.syncDirty, '1');
     } catch (e) {}
   }
 
-  function clearSyncDirty() {
+  function clearSyncDirty(seqAtStart = null) {
+    if (seqAtStart !== null && seqAtStart !== syncMutationSeq) {
+      return false;
+    }
     try {
       localStorage.setItem(STORAGE_KEYS.syncDirty, '0');
       localStorage.setItem(STORAGE_KEYS.syncLastAt, String(Date.now()));
     } catch (e) {}
+    return true;
   }
 
   function isSyncDirty() {
@@ -748,12 +1048,12 @@
   }
 
   async function syncPullOnly(cfg) {
-    const res = await fetch(`${cfg.url}/api/sync/pull`, {
+    const res = await fetchWithTimeout(`${cfg.url}/api/sync/pull`, {
       method: 'GET',
       headers: {
         'X-Sync-Pin': cfg.pin
       }
-    });
+    }, 15000);
     if (res.status === 401) throw new Error('SYNC_PIN_INVALID');
     if (!res.ok) throw new Error(`HTTP_${res.status}`);
     return res.json();
@@ -774,22 +1074,39 @@
   }
 
   async function syncPushOnly(cfg) {
+    const memoriesCopy = { ...getAiMemories() };
+    const chatPayload = buildChatThreadsSyncPayload();
+    if (Object.keys(chatPayload).length > 0) {
+      let maxTs = 1;
+      Object.values(chatPayload).forEach(v => {
+        if (v && v.updatedAt > maxTs) maxTs = v.updatedAt;
+      });
+      const serialized = JSON.stringify(chatPayload);
+      if (serialized.length <= 65536) {
+        memoriesCopy.__sys_chat_threads__ = {
+          kind: 'system_chat_threads',
+          text: serialized,
+          updatedAt: maxTs
+        };
+      }
+    }
     const payload = {
       mastery: buildLocalMasteryPayload(),
       studyLogs: buildLocalStudyLogsPayload(),
-      aiMemories: getAiMemories(),
+      aiMemories: memoriesCopy,
       reciteLogs: getReciteLogs(),
       learningProfile: getLearningProfile(),
-      ai_cloze_cache: buildRemoteClozePayload()
+      ai_cloze_cache: buildRemoteClozePayload(),
+      chatThreads: chatPayload
     };
-    const res = await fetch(`${cfg.url}/api/sync/push`, {
+    const res = await fetchWithTimeout(`${cfg.url}/api/sync/push`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-Sync-Pin': cfg.pin
       },
       body: JSON.stringify(payload)
-    });
+    }, 18000);
     if (res.status === 401) throw new Error('SYNC_PIN_INVALID');
     if (!res.ok) throw new Error(`HTTP_${res.status}`);
     return res.json();
@@ -808,9 +1125,16 @@
       if (!quiet) showToast('当前离线，已进入待同步队列', 2200);
       return false;
     }
-    if (aiState.isSyncing) return false;
+    if (aiState.isSyncing) {
+      queuedSyncOptions = {
+        quiet: queuedSyncOptions ? (queuedSyncOptions.quiet && quiet) : quiet,
+        pushFirst: Boolean((queuedSyncOptions && queuedSyncOptions.pushFirst) || pushFirst)
+      };
+      return false;
+    }
 
     aiState.isSyncing = true;
+    const seqAtStart = syncMutationSeq;
     updateSyncStatusUI('正在同步...', 'busy');
     try {
       let needPush = pushFirst || isSyncDirty();
@@ -823,7 +1147,9 @@
         const r4 = mergeReciteLogsWithRemote(pullData.reciteLogs);
         const r5 = mergeLearningProfileWithRemote(pullData.learningProfile);
         const r6 = mergeAiClozeCacheWithRemote(pullData.ai_cloze_cache ?? pullData.aiClozeCache);
-        if (r1.localHasNewer || r2.localHasNewer || r3.localHasNewer || r4.localHasNewer || r5.localHasNewer || r6.localHasNewer) {
+        const remThreads = pullData.chatThreads || extractChatThreadsFromMemories(pullData.aiMemories);
+        const r7 = mergeChatThreadsWithRemote(remThreads);
+        if (r1.localHasNewer || r2.localHasNewer || r3.localHasNewer || r4.localHasNewer || r5.localHasNewer || r6.localHasNewer || r7.localHasNewer) {
           needPush = true;
         }
       }
@@ -838,10 +1164,11 @@
           mergeReciteLogsWithRemote(merged.reciteLogs);
           mergeLearningProfileWithRemote(merged.learningProfile);
           mergeAiClozeCacheWithRemote(merged.ai_cloze_cache ?? merged.aiClozeCache);
+          mergeChatThreadsWithRemote(merged.chatThreads || extractChatThreadsFromMemories(merged.aiMemories));
         }
       }
 
-      clearSyncDirty();
+      clearSyncDirty(seqAtStart);
       refreshMemoryBoxUI();
       if (aiState.isOpen && aiState.activeTab === 'recite') {
         renderReciteHistoryIfIdle();
@@ -861,6 +1188,14 @@
       return false;
     } finally {
       aiState.isSyncing = false;
+      const pending = queuedSyncOptions;
+      queuedSyncOptions = null;
+      if (pending || syncMutationSeq !== seqAtStart) {
+        const nextOpts = pending || { quiet: true, pushFirst: true };
+        setTimeout(() => {
+          syncBidirectional({ quiet: nextOpts.quiet !== false, pushFirst: true });
+        }, 80);
+      }
     }
   }
 
@@ -885,7 +1220,7 @@
     try {
       const headers = {};
       if (cfg.pin) headers['X-Sync-Pin'] = cfg.pin;
-      const res = await fetch(`${cfg.url}/api/health`, { method: 'GET', headers });
+      const res = await fetchWithTimeout(`${cfg.url}/api/health`, { method: 'GET', headers }, 10000);
       if (!res.ok) throw new Error(`HTTP_${res.status}`);
       const data = await res.json();
       const pinNote = cfg.pin ? (data.pinValid ? 'PIN 校验通过' : 'PIN 未通过校验') : '未填写 PIN';
@@ -1481,7 +1816,7 @@
         if (!cleanId) return cleanTitle;
         const token = `@@AI_ITEM_${itemTokens.length}@@`;
         itemTokens.push(
-          `<button type="button" class="ai-item-jump" data-item-id="${cleanId}" title="跳转到：${cleanTitle}">📖 ${cleanTitle}</button>`
+          `<button type="button" class="ai-item-jump" data-item-id="${cleanId}" title="跳转到：${cleanTitle}"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-flex;vertical-align:-1px;margin-right:3px;"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>${cleanTitle}</button>`
         );
         return token;
       });
@@ -1591,7 +1926,7 @@
             fallbackSentences
           );
           const jumpHtml = matchedSent
-            ? ` <button type="button" class="ai-quote-jump" data-sent-idx="${matchedSent.idx}" data-sent-start="${matchedSent.start !== undefined && matchedSent.start !== null ? escapeHtml(String(matchedSent.start)) : ''}" title="点击跳转并播放该句音频">🔊 跳听</button>`
+            ? ` <button type="button" class="ai-quote-jump" data-sent-idx="${matchedSent.idx}" data-sent-start="${matchedSent.start !== undefined && matchedSent.start !== null ? escapeHtml(String(matchedSent.start)) : ''}" title="点击跳转并播放该句音频"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-flex;vertical-align:-1px;margin-right:3px;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>跳听</button>`
             : '';
           out.push(`<blockquote class="ai-md-quote">${quoteLines.join('<br>')}${jumpHtml}</blockquote>`);
           continue;
@@ -1704,6 +2039,11 @@
       }
     }
 
+    let timedOutReason = '';
+    let firstByteTimer = setTimeout(() => {
+      timedOutReason = '请求连接超时，请检查网络或服务状态';
+      try { controller.abort(); } catch (e) {}
+    }, 35000);
     try {
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -1711,6 +2051,8 @@
         body: JSON.stringify(body),
         signal: controller.signal
       });
+      clearTimeout(firstByteTimer);
+      firstByteTimer = null;
 
       const contentType = res.headers.get('content-type') || '';
       if (!res.ok) {
@@ -1776,7 +2118,24 @@
       };
 
       while (true) {
-        const { done, value } = await reader.read();
+        let idleTimer = null;
+        let stepTimedOut = false;
+        const { done, value } = await Promise.race([
+          reader.read().finally(() => {
+            if (idleTimer) {
+              clearTimeout(idleTimer);
+              idleTimer = null;
+            }
+          }),
+          new Promise((_, reject) => {
+            idleTimer = setTimeout(() => {
+              stepTimedOut = true;
+              try { controller.abort(); } catch (e) {}
+              reject(new Error('流式响应超时，请稍后重试'));
+            }, 45000);
+          })
+        ]);
+        if (stepTimedOut) break;
         if (done) break;
         buffer += decoder.decode(value, { stream: true });
 
@@ -1866,6 +2225,10 @@
         usage: usageData
       };
     } finally {
+      if (firstByteTimer) {
+        clearTimeout(firstByteTimer);
+        firstByteTimer = null;
+      }
       if (!background) {
         if (aiState.abortController === controller) {
           aiState.abortController = null;
@@ -1874,6 +2237,9 @@
           aiState.isStreaming = false;
           setAskSendBtnStreaming(false);
         }
+      }
+      if (timedOutReason && !background) {
+        console.warn('Stream timed out:', timedOutReason);
       }
     }
   }
@@ -2343,15 +2709,17 @@ ${fullText}${focusSection}${tailSection}`;
     }
   }
 
-  function renderChatStream() {
+  function renderChatStream(options = {}) {
     if (!dom.chatStream) return;
     const ctx = getScopeContext();
     const msgs = aiState.chatThreads.get(ctx.scopeKey) || [];
+    const distFromBottom = dom.chatStream.scrollHeight - dom.chatStream.scrollTop - dom.chatStream.clientHeight;
+    const wasNearBottom = Boolean(options.forceScroll) || msgs.length <= 2 || distFromBottom <= 72;
 
     if (msgs.length === 0) {
       dom.chatStream.innerHTML = `
         <div class="ai-empty-hint">
-          已锁定「${escapeHtml(ctx.blockId)}」。你可以直接在下方提问，或点击建议标签生成<strong>答题骨架 / 对比表 / 换考法 / 跨科串联</strong>（支持引用原句「🔊 跳听」与篇目一键跳转）。
+          已锁定「${escapeHtml(ctx.blockId)}」。你可以直接在下方提问，或点击建议标签生成<strong>答题骨架 / 对比表 / 换考法 / 跨科串联</strong>（支持引用原句「跳听」与篇目一键跳转）。
         </div>
       `;
       return;
@@ -2380,7 +2748,9 @@ ${fullText}${focusSection}${tailSection}`;
       return `<div class="ai-msg ai-msg-assistant"><div class="ai-msg-bubble">${reasoningHtml}${toolStatusHtml}${bodyHtml}${actionsHtml}</div></div>`;
     }).join('');
 
-    dom.chatStream.scrollTop = dom.chatStream.scrollHeight;
+    if (wasNearBottom) {
+      dom.chatStream.scrollTop = dom.chatStream.scrollHeight;
+    }
   }
 
   async function sendAskMessage(presetPrompt = null, options = {}) {
@@ -2417,7 +2787,7 @@ ${fullText}${focusSection}${tailSection}`;
     persistChatThreadsToStorage();
     aiState._activeAssistantMsg = assistantMsg;
     aiState._activeScopeKey = ctx.scopeKey;
-    renderChatStream();
+    renderChatStream({ forceScroll: true });
 
     const historyMsgs = trimHistoryForCache(thread.slice(0, -2)).map(m => ({ role: m.role, content: m.content }));
     const apiMessages = [
@@ -2455,7 +2825,7 @@ ${fullText}${focusSection}${tailSection}`;
       });
       assistantMsg.toolStatus = '';
       touchChatThread(ctx.scopeKey, thread);
-      persistChatThreadsToStorage();
+      persistChatThreadsToStorage({ sync: true });
       renderChatStream();
 
       const userTurns = thread.filter(m => m.role === 'user').length;
@@ -2475,7 +2845,7 @@ ${fullText}${focusSection}${tailSection}`;
           }
         }
         touchChatThread(ctx.scopeKey, thread);
-        persistChatThreadsToStorage();
+        persistChatThreadsToStorage({ sync: true });
         renderChatStream();
         return;
       }
@@ -2485,7 +2855,7 @@ ${fullText}${focusSection}${tailSection}`;
         assistantMsg.content = `请求出错：${err && err.message ? err.message : '未知网络错误'}`;
       }
       touchChatThread(ctx.scopeKey, thread);
-      persistChatThreadsToStorage();
+      persistChatThreadsToStorage({ sync: true });
       renderChatStream();
     } finally {
       aiState._activeAssistantMsg = null;
@@ -2498,7 +2868,8 @@ ${fullText}${focusSection}${tailSection}`;
     abortActiveStream({ markStopped: false });
     const ctx = getScopeContext();
     aiState.chatThreads.delete(ctx.scopeKey);
-    persistChatThreadsToStorage();
+    aiState.chatThreadMeta.set(ctx.scopeKey, { updatedAt: Date.now(), deleted: true });
+    persistChatThreadsToStorage({ sync: true });
     renderChatStream();
     showToast('已清空当前范围对话', 1500);
   }
@@ -2596,7 +2967,7 @@ ${fullText}${focusSection}${tailSection}`;
 
       if (isSyncConfigured(cfg)) {
         try {
-          await fetch(`${cfg.url}/api/ai/cloze`, {
+          const clozeRes = await fetchWithTimeout(`${cfg.url}/api/ai/cloze`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -2609,7 +2980,10 @@ ${fullText}${focusSection}${tailSection}`;
               model: clozeEntry.model,
               updated_at: nowIso
             })
-          });
+          }, 12000);
+          if (!clozeRes.ok) {
+            throw new Error(`HTTP_${clozeRes.status}`);
+          }
         } catch (syncErr) {
           console.warn('POST /api/ai/cloze failed:', syncErr);
           markSyncDirty();

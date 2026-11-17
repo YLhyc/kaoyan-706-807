@@ -52,7 +52,7 @@
     sentenceRepeatCount: 3, // 2..10
     sectionRepeatCount: 0,  // 0 (∞) | 2..10
     rangeRepeatCount: 0,    // 0 (∞) | 2..10
-    rangeSelection: { itemKey: '', startIdx: -1, endIdx: -1, step: 'idle' }, // step: 'idle' | 'pick-start' | 'pick-end' | 'ready'
+    rangeSelection: { itemKey: '', startIdx: -1, endIdx: -1, step: 'idle', completed: false }, // step: 'idle' | 'pick-start' | 'pick-end' | 'ready'
     loopGapMs: 500,         // 0 | 500 | 800 | 1200
     fontSize: 17,
     theme: 'parchment',
@@ -83,6 +83,8 @@
   let isProgrammaticScrolling = false;
   let programmaticScrollTimer = null;
   let seekToken = 0;
+  let audioTrackGen = 0;
+  let activeSeekListeners = null;
   let lastMediaSessionKey = '';
   let lastHudSectionKey = '';
   let lastHudTrackKey = '';
@@ -114,7 +116,17 @@
   let pendingSeekTimer = null;
   let lastClickedSentGuard = null; // { idx, time, until }
 
+  function detachActiveSeekListeners() {
+    if (!activeSeekListeners) return;
+    try {
+      audio.removeEventListener('loadedmetadata', activeSeekListeners);
+      audio.removeEventListener('canplay', activeSeekListeners);
+    } catch (e) {}
+    activeSeekListeners = null;
+  }
+
   function clearPendingSeek(restoreMute = true) {
+    detachActiveSeekListeners();
     if (pendingSeekTimer) {
       clearTimeout(pendingSeekTimer);
       pendingSeekTimer = null;
@@ -289,6 +301,9 @@
   }
 
   function resetAudioTrackPlayback(autoPlay = false) {
+    audioTrackGen++;
+    seekToken++;
+    manualSeekEpoch++;
     accumulateListeningTime(true);
     if (currentPassItemId && currentPassItemId === state.activeItemId && currentPassCoveredAudioSec > 0) {
       settleCurrentAudioPass({ minRatio: 0.85, source: 'auto' });
@@ -297,6 +312,11 @@
     currentPassCoveredAudioSec = 0;
     cancelLoopGapWait();
     clearPendingSeek(true);
+    isLoopSeeking = false;
+    if (loopSeekTimer) {
+      clearTimeout(loopSeekTimer);
+      loopSeekTimer = null;
+    }
     xtIntroAutoSkipped = false;
     lastAudioErrorRecoverSrc = '';
     if (!autoPlay) {
@@ -480,8 +500,16 @@
   }
 
   function clearAudioSource() {
+    audioTrackGen++;
+    seekToken++;
+    manualSeekEpoch++;
     cancelLoopGapWait();
     clearPendingSeek(true);
+    isLoopSeeking = false;
+    if (loopSeekTimer) {
+      clearTimeout(loopSeekTimer);
+      loopSeekTimer = null;
+    }
     lastAudioErrorRecoverSrc = '';
     state.isPlaying = false;
     if (syncRafId) {
@@ -516,8 +544,9 @@
       const savedTime = parseFloat(localStorage.getItem('kaoyan_last_time') || '0');
       if (!(savedTime > 1)) return;
       const restoreEpoch = manualSeekEpoch;
+      const restoreGen = audioTrackGen;
       const applyRestored = () => {
-        if (restoreEpoch !== manualSeekEpoch || (pendingSeekTarget && Date.now() - pendingSeekTarget.startedAt < 5000)) return;
+        if (restoreGen !== audioTrackGen || restoreEpoch !== manualSeekEpoch || (pendingSeekTarget && Date.now() - pendingSeekTarget.startedAt < 5000)) return;
         xtIntroAutoSkipped = true;
         const dur = audio.duration || 0;
         const safeTime = dur > 0 ? Math.min(savedTime, Math.max(0, dur - 0.5)) : savedTime;
@@ -580,7 +609,10 @@
   }
 
   function getCurrentRangeItemKey() {
-    return `${state.currentSubject || ''}_${state.polSubMode || ''}_${state.activeItemId || ''}_${state.currentTrack || 1}`;
+    const subKey = (state.currentSubject === 'pol' && state.polSubMode === 'recite47' && Number(state.currentTrack) === 2)
+      ? `_${state.polSubCardId || ''}`
+      : '';
+    return `${state.currentSubject || ''}_${state.polSubMode || ''}_${state.activeItemId || ''}_${state.currentTrack || 1}${subKey}`;
   }
 
   function hasValidRangeSelection() {
@@ -693,6 +725,7 @@
             const v = parseInt(btn.dataset.rangeRep, 10);
             state.rangeRepeatCount = isNaN(v) ? 0 : v;
             state.loopCount = 0;
+            if (state.rangeSelection) state.rangeSelection.completed = false;
             localStorage.setItem('kaoyan_range_repeat_count', String(state.rangeRepeatCount));
             if (state.playMode !== 'range') {
               state.playMode = 'range';
@@ -709,7 +742,7 @@
   }
 
   function clearRangeLoop(restoreMode = true) {
-    state.rangeSelection = { itemKey: '', startIdx: -1, endIdx: -1, step: 'idle' };
+    state.rangeSelection = { itemKey: '', startIdx: -1, endIdx: -1, step: 'idle', completed: false };
     if (restoreMode && state.playMode === 'range') {
       state.playMode = 'sequence';
       state.loopCount = 0;
@@ -724,12 +757,17 @@
       showToast('当前篇目暂无可框选的分句音频', 2000);
       return;
     }
-    cancelLoopGapWait();
+    if (isLoopGapWaiting) {
+      pauseDuringGapWait();
+    } else {
+      cancelLoopGapWait();
+    }
     state.rangeSelection = {
       itemKey: getCurrentRangeItemKey(),
       startIdx: -1,
       endIdx: -1,
-      step: 'pick-start'
+      step: 'pick-start',
+      completed: false
     };
     renderRangeLoopUI();
     showToast('请依次点击起始分句 A 与结束分句 B', 2200);
@@ -745,6 +783,7 @@
       rs.startIdx = sentIdx;
       rs.endIdx = sentIdx;
       rs.step = 'pick-end';
+      rs.completed = false;
       renderRangeLoopUI();
       return;
     }
@@ -755,6 +794,7 @@
       rs.startIdx = a;
       rs.endIdx = b;
       rs.step = 'ready';
+      rs.completed = false;
       state.playMode = 'range';
       state.loopCount = 0;
       localStorage.setItem('kaoyan_play_mode', 'range');
@@ -786,9 +826,10 @@
   }
 
   function setPlayMode(modeId, showToastNotice = true) {
+    const wasGapWaiting = isLoopGapWaiting;
     cancelLoopGapWait();
     if (modeId !== 'range' && state.rangeSelection && state.rangeSelection.step !== 'idle') {
-      state.rangeSelection = { itemKey: '', startIdx: -1, endIdx: -1, step: 'idle' };
+      state.rangeSelection = { itemKey: '', startIdx: -1, endIdx: -1, step: 'idle', completed: false };
       renderRangeLoopUI();
     }
     state.playMode = modeId;
@@ -796,8 +837,25 @@
     localStorage.setItem('kaoyan_play_mode', modeId);
     updatePlayModeUI(showToastNotice);
     if (modeId === 'range' && !hasValidRangeSelection()) {
+      if (wasGapWaiting) {
+        state.isPlaying = false;
+        updatePlayBtnUI();
+      }
       startRangePicking();
       return;
+    }
+    if (wasGapWaiting) {
+      if (hasAudioSource()) {
+        state.isPlaying = true;
+        updatePlayBtnUI();
+        audio.play().catch(() => {
+          state.isPlaying = false;
+          updatePlayBtnUI();
+        });
+      } else {
+        state.isPlaying = false;
+        updatePlayBtnUI();
+      }
     }
 
     // 智能校准当前高光与指针
@@ -1917,6 +1975,106 @@
     }
     state.studyLogs.totalListenSec = Math.max(0, Number(state.studyLogs.totalListenSec) || 0);
     state.studyLogs.itemListenCounts = normalizeItemListenCounts(state.studyLogs.itemListenCounts);
+    ensureDeviceListenBuckets(state.studyLogs);
+  }
+
+  function getLocalDeviceId() {
+    try {
+      let id = localStorage.getItem('kaoyan_device_id');
+      if (id && typeof id === 'string' && id.trim().length >= 6) {
+        return id.trim();
+      }
+      id = 'dev_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
+      localStorage.setItem('kaoyan_device_id', id);
+      return id;
+    } catch (e) {
+      return 'dev_fallback';
+    }
+  }
+
+  function normalizeListenBucket(raw) {
+    const src = (raw && typeof raw === 'object' && !Array.isArray(raw)) ? raw : {};
+    const daily = {};
+    if (src.dailyListenSec && typeof src.dailyListenSec === 'object' && !Array.isArray(src.dailyListenSec)) {
+      Object.entries(src.dailyListenSec).forEach(([d, sec]) => {
+        const v = Number(sec);
+        if (/^\d{4}-\d{2}-\d{2}$/.test(d) && v > 0) daily[d] = v;
+      });
+    }
+    const counts = normalizeItemListenCounts(src.itemListenCounts);
+    const dailySum = Object.values(daily).reduce((acc, v) => acc + v, 0);
+    const total = Math.max(dailySum, Number(src.totalListenSec) || 0);
+    return {
+      dailyListenSec: daily,
+      totalListenSec: total,
+      itemListenCounts: counts,
+      updatedAt: Math.max(0, Number(src.updatedAt) || 0)
+    };
+  }
+
+  function normalizeDeviceBuckets(raw) {
+    const clean = {};
+    if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
+      Object.entries(raw).forEach(([devId, bucket]) => {
+        if (!devId || typeof bucket !== 'object' || Array.isArray(bucket)) return;
+        const norm = normalizeListenBucket(bucket);
+        if (
+          Object.keys(norm.dailyListenSec).length > 0 ||
+          norm.totalListenSec > 0 ||
+          Object.keys(norm.itemListenCounts).length > 0
+        ) {
+          clean[String(devId)] = norm;
+        }
+      });
+    }
+    return clean;
+  }
+
+  function ensureDeviceListenBuckets(logs) {
+    if (!logs || typeof logs !== 'object') return;
+    if (!logs.deviceBuckets || typeof logs.deviceBuckets !== 'object' || Array.isArray(logs.deviceBuckets)) {
+      // 首次从旧版升级时，将已同步的历史总量封存到 legacyListen 基线，后续各端增量按 devId 独立累加
+      logs.legacyListen = normalizeListenBucket({
+        dailyListenSec: logs.dailyListenSec || {},
+        totalListenSec: logs.totalListenSec || 0,
+        itemListenCounts: logs.itemListenCounts || {}
+      });
+      logs.deviceBuckets = {};
+    } else {
+      logs.legacyListen = normalizeListenBucket(logs.legacyListen || {});
+      logs.deviceBuckets = normalizeDeviceBuckets(logs.deviceBuckets);
+    }
+  }
+
+  function recomputeListenAggregates(logs) {
+    if (!logs || typeof logs !== 'object') return;
+    ensureDeviceListenBuckets(logs);
+    const base = logs.legacyListen;
+    const aggDaily = {};
+    const aggCounts = {};
+    let aggTotal = Math.max(0, Number(base.totalListenSec) || 0);
+
+    Object.entries(base.dailyListenSec || {}).forEach(([d, v]) => {
+      if (v > 0) aggDaily[d] = (aggDaily[d] || 0) + v;
+    });
+    Object.entries(base.itemListenCounts || {}).forEach(([id, c]) => {
+      if (c > 0) aggCounts[id] = (aggCounts[id] || 0) + c;
+    });
+
+    Object.values(logs.deviceBuckets || {}).forEach((b) => {
+      Object.entries(b.dailyListenSec || {}).forEach(([d, v]) => {
+        if (v > 0) aggDaily[d] = (aggDaily[d] || 0) + v;
+      });
+      Object.entries(b.itemListenCounts || {}).forEach(([id, c]) => {
+        if (c > 0) aggCounts[id] = (aggCounts[id] || 0) + c;
+      });
+      aggTotal += Math.max(0, Number(b.totalListenSec) || 0);
+    });
+
+    const dailySum = Object.values(aggDaily).reduce((a, b) => a + b, 0);
+    logs.dailyListenSec = aggDaily;
+    logs.itemListenCounts = aggCounts;
+    logs.totalListenSec = Math.max(dailySum, aggTotal);
   }
 
   function escapeHtml(str) {
@@ -1986,14 +2144,38 @@
 
   function setItemListenCount(itemId, nextCount) {
     if (!itemId || !state.studyLogs) return 0;
-    if (!state.studyLogs.itemListenCounts || typeof state.studyLogs.itemListenCounts !== 'object' || Array.isArray(state.studyLogs.itemListenCounts)) {
-      state.studyLogs.itemListenCounts = {};
-    }
+    ensureDeviceListenBuckets(state.studyLogs);
     const clean = Math.max(0, Math.floor(Number(nextCount) || 0));
-    if (clean > 0) {
-      state.studyLogs.itemListenCounts[itemId] = clean;
-    } else {
-      delete state.studyLogs.itemListenCounts[itemId];
+    const current = getItemListenCount(itemId);
+    const delta = clean - current;
+    const devId = getLocalDeviceId();
+    if (delta !== 0) {
+      if (!state.studyLogs.deviceBuckets[devId]) {
+        state.studyLogs.deviceBuckets[devId] = normalizeListenBucket({});
+      }
+      const bucket = state.studyLogs.deviceBuckets[devId];
+      if (delta > 0) {
+        bucket.itemListenCounts[itemId] = (Number(bucket.itemListenCounts[itemId]) || 0) + delta;
+      } else {
+        // 手动减量/重置时同步校正当前设备桶与历史基线
+        let remain = -delta;
+        const curB = Math.floor(Number(bucket.itemListenCounts[itemId]) || 0);
+        if (curB > 0) {
+          const take = Math.min(curB, remain);
+          const left = curB - take;
+          if (left > 0) bucket.itemListenCounts[itemId] = left;
+          else delete bucket.itemListenCounts[itemId];
+          remain -= take;
+        }
+        if (remain > 0 && state.studyLogs.legacyListen && state.studyLogs.legacyListen.itemListenCounts) {
+          const curL = Math.floor(Number(state.studyLogs.legacyListen.itemListenCounts[itemId]) || 0);
+          const leftL = Math.max(0, curL - remain);
+          if (leftL > 0) state.studyLogs.legacyListen.itemListenCounts[itemId] = leftL;
+          else delete state.studyLogs.legacyListen.itemListenCounts[itemId];
+        }
+      }
+      bucket.updatedAt = Date.now();
+      recomputeListenAggregates(state.studyLogs);
     }
     saveStudyLogs();
     updateHeaderListenBadgeUI();
@@ -2001,7 +2183,7 @@
     if (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) {
       updateStudyDashboardUI();
     }
-    return clean;
+    return getItemListenCount(itemId);
   }
 
   function incrementItemListenCount(itemId, options = {}) {
@@ -2111,11 +2293,16 @@
       const deltaSec = (now - lastListenTickTs) / 1000;
       if (deltaSec > 0 && deltaSec <= 30) {
         const today = getTodayDateStr();
-        if (!state.studyLogs.dailyListenSec || typeof state.studyLogs.dailyListenSec !== 'object') {
-          state.studyLogs.dailyListenSec = {};
+        ensureDeviceListenBuckets(state.studyLogs);
+        const devId = getLocalDeviceId();
+        if (!state.studyLogs.deviceBuckets[devId]) {
+          state.studyLogs.deviceBuckets[devId] = normalizeListenBucket({});
         }
-        state.studyLogs.dailyListenSec[today] = (Number(state.studyLogs.dailyListenSec[today]) || 0) + deltaSec;
-        state.studyLogs.totalListenSec = (Number(state.studyLogs.totalListenSec) || 0) + deltaSec;
+        const bucket = state.studyLogs.deviceBuckets[devId];
+        bucket.dailyListenSec[today] = (Number(bucket.dailyListenSec[today]) || 0) + deltaSec;
+        bucket.totalListenSec = (Number(bucket.totalListenSec) || 0) + deltaSec;
+        bucket.updatedAt = now;
+        recomputeListenAggregates(state.studyLogs);
         if (state.activeItemId) {
           if (currentPassItemId !== state.activeItemId) {
             currentPassItemId = state.activeItemId;
@@ -2245,6 +2432,13 @@
           totalListenSec: Math.max(0, Number(rawLogs.totalListenSec) || 0),
           itemListenCounts: normalizeItemListenCounts(rawLogs.itemListenCounts)
         };
+        if (rawLogs.deviceBuckets && typeof rawLogs.deviceBuckets === 'object' && !Array.isArray(rawLogs.deviceBuckets)) {
+          state.studyLogs.legacyListen = normalizeListenBucket(rawLogs.legacyListen || {});
+          state.studyLogs.deviceBuckets = normalizeDeviceBuckets(rawLogs.deviceBuckets);
+          recomputeListenAggregates(state.studyLogs);
+        } else {
+          ensureDeviceListenBuckets(state.studyLogs);
+        }
         saveStudyLogs();
       }
 
@@ -3393,13 +3587,20 @@
       elItem.addEventListener('click', (e) => {
         if (hasActiveTextSelection()) return;
         if (e.target.closest('.card-ai-btn')) return;
-        if (state.clozeMode === 'keyword' && (e.target.closest('.cloze') || e.target.closest('.kw-red') || e.target.closest('.stream-kw'))) return;
-        if (state.clozeMode === 'body') {
-          const isAlreadyVisible = elItem.classList.contains('cloze-revealed') || elItem.classList.contains('active-spotlight');
-          if (!isAlreadyVisible) {
-            elItem.classList.add('cloze-revealed');
-            e.stopPropagation();
-            return;
+        const isRangePicking = Boolean(
+          state.rangeSelection &&
+          (state.rangeSelection.step === 'pick-start' || state.rangeSelection.step === 'pick-end') &&
+          state.rangeSelection.itemKey === getCurrentRangeItemKey()
+        );
+        if (!isRangePicking) {
+          if (state.clozeMode === 'keyword' && (e.target.closest('.cloze') || e.target.closest('.kw-red') || e.target.closest('.stream-kw'))) return;
+          if (state.clozeMode === 'body') {
+            const isAlreadyVisible = elItem.classList.contains('cloze-revealed') || elItem.classList.contains('active-spotlight');
+            if (!isAlreadyVisible) {
+              elItem.classList.add('cloze-revealed');
+              e.stopPropagation();
+              return;
+            }
           }
         }
 
@@ -3697,6 +3898,14 @@
     }
 
     const myToken = ++seekToken;
+    const myGen = audioTrackGen;
+    const mySrc = audio.getAttribute('src') || audio.src || '';
+    if (state.rangeSelection) state.rangeSelection.completed = false;
+    const isCurrentSeekValid = () => (
+      myGen === audioTrackGen &&
+      myToken === seekToken &&
+      (!mySrc || (audio.getAttribute('src') || audio.src || '') === mySrc)
+    );
     const seekIdx = targetIdx !== -1 ? targetIdx : (targetSent ? targetSent.idx : -1);
     pendingSeekTarget = {
       token: myToken,
@@ -3725,7 +3934,7 @@
     };
 
     const playAndEnforceTarget = () => {
-      if (myToken !== seekToken) return;
+      if (!isCurrentSeekValid()) return;
       if (audio.paused) {
         // 慢网 readyState === 0 时暂静音并在同步手势内起音以保留 iOS Safari 播放权限，到位即恢复有声
         if (audio.readyState < 2 && targetTime > 0.25 && !audio.muted && pendingSeekTarget && pendingSeekTarget.token === myToken) {
@@ -3735,7 +3944,7 @@
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
-            if (myToken !== seekToken) return;
+            if (!isCurrentSeekValid()) return;
             if (audio.readyState >= 1 && Math.abs(audio.currentTime - targetTime) > 0.25) {
               applySeek();
             }
@@ -3770,9 +3979,12 @@
       const cleanupReadyListeners = () => {
         audio.removeEventListener('loadedmetadata', onReadySeekAndPlay);
         audio.removeEventListener('canplay', onReadySeekAndPlay);
+        if (activeSeekListeners === onReadySeekAndPlay) {
+          activeSeekListeners = null;
+        }
       };
       const onReadySeekAndPlay = () => {
-        if (myToken !== seekToken) {
+        if (!isCurrentSeekValid()) {
           cleanupReadyListeners();
           return;
         }
@@ -3784,6 +3996,8 @@
           cleanupReadyListeners();
         }
       };
+      detachActiveSeekListeners();
+      activeSeekListeners = onReadySeekAndPlay;
       audio.addEventListener('loadedmetadata', onReadySeekAndPlay);
       audio.addEventListener('canplay', onReadySeekAndPlay);
       if (audio.paused && audio.networkState === 0) {
@@ -4619,6 +4833,17 @@
   let lastTimeSaveTs = 0;
 
   function syncManualSeekPointers(targetTime) {
+    manualSeekEpoch++;
+    seekToken++;
+    clearPendingSeek(true);
+    isLoopSeeking = false;
+    if (loopSeekTimer) {
+      clearTimeout(loopSeekTimer);
+      loopSeekTimer = null;
+    }
+    if (state.rangeSelection) {
+      state.rangeSelection.completed = false;
+    }
     cancelLoopGapWait();
     xtIntroAutoSkipped = true;
     state.loopCount = 0;
@@ -4663,6 +4888,15 @@
           if (curSrc) {
             audio.src = curSrc;
             audio.load();
+          }
+        }
+        if (state.playMode === 'range' && hasValidRangeSelection() && state.rangeSelection.completed) {
+          state.rangeSelection.completed = false;
+          state.loopCount = 0;
+          const startSent = state.activeSentences[state.rangeSelection.startIdx];
+          if (startSent) {
+            seekToSentence(state.rangeSelection.startIdx, startSent.start);
+            return;
           }
         }
         audio.play().catch(e => console.log('Play failed:', e));
@@ -4728,6 +4962,7 @@
             return 'handled';
           } else {
             state.loopCount = 0;
+            rs.completed = true;
             cancelLoopGapWait();
             state.isPlaying = false;
             try { audio.pause(); } catch (e) {}
@@ -5055,8 +5290,10 @@
 
       if (cur > 1 && Date.now() - lastTimeSaveTs > 2000) {
         lastTimeSaveTs = Date.now();
-        localStorage.setItem('kaoyan_last_time', String(cur));
-        localStorage.setItem('kaoyan_last_time_key', `${state.currentSubject}_${state.activeItemId}_${state.currentTrack}`);
+        try {
+          localStorage.setItem('kaoyan_last_time', String(cur));
+          localStorage.setItem('kaoyan_last_time_key', `${state.currentSubject}_${state.activeItemId}_${state.currentTrack}`);
+        } catch (e) {}
       }
 
       if (dur > 0 && el.progressFill) {
@@ -6624,33 +6861,47 @@
       if (!probeRes.ok) throw new Error('PROBE_FAILED');
       await sleep(260);
 
-      // 步骤 2: 验证在线可达后安全清理历史离线缓存 (50%)
-      setStep(50, '步骤 2/4 · 净化缓存', '正在清理过期离线数据并重置 Service Worker...');
+      // 步骤 2: 预下载并校验核心资产完整性后再替换旧缓存 (50%)
+      setStep(50, '步骤 2/4 · 载入新版', '正在预下载并校验新版全科题库与核心资源...');
+      const tsNow = Date.now();
+      const cacheVer = targetVer || 'latest';
+      const criticalAssets = [
+        { reqUrl: `./index.html`, fetchUrl: `index.html?_t=${tsNow}` },
+        { reqUrl: `./version.json`, fetchUrl: `version.json?_t=${tsNow}` },
+        { reqUrl: `./app.css?v=${cacheVer}`, fetchUrl: `app.css?v=${cacheVer}&_t=${tsNow}` },
+        { reqUrl: `./app.js?v=${cacheVer}`, fetchUrl: `app.js?v=${cacheVer}&_t=${tsNow}` },
+        { reqUrl: `./ai_sync.js?v=${cacheVer}`, fetchUrl: `ai_sync.js?v=${cacheVer}&_t=${tsNow}` },
+        { reqUrl: `./data/kaoyan_data.js?v=${cacheVer}`, fetchUrl: `data/kaoyan_data.js?v=${cacheVer}&_t=${tsNow}` },
+        { reqUrl: `./data/kaoyan_data_pol.js?v=${cacheVer}`, fetchUrl: `data/kaoyan_data_pol.js?v=${cacheVer}&_t=${tsNow}` }
+      ];
+      const fetchedPairs = await Promise.all(
+        criticalAssets.map(async (item) => {
+          const res = await fetch(item.fetchUrl, { cache: 'no-store' });
+          if (!res || !res.ok) {
+            throw new Error(`ASSET_FETCH_FAILED:${item.reqUrl}`);
+          }
+          return { reqUrl: item.reqUrl, res };
+        })
+      );
+      const nextCacheName = `kaoyan-all-in-one-v${cacheVer}`;
+      if ('caches' in window) {
+        const nextCache = await caches.open(nextCacheName);
+        await Promise.all(fetchedPairs.map(pair => nextCache.put(pair.reqUrl, pair.res.clone())));
+      }
+      await sleep(300);
+
+      // 步骤 3: 新版资产已安全落盘，安全净化旧版历史缓存并重建 Service Worker (85%)
+      setStep(85, '步骤 3/4 · 净化旧版', '正在清理历史过期缓存并切换新版本入口...');
       if ('caches' in window) {
         const keys = await caches.keys();
-        await Promise.all(keys.map(k => caches.delete(k)));
+        await Promise.all(keys.filter(k => k.startsWith('kaoyan-all-in-one-') && k !== nextCacheName).map(k => caches.delete(k)));
       }
       if ('serviceWorker' in navigator) {
         const regs = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(regs.map(r => r.unregister()));
+        await Promise.all(regs.map(r => r.update ? r.update().catch(() => r.unregister()) : r.unregister()));
       }
       sessionStorage.clear();
-      await sleep(400);
-
-      // 步骤 3: 预载最新核心资产 (85%)
-      setStep(85, '步骤 3/4 · 载入新版', '正在全量预加载最新全科背诵数据与核心组件...');
-      try {
-        await Promise.all([
-          fetch(`index.html?_t=${Date.now()}`, { cache: 'no-store' }),
-          fetch(`version.json?_t=${Date.now()}`, { cache: 'no-store' }),
-          fetch(`app.js?v=${targetVer}&_t=${Date.now()}`, { cache: 'no-store' }),
-          fetch(`ai_sync.js?v=${targetVer}&_t=${Date.now()}`, { cache: 'no-store' }),
-          fetch(`app.css?v=${targetVer}&_t=${Date.now()}`, { cache: 'no-store' })
-        ]);
-      } catch (e) {
-        console.warn('Preload partial error:', e);
-      }
-      await sleep(350);
+      await sleep(300);
 
       // 步骤 4: 完成并重载 (100%)
       setStep(100, '步骤 4/4 · 同步就绪', '同步完成！背诵手卷正在重新启封...');
@@ -7041,6 +7292,30 @@
     aiClozeCache.set(key, norm);
     persistAiClozeCache();
     return getAiClozeData(key);
+  }
+
+  function setAiClozeDataBatch(entriesObj) {
+    ensureAiClozeCacheLoaded();
+    if (!entriesObj || typeof entriesObj !== 'object' || Array.isArray(entriesObj)) return 0;
+    let count = 0;
+    Object.entries(entriesObj).forEach(([itemId, clozeObj]) => {
+      if (!itemId) return;
+      const key = String(itemId);
+      if (clozeObj === null) {
+        aiClozeCache.delete(key);
+        count++;
+        return;
+      }
+      const norm = normalizeAiClozeEntry(clozeObj);
+      if (norm) {
+        aiClozeCache.set(key, norm);
+        count++;
+      }
+    });
+    if (count > 0) {
+      persistAiClozeCache();
+    }
+    return count;
   }
 
   function syncClozeFilterBarUI() {
@@ -7492,6 +7767,7 @@
       }),
       getAiClozeData: (itemId) => getAiClozeData(itemId),
       setAiClozeData: (itemId, clozeObj) => setAiClozeData(itemId, clozeObj),
+      setAiClozeDataBatch: (entriesObj) => setAiClozeDataBatch(entriesObj),
       refreshCloze: () => refreshCloze(),
       setClozeFilterMode: (mode) => setClozeFilterMode(mode),
       play: () => {
@@ -7565,6 +7841,24 @@
             totalListenSec: Math.max(0, Number(mergedLogs.totalListenSec) || 0),
             itemListenCounts: cleanCounts
           };
+          if (mergedLogs.deviceBuckets && typeof mergedLogs.deviceBuckets === 'object' && !Array.isArray(mergedLogs.deviceBuckets)) {
+            state.studyLogs.legacyListen = normalizeListenBucket(mergedLogs.legacyListen || {});
+            state.studyLogs.deviceBuckets = normalizeDeviceBuckets(mergedLogs.deviceBuckets);
+            recomputeListenAggregates(state.studyLogs);
+            Object.entries(cleanDaily).forEach(([d, sec]) => {
+              if ((state.studyLogs.dailyListenSec[d] || 0) < sec) {
+                state.studyLogs.dailyListenSec[d] = sec;
+              }
+            });
+            Object.entries(cleanCounts).forEach(([id, c]) => {
+              if ((state.studyLogs.itemListenCounts[id] || 0) < c) {
+                state.studyLogs.itemListenCounts[id] = c;
+              }
+            });
+            state.studyLogs.totalListenSec = Math.max(state.studyLogs.totalListenSec || 0, Number(mergedLogs.totalListenSec) || 0);
+          } else {
+            ensureDeviceListenBuckets(state.studyLogs);
+          }
           saveStudyLogs();
           updateHeaderListenBadgeUI();
           renderSidebarList();
@@ -7745,9 +8039,6 @@
     if (state.rangeSelection && state.rangeSelection.step !== 'idle' && state.rangeSelection.itemKey !== getCurrentRangeItemKey()) {
       clearRangeLoop(state.playMode === 'range');
     }
-    if (state.rangeSelection && state.rangeSelection.step !== 'idle' && state.rangeSelection.itemKey !== getCurrentRangeItemKey()) {
-      clearRangeLoop(state.playMode === 'range');
-    }
     localStorage.setItem('kaoyan_last_track', String(trackNum));
 
     if (el.tabTrack1) el.tabTrack1.classList.toggle('active', trackNum === 1);
@@ -7898,6 +8189,9 @@
   }
 
   function activateSubCardAudio(card, autoPlay = false, restoreTime = false) {
+    if (state.rangeSelection && state.rangeSelection.step !== 'idle' && state.rangeSelection.itemKey !== getCurrentRangeItemKey()) {
+      clearRangeLoop(state.playMode === 'range');
+    }
     resetAudioTrackPlayback(autoPlay);
     resetAudioProgressUI();
     if (card.audio) {
@@ -7928,6 +8222,7 @@
     })));
 
     stampSentenceIndices();
+    renderRangeLoopUI();
 
     const bodyEl = document.getElementById('polSubcardBody');
     if (bodyEl) {
@@ -8727,6 +9022,12 @@
       if (kw.dataset.clozeBound) return;
       kw.dataset.clozeBound = '1';
       kw.addEventListener('click', (e) => {
+        const isRangePicking = Boolean(
+          state.rangeSelection &&
+          (state.rangeSelection.step === 'pick-start' || state.rangeSelection.step === 'pick-end') &&
+          state.rangeSelection.itemKey === getCurrentRangeItemKey()
+        );
+        if (isRangePicking) return;
         if (state.clozeMode === 'keyword' && kw.dataset.clozeFilteredOut !== '1') {
           e.stopPropagation();
           e.preventDefault();
