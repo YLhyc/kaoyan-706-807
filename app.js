@@ -6728,7 +6728,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.4.8';
+  const APP_BUILD_ID = '3.4.9';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
