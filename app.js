@@ -4745,15 +4745,17 @@
     const subjName = state.currentSubject === 'pol' ? '考研政治' : (state.currentSubject === '807' ? '807 现代文学' : (state.currentSubject === '706' ? '706 古代文学' : '考研英语写作'));
 
     try {
-      const icon256Url = new URL('icon-256.png', window.location.href).href;
-      const icon512Url = new URL('icon-512.png', window.location.href).href;
+      // Lock-screen artwork must fill the square; app icons have transparent rounded corners.
+      // Separate filenames also avoid reusing the system's cached application icon.
+      const artwork512Url = new URL('media-artwork-512.png', window.location.href).href;
+      const artwork1024Url = new URL('media-artwork-1024.png', window.location.href).href;
       navigator.mediaSession.metadata = new MediaMetadata({
         title: `[${trackLabel}] ${item.title}`,
         artist: `${secTitle}${subjName} · ${item.score || ''}`,
         album: '2027 考研全科双轨手卷 (706·807·政·英)',
         artwork: [
-          { src: icon256Url, sizes: '256x256', type: 'image/png' },
-          { src: icon512Url, sizes: '512x512', type: 'image/png' }
+          { src: artwork512Url, sizes: '512x512', type: 'image/png' },
+          { src: artwork1024Url, sizes: '1024x1024', type: 'image/png' }
         ]
       });
       updateMediaSessionState(false);
@@ -6832,7 +6834,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.4.12';
+  const APP_BUILD_ID = '3.4.13';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
@@ -6974,7 +6976,10 @@
         { reqUrl: `./version.json`, fetchUrl: `version.json?_t=${tsNow}` },
         { reqUrl: `./app.css?v=${cacheVer}`, fetchUrl: `app.css?v=${cacheVer}&_t=${tsNow}` },
         { reqUrl: `./app.js?v=${cacheVer}`, fetchUrl: `app.js?v=${cacheVer}&_t=${tsNow}` },
+        { reqUrl: `./listen_tracking.js?v=${cacheVer}`, fetchUrl: `listen_tracking.js?v=${cacheVer}&_t=${tsNow}` },
         { reqUrl: `./ai_sync.js?v=${cacheVer}`, fetchUrl: `ai_sync.js?v=${cacheVer}&_t=${tsNow}` },
+        { reqUrl: `./media-artwork-512.png`, fetchUrl: `media-artwork-512.png?_t=${tsNow}` },
+        { reqUrl: `./media-artwork-1024.png`, fetchUrl: `media-artwork-1024.png?_t=${tsNow}` },
         { reqUrl: `./data/kaoyan_data.js?v=${cacheVer}`, fetchUrl: `data/kaoyan_data.js?v=${cacheVer}&_t=${tsNow}` },
         { reqUrl: `./data/kaoyan_data_pol.js?v=${cacheVer}`, fetchUrl: `data/kaoyan_data_pol.js?v=${cacheVer}&_t=${tsNow}` }
       ];
