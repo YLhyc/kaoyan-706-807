@@ -45,6 +45,7 @@ total_all_spans = 0
 total_all_drifts = 0
 total_missing_ids = 0
 total_missing_json = 0
+total_duplicate_ids = 0
 
 for sub_title, manifest_name in subject_checks:
     mf_path = os.path.join(DATA_DIR, manifest_name)
@@ -69,9 +70,30 @@ for sub_title, manifest_name in subject_checks:
             with open(json_path, "r", encoding="utf-8") as f:
                 sents = json.load(f)
             sent_map = {str(s.get("id")): s for s in sents}
+            json_ids = [str(s.get("id")) for s in sents]
+            duplicates = {sid: count for sid, count in Counter(json_ids).items() if count > 1}
+            if duplicates:
+                total_duplicate_ids += len(duplicates)
+                print(f"  Duplicate JSON sentence IDs in {item['id']} {t_key}: {duplicates}")
 
             soup = BeautifulSoup(t_obj.get("html", ""), "html.parser")
             spans = soup.find_all(attrs={"data-sent-id": True})
+            # Track 2 may repeat Track 1 quotes via t1-linked-sent. Those are
+            # optional references, not substitutes for its primary audio sentences.
+            primary = [sp for sp in spans if not (t_key == "track2" and "t1-linked-sent" in sp.get("class", []))]
+            primary_ids = [sp.get("data-sent-id") for sp in primary]
+            missing_dom = set(sent_map) - set(primary_ids)
+            if missing_dom:
+                sub_missing += len(missing_dom)
+                print(f"  Missing primary DOM sentences in {item['id']} {t_key}: {sorted(missing_dom)}")
+            groups = [primary]
+            if t_key == "track2":
+                groups.append([sp for sp in spans if "t1-linked-sent" in sp.get("class", [])])
+            for group in groups:
+                duplicates = {sid: count for sid, count in Counter(sp.get("data-sent-id") for sp in group).items() if count > 1}
+                if duplicates:
+                    total_duplicate_ids += len(duplicates)
+                    print(f"  Duplicate DOM sentence IDs in {item['id']} {t_key}: {duplicates}")
             for span in spans:
                 sub_spans += 1
                 sid = span.get("data-sent-id")
@@ -255,6 +277,7 @@ total_errors = (
     total_all_drifts
     + total_missing_ids
     + total_missing_json
+    + total_duplicate_ids
     + t1_dup_ids
     + t1_mismatches
     + t2_mismatches

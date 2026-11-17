@@ -1,13 +1,14 @@
-// 考研背诵手卷 · 离线 PWA Service Worker (v3.4.10)
-const CACHE_NAME = 'kaoyan-all-in-one-v3.4.10';
+// 考研背诵手卷 · 离线 PWA Service Worker (v3.4.12)
+const CACHE_NAME = 'kaoyan-all-in-one-v3.4.12';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
-  './app.css?v=3.4.10',
-  './app.js?v=3.4.10',
-  './ai_sync.js?v=3.4.10',
-  './data/kaoyan_data.js?v=3.4.10',
-  './data/kaoyan_data_pol.js?v=3.4.10',
+  './app.css?v=3.4.12',
+  './app.js?v=3.4.12',
+  './listen_tracking.js?v=3.4.12',
+  './ai_sync.js?v=3.4.12',
+  './data/kaoyan_data.js?v=3.4.12',
+  './data/kaoyan_data_pol.js?v=3.4.12',
   './version.json',
   './manifest.json',
   './favicon.svg',
@@ -107,6 +108,7 @@ self.addEventListener('fetch', (event) => {
   // 2. 核心样式与脚本（自带版本指纹，Cache-First 快速响应）
   const isStaticCode = url.pathname.endsWith('app.css') || 
                        url.pathname.endsWith('app.js') ||
+                       url.pathname.endsWith('listen_tracking.js') ||
                        url.pathname.endsWith('ai_sync.js');
 
   if (isStaticCode) {

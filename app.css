@@ -4684,6 +4684,21 @@ body {
 }
 
 /* 听读遍数记录徽章与金石朱墨色阶 (题头可手动 +1 · 侧栏列表 · 看板榜) */
+.listen-progress-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 12px;
+  padding: 0 20px 6px;
+  color: var(--ink-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.listen-progress-row span:empty { display: none; }
+.player-dock.dock-collapsed .listen-progress-row { display: none; }
+
 .paper-listen-badge {
   display: inline-flex;
   align-items: center;

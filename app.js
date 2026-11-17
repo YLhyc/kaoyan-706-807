@@ -6,6 +6,7 @@
 
 (function () {
   'use strict';
+  const listenTracker = window.KaoyanListen;
 
   // 安全前置初始化同步补偿量 (保留用户显式设置，默认 0.15s 灵敏合拍)
   let initialSyncOffset = 0.15;
@@ -92,10 +93,11 @@
   let xtIntroAutoSkipped = false;
   let playModeCloseTimer = null;
   let speedModalCloseTimer = null;
-  let lastListenTickTs = 0;
   let lastListenSaveTs = 0;
-  let currentPassItemId = '';
-  let currentPassCoveredAudioSec = 0;
+  let listenAnchor = null;
+  let listenContext = null;
+  let listenLogsDirty = false;
+  let rangePractice = null;
 
   // 严密循环闭环与寻音防重入锁引擎 (Anti-Reentry & Drift-Prevention Engine)
   let isLoopSeeking = false;
@@ -208,7 +210,7 @@
     isLoopSeeking = true;
     lastSeekTs = now;
     try {
-      audio.currentTime = targetTime;
+      setAudioPosition(targetTime);
     } catch (err) {
       console.warn('Seek error:', err);
     }
@@ -305,11 +307,9 @@
     seekToken++;
     manualSeekEpoch++;
     accumulateListeningTime(true);
-    if (currentPassItemId && currentPassItemId === state.activeItemId && currentPassCoveredAudioSec > 0) {
-      settleCurrentAudioPass({ minRatio: 0.85, source: 'auto' });
-    }
-    currentPassItemId = state.activeItemId || '';
-    currentPassCoveredAudioSec = 0;
+    listenAnchor = null;
+    listenContext = null;
+    rangePractice = null;
     cancelLoopGapWait();
     clearPendingSeek(true);
     isLoopSeeking = false;
@@ -391,7 +391,7 @@
         if (!state.isPlaying || !hasAudioSource()) return;
         try {
           if (Math.abs((audio.currentTime || 0) - targetTime) > 0.05) {
-            audio.currentTime = targetTime;
+            setAudioPosition(targetTime);
           }
         } catch (e) {}
         updateHUDDisplay(audio.currentTime || targetTime);
@@ -550,7 +550,7 @@
         xtIntroAutoSkipped = true;
         const dur = audio.duration || 0;
         const safeTime = dur > 0 ? Math.min(savedTime, Math.max(0, dur - 0.5)) : savedTime;
-        try { audio.currentTime = safeTime; } catch (err) {}
+        try { setAudioPosition(safeTime); } catch (err) {}
         audio.playbackRate = state.speed;
         if (el.timeCurrent) el.timeCurrent.textContent = formatTime(safeTime);
         if (dur > 0 && el.progressFill) {
@@ -1313,6 +1313,8 @@
     el.masteryBtnText = document.getElementById('masteryBtnText');
     el.btnListenCountAdd = document.getElementById('btn-listen-count-add');
     el.paperListenText = document.getElementById('paperListenText');
+    el.listenCoverageText = document.getElementById('listenCoverageText');
+    el.listenPracticeText = document.getElementById('listenPracticeText');
     
     el.btnStudyDashboard = document.getElementById('btn-study-dashboard');
     el.studyDashboardBackdrop = document.getElementById('studyDashboardBackdrop');
@@ -1975,7 +1977,8 @@
     }
     state.studyLogs.totalListenSec = Math.max(0, Number(state.studyLogs.totalListenSec) || 0);
     state.studyLogs.itemListenCounts = normalizeItemListenCounts(state.studyLogs.itemListenCounts);
-    ensureDeviceListenBuckets(state.studyLogs);
+    state.studyLogs.listenProgress = listenTracker.normalize(state.studyLogs.listenProgress);
+    recomputeListenAggregates(state.studyLogs);
   }
 
   function getLocalDeviceId() {
@@ -2008,6 +2011,7 @@
       dailyListenSec: daily,
       totalListenSec: total,
       itemListenCounts: counts,
+      itemListenDecrements: normalizeItemListenCounts(src.itemListenDecrements),
       updatedAt: Math.max(0, Number(src.updatedAt) || 0)
     };
   }
@@ -2021,7 +2025,8 @@
         if (
           Object.keys(norm.dailyListenSec).length > 0 ||
           norm.totalListenSec > 0 ||
-          Object.keys(norm.itemListenCounts).length > 0
+          Object.keys(norm.itemListenCounts).length > 0 ||
+          Object.keys(norm.itemListenDecrements).length > 0
         ) {
           clean[String(devId)] = norm;
         }
@@ -2044,6 +2049,33 @@
       logs.legacyListen = normalizeListenBucket(logs.legacyListen || {});
       logs.deviceBuckets = normalizeDeviceBuckets(logs.deviceBuckets);
     }
+    if (logs.listenSchemaVersion !== 2) {
+      // v3.4.10 may have saved flat compatibility floors outside the buckets.
+      // Import only the deficit once; subsequent aggregates are derived from buckets.
+      const base = logs.legacyListen;
+      const buckets = [base, ...Object.values(logs.deviceBuckets)];
+      const daily = {}, counts = {};
+      let total = 0;
+      buckets.forEach(b => {
+        Object.entries(b.dailyListenSec).forEach(([d, v]) => { daily[d] = (daily[d] || 0) + v; });
+        Object.entries(b.itemListenCounts).forEach(([id, v]) => { counts[id] = (counts[id] || 0) + v; });
+        total += b.totalListenSec;
+      });
+      Object.entries(logs.dailyListenSec || {}).forEach(([d, v]) => {
+        if (/^\d{4}-\d{2}-\d{2}$/.test(d) && Number.isFinite(Number(v)) && Number(v) > (daily[d] || 0)) {
+          base.dailyListenSec[d] = (base.dailyListenSec[d] || 0) + Number(v) - (daily[d] || 0);
+        }
+      });
+      Object.entries(normalizeItemListenCounts(logs.itemListenCounts)).forEach(([id, v]) => {
+        const deficit = Math.max(0, v - (counts[id] || 0));
+        if (deficit) base.itemListenCounts[id] = (base.itemListenCounts[id] || 0) + deficit;
+      });
+      base.totalListenSec = Math.max(
+        base.totalListenSec + Math.max(0, (Number(logs.totalListenSec) || 0) - total),
+        Object.values(base.dailyListenSec).reduce((a, b) => a + b, 0)
+      );
+      logs.listenSchemaVersion = 2;
+    }
   }
 
   function recomputeListenAggregates(logs) {
@@ -2052,6 +2084,7 @@
     const base = logs.legacyListen;
     const aggDaily = {};
     const aggCounts = {};
+    const decrements = {};
     let aggTotal = Math.max(0, Number(base.totalListenSec) || 0);
 
     Object.entries(base.dailyListenSec || {}).forEach(([d, v]) => {
@@ -2059,6 +2092,9 @@
     });
     Object.entries(base.itemListenCounts || {}).forEach(([id, c]) => {
       if (c > 0) aggCounts[id] = (aggCounts[id] || 0) + c;
+    });
+    Object.entries(base.itemListenDecrements || {}).forEach(([id, c]) => {
+      decrements[id] = (decrements[id] || 0) + c;
     });
 
     Object.values(logs.deviceBuckets || {}).forEach((b) => {
@@ -2068,10 +2104,21 @@
       Object.entries(b.itemListenCounts || {}).forEach(([id, c]) => {
         if (c > 0) aggCounts[id] = (aggCounts[id] || 0) + c;
       });
+      Object.entries(b.itemListenDecrements || {}).forEach(([id, c]) => {
+        decrements[id] = (decrements[id] || 0) + c;
+      });
       aggTotal += Math.max(0, Number(b.totalListenSec) || 0);
     });
 
+    Object.entries(listenTracker.totals(logs.listenProgress)).forEach(([id, count]) => {
+      aggCounts[id] = (aggCounts[id] || 0) + count;
+    });
     const dailySum = Object.values(aggDaily).reduce((a, b) => a + b, 0);
+    Object.keys(aggCounts).forEach(id => {
+      const net = aggCounts[id] - (decrements[id] || 0);
+      if (net > 0) aggCounts[id] = net;
+      else delete aggCounts[id];
+    });
     logs.dailyListenSec = aggDaily;
     logs.itemListenCounts = aggCounts;
     logs.totalListenSec = Math.max(dailySum, aggTotal);
@@ -2111,7 +2158,7 @@
   function renderListenCountBadgeHtml(count) {
     const info = getListenTierInfo(count);
     if (info.tier === 'none') return '';
-    return `<span class="card-listen-badge tier-${info.tier}" title="累计精听 ${count} 遍">${info.shortLabel}</span>`;
+    return `<span class="card-listen-badge tier-${info.tier}" title="听读记录 ${count} 遍（含历史记录与手动补记）">${info.shortLabel}</span>`;
   }
 
   function findStudyItemTitleById(itemId) {
@@ -2157,22 +2204,9 @@
       if (delta > 0) {
         bucket.itemListenCounts[itemId] = (Number(bucket.itemListenCounts[itemId]) || 0) + delta;
       } else {
-        // 手动减量/重置时同步校正当前设备桶与历史基线
-        let remain = -delta;
-        const curB = Math.floor(Number(bucket.itemListenCounts[itemId]) || 0);
-        if (curB > 0) {
-          const take = Math.min(curB, remain);
-          const left = curB - take;
-          if (left > 0) bucket.itemListenCounts[itemId] = left;
-          else delete bucket.itemListenCounts[itemId];
-          remain -= take;
-        }
-        if (remain > 0 && state.studyLogs.legacyListen && state.studyLogs.legacyListen.itemListenCounts) {
-          const curL = Math.floor(Number(state.studyLogs.legacyListen.itemListenCounts[itemId]) || 0);
-          const leftL = Math.max(0, curL - remain);
-          if (leftL > 0) state.studyLogs.legacyListen.itemListenCounts[itemId] = leftL;
-          else delete state.studyLogs.legacyListen.itemListenCounts[itemId];
-        }
+        // Positive and negative counters both grow monotonically, so stale sync
+        // snapshots cannot resurrect an undo (including counts earned elsewhere).
+        bucket.itemListenDecrements[itemId] = (bucket.itemListenDecrements[itemId] || 0) - delta;
       }
       bucket.updatedAt = Date.now();
       recomputeListenAggregates(state.studyLogs);
@@ -2204,29 +2238,10 @@
           }
         });
       } else {
-        showToast(`《${shortTitle}》已精听第 ${next} 遍`, 2200);
+        showToast(`《${shortTitle}》听读记录已达 ${next} 遍`, 2200);
       }
     }
     return next;
-  }
-
-  function settleCurrentAudioPass(options = {}) {
-    const { minRatio = 0.75, source = 'ended', silentToast = false } = options;
-    const itemId = currentPassItemId || state.activeItemId;
-    const covered = currentPassCoveredAudioSec;
-    currentPassCoveredAudioSec = 0;
-    if (!itemId || !hasAudioSource()) return false;
-    const dur = Number(audio && audio.duration) || 0;
-    let passed = false;
-    if (isFinite(dur) && dur > 0) {
-      const requiredSec = Math.max(Math.min(5, dur * 0.6), dur * minRatio);
-      passed = covered >= requiredSec;
-    } else {
-      passed = covered >= 15;
-    }
-    if (!passed) return false;
-    incrementItemListenCount(itemId, { source, silentToast });
-    return true;
   }
 
   function saveMasteryData() {
@@ -2243,8 +2258,10 @@
       if (!suppressSyncHook && window.__kaoyanAiHooks && typeof window.__kaoyanAiHooks.onStudyLogsMutation === 'function') {
         window.__kaoyanAiHooks.onStudyLogsMutation(state.studyLogs);
       }
+      return true;
     } catch (e) {
       console.warn('Failed to save kaoyan_study_logs:', e);
+      return false;
     }
   }
 
@@ -2285,48 +2302,126 @@
     if (el.dashTotalListenMin) el.dashTotalListenMin.textContent = String(Math.floor(totalSec / 60));
   }
 
+  function getListenContext() {
+    const source = audio.getAttribute('src') || '';
+    const duration = Number(audio.duration);
+    if (!source || !state.activeItemId || !Number.isFinite(duration) || duration <= 0) return null;
+    const identity = `${state.currentSubject}|${state.activeItemId}|${state.currentTrack}|${source}`;
+    if (listenContext && listenContext.identity === identity && listenContext.duration === duration &&
+        listenContext.sentences === state.activeSentences && listenContext.sections === currentFrameworkSections) return listenContext;
+    const windows = listenTracker.union((state.activeSentences || []).map(s => [Number(s.start), Math.min(duration, Number(s.end))]));
+    if (!windows.length) return null; // Do not credit an unknown or not-yet-loaded timeline.
+    let hash = 2166136261;
+    for (const char of JSON.stringify(windows)) hash = Math.imul(hash ^ char.charCodeAt(0), 16777619) >>> 0;
+    const key = `${identity}|${hash.toString(36)}`;
+    const targets = (currentFrameworkSections || []).map(sec => ({
+      id: `section:${Number(sec.start).toFixed(3)}:${Number(sec.end).toFixed(3)}`,
+      windows: listenTracker.intersect(listenTracker.union([[sec.start, sec.end]]), windows)
+    })).filter(target => target.windows.length);
+    listenContext = { identity, key, duration, windows, targets,
+      itemId: state.activeItemId, sentences: state.activeSentences, sections: currentFrameworkSections };
+    return listenContext;
+  }
+
+  function getListenTargets(context) {
+    const targets = context.targets.slice();
+    // Fixed sentences are the durable record underneath arbitrary A-B selections.
+    if (['sentence', 'loop3', 'range'].includes(state.playMode)) {
+      let indices = [state.currentSentIndex];
+      if (state.playMode === 'range' && hasValidRangeSelection()) {
+        indices = [];
+        for (let i = state.rangeSelection.startIdx; i <= state.rangeSelection.endIdx; i++) indices.push(i);
+      }
+      indices.forEach(idx => {
+        const s = context.sentences[idx];
+        if (s) targets.push({ id: `sentence:${s.id}:${Number(s.start).toFixed(3)}:${Number(s.end).toFixed(3)}`, windows: [[s.start, s.end]] });
+      });
+    }
+    return targets;
+  }
+
+  function getRangePractice(context) {
+    if (state.playMode !== 'range' || !hasValidRangeSelection()) { rangePractice = null; return null; }
+    const rs = state.rangeSelection, start = context.sentences[rs.startIdx], end = context.sentences[rs.endIdx];
+    if (!start || !end) return null;
+    const key = `${context.key}|${start.start}|${end.end}`;
+    if (!rangePractice || rangePractice.key !== key) {
+      rangePractice = { key, windows: listenTracker.intersect([[start.start, end.end]], context.windows), round: listenTracker.emptyRound() };
+    }
+    return rangePractice;
+  }
+
+  function makeListenAnchor() {
+    const context = getListenContext();
+    if (!context) return null;
+    return { key: context.key, context, now: performance.now(), position: Number(audio.currentTime) || 0,
+      rate: Number(audio.playbackRate) || 1,
+      active: !audio.paused && state.isPlaying && !isLoopGapWaiting && !audio.seeking && audio.readyState >= 2,
+      seeking: audio.seeking, targets: getListenTargets(context), range: getRangePractice(context) };
+  }
+
   function accumulateListeningTime(forceFlush = false) {
     if (!state.studyLogs) return;
-    const now = Date.now();
-    const isActivelyListening = Boolean(audio && !audio.paused && state.isPlaying && !isLoopGapWaiting);
-    if (lastListenTickTs > 0) {
-      const deltaSec = (now - lastListenTickTs) / 1000;
-      if (deltaSec > 0 && deltaSec <= 30) {
-        const today = getTodayDateStr();
-        ensureDeviceListenBuckets(state.studyLogs);
-        const devId = getLocalDeviceId();
-        if (!state.studyLogs.deviceBuckets[devId]) {
-          state.studyLogs.deviceBuckets[devId] = normalizeListenBucket({});
-        }
-        const bucket = state.studyLogs.deviceBuckets[devId];
-        bucket.dailyListenSec[today] = (Number(bucket.dailyListenSec[today]) || 0) + deltaSec;
-        bucket.totalListenSec = (Number(bucket.totalListenSec) || 0) + deltaSec;
-        bucket.updatedAt = now;
-        recomputeListenAggregates(state.studyLogs);
-        if (state.activeItemId) {
-          if (currentPassItemId !== state.activeItemId) {
-            currentPassItemId = state.activeItemId;
-            currentPassCoveredAudioSec = 0;
-          }
-          const rate = Math.max(0.5, Math.min(3.0, Number(audio && audio.playbackRate) || 1));
-          currentPassCoveredAudioSec += deltaSec * rate;
-        }
-        if (forceFlush || (now - lastListenSaveTs >= 5000)) {
-          lastListenSaveTs = now;
-          saveStudyLogs();
-          if (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) {
-            updateStudyDashboardListenUI();
-          }
-        }
-      }
-      lastListenTickTs = isActivelyListening ? now : 0;
-    } else if (isActivelyListening) {
-      lastListenTickTs = now;
-      if (state.activeItemId && currentPassItemId !== state.activeItemId) {
-        currentPassItemId = state.activeItemId;
-        currentPassCoveredAudioSec = 0;
+    const now = Date.now(), next = makeListenAnchor();
+    const heard = next && listenTracker.sample(listenAnchor, next);
+    let credited = false;
+    if (heard) {
+      const logs = state.studyLogs, context = listenAnchor.context;
+      ensureDeviceListenBuckets(logs);
+      const deviceId = getLocalDeviceId(), today = getTodayDateStr();
+      const bucket = logs.deviceBuckets[deviceId] || (logs.deviceBuckets[deviceId] = normalizeListenBucket({}));
+      bucket.dailyListenSec[today] = (bucket.dailyListenSec[today] || 0) + heard.seconds;
+      bucket.totalListenSec += heard.seconds;
+      bucket.updatedAt = now;
+      if (!logs.listenProgress) logs.listenProgress = {};
+      const track = listenTracker.ensure(logs.listenProgress, context.key, context.itemId, context.windows);
+      credited = listenTracker.record(track, deviceId, heard.from, heard.to, listenAnchor.targets);
+      if (listenAnchor.range) listenTracker.advance(listenAnchor.range.round, listenAnchor.range.windows, heard.from, heard.to, true);
+      recomputeListenAggregates(logs);
+      listenLogsDirty = true;
+      if (credited) {
+        updateHeaderListenBadgeUI();
+        refreshSidebarListenBadge(context.itemId);
+        showToast('本轮正文覆盖已达 90%，整篇听读 +1', 2200);
       }
     }
+    listenAnchor = next;
+    if ((forceFlush || credited || now - lastListenSaveTs >= 5000) && listenLogsDirty) {
+      lastListenSaveTs = now;
+      listenLogsDirty = !saveStudyLogs();
+      if (el.studyDashboardDrawer && el.studyDashboardDrawer.classList.contains('open')) updateStudyDashboardUI();
+    }
+    updateListenProgressUI();
+  }
+
+  function setAudioPosition(time) {
+    accumulateListeningTime(true);
+    listenAnchor = null;
+    audio.currentTime = time;
+  }
+
+  function updateListenProgressUI() {
+    if (!el.listenCoverageText) return;
+    const context = getListenContext();
+    const track = context && state.studyLogs.listenProgress && state.studyLogs.listenProgress[context.key];
+    const deviceId = getLocalDeviceId();
+    const whole = track && track.wholeDevices[deviceId] ? track.wholeDevices[deviceId] : listenTracker.emptyRound();
+    const coverageText = !context ? '本轮覆盖待加载' : `本轨听读 ${listenTracker.total(track)} 遍 · ` + (whole.sealedAt != null ? '本轮已达标' : `本轮覆盖 ${Math.floor(listenTracker.ratio(whole, context.windows) * 100 + 1e-6)}%`);
+    if (el.listenCoverageText.textContent !== coverageText) el.listenCoverageText.textContent = coverageText;
+    let practiceText = '';
+    const range = context && getRangePractice(context);
+    if (range) practiceText = `本次区间已完成 ${range.round.completed} 遍`;
+    else if (context) {
+      const sentence = context.sentences[state.currentSentIndex];
+      if (['sentence', 'loop3'].includes(state.playMode) && sentence) {
+        const id = `sentence:${sentence.id}:${Number(sentence.start).toFixed(3)}:${Number(sentence.end).toFixed(3)}`;
+        practiceText = `此句已完成 ${listenTracker.practiceCount(track, id)} 遍`;
+      } else {
+        const sec = currentFrameworkSections[currentActiveSectionIndex];
+        if (sec) practiceText = `此段已完成 ${listenTracker.practiceCount(track, `section:${Number(sec.start).toFixed(3)}:${Number(sec.end).toFixed(3)}`)} 遍`;
+      }
+    }
+    if (el.listenPracticeText && el.listenPracticeText.textContent !== practiceText) el.listenPracticeText.textContent = practiceText;
   }
 
   function readJsonStorageSafe(key, fallbackVal) {
@@ -2430,7 +2525,9 @@
           totalCardsCompleted: Math.max(0, Number(rawLogs.totalCardsCompleted) || cleanCompleted.length),
           dailyListenSec: cleanDaily,
           totalListenSec: Math.max(0, Number(rawLogs.totalListenSec) || 0),
-          itemListenCounts: normalizeItemListenCounts(rawLogs.itemListenCounts)
+          itemListenCounts: normalizeItemListenCounts(rawLogs.itemListenCounts),
+          listenProgress: listenTracker.normalize(rawLogs.listenProgress),
+          listenSchemaVersion: rawLogs.listenSchemaVersion
         };
         if (rawLogs.deviceBuckets && typeof rawLogs.deviceBuckets === 'object' && !Array.isArray(rawLogs.deviceBuckets)) {
           state.studyLogs.legacyListen = normalizeListenBucket(rawLogs.legacyListen || {});
@@ -2600,11 +2697,12 @@
     const info = getListenTierInfo(count);
     el.btnListenCountAdd.className = `paper-listen-badge tier-${info.tier}`;
     if (el.paperListenText) {
-      el.paperListenText.textContent = count > 0 ? `已听 ${count} 遍 · +1` : '补记 +1';
+      el.paperListenText.textContent = count > 0 ? `听读 ${count} 遍 · +1` : '补记 +1';
     }
     el.btnListenCountAdd.title = count > 0
-      ? `当前篇目累计精听 ${count} 遍（完整听完 ≥75% 自动 +1，点击可手动补记 +1）`
-      : '尚未计入精听遍数（完整听完 ≥75% 自动 +1，点击可手动补记 +1）';
+      ? `听读记录 ${count} 遍，含历史记录与补记；新记录按单轨正文去重覆盖 ≥90% 自动 +1，点击补记`
+      : '按单轨正文去重覆盖 ≥90% 自动 +1；单段练习另行记录，点击可手动补记 +1';
+    updateListenProgressUI();
   }
 
   function updateHeaderMasteryUI() {
@@ -3405,11 +3503,7 @@
 
     const resolvedId = item.id;
     accumulateListeningTime(true);
-    if (currentPassItemId && currentPassItemId !== resolvedId && currentPassCoveredAudioSec > 0) {
-      settleCurrentAudioPass({ minRatio: 0.85, source: 'auto' });
-    }
-    currentPassItemId = resolvedId;
-    currentPassCoveredAudioSec = 0;
+    listenAnchor = null;
     lastSpotlightEls = [];
     lastSpotlightEl = null; // 切换考题清除旧聚光引用，消除跨题内存残留与同名 sentId 穿透
     lastLinkedClickInfo = null;
@@ -3476,6 +3570,8 @@
   }
 
   function loadTrackData(trackNum, autoPlay = false, restoreTime = false) {
+    accumulateListeningTime(true);
+    listenAnchor = null;
     if (state.currentSubject === 'pol') {
       loadPolTrackData(trackNum, autoPlay, restoreTime);
       return;
@@ -3884,7 +3980,7 @@
 
     const applySeek = () => {
       try {
-        audio.currentTime = targetTime;
+        setAudioPosition(targetTime);
       } catch (err) {
         console.warn('Seek error:', err);
       }
@@ -4506,6 +4602,7 @@
 
   function updateHUDDisplay(curTime) {
     if (!state.activeItem) return;
+    updateListenProgressUI();
     const item = state.activeItem;
     const isT1 = state.currentTrack === 1;
 
@@ -4670,8 +4767,7 @@
 
     try {
       navigator.mediaSession.setActionHandler('play', () => {
-        if (isLoopGapWaiting) cancelLoopGapWait();
-        audio.play().catch(e => console.log(e));
+        resumeAudioPlayback();
       });
       navigator.mediaSession.setActionHandler('pause', () => {
         if (isLoopGapWaiting) {
@@ -4688,18 +4784,18 @@
       });
       navigator.mediaSession.setActionHandler('seekbackward', (details) => {
         const nextT = Math.max(0, audio.currentTime - (details.seekOffset || 5));
-        audio.currentTime = nextT;
+        setAudioPosition(nextT);
         syncManualSeekPointers(nextT);
       });
       navigator.mediaSession.setActionHandler('seekforward', (details) => {
         const dur = audio.duration;
         const nextT = (dur && isFinite(dur)) ? Math.min(dur, audio.currentTime + (details.seekOffset || 5)) : (audio.currentTime + (details.seekOffset || 5));
-        audio.currentTime = nextT;
+        setAudioPosition(nextT);
         syncManualSeekPointers(nextT);
       });
       navigator.mediaSession.setActionHandler('seekto', (details) => {
         if (details.seekTime !== null && details.seekTime !== undefined) {
-          audio.currentTime = details.seekTime;
+          setAudioPosition(details.seekTime);
           syncManualSeekPointers(details.seekTime);
         }
       });
@@ -4866,6 +4962,12 @@
       pauseDuringGapWait();
       return;
     }
+    if (audio.paused) resumeAudioPlayback();
+    else audio.pause();
+  }
+
+  function resumeAudioPlayback() {
+    if (isLoopGapWaiting) cancelLoopGapWait();
     const hasSrc = hasAudioSource();
     if (hasSrc) {
       expandPlayerDock();
@@ -4878,6 +4980,15 @@
           loadTrackData(state.currentTrack, true);
         }
       } else {
+        if (state.playMode === 'range' && hasValidRangeSelection() && state.rangeSelection.completed) {
+          state.rangeSelection.completed = false;
+          state.loopCount = 0;
+          const startSent = state.activeSentences[state.rangeSelection.startIdx];
+          if (startSent) {
+            seekToSentence(state.rangeSelection.startIdx, startSent.start);
+            return;
+          }
+        }
         if (audio.error) {
           const resumeIdx = (state.currentSentIndex >= 0 && state.activeSentences?.[state.currentSentIndex]) ? state.currentSentIndex : 0;
           if (state.activeSentences && state.activeSentences[resumeIdx]) {
@@ -4890,19 +5001,8 @@
             audio.load();
           }
         }
-        if (state.playMode === 'range' && hasValidRangeSelection() && state.rangeSelection.completed) {
-          state.rangeSelection.completed = false;
-          state.loopCount = 0;
-          const startSent = state.activeSentences[state.rangeSelection.startIdx];
-          if (startSent) {
-            seekToSentence(state.rangeSelection.startIdx, startSent.start);
-            return;
-          }
-        }
         audio.play().catch(e => console.log('Play failed:', e));
       }
-    } else {
-      audio.pause();
     }
   }
   const togglePlay = toggleAudioPlayback;
@@ -5030,7 +5130,6 @@
               return 'handled';
             } else {
               accumulateListeningTime(true);
-              settleCurrentAudioPass({ minRatio: 0.75, source: 'ended' });
               cancelLoopGapWait();
               state.isPlaying = false;
               audio.pause();
@@ -5104,7 +5203,6 @@
                 return 'handled';
               } else {
                 accumulateListeningTime(true);
-                settleCurrentAudioPass({ minRatio: 0.75, source: 'ended' });
                 cancelLoopGapWait();
                 state.isPlaying = false;
                 audio.pause();
@@ -5147,7 +5245,7 @@
             if (loopSeekTimer) { clearTimeout(loopSeekTimer); loopSeekTimer = null; }
           } else if (Date.now() - pendingSeekTarget.startedAt < 3800) {
             if (audio.readyState >= 1 && !audio.seeking && drift > 0.5) {
-              try { audio.currentTime = pendingSeekTarget.time; } catch (e) {}
+              try { setAudioPosition(pendingSeekTarget.time); } catch (e) {}
             }
             if (pendingSeekTarget.idx !== -1) {
               state.currentSentIndex = pendingSeekTarget.idx;
@@ -5206,12 +5304,12 @@
       state.isPlaying = true;
       if (audio.preload !== 'auto') audio.preload = 'auto';
       audio.playbackRate = state.speed;
-      if (!lastListenTickTs) lastListenTickTs = Date.now();
+      listenAnchor = makeListenAnchor();
 
       // 政治徐涛16天带背原声前奏导言区自动跳过（若用户刚主动点选过句子且在寻求目标时刻，不覆盖）
       maybeSkipXutaoIntro(audio.currentTime || 0);
       if (pendingSeekTarget && pendingSeekTarget.token === seekToken && audio.readyState >= 1 && Math.abs(audio.currentTime - pendingSeekTarget.time) > 0.35) {
-        try { audio.currentTime = pendingSeekTarget.time; } catch (e) {}
+        try { setAudioPosition(pendingSeekTarget.time); } catch (e) {}
       }
 
       updatePlayBtnUI();
@@ -5244,6 +5342,7 @@
     });
 
     audio.addEventListener('seeked', () => {
+      listenAnchor = makeListenAnchor();
       if (!isLoopGapWaiting) {
         releaseLoopMuteGuard();
       }
@@ -5254,7 +5353,7 @@
           isLoopSeeking = false;
           if (loopSeekTimer) { clearTimeout(loopSeekTimer); loopSeekTimer = null; }
         } else if (audio.readyState >= 1 && Date.now() - pendingSeekTarget.startedAt < 3500) {
-          try { audio.currentTime = pendingSeekTarget.time; } catch (e) {}
+          try { setAudioPosition(pendingSeekTarget.time); } catch (e) {}
         }
         return;
       }
@@ -5270,7 +5369,7 @@
     audio.addEventListener('canplay', () => {
       if (pendingSeekTarget && pendingSeekTarget.token === seekToken) {
         if (Math.abs(audio.currentTime - pendingSeekTarget.time) > 0.35 && !audio.seeking && Date.now() - pendingSeekTarget.startedAt < 3500) {
-          try { audio.currentTime = pendingSeekTarget.time; } catch (e) {}
+          try { setAudioPosition(pendingSeekTarget.time); } catch (e) {}
         } else if (Math.abs(audio.currentTime - pendingSeekTarget.time) <= 0.45 && audio.readyState >= 2) {
           clearPendingSeek(true);
           isLoopSeeking = false;
@@ -5344,7 +5443,6 @@
 
     audio.addEventListener('ended', () => {
       accumulateListeningTime(true);
-      settleCurrentAudioPass({ minRatio: 0.75, source: 'ended' });
       if (state.playMode === 'item') {
         performLoopTransition(0, { targetSentIdx: state.activeSentences?.length ? 0 : null, shouldResume: true, useGap: false });
         return;
@@ -5368,8 +5466,14 @@
     });
 
     audio.addEventListener('ratechange', () => {
+      accumulateListeningTime(true);
       updateMediaSessionState(true);
     });
+
+    audio.addEventListener('seeking', () => { listenAnchor = null; });
+    audio.addEventListener('playing', () => { listenAnchor = makeListenAnchor(); });
+    audio.addEventListener('waiting', () => { accumulateListeningTime(true); listenAnchor = null; });
+    audio.addEventListener('emptied', () => { listenAnchor = null; listenContext = null; updateListenProgressUI(); });
 
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
@@ -5429,7 +5533,7 @@
               if (recoverEpoch !== manualSeekEpoch || audio.error) return;
               try {
                 const dur = audio.duration || 0;
-                audio.currentTime = dur > 0 ? Math.min(resumeTime, Math.max(0, dur - 0.1)) : resumeTime;
+                setAudioPosition(dur > 0 ? Math.min(resumeTime, Math.max(0, dur - 0.1)) : resumeTime);
               } catch (e) {}
             }, { once: true });
           }
@@ -5881,7 +5985,7 @@
         }
         const cur = audio.currentTime || 0;
         const nextT = Math.max(0, cur - 5);
-        audio.currentTime = nextT;
+        setAudioPosition(nextT);
         if (el.timeCurrent) el.timeCurrent.textContent = formatTime(nextT);
         if (audio.duration && isFinite(audio.duration) && el.progressFill) {
           el.progressFill.style.width = ((nextT / audio.duration) * 100) + '%';
@@ -5906,7 +6010,7 @@
           return;
         }
         const nextT = (dur && isFinite(dur)) ? Math.min(dur, cur + 5) : (cur + 5);
-        audio.currentTime = nextT;
+        setAudioPosition(nextT);
         if (el.timeCurrent) el.timeCurrent.textContent = formatTime(nextT);
         if (dur && isFinite(dur) && el.progressFill) {
           el.progressFill.style.width = ((nextT / dur) * 100) + '%';
@@ -5925,7 +6029,7 @@
         const pos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
         if (audio.duration && isFinite(audio.duration)) {
           const nextT = pos * audio.duration;
-          audio.currentTime = nextT;
+          setAudioPosition(nextT);
           if (el.progressFill) {
             el.progressFill.style.width = (pos * 100) + '%';
           }
@@ -6657,13 +6761,13 @@
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
         const nextT = Math.max(0, (audio.currentTime || 0) - 5);
-        audio.currentTime = nextT;
+        setAudioPosition(nextT);
         syncManualSeekPointers(nextT);
       } else if (e.key === 'ArrowRight') {
         e.preventDefault();
         const dur = audio.duration;
         const nextT = (dur && isFinite(dur)) ? Math.min(dur, (audio.currentTime || 0) + 5) : ((audio.currentTime || 0) + 5);
-        audio.currentTime = nextT;
+        setAudioPosition(nextT);
         syncManualSeekPointers(nextT);
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
@@ -6728,7 +6832,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.4.10';
+  const APP_BUILD_ID = '3.4.12';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
@@ -7770,9 +7874,7 @@
       setAiClozeDataBatch: (entriesObj) => setAiClozeDataBatch(entriesObj),
       refreshCloze: () => refreshCloze(),
       setClozeFilterMode: (mode) => setClozeFilterMode(mode),
-      play: () => {
-        if (audio.paused) toggleAudioPlayback();
-      },
+      play: () => resumeAudioPlayback(),
       pause: () => {
         if (isLoopGapWaiting) {
           pauseDuringGapWait();
@@ -7815,6 +7917,11 @@
         }
       },
       getStudyLogs: () => JSON.parse(JSON.stringify(state.studyLogs || { dates: [], completedIds: [], totalCardsCompleted: 0, dailyListenSec: {}, totalListenSec: 0, itemListenCounts: {} })),
+      normalizeStudyLogsForSync: (logs) => {
+        const normalized = { ...logs };
+        recomputeListenAggregates(normalized);
+        return normalized;
+      },
       applyMergedStudyLogs: (mergedLogs) => {
         if (!mergedLogs || typeof mergedLogs !== 'object' || Array.isArray(mergedLogs)) return;
         const cleanDates = Array.isArray(mergedLogs.dates)
@@ -7839,23 +7946,14 @@
             totalCardsCompleted: Math.max(0, Number(mergedLogs.totalCardsCompleted) || cleanCompleted.length),
             dailyListenSec: cleanDaily,
             totalListenSec: Math.max(0, Number(mergedLogs.totalListenSec) || 0),
-            itemListenCounts: cleanCounts
+            itemListenCounts: cleanCounts,
+            listenProgress: listenTracker.normalize(mergedLogs.listenProgress),
+            listenSchemaVersion: mergedLogs.listenSchemaVersion
           };
           if (mergedLogs.deviceBuckets && typeof mergedLogs.deviceBuckets === 'object' && !Array.isArray(mergedLogs.deviceBuckets)) {
             state.studyLogs.legacyListen = normalizeListenBucket(mergedLogs.legacyListen || {});
             state.studyLogs.deviceBuckets = normalizeDeviceBuckets(mergedLogs.deviceBuckets);
             recomputeListenAggregates(state.studyLogs);
-            Object.entries(cleanDaily).forEach(([d, sec]) => {
-              if ((state.studyLogs.dailyListenSec[d] || 0) < sec) {
-                state.studyLogs.dailyListenSec[d] = sec;
-              }
-            });
-            Object.entries(cleanCounts).forEach(([id, c]) => {
-              if ((state.studyLogs.itemListenCounts[id] || 0) < c) {
-                state.studyLogs.itemListenCounts[id] = c;
-              }
-            });
-            state.studyLogs.totalListenSec = Math.max(state.studyLogs.totalListenSec || 0, Number(mergedLogs.totalListenSec) || 0);
           } else {
             ensureDeviceListenBuckets(state.studyLogs);
           }
@@ -8033,6 +8131,8 @@
   }
 
   function loadPolTrackData(trackNum, autoPlay = false, restoreTime = false) {
+    accumulateListeningTime(true);
+    listenAnchor = null;
     state.currentTrack = trackNum;
     state.currentSentIndex = -1;
     state.loopCount = 0;
@@ -8390,7 +8490,7 @@
         const xtEpoch = ++manualSeekEpoch;
         const setTime = () => {
           if (xtEpoch !== manualSeekEpoch) return;
-          audio.currentTime = Math.max(0, t);
+          setAudioPosition(Math.max(0, t));
           highlightSentence(startPointIdx);
         };
         if (audio.readyState >= 1) {
@@ -8416,7 +8516,7 @@
             if (xtEpoch !== manualSeekEpoch || (pendingSeekTarget && Date.now() - pendingSeekTarget.startedAt < 5000)) return;
             if (audio.currentTime < t0 - 0.3) {
               xtIntroAutoSkipped = true;
-              audio.currentTime = t0;
+              setAudioPosition(t0);
               highlightSentence(0);
             }
           };
@@ -8753,7 +8853,7 @@
     return false;
   }
 
-  const AI_CLOZE_SKIP_ANCESTOR = '.cloze, .cloze-blank, .kw-red, .stream-kw, .xt-keyword, .thesis-pill, .card-ai-btn, .en-audio-jump-pill, .tj-point-jump-pill, .seal-btn, .pol-subcard-pills, .xt-voice-switcher, .section-card-header, .xt-day-point-header, .tj-card-header, .en-intro-badge, .en-task-prompt-box, .logic-block-title, .card-title, .tj-card-title, .tj-points-title, .xt-part-title, h1, h2, h3, h4, svg, button, a, script, style';
+  const AI_CLOZE_SKIP_ANCESTOR = '.thesis-pill, .card-ai-btn, .en-audio-jump-pill, .tj-point-jump-pill, .seal-btn, .pol-subcard-pills, .xt-voice-switcher, .section-card-header, .xt-day-point-header, .tj-card-header, .en-intro-badge, .en-task-prompt-box, .logic-block-title, .card-title, .tj-card-title, .tj-points-title, .xt-part-title, h1, h2, h3, h4, svg, button, a, script, style';
 
   function resetDynamicClozeDom() {
     if (!el.paperContent) return;
@@ -8781,62 +8881,89 @@
     });
   }
 
-  function collectAiClozeTextNodes(rootEl) {
-    const textNodes = [];
-    if (!rootEl) return textNodes;
+  function wrapAiTargetsAcrossNodes(rootEl, sortedTargets, caseInsensitive = false) {
+    // Match logical sentence text first, then map offsets back to individual text
+    // nodes. Inline emphasis and sentence IDs/listeners remain untouched.
+    const runs = [];
     const walker = document.createTreeWalker(rootEl, NodeFilter.SHOW_TEXT);
-    let node;
+    let node, run = null;
     while ((node = walker.nextNode())) {
-      if (!node.nodeValue || !node.nodeValue.trim()) continue;
       const parentEl = node.parentElement;
-      if (!parentEl || parentEl.closest(AI_CLOZE_SKIP_ANCESTOR)) continue;
-      textNodes.push(node);
+      if (!parentEl || parentEl.closest(AI_CLOZE_SKIP_ANCESTOR)) {
+        run = null;
+        continue;
+      }
+      const scope = parentEl.closest('.recite-sent, .recite-sentence, .recite-sent-item, .tj-sent-span, [data-sent-id]')
+        || parentEl.closest('p, li, .xt-point-content, .tj-point-text') || parentEl;
+      if (!run || run.scope !== scope) {
+        run = { scope, text: '', nodes: [] };
+        runs.push(run);
+      }
+      const text = node.nodeValue || '';
+      run.nodes.push({ node, start: run.text.length, end: run.text.length + text.length });
+      run.text += text;
     }
-    return textNodes;
-  }
 
-  function wrapAiTargetsInTextNode(txtNode, sortedTargets, caseInsensitive = false) {
-    const text = txtNode.nodeValue || '';
-    const hay = caseInsensitive ? text.toLowerCase() : text;
-    const hits = [];
-    for (const target of sortedTargets) {
-      if (!target || !target.needle) continue;
-      const needle = target.needle;
-      const nLen = needle.length;
-      if (nLen < 2) continue;
-      let searchFrom = 0;
-      while (searchFrom <= hay.length - nLen) {
-        const idx = hay.indexOf(needle, searchFrom);
-        if (idx === -1) break;
-        const end = idx + nLen;
-        const overlaps = hits.some(h => !(end <= h.start || idx >= h.end));
-        if (!overlaps) {
-          hits.push({ start: idx, end, tier: target.tier });
+    let groupIndex = 0;
+    runs.forEach(({ text, nodes, scope }) => {
+      const hay = caseInsensitive ? text.toLowerCase() : text;
+      const hits = [];
+      sortedTargets.forEach(target => {
+        let from = 0, index;
+        while ((index = hay.indexOf(target.needle, from)) !== -1) {
+          hits.push({ start: index, end: index + target.needle.length, tier: target.tier });
+          from = index + 1;
         }
-        searchFrom = end;
-      }
-    }
-    if (hits.length === 0) return false;
-    hits.sort((a, b) => a.start - b.start);
-    const frag = document.createDocumentFragment();
-    let cursor = 0;
-    for (const h of hits) {
-      if (h.start > cursor) {
-        frag.appendChild(document.createTextNode(text.slice(cursor, h.start)));
-      }
-      const span = document.createElement('span');
-      span.className = `cloze cloze-blank cloze-tier-${h.tier}`;
-      span.dataset.aiCloze = '1';
-      span.dataset.clozeTier = h.tier;
-      span.textContent = text.slice(h.start, h.end);
-      frag.appendChild(span);
-      cursor = h.end;
-    }
-    if (cursor < text.length) {
-      frag.appendChild(document.createTextNode(text.slice(cursor)));
-    }
-    txtNode.parentNode.replaceChild(frag, txtNode);
-    return true;
+      });
+      hits.sort((a, b) => a.start - b.start || b.end - a.end);
+      const ranges = [];
+      hits.forEach(hit => {
+        const prev = ranges[ranges.length - 1];
+        if (prev && hit.start < prev.end) {
+          prev.end = Math.max(prev.end, hit.end);
+          if (hit.tier === 'scoring') prev.tier = 'scoring';
+        } else {
+          ranges.push({ ...hit, group: `ai-${groupIndex++}` });
+        }
+      });
+      nodes.forEach(({ node: textNode, start, end }) => {
+        const parts = ranges.filter(r => r.start < end && r.end > start);
+        if (!parts.length) return;
+        // Existing curated annotations become formatting containers. Their inner
+        // fragments own the mask, avoiding nested masks and partial reveals.
+        let ancestor = textNode.parentElement;
+        while (ancestor && ancestor !== scope.parentElement) {
+          if (ancestor.matches('.cloze, .kw-red, .stream-kw, strong:not(.quote-gold-core)')) {
+            if (!ancestor.classList.contains('cloze')) {
+              ancestor.classList.add('cloze');
+              ancestor.dataset.clozeAddedForFilter = '1';
+            }
+            ancestor.dataset.clozeFilteredOut = '1';
+            ancestor.classList.add('revealed');
+            ancestor.classList.remove('cloze-blank', 'cloze-tier-scoring', 'cloze-tier-skeleton');
+            delete ancestor.dataset.clozeTier;
+          }
+          ancestor = ancestor.parentElement;
+        }
+        const frag = document.createDocumentFragment();
+        let cursor = 0;
+        parts.forEach(r => {
+          const left = Math.max(start, r.start) - start;
+          const right = Math.min(end, r.end) - start;
+          if (left > cursor) frag.appendChild(document.createTextNode(textNode.nodeValue.slice(cursor, left)));
+          const span = document.createElement('span');
+          span.className = `cloze cloze-blank cloze-tier-${r.tier}`;
+          span.dataset.aiCloze = '1';
+          span.dataset.clozeGroup = r.group;
+          span.dataset.clozeTier = r.tier;
+          span.textContent = textNode.nodeValue.slice(left, right);
+          frag.appendChild(span);
+          cursor = right;
+        });
+        if (cursor < end - start) frag.appendChild(document.createTextNode(textNode.nodeValue.slice(cursor)));
+        textNode.parentNode.replaceChild(frag, textNode);
+      });
+    });
   }
 
   function classifyCuratedTextTier(rawText, scoringList, skeletonList, caseInsensitive = false) {
@@ -8953,10 +9080,7 @@
       });
 
       if (sortedTargets.length > 0) {
-        const textNodes = collectAiClozeTextNodes(el.paperContent);
-        for (const txtNode of textNodes) {
-          wrapAiTargetsInTextNode(txtNode, sortedTargets, caseInsensitive);
-        }
+        wrapAiTargetsAcrossNodes(el.paperContent, sortedTargets, caseInsensitive);
       }
     } else {
       // 0. 无 AI 采分眼数据时优雅回退至全科本地正则挖空规则
@@ -9031,7 +9155,14 @@
         if (state.clozeMode === 'keyword' && kw.dataset.clozeFilteredOut !== '1') {
           e.stopPropagation();
           e.preventDefault();
-          kw.classList.toggle('revealed');
+          if (kw.dataset.clozeGroup) {
+            const reveal = !kw.classList.contains('revealed');
+            el.paperContent.querySelectorAll(`[data-cloze-group="${kw.dataset.clozeGroup}"]`).forEach(part => {
+              part.classList.toggle('revealed', reveal);
+            });
+          } else {
+            kw.classList.toggle('revealed');
+          }
         }
       });
     });

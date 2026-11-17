@@ -589,6 +589,7 @@
       dailyListenSec: daily,
       totalListenSec: Math.max(0, Number(logs.totalListenSec) || 0),
       itemListenCounts: cleanCounts,
+      listenProgress: window.KaoyanListen ? window.KaoyanListen.normalize(logs.listenProgress) : {},
       updatedAt: Number(meta && meta.updatedAt) || 0
     };
     if (logs && logs.deviceBuckets && typeof logs.deviceBuckets === 'object' && !Array.isArray(logs.deviceBuckets)) {
@@ -598,6 +599,7 @@
         itemListenCounts: {}
       };
       out.deviceBuckets = logs.deviceBuckets;
+      out.listenSchemaVersion = logs.listenSchemaVersion;
     }
     return out;
   }
@@ -679,6 +681,9 @@
       dailyListenSec: daily,
       totalListenSec: Math.max(dailySum, Number(src.totalListenSec) || 0),
       itemListenCounts: counts,
+      itemListenDecrements: Object.fromEntries(Object.entries(src.itemListenDecrements || {}).filter(
+        ([id, c]) => id && Number.isFinite(Number(c)) && Math.floor(Number(c)) > 0
+      ).map(([id, c]) => [id, Math.floor(Number(c))])),
       updatedAt: Math.max(0, Number(src.updatedAt) || 0)
     };
   }
@@ -705,11 +710,20 @@
     });
     const dailySum = Object.values(daily).reduce((acc, v) => acc + v, 0);
     if (a.totalListenSec > b.totalListenSec + 0.5) localNewer = true;
+    const decrements = {};
+    new Set([...Object.keys(a.itemListenDecrements), ...Object.keys(b.itemListenDecrements)]).forEach(id => {
+      const ac = a.itemListenDecrements[id] || 0;
+      const bc = b.itemListenDecrements[id] || 0;
+      if (ac > bc) localNewer = true;
+      const value = Math.max(ac, bc);
+      if (value > 0) decrements[id] = value;
+    });
     return {
       bucket: {
         dailyListenSec: daily,
         totalListenSec: Math.max(dailySum, a.totalListenSec, b.totalListenSec),
         itemListenCounts: counts,
+        itemListenDecrements: decrements,
         updatedAt: Math.max(a.updatedAt, b.updatedAt)
       },
       localNewer
@@ -719,6 +733,12 @@
   function mergeStudyLogsWithRemote(remoteLogs) {
     const loc = buildLocalStudyLogsPayload();
     if (!remoteLogs || typeof remoteLogs !== 'object') return { localHasNewer: false };
+    const bridge = getBridge();
+    if (remoteLogs.deviceBuckets && typeof remoteLogs.deviceBuckets === 'object' && !Array.isArray(remoteLogs.deviceBuckets)
+      && remoteLogs.listenSchemaVersion !== 2 && bridge && typeof bridge.normalizeStudyLogsForSync === 'function') {
+      // Upgrade a v3.4.10 peer's saved compatibility floor before merging buckets.
+      remoteLogs = bridge.normalizeStudyLogsForSync(remoteLogs);
+    }
 
     const remDates = Array.isArray(remoteLogs.dates) ? remoteLogs.dates : [];
     const remCompleted = Array.isArray(remoteLogs.completedIds ?? remoteLogs.completed_ids)
@@ -740,6 +760,9 @@
       .filter(id => typeof id === 'string' && id.length > 0);
 
     const locBuckets = (loc.deviceBuckets && typeof loc.deviceBuckets === 'object') ? loc.deviceBuckets : {};
+    const listenProgress = window.KaoyanListen ? window.KaoyanListen.merge(loc.listenProgress, remoteLogs.listenProgress) : {};
+    const autoCounts = window.KaoyanListen ? window.KaoyanListen.totals(listenProgress) : {};
+    const progressLocalNewer = window.KaoyanListen && JSON.stringify(listenProgress) !== JSON.stringify(window.KaoyanListen.normalize(remoteLogs.listenProgress));
     const mergedBuckets = {};
     let bucketsLocalNewer = false;
     new Set([...Object.keys(locBuckets), ...Object.keys(remBuckets || {})]).forEach((devId) => {
@@ -748,7 +771,8 @@
       if (
         Object.keys(res.bucket.dailyListenSec).length > 0 ||
         res.bucket.totalListenSec > 0 ||
-        Object.keys(res.bucket.itemListenCounts).length > 0
+        Object.keys(res.bucket.itemListenCounts).length > 0 ||
+        Object.keys(res.bucket.itemListenDecrements).length > 0
       ) {
         mergedBuckets[devId] = res.bucket;
       }
@@ -758,14 +782,15 @@
     });
 
     const legacyRes = mergeSyncBucketPair(
-      loc.legacyListen || { dailyListenSec: {}, totalListenSec: 0, itemListenCounts: {} },
+      loc.legacyListen || (loc.deviceBuckets ? {} : loc),
       remLegacyRaw || {}
     );
     const mergedLegacy = legacyRes.bucket;
 
-    // 汇总 legacy 基线 + 全部端设备增量桶，并用旧版扁平字段作安全下界（兼容未升级旧端）
+    // Flat fields from bucket-aware peers are derived snapshots, not extra events.
     const sumDaily = {};
     const sumCounts = {};
+    const sumDecrements = { ...mergedLegacy.itemListenDecrements };
     let sumTotal = Math.max(0, Number(mergedLegacy.totalListenSec) || 0);
     Object.entries(mergedLegacy.dailyListenSec || {}).forEach(([d, v]) => {
       sumDaily[d] = (sumDaily[d] || 0) + v;
@@ -780,15 +805,48 @@
       Object.entries(bk.itemListenCounts || {}).forEach(([id, c]) => {
         sumCounts[id] = (sumCounts[id] || 0) + c;
       });
+      Object.entries(bk.itemListenDecrements || {}).forEach(([id, c]) => {
+        sumDecrements[id] = (sumDecrements[id] || 0) + c;
+      });
       sumTotal += Math.max(0, Number(bk.totalListenSec) || 0);
     });
+    Object.entries(autoCounts).forEach(([id, count]) => { sumCounts[id] = (sumCounts[id] || 0) + count; });
+
+    if (!remBuckets) {
+      // Persist only an old peer's uncovered floor into the shared legacy base.
+      // Compare counts before decrements, so old flat snapshots cannot undo an undo.
+      Object.entries(remDaily).forEach(([d, sec]) => {
+        const value = Number(sec);
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(d) || !Number.isFinite(value)) return;
+        const deficit = Math.max(0, value - (sumDaily[d] || 0));
+        if (deficit) {
+          mergedLegacy.dailyListenSec[d] = (mergedLegacy.dailyListenSec[d] || 0) + deficit;
+          sumDaily[d] = value;
+        }
+      });
+      Object.entries(remCounts).forEach(([id, count]) => {
+        const value = Math.floor(Number(count));
+        if (!id || !Number.isFinite(value)) return;
+        const deficit = Math.max(0, value - (sumCounts[id] || 0));
+        if (deficit) {
+          mergedLegacy.itemListenCounts[id] = (mergedLegacy.itemListenCounts[id] || 0) + deficit;
+          sumCounts[id] = value;
+        }
+      });
+      const oldTotal = mergedLegacy.totalListenSec;
+      mergedLegacy.totalListenSec = Math.max(
+        oldTotal + Math.max(0, remTotal - sumTotal),
+        Object.values(mergedLegacy.dailyListenSec).reduce((a, b) => a + b, 0)
+      );
+      sumTotal += mergedLegacy.totalListenSec - oldTotal;
+    }
 
     const mergedDaily = {};
-    const allDays = new Set([...Object.keys(sumDaily), ...Object.keys(remDaily || {})]);
+    const allDays = new Set(Object.keys(sumDaily));
     let dailySum = 0;
     allDays.forEach((d) => {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return;
-      const v = Math.max(Number(sumDaily[d]) || 0, Number(remDaily[d]) || 0);
+      const v = Number(sumDaily[d]) || 0;
       if (v > 0) {
         mergedDaily[d] = v;
         dailySum += v;
@@ -797,17 +855,17 @@
 
     const mergedCounts = {};
     let countsLocalNewer = false;
-    const allCountIds = new Set([...Object.keys(sumCounts), ...Object.keys(remCounts || {})]);
+    const allCountIds = new Set([...Object.keys(sumCounts), ...Object.keys(sumDecrements)]);
     allCountIds.forEach((id) => {
       if (!id) return;
       const sv = Math.max(0, Math.floor(Number(sumCounts[id]) || 0));
       const rv = Math.max(0, Math.floor(Number(remCounts[id]) || 0));
-      const mv = Math.max(sv, rv);
+      const mv = Math.max(0, sv - (sumDecrements[id] || 0));
       if (mv > 0) mergedCounts[id] = mv;
-      if (sv > rv) countsLocalNewer = true;
+      if (mv !== rv) countsLocalNewer = true;
     });
 
-    const mergedTotal = Math.max(dailySum, sumTotal, remTotal);
+    const mergedTotal = Math.max(dailySum, sumTotal);
     const mergedUpdated = Math.max(loc.updatedAt || 0, remUpdated);
     const localHasNewer = (
       mergedDates.length > remDates.length ||
@@ -816,6 +874,7 @@
       countsLocalNewer ||
       bucketsLocalNewer ||
       legacyRes.localNewer ||
+      progressLocalNewer ||
       (loc.updatedAt || 0) > remUpdated
     );
 
@@ -828,8 +887,10 @@
       dailyListenSec: mergedDaily,
       totalListenSec: mergedTotal,
       itemListenCounts: mergedCounts,
+      listenProgress,
       legacyListen: mergedLegacy,
-      deviceBuckets: mergedBuckets
+      deviceBuckets: mergedBuckets,
+      listenSchemaVersion: 2
     };
 
     setStudyLogsMeta({ updatedAt: mergedUpdated });
@@ -974,28 +1035,44 @@
   let syncMutationSeq = 0;
   let queuedSyncOptions = null;
 
-  function fetchWithTimeout(url, options = {}, timeoutMs = 15000) {
-    if (typeof AbortController === 'undefined') {
-      return fetch(url, options);
-    }
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => {
-      try { ctrl.abort(); } catch (e) {}
-    }, timeoutMs);
+  async function fetchWithTimeout(url, options = {}, timeoutMs = 15000, readResponse = res => res) {
+    const ctrl = typeof AbortController === 'undefined' ? null : new AbortController();
     const parentSignal = options && options.signal;
-    const onParentAbort = () => {
-      try { ctrl.abort(); } catch (e) {}
+    let rejectRequest;
+    const cancelled = new Promise((_, reject) => { rejectRequest = reject; });
+    const abortRequest = (message) => {
+      const err = new Error(message);
+      err.name = 'AbortError';
+      rejectRequest(err);
+      try { if (ctrl) ctrl.abort(); } catch (e) {}
     };
+    const timer = setTimeout(() => abortRequest('REQUEST_TIMEOUT'), timeoutMs);
+    const onParentAbort = () => abortRequest('REQUEST_ABORTED');
     if (parentSignal) {
       if (parentSignal.aborted) onParentAbort();
       else parentSignal.addEventListener('abort', onParentAbort, { once: true });
     }
-    return fetch(url, { ...options, signal: ctrl.signal }).finally(() => {
+    try {
+      // Keep the deadline alive through JSON/body consumption, even if a transport ignores abort.
+      return await Promise.race([
+        cancelled,
+        Promise.resolve().then(() => {
+          if (parentSignal && parentSignal.aborted) throw new Error('REQUEST_ABORTED');
+          return fetch(url, { ...options, signal: ctrl ? ctrl.signal : parentSignal });
+        }).then(readResponse)
+      ]);
+    } finally {
       clearTimeout(timer);
       if (parentSignal) {
         try { parentSignal.removeEventListener('abort', onParentAbort); } catch (e) {}
       }
-    });
+    }
+  }
+
+  function readSyncJsonResponse(res) {
+    if (res.status === 401) throw new Error('SYNC_PIN_INVALID');
+    if (!res.ok) throw new Error(`HTTP_${res.status}`);
+    return res.json();
   }
 
   function markSyncDirty() {
@@ -1048,15 +1125,12 @@
   }
 
   async function syncPullOnly(cfg) {
-    const res = await fetchWithTimeout(`${cfg.url}/api/sync/pull`, {
+    return fetchWithTimeout(`${cfg.url}/api/sync/pull`, {
       method: 'GET',
       headers: {
         'X-Sync-Pin': cfg.pin
       }
-    }, 15000);
-    if (res.status === 401) throw new Error('SYNC_PIN_INVALID');
-    if (!res.ok) throw new Error(`HTTP_${res.status}`);
-    return res.json();
+    }, 15000, readSyncJsonResponse);
   }
 
   function buildRemoteClozePayload() {
@@ -1099,17 +1173,14 @@
       ai_cloze_cache: buildRemoteClozePayload(),
       chatThreads: chatPayload
     };
-    const res = await fetchWithTimeout(`${cfg.url}/api/sync/push`, {
+    return fetchWithTimeout(`${cfg.url}/api/sync/push`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-Sync-Pin': cfg.pin
       },
       body: JSON.stringify(payload)
-    }, 18000);
-    if (res.status === 401) throw new Error('SYNC_PIN_INVALID');
-    if (!res.ok) throw new Error(`HTTP_${res.status}`);
-    return res.json();
+    }, 18000, readSyncJsonResponse);
   }
 
   async function syncBidirectional({ quiet = true, pushFirst = false } = {}) {
@@ -1220,9 +1291,7 @@
     try {
       const headers = {};
       if (cfg.pin) headers['X-Sync-Pin'] = cfg.pin;
-      const res = await fetchWithTimeout(`${cfg.url}/api/health`, { method: 'GET', headers }, 10000);
-      if (!res.ok) throw new Error(`HTTP_${res.status}`);
-      const data = await res.json();
+      const data = await fetchWithTimeout(`${cfg.url}/api/health`, { method: 'GET', headers }, 10000, readSyncJsonResponse);
       const pinNote = cfg.pin ? (data.pinValid ? 'PIN 校验通过' : 'PIN 未通过校验') : '未填写 PIN';
       const dsNote = data.deepseekConfigured ? '服务端 DeepSeek Key 已就绪' : '服务端未配 DeepSeek Key (可用个人 Key)';
       const summary = `连通成功 (v${data.version || '1.0'}) · ${pinNote} · ${dsNote}`;

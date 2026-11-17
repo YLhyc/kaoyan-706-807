@@ -23,7 +23,7 @@ if hasattr(sys.stdout, 'reconfigure'):
 
 def main():
     root = Path(__file__).resolve().parent
-    TARGET_VER = '3.4.10'
+    TARGET_VER = '3.4.12'
     TARGET_CACHE = f"kaoyan-all-in-one-v{TARGET_VER}"
 
     print("=" * 65)
@@ -36,6 +36,7 @@ def main():
     print("\n[1/4] 执行 Node.js 静态语法防白屏检测...")
     js_files = [
         ("app.js", root / "app.js"),
+        ("listen_tracking.js", root / "listen_tracking.js"),
         ("ai_sync.js", root / "ai_sync.js"),
         ("sw.js", root / "sw.js"),
         ("kubai_icons.js", root / "kubai_icons.js"),
@@ -141,6 +142,11 @@ def main():
     print("\n[3/4] 校验 index.html 结构与关键 DOM 锚点...")
     if index_file.exists():
         html = index_file.read_text(encoding="utf-8")
+        tracker_script = f'listen_tracking.js?v={TARGET_VER}'
+        if tracker_script not in html or html.find(tracker_script) > html.find(f'app.js?v={TARGET_VER}'):
+            errors.append('listen_tracking.js 必须在 app.js 前加载')
+        if not sw_file.exists() or tracker_script not in sw_file.read_text(encoding="utf-8"):
+            errors.append('Service Worker 必须预缓存 listen_tracking.js')
 
         # 检查 defer 属性
         if 'kaoyan_data.js' not in html:
@@ -153,7 +159,8 @@ def main():
             "btn-subject-807", "btn-subject-706", "btn-subject-pol", "btn-subject-en",
             "dock-play-btn", "dock-prev-btn", "dock-next-btn", "dock-rewind-btn", "dock-forward-btn",
             "btn-speed", "btn-loop-mode", "paper-content", "item-list", "search-input",
-            "progress-bar", "btn-ai-assistant", "aiSelectionPill", "aiAssistantDrawer"
+            "progress-bar", "btn-ai-assistant", "aiSelectionPill", "aiAssistantDrawer",
+            "listenCoverageText", "listenPracticeText"
         ]
         missing_dom = [did for did in required_dom_ids if f'id="{did}"' not in html]
         if missing_dom:
