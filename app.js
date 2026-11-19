@@ -4096,11 +4096,38 @@
   }
 
   function buildRelaySpineHtml(sec, showRoles = true, roles = null) {
+    const r = (label) => showRoles ? `<span class="relay-role">${label}</span>` : '';
+    const cueHtml = sec.cue ? `<div class="relay-cue-line"><span class="relay-cue-tag">自检</span><span>${sec.cue}</span></div>` : '';
+    if (Array.isArray(sec.steps) && sec.steps.length >= 2) {
+      const steps = sec.steps;
+      let inner = '';
+      steps.forEach(([lbl, txt], i) => {
+        const isFirst = i === 0;
+        const isLast = i === steps.length - 1;
+        const stepAttr = isFirst ? 's1' : (isLast && steps.length >= 3 ? 's3' : 's2');
+        inner += `
+        <div class="relay-step">
+          <span class="relay-dot"></span>
+          <div class="relay-sent" data-relay-step="${stepAttr}">${r(lbl || '')}${txt || ''}</div>
+        </div>`;
+        if (isFirst && sec.q1) {
+          inner += `<div class="relay-glue-row">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>${sec.q1}</span>
+        </div>`;
+        } else if (i === steps.length - 2 && steps.length >= 3 && sec.q2) {
+          inner += `<div class="relay-glue-row">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          <span>${sec.q2}</span>
+        </div>`;
+        }
+      });
+      return `${cueHtml}<div class="relay-spine">${inner}</div>`;
+    }
     const labels = (Array.isArray(roles) && roles.length >= 3)
       ? roles
       : ['① 定局立桩', '② 落锚举例', '③ 收果拔高'];
-    const r = (label) => showRoles ? `<span class="relay-role">${label}</span>` : '';
-    return `
+    return `${cueHtml}
       <div class="relay-spine">
         <div class="relay-step">
           <span class="relay-dot"></span>
@@ -4160,9 +4187,15 @@
     const wrap = document.createElement('div');
     wrap.className = 'paper-track2-wrap relay-track2-wrap';
 
-    const chainHtml = (rm.logic_chain || []).map((label, idx, arr) =>
-      `<button type="button" class="relay-chain-node" data-jump-sec="${idx}">${idx + 1}. ${label}</button>${idx < arr.length - 1 ? '<span class="relay-chain-arrow">→</span>' : ''}`
-    ).join('');
+    const chainHtml = (Array.isArray(rm.chain_nodes) && rm.chain_nodes.length > 0)
+      ? rm.chain_nodes.map((node, idx, arr) => {
+          const chip = `<button type="button" class="relay-chain-node relay-chain-node-v4" data-jump-sec="${idx}"><span class="rcn-role">${idx + 1}. ${node.role || ''}</span><span class="rcn-core">${node.core || ''}</span></button>`;
+          const trans = (idx < arr.length - 1) ? `<span class="relay-chain-arrow">${node.trans ? `${node.trans} →` : '→'}</span>` : '';
+          return chip + trans;
+        }).join('')
+      : (rm.logic_chain || []).map((label, idx, arr) =>
+          `<button type="button" class="relay-chain-node" data-jump-sec="${idx}">${idx + 1}. ${label}</button>${idx < arr.length - 1 ? '<span class="relay-chain-arrow">→</span>' : ''}`
+        ).join('');
 
     wrap.innerHTML = `
       <div class="exam-spec-banner" style="background: linear-gradient(135deg, rgba(160, 90, 44, 0.08) 0%, rgba(200, 140, 60, 0.05) 100%); border-color: rgba(160, 90, 44, 0.2);">
@@ -4170,7 +4203,7 @@
           <svg fill="none" height="14" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="14"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
           <span>接力微缩逻辑版</span>
         </div>
-        <div class="spec-chip chip-type"><span>三句因果接力</span></div>
+        <div class="spec-chip chip-type"><span>${rm.is_noun_collection ? '三阶名解速记' : '结构接力微缩'}</span></div>
         <div class="spec-chip chip-score"><span>原段点读对照</span></div>
       </div>
       <div class="exam-title-box">
@@ -4183,6 +4216,7 @@
           <span class="relay-chain-count">共 ${(rm.sections || []).length} 段接力</span>
         </div>
         <div class="relay-chain-nodes">${chainHtml}</div>
+        ${rm.narrative_hook ? `<div class="relay-narrative-hook"><span class="rnh-tag">记忆主线</span><span>${rm.narrative_hook}</span></div>` : ''}
         ${rm.guard ? `<div class="relay-guard-strip">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           <span>${rm.guard}</span>
@@ -4246,6 +4280,7 @@
           <div class="relay-flow-head-left">
             <span class="relay-sec-num">${numStr}</span>
             <h3>${sec.title || ''}</h3>
+            ${sec.count_hook ? `<span class="relay-count-pill">${sec.count_hook}</span>` : ''}
           </div>
           <div class="relay-card-actions">
             <button type="button" class="relay-mini-btn relay-origin-toggle">
@@ -4309,6 +4344,26 @@
         if (obLast) conclCard.querySelector('.relay-origin-body').appendChild(obLast);
       }
       wrap.appendChild(conclCard);
+    }
+
+    if ((Array.isArray(rm.drills) && rm.drills.length) || (rm.exam_variants && Array.isArray(rm.exam_variants.cases))) {
+      const footerBox = document.createElement('div');
+      footerBox.className = 'relay-v4-footer';
+      let fHtml = '';
+      if (Array.isArray(rm.drills) && rm.drills.length) {
+        fHtml += `<section class="relay-drills-card">
+          <div class="relay-footer-head"><span>合书闭眼抽查（${rm.drills.length} 问自检）</span></div>
+          <div class="relay-footer-list">${rm.drills.map(d => `<div class="relay-footer-item">${d}</div>`).join('')}</div>
+        </section>`;
+      }
+      if (rm.exam_variants && Array.isArray(rm.exam_variants.cases) && rm.exam_variants.cases.length) {
+        fHtml += `<section class="relay-variants-card">
+          <div class="relay-footer-head"><span>西华师大真题考法变式与衍生拆解</span>${rm.exam_variants.freq ? `<span class="relay-freq-badge">${rm.exam_variants.freq}</span>` : ''}</div>
+          <div class="relay-footer-list">${rm.exam_variants.cases.map(c => `<div class="relay-footer-item">${c}</div>`).join('')}</div>
+        </section>`;
+      }
+      footerBox.innerHTML = fHtml;
+      wrap.appendChild(footerBox);
     }
 
     el.paperContent.appendChild(wrap);

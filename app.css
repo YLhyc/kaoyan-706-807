@@ -13839,6 +13839,113 @@ body.dock-expanded .ai-selection-pill {
   margin-bottom: 6px;
 }
 
+.relay-chain-node-v4 {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 2px;
+  padding: 5px 10px;
+}
+.rcn-role {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--vermilion);
+}
+.rcn-core {
+  font-size: 12px;
+  color: var(--ink-primary);
+}
+.relay-narrative-hook {
+  margin-top: 9px;
+  padding: 8px 11px;
+  border-radius: var(--radius-md);
+  border: 0.5px solid var(--line-main);
+  background: var(--bg-canvas);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-secondary);
+}
+.rnh-tag {
+  display: inline-block;
+  margin-right: 7px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--vermilion-soft);
+  color: var(--vermilion);
+  font-size: 12px;
+  font-weight: 600;
+}
+.relay-count-pill {
+  flex-shrink: 0;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 0.5px solid var(--line-strong);
+  background: var(--bg-canvas);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--ink-secondary);
+}
+.relay-cue-line {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 4px 0 8px;
+  padding: 5px 9px;
+  border-radius: var(--radius-md);
+  background: var(--bg-canvas);
+  border: 0.5px dashed var(--line-strong);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-secondary);
+}
+.relay-cue-tag {
+  flex-shrink: 0;
+  font-weight: 600;
+  color: var(--vermilion);
+}
+.relay-v4-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+.relay-drills-card,
+.relay-variants-card {
+  border: 0.5px solid var(--line-main);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  padding: 11px 14px;
+}
+.relay-footer-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-primary);
+  margin-bottom: 6px;
+}
+.relay-freq-badge {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--vermilion);
+}
+.relay-footer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-secondary);
+}
+
 [data-theme="dark"] .relay-inter-glue,
 [data-theme="dark"] .relay-seg-group {
   background: var(--bg-canvas);
