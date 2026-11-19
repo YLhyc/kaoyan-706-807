@@ -41,9 +41,154 @@ if hasattr(sys.stdout, "reconfigure"):
         pass
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SYNC_BASE = "https://sync.2026706.xyz"
-SYNC_PIN = "ky2026-rQRBy"
+ENV_SYNC_BASE = os.environ.get("KAOYAN_SYNC_BASE", "").strip().rstrip("/")
+ENV_SYNC_PIN = os.environ.get("KAOYAN_SYNC_PIN", "").strip()
+USE_LIVE_SYNC = bool(ENV_SYNC_BASE and ENV_SYNC_PIN)
+SYNC_BASE = ENV_SYNC_BASE
+SYNC_PIN = ENV_SYNC_PIN or "test-local-pin-0000"
 TEST_CLOZE_ID = "__test_v344_e2e__"
+
+
+class MockSyncState:
+    def __init__(self):
+        self.cloze_items = {}
+        self.total_calls = 12
+
+
+class MockSyncHandler(http.server.BaseHTTPRequestHandler):
+    state = MockSyncState()
+    expected_pin = "test-local-pin-0000"
+
+    def log_message(self, format, *args):
+        pass
+
+    def _send_json(self, code, obj):
+        body = json.dumps(obj, ensure_ascii=False).encode("utf-8")
+        self.send_response(code)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, X-Sync-Pin, X-Deepseek-Key")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.end_headers()
+        self.wfile.write(body)
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, X-Sync-Pin, X-Deepseek-Key")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.end_headers()
+
+    def do_GET(self):
+        req_pin = self.headers.get("X-Sync-Pin", "")
+        if req_pin != self.expected_pin:
+            self._send_json(401, {"ok": False, "error": "invalid_pin"})
+            return
+        clean_path = self.path.split("?")[0]
+        if clean_path == "/api/health":
+            self._send_json(200, {"ok": True, "version": "1.2.0", "deepseekConfigured": True, "pinValid": True})
+            return
+        if clean_path == "/api/ai/usage":
+            s = self.state
+            self._send_json(200, {
+                "ok": True,
+                "summary": {
+                    "total_calls": s.total_calls,
+                    "prompt_tokens": 3200,
+                    "cache_hit_tokens": 2400,
+                    "cache_miss_tokens": 800,
+                    "completion_tokens": 640,
+                    "cache_hit_rate": 0.75,
+                },
+                "last_24h": {"total_calls": s.total_calls},
+                "by_model": [{"model": "deepseek-flash", "calls": s.total_calls}],
+                "recent": [],
+            })
+            return
+        if clean_path == "/api/ai/cloze":
+            item_id = ""
+            if "item_id=" in self.path:
+                item_id = self.path.split("item_id=", 1)[1].split("&", 1)[0]
+            items = self.state.cloze_items
+            if item_id:
+                items = {item_id: items[item_id]} if item_id in items else {}
+            self._send_json(200, {"ok": True, "items": items})
+            return
+        if clean_path == "/api/sync/pull":
+            self._send_json(200, {
+                "ok": True,
+                "mastery": {},
+                "studyLogs": {},
+                "aiMemories": {},
+                "reciteLogs": [],
+                "learningProfile": None,
+                "ai_cloze_cache": self.state.cloze_items,
+                "chatThreads": {},
+            })
+            return
+        self._send_json(404, {"ok": False, "error": "not_found"})
+
+    def do_POST(self):
+        req_pin = self.headers.get("X-Sync-Pin", "")
+        if req_pin != self.expected_pin:
+            self._send_json(401, {"ok": False, "error": "invalid_pin"})
+            return
+        length = int(self.headers.get("Content-Length", "0") or "0")
+        raw = self.rfile.read(length) if length > 0 else b"{}"
+        body = json.loads(raw.decode("utf-8") or "{}")
+        clean_path = self.path.split("?")[0]
+        if clean_path == "/api/sync/push":
+            self._send_json(200, {"ok": True, "merged": body})
+            return
+        if clean_path == "/api/ai/cloze":
+            iid = body.get("item_id", "")
+            incoming_ts = str(body.get("updated_at") or "")
+            existing = self.state.cloze_items.get(iid)
+            if existing and str(existing.get("updated_at") or "") >= incoming_ts:
+                self._send_json(200, {"ok": True, "updated": False})
+                return
+            self.state.cloze_items[iid] = {
+                "skeleton": body.get("skeleton") or [],
+                "scoring": body.get("scoring") or [],
+                "model": body.get("model") or "deepseek-flash",
+                "updated_at": incoming_ts,
+            }
+            self._send_json(200, {"ok": True, "updated": True})
+            return
+        if clean_path == "/api/ai/chat":
+            self.state.total_calls += 1
+            if (body.get("response_format") or {}).get("type") == "json_object":
+                self._send_json(200, {
+                    "id": "mock_json",
+                    "choices": [{"index": 0, "message": {"role": "assistant", "content": '{"skeleton":["意蕴"],"scoring":["悲剧"]}'}, "finish_reason": "stop"}],
+                })
+                return
+            if body.get("tools"):
+                self._send_json(200, {
+                    "id": "mock_tools",
+                    "choices": [{
+                        "index": 0,
+                        "message": {
+                            "role": "assistant",
+                            "content": "",
+                            "tool_calls": [{"id": "call_1", "type": "function", "function": {"name": "search_knowledge_base", "arguments": '{"query":"红楼梦"}'}}],
+                        },
+                        "finish_reason": "tool_calls",
+                    }],
+                })
+                return
+            self._send_json(200, {"id": "mock_chat", "choices": [{"index": 0, "message": {"role": "assistant", "content": "ok"}, "finish_reason": "stop"}]})
+            return
+        self._send_json(404, {"ok": False, "error": "not_found"})
+
+
+def start_mock_sync_server():
+    httpd = ReusableTCPServer(("127.0.0.1", 0), MockSyncHandler)
+    port = httpd.server_address[1]
+    t = threading.Thread(target=httpd.serve_forever, daemon=True)
+    t.start()
+    return httpd, port
 
 
 class Mp3RangeHandler(http.server.SimpleHTTPRequestHandler):
@@ -134,6 +279,12 @@ def sse_bytes(events):
 
 
 def run():
+    global SYNC_BASE
+    mock_sync_httpd = None
+    if not USE_LIVE_SYNC:
+        mock_sync_httpd, mock_port = start_mock_sync_server()
+        SYNC_BASE = f"http://127.0.0.1:{mock_port}"
+
     results = []
 
     def check(cond, msg):
@@ -142,9 +293,10 @@ def run():
         print(f"  [{status}] {msg}", flush=True)
 
     # =========================================================================
-    # 1. Live Backend API Checks
+    # 1. Live / Local Mock Backend API Checks
     # =========================================================================
-    print("\n[1] Live Backend API Verification (https://sync.2026706.xyz)", flush=True)
+    mode_label = f"Live: {SYNC_BASE}" if USE_LIVE_SYNC else f"Local Mock: {SYNC_BASE}"
+    print(f"\n[1] Backend API Verification ({mode_label})", flush=True)
     st_h, health = api_request("/api/health")
     check(
         st_h == 200
@@ -843,6 +995,8 @@ def run():
         browser.close()
 
     httpd.shutdown()
+    if mock_sync_httpd is not None:
+        mock_sync_httpd.shutdown()
 
     passed = sum(1 for c, _ in results if c)
     total = len(results)

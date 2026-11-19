@@ -68,6 +68,7 @@
     quotedText: '',
     chatThreads: new Map(), // scopeKey -> Array<{ role, content, reasoning?, toolStatus? }>
     chatThreadMeta: new Map(), // scopeKey -> { updatedAt: number, deleted?: boolean }
+    chatThreadEpoch: new Map(), // scopeKey -> monotonic delete/clear generation counter
     isStreaming: false,
     abortController: null,
     _activeAssistantMsg: null,
@@ -389,7 +390,7 @@
     }
     let localHasNewer = false;
     let activeUpdated = false;
-    const activeScopeKey = aiState._activeScopeKey || (dom.scopeTitle ? getScopeContext().scopeKey : '');
+    const activeScopeKey = aiState._activeScopeKey || (aiState.isOpen ? getScopeContext().scopeKey : '');
     const allScopes = new Set([
       ...Array.from(aiState.chatThreads.keys()),
       ...Array.from(aiState.chatThreadMeta.keys()),
@@ -470,7 +471,8 @@
     const seen = new Set();
     const out = [];
     arr.forEach((raw) => {
-      const txt = String(raw || '').trim();
+      if (typeof raw !== 'string') return;
+      const txt = raw.trim();
       if (txt.length >= 2 && txt.length <= 48 && !seen.has(txt)) {
         seen.add(txt);
         out.push(txt);
@@ -1264,7 +1266,7 @@
       if (pending || syncMutationSeq !== seqAtStart) {
         const nextOpts = pending || { quiet: true, pushFirst: true };
         setTimeout(() => {
-          syncBidirectional({ quiet: nextOpts.quiet !== false, pushFirst: true });
+          syncBidirectional({ quiet: nextOpts.quiet !== false, pushFirst: Boolean(nextOpts.pushFirst) });
         }, 80);
       }
     }
@@ -1310,7 +1312,10 @@
   function extractCleanTextFromElement(rootEl) {
     if (!rootEl) return '';
     const clone = rootEl.cloneNode(true);
-    clone.querySelectorAll('.card-ai-btn, .seal-btn, .en-audio-jump-pill, .tj-point-jump-pill, .xt-point-jump-hint, .live-repeat-badge, svg').forEach(n => n.remove());
+    clone.querySelectorAll(
+      '.card-ai-btn, .card-relay-btn, .seal-btn, .en-audio-jump-pill, .tj-point-jump-pill, .xt-point-jump-hint, .live-repeat-badge, ' +
+      '.relay-toolbar, .relay-chain-bar, .relay-chain-head, .relay-mini-btn, .relay-card-actions, .relay-role, .relay-origin-tip, .relay-t1-chain-bar, .relay-bookend-head, svg'
+    ).forEach(n => n.remove());
     return (clone.innerText || clone.textContent || '')
       .replace(/\s+\n/g, '\n')
       .replace(/\n{3,}/g, '\n\n')
@@ -1610,8 +1615,13 @@
     const ctx = getScopeContext();
     const memories = getAiMemories();
     const mem = normalizeMemoryEntry(memories[ctx.itemId]);
-    if (dom.memorySummaryInput) {
-      dom.memorySummaryInput.value = mem ? mem.summary : '';
+    if (dom.memorySummaryInput && document.activeElement !== dom.memorySummaryInput) {
+      const sameDirtyItem = dom.memorySummaryInput.dataset.dirty === '1' && dom.memorySummaryInput.dataset.itemId === ctx.itemId;
+      if (!sameDirtyItem) {
+        dom.memorySummaryInput.value = mem ? mem.summary : '';
+        dom.memorySummaryInput.dataset.itemId = ctx.itemId;
+        dom.memorySummaryInput.dataset.dirty = '0';
+      }
     }
     if (dom.memoryStats) {
       if (mem && (mem.reciteCount > 0 || mem.lastScore !== null)) {
@@ -1762,13 +1772,15 @@
       aiState.scopedCardLabel = extractCardLabel(cardEl);
       aiState.scopedCardText = extractCleanTextFromElement(cardEl);
       aiState.scopedSentences = collectScopedSentences(cardEl);
-    } else if (aiState.scopedCardEl && !document.body.contains(aiState.scopedCardEl)) {
-      abortActiveStream();
+    } else {
+      if (prevCardEl) {
+        abortActiveStream();
+        if (!quote) aiState.quotedText = '';
+      }
       aiState.scopedCardEl = null;
       aiState.scopedCardLabel = '';
       aiState.scopedCardText = '';
       aiState.scopedSentences = [];
-      if (!quote) aiState.quotedText = '';
     }
 
     if (quote) {
@@ -2043,6 +2055,18 @@
   // ==========================================
   // 6. DeepSeek 流式请求封装 (VPS 代理 / BYOK 兜底 + Tools / JSON)
   // ==========================================
+  function isValidSyncUrl(url) {
+    const u = String(url || '').trim();
+    if (!u) return false;
+    if (/^https:\/\//i.test(u)) return true;
+    return /^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/i.test(u);
+  }
+
+  function mapModelForDirectDeepSeek(modelName) {
+    const norm = normalizeAiModel(modelName);
+    return norm === 'deepseek-v4-pro' ? 'deepseek-reasoner' : 'deepseek-chat';
+  }
+
   async function streamDeepSeek({
     messages,
     temperature = 0.4,
@@ -2068,17 +2092,9 @@
       if (manageStreamUi) setAskSendBtnStreaming(true);
     }
 
-    let endpoint = '';
-    const headers = { 'Content-Type': 'application/json' };
-
-    if (isSyncConfigured(cfg)) {
-      endpoint = `${cfg.url}/api/ai/chat`;
-      headers['X-Sync-Pin'] = cfg.pin;
-      if (cfg.deepseekKey) headers['X-Deepseek-Key'] = cfg.deepseekKey;
-    } else if (cfg.deepseekKey) {
-      endpoint = 'https://api.deepseek.com/chat/completions';
-      headers['Authorization'] = `Bearer ${cfg.deepseekKey}`;
-    } else {
+    const hasProxy = isSyncConfigured(cfg);
+    const hasDirectKey = Boolean(cfg.deepseekKey);
+    if (!hasProxy && !hasDirectKey) {
       if (!background) {
         aiState.isStreaming = false;
         if (manageStreamUi) setAskSendBtnStreaming(false);
@@ -2088,25 +2104,43 @@
 
     const activeModel = modelOverride ? normalizeAiModel(modelOverride) : cfg.model;
     const activeEffort = normalizeReasoningEffort(effort || cfg.effort);
-    const body = {
-      model: activeModel,
-      messages,
-      stream: Boolean(stream),
-      max_tokens: maxTokens,
-      reasoning_effort: activeEffort
-    };
-    if (activeModel !== 'deepseek-reasoner') {
-      body.temperature = temperature;
-    }
-    if (responseFormat && typeof responseFormat === 'object') {
-      body.response_format = responseFormat;
-    }
-    if (Array.isArray(tools) && tools.length > 0) {
-      body.tools = tools;
-      if (toolChoice !== null && toolChoice !== undefined) {
-        body.tool_choice = toolChoice;
+
+    const buildRequestForMode = (useDirect) => {
+      const ep = useDirect ? 'https://api.deepseek.com/chat/completions' : `${cfg.url}/api/ai/chat`;
+      const hdrs = { 'Content-Type': 'application/json' };
+      if (useDirect) {
+        hdrs['Authorization'] = `Bearer ${cfg.deepseekKey}`;
+      } else {
+        if (!isValidSyncUrl(cfg.url)) {
+          throw new Error('同步服务地址须以 https:// 开头（本地 127.0.0.1/localhost 除外），已拦截明文传输个人 Key');
+        }
+        hdrs['X-Sync-Pin'] = cfg.pin;
+        if (cfg.deepseekKey) hdrs['X-Deepseek-Key'] = cfg.deepseekKey;
       }
-    }
+      const wireModel = useDirect ? mapModelForDirectDeepSeek(activeModel) : activeModel;
+      const reqBody = {
+        model: wireModel,
+        messages,
+        stream: Boolean(stream),
+        max_tokens: maxTokens
+      };
+      if (!useDirect) {
+        reqBody.reasoning_effort = activeEffort;
+      }
+      if (wireModel !== 'deepseek-reasoner') {
+        reqBody.temperature = temperature;
+      }
+      if (responseFormat && typeof responseFormat === 'object') {
+        reqBody.response_format = responseFormat;
+      }
+      if (Array.isArray(tools) && tools.length > 0) {
+        reqBody.tools = tools;
+        if (toolChoice !== null && toolChoice !== undefined) {
+          reqBody.tool_choice = toolChoice;
+        }
+      }
+      return { ep, hdrs, reqBody };
+    };
 
     let timedOutReason = '';
     let firstByteTimer = setTimeout(() => {
@@ -2114,12 +2148,38 @@
       try { controller.abort(); } catch (e) {}
     }, 35000);
     try {
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(body),
-        signal: controller.signal
-      });
+      let res = null;
+      const preferProxy = hasProxy;
+      const primaryReq = buildRequestForMode(!preferProxy);
+      try {
+        res = await fetch(primaryReq.ep, {
+          method: 'POST',
+          headers: primaryReq.hdrs,
+          body: JSON.stringify(primaryReq.reqBody),
+          signal: controller.signal
+        });
+        if (preferProxy && hasDirectKey && res.status >= 500 && !controller.signal.aborted) {
+          const directReq = buildRequestForMode(true);
+          res = await fetch(directReq.ep, {
+            method: 'POST',
+            headers: directReq.hdrs,
+            body: JSON.stringify(directReq.reqBody),
+            signal: controller.signal
+          });
+        }
+      } catch (fetchErr) {
+        if (preferProxy && hasDirectKey && !controller.signal.aborted && (!fetchErr || fetchErr.name !== 'AbortError')) {
+          const directReq = buildRequestForMode(true);
+          res = await fetch(directReq.ep, {
+            method: 'POST',
+            headers: directReq.hdrs,
+            body: JSON.stringify(directReq.reqBody),
+            signal: controller.signal
+          });
+        } else {
+          throw fetchErr;
+        }
+      }
       clearTimeout(firstByteTimer);
       firstByteTimer = null;
 
@@ -2136,9 +2196,20 @@
         throw new Error(errMsg);
       }
 
-      // 非流式 JSON 兼容
+      // 非流式 JSON 兼容（增加读体超时）
       if (contentType.includes('application/json') || !stream) {
-        const data = await res.json();
+        let jsonTimer = null;
+        const data = await Promise.race([
+          res.json().finally(() => {
+            if (jsonTimer) { clearTimeout(jsonTimer); jsonTimer = null; }
+          }),
+          new Promise((_, reject) => {
+            jsonTimer = setTimeout(() => {
+              try { controller.abort(); } catch (e) {}
+              reject(new Error('响应正文读取超时，请稍后重试'));
+            }, 35000);
+          })
+        ]);
         if (data && data.ok === false) {
           throw new Error(data.message || data.error || '服务端返回异常');
         }
@@ -2170,6 +2241,7 @@
       let fullReasoning = '';
       let usageData = null;
       let finishReason = '';
+      let sawStreamEndMarker = false;
       const toolCallsMap = new Map();
 
       const buildToolCallsArray = () => {
@@ -2215,13 +2287,17 @@
           const line = rawLine.trim();
           if (!line || !line.startsWith('data:')) continue;
           const payloadStr = line.slice(5).trim();
-          if (payloadStr === '[DONE]') continue;
+          if (payloadStr === '[DONE]') {
+            sawStreamEndMarker = true;
+            continue;
+          }
           try {
             const parsed = JSON.parse(payloadStr);
             if (parsed && parsed.usage) usageData = parsed.usage;
             const choice = parsed && parsed.choices && parsed.choices[0];
             if (choice && choice.finish_reason) {
               finishReason = choice.finish_reason;
+              sawStreamEndMarker = true;
             }
             const delta = choice && choice.delta;
             if (delta) {
@@ -2272,6 +2348,12 @@
       }
 
       const finalToolCalls = buildToolCallsArray();
+      if (!sawStreamEndMarker && finalToolCalls.length === 0) {
+        if (!fullContent && !fullReasoning) {
+          throw new Error('流式响应意外中断，未收到有效内容');
+        }
+        fullContent = `${fullContent.trimEnd()}\n\n（连接提前中断，内容可能不完整）`;
+      }
       if (!background && usageData) {
         aiState.lastCacheUsage = usageData;
         updateCacheBadgeUI(usageData);
@@ -2468,6 +2550,7 @@
     aiState.isStreaming = true;
     setAskSendBtnStreaming(true);
 
+    const roundToolExchange = [];
     try {
       for (let round = 0; round <= maxRounds; round++) {
         const allowTools = round < maxRounds && Array.isArray(tools) && tools.length > 0;
@@ -2492,7 +2575,7 @@
 
         if (!wantsToolLoop) {
           if (typeof onToolStatus === 'function') onToolStatus('', true);
-          return roundRes;
+          return { ...roundRes, toolExchange: roundToolExchange };
         }
 
         // 记录助手发起的 tool_calls 轮次
@@ -2512,6 +2595,7 @@
           assistantToolMsg.reasoning_content = roundRes.reasoning;
         }
         loopMessages.push(assistantToolMsg);
+        roundToolExchange.push(assistantToolMsg);
 
         for (let i = 0; i < assistantToolMsg.tool_calls.length; i++) {
           if (!aiState.isStreaming) {
@@ -2528,16 +2612,18 @@
           if (typeof onToolStatus === 'function') {
             onToolStatus(exec.statusText, false);
           }
-          loopMessages.push({
+          const toolReplyMsg = {
             role: 'tool',
             tool_call_id: tc.id,
             content: exec.result
-          });
+          };
+          loopMessages.push(toolReplyMsg);
+          roundToolExchange.push(toolReplyMsg);
         }
       }
 
       if (typeof onToolStatus === 'function') onToolStatus('', true);
-      return { content: '', reasoning: '', toolCalls: [], finishReason: 'stop', usage: null };
+      return { content: '', reasoning: '', toolCalls: [], finishReason: 'stop', usage: null, toolExchange: roundToolExchange };
     } finally {
       aiState.isStreaming = false;
       aiState.abortController = null;
@@ -2698,7 +2784,10 @@ ${fullText}${focusSection}${tailSection}`;
 
   function trimHistoryForCache(msgs) {
     if (!Array.isArray(msgs) || msgs.length <= 18) return msgs || [];
-    const dropCount = Math.floor((msgs.length - 12) / 6) * 6;
+    let dropCount = Math.floor((msgs.length - 12) / 6) * 6;
+    while (dropCount < msgs.length && msgs[dropCount] && msgs[dropCount].role !== 'user') {
+      dropCount++;
+    }
     return msgs.slice(dropCount);
   }
 
@@ -2786,6 +2875,7 @@ ${fullText}${focusSection}${tailSection}`;
     const wasNearBottom = Boolean(options.forceScroll) || msgs.length <= 2 || distFromBottom <= 72;
 
     if (msgs.length === 0) {
+      dom.chatStream.dataset.renderedScope = ctx.scopeKey;
       dom.chatStream.innerHTML = `
         <div class="ai-empty-hint">
           已锁定「${escapeHtml(ctx.blockId)}」。你可以直接在下方提问，或点击建议标签生成<strong>答题骨架 / 对比表 / 换考法 / 跨科串联</strong>（支持引用原句「跳听」与篇目一键跳转）。
@@ -2794,28 +2884,79 @@ ${fullText}${focusSection}${tailSection}`;
       return;
     }
 
-    dom.chatStream.innerHTML = msgs.map((m, idx) => {
+    const buildMsgHtml = (m, idx) => {
       if (m.role === 'user') {
-        return `<div class="ai-msg ai-msg-user"><div class="ai-msg-bubble">${escapeHtml(m.content).replace(/\n/g, '<br>')}</div></div>`;
+        return `<div class="ai-msg ai-msg-user" data-msg-idx="${idx}"><div class="ai-msg-bubble">${escapeHtml(m.content).replace(/\n/g, '<br>')}</div></div>`;
       }
+      const isLastStreaming = aiState.isStreaming && idx === msgs.length - 1;
       const reasoningHtml = m.reasoning
         ? `<details class="ai-reasoning-block"><summary>DeepSeek 深度推理过程</summary><div class="ai-reasoning-body">${escapeHtml(m.reasoning).replace(/\n/g, '<br>')}</div></details>`
         : '';
       const toolStatusHtml = m.toolStatus
         ? `<div class="ai-tool-status${m.toolDone ? ' is-done' : ''}">${escapeHtml(m.toolStatus)}</div>`
         : '';
-      const bodyHtml = m.content
-        ? renderAiMarkdown(m.content, ctx.sentences)
-        : (m.toolStatus ? '' : '<span class="ai-typing-dots">正在思考并检索原文...</span>');
-      const isLastStreaming = aiState.isStreaming && idx === msgs.length - 1;
+      let bodyHtml = '';
+      if (m.content) {
+        bodyHtml = renderAiMarkdown(m.content, ctx.sentences);
+      } else if (m.toolStatus) {
+        bodyHtml = '';
+      } else if (isLastStreaming) {
+        bodyHtml = '<span class="ai-typing-dots">正在思考并检索原文...</span>';
+      } else if (m.finishReason === 'length') {
+        bodyHtml = '<div class="ai-empty-warn">模型深度推理已耗尽本次输出长度上限，未能生成正文结论。可点击重试或调低思考深度。</div>';
+      } else {
+        bodyHtml = '<div class="ai-empty-warn">模型本次未返回有效正文，请点击重试。</div>';
+      }
       const actionsHtml = (m.content && !isLastStreaming)
         ? `<div class="ai-msg-actions">
             <button type="button" class="ai-msg-action-btn js-ai-copy-btn" data-msg-idx="${idx}">复制解析</button>
             <button type="button" class="ai-msg-action-btn js-ai-save-mem-btn" data-msg-idx="${idx}">存入卡点记忆</button>
           </div>`
         : '';
-      return `<div class="ai-msg ai-msg-assistant"><div class="ai-msg-bubble">${reasoningHtml}${toolStatusHtml}${bodyHtml}${actionsHtml}</div></div>`;
-    }).join('');
+      return `<div class="ai-msg ai-msg-assistant" data-msg-idx="${idx}"><div class="ai-msg-bubble">${reasoningHtml}${toolStatusHtml}${bodyHtml}${actionsHtml}</div></div>`;
+    };
+
+    const existingMsgs = dom.chatStream.querySelectorAll(':scope > .ai-msg');
+    const canReusePrefix = (
+      !options.forceFull &&
+      dom.chatStream.dataset.renderedScope === ctx.scopeKey &&
+      existingMsgs.length > 0 &&
+      msgs.length >= existingMsgs.length
+    );
+
+    if (canReusePrefix) {
+      const prevLastIdx = existingMsgs.length - 1;
+      const lastNode = existingMsgs[prevLastIdx];
+      if (lastNode) {
+        const prevOpenReasoning = lastNode.querySelector('.ai-reasoning-block[open]');
+        const prevFoldStates = Array.from(lastNode.querySelectorAll('details.ai-fold')).map(d => d.open);
+        const tpl = document.createElement('div');
+        tpl.innerHTML = buildMsgHtml(msgs[prevLastIdx], prevLastIdx);
+        const replacement = tpl.firstElementChild;
+        if (replacement) {
+          if (prevOpenReasoning) {
+            const newReasoning = replacement.querySelector('.ai-reasoning-block');
+            if (newReasoning) newReasoning.open = true;
+          }
+          if (prevFoldStates.length > 0) {
+            replacement.querySelectorAll('details.ai-fold').forEach((d, fi) => {
+              if (prevFoldStates[fi]) d.open = true;
+            });
+          }
+          lastNode.replaceWith(replacement);
+        }
+      }
+      if (msgs.length > existingMsgs.length) {
+        const appendedHtml = msgs
+          .slice(existingMsgs.length)
+          .map((m, offset) => buildMsgHtml(m, existingMsgs.length + offset))
+          .join('');
+        dom.chatStream.insertAdjacentHTML('beforeend', appendedHtml);
+      }
+    } else {
+      dom.chatStream.dataset.renderedScope = ctx.scopeKey;
+      dom.chatStream.innerHTML = msgs.map((m, idx) => buildMsgHtml(m, idx)).join('');
+    }
 
     if (wasNearBottom) {
       dom.chatStream.scrollTop = dom.chatStream.scrollHeight;
@@ -2834,7 +2975,11 @@ ${fullText}${focusSection}${tailSection}`;
     }
 
     const ctx = getScopeContext();
-    const thread = aiState.chatThreads.get(ctx.scopeKey) || [];
+    const sendScopeKey = ctx.scopeKey;
+    const sendEpoch = aiState.chatThreadEpoch.get(sendScopeKey) || 0;
+    const isStaleThreadSend = () => (aiState.chatThreadEpoch.get(sendScopeKey) || 0) !== sendEpoch;
+
+    const thread = aiState.chatThreads.get(sendScopeKey) || [];
     const baseDisplay = options.displayContent || rawInput;
     const userDisplay = aiState.quotedText
       ? `【引用原文】“${aiState.quotedText}”\n\n${baseDisplay}`
@@ -2850,15 +2995,24 @@ ${fullText}${focusSection}${tailSection}`;
     updateScopeHeaderUI();
 
     thread.push({ role: 'user', content: userDisplay });
-    const assistantMsg = { role: 'assistant', content: '', reasoning: '', toolStatus: '', toolDone: false };
+    const assistantMsg = { role: 'assistant', content: '', reasoning: '', toolStatus: '', toolDone: false, finishReason: '', toolExchange: [] };
     thread.push(assistantMsg);
-    touchChatThread(ctx.scopeKey, thread);
+    touchChatThread(sendScopeKey, thread);
     persistChatThreadsToStorage();
     aiState._activeAssistantMsg = assistantMsg;
-    aiState._activeScopeKey = ctx.scopeKey;
+    aiState._activeScopeKey = sendScopeKey;
     renderChatStream({ forceScroll: true });
 
-    const historyMsgs = trimHistoryForCache(thread.slice(0, -2)).map(m => ({ role: m.role, content: m.content }));
+    const historyMsgs = [];
+    trimHistoryForCache(thread.slice(0, -2)).forEach((m) => {
+      if (!m || !m.role) return;
+      if (m.role === 'assistant' && Array.isArray(m.toolExchange) && m.toolExchange.length > 0) {
+        m.toolExchange.forEach((step) => {
+          if (step && step.role) historyMsgs.push(step);
+        });
+      }
+      historyMsgs.push({ role: m.role, content: m.content || '' });
+    });
     const apiMessages = [
       { role: 'system', content: buildAskSystemPrompt(ctx, rawInput) },
       ...historyMsgs,
@@ -2868,7 +3022,7 @@ ${fullText}${focusSection}${tailSection}`;
     setAskSendBtnStreaming(true);
     try {
       const useTools = options.useTools !== false;
-      await runDeepSeekWithTools({
+      const toolRes = await runDeepSeekWithTools({
         messages: apiMessages,
         temperature: options.temperature !== undefined ? options.temperature : 0.45,
         maxTokens: options.maxTokens || 2048,
@@ -2879,21 +3033,31 @@ ${fullText}${focusSection}${tailSection}`;
         maxRounds: 3,
         ctx,
         onToolStatus: (statusText, isDone) => {
+          if (isStaleThreadSend()) return;
           assistantMsg.toolStatus = statusText || '';
           assistantMsg.toolDone = Boolean(isDone);
           renderChatStream();
         },
-        onDelta: ({ content, reasoning }) => {
+        onDelta: ({ content, reasoning, finishReason }) => {
+          if (isStaleThreadSend()) return;
           assistantMsg.content = content;
           assistantMsg.reasoning = reasoning;
+          if (finishReason) assistantMsg.finishReason = finishReason;
           if (content) {
             assistantMsg.toolStatus = '';
           }
           renderChatStream();
         }
       });
+      if (isStaleThreadSend()) return;
       assistantMsg.toolStatus = '';
-      touchChatThread(ctx.scopeKey, thread);
+      if (toolRes && toolRes.finishReason) {
+        assistantMsg.finishReason = toolRes.finishReason;
+      }
+      if (toolRes && Array.isArray(toolRes.toolExchange) && toolRes.toolExchange.length > 0) {
+        assistantMsg.toolExchange = toolRes.toolExchange;
+      }
+      touchChatThread(sendScopeKey, thread);
       persistChatThreadsToStorage({ sync: true });
       renderChatStream();
 
@@ -2902,6 +3066,7 @@ ${fullText}${focusSection}${tailSection}`;
         setTimeout(() => { distillLearningProfile({ manual: false }); }, 800);
       }
     } catch (err) {
+      if (isStaleThreadSend()) return;
       assistantMsg.toolStatus = '';
       if (err && err.name === 'AbortError') {
         if (thread[thread.length - 1] === assistantMsg) {
@@ -2913,7 +3078,7 @@ ${fullText}${focusSection}${tailSection}`;
             assistantMsg.content = '（已停止生成）';
           }
         }
-        touchChatThread(ctx.scopeKey, thread);
+        touchChatThread(sendScopeKey, thread);
         persistChatThreadsToStorage({ sync: true });
         renderChatStream();
         return;
@@ -2923,7 +3088,7 @@ ${fullText}${focusSection}${tailSection}`;
       } else {
         assistantMsg.content = `请求出错：${err && err.message ? err.message : '未知网络错误'}`;
       }
-      touchChatThread(ctx.scopeKey, thread);
+      touchChatThread(sendScopeKey, thread);
       persistChatThreadsToStorage({ sync: true });
       renderChatStream();
     } finally {
@@ -2934,12 +3099,13 @@ ${fullText}${focusSection}${tailSection}`;
   }
 
   function clearCurrentThread() {
-    abortActiveStream({ markStopped: false });
     const ctx = getScopeContext();
+    aiState.chatThreadEpoch.set(ctx.scopeKey, (aiState.chatThreadEpoch.get(ctx.scopeKey) || 0) + 1);
+    abortActiveStream({ markStopped: false });
     aiState.chatThreads.delete(ctx.scopeKey);
     aiState.chatThreadMeta.set(ctx.scopeKey, { updatedAt: Date.now(), deleted: true });
     persistChatThreadsToStorage({ sync: true });
-    renderChatStream();
+    renderChatStream({ forceFull: true });
     showToast('已清空当前范围对话', 1500);
   }
 
@@ -3007,10 +3173,24 @@ ${fullText}${focusSection}${tailSection}`;
       });
 
       const parsed = parseJsonFromAiContent(res && res.content);
-      const skeleton = cleanClozePhraseList(parsed && parsed.skeleton);
-      const scoring = cleanClozePhraseList(parsed && parsed.scoring);
+      const normSource = normalizeForMatch(sourceText);
+      const rawSkeleton = cleanClozePhraseList(parsed && parsed.skeleton);
+      const rawScoring = cleanClozePhraseList(parsed && parsed.scoring);
+      const usedSet = new Set();
+      const skeleton = rawSkeleton.filter((p) => {
+        const np = normalizeForMatch(p);
+        if (!np || !normSource.includes(np) || usedSet.has(p)) return false;
+        usedSet.add(p);
+        return true;
+      });
+      const scoring = rawScoring.filter((p) => {
+        const np = normalizeForMatch(p);
+        if (!np || !normSource.includes(np) || usedSet.has(p)) return false;
+        usedSet.add(p);
+        return true;
+      });
       if (skeleton.length === 0 && scoring.length === 0) {
-        throw new Error('AI 未返回有效的采分眼词条');
+        throw new Error('AI 提取的词条未在当前原文中命中有效采分点，请重试');
       }
 
       const nowIso = new Date().toISOString();
@@ -3451,12 +3631,18 @@ ${fullText}${focusSection}${tailSection}`;
     }
 
     if (dom.saveMemoryBtn && dom.memorySummaryInput) {
+      dom.memorySummaryInput.addEventListener('input', () => {
+        dom.memorySummaryInput.dataset.dirty = '1';
+        dom.memorySummaryInput.dataset.itemId = getScopeContext().itemId;
+      });
       dom.saveMemoryBtn.addEventListener('click', () => {
         const ctx = getScopeContext();
         saveMemorySummary(ctx.itemId, {
           summary: dom.memorySummaryInput.value,
           incrementRecite: false
         });
+        dom.memorySummaryInput.dataset.dirty = '0';
+        dom.memorySummaryInput.dataset.itemId = ctx.itemId;
         setMemoryBoxOpen(false);
         showToast('本题卡点记忆已保存并加入云端同步队列', 1800);
       });
@@ -3554,7 +3740,23 @@ ${fullText}${focusSection}${tailSection}`;
             ? Number(rawStart)
             : undefined;
           const b = getBridge();
-          if (!isNaN(sentIdx) && b && typeof b.seekToSentence === 'function') {
+          if (b && typeof b.getState === 'function' && typeof b.seekToSentence === 'function') {
+            const st = b.getState();
+            const liveSents = (st && Array.isArray(st.activeSentences)) ? st.activeSentences : [];
+            const targetSent = (!isNaN(sentIdx) && sentIdx >= 0 && sentIdx < liveSents.length) ? liveSents[sentIdx] : null;
+            const timeMatches = targetSent && (start === undefined || Math.abs(Number(targetSent.start) - start) <= 0.6);
+            if (!targetSent || !timeMatches) {
+              const quoteBlock = quoteJump.closest('.ai-md-quote');
+              const qTxt = quoteBlock ? (quoteBlock.textContent || '').replace(/跳听\s*$/, '').trim() : '';
+              const reMatchedIdx = qTxt ? findSentenceIndexByQuote(qTxt, liveSents) : -1;
+              if (reMatchedIdx >= 0) {
+                b.seekToSentence(reMatchedIdx, liveSents[reMatchedIdx].start);
+                showToast('已跳转定位原句音频', 1400);
+              } else {
+                showToast('当前已切换篇目或音轨，请切回对应文本后再跳听该原句', 2200);
+              }
+              return;
+            }
             b.seekToSentence(sentIdx, start);
             showToast('已跳转定位原句音频', 1400);
           }

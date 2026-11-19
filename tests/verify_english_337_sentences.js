@@ -110,9 +110,13 @@ manifest.forEach((essay, essayIdx) => {
   });
 });
 
+if (totalDomSpans !== totalJsonSentences) {
+  errors.push(`Total DOM spans (${totalDomSpans}) != total JSON sentences (${totalJsonSentences})`);
+}
+
 console.log(`[Summary Check]`);
-console.log(`  Total verified DOM spans: ${totalDomSpans} (Expected: 337)`);
-console.log(`  Total verified JSON sentences: ${totalJsonSentences} (Expected: 353)`);
+console.log(`  Total verified DOM spans: ${totalDomSpans} (Expected: ${totalJsonSentences})`);
+console.log(`  Total verified JSON sentences: ${totalJsonSentences}`);
 console.log(`  Total verification errors: ${errors.length}`);
 
 if (errors.length > 0) {
@@ -120,7 +124,7 @@ if (errors.length > 0) {
   errors.slice(0, 20).forEach(e => console.error("  -", e));
   process.exit(1);
 } else {
-  console.log("\n✅ ALL 337 DOM SPANS & 353 JSON SENTENCES VERIFIED 100% PERFECT!");
+  console.log(`\n✅ ALL ${totalDomSpans} DOM SPANS & ${totalJsonSentences} JSON SENTENCES VERIFIED 100% PERFECT!`);
   console.log("   - Strict Monotonicity: 100% PASS");
   console.log("   - Non-overlapping & Legal Durations: 100% PASS");
   console.log("   - HTML DOM vs sentences.json Exact Sync: 100% PASS");

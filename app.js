@@ -49,6 +49,17 @@
       } catch (e) { return 'all'; }
     })(),
     reciteMode: 'normal',
+    relayMode: (function () {
+      try {
+        const saved = localStorage.getItem('kaoyan_relay_mode');
+        return ['full', 'pile', 'reverse', 'kw'].includes(saved) ? saved : 'full';
+      } catch (e) { return 'full'; }
+    })(),
+    relayShowGlue: (function () {
+      try {
+        return localStorage.getItem('kaoyan_relay_glue') !== '0';
+      } catch (e) { return true; }
+    })(),
     loopCount: 0,
     sentenceRepeatCount: 3, // 2..10
     sectionRepeatCount: 0,  // 0 (∞) | 2..10
@@ -92,6 +103,7 @@
   let lastHudTitleText = '';
   let xtIntroAutoSkipped = false;
   let playModeCloseTimer = null;
+  let playModeOpenRaf = null;
   let speedModalCloseTimer = null;
   let lastListenSaveTs = 0;
   let listenAnchor = null;
@@ -537,10 +549,40 @@
     lastMediaSessionKey = '';
   }
 
+  function getPlaybackTimeKey(trackOverride = null) {
+    const tr = (trackOverride !== null && trackOverride !== undefined) ? trackOverride : state.currentTrack;
+    const base = `${state.currentSubject}_${state.activeItemId}_${tr}`;
+    if (state.currentSubject === 'pol') {
+      if (state.polSubMode === 'xutao16') {
+        return `${base}_xt_${state.polXtVoice || 'anlang'}`;
+      }
+      if (state.polSubMode === 'recite47' && Number(tr) === 2 && state.polSubCardId) {
+        return `${base}_card_${state.polSubCardId}`;
+      }
+      if (state.polSubMode === 'tuijie11') {
+        return `${base}_tj`;
+      }
+    }
+    return base;
+  }
+
+  function flushPlaybackPosition(timeOverride = null) {
+    if (!state.activeItemId || !hasAudioSource()) return;
+    const t = (typeof timeOverride === 'number' && !isNaN(timeOverride)) ? timeOverride : (audio.currentTime || 0);
+    if (!(t > 1)) return;
+    try {
+      localStorage.setItem('kaoyan_last_time', String(t));
+      localStorage.setItem('kaoyan_last_time_key', getPlaybackTimeKey());
+    } catch (e) {}
+  }
+
   function tryRestoreAudioTime(restoreTime, expectedKey) {
     if (!restoreTime) return;
     try {
-      if (localStorage.getItem('kaoyan_last_time_key') !== expectedKey) return;
+      const targetKey = expectedKey || getPlaybackTimeKey();
+      const storedKey = localStorage.getItem('kaoyan_last_time_key');
+      const legacyBase = `${state.currentSubject}_${state.activeItemId}_${state.currentTrack}`;
+      if (storedKey !== targetKey && storedKey !== legacyBase) return;
       const savedTime = parseFloat(localStorage.getItem('kaoyan_last_time') || '0');
       if (!(savedTime > 1)) return;
       const restoreEpoch = manualSeekEpoch;
@@ -991,16 +1033,23 @@
     }
   }
 
+  let lastPlayModeTrigger = null;
   function openPlayModeDrawer() {
     if (!el.playModeDrawer || !el.playModeList) return;
     if (playModeCloseTimer) {
       clearTimeout(playModeCloseTimer);
       playModeCloseTimer = null;
     }
+    if (playModeOpenRaf) {
+      cancelAnimationFrame(playModeOpenRaf);
+      playModeOpenRaf = null;
+    }
+    lastPlayModeTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     renderPlayModeList();
     setPlayerDockReceded(true);
     if (el.playModeBackdrop) el.playModeBackdrop.style.display = 'block';
-    requestAnimationFrame(() => {
+    playModeOpenRaf = requestAnimationFrame(() => {
+      playModeOpenRaf = null;
       el.playModeDrawer.classList.add('open');
       el.playModeDrawer.setAttribute('aria-hidden', 'false');
     });
@@ -1009,6 +1058,10 @@
 
   function closePlayModeDrawer() {
     if (!el.playModeDrawer) return;
+    if (playModeOpenRaf) {
+      cancelAnimationFrame(playModeOpenRaf);
+      playModeOpenRaf = null;
+    }
     if (playModeCloseTimer) clearTimeout(playModeCloseTimer);
     el.playModeDrawer.classList.remove('open');
     el.playModeDrawer.setAttribute('aria-hidden', 'true');
@@ -1020,6 +1073,10 @@
     }, 280);
     unlockBodyScroll('playModeDrawer');
     setPlayerDockReceded(false);
+    if (lastPlayModeTrigger && typeof lastPlayModeTrigger.focus === 'function' && document.body.contains(lastPlayModeTrigger)) {
+      try { lastPlayModeTrigger.focus({ preventScroll: true }); } catch (e) {}
+    }
+    lastPlayModeTrigger = null;
   }
 
   function renderPlayModeList() {
@@ -1647,8 +1704,18 @@
         pillText = isT1 ? '整章背诵' : '微考点精析';
       }
     } else {
-      headerText = isT1 ? '龙安朗 · 清爽利落全段通读' : '龙安朗 · 答题逻辑双轨精解';
-      pillText = isT1 ? '龙安朗 · 答题通读' : '龙安朗 · 精解';
+      const hasRelay = Boolean(state.activeItem && state.activeItem.relay_micro);
+      const hasDedicatedVoice = Boolean(state.activeItem && state.activeItem.track2 && state.activeItem.track2.dedicated_voice);
+      if (isT1) {
+        headerText = '龙安朗 · 清爽利落全段通读';
+        pillText = '龙安朗 · 答题通读';
+      } else if (hasRelay && !hasDedicatedVoice) {
+        headerText = '龙安朗 · 考场原音伴读（接力对照点读）';
+        pillText = '考场原音伴读';
+      } else {
+        headerText = '龙安朗 · 答题逻辑双轨精解';
+        pillText = hasDedicatedVoice ? '逻辑微缩专配' : '龙安朗 · 精解';
+      }
     }
 
     if (el.headerVoiceBadge && el.headerVoiceBadge.textContent !== headerText) {
@@ -2435,6 +2502,20 @@
     }
   }
 
+  function collectLastItemProgressMap() {
+    const out = {};
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && (k.startsWith('kaoyan_last_item_') || k === 'kaoyan_last_subject' || k === 'kaoyan_pol_submode' || k === 'kaoyan_pol_cat' || k === 'kaoyan_last_track' || k === 'kaoyan_pol_subcard_id' || k === 'kaoyan_last_time_key' || k === 'kaoyan_last_time')) {
+          const v = localStorage.getItem(k);
+          if (v !== null) out[k] = v;
+        }
+      }
+    } catch (e) {}
+    return out;
+  }
+
   function buildStudyBackupPayload() {
     accumulateListeningTime(true);
     return {
@@ -2448,6 +2529,9 @@
       aiMemories: readJsonStorageSafe('kaoyan_ai_memories', {}),
       reciteLogs: readJsonStorageSafe('kaoyan_recite_logs', []),
       learningProfile: readJsonStorageSafe('kaoyan_learning_profile', null),
+      aiClozeCache: readJsonStorageSafe('kaoyan_ai_cloze_cache_v1', {}),
+      aiChatThreads: readJsonStorageSafe('kaoyan_ai_chat_threads_v1', {}),
+      lastProgress: collectLastItemProgressMap(),
       settings: {
         theme: localStorage.getItem('kaoyan_theme') || state.theme,
         fontSize: localStorage.getItem('kaoyan_font_size') || String(state.fontSize || 17),
@@ -2475,7 +2559,7 @@
       a.click();
       a.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-      showToast('学习进度与打卡备份已导出', 2200);
+      showToast('学习进度、AI 记忆与对话备份已导出', 2200);
     } catch (err) {
       console.error('Export backup failed:', err);
       showToast('导出备份失败，请重试', 2400);
@@ -2487,24 +2571,26 @@
     try {
       const rawText = await file.text();
       const parsed = JSON.parse(rawText);
-      if (!parsed || typeof parsed !== 'object' || (!parsed.masteryState && !parsed.studyLogs)) {
+      const hasValidMastery = parsed && parsed.masteryState && typeof parsed.masteryState === 'object' && !Array.isArray(parsed.masteryState);
+      const hasValidLogs = parsed && parsed.studyLogs && typeof parsed.studyLogs === 'object' && !Array.isArray(parsed.studyLogs);
+      if (!parsed || typeof parsed !== 'object' || (!hasValidMastery && !hasValidLogs)) {
         showToast('备份文件结构无效，未改动当前数据', 2600);
         return;
       }
 
-      if (parsed.masteryState && typeof parsed.masteryState === 'object' && !Array.isArray(parsed.masteryState)) {
-        const sanitizedMastery = {};
+      // 第一阶段：全部预校验与清洗，确认完整合法后再原子化提交写入
+      let nextMastery = null;
+      if (hasValidMastery) {
+        nextMastery = {};
         Object.entries(parsed.masteryState).forEach(([k, v]) => {
           if (k && (v === 'unlearned' || v === 'familiar' || v === 'mastered')) {
-            sanitizedMastery[String(k)] = v;
+            nextMastery[String(k)] = v;
           }
         });
-        state.masteryState = sanitizedMastery;
-        state.masteryMap = state.masteryState;
-        saveMasteryData();
       }
 
-      if (parsed.studyLogs && typeof parsed.studyLogs === 'object' && !Array.isArray(parsed.studyLogs)) {
+      let nextLogs = null;
+      if (hasValidLogs) {
         const rawLogs = parsed.studyLogs;
         const cleanDates = Array.isArray(rawLogs.dates)
           ? Array.from(new Set(rawLogs.dates.filter(d => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)))).sort()
@@ -2519,7 +2605,7 @@
             if (/^\d{4}-\d{2}-\d{2}$/.test(d) && val >= 0) cleanDaily[d] = val;
           });
         }
-        state.studyLogs = {
+        nextLogs = {
           dates: cleanDates,
           completedIds: cleanCompleted,
           totalCardsCompleted: Math.max(0, Number(rawLogs.totalCardsCompleted) || cleanCompleted.length),
@@ -2530,12 +2616,22 @@
           listenSchemaVersion: rawLogs.listenSchemaVersion
         };
         if (rawLogs.deviceBuckets && typeof rawLogs.deviceBuckets === 'object' && !Array.isArray(rawLogs.deviceBuckets)) {
-          state.studyLogs.legacyListen = normalizeListenBucket(rawLogs.legacyListen || {});
-          state.studyLogs.deviceBuckets = normalizeDeviceBuckets(rawLogs.deviceBuckets);
-          recomputeListenAggregates(state.studyLogs);
+          nextLogs.legacyListen = normalizeListenBucket(rawLogs.legacyListen || {});
+          nextLogs.deviceBuckets = normalizeDeviceBuckets(rawLogs.deviceBuckets);
+          recomputeListenAggregates(nextLogs);
         } else {
-          ensureDeviceListenBuckets(state.studyLogs);
+          ensureDeviceListenBuckets(nextLogs);
         }
+      }
+
+      // 第二阶段：校验通过后写入内存状态与 localStorage
+      if (nextMastery !== null) {
+        state.masteryState = nextMastery;
+        state.masteryMap = state.masteryState;
+        saveMasteryData();
+      }
+      if (nextLogs !== null) {
+        state.studyLogs = nextLogs;
         saveStudyLogs();
       }
 
@@ -2602,6 +2698,20 @@
       }
       if (parsed.learningProfile && typeof parsed.learningProfile === 'object' && !Array.isArray(parsed.learningProfile)) {
         localStorage.setItem('kaoyan_learning_profile', JSON.stringify(parsed.learningProfile));
+      }
+      if (parsed.aiClozeCache && typeof parsed.aiClozeCache === 'object' && !Array.isArray(parsed.aiClozeCache)) {
+        localStorage.setItem('kaoyan_ai_cloze_cache_v1', JSON.stringify(parsed.aiClozeCache));
+      }
+      if (parsed.aiChatThreads && typeof parsed.aiChatThreads === 'object' && !Array.isArray(parsed.aiChatThreads)) {
+        localStorage.setItem('kaoyan_ai_chat_threads_v1', JSON.stringify(parsed.aiChatThreads));
+      }
+      if (parsed.lastProgress && typeof parsed.lastProgress === 'object' && !Array.isArray(parsed.lastProgress)) {
+        const ALLOWED_PROG_KEYS = new Set(['kaoyan_last_subject', 'kaoyan_pol_submode', 'kaoyan_pol_cat', 'kaoyan_last_track', 'kaoyan_pol_subcard_id', 'kaoyan_last_time_key', 'kaoyan_last_time']);
+        Object.entries(parsed.lastProgress).forEach(([k, v]) => {
+          if (typeof v === 'string' && (ALLOWED_PROG_KEYS.has(k) || k.startsWith('kaoyan_last_item_'))) {
+            localStorage.setItem(k, v);
+          }
+        });
       }
       if (window.__kaoyanAiHooks && typeof window.__kaoyanAiHooks.onBackupImported === 'function') {
         window.__kaoyanAiHooks.onBackupImported();
@@ -2745,11 +2855,14 @@
     updateHeaderListenBadgeUI();
   }
 
+  let lastDashboardTrigger = null;
   function openStudyDashboard() {
     if (!el.studyDashboardDrawer) return;
+    lastDashboardTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     accumulateListeningTime(true);
     updateStudyDashboardUI();
     el.studyDashboardDrawer.classList.add('open');
+    el.studyDashboardDrawer.setAttribute('aria-hidden', 'false');
     setPlayerDockReceded(true);
     if (el.studyDashboardBackdrop) el.studyDashboardBackdrop.style.display = 'block';
     lockBodyScroll('studyDashboardDrawer');
@@ -2766,6 +2879,7 @@
   function closeStudyDashboard() {
     if (!el.studyDashboardDrawer) return;
     el.studyDashboardDrawer.classList.remove('open');
+    el.studyDashboardDrawer.setAttribute('aria-hidden', 'true');
     if (el.studyDashboardBackdrop) el.studyDashboardBackdrop.style.display = 'none';
     unlockBodyScroll('studyDashboardDrawer');
     setPlayerDockReceded(false);
@@ -2773,6 +2887,10 @@
     if (navDash && navDash.classList.contains('active')) {
       setBottomNavActiveTab('');
     }
+    if (lastDashboardTrigger && typeof lastDashboardTrigger.focus === 'function' && document.body.contains(lastDashboardTrigger)) {
+      try { lastDashboardTrigger.focus({ preventScroll: true }); } catch (e) {}
+    }
+    lastDashboardTrigger = null;
   }
 
   function updateStudyDashboardUI() {
@@ -3164,9 +3282,9 @@
       target.title = '点击从该句播放';
     };
 
-    // 3. 按时间轴顺序将每句话精准对齐到 DOM 文本偏移
+    // 3. 按时间轴顺序将每句话精准对齐到 DOM 文本偏移（支持多块跨节点联合高光，不再局限于单一 startBlock）
     let cursor = 0;
-    const spansByBlock = new Map();
+    const alignedSpans = [];
 
     for (let i = 0; i < sents.length; i++) {
       const sent = sents[i];
@@ -3227,31 +3345,73 @@
         }
       }
 
-      // 若仅蹭到上一段末尾不足 12 字（如 TTS 跨越“其他内容见附录2”），优先落到后续正文主体块
+      // 若仅蹭到上一段纯尾注尾巴（如“其他内容见附录2)”且非当前标题/题号），顺延至正文主体起点
       let startBlock = entries[startIdx].block;
       let remainInBlock = 1;
       while (startIdx + remainInBlock < entries.length && entries[startIdx + remainInBlock].block === startBlock && remainInBlock <= 14) {
         remainInBlock++;
       }
-      if (remainInBlock < 12 && sc.length - found.off >= 12) {
+      const isOwnHeadingOrNum = Boolean(startBlock.classList && (startBlock.classList.contains('xt-num-badge') || startBlock.classList.contains('xt-sec-title')));
+      if (!isOwnHeadingOrNum && remainInBlock < 12 && sc.length - found.off >= 12) {
         const nextIdx = startIdx + remainInBlock;
         if (nextIdx < entries.length && entries[nextIdx].block !== startBlock) {
           const probeSlice = stream.slice(nextIdx, nextIdx + 16);
           if (probeSlice.length >= 4 && sc.includes(probeSlice.slice(0, Math.min(7, probeSlice.length)))) {
             startIdx = nextIdx;
-            startBlock = entries[nextIdx].block;
           }
         }
       }
 
       let endIdx = Math.min(entries.length - 1, startIdx + Math.max(1, sc.length - found.off) - 1);
-      while (endIdx > startIdx && entries[endIdx].block !== startBlock) {
-        endIdx--;
+      if (sc.length >= 8) {
+        const tailLen = Math.min(8, sc.length);
+        const tail = sc.slice(sc.length - tailLen);
+        const searchFrom = Math.max(startIdx, endIdx - 28);
+        const searchTo = Math.min(stream.length, endIdx + 36);
+        const tailPos = stream.slice(searchFrom, searchTo).indexOf(tail);
+        if (tailPos !== -1) {
+          endIdx = Math.min(entries.length - 1, searchFrom + tailPos + tailLen - 1);
+        }
+      }
+      if (endIdx < startIdx) endIdx = startIdx;
+
+      alignedSpans.push({ sent, arrayIdx: i, startIdx, endIdx });
+      cursor = Math.max(cursor, startIdx + Math.min(found.len, 6));
+    }
+
+    // 截断前后句尾部边界重叠，并将每句跨越的所有有效块登记入 spansByBlock
+    const spansByBlock = new Map();
+    const blockLengths = new Map();
+    for (let k = 0; k < entries.length; k++) {
+      const b = entries[k].block;
+      blockLengths.set(b, (blockLengths.get(b) || 0) + 1);
+    }
+
+    for (let a = 0; a < alignedSpans.length; a++) {
+      const sp = alignedSpans[a];
+      if (a + 1 < alignedSpans.length && sp.endIdx >= alignedSpans[a + 1].startIdx) {
+        sp.endIdx = Math.max(sp.startIdx, alignedSpans[a + 1].startIdx - 1);
       }
 
-      if (!spansByBlock.has(startBlock)) spansByBlock.set(startBlock, []);
-      spansByBlock.get(startBlock).push({ sent, arrayIdx: i, startIdx, endIdx });
-      cursor = Math.max(cursor, startIdx + Math.min(found.len, 6));
+      let p = sp.startIdx;
+      while (p <= sp.endIdx) {
+        const b = entries[p].block;
+        const segStart = p;
+        while (p + 1 <= sp.endIdx && entries[p + 1].block === b) {
+          p++;
+        }
+        const segEnd = p;
+        const segLen = segEnd - segStart + 1;
+        const totalBlockLen = blockLengths.get(b) || segLen;
+        const isNumBadge = Boolean(b.classList && b.classList.contains('xt-num-badge'));
+        const isValidCoverage = isNumBadge || totalBlockLen <= 2 || segLen >= 2;
+        const isTinyStrayTail = !isNumBadge && segLen === 1 && totalBlockLen >= 5;
+        if (isValidCoverage && !isTinyStrayTail) {
+          if (!spansByBlock.has(b)) spansByBlock.set(b, []);
+          spansByBlock.get(b).push({ sent: sp.sent, arrayIdx: sp.arrayIdx, startIdx: segStart, endIdx: segEnd });
+        }
+        p++;
+      }
     }
 
     // 4. 按块落实唯一 DOM 句标或 DOM Range 无损拆分子句
@@ -3266,8 +3426,9 @@
         let target = block;
         if (block.classList && block.classList.contains('xt-item-content')) {
           const row = block.closest('.xt-item-row');
-          if (row && row.querySelectorAll('.xt-item-content').length === 1 && !row.querySelector('.xt-subline') && !row.querySelector('[data-sent-idx]')) {
-            target = row;
+          if (row && row.querySelectorAll('.xt-item-content').length === 1 && !row.querySelector('.xt-subline')) {
+            const otherIdxEl = row.querySelector(`[data-sent-idx]:not([data-sent-idx="${list[0].arrayIdx}"])`);
+            if (!otherIdxEl) target = row;
           }
         }
         applySentAttrs(target, list[0].sent, list[0].arrayIdx);
@@ -3428,8 +3589,8 @@
         if (state.rangeSelection && (state.rangeSelection.step === 'pick-start' || state.rangeSelection.step === 'pick-end')) {
           return;
         }
-        // 若点击的是交互控件（按钮、链接、专属跳转胶囊、AI 伴学按钮或挖空测验模式的填空词），由其自身专属事件接管
-        if (e.target.closest('button, a, input, .seal-btn, .en-audio-jump-pill, .card-ai-btn')) {
+        // 若点击的是交互控件（按钮、链接、专属跳转胶囊、AI 伴学按钮、接力微缩句或挖空测验模式的填空词），由其自身专属事件接管
+        if (e.target.closest('button, a, input, .seal-btn, .en-audio-jump-pill, .card-ai-btn, .card-relay-btn, .relay-sent, .relay-toolbar, .relay-chain-bar, .relay-glue-row, .relay-inter-glue, .relay-t1-drawer, .relay-t1-chain-bar, .relay-origin-tip')) {
           return;
         }
         if (state.clozeMode === 'keyword' && (e.target.closest('.cloze') || e.target.closest('.kw-red') || e.target.closest('.stream-kw'))) {
@@ -3570,6 +3731,14 @@
   }
 
   function loadTrackData(trackNum, autoPlay = false, restoreTime = false) {
+    const prevItemId = state.activeItemId;
+    const prevTrack = state.currentTrack;
+    const prevSubject = state.currentSubject;
+    const prevTime = (hasAudioSource() && !isNaN(audio.currentTime)) ? (audio.currentTime || 0) : 0;
+    const prevSentIdx = state.currentSentIndex;
+    if (!restoreTime && prevTime > 1 && state.activeItemId) {
+      flushPlaybackPosition(prevTime);
+    }
     accumulateListeningTime(true);
     listenAnchor = null;
     if (state.currentSubject === 'pol') {
@@ -3584,21 +3753,35 @@
     }
     localStorage.setItem('kaoyan_last_track', String(trackNum));
 
+    if (el.trackTabs) {
+      const tabBtnsRow = el.trackTabs.querySelector('.track-tabs');
+      if (tabBtnsRow) tabBtnsRow.style.display = '';
+    }
     if (el.tabTrack1) el.tabTrack1.classList.toggle('active', trackNum === 1);
     if (el.tabTrack2) el.tabTrack2.classList.toggle('active', trackNum === 2);
     if (el.dockTrackPill) {
       if (state.currentSubject === 'en') {
         el.dockTrackPill.textContent = trackNum === 1 ? '中英听读磨耳版' : '替换变体与仿写拓展';
       } else {
-        el.dockTrackPill.textContent = trackNum === 1 ? '考场直接答题完整版' : '答题版内部逻辑精解版';
+        const hasRelay = Boolean(state.activeItem && state.activeItem.relay_micro);
+        el.dockTrackPill.textContent = trackNum === 1 ? '考场直接答题完整版' : (hasRelay ? '接力微缩逻辑版' : '答题版内部逻辑精解版');
       }
     }
+    syncTrackTabLabels(state.activeItem);
     syncVoiceBadges();
 
     const item = state.activeItem;
     if (!item) return;
 
     const trackObj = trackNum === 1 ? item.track1 : item.track2;
+    const canCarrySameTimeline = (
+      !restoreTime &&
+      (prevSubject === '706' || prevSubject === '807') &&
+      prevItemId === item.id &&
+      prevTrack !== trackNum &&
+      prevTime > 0.5 &&
+      !(item.track2 && item.track2.dedicated_voice)
+    );
     resetAudioTrackPlayback(autoPlay);
     resetAudioProgressUI();
 
@@ -3608,7 +3791,30 @@
       audio.load();
       audio.playbackRate = state.speed;
 
-      tryRestoreAudioTime(restoreTime, `${state.currentSubject}_${state.activeItemId}_${trackNum}`);
+      if (canCarrySameTimeline) {
+        const carryEpoch = manualSeekEpoch;
+        const carryGen = audioTrackGen;
+        const applyCarry = () => {
+          if (carryGen !== audioTrackGen || carryEpoch !== manualSeekEpoch) return;
+          const dur = audio.duration || 0;
+          const safeTime = dur > 0 ? Math.min(prevTime, Math.max(0, dur - 0.3)) : prevTime;
+          try { setAudioPosition(safeTime); } catch (err) {}
+          if (el.timeCurrent) el.timeCurrent.textContent = formatTime(safeTime);
+          if (dur > 0 && el.progressFill) el.progressFill.style.width = Math.min(100, (safeTime / dur) * 100) + '%';
+          if (state.activeSentences && state.activeSentences.length > 0) {
+            const matchedIdx = (prevSentIdx >= 0 && prevSentIdx < state.activeSentences.length) ? prevSentIdx : findActiveSentenceIndex(safeTime);
+            if (matchedIdx !== -1) {
+              state.currentSentIndex = matchedIdx;
+              highlightSentence(matchedIdx);
+            }
+          }
+          updateHUDDisplay(safeTime);
+        };
+        if (audio.readyState >= 1) applyCarry();
+        else audio.addEventListener('loadedmetadata', applyCarry, { once: true });
+      } else {
+        tryRestoreAudioTime(restoreTime, getPlaybackTimeKey(trackNum));
+      }
 
       if (autoPlay) {
         const playPromise = audio.play();
@@ -3682,7 +3888,7 @@
       elItem.dataset.clickBound = '1';
       elItem.addEventListener('click', (e) => {
         if (hasActiveTextSelection()) return;
-        if (e.target.closest('.card-ai-btn')) return;
+        if (e.target.closest('.card-ai-btn, .card-relay-btn, .relay-sent, .relay-toolbar, .relay-chain-bar, .relay-t1-drawer, .relay-t1-chain-bar')) return;
         const isRangePicking = Boolean(
           state.rangeSelection &&
           (state.rangeSelection.step === 'pick-start' || state.rangeSelection.step === 'pick-end') &&
@@ -3795,7 +4001,18 @@
     }
 
     if (trackObj.html) {
+      if (state.currentTrack === 2 && state.activeItem && state.activeItem.relay_micro && state.currentSubject !== 'en' && state.currentSubject !== 'pol') {
+        renderRelayTrack2(trackObj, state.activeItem);
+        bindSentenceClickHandlers(el.paperContent);
+        bindCardSectionClickHandlers(el.paperContent);
+        return;
+      }
+
       el.paperContent.innerHTML = trackObj.html;
+
+      if (state.currentTrack === 1 && state.activeItem && state.activeItem.relay_micro && state.currentSubject !== 'en' && state.currentSubject !== 'pol') {
+        enhanceTrack1WithRelayHelpers(state.activeItem);
+      }
 
       // 绑定权威高光追踪与点击点读事件
       bindSentenceClickHandlers(el.paperContent);
@@ -3848,7 +4065,7 @@
         enIntroBadges.forEach(ib => {
           ib.addEventListener('click', (e) => {
             if (hasActiveTextSelection()) return;
-            if (e.target.closest('.card-ai-btn')) return;
+            if (e.target.closest('.card-ai-btn, .card-relay-btn, .relay-sent, .relay-toolbar, .relay-chain-bar, .relay-t1-drawer, .relay-t1-chain-bar')) return;
             e.stopPropagation();
             const targetCard = ib.closest('.en-essay-para') || ib.closest('.exam-section-card') || el.paperContent.querySelector('.en-full-essay-box');
             if (seekToFirstSentenceInCard(targetCard)) {
@@ -3865,6 +4082,387 @@
     if (trackObj.text) {
       el.paperContent.innerHTML = `<div class="exam-section-card"><div class="section-card-content"><p>${trackObj.text.replace(/\n/g, '<br>')}</p></div></div>`;
     }
+  }
+
+  function syncTrackTabLabels(item) {
+    if (state.currentSubject === 'en' || state.currentSubject === 'pol') return;
+    const hasRelay = Boolean(item && item.relay_micro);
+    if (el.tab2TextFull) {
+      el.tab2TextFull.textContent = hasRelay ? '【轨道二】接力微缩逻辑版' : '【轨道二】答题版内部逻辑精解版';
+    }
+    if (el.tab2TextShort) {
+      el.tab2TextShort.textContent = hasRelay ? '轨道二 · 接力微缩' : '轨道二 · 逻辑精解版';
+    }
+  }
+
+  function buildRelaySpineHtml(sec, showRoles = true, roles = null) {
+    const labels = (Array.isArray(roles) && roles.length >= 3)
+      ? roles
+      : ['① 定局立桩', '② 落锚举例', '③ 收果拔高'];
+    const r = (label) => showRoles ? `<span class="relay-role">${label}</span>` : '';
+    return `
+      <div class="relay-spine">
+        <div class="relay-step">
+          <span class="relay-dot"></span>
+          <div class="relay-sent" data-relay-step="s1">${r(labels[0])}${sec.s1 || ''}</div>
+        </div>
+        ${sec.q1 ? `<div class="relay-glue-row">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>${sec.q1}</span>
+        </div>` : ''}
+        <div class="relay-step">
+          <span class="relay-dot"></span>
+          <div class="relay-sent" data-relay-step="s2">${r(labels[1])}${sec.s2 || ''}</div>
+        </div>
+        ${sec.q2 ? `<div class="relay-glue-row">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          <span>${sec.q2}</span>
+        </div>` : ''}
+        <div class="relay-step">
+          <span class="relay-dot"></span>
+          <div class="relay-sent" data-relay-step="s3">${r(labels[2])}${sec.s3 || ''}</div>
+        </div>
+      </div>`;
+  }
+
+  function applyRelayModeClasses(wrap) {
+    if (!wrap) return;
+    wrap.classList.toggle('relay-hide-glue', !state.relayShowGlue);
+    wrap.classList.toggle('relay-kw-only', state.relayMode === 'kw');
+    wrap.querySelectorAll('.relay-seg-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.relayMode === state.relayMode);
+    });
+    const glueBtn = wrap.querySelector('.relay-glue-toggle');
+    if (glueBtn) glueBtn.classList.toggle('active', state.relayShowGlue);
+
+    wrap.querySelectorAll('.relay-sent[data-relay-step]').forEach(sEl => {
+      const step = sEl.dataset.relayStep;
+      const shouldMask =
+        (step === 's1' && state.relayMode === 'reverse') ||
+        (step === 's2' && state.relayMode === 'pile') ||
+        (step === 's3' && (state.relayMode === 'pile' || state.relayMode === 'reverse'));
+      sEl.classList.toggle('masked', shouldMask);
+    });
+  }
+
+  function renderRelayTrack2(trackObj, item) {
+    const rm = item.relay_micro;
+    const origWrap = document.createElement('div');
+    origWrap.innerHTML = trackObj.html || '';
+    const origBlocks = Array.from(origWrap.querySelectorAll('.logic-block-card'));
+
+    const extractOriginBody = (blockIdx) => {
+      const blk = origBlocks[blockIdx];
+      if (!blk) return null;
+      return blk.querySelector('.gold-quote-body') || blk.querySelector('.logic-block-body');
+    };
+
+    const wrap = document.createElement('div');
+    wrap.className = 'paper-track2-wrap relay-track2-wrap';
+
+    const chainHtml = (rm.logic_chain || []).map((label, idx, arr) =>
+      `<button type="button" class="relay-chain-node" data-jump-sec="${idx}">${idx + 1}. ${label}</button>${idx < arr.length - 1 ? '<span class="relay-chain-arrow">→</span>' : ''}`
+    ).join('');
+
+    wrap.innerHTML = `
+      <div class="exam-spec-banner" style="background: linear-gradient(135deg, rgba(160, 90, 44, 0.08) 0%, rgba(200, 140, 60, 0.05) 100%); border-color: rgba(160, 90, 44, 0.2);">
+        <div class="spec-chip" style="background: rgba(160, 90, 44, 0.12); color: #8A4B1A;">
+          <svg fill="none" height="14" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="14"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span>接力微缩逻辑版</span>
+        </div>
+        <div class="spec-chip chip-type"><span>三句因果接力</span></div>
+        <div class="spec-chip chip-score"><span>原段点读对照</span></div>
+      </div>
+      <div class="exam-title-box">
+        <span class="title-seal" style="border-color: #8A4B1A; color: #8A4B1A;">接力微缩</span>
+        <h2 class="exam-title-h2">${item.title || ''}</h2>
+      </div>
+      <div class="relay-chain-bar">
+        <div class="relay-chain-head">
+          <span>全篇逻辑链 · 点击定位分论点</span>
+          <span class="relay-chain-count">共 ${(rm.sections || []).length} 段接力</span>
+        </div>
+        <div class="relay-chain-nodes">${chainHtml}</div>
+        ${rm.guard ? `<div class="relay-guard-strip">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>${rm.guard}</span>
+        </div>` : ''}
+      </div>
+      <div class="relay-toolbar" role="toolbar" aria-label="接力微缩背诵模式">
+        <div class="relay-seg-group">
+          <button type="button" class="relay-seg-btn" data-relay-mode="full">全显顺读</button>
+          <button type="button" class="relay-seg-btn" data-relay-mode="pile">看桩背例</button>
+          <button type="button" class="relay-seg-btn" data-relay-mode="reverse">看例反推</button>
+          <button type="button" class="relay-seg-btn" data-relay-mode="kw">只看红词</button>
+        </div>
+        <button type="button" class="relay-glue-toggle">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span>追问胶水</span>
+        </button>
+      </div>
+    `;
+
+    const usedBlocks = new Set();
+
+    // 引论卡片（保留 origBlocks[0] 的 .t1-linked-sent）
+    if (rm.intro) {
+      usedBlocks.add(0);
+      const introCard = document.createElement('article');
+      introCard.className = 'logic-block-card relay-bookend-card';
+      introCard.innerHTML = `
+        <div class="logic-block-title" style="display:none;"><h3>【引论 · 总起微缩】</h3></div>
+        <div class="relay-bookend-head">
+          <span class="relay-bookend-label">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>总起微缩（破题定位）</span>
+          </span>
+          <button type="button" class="relay-mini-btn relay-origin-toggle">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span>对照原段</span>
+          </button>
+        </div>
+        <div class="relay-sent">${rm.intro}</div>
+        <div class="relay-origin-drawer">
+          <div class="relay-origin-body">
+            <div class="relay-origin-tip">考场原段（点击任意句跳播原录音）：</div>
+          </div>
+        </div>
+      `;
+      const ob0 = extractOriginBody(0);
+      if (ob0) introCard.querySelector('.relay-origin-body').appendChild(ob0);
+      wrap.appendChild(introCard);
+    }
+
+    // 主体各分论点接力卡
+    (rm.sections || []).forEach((sec, idx) => {
+      const bIdx = sec.block_idx !== undefined ? sec.block_idx : (idx + 1);
+      usedBlocks.add(bIdx);
+      const card = document.createElement('article');
+      card.className = 'logic-block-card relay-flow-card';
+      card.id = `relay-sec-${idx}`;
+      const numStr = String(idx + 1).padStart(2, '0');
+      card.innerHTML = `
+        <div class="logic-block-title">
+          <div class="relay-flow-head-left">
+            <span class="relay-sec-num">${numStr}</span>
+            <h3>${sec.title || ''}</h3>
+          </div>
+          <div class="relay-card-actions">
+            <button type="button" class="relay-mini-btn relay-origin-toggle">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              <span>对照原段</span>
+            </button>
+            <button type="button" class="relay-mini-btn relay-card-audio-btn">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              <span>听本段</span>
+            </button>
+          </div>
+        </div>
+        ${buildRelaySpineHtml(sec, true, rm.roles)}
+        <div class="relay-origin-drawer">
+          <div class="relay-origin-body">
+            <div class="relay-origin-tip">考场原段（点击任意句跳播原录音）：</div>
+          </div>
+        </div>
+      `;
+      const ob = extractOriginBody(bIdx);
+      if (ob) card.querySelector('.relay-origin-body').appendChild(ob);
+      wrap.appendChild(card);
+
+      if (sec.next_q) {
+        const inter = document.createElement('div');
+        inter.className = 'relay-inter-glue';
+        inter.innerHTML = `
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+          <span>${sec.next_q}</span>
+        `;
+        wrap.appendChild(inter);
+      }
+    });
+
+    // 结语卡片（保留最后一个 origBlock 的 .t1-linked-sent）
+    if (rm.conclusion) {
+      const conclIdx = origBlocks.length - 1;
+      const conclCard = document.createElement('article');
+      conclCard.className = 'logic-block-card relay-bookend-card';
+      conclCard.innerHTML = `
+        <div class="logic-block-title" style="display:none;"><h3>【结语 · 总结升华】</h3></div>
+        <div class="relay-bookend-head">
+          <span class="relay-bookend-label">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>结语微缩（总结升华）</span>
+          </span>
+          <button type="button" class="relay-mini-btn relay-origin-toggle">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span>对照原段</span>
+          </button>
+        </div>
+        <div class="relay-sent">${rm.conclusion}</div>
+        <div class="relay-origin-drawer">
+          <div class="relay-origin-body">
+            <div class="relay-origin-tip">考场原段（点击任意句跳播原录音）：</div>
+          </div>
+        </div>
+      `;
+      if (conclIdx >= 0 && !usedBlocks.has(conclIdx)) {
+        const obLast = extractOriginBody(conclIdx);
+        if (obLast) conclCard.querySelector('.relay-origin-body').appendChild(obLast);
+      }
+      wrap.appendChild(conclCard);
+    }
+
+    el.paperContent.appendChild(wrap);
+    applyRelayModeClasses(wrap);
+
+    // 交互事件绑定（阻止冒泡避免触发整卡点读）
+    wrap.querySelectorAll('.relay-chain-node').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const target = document.getElementById(`relay-sec-${btn.dataset.jumpSec}`);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    wrap.querySelectorAll('.relay-seg-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        state.relayMode = btn.dataset.relayMode || 'full';
+        try { localStorage.setItem('kaoyan_relay_mode', state.relayMode); } catch (err) {}
+        applyRelayModeClasses(wrap);
+      });
+    });
+
+    const glueBtn = wrap.querySelector('.relay-glue-toggle');
+    if (glueBtn) {
+      glueBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        state.relayShowGlue = !state.relayShowGlue;
+        try { localStorage.setItem('kaoyan_relay_glue', state.relayShowGlue ? '1' : '0'); } catch (err) {}
+        applyRelayModeClasses(wrap);
+      });
+    }
+
+    wrap.querySelectorAll('.relay-sent[data-relay-step]').forEach(sEl => {
+      sEl.addEventListener('click', (e) => {
+        if (sEl.classList.contains('masked')) {
+          e.stopPropagation();
+          sEl.classList.remove('masked');
+        }
+      });
+    });
+
+    wrap.querySelectorAll('.relay-origin-toggle').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const card = btn.closest('.logic-block-card');
+        const body = card ? card.querySelector('.relay-origin-body') : null;
+        if (body) {
+          const isOpen = body.classList.toggle('open');
+          btn.classList.toggle('active', isOpen);
+        }
+      });
+    });
+
+    wrap.querySelectorAll('.relay-card-audio-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const card = btn.closest('.logic-block-card');
+        const sents = card ? getCardTimedSentences(card) : [];
+        if (sents.length > 0) {
+          const first = sents[0];
+          const lidx = first.dataset.linkedSentIdx !== undefined ? parseInt(first.dataset.linkedSentIdx, 10) : NaN;
+          const idx = first.dataset.sentIdx !== undefined ? parseInt(first.dataset.sentIdx, 10) : lidx;
+          if (!isNaN(idx) && state.activeSentences && state.activeSentences[idx]) {
+            seekToSentence(idx, state.activeSentences[idx].start);
+            return;
+          }
+          const st = parseFloat(first.dataset.start);
+          if (!isNaN(st)) {
+            seekToSentence(first.dataset.sentId || 0, st);
+          }
+        }
+      });
+    });
+  }
+
+  function enhanceTrack1WithRelayHelpers(item) {
+    const rm = item && item.relay_micro;
+    if (!rm || !el.paperContent) return;
+
+    // 1. 顶部默认折叠的轻量逻辑链速览条（绝不剧透正文）
+    const anchor = el.paperContent.querySelector('.exam-title-box') || el.paperContent.querySelector('.exam-spec-banner');
+    if (anchor && (rm.logic_chain || []).length > 0) {
+      const chainBar = document.createElement('div');
+      chainBar.className = 'relay-t1-chain-bar';
+      const secList = rm.sections || [];
+      const nodesHtml = rm.logic_chain.map((n, i, arr) => {
+        const jumpIdx = (secList[i] && secList[i].block_idx !== undefined) ? secList[i].block_idx : (rm.intro ? i + 1 : i);
+        return `<span class="relay-chain-node" data-t1-jump="${jumpIdx}">${i + 1}. ${n}</span>${i < arr.length - 1 ? '<span class="relay-chain-arrow">→</span>' : ''}`;
+      }).join('');
+      chainBar.innerHTML = `
+        <button type="button" class="relay-t1-chain-toggle">
+          <span style="display:inline-flex;align-items:center;gap:6px;">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span>逻辑链速览（卡壳时点击展开 · 共 ${rm.logic_chain.length} 步）</span>
+          </span>
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="relay-t1-chain-body">
+          <div class="relay-chain-nodes">${nodesHtml}</div>
+          ${rm.guard ? `<div class="relay-guard-strip" style="margin-top:8px;"><span>${rm.guard}</span></div>` : ''}
+        </div>
+      `;
+      anchor.insertAdjacentElement('afterend', chainBar);
+      chainBar.querySelector('.relay-t1-chain-toggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        chainBar.classList.toggle('open');
+      });
+      const t1CardsAll = el.paperContent.querySelectorAll('.exam-section-card');
+      chainBar.querySelectorAll('[data-t1-jump]').forEach(chip => {
+        chip.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const idx = parseInt(chip.dataset.t1Jump, 10);
+          if (t1CardsAll[idx]) t1CardsAll[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    }
+
+    // 2. 各分论点卡片右上角注入“接力3句”就地提示按钮（仅展当前段 3 句，不剧透他段）
+    const t1Cards = el.paperContent.querySelectorAll('.exam-section-card');
+    (rm.sections || []).forEach((sec, idx) => {
+      const cardIdx = sec.block_idx !== undefined ? sec.block_idx : (idx + 1);
+      const card = t1Cards[cardIdx];
+      if (!card) return;
+      const header = card.querySelector('.section-card-header');
+      if (!header) return;
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'card-relay-btn';
+      btn.title = '查看本段“三句接力”速记骨架';
+      btn.innerHTML = `
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <span>接力3句</span>
+      `;
+      header.appendChild(btn);
+
+      const drawer = document.createElement('div');
+      drawer.className = 'relay-t1-drawer';
+      drawer.innerHTML = `
+        <div class="relay-t1-drawer-head">
+          <span>本段三句接力提示</span>
+          <span>可切至轨道二完整练习</span>
+        </div>
+        ${buildRelaySpineHtml(sec, false, rm.roles)}
+      `;
+      header.insertAdjacentElement('afterend', drawer);
+
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = drawer.classList.toggle('open');
+        btn.classList.toggle('active', isOpen);
+      });
+    });
   }
 
   function formatSentenceHtml(text) {
@@ -3931,6 +4529,13 @@
       }
 
       if (targetSent) {
+        if (state.playMode === 'range' && hasValidRangeSelection() && targetIdx !== -1) {
+          const rs = state.rangeSelection;
+          if (targetIdx < rs.startIdx || targetIdx > rs.endIdx) {
+            clearRangeLoop(true);
+            showToast('已点击区间外分句，恢复顺序播放', 1800);
+          }
+        }
         state.currentSentIndex = targetIdx;
         state.loopCount = 0;
         if (typeof targetSent.start === 'number' && !isNaN(targetSent.start)) {
@@ -4115,7 +4720,11 @@
     const t = Math.max(0, currentTime + offset);
 
     const firstStart = typeof sents[0].start === 'number' ? sents[0].start : parseFloat(sents[0].start || 0);
-    if (t < firstStart) return 0;
+    const isXutaoBounded = state.currentSubject === 'pol' && state.polSubMode === 'xutao16';
+    if (t < firstStart) {
+      if (isXutaoBounded && firstStart > 1.5 && t < firstStart - 0.1) return -1;
+      return 0;
+    }
 
     // 二分查找满足 sents[i].start <= t 的最大索引 i
     let low = 0;
@@ -4130,6 +4739,14 @@
         low = mid + 1;
       } else {
         high = mid - 1;
+      }
+    }
+
+    if (isXutaoBounded) {
+      const last = sents[len - 1];
+      const lastEnd = typeof last.end === 'number' ? last.end : parseFloat(last.end || 0);
+      if (lastEnd > 0 && currentTime > lastEnd + 0.35) {
+        return -1;
       }
     }
 
@@ -4172,11 +4789,15 @@
     }
 
     let targetEl = null;
+    const targetEls = [];
     const linkedEls = [];
     if (el.paperContent) {
-      // 1. 绝对第一优先级：严格以 [data-sent-idx="${targetIdx}"] 查询（100% 音画同拍）
+      // 1. 绝对第一优先级：严格以 [data-sent-idx="${targetIdx}"] 查询（兼容政治跨块同句多节点联合高光）
       if (targetIdx !== -1) {
-        targetEl = el.paperContent.querySelector(`[data-sent-idx="${targetIdx}"]`);
+        el.paperContent.querySelectorAll(`[data-sent-idx="${targetIdx}"]`).forEach(n => {
+          if (n && !targetEls.includes(n)) targetEls.push(n);
+        });
+        if (targetEls.length > 0) targetEl = targetEls[0];
       }
       // 2. 备用：按 sentObj.id 或 sentObj.domId 查询（排除 .t1-linked-sent 避免抢占主句锚点）
       if (!targetEl && sentObj) {
@@ -4203,7 +4824,7 @@
       // 4. 同步联动 Track 2 .gold-quote-box 考场原句区（[data-linked-sent-idx]）
       if (targetIdx !== -1) {
         el.paperContent.querySelectorAll(`[data-linked-sent-idx="${targetIdx}"]`).forEach(ln => {
-          if (ln && ln !== targetEl && !linkedEls.includes(ln)) {
+          if (ln && ln !== targetEl && !targetEls.includes(ln) && !linkedEls.includes(ln)) {
             linkedEls.push(ln);
           }
         });
@@ -4211,7 +4832,11 @@
     }
 
     const newSpotlightEls = [];
-    if (targetEl) newSpotlightEls.push(targetEl);
+    if (targetEls.length > 0) {
+      targetEls.forEach(n => newSpotlightEls.push(n));
+    } else if (targetEl) {
+      newSpotlightEls.push(targetEl);
+    }
     linkedEls.forEach(ln => newSpotlightEls.push(ln));
 
     const isSameSet = newSpotlightEls.length > 0 &&
@@ -4882,7 +5507,9 @@
     });
   }
 
+  let lastOutlineTrigger = null;
   function openOutlineDrawer() {
+    lastOutlineTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     renderOutlineDrawer();
     if (el.outlineDrawer) {
       el.outlineDrawer.classList.add('open');
@@ -4905,6 +5532,10 @@
       el.outlineDrawerBackdrop.style.display = 'none';
     }
     unlockBodyScroll('outlineDrawer');
+    if (lastOutlineTrigger && typeof lastOutlineTrigger.focus === 'function' && document.body.contains(lastOutlineTrigger)) {
+      try { lastOutlineTrigger.focus({ preventScroll: true }); } catch (e) {}
+    }
+    lastOutlineTrigger = null;
   }
 
   function renderProgressTicks() {
@@ -4931,6 +5562,8 @@
   let lastTimeSaveTs = 0;
 
   function syncManualSeekPointers(targetTime) {
+    const wasGapWaiting = isLoopGapWaiting;
+    const shouldResumeGapPlayback = Boolean(wasGapWaiting && state.isPlaying);
     manualSeekEpoch++;
     seekToken++;
     clearPendingSeek(true);
@@ -4941,20 +5574,37 @@
     }
     if (state.rangeSelection) {
       state.rangeSelection.completed = false;
+      if (state.playMode === 'range' && hasValidRangeSelection() && state.activeSentences && state.activeSentences.length > 0) {
+        const rs = state.rangeSelection;
+        const startSent = state.activeSentences[rs.startIdx];
+        const endSent = state.activeSentences[rs.endIdx];
+        const afterSent = (rs.endIdx + 1 < state.activeSentences.length) ? state.activeSentences[rs.endIdx + 1] : null;
+        const rStart = typeof startSent.start === 'number' ? startSent.start : parseFloat(startSent.start || 0);
+        const rEnd = typeof endSent.end === 'number' ? endSent.end : parseFloat(endSent.end || (afterSent ? afterSent.start : Infinity));
+        const afterStart = afterSent ? (typeof afterSent.start === 'number' ? afterSent.start : parseFloat(afterSent.start)) : Infinity;
+        const rangeCutoff = getLoopCutoff(rStart, rEnd, afterStart);
+        if (targetTime < rStart - 0.35 || targetTime > Math.min(rangeCutoff, rEnd) + 0.25) {
+          clearRangeLoop(true);
+          showToast('已跳离当前 A–B 区间，切换为顺序播放', 1800);
+        }
+      }
     }
     cancelLoopGapWait();
     xtIntroAutoSkipped = true;
     state.loopCount = 0;
     if (state.activeSentences && state.activeSentences.length > 0) {
       const idx = findActiveSentenceIndex(targetTime);
-      if (idx !== -1) {
-        state.currentSentIndex = idx;
-        highlightSentence(idx);
-      }
+      state.currentSentIndex = idx;
+      highlightSentence(idx !== -1 ? idx : null);
     }
-    if (state.playMode !== 'section' && currentFrameworkSections.length > 0) {
+    if (currentFrameworkSections.length > 0) {
       const secIdx = findSectionIndexAtTime(targetTime);
       if (secIdx !== -1) currentActiveSectionIndex = secIdx;
+    }
+    if (shouldResumeGapPlayback && hasAudioSource() && audio.paused) {
+      state.isPlaying = true;
+      updatePlayBtnUI();
+      audio.play().catch(err => console.log('Manual seek gap resume failed:', err));
     }
     updateHUDDisplay(targetTime);
   }
@@ -5028,6 +5678,10 @@
       if (isLoopGapWaiting) {
         updateHUDDisplay(cur);
         return 'waiting';
+      }
+      if (!isEnded && ((pendingSeekTarget && pendingSeekTarget.token === seekToken) || audio.seeking)) {
+        updateHUDDisplay(cur);
+        return 'handled';
       }
       const shouldResume = !audio.paused || isEnded;
 
@@ -5285,7 +5939,14 @@
           if (state.playMode === 'range' && hasValidRangeSelection() && activeIdx !== -1) {
             activeIdx = Math.max(state.rangeSelection.startIdx, Math.min(state.rangeSelection.endIdx, activeIdx));
           }
-          if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
+          if (activeIdx === -1) {
+            if (state.currentSentIndex !== -1) {
+              state.currentSentIndex = -1;
+              state.loopCount = 0;
+              highlightSentence(null);
+              updateHUDDisplay(cur);
+            }
+          } else if (activeIdx !== state.currentSentIndex) {
             if (lastClickedSentGuard && Date.now() < lastClickedSentGuard.until && cur < lastClickedSentGuard.time + 0.12 && activeIdx !== lastClickedSentGuard.idx) {
               syncRafId = requestAnimationFrame(runSyncLoop);
               return;
@@ -5335,6 +5996,7 @@
       clearPendingSeek(true);
       releaseLoopMuteGuard();
       state.isPlaying = false;
+      flushPlaybackPosition();
       if (syncRafId) {
         cancelAnimationFrame(syncRafId);
         syncRafId = null;
@@ -5391,10 +6053,7 @@
 
       if (cur > 1 && Date.now() - lastTimeSaveTs > 2000) {
         lastTimeSaveTs = Date.now();
-        try {
-          localStorage.setItem('kaoyan_last_time', String(cur));
-          localStorage.setItem('kaoyan_last_time_key', `${state.currentSubject}_${state.activeItemId}_${state.currentTrack}`);
-        } catch (e) {}
+        flushPlaybackPosition(cur);
       }
 
       if (dur > 0 && el.progressFill) {
@@ -5417,7 +6076,7 @@
       }
 
       if (state.activeSentences && state.activeSentences.length > 0) {
-        // 徐涛16天带背原声前奏导言区自动跳至第一考点
+        // 徐涛26天带背原声前奏导言区自动跳至第一考点
         if (!audio.paused && state.isPlaying && maybeSkipXutaoIntro(cur)) {
           return;
         }
@@ -5434,7 +6093,13 @@
           if (state.playMode === 'range' && hasValidRangeSelection() && activeIdx !== -1) {
             activeIdx = Math.max(state.rangeSelection.startIdx, Math.min(state.rangeSelection.endIdx, activeIdx));
           }
-          if (activeIdx !== -1 && activeIdx !== state.currentSentIndex) {
+          if (activeIdx === -1) {
+            if (state.currentSentIndex !== -1) {
+              state.currentSentIndex = -1;
+              state.loopCount = 0;
+              highlightSentence(null);
+            }
+          } else if (activeIdx !== state.currentSentIndex) {
             state.currentSentIndex = activeIdx;
             state.loopCount = 0;
             highlightSentence(activeIdx);
@@ -5477,7 +6142,15 @@
     audio.addEventListener('waiting', () => { accumulateListeningTime(true); listenAnchor = null; });
     audio.addEventListener('emptied', () => { listenAnchor = null; listenContext = null; updateListenProgressUI(); });
 
+    window.addEventListener('pagehide', () => {
+      flushPlaybackPosition();
+    });
+
     document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        flushPlaybackPosition();
+        return;
+      }
       if (document.visibilityState === 'visible') {
         lastRafRunTs = 0;
         if (isLoopSeeking && (Date.now() - lastSeekTs >= 350)) {
@@ -5487,7 +6160,10 @@
           const cur = audio.currentTime || 0;
           if (state.playMode === 'sequence' || state.playMode === 'item') {
             const activeIdx = findActiveSentenceIndex(cur);
-            if (activeIdx !== -1) {
+            if (activeIdx === -1) {
+              state.currentSentIndex = -1;
+              highlightSentence(null);
+            } else {
               state.currentSentIndex = activeIdx;
             }
           }
@@ -5509,6 +6185,7 @@
       const resumeTime = (pendingSeekTarget && pendingSeekTarget.token === seekToken)
         ? pendingSeekTarget.time
         : (audio.currentTime || 0);
+      const isOffline = typeof navigator !== 'undefined' && navigator.onLine === false;
       console.warn('Audio decode/pipeline error:', errCode, audio.error.message || '', curSrc);
       cancelLoopGapWait();
       clearPendingSeek(true);
@@ -5524,6 +6201,10 @@
       state.isPlaying = false;
       updatePlayBtnUI();
       collapsePlayerDock();
+      if (isOffline) {
+        showToast('当前处于离线状态：正文与骨架可正常阅读，未缓存音频需联网后播放', 3000);
+        return;
+      }
       // 对同一音频源最多自动尝试一次无感重载恢复，防止死循环
       if (curSrc && lastAudioErrorRecoverSrc !== curSrc && (errCode === 2 || errCode === 3)) {
         lastAudioErrorRecoverSrc = curSrc;
@@ -5602,6 +6283,7 @@
 
   function switchPolSubCard(targetCard, autoPlay = true) {
     if (!targetCard) return;
+    flushPlaybackPosition();
     state.polSubCardId = targetCard.cardId;
     state.currentSentIndex = -1;
     state.loopCount = 0;
@@ -5655,6 +6337,21 @@
     }
   }
 
+  function switchXutaoVoice(nextVoice, dayItem = state.activeItem) {
+    if (!dayItem) return;
+    flushPlaybackPosition();
+    const shouldPlay = Boolean(state.isPlaying || isLoopGapWaiting || !audio.paused);
+    const ptLen = Array.isArray(dayItem.points) ? dayItem.points.length : 0;
+    const curPtIdx = (state.currentSentIndex >= 0 && state.currentSentIndex < ptLen) ? state.currentSentIndex : 0;
+    state.polXtVoice = nextVoice;
+    localStorage.setItem('kaoyan_pol_xt_voice', nextVoice);
+    document.querySelectorAll('#xtVoiceSwitcher .xt-voice-btn, .xt-voice-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.voice === nextVoice);
+    });
+    setXutao16Audio(dayItem, nextVoice, shouldPlay, curPtIdx);
+    showToast(`已切换至【${nextVoice === 'anlang' ? '龙安朗 AI 干货版' : '徐涛原声带背版'}】`, 2000);
+  }
+
   function setupEventListeners() {
     // HUD 轨道点击快速切换
     if (el.hudTrackBadge) {
@@ -5663,13 +6360,7 @@
         if (state.currentSubject === 'pol') {
           if (state.polSubMode === 'xutao16') {
             const nextVoice = state.polXtVoice === 'anlang' ? 'voice' : 'anlang';
-            state.polXtVoice = nextVoice;
-            localStorage.setItem('kaoyan_pol_xt_voice', nextVoice);
-            setXutao16Audio(state.activeItem, nextVoice, !audio.paused);
-            document.querySelectorAll('.xt-voice-btn').forEach(b => {
-              b.classList.toggle('active', b.dataset.voice === nextVoice);
-            });
-            showToast(`已切换至【${nextVoice === 'anlang' ? '龙安朗 AI 干货版' : '徐涛原声带背版'}】`, 2000);
+            switchXutaoVoice(nextVoice, state.activeItem);
             return;
           } else if (state.polSubMode === 'tuijie11') {
             showToast('当前为腿姐冲刺讲义伴读模式', 2000);
@@ -5926,19 +6617,23 @@
       const applySearchFilter = (qVal) => {
         state.searchQuery = qVal;
         renderSidebarList();
-        const matchingList = getCurrentItemsList();
-        if (matchingList.length > 0) {
-          const currentStillMatches = matchingList.some(it => it.id === state.activeItemId);
-          if (!currentStillMatches) {
-            selectItem(matchingList[0].id, false);
-          }
-        }
       };
       el.searchInput.addEventListener('input', (e) => {
         const val = e.target.value;
         if (clearSearchBtn) clearSearchBtn.style.display = val.length > 0 ? 'inline-flex' : 'none';
         if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
         searchDebounceTimer = setTimeout(() => applySearchFilter(val.trim()), 180);
+      });
+      el.searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+          applySearchFilter(el.searchInput.value.trim());
+          const matchingList = getCurrentItemsList();
+          if (matchingList.length > 0 && !matchingList.some(it => it.id === state.activeItemId)) {
+            selectItem(matchingList[0].id, false);
+          }
+        }
       });
       if (clearSearchBtn) {
         clearSearchBtn.addEventListener('click', () => {
@@ -6570,9 +7265,12 @@
     const settingsBackdrop = document.getElementById('settingsModalBackdrop');
     const settingsClose = document.getElementById('settingsClose');
 
+    let lastSettingsTrigger = null;
     function openSettings() {
       if (!settingsDrawer) return;
+      lastSettingsTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       settingsDrawer.classList.add('open');
+      settingsDrawer.setAttribute('aria-hidden', 'false');
       setPlayerDockReceded(true);
       if (settingsBackdrop) {
         settingsBackdrop.style.display = 'block';
@@ -6586,6 +7284,7 @@
     function closeSettings() {
       if (!settingsDrawer) return;
       settingsDrawer.classList.remove('open');
+      settingsDrawer.setAttribute('aria-hidden', 'true');
       if (settingsBackdrop) {
         settingsBackdrop.classList.remove('open');
         setTimeout(() => {
@@ -6595,6 +7294,10 @@
       setPlayerDockReceded(false);
       setBottomNavActiveTab('');
       unlockBodyScroll('settingsDrawer');
+      if (lastSettingsTrigger && typeof lastSettingsTrigger.focus === 'function' && document.body.contains(lastSettingsTrigger)) {
+        try { lastSettingsTrigger.focus({ preventScroll: true }); } catch (e) {}
+      }
+      lastSettingsTrigger = null;
     }
 
     function updateSettingsSheetUI() {
@@ -6754,10 +7457,20 @@
         }
         return;
       }
-      const activeTag = document.activeElement ? document.activeElement.tagName : '';
-      const isTyping = activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT' || (document.activeElement && document.activeElement.isContentEditable);
+      const activeEl = document.activeElement;
+      const activeTag = activeEl ? activeEl.tagName : '';
+      const isTyping = activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT' || (activeEl && activeEl.isContentEditable);
       if (isTyping || e.ctrlKey || e.metaKey || e.altKey) return;
       if (e.code === 'Space' || e.key === ' ') {
+        const isInteractiveControl = Boolean(
+          activeEl && (
+            activeTag === 'BUTTON' ||
+            activeTag === 'A' ||
+            activeTag === 'SUMMARY' ||
+            (typeof activeEl.getAttribute === 'function' && activeEl.getAttribute('role') === 'button')
+          )
+        );
+        if (isInteractiveControl) return;
         e.preventDefault();
         toggleAudioPlayback();
       } else if (e.key === 'ArrowLeft') {
@@ -6834,7 +7547,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.4.14';
+  const APP_BUILD_ID = '3.4.15';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
@@ -7068,7 +7781,7 @@
         if (banner) banner.style.display = 'none';
         if (badge) badge.classList.remove('has-update');
         if (versionText) {
-          versionText.textContent = `已是最新版 v${APP_BUILD_ID} · 172节全科真题`;
+          versionText.textContent = `已是最新版 v${APP_BUILD_ID} · 182讲全科考点`;
         }
         if (isManual) {
           showToast(`当前已是最新版本 v${APP_BUILD_ID}`, 2000);
@@ -7529,7 +8242,7 @@
     xt16.forEach(xt => {
       if (!xt || !xt.id) return;
       const title = String(xt.title || xt.id);
-      const category = '徐涛16天';
+      const category = '徐涛26天';
       const pts = Array.isArray(xt.points) ? xt.points : [];
       const metaText = [title, xt.subtitle, category, xt.day ? `Day ${xt.day}` : ''].filter(Boolean).join(' ');
       const bodyText = pts.map(p => `${p.tag || ''} ${stripHtmlToPlainText(p.html)}`).join(' ').replace(/\s+/g, ' ').trim();
@@ -7666,7 +8379,7 @@
     pushList(state.allData?.items_en, 'en');
     const pol = state.polData || window.KAOYAN_POL_DATA;
     pushList(pol?.chapters47, 'pol', '47题背诵');
-    pushList(pol?.xutao16, 'pol', '徐涛16天');
+    pushList(pol?.xutao16, 'pol', '徐涛26天');
     pushList(pol?.tuijie11, 'pol', '腿姐11页');
     return res;
   }
@@ -8151,8 +8864,10 @@
 
     const mode = state.polSubMode || 'recite47';
     syncVoiceBadges();
+    const tabBtnsRow = el.trackTabs ? el.trackTabs.querySelector('.track-tabs') : null;
     if (mode === 'recite47') {
       if (el.trackTabs) el.trackTabs.style.display = '';
+      if (tabBtnsRow) tabBtnsRow.style.display = '';
       if (el.tab1TextFull) el.tab1TextFull.textContent = '【轨道一】原书背诵与理解';
       if (el.tab1TextShort) el.tab1TextShort.textContent = '轨道一 · 原书背诵';
       const subCardsCount = (state.activeItem.track2 && state.activeItem.track2.subCards) ? state.activeItem.track2.subCards.length : 0;
@@ -8165,10 +8880,12 @@
         renderPolChapterTrack2(state.activeItem, autoPlay, restoreTime);
       }
     } else if (mode === 'xutao16') {
-      if (el.trackTabs) el.trackTabs.style.display = 'none';
+      if (el.trackTabs) el.trackTabs.style.display = '';
+      if (tabBtnsRow) tabBtnsRow.style.display = 'none';
       renderPolXutao16(state.activeItem, autoPlay, restoreTime);
     } else if (mode === 'tuijie11') {
-      if (el.trackTabs) el.trackTabs.style.display = 'none';
+      if (el.trackTabs) el.trackTabs.style.display = '';
+      if (tabBtnsRow) tabBtnsRow.style.display = 'none';
       renderPolTuijie11(state.activeItem, autoPlay, restoreTime);
     }
   }
@@ -8201,7 +8918,7 @@
       audio.src = chapter.track1.audio;
       audio.load();
       audio.playbackRate = state.speed;
-      tryRestoreAudioTime(restoreTime, `pol_${chapter.id}_1`);
+      tryRestoreAudioTime(restoreTime, getPlaybackTimeKey(1));
       if (autoPlay) {
         audio.play().catch(e => console.log('Autoplay prevented:', e));
       }
@@ -8222,6 +8939,7 @@
 
     normalizePoliticsSentenceDom();
     stampSentenceIndices();
+    renderRangeLoopUI();
     bindSentenceClickHandlers(el.paperContent);
     bindCardSectionClickHandlers(el.paperContent);
     el.paperContent.querySelectorAll('.recite-chapter-play-btn').forEach(btn => {
@@ -8260,14 +8978,18 @@
 
     const pillsHtml = `
       <div class="pol-subcard-pills" id="polSubcardPills">
-        ${subCards.map(sc => `
-          <button type="button" class="playlist-chip-btn ${sc.cardId === activeCard.cardId ? 'active' : ''}" data-card-id="${sc.cardId}" title="${sc.chipLabel}">
-            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
-            <span>${sc.chipLabel}</span>
-          </button>
-        `).join('')}
+        ${subCards.map(sc => {
+          const hasAudio = Boolean(sc.audio);
+          const iconSvg = hasAudio
+            ? `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`
+            : `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>`;
+          const titleTip = hasAudio ? sc.chipLabel : `${sc.chipLabel}（纯图表速览无音频）`;
+          return `
+          <button type="button" class="playlist-chip-btn ${sc.cardId === activeCard.cardId ? 'active' : ''}${hasAudio ? '' : ' no-audio-chip'}" data-card-id="${sc.cardId}" title="${titleTip}">
+            ${iconSvg}
+            <span>${sc.chipLabel}${hasAudio ? '' : '（图表）'}</span>
+          </button>`;
+        }).join('')}
       </div>`;
 
     el.paperContent.innerHTML = `
@@ -8304,7 +9026,7 @@
       audio.load();
       audio.playbackRate = state.speed;
       if (state.activeItem) {
-        tryRestoreAudioTime(restoreTime, `pol_${state.activeItem.id}_2`);
+        tryRestoreAudioTime(restoreTime, getPlaybackTimeKey(2));
       }
       if (autoPlay) {
         audio.play().catch(e => console.log('Autoplay prevented:', e));
@@ -8416,12 +9138,7 @@
       btn.addEventListener('click', () => {
         const v = btn.dataset.voice;
         if (v !== state.polXtVoice) {
-          state.polXtVoice = v;
-          localStorage.setItem('kaoyan_pol_xt_voice', v);
-          voiceBtns.forEach(b => b.classList.toggle('active', b === btn));
-          const currentPointIdx = Math.max(0, state.currentSentIndex);
-          setXutao16Audio(dayItem, v, state.isPlaying, currentPointIdx);
-          showToast(`已切换至【${v === 'anlang' ? '龙安朗 AI 干货版' : '徐涛原声带背版'}】`, 2000);
+          switchXutaoVoice(v, dayItem);
         }
       });
     });
@@ -8429,7 +9146,12 @@
     el.paperContent.querySelectorAll('.xt-day-point-card').forEach(card => {
       card.addEventListener('click', (e) => {
         if (hasActiveTextSelection()) return;
-        if (e.target.closest('.card-ai-btn')) return;
+        if (e.target.closest('.card-ai-btn, .card-relay-btn, .relay-sent, .relay-toolbar, .relay-chain-bar, .relay-t1-drawer, .relay-t1-chain-bar')) return;
+        const pIdx = parseInt(card.dataset.pointIdx, 10);
+        if (state.rangeSelection && (state.rangeSelection.step === 'pick-start' || state.rangeSelection.step === 'pick-end')) {
+          if (!isNaN(pIdx)) handleRangeSentencePick(pIdx);
+          return;
+        }
         if (state.clozeMode === 'keyword' && (e.target.closest('.cloze') || e.target.closest('.kw-red') || e.target.closest('.stream-kw'))) return;
         if (state.clozeMode === 'body') {
           const isAlreadyVisible = card.classList.contains('cloze-revealed') || card.classList.contains('active-spotlight');
@@ -8438,7 +9160,6 @@
             return;
           }
         }
-        const pIdx = parseInt(card.dataset.pointIdx, 10);
         let matched = null;
         if (state.activeSentences && !isNaN(pIdx) && pIdx >= 0 && pIdx < state.activeSentences.length) {
           matched = state.activeSentences[pIdx];
@@ -8456,6 +9177,7 @@
     });
 
     stampSentenceIndices();
+    renderRangeLoopUI();
     bindCardSectionClickHandlers(el.paperContent);
     attachSealButtonListeners(dayItem.id);
     buildFrameworkIndex();
@@ -8482,30 +9204,43 @@
       text: p.tag
     })));
     stampSentenceIndices();
+    renderRangeLoopUI();
 
     let playedViaSeek = false;
     if (startPointIdx >= 0 && startPointIdx < points.length) {
       xtIntroAutoSkipped = true;
       const p = points[startPointIdx];
-      const t = voiceType === 'anlang' ? p.anlang_start : p.voice_start;
+      const t = Math.max(0, voiceType === 'anlang' ? p.anlang_start : p.voice_start);
       if (autoPlay) {
         seekToSentence(startPointIdx, t);
         playedViaSeek = true;
       } else {
+        state.currentSentIndex = startPointIdx;
         const xtEpoch = ++manualSeekEpoch;
         const setTime = () => {
           if (xtEpoch !== manualSeekEpoch) return;
-          setAudioPosition(Math.max(0, t));
+          setAudioPosition(t);
+          const dur = audio.duration || 0;
+          if (el.timeCurrent) el.timeCurrent.textContent = formatTime(t);
+          if (dur > 0) {
+            if (el.timeTotal) el.timeTotal.textContent = formatTime(dur);
+            if (el.progressFill) el.progressFill.style.width = Math.min(100, (t / dur) * 100) + '%';
+          }
           highlightSentence(startPointIdx);
+          updateHUDDisplay(t);
+          flushPlaybackPosition(t);
         };
         if (audio.readyState >= 1) {
           setTime();
         } else {
+          if (el.timeCurrent) el.timeCurrent.textContent = formatTime(t);
+          highlightSentence(startPointIdx);
+          updateHUDDisplay(t);
           audio.addEventListener('loadedmetadata', setTime, { once: true });
         }
       }
     } else if (restoreTime) {
-      tryRestoreAudioTime(true, `pol_${dayItem.id}_${state.currentTrack}`);
+      tryRestoreAudioTime(true, getPlaybackTimeKey());
     } else if (points.length > 0) {
       // 若用户未指定特定考点且从开头播放，若首考点前有原声前奏导言区，自动就位至第一考点起始点
       const p0 = points[0];
@@ -8522,7 +9257,12 @@
             if (audio.currentTime < t0 - 0.3) {
               xtIntroAutoSkipped = true;
               setAudioPosition(t0);
+              state.currentSentIndex = 0;
+              const dur = audio.duration || 0;
+              if (el.timeCurrent) el.timeCurrent.textContent = formatTime(t0);
+              if (dur > 0 && el.progressFill) el.progressFill.style.width = Math.min(100, (t0 / dur) * 100) + '%';
               highlightSentence(0);
+              updateHUDDisplay(t0);
             }
           };
           if (audio.readyState >= 1) {
@@ -8646,7 +9386,7 @@
       audio.src = dayItem.audio;
       audio.load();
       audio.playbackRate = state.speed;
-      tryRestoreAudioTime(restoreTime, `pol_${dayItem.id}_${state.currentTrack}`);
+      tryRestoreAudioTime(restoreTime, getPlaybackTimeKey());
       if (autoPlay) audio.play().catch(e => console.log(e));
     } else {
       clearAudioSource();
@@ -8655,6 +9395,7 @@
 
     state.activeSentences = sanitizeSentences(allSentences);
     stampSentenceIndices();
+    renderRangeLoopUI();
     el.paperContent.querySelectorAll('.tj-point-card[data-jump-sent-id]').forEach(pCard => {
       const targetId = pCard.dataset.jumpSentId;
       let resolvedIdx = state.activeSentences.findIndex(s => s.id === targetId);
@@ -8675,13 +9416,21 @@
     el.paperContent.querySelectorAll('.tj-point-card').forEach(pCard => {
       pCard.addEventListener('click', (e) => {
         if (hasActiveTextSelection()) return;
-        if (e.target.closest('.card-ai-btn')) return;
+        if (e.target.closest('.card-ai-btn, .card-relay-btn, .relay-sent, .relay-toolbar, .relay-chain-bar, .relay-t1-drawer, .relay-t1-chain-bar')) return;
+        const jIdx = pCard.dataset.jumpIdx !== undefined ? parseInt(pCard.dataset.jumpIdx, 10) : NaN;
+        if (state.rangeSelection && (state.rangeSelection.step === 'pick-start' || state.rangeSelection.step === 'pick-end')) {
+          if (!isNaN(jIdx) && jIdx >= 0) {
+            handleRangeSentencePick(jIdx);
+          } else {
+            showToast('请在上方讲义正文句段中点选区间起止句', 1800);
+          }
+          return;
+        }
         if (state.clozeMode === 'keyword' && e.target.closest('.cloze, .kw-red, .stream-kw')) return;
         if (state.clozeMode === 'body' && !pCard.classList.contains('cloze-revealed')) {
           pCard.classList.add('cloze-revealed');
           return;
         }
-        const jIdx = pCard.dataset.jumpIdx !== undefined ? parseInt(pCard.dataset.jumpIdx, 10) : NaN;
         const jStart = parseFloat(pCard.dataset.jumpStart);
         if (!isNaN(jIdx) && jIdx >= 0 && state.activeSentences && jIdx < state.activeSentences.length) {
           e.stopPropagation();
@@ -8858,7 +9607,7 @@
     return false;
   }
 
-  const AI_CLOZE_SKIP_ANCESTOR = '.thesis-pill, .card-ai-btn, .en-audio-jump-pill, .tj-point-jump-pill, .seal-btn, .pol-subcard-pills, .xt-voice-switcher, .section-card-header, .xt-day-point-header, .tj-card-header, .en-intro-badge, .en-task-prompt-box, .logic-block-title, .card-title, .tj-card-title, .tj-points-title, .xt-part-title, h1, h2, h3, h4, svg, button, a, script, style';
+  const AI_CLOZE_SKIP_ANCESTOR = '.thesis-pill, .card-ai-btn, .card-relay-btn, .relay-glue-row, .relay-inter-glue, .relay-guard-strip, .relay-chain-bar, .relay-toolbar, .relay-t1-chain-bar, .relay-t1-drawer-head, .relay-bookend-label, .relay-role, .relay-origin-tip, .en-audio-jump-pill, .tj-point-jump-pill, .seal-btn, .pol-subcard-pills, .xt-voice-switcher, .section-card-header, .xt-day-point-header, .tj-card-header, .en-intro-badge, .en-task-prompt-box, .logic-block-title, .card-title, .tj-card-title, .tj-points-title, .xt-part-title, h1, h2, h3, h4, svg, button, a, script, style';
 
   function resetDynamicClozeDom() {
     if (!el.paperContent) return;

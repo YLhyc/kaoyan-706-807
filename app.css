@@ -10336,6 +10336,22 @@ body.drawer-scroll-locked #mainStage {
   }
 }
 
+@media (min-width: 835px) and (max-width: 1020px) and (orientation: landscape) and (min-height: 501px) {
+  .brand-title-wrap {
+    display: none !important;
+  }
+  .subject-btn .subject-name-full {
+    display: none !important;
+  }
+  .subject-btn .subject-name-mobile {
+    display: inline !important;
+  }
+  .subject-btn {
+    padding: 5px 10px !important;
+    font-size: 12.5px !important;
+  }
+}
+
 /* ==========================================================================
    v3.4.0 DeepSeek AI 伴学抽背与多端云同步样式系统 (Warm Parchment / Dark Night)
    ========================================================================== */
@@ -13061,8 +13077,7 @@ body.dock-expanded .ai-selection-pill {
     gap: 4px !important;
   }
   .subject-btn .count-tag {
-    font-size: 11px !important;
-    padding: 1px 5px !important;
+    display: none !important;
   }
   .header-actions {
     gap: 6px !important;
@@ -13422,4 +13437,493 @@ body.dock-expanded .ai-selection-pill {
 [data-theme="dark"] .recite-sent.range-loop-selected.active-spotlight {
   background: rgba(217, 146, 59, 0.28) !important;
   color: #f7efe5 !important;
+}
+
+/* ============================================================================
+   轨道二 · 接力微缩逻辑版（方案一：线装心流接力链）与 轨道一轻量接力锚点
+   ============================================================================ */
+.relay-chain-bar {
+  border: 0.5px solid var(--line-main);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+.relay-chain-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+}
+.relay-chain-count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+.relay-chain-nodes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.relay-chain-node {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--bg-canvas);
+  border: 0.5px solid var(--line-strong);
+  color: var(--ink-primary);
+  cursor: pointer;
+  transition: border-color 0.14s, color 0.14s;
+}
+.relay-chain-node:hover {
+  border-color: var(--vermilion);
+  color: var(--vermilion);
+}
+.relay-chain-arrow {
+  color: var(--ink-muted);
+  font-size: 12px;
+  font-family: var(--font-sans);
+}
+.relay-guard-strip {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  background: var(--amber-soft);
+  border: 0.5px solid rgba(196, 107, 22, 0.28);
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--amber);
+}
+.relay-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  border: 0.5px solid var(--line-main);
+  background: var(--bg-card);
+}
+.relay-seg-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  background: var(--bg-canvas);
+  border: 0.5px solid var(--line-main);
+  border-radius: 8px;
+  padding: 2px;
+}
+.relay-seg-btn {
+  border: 0.5px solid transparent;
+  background: transparent;
+  color: var(--ink-secondary);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.relay-seg-btn.active {
+  background: var(--bg-card);
+  color: var(--vermilion);
+  border-color: var(--vermilion-border);
+  font-weight: 600;
+}
+.relay-glue-toggle {
+  border: 0.5px solid var(--line-strong);
+  background: var(--bg-canvas);
+  color: var(--ink-secondary);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+.relay-glue-toggle.active {
+  background: var(--accent-slate-soft);
+  border-color: rgba(74, 124, 155, 0.35);
+  color: var(--accent-slate);
+}
+.relay-bookend-card {
+  padding: 13px 16px !important;
+  margin-bottom: 12px !important;
+}
+.relay-bookend-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.relay-bookend-label {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pine);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.relay-flow-card .logic-block-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.relay-flow-head-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.relay-sec-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--vermilion-soft);
+  color: var(--vermilion);
+  border: 0.5px solid var(--vermilion-border);
+  font-variant-numeric: tabular-nums;
+}
+.relay-card-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+.relay-mini-btn {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 6px;
+  border: 0.5px solid var(--line-strong);
+  background: var(--bg-canvas);
+  color: var(--ink-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.relay-mini-btn:hover,
+.relay-mini-btn.active {
+  color: var(--vermilion);
+  border-color: var(--vermilion-border);
+}
+.relay-spine {
+  position: relative;
+  padding-left: 20px;
+  border-left: 1.5px solid var(--vermilion-border);
+  margin: 10px 0 4px 6px;
+}
+.relay-step {
+  position: relative;
+  margin-bottom: 8px;
+}
+.relay-step:last-child {
+  margin-bottom: 0;
+}
+.relay-dot {
+  position: absolute;
+  left: -26px;
+  top: 9px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--bg-canvas);
+  border: 2px solid var(--vermilion);
+}
+.relay-sent {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 1.78;
+  color: var(--ink-primary);
+  padding: 7px 11px;
+  border-radius: 8px;
+  background: var(--bg-canvas);
+  border: 0.5px solid var(--line-main);
+  max-width: 68ch;
+}
+.relay-role {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  margin-right: 6px;
+}
+.relay-sent.masked {
+  cursor: pointer;
+  background: var(--bg-card-hover);
+  border-style: dashed;
+  color: transparent !important;
+  user-select: none;
+  position: relative;
+}
+.relay-sent.masked * {
+  color: transparent !important;
+  background: transparent !important;
+  border-color: transparent !important;
+}
+.relay-sent.masked::after {
+  content: "先按追问口述，点击揭晓本句接力";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+.relay-glue-row {
+  margin: 6px 0 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--accent-slate-soft);
+  border: 0.5px solid rgba(74, 124, 155, 0.28);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent-slate);
+}
+.relay-hide-glue .relay-glue-row,
+.relay-hide-glue .relay-inter-glue {
+  display: none;
+}
+.relay-kw-only .relay-sent:not(.masked) {
+  color: rgba(140, 136, 126, 0.26);
+}
+.relay-kw-only .relay-sent:not(.masked) .kw-red,
+.relay-kw-only .relay-sent:not(.masked) .cloze {
+  color: var(--vermilion);
+  background: var(--vermilion-soft);
+  border-radius: 3px;
+  padding: 0 3px;
+}
+.relay-origin-drawer {
+  margin-top: 10px;
+}
+.relay-origin-body {
+  display: none;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--bg-canvas);
+  border: 0.5px dashed var(--line-strong);
+}
+.relay-origin-body.open {
+  display: block;
+}
+.relay-origin-tip {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-bottom: 6px;
+}
+.relay-inter-glue {
+  margin: -4px auto 14px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 0.5px solid var(--line-strong);
+  background: var(--bg-canvas);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: fit-content;
+  max-width: 100%;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--ink-secondary);
+}
+
+/* 轨道一轻量接力锚点（默认折叠，不剧透全文） */
+.relay-t1-chain-bar {
+  margin: 0 0 14px;
+  border: 0.5px solid var(--line-main);
+  border-radius: 10px;
+  background: var(--bg-card);
+  padding: 8px 12px;
+}
+.relay-t1-chain-toggle {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  cursor: pointer;
+}
+.relay-t1-chain-body {
+  display: none;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 0.5px dashed var(--line-strong);
+}
+.relay-t1-chain-bar.open .relay-t1-chain-body {
+  display: block;
+}
+.card-relay-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 0.5px solid var(--vermilion-border);
+  background: var(--vermilion-soft);
+  color: var(--vermilion);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: auto;
+}
+.card-relay-btn.active {
+  background: var(--vermilion);
+  color: #fff;
+}
+.card-relay-btn + .card-ai-btn {
+  margin-left: 6px !important;
+}
+.relay-t1-drawer {
+  display: none;
+  margin: 4px 0 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--bg-canvas);
+  border: 0.5px dashed var(--vermilion-border);
+}
+.relay-t1-drawer.open {
+  display: block;
+}
+.relay-t1-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--vermilion);
+  margin-bottom: 6px;
+}
+
+[data-theme="dark"] .relay-inter-glue,
+[data-theme="dark"] .relay-seg-group {
+  background: var(--bg-canvas);
+}
+[data-theme="dark"] .relay-guard-strip {
+  border-color: rgba(220, 160, 63, 0.3);
+}
+[data-theme="dark"] .relay-glue-row,
+[data-theme="dark"] .relay-glue-toggle.active {
+  background: rgba(125, 168, 201, 0.14);
+  border-color: rgba(125, 168, 201, 0.34);
+  color: #8cb8da;
+}
+[data-theme="dark"] .relay-kw-only .relay-sent:not(.masked) {
+  color: rgba(171, 161, 149, 0.25);
+}
+
+/* ==========================================================================
+   v3.4.15 审查复核协同修复补丁 (D03 / U02 / U03 / U07)
+   ========================================================================== */
+.ai-empty-warn {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 0.5px dashed rgba(176, 105, 23, 0.45);
+  background: rgba(176, 105, 23, 0.07);
+  color: var(--amber, #9a5810);
+  font-size: 13px;
+  line-height: 1.55;
+}
+[data-theme="dark"] .ai-empty-warn {
+  border-color: rgba(243, 184, 107, 0.35);
+  background: rgba(243, 184, 107, 0.1);
+  color: #f3b86b;
+}
+.playlist-chip-btn.no-audio-chip {
+  opacity: 0.78;
+  border-style: dashed !important;
+}
+.pol-category-pills .filter-pill,
+.stage-pol-cats .filter-pill {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+@media (max-width: 480px) {
+  .pol-category-pills,
+  .stage-pol-cats {
+    gap: 5px !important;
+  }
+  .pol-category-pills .filter-pill,
+  .stage-pol-cats .filter-pill {
+    padding: 4px 9px !important;
+    font-size: 12px !important;
+  }
+  .track-tab-btn {
+    padding: 7px 6px !important;
+    font-size: 12px !important;
+    gap: 4px !important;
+  }
+  .track-tab-btn svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+}
+@media (min-width: 1025px) {
+  .app-body:not(.sidebar-collapsed) .stage-pol-nav {
+    display: none !important;
+  }
+}
+@media (max-width: 520px) {
+  .dock-core-transport {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) repeat(5, auto) minmax(0, 1fr) !important;
+    justify-content: stretch !important;
+    align-items: center !important;
+    gap: 4px !important;
+  }
+  .dock-core-transport .dock-tool-loop {
+    justify-self: start !important;
+  }
+  .dock-core-transport .dock-tool-speed {
+    justify-self: end !important;
+  }
+  .dock-core-transport .dock-btn-tool {
+    min-width: 58px !important;
+    justify-content: center !important;
+    padding: 0 7px !important;
+  }
 }
