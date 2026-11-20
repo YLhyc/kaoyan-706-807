@@ -121,14 +121,67 @@
   let loopGapEpoch = 0;
   let loopGapAudioCtx = null;
   let loopGapKeepaliveNode = null;
-  let loopMuteGuard = null; // { wasMuted, timer }
+  let bgBoundaryTimer = null;
+  const muteLockReasons = new Map();
+  let muteBaselineMuted = false;
   let lastLiveRepeatText = '';
   let lastLiveRepeatHost = null;
   let lastLiveRepeatWaiting = false;
   let liveRepeatBadgeEl = null;
-  let pendingSeekTarget = null; // { token, time, idx, startedAt, wasMuted, mutedForSeek }
+  let pendingSeekTarget = null; // { token, time, idx, startedAt, mutedForSeek }
   let pendingSeekTimer = null;
   let lastClickedSentGuard = null; // { idx, time, until }
+
+  function clearBgBoundaryTimer() {
+    if (bgBoundaryTimer) {
+      clearTimeout(bgBoundaryTimer);
+      bgBoundaryTimer = null;
+    }
+  }
+
+  function syncAudioMutedFromLocks() {
+    try {
+      audio.muted = muteLockReasons.size > 0 ? true : Boolean(muteBaselineMuted);
+    } catch (e) {}
+  }
+
+  function setInternalMuteLock(reason, maxMs = 0) {
+    if (muteLockReasons.size === 0) {
+      muteBaselineMuted = Boolean(audio.muted);
+    }
+    const prevTimer = muteLockReasons.get(reason);
+    if (prevTimer) clearTimeout(prevTimer);
+    let timerId = 0;
+    if (maxMs > 0) {
+      timerId = setTimeout(() => releaseInternalMuteLock(reason), maxMs);
+    }
+    muteLockReasons.set(reason, timerId);
+    syncAudioMutedFromLocks();
+  }
+
+  function releaseInternalMuteLock(reason) {
+    if (!muteLockReasons.has(reason)) return;
+    const t = muteLockReasons.get(reason);
+    if (t) clearTimeout(t);
+    muteLockReasons.delete(reason);
+    syncAudioMutedFromLocks();
+  }
+
+  function releaseAllInternalMuteLocks() {
+    muteLockReasons.forEach(t => { if (t) clearTimeout(t); });
+    muteLockReasons.clear();
+    muteBaselineMuted = false;
+    try { audio.muted = false; } catch (e) {}
+  }
+
+  function reconcileStaleMuteLocks() {
+    const hasActiveSeek = Boolean(pendingSeekTarget && pendingSeekTarget.token === seekToken);
+    if (!hasActiveSeek) releaseInternalMuteLock('pendingSeek');
+    if (!isLoopGapWaiting && !isLoopSeeking) releaseInternalMuteLock('loopGuard');
+    if (muteLockReasons.size === 0 && audio.muted && !muteBaselineMuted) {
+      syncAudioMutedFromLocks();
+    }
+  }
 
   function detachActiveSeekListeners() {
     if (!activeSeekListeners) return;
@@ -146,9 +199,7 @@
       pendingSeekTimer = null;
     }
     if (pendingSeekTarget && restoreMute && pendingSeekTarget.mutedForSeek) {
-      try {
-        audio.muted = Boolean(pendingSeekTarget.wasMuted);
-      } catch (e) {}
+      releaseInternalMuteLock('pendingSeek');
     }
     pendingSeekTarget = null;
   }
@@ -244,27 +295,14 @@
   const el = {};
 
   function engageLoopMuteGuard(maxMs = 150) {
-    if (loopMuteGuard) {
-      clearTimeout(loopMuteGuard.timer);
-      loopMuteGuard.timer = setTimeout(releaseLoopMuteGuard, maxMs);
-      return;
-    }
-    loopMuteGuard = {
-      wasMuted: Boolean(audio.muted),
-      timer: setTimeout(releaseLoopMuteGuard, maxMs)
-    };
-    try { audio.muted = true; } catch (e) {}
+    setInternalMuteLock('loopGuard', maxMs);
   }
 
   function releaseLoopMuteGuard() {
-    if (!loopMuteGuard) return;
-    clearTimeout(loopMuteGuard.timer);
-    const restoreTo = (pendingSeekTarget && pendingSeekTarget.mutedForSeek) ? true : Boolean(loopMuteGuard.wasMuted);
-    loopMuteGuard = null;
-    try { audio.muted = restoreTo; } catch (e) {}
+    releaseInternalMuteLock('loopGuard');
   }
 
-  function startLoopGapKeepalive() {
+  function ensureAudioContextWarmed() {
     try {
       const Ctx = window.AudioContext || window.webkitAudioContext;
       if (!Ctx) return;
@@ -272,6 +310,44 @@
       if (loopGapAudioCtx.state === 'suspended') {
         loopGapAudioCtx.resume().catch(() => {});
       }
+    } catch (e) {}
+  }
+
+  function playAudioWithStateSync(label = 'Play', allowCanplayRetry = false) {
+    ensureAudioContextWarmed();
+    const playGen = audioTrackGen;
+    const playPromise = audio.play();
+    if (playPromise && typeof playPromise.catch === 'function') {
+      playPromise.catch(err => {
+        if (playGen !== audioTrackGen) return;
+        if (err && err.name === 'AbortError') return;
+        console.log(label + ' failed:', err);
+        if (allowCanplayRetry && hasAudioSource() && !audio.error && audio.readyState < 2) {
+          audio.addEventListener('canplay', () => {
+            if (playGen !== audioTrackGen || !hasAudioSource() || audio.error || !audio.paused) return;
+            audio.play().catch(err2 => {
+              if (playGen !== audioTrackGen || (err2 && err2.name === 'AbortError')) return;
+              state.isPlaying = false;
+              updatePlayBtnUI();
+              updateMediaSessionState(true);
+            });
+          }, { once: true });
+          return;
+        }
+        if (audio.paused) {
+          state.isPlaying = false;
+          updatePlayBtnUI();
+          updateMediaSessionState(true);
+        }
+      });
+    }
+    return playPromise;
+  }
+
+  function startLoopGapKeepalive() {
+    try {
+      ensureAudioContextWarmed();
+      if (!loopGapAudioCtx) return;
       if (loopGapKeepaliveNode) return;
       const osc = loopGapAudioCtx.createOscillator();
       const gain = loopGapAudioCtx.createGain();
@@ -318,6 +394,7 @@
     audioTrackGen++;
     seekToken++;
     manualSeekEpoch++;
+    clearBgBoundaryTimer();
     accumulateListeningTime(true);
     listenAnchor = null;
     listenContext = null;
@@ -412,7 +489,7 @@
           }
           updateHUDDisplay(audio.currentTime || targetTime);
           releaseLoopMuteGuard();
-          audio.play().catch(err => console.log('Loop gap resume failed:', err));
+          playAudioWithStateSync('Loop gap resume', true);
         };
         if (needReseek || audio.seeking) {
           engageLoopMuteGuard(220);
@@ -442,7 +519,7 @@
       triggerLoopSeek(targetTime, targetSentIdx);
       updateHUDDisplay(targetTime);
       if (shouldResume && audio.paused) {
-        audio.play().catch(err => console.log('Loop transition play failed:', err));
+        playAudioWithStateSync('Loop transition play', true);
       }
     }
   }
@@ -543,8 +620,10 @@
     audioTrackGen++;
     seekToken++;
     manualSeekEpoch++;
+    clearBgBoundaryTimer();
     cancelLoopGapWait();
     clearPendingSeek(true);
+    releaseAllInternalMuteLocks();
     isLoopSeeking = false;
     if (loopSeekTimer) {
       clearTimeout(loopSeekTimer);
@@ -3845,10 +3924,7 @@
       }
 
       if (autoPlay) {
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(e => console.log('Autoplay prevented:', e));
-        }
+        playAudioWithStateSync('Track load autoplay', true);
       }
     } else {
       clearAudioSource();
@@ -4696,7 +4772,6 @@
       time: targetTime,
       idx: seekIdx,
       startedAt: Date.now(),
-      wasMuted: audio.muted,
       mutedForSeek: false
     };
     pendingSeekTimer = setTimeout(() => {
@@ -4719,11 +4794,12 @@
 
     const playAndEnforceTarget = () => {
       if (!isCurrentSeekValid()) return;
+      ensureAudioContextWarmed();
       if (audio.paused) {
         // 慢网或大跨度跳转时暂静音并在同步手势内起音，到位即恢复有声，杜绝首音重复/口吃
-        if ((audio.readyState < 2 || (audio.seeking && Math.abs((audio.currentTime || 0) - targetTime) > 0.08)) && targetTime >= 0 && !audio.muted && pendingSeekTarget && pendingSeekTarget.token === myToken) {
+        if ((audio.readyState < 2 || (audio.seeking && Math.abs((audio.currentTime || 0) - targetTime) > 0.08)) && targetTime >= 0 && pendingSeekTarget && pendingSeekTarget.token === myToken) {
           pendingSeekTarget.mutedForSeek = true;
-          audio.muted = true;
+          setInternalMuteLock('pendingSeek', 3800);
         }
         const playPromise = audio.play();
         if (playPromise !== undefined) {
@@ -4735,7 +4811,7 @@
             settlePendingIfLanded();
           }).catch(e => {
             if (pendingSeekTarget && pendingSeekTarget.token === myToken && pendingSeekTarget.mutedForSeek) {
-              audio.muted = Boolean(pendingSeekTarget.wasMuted);
+              releaseInternalMuteLock('pendingSeek');
               pendingSeekTarget.mutedForSeek = false;
             }
             console.log('Audio play failed:', e);
@@ -5409,6 +5485,7 @@
         if (el.hudFrameworkText) {
           el.hudFrameworkText.textContent = '大纲';
         }
+        updateSystemMediaSession(null, 0);
       }
       updateRepeatIndicatorUI(-1);
     }
@@ -5449,6 +5526,14 @@
       trackLabel = isT1 ? '轨一·磨耳版' : '轨二·拓展版';
     }
 
+    const secIndex = currentSec ? currentSec.index : -1;
+    const metaKey = `${item.id}_${state.currentSubject}_${state.polSubMode}_${state.polXtVoice}_${state.polSubCardId || ''}_${state.currentTrack}_${secIndex}_${totalSec || 0}`;
+    if (metaKey === lastMediaSessionKey && navigator.mediaSession.metadata) {
+      updateMediaSessionState(false);
+      return;
+    }
+    lastMediaSessionKey = metaKey;
+
     const secTitle = currentSec ? `[${currentSec.index + 1}/${totalSec} ${currentSec.badge}] ` : '';
     const subjName = state.currentSubject === 'pol' ? '考研政治' : (state.currentSubject === '807' ? '807 现代文学' : (state.currentSubject === '706' ? '706 古代文学' : '考研英语写作'));
 
@@ -5472,11 +5557,25 @@
     }
   }
 
+  function ensureMediaMetadataPopulated() {
+    if (!('mediaSession' in navigator) || !state.activeItem) return;
+    if (navigator.mediaSession.metadata && lastMediaSessionKey && lastMediaSessionKey.startsWith(state.activeItem.id + '_')) {
+      return;
+    }
+    const total = currentFrameworkSections ? currentFrameworkSections.length : 0;
+    const sec = (total > 0 && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < total)
+      ? currentFrameworkSections[currentActiveSectionIndex]
+      : (total > 0 ? currentFrameworkSections[0] : null);
+    updateSystemMediaSession(sec, total);
+  }
+
   function setupMediaSessionHandlers() {
     if (!('mediaSession' in navigator)) return;
 
     try {
       navigator.mediaSession.setActionHandler('play', () => {
+        ensureAudioContextWarmed();
+        ensureMediaMetadataPopulated();
         resumeAudioPlayback();
       });
       navigator.mediaSession.setActionHandler('pause', () => {
@@ -5494,19 +5593,25 @@
       });
       navigator.mediaSession.setActionHandler('seekbackward', (details) => {
         const nextT = Math.max(0, audio.currentTime - (details.seekOffset || 5));
+        cancelLoopGapWait();
         setAudioPosition(nextT);
         syncManualSeekPointers(nextT);
+        updateMediaSessionState(true);
       });
       navigator.mediaSession.setActionHandler('seekforward', (details) => {
         const dur = audio.duration;
         const nextT = (dur && isFinite(dur)) ? Math.min(dur, audio.currentTime + (details.seekOffset || 5)) : (audio.currentTime + (details.seekOffset || 5));
+        cancelLoopGapWait();
         setAudioPosition(nextT);
         syncManualSeekPointers(nextT);
+        updateMediaSessionState(true);
       });
       navigator.mediaSession.setActionHandler('seekto', (details) => {
         if (details.seekTime !== null && details.seekTime !== undefined) {
+          cancelLoopGapWait();
           setAudioPosition(details.seekTime);
           syncManualSeekPointers(details.seekTime);
+          updateMediaSessionState(true);
         }
       });
     } catch (e) {
@@ -5687,12 +5792,13 @@
     if (shouldResumeGapPlayback && hasAudioSource() && audio.paused) {
       state.isPlaying = true;
       updatePlayBtnUI();
-      audio.play().catch(err => console.log('Manual seek gap resume failed:', err));
+      playAudioWithStateSync('Manual seek gap resume', true);
     }
     updateHUDDisplay(targetTime);
   }
 
   function toggleAudioPlayback() {
+    ensureAudioContextWarmed();
     if (isLoopGapWaiting) {
       pauseDuringGapWait();
       return;
@@ -5702,6 +5808,7 @@
   }
 
   function resumeAudioPlayback() {
+    ensureAudioContextWarmed();
     if (isLoopGapWaiting) cancelLoopGapWait();
     const hasSrc = hasAudioSource();
     if (hasSrc) {
@@ -5736,7 +5843,8 @@
             audio.load();
           }
         }
-        audio.play().catch(e => console.log('Play failed:', e));
+        ensureMediaMetadataPopulated();
+        playAudioWithStateSync('Resume play', true);
       }
     }
   }
@@ -5744,6 +5852,55 @@
 
   function setupAudioEngine() {
     syncRafId = null;
+
+    function getActiveLoopCutoffSec() {
+      if (!state.activeSentences || state.activeSentences.length === 0) return Infinity;
+      if (state.playMode === 'range' && hasValidRangeSelection()) {
+        const rs = state.rangeSelection;
+        const startSent = state.activeSentences[rs.startIdx];
+        const endSent = state.activeSentences[rs.endIdx];
+        const afterSent = (rs.endIdx + 1 < state.activeSentences.length) ? state.activeSentences[rs.endIdx + 1] : null;
+        if (startSent && endSent) {
+          const rStart = typeof startSent.start === 'number' ? startSent.start : parseFloat(startSent.start || 0);
+          const rEnd = typeof endSent.end === 'number' ? endSent.end : parseFloat(endSent.end || (afterSent ? afterSent.start : Infinity));
+          const afterStart = afterSent ? (typeof afterSent.start === 'number' ? afterSent.start : parseFloat(afterSent.start)) : Infinity;
+          return getLoopCutoff(rStart, rEnd, afterStart);
+        }
+      }
+      if ((state.playMode === 'sentence' || state.playMode === 'loop3') && state.currentSentIndex >= 0 && state.currentSentIndex < state.activeSentences.length) {
+        const sent = state.activeSentences[state.currentSentIndex];
+        const nextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
+        const sStart = typeof sent.start === 'number' ? sent.start : parseFloat(sent.start || 0);
+        const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (nextSent ? nextSent.start : Infinity));
+        const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
+        return getLoopCutoff(sStart, sEnd, nextStart);
+      }
+      if (state.playMode === 'section' && currentFrameworkSections.length > 0 && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < currentFrameworkSections.length) {
+        const curSec = currentFrameworkSections[currentActiveSectionIndex];
+        const nextSec = (currentActiveSectionIndex + 1 < currentFrameworkSections.length) ? currentFrameworkSections[currentActiveSectionIndex + 1] : null;
+        const nextSecStart = nextSec && typeof nextSec.start === 'number' ? nextSec.start : Infinity;
+        return getLoopCutoff(curSec.start, curSec.end, nextSecStart);
+      }
+      return Infinity;
+    }
+
+    function scheduleBgBoundaryCheck() {
+      clearBgBoundaryTimer();
+      if (!document.hidden || !state.isPlaying || audio.paused || isLoopGapWaiting) return;
+      const cutoff = getActiveLoopCutoffSec();
+      if (!isFinite(cutoff)) return;
+      const cur = audio.currentTime || 0;
+      const rate = (audio.playbackRate && isFinite(audio.playbackRate) && audio.playbackRate > 0) ? audio.playbackRate : 1;
+      const waitMs = Math.max(60, Math.min(1800, Math.round(((cutoff - cur) / rate) * 1000 + 20)));
+      bgBoundaryTimer = setTimeout(() => {
+        bgBoundaryTimer = null;
+        if (!document.hidden || !state.isPlaying || audio.paused) return;
+        handleLoopBoundary(audio.currentTime || 0, false);
+        if (document.hidden && state.isPlaying && !audio.paused) {
+          scheduleBgBoundaryCheck();
+        }
+      }, waitMs);
+    }
 
     // 60fps 高频毫秒级聚光同步引擎 (彻底消除 timeupdate 的 300ms 滞后与 1s 句子迟滞)
     function getFirstSentIndexInSection(sec, nextSecStart) {
@@ -5917,7 +6074,7 @@
                 engageLoopMuteGuard(110);
                 triggerLoopSeek(curSec.start, targetIdx);
                 updateHUDDisplay(curSec.start);
-                if (shouldResume && audio.paused) audio.play().catch(e => console.log(e));
+                if (shouldResume && audio.paused) playAudioWithStateSync('Section loop transition', true);
               } else {
                 performLoopTransition(curSec.start, {
                   targetSentIdx: targetIdx,
@@ -6060,13 +6217,16 @@
 
       updatePlayBtnUI();
       expandPlayerDock();
+      ensureMediaMetadataPopulated();
       updateMediaSessionState(true);
+      if (document.hidden) scheduleBgBoundaryCheck();
       lastRafRunTs = Date.now();
       if (syncRafId) cancelAnimationFrame(syncRafId);
       syncRafId = requestAnimationFrame(runSyncLoop);
     });
 
     audio.addEventListener('pause', () => {
+      clearBgBoundaryTimer();
       accumulateListeningTime(true);
       if (isLoopGapWaiting) {
         if (syncRafId) {
@@ -6077,7 +6237,7 @@
         return;
       }
       clearPendingSeek(true);
-      releaseLoopMuteGuard();
+      releaseAllInternalMuteLocks();
       state.isPlaying = false;
       flushPlaybackPosition();
       if (syncRafId) {
@@ -6150,6 +6310,9 @@
 
       // 仅当前台 60fps RAF 引擎真实活跃（120ms 内有帧回调且页面可见）时才跳过，切入后台或息屏立即由 timeupdate 接管循环推进
       const rafActive = Boolean(syncRafId) && !document.hidden && (Date.now() - lastRafRunTs <= 120);
+      if (!isLoopGapWaiting && !isLoopSeeking && (Date.now() - lastSeekTs > 500)) {
+        reconcileStaleMuteLocks();
+      }
       if (state.isPlaying && !audio.paused && rafActive) {
         return;
       }
@@ -6166,6 +6329,7 @@
 
         if (!audio.paused && state.isPlaying) {
           const loopState = handleLoopBoundary(cur, false);
+          if (document.hidden) scheduleBgBoundaryCheck();
           if (loopState) {
             return;
           }
@@ -6192,6 +6356,7 @@
     });
 
     audio.addEventListener('ended', () => {
+      clearBgBoundaryTimer();
       accumulateListeningTime(true);
       if (state.playMode === 'item') {
         performLoopTransition(0, { targetSentIdx: state.activeSentences?.length ? 0 : null, shouldResume: true, useGap: false });
@@ -6212,18 +6377,29 @@
       audio.playbackRate = state.speed;
       if (el.timeTotal) el.timeTotal.textContent = formatTime(audio.duration || 0);
       renderProgressTicks();
+      ensureMediaMetadataPopulated();
       updateMediaSessionState(true);
     });
 
     audio.addEventListener('ratechange', () => {
       accumulateListeningTime(true);
       updateMediaSessionState(true);
+      if (document.hidden) scheduleBgBoundaryCheck();
     });
 
     audio.addEventListener('seeking', () => { listenAnchor = null; });
-    audio.addEventListener('playing', () => { listenAnchor = makeListenAnchor(); });
+    audio.addEventListener('playing', () => {
+      listenAnchor = makeListenAnchor();
+      if (!pendingSeekTarget || pendingSeekTarget.token !== seekToken || (!audio.seeking && Math.abs((audio.currentTime || 0) - pendingSeekTarget.time) <= 0.45)) {
+        releaseInternalMuteLock('pendingSeek');
+      }
+      if (!isLoopGapWaiting && !isLoopSeeking) {
+        releaseInternalMuteLock('loopGuard');
+      }
+      if (document.hidden) scheduleBgBoundaryCheck();
+    });
     audio.addEventListener('waiting', () => { accumulateListeningTime(true); listenAnchor = null; });
-    audio.addEventListener('emptied', () => { listenAnchor = null; listenContext = null; updateListenProgressUI(); });
+    audio.addEventListener('emptied', () => { clearBgBoundaryTimer(); listenAnchor = null; listenContext = null; updateListenProgressUI(); });
 
     window.addEventListener('pagehide', () => {
       flushPlaybackPosition();
@@ -6232,9 +6408,30 @@
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
         flushPlaybackPosition();
+        // 锁屏/切后台瞬间若正处于停顿气口暂停中，立刻解除暂停并恢复真实音频流，防系统冻结定时器导致无声假死
+        if (isLoopGapWaiting && state.isPlaying && hasAudioSource()) {
+          isLoopGapWaiting = false;
+          loopGapEpoch++;
+          if (loopGapTimer) {
+            clearTimeout(loopGapTimer);
+            loopGapTimer = null;
+          }
+          stopLoopGapKeepalive();
+          releaseInternalMuteLock('loopGuard');
+          updateHUDDisplay(audio.currentTime || 0);
+          updatePlayBtnUI();
+          ensureMediaMetadataPopulated();
+          updateMediaSessionState(true);
+          if (audio.paused) {
+            playAudioWithStateSync('Background gap flush', true);
+          }
+        }
+        scheduleBgBoundaryCheck();
         return;
       }
       if (document.visibilityState === 'visible') {
+        clearBgBoundaryTimer();
+        reconcileStaleMuteLocks();
         lastRafRunTs = 0;
         if (isLoopSeeking && (Date.now() - lastSeekTs >= 350)) {
           isLoopSeeking = false;
@@ -6270,8 +6467,10 @@
         : (audio.currentTime || 0);
       const isOffline = typeof navigator !== 'undefined' && navigator.onLine === false;
       console.warn('Audio decode/pipeline error:', errCode, audio.error.message || '', curSrc);
+      clearBgBoundaryTimer();
       cancelLoopGapWait();
       clearPendingSeek(true);
+      releaseAllInternalMuteLocks();
       isLoopSeeking = false;
       if (loopSeekTimer) {
         clearTimeout(loopSeekTimer);
@@ -7630,7 +7829,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.5.1';
+  const APP_BUILD_ID = '3.5.2';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
@@ -9003,7 +9202,7 @@
       audio.playbackRate = state.speed;
       tryRestoreAudioTime(restoreTime, getPlaybackTimeKey(1));
       if (autoPlay) {
-        audio.play().catch(e => console.log('Autoplay prevented:', e));
+        playAudioWithStateSync('Pol T1 autoplay', true);
       }
     } else {
       clearAudioSource();
@@ -9112,7 +9311,7 @@
         tryRestoreAudioTime(restoreTime, getPlaybackTimeKey(2));
       }
       if (autoPlay) {
-        audio.play().catch(e => console.log('Autoplay prevented:', e));
+        playAudioWithStateSync('Pol T1 autoplay', true);
       }
       if (el.dockTitle) el.dockTitle.textContent = `${state.activeItem.title} · ${card.chipLabel}`;
     } else {
@@ -9358,7 +9557,7 @@
     }
 
     if (autoPlay && !playedViaSeek) {
-      audio.play().catch(e => console.log('Autoplay prevented:', e));
+      playAudioWithStateSync('Xutao autoplay', true);
     }
     updatePlayBtnUI();
     syncVoiceBadges();
@@ -9470,7 +9669,7 @@
       audio.load();
       audio.playbackRate = state.speed;
       tryRestoreAudioTime(restoreTime, getPlaybackTimeKey());
-      if (autoPlay) audio.play().catch(e => console.log(e));
+      if (autoPlay) playAudioWithStateSync('Tuijie autoplay', true);
     } else {
       clearAudioSource();
     }

@@ -141,13 +141,15 @@ def check_manifest_sentence_margins():
                 gap_ms = (float(nxt["start"]) - float(cur["end"])) * 1000.0
                 if gap_ms < min_gap_ms:
                     min_gap_ms = gap_ms
-                if gap_ms < 20.0:
-                    tight_pairs.append((item["id"], cur["id"], round(gap_ms, 1)))
+                stripped = cur["text"].rstrip("”’）)】」")
+                min_req = 499.0 if (stripped and stripped[-1] in "。；？！") else 349.0
+                if gap_ms < min_req:
+                    tight_pairs.append((item["id"], cur["id"], round(gap_ms, 1), min_req))
                 cutoff = calc_app_cutoff(sents, i)
                 margin_ms = (float(nxt["start"]) - cutoff) * 1000.0
                 if margin_ms < min_cutoff_margin_ms:
                     min_cutoff_margin_ms = margin_ms
-                if margin_ms < 120.0:
+                if margin_ms < 250.0:
                     cutoff_overshoots.append((item["id"], cur["id"], round(margin_ms, 1)))
     return total_pairs, min_gap_ms, tight_pairs, min_cutoff_margin_ms, cutoff_overshoots
 
@@ -165,7 +167,7 @@ def main():
     total_pairs, min_gap_ms, tight_pairs, min_cutoff_margin_ms, cutoff_overshoots = check_manifest_sentence_margins()
     check(
         total_pairs >= 2500 and len(tight_pairs) == 0 and len(cutoff_overshoots) == 0,
-        "All 706/807 adjacent sentences retain >=20ms physical gap and >=120ms cutoff margin before next sentence onset",
+        "All 706/807 adjacent sentences retain >=350ms(comma)/500ms(period) gap and >=250ms cutoff margin before next sentence onset",
         f"pairs={total_pairs}, min_gap={min_gap_ms:.1f}ms, min_cutoff_margin={min_cutoff_margin_ms:.1f}ms, tight={tight_pairs[:3]}, overshoots={cutoff_overshoots[:3]}",
     )
 
@@ -310,6 +312,112 @@ def main():
                 res["playsBeforeSeeked"] == 0 and res["playsAfterSeeked"] == 1,
                 "Resume waits for 'seeked' before play() when audio.seeking is active (prevents first-syllable clip/stutter)",
                 json.dumps(res["deferredOrder"]),
+            )
+
+            # 3. Mute-lock overlap deadlock prevention & background visibilitychange gap-flush + MediaMetadata without sections
+            res_bg = page.evaluate("""async () => {
+              const a = window.audio;
+              let mockTime = 0;
+              let mockPaused = true;
+              let mockReady = 1;
+              let mockHidden = false;
+              let mockVis = 'visible';
+
+              Object.defineProperty(document, 'hidden', { configurable: true, get: () => mockHidden });
+              Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => mockVis });
+              Object.defineProperty(a, 'readyState', { configurable: true, get: () => mockReady });
+              Object.defineProperty(a, 'duration', { configurable: true, get: () => 280 });
+              Object.defineProperty(a, 'paused', { configurable: true, get: () => mockPaused });
+              Object.defineProperty(a, 'seeking', { configurable: true, get: () => false });
+              Object.defineProperty(a, 'currentTime', {
+                configurable: true,
+                get: () => mockTime,
+                set: (v) => { mockTime = Number(v) || 0; }
+              });
+              a.pause = () => { mockPaused = true; a.dispatchEvent(new Event('pause')); };
+              a.play = () => { mockPaused = false; a.dispatchEvent(new Event('play')); return Promise.resolve(); };
+
+              // E: Overlap pendingSeek mute + loopGuard mute -> must restore muted=false once both clear!
+              a.muted = false;
+              const sents = window.state.activeSentences;
+              const domSents = document.querySelectorAll('#paper-content .recite-sent');
+              mockReady = 1;
+              domSents[3].click(); // engages pendingSeek mute because readyState < 2
+              const mutedAfterUnreadyClick = a.muted;
+
+              // Force a zero-gap loop wrap while unready & muted (engages loopGuard on top of pendingSeek)
+              mockTime = sents[3].end + 0.05;
+              window.state.loopGapMs = 0;
+              window.state.playMode = 'sentence';
+              a.dispatchEvent(new Event('ended'));
+              mockReady = 4;
+              mockTime = sents[3].start;
+              a.dispatchEvent(new Event('seeked'));
+              await new Promise(r => setTimeout(r, 260)); // Wait past 200ms loopGuard timer
+              const mutedAfterBothSettled = a.muted;
+
+              // F: Lock screen (visibilitychange -> hidden) mid loopGapWaiting must immediately flush & resume audio
+              window.state.loopGapMs = 900;
+              mockTime = sents[3].end + 0.05;
+              mockPaused = false;
+              a.dispatchEvent(new Event('ended'));
+              const pausedInGap = mockPaused;
+              const playingStateInGap = window.state.isPlaying;
+              mockHidden = true;
+              mockVis = 'hidden';
+              document.dispatchEvent(new Event('visibilitychange'));
+              await new Promise(r => setTimeout(r, 40));
+              const pausedAfterHidden = mockPaused;
+              const playingAfterHidden = window.state.isPlaying;
+              const mutedAfterHidden = a.muted;
+
+              // Reset visibility
+              mockHidden = false;
+              mockVis = 'visible';
+              document.dispatchEvent(new Event('visibilitychange'));
+
+              // G: MediaMetadata must populate even on Politics cards with zero framework sections
+              a.pause();
+              document.getElementById('btn-subject-pol').click();
+              await new Promise(r => setTimeout(r, 150));
+              document.querySelector('#pol-submode-bar button[data-pol-submode="xutao16"]').click();
+              await new Promise(r => setTimeout(r, 180));
+              navigator.mediaSession.metadata = null;
+              document.getElementById('dock-play-btn').click();
+              await new Promise(r => setTimeout(r, 100));
+              const metaTitle = navigator.mediaSession.metadata ? navigator.mediaSession.metadata.title : '';
+              const metaArtist = navigator.mediaSession.metadata ? navigator.mediaSession.metadata.artist : '';
+
+              return {
+                mutedAfterUnreadyClick,
+                mutedAfterBothSettled,
+                pausedInGap,
+                playingStateInGap,
+                pausedAfterHidden,
+                playingAfterHidden,
+                mutedAfterHidden,
+                metaTitle,
+                metaArtist
+              };
+            }""")
+            check(
+                res_bg["mutedAfterUnreadyClick"] is True and res_bg["mutedAfterBothSettled"] is False,
+                "Overlapping pendingSeek + loopGuard mute locks do NOT deadlock audio.muted=true",
+                json.dumps(res_bg),
+            )
+            check(
+                res_bg["pausedInGap"] is True
+                and res_bg["playingStateInGap"] is True
+                and res_bg["pausedAfterHidden"] is False
+                and res_bg["playingAfterHidden"] is True
+                and res_bg["mutedAfterHidden"] is False,
+                "visibilitychange->hidden mid loopGapWaiting flushes pause and resumes live audio cleanly",
+                json.dumps(res_bg),
+            )
+            check(
+                bool(res_bg["metaTitle"]) and bool(res_bg["metaArtist"]),
+                "navigator.mediaSession.metadata is populated even without framework sections",
+                json.dumps(res_bg, ensure_ascii=False),
             )
 
             ctx.close()
