@@ -174,9 +174,9 @@
     if (!isFinite(safeEnd)) return Infinity;
     const span = Math.max(0, safeEnd - safeStart);
     const rate = Math.max(0.8, Math.min(2.5, Number((typeof audio !== 'undefined' && audio && audio.playbackRate) || (state && state.speed) || 1)));
-    // 按倍速自适应预留 DAC 硬件输出缓冲与 RAF 帧间隔，杜绝循环末尾念到下一段首字（如“第一…第”）
-    const endGuard = Math.min(0.14, 0.055 * rate, span * 0.22);
-    const nextGuard = Math.min(0.22, 0.115 * rate, span * 0.28);
+    // 按倍速自适应预留 DAC 硬件输出缓冲与 RAF/timeupdate 帧间隔，杜绝循环末尾念到下一句首音
+    const endGuard = Math.min(0.16, 0.065 * rate, span * 0.22);
+    const nextGuard = Math.min(0.26, 0.145 * rate, span * 0.28);
     const rawCutoff = hasNext
       ? Math.min(safeEnd - endGuard, nextStart - nextGuard)
       : (safeEnd - endGuard);
@@ -386,12 +386,13 @@
       const myEpoch = ++loopGapEpoch;
       isLoopGapWaiting = true;
       state.isPlaying = true;
-      engageLoopMuteGuard(Math.max(150, Math.min(250, gapMs)));
-      startLoopGapKeepalive();
-      triggerLoopSeek(targetTime, targetSentIdx);
+      // 先暂停再静音落位，避免边解码边 seek 引起切回首音口吃
+      engageLoopMuteGuard(Math.max(180, Math.min(300, gapMs)));
       try {
         if (!audio.paused) audio.pause();
       } catch (e) {}
+      startLoopGapKeepalive();
+      triggerLoopSeek(targetTime, targetSentIdx);
       updatePlayBtnUI();
       updateHUDDisplay(targetTime);
       loopGapTimer = setTimeout(() => {
@@ -399,18 +400,45 @@
         isLoopGapWaiting = false;
         loopGapTimer = null;
         stopLoopGapKeepalive();
-        releaseLoopMuteGuard();
-        if (!state.isPlaying || !hasAudioSource()) return;
-        try {
-          if (Math.abs((audio.currentTime || 0) - targetTime) > 0.05) {
-            setAudioPosition(targetTime);
+        if (!state.isPlaying || !hasAudioSource()) {
+          releaseLoopMuteGuard();
+          return;
+        }
+        const needReseek = Math.abs((audio.currentTime || 0) - targetTime) > 0.05;
+        const startPlayCleanly = () => {
+          if (myEpoch !== loopGapEpoch || !state.isPlaying || !hasAudioSource()) {
+            releaseLoopMuteGuard();
+            return;
           }
-        } catch (e) {}
-        updateHUDDisplay(audio.currentTime || targetTime);
-        audio.play().catch(err => console.log('Loop gap resume failed:', err));
+          updateHUDDisplay(audio.currentTime || targetTime);
+          releaseLoopMuteGuard();
+          audio.play().catch(err => console.log('Loop gap resume failed:', err));
+        };
+        if (needReseek || audio.seeking) {
+          engageLoopMuteGuard(220);
+          if (needReseek) {
+            try { setAudioPosition(targetTime); } catch (e) {}
+          }
+          if (audio.seeking && audio.readyState >= 1) {
+            let started = false;
+            const onSettled = () => {
+              if (started) return;
+              started = true;
+              audio.removeEventListener('seeked', onSettled);
+              clearTimeout(fbTimer);
+              startPlayCleanly();
+            };
+            const fbTimer = setTimeout(onSettled, 120);
+            audio.addEventListener('seeked', onSettled, { once: true });
+          } else {
+            startPlayCleanly();
+          }
+        } else {
+          startPlayCleanly();
+        }
       }, gapMs);
     } else {
-      engageLoopMuteGuard(120);
+      engageLoopMuteGuard(200);
       triggerLoopSeek(targetTime, targetSentIdx);
       updateHUDDisplay(targetTime);
       if (shouldResume && audio.paused) {
@@ -4692,8 +4720,8 @@
     const playAndEnforceTarget = () => {
       if (!isCurrentSeekValid()) return;
       if (audio.paused) {
-        // 慢网 readyState === 0 时暂静音并在同步手势内起音以保留 iOS Safari 播放权限，到位即恢复有声
-        if (audio.readyState < 2 && targetTime > 0.25 && !audio.muted && pendingSeekTarget && pendingSeekTarget.token === myToken) {
+        // 慢网或大跨度跳转时暂静音并在同步手势内起音，到位即恢复有声，杜绝首音重复/口吃
+        if ((audio.readyState < 2 || (audio.seeking && Math.abs((audio.currentTime || 0) - targetTime) > 0.08)) && targetTime >= 0 && !audio.muted && pendingSeekTarget && pendingSeekTarget.token === myToken) {
           pendingSeekTarget.mutedForSeek = true;
           audio.muted = true;
         }
@@ -4701,7 +4729,7 @@
         if (playPromise !== undefined) {
           playPromise.then(() => {
             if (!isCurrentSeekValid()) return;
-            if (audio.readyState >= 1 && Math.abs(audio.currentTime - targetTime) > 0.25) {
+            if (audio.readyState >= 1 && !audio.seeking && (Date.now() - (pendingSeekTarget ? pendingSeekTarget.startedAt : 0) > 120) && Math.abs(audio.currentTime - targetTime) > 0.25) {
               applySeek();
             }
             settlePendingIfLanded();
@@ -5955,7 +5983,7 @@
             isLoopSeeking = false;
             if (loopSeekTimer) { clearTimeout(loopSeekTimer); loopSeekTimer = null; }
           } else if (Date.now() - pendingSeekTarget.startedAt < 3800) {
-            if (audio.readyState >= 1 && !audio.seeking && drift > 0.5) {
+            if (audio.readyState >= 1 && !audio.seeking && (Date.now() - pendingSeekTarget.startedAt > 150) && drift > 0.5) {
               try { setAudioPosition(pendingSeekTarget.time); } catch (e) {}
             }
             if (pendingSeekTarget.idx !== -1) {
@@ -6026,7 +6054,7 @@
 
       // 政治徐涛16天带背原声前奏导言区自动跳过（若用户刚主动点选过句子且在寻求目标时刻，不覆盖）
       maybeSkipXutaoIntro(audio.currentTime || 0);
-      if (pendingSeekTarget && pendingSeekTarget.token === seekToken && audio.readyState >= 1 && Math.abs(audio.currentTime - pendingSeekTarget.time) > 0.35) {
+      if (pendingSeekTarget && pendingSeekTarget.token === seekToken && audio.readyState >= 1 && !audio.seeking && (Date.now() - pendingSeekTarget.startedAt > 120) && Math.abs(audio.currentTime - pendingSeekTarget.time) > 0.35) {
         try { setAudioPosition(pendingSeekTarget.time); } catch (e) {}
       }
 
@@ -6076,7 +6104,7 @@
         }
         return;
       }
-      if (isLoopSeeking && Date.now() - lastSeekTs >= 25) {
+      if (isLoopSeeking && Date.now() - lastSeekTs >= 60) {
         isLoopSeeking = false;
         if (loopSeekTimer) {
           clearTimeout(loopSeekTimer);
@@ -6087,7 +6115,7 @@
 
     audio.addEventListener('canplay', () => {
       if (pendingSeekTarget && pendingSeekTarget.token === seekToken) {
-        if (Math.abs(audio.currentTime - pendingSeekTarget.time) > 0.35 && !audio.seeking && Date.now() - pendingSeekTarget.startedAt < 3500) {
+        if (Math.abs(audio.currentTime - pendingSeekTarget.time) > 0.35 && !audio.seeking && (Date.now() - pendingSeekTarget.startedAt > 120) && Date.now() - pendingSeekTarget.startedAt < 3500) {
           try { setAudioPosition(pendingSeekTarget.time); } catch (e) {}
         } else if (Math.abs(audio.currentTime - pendingSeekTarget.time) <= 0.45 && audio.readyState >= 2) {
           clearPendingSeek(true);
@@ -7602,7 +7630,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.5.0';
+  const APP_BUILD_ID = '3.5.1';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
