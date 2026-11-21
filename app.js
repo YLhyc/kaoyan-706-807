@@ -139,16 +139,23 @@
     }
   }
 
+  function withAudioVersion(url) {
+    const raw = String(url || '').trim();
+    if (!raw) return '';
+    if (/^(blob:|data:)/i.test(raw)) return raw;
+    if (/[?&]v=/.test(raw)) return raw;
+    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.3';
+    return raw + (raw.includes('?') ? '&' : '?') + 'v=' + encodeURIComponent(ver);
+  }
+
   function syncAudioMutedFromLocks() {
     try {
-      audio.muted = muteLockReasons.size > 0 ? true : Boolean(muteBaselineMuted);
+      audio.muted = muteLockReasons.size > 0;
     } catch (e) {}
   }
 
   function setInternalMuteLock(reason, maxMs = 0) {
-    if (muteLockReasons.size === 0) {
-      muteBaselineMuted = Boolean(audio.muted);
-    }
+    muteBaselineMuted = false;
     const prevTimer = muteLockReasons.get(reason);
     if (prevTimer) clearTimeout(prevTimer);
     let timerId = 0;
@@ -178,7 +185,8 @@
     const hasActiveSeek = Boolean(pendingSeekTarget && pendingSeekTarget.token === seekToken);
     if (!hasActiveSeek) releaseInternalMuteLock('pendingSeek');
     if (!isLoopGapWaiting && !isLoopSeeking) releaseInternalMuteLock('loopGuard');
-    if (muteLockReasons.size === 0 && audio.muted && !muteBaselineMuted) {
+    if (!isLoopGapWaiting) releaseInternalMuteLock('loopGap');
+    if (muteLockReasons.size === 0 && audio.muted) {
       syncAudioMutedFromLocks();
     }
   }
@@ -225,9 +233,14 @@
     if (!isFinite(safeEnd)) return Infinity;
     const span = Math.max(0, safeEnd - safeStart);
     const rate = Math.max(0.8, Math.min(2.5, Number((typeof audio !== 'undefined' && audio && audio.playbackRate) || (state && state.speed) || 1)));
-    // 按倍速自适应预留 DAC 硬件输出缓冲与 RAF/timeupdate 帧间隔，杜绝循环末尾念到下一句首音
-    const endGuard = Math.min(0.16, 0.065 * rate, span * 0.22);
-    const nextGuard = Math.min(0.26, 0.145 * rate, span * 0.28);
+    const isHiddenBg = typeof document !== 'undefined' && document.hidden;
+    // 按倍速自适应预留 DAC 硬件输出缓冲与 RAF/timeupdate 帧间隔，后台态适当放大前瞻以防锁屏 timeupdate 节流冲界
+    const endGuard = isHiddenBg
+      ? Math.min(0.24, 0.11 * rate, span * 0.25)
+      : Math.min(0.16, 0.065 * rate, span * 0.22);
+    const nextGuard = isHiddenBg
+      ? Math.min(0.36, 0.20 * rate, span * 0.30)
+      : Math.min(0.26, 0.145 * rate, span * 0.28);
     const rawCutoff = hasNext
       ? Math.min(safeEnd - endGuard, nextStart - nextGuard)
       : (safeEnd - endGuard);
@@ -307,7 +320,7 @@
       const Ctx = window.AudioContext || window.webkitAudioContext;
       if (!Ctx) return;
       if (!loopGapAudioCtx) loopGapAudioCtx = new Ctx();
-      if (loopGapAudioCtx.state === 'suspended') {
+      if (loopGapAudioCtx.state === 'suspended' || loopGapAudioCtx.state === 'interrupted') {
         loopGapAudioCtx.resume().catch(() => {});
       }
     } catch (e) {}
@@ -376,18 +389,23 @@
       loopGapTimer = null;
     }
     stopLoopGapKeepalive();
+    releaseInternalMuteLock('loopGap');
     releaseLoopMuteGuard();
   }
 
   function pauseDuringGapWait() {
     cancelLoopGapWait();
     state.isPlaying = false;
+    try {
+      if (!audio.paused) audio.pause();
+    } catch (e) {}
     if (syncRafId) {
       cancelAnimationFrame(syncRafId);
       syncRafId = null;
     }
     updatePlayBtnUI();
     updateHUDDisplay(audio.currentTime || 0);
+    updateMediaSessionState(true);
   }
 
   function resetAudioTrackPlayback(autoPlay = false) {
@@ -459,17 +477,32 @@
     }
 
     const gapMs = (useGap && !document.hidden) ? (Number(state.loopGapMs) || 0) : 0;
+    const isIOSLike = typeof navigator !== 'undefined' && (
+      /iPad|iPhone|iPod/.test(navigator.userAgent || '') ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
+      navigator.standalone === true
+    );
     if (gapMs > 0 && shouldResume && hasAudioSource()) {
       const myEpoch = ++loopGapEpoch;
       isLoopGapWaiting = true;
       state.isPlaying = true;
-      // 先暂停再静音落位，避免边解码边 seek 引起切回首音口吃
-      engageLoopMuteGuard(Math.max(180, Math.min(300, gapMs)));
-      try {
-        if (!audio.paused) audio.pause();
-      } catch (e) {}
-      startLoopGapKeepalive();
-      triggerLoopSeek(targetTime, targetSentIdx);
+      if (isIOSLike) {
+        // iOS / iPadOS PWA：保持主 <audio> 连续播放并加内部静音锁，绝不调用 audio.pause() 释放系统媒体会话
+        setInternalMuteLock('loopGap', gapMs + 450);
+        engageLoopMuteGuard(Math.max(180, Math.min(300, gapMs)));
+        triggerLoopSeek(targetTime, targetSentIdx);
+        if (audio.paused) {
+          playAudioWithStateSync('Loop gap keep-playing', true);
+        }
+      } else {
+        // 桌面端 / Android：先暂停再静音落位，避免边解码边 seek 引起切回首音口吃
+        engageLoopMuteGuard(Math.max(180, Math.min(300, gapMs)));
+        try {
+          if (!audio.paused) audio.pause();
+        } catch (e) {}
+        startLoopGapKeepalive();
+        triggerLoopSeek(targetTime, targetSentIdx);
+      }
       updatePlayBtnUI();
       updateHUDDisplay(targetTime);
       loopGapTimer = setTimeout(() => {
@@ -478,21 +511,27 @@
         loopGapTimer = null;
         stopLoopGapKeepalive();
         if (!state.isPlaying || !hasAudioSource()) {
+          releaseInternalMuteLock('loopGap');
           releaseLoopMuteGuard();
           return;
         }
         const needReseek = Math.abs((audio.currentTime || 0) - targetTime) > 0.05;
         const startPlayCleanly = () => {
           if (myEpoch !== loopGapEpoch || !state.isPlaying || !hasAudioSource()) {
+            releaseInternalMuteLock('loopGap');
             releaseLoopMuteGuard();
             return;
           }
           updateHUDDisplay(audio.currentTime || targetTime);
+          releaseInternalMuteLock('loopGap');
           releaseLoopMuteGuard();
-          playAudioWithStateSync('Loop gap resume', true);
+          if (audio.paused) {
+            playAudioWithStateSync('Loop gap resume', true);
+          }
         };
         if (needReseek || audio.seeking) {
           engageLoopMuteGuard(220);
+          releaseInternalMuteLock('loopGap');
           if (needReseek) {
             try { setAudioPosition(targetTime); } catch (e) {}
           }
@@ -3894,7 +3933,7 @@
 
     // 1. 同步第一时间挂载音频并处理自动播放（保护 iOS Safari WebKit 用户手势与后台连播上下文）
     if (trackObj && trackObj.audio) {
-      audio.src = trackObj.audio;
+      audio.src = withAudioVersion(trackObj.audio);
       audio.load();
       audio.playbackRate = state.speed;
 
@@ -4870,13 +4909,15 @@
 
   let lastScrollTs = 0;
 
-  // 工业级严格区间对齐引擎 (结合 syncOffset 前瞻补偿与 60fps 实时追踪，消除高光滞后)
+  // 工业级严格区间对齐引擎 (结合 syncOffset 前瞻补偿与句末物理边界收敛，杜绝句间静音/倍速抢跳)
   function findActiveSentenceIndex(currentTime) {
     const sents = state.activeSentences;
     if (!sents || sents.length === 0) return -1;
     const len = sents.length;
-    const offset = (typeof state.syncOffset === 'number' && !isNaN(state.syncOffset)) ? state.syncOffset : 0.15;
-    const t = Math.max(0, currentTime + offset);
+    const rawOffset = (typeof state.syncOffset === 'number' && !isNaN(state.syncOffset)) ? state.syncOffset : 0.15;
+    const rate = Math.max(0.8, Math.min(2.5, Number((typeof audio !== 'undefined' && audio && audio.playbackRate) || (state && state.speed) || 1)));
+    const effectiveOffset = Math.min(rawOffset, 0.08 * Math.min(rate, 1.5));
+    const t = Math.max(0, currentTime + effectiveOffset);
 
     const firstStart = typeof sents[0].start === 'number' ? sents[0].start : parseFloat(sents[0].start || 0);
     const isXutaoBounded = state.currentSubject === 'pol' && state.polSubMode === 'xutao16';
@@ -4898,6 +4939,21 @@
         low = mid + 1;
       } else {
         high = mid - 1;
+      }
+    }
+
+    // 若物理播放头仍在上一句发音区间内，或距下一句真实起音尚有较长句间静音，绝不提前抢跳
+    while (ans > 0) {
+      const prevSent = sents[ans - 1];
+      const curSent = sents[ans];
+      const prevEnd = typeof prevSent.end === 'number' ? prevSent.end : parseFloat(prevSent.end || 0);
+      const curStart = typeof curSent.start === 'number' ? curSent.start : parseFloat(curSent.start || 0);
+      const stillInPrev = isFinite(prevEnd) && prevEnd > 0 && currentTime < prevEnd - 0.02;
+      const farBeforeNext = isFinite(curStart) && currentTime < curStart - 0.06;
+      if (stillInPrev || farBeforeNext) {
+        ans--;
+      } else {
+        break;
       }
     }
 
@@ -5559,9 +5615,6 @@
 
   function ensureMediaMetadataPopulated() {
     if (!('mediaSession' in navigator) || !state.activeItem) return;
-    if (navigator.mediaSession.metadata && lastMediaSessionKey && lastMediaSessionKey.startsWith(state.activeItem.id + '_')) {
-      return;
-    }
     const total = currentFrameworkSections ? currentFrameworkSections.length : 0;
     const sec = (total > 0 && currentActiveSectionIndex >= 0 && currentActiveSectionIndex < total)
       ? currentFrameworkSections[currentActiveSectionIndex]
@@ -5592,26 +5645,36 @@
         playNextItem();
       });
       navigator.mediaSession.setActionHandler('seekbackward', (details) => {
-        const nextT = Math.max(0, audio.currentTime - (details.seekOffset || 5));
-        cancelLoopGapWait();
-        setAudioPosition(nextT);
-        syncManualSeekPointers(nextT);
-        updateMediaSessionState(true);
+        if (!hasAudioSource() || audio.readyState < 1) return;
+        try {
+          const nextT = Math.max(0, (audio.currentTime || 0) - (details.seekOffset || 5));
+          cancelLoopGapWait();
+          setAudioPosition(nextT);
+          syncManualSeekPointers(nextT);
+          updateMediaSessionState(true);
+        } catch (e) {}
       });
       navigator.mediaSession.setActionHandler('seekforward', (details) => {
-        const dur = audio.duration;
-        const nextT = (dur && isFinite(dur)) ? Math.min(dur, audio.currentTime + (details.seekOffset || 5)) : (audio.currentTime + (details.seekOffset || 5));
-        cancelLoopGapWait();
-        setAudioPosition(nextT);
-        syncManualSeekPointers(nextT);
-        updateMediaSessionState(true);
+        if (!hasAudioSource() || audio.readyState < 1) return;
+        try {
+          const dur = audio.duration;
+          const cur = audio.currentTime || 0;
+          const nextT = (dur && isFinite(dur)) ? Math.min(dur, cur + (details.seekOffset || 5)) : (cur + (details.seekOffset || 5));
+          cancelLoopGapWait();
+          setAudioPosition(nextT);
+          syncManualSeekPointers(nextT);
+          updateMediaSessionState(true);
+        } catch (e) {}
       });
       navigator.mediaSession.setActionHandler('seekto', (details) => {
-        if (details.seekTime !== null && details.seekTime !== undefined) {
-          cancelLoopGapWait();
-          setAudioPosition(details.seekTime);
-          syncManualSeekPointers(details.seekTime);
-          updateMediaSessionState(true);
+        if (!hasAudioSource() || audio.readyState < 1) return;
+        if (details.seekTime !== null && details.seekTime !== undefined && isFinite(details.seekTime)) {
+          try {
+            cancelLoopGapWait();
+            setAudioPosition(details.seekTime);
+            syncManualSeekPointers(details.seekTime);
+            updateMediaSessionState(true);
+          } catch (e) {}
         }
       });
     } catch (e) {
@@ -5884,19 +5947,23 @@
       return Infinity;
     }
 
-    function scheduleBgBoundaryCheck() {
+    function scheduleBgBoundaryCheck(expectedCurTime = null) {
       clearBgBoundaryTimer();
       if (!document.hidden || !state.isPlaying || audio.paused || isLoopGapWaiting) return;
       const cutoff = getActiveLoopCutoffSec();
       if (!isFinite(cutoff)) return;
-      const cur = audio.currentTime || 0;
+      const cur = (typeof expectedCurTime === 'number' && isFinite(expectedCurTime))
+        ? expectedCurTime
+        : (audio.currentTime || 0);
       const rate = (audio.playbackRate && isFinite(audio.playbackRate) && audio.playbackRate > 0) ? audio.playbackRate : 1;
       const waitMs = Math.max(60, Math.min(1800, Math.round(((cutoff - cur) / rate) * 1000 + 20)));
       bgBoundaryTimer = setTimeout(() => {
         bgBoundaryTimer = null;
         if (!document.hidden || !state.isPlaying || audio.paused) return;
-        handleLoopBoundary(audio.currentTime || 0, false);
-        if (document.hidden && state.isPlaying && !audio.paused) {
+        const prevSeekTs = lastSeekTs;
+        const res = handleLoopBoundary(audio.currentTime || 0, false);
+        const didSeek = lastSeekTs !== prevSeekTs || isLoopSeeking;
+        if (document.hidden && state.isPlaying && !audio.paused && !didSeek && res !== 'finished') {
           scheduleBgBoundaryCheck();
         }
       }, waitMs);
@@ -6027,10 +6094,7 @@
             } else {
               accumulateListeningTime(true);
               cancelLoopGapWait();
-              state.isPlaying = false;
-              audio.pause();
-              updatePlayBtnUI();
-              updateHUDDisplay(cur);
+              // 后台/锁屏自动连播切篇：绝不先 pause() 释放 iOS 媒体会话
               playNextItem();
               return 'finished';
             }
@@ -6100,10 +6164,7 @@
               } else {
                 accumulateListeningTime(true);
                 cancelLoopGapWait();
-                state.isPlaying = false;
-                audio.pause();
-                updatePlayBtnUI();
-                updateHUDDisplay(cur);
+                // 后台/锁屏自动连播切篇：绝不先 pause() 释放 iOS 媒体会话
                 playNextItem();
                 return 'finished';
               }
@@ -6367,9 +6428,7 @@
         return;
       }
       cancelLoopGapWait();
-      state.isPlaying = false;
-      updatePlayBtnUI();
-      updateMediaSessionState(true);
+      // 保持 state.isPlaying 以支持后台自动连播下一篇，若已是最后一篇由 playNextItem 负责收尾停播
       playNextItem();
     });
 
@@ -6408,7 +6467,7 @@
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
         flushPlaybackPosition();
-        // 锁屏/切后台瞬间若正处于停顿气口暂停中，立刻解除暂停并恢复真实音频流，防系统冻结定时器导致无声假死
+        // 锁屏/切后台瞬间若正处于停顿气口静音等待中，立刻解除等待并恢复真实音量，无需 pause->play
         if (isLoopGapWaiting && state.isPlaying && hasAudioSource()) {
           isLoopGapWaiting = false;
           loopGapEpoch++;
@@ -6417,6 +6476,7 @@
             loopGapTimer = null;
           }
           stopLoopGapKeepalive();
+          releaseInternalMuteLock('loopGap');
           releaseInternalMuteLock('loopGuard');
           updateHUDDisplay(audio.currentTime || 0);
           updatePlayBtnUI();
@@ -6435,6 +6495,11 @@
         lastRafRunTs = 0;
         if (isLoopSeeking && (Date.now() - lastSeekTs >= 350)) {
           isLoopSeeking = false;
+        }
+        if (state.isPlaying && audio.paused && !isLoopGapWaiting) {
+          state.isPlaying = false;
+          updatePlayBtnUI();
+          updateMediaSessionState(true);
         }
         if (state.isPlaying && !audio.paused && state.activeSentences && state.activeSentences.length > 0) {
           const cur = audio.currentTime || 0;
@@ -6462,6 +6527,7 @@
       if (!hasAudioSource() || !audio.error) return;
       const errCode = audio.error.code;
       const curSrc = audio.getAttribute('src') || audio.src || '';
+      const wasPlaying = Boolean(state.isPlaying);
       const resumeTime = (pendingSeekTarget && pendingSeekTarget.token === seekToken)
         ? pendingSeekTarget.time
         : (audio.currentTime || 0);
@@ -6482,8 +6548,9 @@
       }
       state.isPlaying = false;
       updatePlayBtnUI();
-      collapsePlayerDock();
+      updateMediaSessionState(true);
       if (isOffline) {
+        collapsePlayerDock();
         showToast('当前处于离线状态：正文与骨架可正常阅读，未缓存音频需联网后播放', 3000);
         return;
       }
@@ -6492,18 +6559,26 @@
         lastAudioErrorRecoverSrc = curSrc;
         try {
           audio.load();
-          if (resumeTime > 0.2) {
-            const recoverEpoch = manualSeekEpoch;
-            audio.addEventListener('loadedmetadata', () => {
-              if (recoverEpoch !== manualSeekEpoch || audio.error) return;
-              try {
+          const recoverEpoch = manualSeekEpoch;
+          const recoverGen = audioTrackGen;
+          audio.addEventListener('loadedmetadata', () => {
+            if (recoverEpoch !== manualSeekEpoch || recoverGen !== audioTrackGen || audio.error) return;
+            try {
+              if (resumeTime > 0.2) {
                 const dur = audio.duration || 0;
                 setAudioPosition(dur > 0 ? Math.min(resumeTime, Math.max(0, dur - 0.1)) : resumeTime);
-              } catch (e) {}
-            }, { once: true });
-          }
+              }
+              if (wasPlaying) {
+                state.isPlaying = true;
+                updatePlayBtnUI();
+                playAudioWithStateSync('Error auto-recover', true);
+              }
+            } catch (e) {}
+          }, { once: true });
+          return;
         } catch (e) {}
       }
+      collapsePlayerDock();
       showToast('音频加载或解码异常，点击句子或播放键可重试', 2600);
     });
   }
@@ -6597,6 +6672,10 @@
     if (currIdx !== -1 && currIdx < list.length - 1) {
       selectItem(list[currIdx + 1].id, true);
     } else {
+      state.isPlaying = false;
+      try { if (!audio.paused) audio.pause(); } catch (e) {}
+      updatePlayBtnUI();
+      updateMediaSessionState(true);
       showToast('已是当前筛选列表最后一篇考点', 1800);
     }
   }
@@ -7829,7 +7908,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.5.2';
+  const APP_BUILD_ID = '3.5.3';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
@@ -8002,7 +8081,15 @@
       }
       if ('serviceWorker' in navigator) {
         const regs = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(regs.map(r => r.update ? r.update().catch(() => r.unregister()) : r.unregister()));
+        await Promise.all(regs.map(async (r) => {
+          try {
+            if (r.update) await r.update();
+          } catch (e) {}
+          const waitingWorker = r.waiting || r.installing;
+          if (waitingWorker) {
+            try { waitingWorker.postMessage({ type: 'SKIP_WAITING' }); } catch (e) {}
+          }
+        }));
       }
       sessionStorage.clear();
       await sleep(300);
@@ -8159,9 +8246,9 @@
           if (installingWorker) {
             installingWorker.onstatechange = () => {
               if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                console.log('[PWA] 发现新版本 Service Worker，等待更新触发');
+                console.log('[PWA] 发现新版本 Service Worker，等待用户确认更新后激活');
                 if (window.__manualSwUpdateRequested) {
-                  window.location.reload();
+                  try { installingWorker.postMessage({ type: 'SKIP_WAITING' }); } catch (e) {}
                 }
               }
             };
@@ -9197,7 +9284,7 @@
       </div>`;
 
     if (chapter.track1 && chapter.track1.audio) {
-      audio.src = chapter.track1.audio;
+      audio.src = withAudioVersion(chapter.track1.audio);
       audio.load();
       audio.playbackRate = state.speed;
       tryRestoreAudioTime(restoreTime, getPlaybackTimeKey(1));
@@ -9304,7 +9391,7 @@
     resetAudioTrackPlayback(autoPlay);
     resetAudioProgressUI();
     if (card.audio) {
-      audio.src = card.audio;
+      audio.src = withAudioVersion(card.audio);
       audio.load();
       audio.playbackRate = state.speed;
       if (state.activeItem) {
@@ -9471,7 +9558,7 @@
     const audioSrc = voiceType === 'anlang' ? dayItem.anlang_audio : dayItem.voice_audio;
     resetAudioTrackPlayback(autoPlay && Boolean(audioSrc));
     if (audioSrc) {
-      audio.src = audioSrc;
+      audio.src = withAudioVersion(audioSrc);
       audio.load();
       audio.playbackRate = state.speed;
     } else {
@@ -9665,7 +9752,7 @@
     el.paperContent.innerHTML = `${topBarHtml}${secHtml}${pointsHtml}`;
 
     if (dayItem.audio) {
-      audio.src = dayItem.audio;
+      audio.src = withAudioVersion(dayItem.audio);
       audio.load();
       audio.playbackRate = state.speed;
       tryRestoreAudioTime(restoreTime, getPlaybackTimeKey());

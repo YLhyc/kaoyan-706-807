@@ -1,14 +1,14 @@
-// 考研背诵手卷 · 离线 PWA Service Worker (v3.5.2)
-const CACHE_NAME = 'kaoyan-all-in-one-v3.5.2';
+// 考研背诵手卷 · 离线 PWA Service Worker (v3.5.3)
+const CACHE_NAME = 'kaoyan-all-in-one-v3.5.3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
-  './app.css?v=3.5.2',
-  './app.js?v=3.5.2',
-  './listen_tracking.js?v=3.5.2',
-  './ai_sync.js?v=3.5.2',
-  './data/kaoyan_data.js?v=3.5.2',
-  './data/kaoyan_data_pol.js?v=3.5.2',
+  './app.css?v=3.5.3',
+  './app.js?v=3.5.3',
+  './listen_tracking.js?v=3.5.3',
+  './ai_sync.js?v=3.5.3',
+  './data/kaoyan_data.js?v=3.5.3',
+  './data/kaoyan_data_pol.js?v=3.5.3',
   './version.json',
   './manifest.json',
   './favicon.svg',
@@ -26,6 +26,12 @@ self.addEventListener('install', (event) => {
       .then((cache) => cache.addAll(ASSETS_TO_CACHE))
       .then(() => self.skipWaiting())
   );
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('activate', (event) => {
