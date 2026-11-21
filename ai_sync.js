@@ -2067,10 +2067,20 @@
     return norm === 'deepseek-v4-pro' ? 'deepseek-reasoner' : 'deepseek-chat';
   }
 
+  function resolveDefaultMaxTokens(activeModel, activeEffort, explicitMaxTokens) {
+    if (typeof explicitMaxTokens === 'number' && explicitMaxTokens > 0) {
+      return explicitMaxTokens;
+    }
+    if (activeModel === 'deepseek-v4-pro' || activeEffort === 'max') {
+      return 8192;
+    }
+    return 4096;
+  }
+
   async function streamDeepSeek({
     messages,
     temperature = 0.4,
-    maxTokens = 2048,
+    maxTokens = null,
     modelOverride = null,
     effort = null,
     background = false,
@@ -2104,6 +2114,10 @@
 
     const activeModel = modelOverride ? normalizeAiModel(modelOverride) : cfg.model;
     const activeEffort = normalizeReasoningEffort(effort || cfg.effort);
+    const resolvedMaxTokens = resolveDefaultMaxTokens(activeModel, activeEffort, maxTokens);
+    const isDeepThinking = (activeModel === 'deepseek-v4-pro' || activeEffort === 'max');
+    const firstByteTimeoutMs = isDeepThinking ? 90000 : 60000;
+    const streamIdleTimeoutMs = isDeepThinking ? 90000 : 60000;
 
     const buildRequestForMode = (useDirect) => {
       const ep = useDirect ? 'https://api.deepseek.com/chat/completions' : `${cfg.url}/api/ai/chat`;
@@ -2122,7 +2136,7 @@
         model: wireModel,
         messages,
         stream: Boolean(stream),
-        max_tokens: maxTokens
+        max_tokens: resolvedMaxTokens
       };
       if (!useDirect) {
         reqBody.reasoning_effort = activeEffort;
@@ -2143,10 +2157,15 @@
     };
 
     let timedOutReason = '';
-    let firstByteTimer = setTimeout(() => {
-      timedOutReason = '请求连接超时，请检查网络或服务状态';
-      try { controller.abort(); } catch (e) {}
-    }, 35000);
+    let firstByteTimer = null;
+    const resetFirstByteTimer = () => {
+      if (firstByteTimer) clearTimeout(firstByteTimer);
+      firstByteTimer = setTimeout(() => {
+        timedOutReason = '请求连接超时，请检查网络或服务状态';
+        try { controller.abort(); } catch (e) {}
+      }, firstByteTimeoutMs);
+    };
+    resetFirstByteTimer();
     try {
       let res = null;
       const preferProxy = hasProxy;
@@ -2159,6 +2178,7 @@
           signal: controller.signal
         });
         if (preferProxy && hasDirectKey && res.status >= 500 && !controller.signal.aborted) {
+          resetFirstByteTimer();
           const directReq = buildRequestForMode(true);
           res = await fetch(directReq.ep, {
             method: 'POST',
@@ -2169,6 +2189,7 @@
         }
       } catch (fetchErr) {
         if (preferProxy && hasDirectKey && !controller.signal.aborted && (!fetchErr || fetchErr.name !== 'AbortError')) {
+          resetFirstByteTimer();
           const directReq = buildRequestForMode(true);
           res = await fetch(directReq.ep, {
             method: 'POST',
@@ -2258,6 +2279,69 @@
           }));
       };
 
+      const processSseLine = (rawLine) => {
+        const line = rawLine.trim();
+        if (!line || !line.startsWith('data:')) return;
+        const payloadStr = line.slice(5).trim();
+        if (payloadStr === '[DONE]') {
+          sawStreamEndMarker = true;
+          return;
+        }
+        try {
+          const parsed = JSON.parse(payloadStr);
+          if (parsed && parsed.usage) usageData = parsed.usage;
+          const choice = parsed && parsed.choices && parsed.choices[0];
+          if (choice && choice.finish_reason) {
+            finishReason = choice.finish_reason;
+            sawStreamEndMarker = true;
+          }
+          const delta = choice && choice.delta;
+          if (delta) {
+            if (delta.reasoning_content) fullReasoning += delta.reasoning_content;
+            if (delta.content) fullContent += delta.content;
+            if (Array.isArray(delta.tool_calls)) {
+              delta.tool_calls.forEach((tc, pos) => {
+                const tcIdx = typeof tc.index === 'number' ? tc.index : pos;
+                if (!toolCallsMap.has(tcIdx)) {
+                  toolCallsMap.set(tcIdx, {
+                    id: tc.id || '',
+                    type: tc.type || 'function',
+                    function: { name: '', arguments: '' }
+                  });
+                }
+                const entry = toolCallsMap.get(tcIdx);
+                if (tc.id) entry.id = tc.id;
+                if (tc.type) entry.type = tc.type;
+                if (tc.function) {
+                  if (typeof tc.function.name === 'string' && tc.function.name) {
+                    if (!entry.function.name) {
+                      entry.function.name = tc.function.name;
+                    } else if (entry.function.name !== tc.function.name) {
+                      entry.function.name += tc.function.name;
+                    }
+                  }
+                  if (typeof tc.function.arguments === 'string') {
+                    entry.function.arguments += tc.function.arguments;
+                  }
+                }
+              });
+            }
+            if (typeof onDelta === 'function') {
+              onDelta({
+                content: fullContent,
+                reasoning: fullReasoning,
+                toolCalls: buildToolCallsArray(),
+                finishReason,
+                usage: usageData,
+                done: false
+              });
+            }
+          }
+        } catch (e) {
+          // 忽略半包行或心跳注释
+        }
+      };
+
       while (true) {
         let idleTimer = null;
         let stepTimedOut = false;
@@ -2273,7 +2357,7 @@
               stepTimedOut = true;
               try { controller.abort(); } catch (e) {}
               reject(new Error('流式响应超时，请稍后重试'));
-            }, 45000);
+            }, streamIdleTimeoutMs);
           })
         ]);
         if (stepTimedOut) break;
@@ -2282,69 +2366,18 @@
 
         const lines = buffer.split(/\r?\n/);
         buffer = lines.pop() || '';
-
         for (const rawLine of lines) {
-          const line = rawLine.trim();
-          if (!line || !line.startsWith('data:')) continue;
-          const payloadStr = line.slice(5).trim();
-          if (payloadStr === '[DONE]') {
-            sawStreamEndMarker = true;
-            continue;
-          }
-          try {
-            const parsed = JSON.parse(payloadStr);
-            if (parsed && parsed.usage) usageData = parsed.usage;
-            const choice = parsed && parsed.choices && parsed.choices[0];
-            if (choice && choice.finish_reason) {
-              finishReason = choice.finish_reason;
-              sawStreamEndMarker = true;
-            }
-            const delta = choice && choice.delta;
-            if (delta) {
-              if (delta.reasoning_content) fullReasoning += delta.reasoning_content;
-              if (delta.content) fullContent += delta.content;
-              if (Array.isArray(delta.tool_calls)) {
-                delta.tool_calls.forEach((tc, pos) => {
-                  const tcIdx = typeof tc.index === 'number' ? tc.index : pos;
-                  if (!toolCallsMap.has(tcIdx)) {
-                    toolCallsMap.set(tcIdx, {
-                      id: tc.id || '',
-                      type: tc.type || 'function',
-                      function: { name: '', arguments: '' }
-                    });
-                  }
-                  const entry = toolCallsMap.get(tcIdx);
-                  if (tc.id) entry.id = tc.id;
-                  if (tc.type) entry.type = tc.type;
-                  if (tc.function) {
-                    if (typeof tc.function.name === 'string' && tc.function.name) {
-                      if (!entry.function.name) {
-                        entry.function.name = tc.function.name;
-                      } else if (entry.function.name !== tc.function.name) {
-                        entry.function.name += tc.function.name;
-                      }
-                    }
-                    if (typeof tc.function.arguments === 'string') {
-                      entry.function.arguments += tc.function.arguments;
-                    }
-                  }
-                });
-              }
-              if (typeof onDelta === 'function') {
-                onDelta({
-                  content: fullContent,
-                  reasoning: fullReasoning,
-                  toolCalls: buildToolCallsArray(),
-                  finishReason,
-                  usage: usageData,
-                  done: false
-                });
-              }
-            }
-          } catch (e) {
-            // 忽略半包行或心跳注释
-          }
+          processSseLine(rawLine);
         }
+      }
+
+      // 冲刷流末尾残余 UTF-8 字节与未以换行结尾的 SSE 尾包，防止丢失末段内容或 finish_reason
+      buffer += decoder.decode();
+      if (buffer.trim()) {
+        for (const tailLine of buffer.split(/\r?\n/)) {
+          processSseLine(tailLine);
+        }
+        buffer = '';
       }
 
       const finalToolCalls = buildToolCallsArray();
@@ -2536,7 +2569,7 @@
   async function runDeepSeekWithTools({
     messages,
     temperature = 0.45,
-    maxTokens = 2048,
+    maxTokens = null,
     modelOverride = null,
     effort = null,
     tools = AI_CLIENT_TOOLS,
@@ -2571,7 +2604,7 @@
         });
 
         const requestedTools = Array.isArray(roundRes.toolCalls) ? roundRes.toolCalls : [];
-        const wantsToolLoop = allowTools && requestedTools.length > 0 && (roundRes.finishReason === 'tool_calls' || !roundRes.content);
+        const wantsToolLoop = allowTools && requestedTools.length > 0 && roundRes.finishReason !== 'length' && (roundRes.finishReason === 'tool_calls' || !roundRes.content);
 
         if (!wantsToolLoop) {
           if (typeof onToolStatus === 'function') onToolStatus('', true);
@@ -2835,7 +2868,7 @@ ${fullText}${focusSection}${tailSection}`;
         effort: 'low',
         background: true,
         temperature: 0.3,
-        maxTokens: 320,
+        maxTokens: 800,
         messages: [
           { role: 'system', content: '你是考研学习数据分析助手，只输出简洁精准的用户长期学习画像（纯文本，<=240字）。' },
           { role: 'user', content: prompt }
@@ -2898,6 +2931,9 @@ ${fullText}${focusSection}${tailSection}`;
       let bodyHtml = '';
       if (m.content) {
         bodyHtml = renderAiMarkdown(m.content, ctx.sentences);
+        if (!isLastStreaming && m.finishReason === 'length') {
+          bodyHtml += '<div class="ai-empty-warn" style="margin-top:8px;">本次回复已达单次输出上限，内容可能未完，可点击下方「继续生成」无缝续写。</div>';
+        }
       } else if (m.toolStatus) {
         bodyHtml = '';
       } else if (isLastStreaming) {
@@ -2907,8 +2943,12 @@ ${fullText}${focusSection}${tailSection}`;
       } else {
         bodyHtml = '<div class="ai-empty-warn">模型本次未返回有效正文，请点击重试。</div>';
       }
+      const continueBtnHtml = (m.content && !isLastStreaming && m.finishReason === 'length')
+        ? `<button type="button" class="ai-msg-action-btn js-ai-continue-btn" data-msg-idx="${idx}">继续生成</button>`
+        : '';
       const actionsHtml = (m.content && !isLastStreaming)
         ? `<div class="ai-msg-actions">
+            ${continueBtnHtml}
             <button type="button" class="ai-msg-action-btn js-ai-copy-btn" data-msg-idx="${idx}">复制解析</button>
             <button type="button" class="ai-msg-action-btn js-ai-save-mem-btn" data-msg-idx="${idx}">存入卡点记忆</button>
           </div>`
@@ -3007,9 +3047,28 @@ ${fullText}${focusSection}${tailSection}`;
     trimHistoryForCache(thread.slice(0, -2)).forEach((m) => {
       if (!m || !m.role) return;
       if (m.role === 'assistant' && Array.isArray(m.toolExchange) && m.toolExchange.length > 0) {
+        // 仅在工具调用与 tool 返回一一配对完整时才带入历史，且剥离跨轮 reasoning_content 防止 DeepSeek 400 协议报错
+        const expectedToolIds = new Set();
+        const repliedToolIds = new Set();
         m.toolExchange.forEach((step) => {
-          if (step && step.role) historyMsgs.push(step);
+          if (step && step.role === 'assistant' && Array.isArray(step.tool_calls)) {
+            step.tool_calls.forEach((tc) => { if (tc && tc.id) expectedToolIds.add(tc.id); });
+          } else if (step && step.role === 'tool' && step.tool_call_id) {
+            repliedToolIds.add(step.tool_call_id);
+          }
         });
+        const isExchangeComplete = expectedToolIds.size > 0 && Array.from(expectedToolIds).every(id => repliedToolIds.has(id));
+        if (isExchangeComplete) {
+          m.toolExchange.forEach((step) => {
+            if (!step || !step.role) return;
+            if (step.role === 'assistant') {
+              const { reasoning_content: _drop, ...cleanStep } = step;
+              historyMsgs.push(cleanStep);
+            } else {
+              historyMsgs.push(step);
+            }
+          });
+        }
       }
       historyMsgs.push({ role: m.role, content: m.content || '' });
     });
@@ -3025,7 +3084,7 @@ ${fullText}${focusSection}${tailSection}`;
       const toolRes = await runDeepSeekWithTools({
         messages: apiMessages,
         temperature: options.temperature !== undefined ? options.temperature : 0.45,
-        maxTokens: options.maxTokens || 2048,
+        maxTokens: options.maxTokens || null,
         modelOverride: options.modelOverride || null,
         effort: options.effort || null,
         tools: useTools ? AI_CLIENT_TOOLS : [],
@@ -3165,7 +3224,7 @@ ${fullText}${focusSection}${tailSection}`;
         stream: false,
         responseFormat: { type: 'json_object' },
         temperature: 0.2,
-        maxTokens: 1600,
+        maxTokens: 2400,
         messages: [
           { role: 'system', content: '你是考研命题与阅卷专家，只输出合法 JSON：{"skeleton": string[], "scoring": string[]}，所有词条必须是原文中的精确连续子串。' },
           { role: 'user', content: prompt }
@@ -3771,6 +3830,14 @@ ${fullText}${focusSection}${tailSection}`;
             b.openStudyItem(targetId);
             closeAiDrawer();
           }
+          return;
+        }
+
+        const continueBtn = e.target.closest('.js-ai-continue-btn');
+        if (continueBtn) {
+          sendAskMessage('请紧接你上一条未写完的内容继续输出，不要重复已经写过的部分。', {
+            displayContent: '继续生成'
+          });
           return;
         }
 
