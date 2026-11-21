@@ -14034,3 +14034,64 @@ body.dock-expanded .ai-selection-pill {
     padding: 0 7px !important;
   }
 }
+
+/* ==========================================================================
+   v3.5.4 iOS / iPadOS 触控隔离、回到当前句胶囊与 Split View 紧凑适配
+   ========================================================================== */
+#progress-bar,
+.progress-track-wrapper,
+.dock-progress-row .progress-track-wrapper {
+  touch-action: none !important;
+}
+
+.return-active-pill {
+  position: fixed;
+  right: max(14px, env(safe-area-inset-right, 14px));
+  bottom: calc(74px + env(safe-area-inset-bottom, 12px));
+  z-index: 985;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(184, 51, 42, 0.28);
+  background: rgba(250, 246, 238, 0.94);
+  color: var(--vermilion, #b8332a);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  box-shadow: 0 6px 20px rgba(42, 34, 27, 0.14);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.22s ease, opacity 0.22s ease, bottom 0.25s ease;
+}
+
+.return-active-pill:active {
+  transform: scale(0.95);
+}
+
+body.dock-expanded .return-active-pill {
+  bottom: calc(146px + env(safe-area-inset-bottom, 12px));
+}
+
+[data-theme="dark"] .return-active-pill {
+  background: rgba(34, 30, 27, 0.92);
+  border-color: rgba(232, 114, 98, 0.35);
+  color: #f08879;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.36);
+}
+
+@media (max-width: 520px) and (max-height: 760px) {
+  .player-dock {
+    padding: 2px 10px calc(6px + env(safe-area-inset-bottom, 8px)) !important;
+  }
+  .dock-progress-row {
+    margin: 2px 0 !important;
+  }
+  body.dock-expanded .main-stage {
+    padding-bottom: calc(164px + env(safe-area-inset-bottom, 12px)) !important;
+  }
+}

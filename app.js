@@ -80,8 +80,29 @@
     studyLogs: { dates: [], totalCardsCompleted: 0 },
 
     lastUserScrollTime: 0,
-    syncOffset: initialSyncOffset
+    syncOffset: initialSyncOffset,
+    mediaTrackMode: (function () {
+      try {
+        return localStorage.getItem('kaoyan_media_track_mode') === 'sentence' ? 'sentence' : 'item';
+      } catch (e) { return 'item'; }
+    })(),
+    sleepTimerMode: 'off', // 'off' | 'end_of_item' | '15m' | '30m' | '45m'
+    sleepTimerEndAt: 0
   };
+
+  const SLEEP_TIMER_OPTIONS = [
+    { id: 'off', label: '关闭', mins: 0 },
+    { id: 'end_of_item', label: '播完本篇', mins: -1 },
+    { id: '15m', label: '15分钟', mins: 15 },
+    { id: '30m', label: '30分钟', mins: 30 },
+    { id: '45m', label: '45分钟', mins: 45 }
+  ];
+
+  let sleepTimerInterval = null;
+  let dockSwipeBlockedByProgress = false;
+  let wasPlayingBeforeHidden = false;
+  let interruptedWhileHidden = false;
+  let userInitiatedPauseAt = 0;
 
   let isPolDataLoading = false;
   let polDataLoadPromise = null;
@@ -144,7 +165,7 @@
     if (!raw) return '';
     if (/^(blob:|data:)/i.test(raw)) return raw;
     if (/[?&]v=/.test(raw)) return raw;
-    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.3';
+    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.4';
     return raw + (raw.includes('?') ? '&' : '?') + 'v=' + encodeURIComponent(ver);
   }
 
@@ -1418,6 +1439,108 @@
       });
     });
     el.playModeList.appendChild(gapCard);
+
+    // 睡前定时停播卡片 (iOS / iPadOS 磨耳朵刚需)
+    const sleepCard = document.createElement('div');
+    sleepCard.className = 'mode-gap-card';
+    sleepCard.id = 'sleepTimerCard';
+    const formatSleepRemain = () => {
+      if (state.sleepTimerMode === 'end_of_item') return '本篇播完后自动暂停';
+      if (state.sleepTimerMode !== 'off' && state.sleepTimerEndAt > Date.now()) {
+        const remSec = Math.max(0, Math.ceil((state.sleepTimerEndAt - Date.now()) / 1000));
+        const mm = String(Math.floor(remSec / 60)).padStart(2, '0');
+        const ss = String(remSec % 60).padStart(2, '0');
+        return `剩余 ${mm}:${ss} 后自动暂停`;
+      }
+      return '睡前磨耳朵定时自动暂停，省电不耗流';
+    };
+    sleepCard.innerHTML = `
+      <div class="mode-gap-header">
+        <span class="mode-gap-title">睡前定时停播</span>
+        <span class="mode-gap-sub" id="sleepTimerSubText">${formatSleepRemain()}</span>
+      </div>
+      <div class="mode-gap-pills">
+        ${SLEEP_TIMER_OPTIONS.map(opt => `<button type="button" class="mode-gap-pill sleep-timer-pill ${state.sleepTimerMode === opt.id ? 'active' : ''}" data-sleep-id="${opt.id}">${opt.label}</button>`).join('')}
+      </div>
+    `;
+    sleepCard.querySelectorAll('.sleep-timer-pill').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const sid = btn.dataset.sleepId || 'off';
+        setSleepTimer(sid);
+        sleepCard.querySelectorAll('.sleep-timer-pill').forEach(b => b.classList.toggle('active', b.dataset.sleepId === state.sleepTimerMode));
+        const subEl = sleepCard.querySelector('#sleepTimerSubText');
+        if (subEl) subEl.textContent = formatSleepRemain();
+      });
+    });
+    el.playModeList.appendChild(sleepCard);
+  }
+
+  function updateSleepTimerDrawerText() {
+    const subEl = document.getElementById('sleepTimerSubText');
+    if (!subEl) return;
+    if (state.sleepTimerMode === 'end_of_item') {
+      subEl.textContent = '本篇播完后自动暂停';
+    } else if (state.sleepTimerMode !== 'off' && state.sleepTimerEndAt > Date.now()) {
+      const remSec = Math.max(0, Math.ceil((state.sleepTimerEndAt - Date.now()) / 1000));
+      const mm = String(Math.floor(remSec / 60)).padStart(2, '0');
+      const ss = String(remSec % 60).padStart(2, '0');
+      subEl.textContent = `剩余 ${mm}:${ss} 后自动暂停`;
+    } else {
+      subEl.textContent = '睡前磨耳朵定时自动暂停，省电不耗流';
+    }
+    document.querySelectorAll('.sleep-timer-pill').forEach(b => b.classList.toggle('active', b.dataset.sleepId === state.sleepTimerMode));
+  }
+
+  function triggerSleepTimerStop(msg = '定时停播已生效，祝好梦') {
+    if (sleepTimerInterval) {
+      clearInterval(sleepTimerInterval);
+      sleepTimerInterval = null;
+    }
+    state.sleepTimerMode = 'off';
+    state.sleepTimerEndAt = 0;
+    userInitiatedPauseAt = Date.now();
+    if (isLoopGapWaiting) cancelLoopGapWait();
+    if (!audio.paused) {
+      try { audio.pause(); } catch (e) {}
+    } else {
+      state.isPlaying = false;
+      updatePlayBtnUI();
+      updateMediaSessionState(true);
+    }
+    updateSleepTimerDrawerText();
+    showToast(msg, 3000);
+  }
+
+  function setSleepTimer(optId) {
+    if (sleepTimerInterval) {
+      clearInterval(sleepTimerInterval);
+      sleepTimerInterval = null;
+    }
+    const opt = SLEEP_TIMER_OPTIONS.find(o => o.id === optId) || SLEEP_TIMER_OPTIONS[0];
+    state.sleepTimerMode = opt.id;
+    state.sleepTimerEndAt = 0;
+    if (opt.id === 'off') {
+      showToast('已关闭定时停播', 1500);
+    } else if (opt.id === 'end_of_item') {
+      showToast('定时停播：播完本篇后自动暂停', 2000);
+    } else {
+      state.sleepTimerEndAt = Date.now() + opt.mins * 60 * 1000;
+      sleepTimerInterval = setInterval(() => {
+        if (state.sleepTimerMode === 'off' || state.sleepTimerMode === 'end_of_item') {
+          clearInterval(sleepTimerInterval);
+          sleepTimerInterval = null;
+          return;
+        }
+        if (Date.now() >= state.sleepTimerEndAt) {
+          triggerSleepTimerStop('定时停播已生效，祝好梦');
+          return;
+        }
+        updateSleepTimerDrawerText();
+      }, 1000);
+      showToast(`定时停播已开启：${opt.label}后自动暂停`, 2000);
+    }
+    updateSleepTimerDrawerText();
   }
 
 
@@ -5090,11 +5213,11 @@
         lastSpotlightEl = targetEl || newSpotlightEls[0];
       }
 
-      // 视口舒适视线中心滑动追踪：保持高光处于屏幕黄金阅读线（vh * 0.40）；若用户正在 .gold-quote-box 点读则不向上强拉视口
+      // 视口舒适视线中心滑动追踪：保持高光处于屏幕黄金阅读线（vh * 0.40）；用户手动滑动后静默 7 秒并显示「回到当前句」胶囊
       const now = Date.now();
       const rate = (audio && audio.playbackRate > 0) ? audio.playbackRate : (state.speed || 1.0);
       const throttleInterval = Math.max(300, Math.round(700 / rate));
-      if (forceScroll || (!isBodyScrollLocked() && now - state.lastUserScrollTime > 2000 && now - lastScrollTs > throttleInterval)) {
+      if (forceScroll || (!isBodyScrollLocked() && now - state.lastUserScrollTime > 7000 && now - lastScrollTs > throttleInterval)) {
         const vh = window.innerHeight || 800;
         let scrollAnchorEl = targetEl || newSpotlightEls[0];
         let skipScroll = false;
@@ -5167,6 +5290,22 @@
         }
       });
     }
+    if (typeof updateReturnActivePill === 'function') {
+      updateReturnActivePill();
+    }
+  }
+
+  function updateReturnActivePill() {
+    const pill = document.getElementById('btnReturnActiveSent');
+    if (!pill) return;
+    if (isBodyScrollLocked() || !lastSpotlightEl || !lastSpotlightEl.isConnected || (!state.isPlaying && (!audio || (audio.currentTime || 0) < 0.2))) {
+      pill.style.display = 'none';
+      return;
+    }
+    const vh = window.innerHeight || 800;
+    const rect = lastSpotlightEl.getBoundingClientRect();
+    const isOutOfView = rect.bottom < 72 || rect.top > (vh - 108);
+    pill.style.display = isOutOfView ? 'inline-flex' : 'none';
   }
 
   // ==========================================
@@ -5622,6 +5761,46 @@
     updateSystemMediaSession(sec, total);
   }
 
+  function jumpToAdjacentSentence(delta) {
+    if (!hasAudioSource() || audio.readyState < 1) return false;
+    const sents = state.activeSentences;
+    const cur = audio.currentTime || 0;
+    if (sents && sents.length > 0) {
+      let curIdx = (state.currentSentIndex >= 0 && state.currentSentIndex < sents.length)
+        ? state.currentSentIndex
+        : findActiveSentenceIndex(cur);
+      if (curIdx < 0) curIdx = 0;
+      let targetIdx = curIdx;
+      if (delta < 0) {
+        const curStart = Number(sents[curIdx]?.start) || 0;
+        // 若已在当前句播过 1.8s 以上，则先重听本句句首；否则跳上一句
+        if ((cur - curStart) > 1.8) {
+          targetIdx = curIdx;
+        } else {
+          targetIdx = Math.max(0, curIdx - 1);
+        }
+      } else {
+        targetIdx = Math.min(sents.length - 1, curIdx + 1);
+      }
+      const targetSent = sents[targetIdx];
+      if (targetSent && typeof targetSent.start === 'number') {
+        cancelLoopGapWait();
+        seekToSentence(targetIdx, targetSent.start);
+        updateMediaSessionState(true);
+        return true;
+      }
+    }
+    // 无分句时间轴时降级为 ±5s
+    const dur = audio.duration;
+    const offset = delta < 0 ? -5 : 5;
+    const nextT = (dur && isFinite(dur)) ? Math.max(0, Math.min(dur, cur + offset)) : Math.max(0, cur + offset);
+    cancelLoopGapWait();
+    setAudioPosition(nextT);
+    syncManualSeekPointers(nextT);
+    updateMediaSessionState(true);
+    return true;
+  }
+
   function setupMediaSessionHandlers() {
     if (!('mediaSession' in navigator)) return;
 
@@ -5632,6 +5811,7 @@
         resumeAudioPlayback();
       });
       navigator.mediaSession.setActionHandler('pause', () => {
+        userInitiatedPauseAt = Date.now();
         if (isLoopGapWaiting) {
           pauseDuringGapWait();
           return;
@@ -5639,31 +5819,27 @@
         audio.pause();
       });
       navigator.mediaSession.setActionHandler('previoustrack', () => {
-        playPrevItem();
+        if (state.mediaTrackMode === 'sentence') {
+          jumpToAdjacentSentence(-1);
+        } else {
+          playPrevItem();
+        }
       });
       navigator.mediaSession.setActionHandler('nexttrack', () => {
-        playNextItem();
+        if (state.mediaTrackMode === 'sentence') {
+          jumpToAdjacentSentence(1);
+        } else {
+          playNextItem();
+        }
       });
-      navigator.mediaSession.setActionHandler('seekbackward', (details) => {
-        if (!hasAudioSource() || audio.readyState < 1) return;
+      navigator.mediaSession.setActionHandler('seekbackward', () => {
         try {
-          const nextT = Math.max(0, (audio.currentTime || 0) - (details.seekOffset || 5));
-          cancelLoopGapWait();
-          setAudioPosition(nextT);
-          syncManualSeekPointers(nextT);
-          updateMediaSessionState(true);
+          jumpToAdjacentSentence(-1);
         } catch (e) {}
       });
-      navigator.mediaSession.setActionHandler('seekforward', (details) => {
-        if (!hasAudioSource() || audio.readyState < 1) return;
+      navigator.mediaSession.setActionHandler('seekforward', () => {
         try {
-          const dur = audio.duration;
-          const cur = audio.currentTime || 0;
-          const nextT = (dur && isFinite(dur)) ? Math.min(dur, cur + (details.seekOffset || 5)) : (cur + (details.seekOffset || 5));
-          cancelLoopGapWait();
-          setAudioPosition(nextT);
-          syncManualSeekPointers(nextT);
-          updateMediaSessionState(true);
+          jumpToAdjacentSentence(1);
         } catch (e) {}
       });
       navigator.mediaSession.setActionHandler('seekto', (details) => {
@@ -5863,11 +6039,15 @@
   function toggleAudioPlayback() {
     ensureAudioContextWarmed();
     if (isLoopGapWaiting) {
+      userInitiatedPauseAt = Date.now();
       pauseDuringGapWait();
       return;
     }
     if (audio.paused) resumeAudioPlayback();
-    else audio.pause();
+    else {
+      userInitiatedPauseAt = Date.now();
+      audio.pause();
+    }
   }
 
   function resumeAudioPlayback() {
@@ -6299,6 +6479,9 @@
       }
       clearPendingSeek(true);
       releaseAllInternalMuteLocks();
+      if (document.hidden && (Date.now() - userInitiatedPauseAt > 800)) {
+        interruptedWhileHidden = true;
+      }
       state.isPlaying = false;
       flushPlaybackPosition();
       if (syncRafId) {
@@ -6419,6 +6602,10 @@
     audio.addEventListener('ended', () => {
       clearBgBoundaryTimer();
       accumulateListeningTime(true);
+      if (state.sleepTimerMode === 'end_of_item') {
+        triggerSleepTimerStop('本篇已播完，定时停播已生效');
+        return;
+      }
       if (state.playMode === 'item') {
         performLoopTransition(0, { targetSentIdx: state.activeSentences?.length ? 0 : null, shouldResume: true, useGap: false });
         return;
@@ -6466,6 +6653,8 @@
 
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
+        wasPlayingBeforeHidden = Boolean(state.isPlaying && (!audio.paused || isLoopGapWaiting));
+        interruptedWhileHidden = false;
         flushPlaybackPosition();
         // 锁屏/切后台瞬间若正处于停顿气口静音等待中，立刻解除等待并恢复真实音量，无需 pause->play
         if (isLoopGapWaiting && state.isPlaying && hasAudioSource()) {
@@ -6500,6 +6689,22 @@
           state.isPlaying = false;
           updatePlayBtnUI();
           updateMediaSessionState(true);
+        }
+        if (wasPlayingBeforeHidden && (interruptedWhileHidden || audio.paused) && !isLoopGapWaiting && hasAudioSource()) {
+          wasPlayingBeforeHidden = false;
+          interruptedWhileHidden = false;
+          const sentNum = (state.currentSentIndex >= 0) ? `（第 ${state.currentSentIndex + 1} 句）` : '';
+          showToast(`音频已因系统打断暂停${sentNum}`, 5500, {
+            label: '继续播放',
+            replaceKey: 'ios-interrupt-resume',
+            onClick: () => {
+              ensureAudioContextWarmed();
+              resumeAudioPlayback();
+            }
+          });
+        } else {
+          wasPlayingBeforeHidden = false;
+          interruptedWhileHidden = false;
         }
         if (state.isPlaying && !audio.paused && state.activeSentences && state.activeSentences.length > 0) {
           const cur = audio.currentTime || 0;
@@ -7116,16 +7321,24 @@
 
       el.progressBar.addEventListener('touchstart', (e) => {
         isDragging = true;
+        dockSwipeBlockedByProgress = true;
+        e.stopPropagation();
         handleSeek(e);
       }, { passive: true });
       window.addEventListener('touchmove', (e) => {
         if (isDragging) {
+          if (e.cancelable) e.preventDefault();
           handleSeek(e);
         }
-      }, { passive: true });
-      window.addEventListener('touchend', () => {
+      }, { passive: false });
+      const endProgressTouch = () => {
         if (isDragging) isDragging = false;
-      });
+        if (dockSwipeBlockedByProgress) {
+          setTimeout(() => { dockSwipeBlockedByProgress = false; }, 80);
+        }
+      };
+      window.addEventListener('touchend', endProgressTouch);
+      window.addEventListener('touchcancel', endProgressTouch);
     }
 
     // 倍速选项复用顶部 IIFE 作用域 SPEED_OPTIONS
@@ -7334,9 +7547,18 @@
 
     // 监听正文区域及全局主舞台用户手动滚动/滑动/触控，防打架 (Bug Fix 4)
     isProgrammaticScrolling = false;
+    let returnPillRafId = 0;
+    const scheduleReturnPillUpdate = () => {
+      if (returnPillRafId) return;
+      returnPillRafId = requestAnimationFrame(() => {
+        returnPillRafId = 0;
+        updateReturnActivePill();
+      });
+    };
     const markUserScroll = (e) => {
       if (isBodyScrollLocked() || isProgrammaticScrolling) return;
       state.lastUserScrollTime = Date.now();
+      scheduleReturnPillUpdate();
     };
 
     const mainStageEl = document.querySelector('.main-stage');
@@ -7345,14 +7567,32 @@
       mainStageEl.addEventListener('wheel', markUserScroll, { passive: true });
       mainStageEl.addEventListener('touchstart', markUserScroll, { passive: true });
       mainStageEl.addEventListener('touchmove', markUserScroll, { passive: true });
+      mainStageEl.addEventListener('scroll', scheduleReturnPillUpdate, { passive: true });
     }
     window.addEventListener('wheel', markUserScroll, { passive: true });
     window.addEventListener('touchstart', markUserScroll, { passive: true });
     window.addEventListener('touchmove', markUserScroll, { passive: true });
+    window.addEventListener('scroll', scheduleReturnPillUpdate, { passive: true });
     if (el.paperContent) {
       el.paperContent.addEventListener('wheel', markUserScroll, { passive: true });
       el.paperContent.addEventListener('touchstart', markUserScroll, { passive: true });
       el.paperContent.addEventListener('touchmove', markUserScroll, { passive: true });
+    }
+
+    const returnActiveBtn = document.getElementById('btnReturnActiveSent');
+    if (returnActiveBtn) {
+      returnActiveBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        state.lastUserScrollTime = 0;
+        returnActiveBtn.style.display = 'none';
+        if (state.currentSentIndex >= 0 && state.activeSentences && state.activeSentences[state.currentSentIndex]) {
+          highlightSentence(state.currentSentIndex, true);
+        } else if (lastSpotlightEl && lastSpotlightEl.isConnected) {
+          try {
+            lastSpotlightEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } catch (err) {}
+        }
+      });
     }
 
 
@@ -7365,19 +7605,28 @@
     }
 
 
-    // 播放坞下滑手势与全宽收起控制 (随时轻松收起)
+    // 播放坞下滑手势与全宽收起控制 (随时轻松收起，严格隔离进度条拖拽)
     const playerDockEl = document.getElementById('playerDock') || document.querySelector('.player-dock');
     if (playerDockEl) {
       let touchStartY = 0;
       let touchStartX = 0;
+      let dockSwipeStartedOnProgress = false;
       playerDockEl.addEventListener('touchstart', (e) => {
-        if (e.touches && e.touches.length === 1) {
+        dockSwipeStartedOnProgress = Boolean(
+          dockSwipeBlockedByProgress ||
+          (e.target && e.target.closest && e.target.closest('#progress-bar, .progress-track-wrapper, .dock-progress-row'))
+        );
+        if (!dockSwipeStartedOnProgress && e.touches && e.touches.length === 1) {
           touchStartY = e.touches[0].clientY;
           touchStartX = e.touches[0].clientX;
         }
       }, { passive: true });
 
       playerDockEl.addEventListener('touchend', (e) => {
+        if (dockSwipeStartedOnProgress || dockSwipeBlockedByProgress) {
+          dockSwipeStartedOnProgress = false;
+          return;
+        }
         if (e.changedTouches && e.changedTouches.length === 1) {
           const deltaY = e.changedTouches[0].clientY - touchStartY;
           const deltaX = Math.abs(e.changedTouches[0].clientX - touchStartX);
@@ -7385,6 +7634,9 @@
             collapsePlayerDock();
           }
         }
+      }, { passive: true });
+      playerDockEl.addEventListener('touchcancel', () => {
+        dockSwipeStartedOnProgress = false;
       }, { passive: true });
     }
 
@@ -7691,9 +7943,17 @@
         }
       }
       document.querySelectorAll('.sync-card-btn').forEach(b => {
+        if (b.classList.contains('media-track-btn')) return;
         const val = parseFloat(b.dataset.offset);
         const curOff = (typeof state.syncOffset === 'number') ? state.syncOffset : 0.15;
         b.classList.toggle('active', Math.abs(val - curOff) < 0.015);
+      });
+      const mediaTrackVal = document.getElementById('sheetMediaTrackVal');
+      if (mediaTrackVal) {
+        mediaTrackVal.textContent = state.mediaTrackMode === 'sentence' ? '切句（重听上句 / 跳下句）' : '切篇（默认）';
+      }
+      document.querySelectorAll('.media-track-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.mediaTrack === state.mediaTrackMode);
       });
     }
     window.__syncSettingsUI = updateSettingsSheetUI;
@@ -7727,6 +7987,7 @@
 
     // 跟读聚光同频校准调节
     document.querySelectorAll('.sync-card-btn').forEach(btn => {
+      if (btn.classList.contains('media-track-btn')) return;
       btn.addEventListener('click', () => {
         const offset = parseFloat(btn.dataset.offset);
         if (!isNaN(offset)) {
@@ -7735,6 +7996,17 @@
           updateSettingsSheetUI();
           showToast(`跟读聚光同频已校准为 ${offset > 0 ? '+' : ''}${offset.toFixed(2)}s`);
         }
+      });
+    });
+
+    // 锁屏 / AirPods 切歌键偏好调节 (切篇 vs 切句)
+    document.querySelectorAll('.media-track-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mode = btn.dataset.mediaTrack === 'sentence' ? 'sentence' : 'item';
+        state.mediaTrackMode = mode;
+        localStorage.setItem('kaoyan_media_track_mode', mode);
+        updateSettingsSheetUI();
+        showToast(mode === 'sentence' ? '锁屏/耳机切歌键已设为【按句重听/跳转】' : '锁屏/耳机切歌键已设为【切换上下篇】', 2000);
       });
     });
 
@@ -7908,7 +8180,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.5.3';
+  const APP_BUILD_ID = '3.5.4';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
