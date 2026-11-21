@@ -2,6 +2,7 @@
 (function (root) {
   'use strict';
   const THRESHOLD = 0.9;
+  const MAX_BANK_LAYERS = 50;
   const number = value => Number.isFinite(Number(value)) ? Number(value) : 0;
   const count = value => Math.max(0, Math.floor(number(value)));
   const object = value => value && typeof value === 'object' && !Array.isArray(value) ? value : {};
@@ -38,11 +39,48 @@
     const total = seconds(windows);
     return total > 0 ? Math.min(1, seconds(round.coverage) / total) : 0;
   };
-  const emptyRound = () => ({ completed: 0, coverage: [], sealedAt: null });
+  const emptyRound = () => ({ completed: 0, coverage: [], bank: [], sealedAt: null });
+
+  function normalizeBank(rawBank, windows) {
+    if (!Array.isArray(rawBank)) return [];
+    const out = [];
+    for (let i = 0; i < rawBank.length && out.length < MAX_BANK_LAYERS; i++) {
+      const layer = intersect(union(rawBank[i]), windows);
+      if (layer.length) out.push(layer);
+    }
+    return out;
+  }
+
+  function trimBank(bank) {
+    if (!Array.isArray(bank)) return [];
+    let end = bank.length;
+    while (end > 0 && (!Array.isArray(bank[end - 1]) || bank[end - 1].length === 0)) end--;
+    return bank.slice(0, Math.min(end, MAX_BANK_LAYERS));
+  }
 
   function total(track) {
     if (!track) return 0;
     return Object.values(object(track.wholeDevices)).reduce((sum, round) => sum + count(round.completed), 0);
+  }
+
+  function roundEquivalent(round, windows) {
+    if (!round) return 0;
+    const totalSec = seconds(windows);
+    let eq = count(round.completed);
+    if (totalSec > 0) {
+      eq += Math.min(1, seconds(Array.isArray(round.coverage) ? round.coverage : []) / totalSec);
+      const bank = Array.isArray(round.bank) ? round.bank : [];
+      for (const layer of bank) {
+        eq += Math.min(1, seconds(Array.isArray(layer) ? layer : []) / totalSec);
+      }
+    }
+    return eq;
+  }
+
+  function equivalent(track) {
+    if (!track) return 0;
+    const windows = Array.isArray(track.windows) ? track.windows : [];
+    return Object.values(object(track.wholeDevices)).reduce((sum, round) => sum + roundEquivalent(round, windows), 0);
   }
 
   function normalizeRound(raw, windows) {
@@ -50,22 +88,33 @@
     return {
       completed: count(src.completed),
       coverage: intersect(union(src.coverage), windows),
+      bank: normalizeBank(src.bank, windows),
       sealedAt: src.sealedAt != null && Number.isFinite(Number(src.sealedAt)) ? Math.max(0, millis(src.sealedAt)) : null
     };
   }
 
   function completeIfReady(round, windows, end, practice = false) {
-    const total = seconds(windows);
-    const tailTolerance = Math.min(0.25, total * 0.22);
-    const requiredRatio = practice ? Math.min(0.98, (total - tailTolerance) / total) : THRESHOLD;
+    const totalSec = seconds(windows);
+    const tailTolerance = Math.min(0.25, totalSec * 0.22);
+    const requiredRatio = practice ? Math.min(0.98, (totalSec - tailTolerance) / totalSec) : THRESHOLD;
     if (ratio(round, windows) + 1e-8 < requiredRatio) return false;
     if (practice && end < windows[windows.length - 1][1] - tailTolerance - 1e-8) return false;
-    round.completed++;
-    // Ignore the rest of this traversal. Otherwise its tail leaks into the next
-    // round and ten complete plays can eventually become eleven credits.
-    round.coverage = [];
-    round.sealedAt = millis(end);
-    return true;
+    let credited = false;
+    while (ratio(round, windows) + 1e-8 >= requiredRatio) {
+      if (practice && credited) break;
+      round.completed++;
+      credited = true;
+      if (!practice && Array.isArray(round.bank) && round.bank.length > 0) {
+        round.coverage = round.bank.shift();
+        round.bank = trimBank(round.bank);
+      } else {
+        round.coverage = [];
+      }
+      // Ignore the rest of this traversal. Otherwise its tail leaks into the next
+      // round and ten complete plays can eventually become eleven credits.
+      round.sealedAt = millis(end);
+    }
+    return credited;
   }
 
   function advance(round, windows, from, to, practice = false) {
@@ -75,17 +124,43 @@
       if (from >= round.sealedAt - 0.05) return false;
       round.sealedAt = null;
     }
+    if (practice) {
+      round.coverage = union([...round.coverage, ...heard]);
+      return completeIfReady(round, windows, to, true);
+    }
+    // Pour heard segments through layered coverage bank:
+    // already-covered portions overflow into bank[0], bank[1], ... so repeated
+    // section/sentence drills are banked instead of discarded by flat union().
+    if (!Array.isArray(round.bank)) round.bank = [];
+    let overflow = intersect(round.coverage, heard);
     round.coverage = union([...round.coverage, ...heard]);
-    return completeIfReady(round, windows, to, practice);
+    let layerIdx = 0;
+    while (overflow.length > 0 && layerIdx < MAX_BANK_LAYERS) {
+      const curLayer = Array.isArray(round.bank[layerIdx]) ? round.bank[layerIdx] : [];
+      const nextOverflow = intersect(curLayer, overflow);
+      round.bank[layerIdx] = union([...curLayer, ...overflow]);
+      overflow = nextOverflow;
+      layerIdx++;
+    }
+    round.bank = trimBank(round.bank);
+    return completeIfReady(round, windows, to, false);
   }
 
   function mergeRound(left, right, windows, practice = false) {
     const a = normalizeRound(left, windows), b = normalizeRound(right, windows);
     if (a.completed !== b.completed) return a.completed > b.completed ? a : b;
     const coverage = union([...a.coverage, ...b.coverage]);
+    const maxBankLen = practice ? 0 : Math.max(a.bank.length, b.bank.length);
+    const bank = [];
+    for (let i = 0; i < maxBankLen && i < MAX_BANK_LAYERS; i++) {
+      const mergedLayer = union([...(a.bank[i] || []), ...(b.bank[i] || [])]);
+      if (mergedLayer.length) bank.push(mergedLayer);
+    }
     const out = {
-      completed: a.completed, coverage,
-      sealedAt: coverage.length ? null : (a.sealedAt == null && b.sealedAt == null ? null : Math.max(a.sealedAt || 0, b.sealedAt || 0))
+      completed: a.completed,
+      coverage,
+      bank: trimBank(bank),
+      sealedAt: (a.sealedAt == null || b.sealedAt == null) ? null : Math.max(a.sealedAt, b.sealedAt)
     };
     return out;
   }
@@ -183,7 +258,7 @@
     return { from: previous.position, to: current.position, seconds: Math.min(wall, media / previous.rate) };
   }
 
-  const api = { THRESHOLD, union, intersect, seconds, ratio, emptyRound, advance, normalize, merge, ensure, record, total, totals, practiceCount, sample };
+  const api = { THRESHOLD, union, intersect, seconds, ratio, emptyRound, roundEquivalent, equivalent, advance, normalize, merge, ensure, record, total, totals, practiceCount, sample };
   root.KaoyanListen = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : globalThis);

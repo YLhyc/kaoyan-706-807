@@ -165,7 +165,7 @@
     if (!raw) return '';
     if (/^(blob:|data:)/i.test(raw)) return raw;
     if (/[?&]v=/.test(raw)) return raw;
-    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.5';
+    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.6';
     return raw + (raw.includes('?') ? '&' : '?') + 'v=' + encodeURIComponent(ver);
   }
 
@@ -2742,7 +2742,12 @@
     const track = context && state.studyLogs.listenProgress && state.studyLogs.listenProgress[context.key];
     const deviceId = getLocalDeviceId();
     const whole = track && track.wholeDevices[deviceId] ? track.wholeDevices[deviceId] : listenTracker.emptyRound();
-    const coverageText = !context ? '本轮覆盖待加载' : `本轨听读 ${listenTracker.total(track)} 遍 · ` + (whole.sealedAt != null ? '本轮已达标' : `本轮覆盖 ${Math.floor(listenTracker.ratio(whole, context.windows) * 100 + 1e-6)}%`);
+    const hasBanked = Array.isArray(whole.bank) && whole.bank.length > 0;
+    const equivVal = (track && typeof listenTracker.equivalent === 'function') ? listenTracker.equivalent(track) : 0;
+    const bankSuffix = hasBanked ? ` · 精听等效 ${equivVal.toFixed(1)} 遍` : '';
+    const coverageText = !context
+      ? '本轮覆盖待加载'
+      : `本轨听读 ${listenTracker.total(track)} 遍 · ` + (whole.sealedAt != null ? '本轮已达标' : `本轮覆盖 ${Math.floor(listenTracker.ratio(whole, context.windows) * 100 + 1e-6)}%`) + bankSuffix;
     if (el.listenCoverageText.textContent !== coverageText) el.listenCoverageText.textContent = coverageText;
     let practiceText = '';
     const range = context && getRangePractice(context);
@@ -8180,7 +8185,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.5.5';
+  const APP_BUILD_ID = '3.5.6';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {

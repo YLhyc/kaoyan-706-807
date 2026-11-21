@@ -143,4 +143,31 @@ test('Malformed records cannot introduce NaN, negative coverage or invalid pract
   assert.equal(Object.keys(p.x.wholeDevices).length, 0);
   assert.deepEqual(p.x.practice, {});
 });
+test('Section-by-section 3x loop credits all 3 whole passes instead of 1', () => {
+  const t = track();
+  // 3 sections of 200s each, each looped 3 times
+  for (let i = 0; i < 3; i++) play(t, 0, 200);
+  assert.equal(t.wholeDevices.pc.completed, 0);
+  assert.ok(Math.abs(L.equivalent(t) - 1.0) < 0.01);
+  for (let i = 0; i < 3; i++) play(t, 200, 400);
+  assert.equal(t.wholeDevices.pc.completed, 0);
+  assert.ok(Math.abs(L.equivalent(t) - 2.0) < 0.01);
+  for (let i = 0; i < 3; i++) play(t, 400, 600);
+  assert.equal(t.wholeDevices.pc.completed, 3);
+  assert.equal(t.wholeDevices.pc.bank.length, 0);
+});
+test('Fragmented cross-session drilling banks extra passes and redeems when blind spots are filled', () => {
+  const p = {}, t = track(p);
+  // Day 1: drill middle section (200..400) 9 times -> 0 whole credits, 3.0 equivalent
+  for (let i = 0; i < 9; i++) play(t, 200, 400);
+  assert.equal(t.wholeDevices.pc.completed, 0);
+  assert.ok(Math.abs(L.equivalent(t) - 3.0) < 0.01);
+  // Reload from JSON (simulating next day)
+  const day2 = L.normalize(JSON.parse(JSON.stringify(p))).audio;
+  // Day 2: finish sections 1 and 3 three times each -> redeems 3 full passes, keeps 6 banked on middle
+  for (let i = 0; i < 3; i++) play(day2, 0, 200);
+  for (let i = 0; i < 3; i++) play(day2, 400, 600);
+  assert.equal(day2.wholeDevices.pc.completed, 3);
+  assert.equal(day2.wholeDevices.pc.bank.length, 5); // 1 in coverage + 5 in bank = 6 remaining middle passes
+});
 console.log(`${passed}/${passed} listen tracking checks passed`);
