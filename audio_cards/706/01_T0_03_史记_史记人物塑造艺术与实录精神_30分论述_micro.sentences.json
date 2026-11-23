@@ -1,0 +1,322 @@
+[
+  {
+    "id": "hook_c0",
+    "dom_key": "hook_c0",
+    "text": "由宏入微再到史魂：先用体制性的“互见法”保持人物真实多面，",
+    "start": 0.0,
+    "end": 6.0,
+    "duration": 6.0
+  },
+  {
+    "id": "hook_c1",
+    "dom_key": "hook_c1",
+    "text": "再以“鸿门宴”等戏剧冲突现场逼出性格光彩，",
+    "start": 6.049,
+    "end": 9.409,
+    "duration": 3.36
+  },
+  {
+    "id": "hook_c2",
+    "dom_key": "hook_c2",
+    "text": "紧接语言动作白描使如见其人，最后由“实录与发愤著书”点亮作品灵魂。",
+    "start": 9.859,
+    "end": 15.819,
+    "duration": 5.96
+  },
+  {
+    "id": "intro_c0",
+    "dom_key": "intro_c0",
+    "text": "《史记》是中国古代第一部纪传体通史与古典传记典范。",
+    "start": 16.269,
+    "end": 20.549,
+    "duration": 4.28
+  },
+  {
+    "id": "intro_c1",
+    "dom_key": "intro_c1",
+    "text": "司马迁秉持发愤著书与实录精神，“究天人之际，通古今之变，",
+    "start": 20.999,
+    "end": 26.039,
+    "duration": 5.04
+  },
+  {
+    "id": "intro_c2",
+    "dom_key": "intro_c2",
+    "text": "成一家之言”，突破编年、国别局限以“人”为中心，",
+    "start": 26.569,
+    "end": 30.449,
+    "duration": 3.88
+  },
+  {
+    "id": "intro_c3",
+    "dom_key": "intro_c3",
+    "text": "鲁迅赞其“史家之绝唱，无韵之离骚”。",
+    "start": 30.899,
+    "end": 34.179,
+    "duration": 3.28
+  },
+  {
+    "id": "sec0_title_c0",
+    "dom_key": "sec0_title_c0",
+    "text": "01 · 独创“互见法”写多维立体性格",
+    "start": 34.629,
+    "end": 37.749,
+    "duration": 3.12
+  },
+  {
+    "id": "sec0_step0_c0",
+    "dom_key": "sec0_step0_c0",
+    "text": "为解决体例整肃与性格多面的矛盾，独创“互见法”（旁见侧出法）：",
+    "start": 38.279,
+    "end": 43.599,
+    "duration": 5.32
+  },
+  {
+    "id": "sec0_step0_c1",
+    "dom_key": "sec0_step0_c1",
+    "text": "主要事迹入本传，次要、矛盾或有损形象之事散见他传。",
+    "start": 44.049,
+    "end": 48.649,
+    "duration": 4.6
+  },
+  {
+    "id": "sec0_step1_c0",
+    "dom_key": "sec0_step1_c0",
+    "text": "《高祖本纪》突出刘邦豁达大度、知人善任；",
+    "start": 49.099,
+    "end": 52.219,
+    "duration": 3.12
+  },
+  {
+    "id": "sec0_step1_c1",
+    "dom_key": "sec0_step1_c1",
+    "text": "《项羽本纪》借范增之口道其贪财好色，",
+    "start": 52.669,
+    "end": 55.909,
+    "duration": 3.24
+  },
+  {
+    "id": "sec0_step1_c2",
+    "dom_key": "sec0_step1_c2",
+    "text": "《樊郦滕灌列传》记逃跑推子下车之冷酷，",
+    "start": 56.359,
+    "end": 59.559,
+    "duration": 3.2
+  },
+  {
+    "id": "sec0_step1_c3",
+    "dom_key": "sec0_step1_c3",
+    "text": "《淮阴侯列传》揭示云梦擒韩信之权谋；",
+    "start": 60.009,
+    "end": 63.049,
+    "duration": 3.04
+  },
+  {
+    "id": "sec0_step2_c0",
+    "dom_key": "sec0_step2_c0",
+    "text": "既维护本传体例整严，又打破非黑即白脸谱化写法。",
+    "start": 63.619,
+    "end": 67.739,
+    "duration": 4.12
+  },
+  {
+    "id": "sec1_title_c0",
+    "dom_key": "sec1_title_c0",
+    "text": "02 · 精选戏剧化历史场景彰显神采",
+    "start": 68.189,
+    "end": 71.749,
+    "duration": 3.56
+  },
+  {
+    "id": "sec1_step0_c0",
+    "dom_key": "sec1_step0_c0",
+    "text": "将漫长历史提炼为高度戏剧化冲突场面，在生死考验中显露人物神采。",
+    "start": 72.199,
+    "end": 78.079,
+    "duration": 5.88
+  },
+  {
+    "id": "sec1_step1_c0",
+    "dom_key": "sec1_step1_c0",
+    "text": "《项羽本纪》“鸿门宴”以刘邦谢罪、范增举玦、项庄舞剑、樊哙闯帐、间道脱逃为主线：",
+    "start": 78.529,
+    "end": 84.969,
+    "duration": 6.44
+  },
+  {
+    "id": "sec1_step1_c1",
+    "dom_key": "sec1_step1_c1",
+    "text": "写尽项羽自矜寡谋、刘邦隐忍机警、张良沉着与范增急躁；",
+    "start": 85.419,
+    "end": 90.739,
+    "duration": 5.32
+  },
+  {
+    "id": "sec1_step2_c0",
+    "dom_key": "sec1_step2_c0",
+    "text": "渑池之会、完璧归赵、易水送别等名场面，皆以紧凑张力写活历史风神。",
+    "start": 91.189,
+    "end": 97.269,
+    "duration": 6.08
+  },
+  {
+    "id": "sec2_title_c0",
+    "dom_key": "sec2_title_c0",
+    "text": "03 · 个性化对话与传神细节白描",
+    "start": 97.719,
+    "end": 100.959,
+    "duration": 3.24
+  },
+  {
+    "id": "sec2_step0_c0",
+    "dom_key": "sec2_step0_c0",
+    "text": "对话肖其声口：陈胜仰天“王侯将相宁有种乎”尽显豪气；",
+    "start": 101.489,
+    "end": 106.049,
+    "duration": 4.56
+  },
+  {
+    "id": "sec2_step0_c1",
+    "dom_key": "sec2_step0_c1",
+    "text": "见秦皇出巡，项羽“彼可取而代也”显张扬强悍，",
+    "start": 106.499,
+    "end": 110.739,
+    "duration": 4.24
+  },
+  {
+    "id": "sec2_step0_c2",
+    "dom_key": "sec2_step0_c2",
+    "text": "刘邦叹“大丈夫当如此也”折出深沉欲望；",
+    "start": 111.269,
+    "end": 114.349,
+    "duration": 3.08
+  },
+  {
+    "id": "sec2_step1_c0",
+    "dom_key": "sec2_step1_c0",
+    "text": "李广一生不得封侯之“数奇”寡言、廉颇肉袒负荆请罪的诚挚勇毅，",
+    "start": 114.799,
+    "end": 120.239,
+    "duration": 5.44
+  },
+  {
+    "id": "sec2_step1_c1",
+    "dom_key": "sec2_step1_c1",
+    "text": "通过片言动作跃然纸上。",
+    "start": 120.689,
+    "end": 122.649,
+    "duration": 1.96
+  },
+  {
+    "id": "sec3_title_c0",
+    "dom_key": "sec3_title_c0",
+    "text": "04 · 贯注发愤著书激情与“实录”精神",
+    "start": 123.099,
+    "end": 126.619,
+    "duration": 3.52
+  },
+  {
+    "id": "sec3_step0_c0",
+    "dom_key": "sec3_step0_c0",
+    "text": "坚持班固所赞“不虚美，不隐恶”实录原则，既肯开国功业，",
+    "start": 127.069,
+    "end": 131.589,
+    "duration": 4.52
+  },
+  {
+    "id": "sec3_step0_c1",
+    "dom_key": "sec3_step0_c1",
+    "text": "亦不讳汉武帝晚年穷兵黩武与猜忌残酷；",
+    "start": 132.039,
+    "end": 135.599,
+    "duration": 3.56
+  },
+  {
+    "id": "sec3_step1_c0",
+    "dom_key": "sec3_step1_c0",
+    "text": "在《太史公自序》与卷尾“太史公曰”直抒胸臆，",
+    "start": 136.049,
+    "end": 139.529,
+    "duration": 3.48
+  },
+  {
+    "id": "sec3_step1_c1",
+    "dom_key": "sec3_step1_c1",
+    "text": "深情同情屈原、李广及刺客游侠；",
+    "start": 139.979,
+    "end": 143.139,
+    "duration": 3.16
+  },
+  {
+    "id": "sec3_step2_c0",
+    "dom_key": "sec3_step2_c0",
+    "text": "使《史记》兼具史学信实之风与强烈抒情感染力。",
+    "start": 143.589,
+    "end": 147.709,
+    "duration": 4.12
+  },
+  {
+    "id": "concl_c0",
+    "dom_key": "concl_c0",
+    "text": "司马迁以纪传体与互见法在冲突与白描细节中写活各阶层人物，将“不虚美，",
+    "start": 148.159,
+    "end": 154.559,
+    "duration": 6.4
+  },
+  {
+    "id": "concl_c1",
+    "dom_key": "concl_c1",
+    "text": "不隐恶”实录精神与发愤悲悯结合，既开创正史传记体制，",
+    "start": 155.089,
+    "end": 159.969,
+    "duration": 4.88
+  },
+  {
+    "id": "concl_c2",
+    "dom_key": "concl_c2",
+    "text": "亦直接启迪唐宋古文与后世叙事文学。",
+    "start": 160.419,
+    "end": 163.659,
+    "duration": 3.24
+  },
+  {
+    "id": "guard_c0",
+    "dom_key": "guard_c0",
+    "text": "防混：《史记》首创纪传体通史与“互见法”；",
+    "start": 164.189,
+    "end": 167.949,
+    "duration": 3.76
+  },
+  {
+    "id": "guard_c1",
+    "dom_key": "guard_c1",
+    "text": "《汉书》则是我国第一部纪传体断代史。",
+    "start": 168.399,
+    "end": 171.479,
+    "duration": 3.08
+  },
+  {
+    "id": "drill0_c0",
+    "dom_key": "drill0_c0",
+    "text": "① 《史记》如何借刘邦本纪与他传落实“互见法”？",
+    "start": 171.929,
+    "end": 176.889,
+    "duration": 4.96
+  },
+  {
+    "id": "drill1_c0",
+    "dom_key": "drill1_c0",
+    "text": "② 鸿门宴五个转折点分别映照哪四位人物？",
+    "start": 177.339,
+    "end": 181.939,
+    "duration": 4.6
+  },
+  {
+    "id": "drill2_c0",
+    "dom_key": "drill2_c0",
+    "text": "③ “不虚美，不隐恶”与“太史公曰”怎样统一史学与文学？",
+    "start": 182.389,
+    "end": 188.549,
+    "duration": 6.16
+  }
+]

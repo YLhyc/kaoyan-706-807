@@ -1,0 +1,290 @@
+[
+  {
+    "id": "hook_c0",
+    "dom_key": "hook_c0",
+    "text": "法→人→战→思四步推进：先立定历史演义“七分事实，",
+    "start": 0.0,
+    "end": 5.16,
+    "duration": 5.16
+  },
+  {
+    "id": "hook_c1",
+    "dom_key": "hook_c1",
+    "text": "三分虚构”的基本法则，再聚焦虚实熔铸出的第一理想人物诸葛亮，",
+    "start": 5.209,
+    "end": 10.489,
+    "duration": 5.28
+  },
+  {
+    "id": "hook_c2",
+    "dom_key": "hook_c2",
+    "text": "随后把智慧人物放进“赤壁之战”全景博弈中检验，",
+    "start": 10.939,
+    "end": 14.739,
+    "duration": 3.8
+  },
+  {
+    "id": "hook_c3",
+    "dom_key": "hook_c3",
+    "text": "最终点出全书“拥刘反曹”倾向与分合沧桑慨叹。",
+    "start": 15.189,
+    "end": 19.509,
+    "duration": 4.32
+  },
+  {
+    "id": "intro_c0",
+    "dom_key": "intro_c0",
+    "text": "《三国演义》是中国古代第一部长篇章回历史演义小说。",
+    "start": 19.959,
+    "end": 24.239,
+    "duration": 4.28
+  },
+  {
+    "id": "intro_c1",
+    "dom_key": "intro_c1",
+    "text": "罗贯中以《三国志》及裴注为框架熔裁话本戏曲，",
+    "start": 24.689,
+    "end": 28.489,
+    "duration": 3.8
+  },
+  {
+    "id": "intro_c2",
+    "dom_key": "intro_c2",
+    "text": "清代章学诚《丙辰札记》概括为“七分事实，三分虚构”。",
+    "start": 28.939,
+    "end": 33.299,
+    "duration": 4.36
+  },
+  {
+    "id": "sec0_title_c0",
+    "dom_key": "sec0_title_c0",
+    "text": "01 · 贯彻“七分事实，三分虚构”原则",
+    "start": 33.829,
+    "end": 37.229,
+    "duration": 3.4
+  },
+  {
+    "id": "sec0_step0_c0",
+    "dom_key": "sec0_step0_c0",
+    "text": "依傍三国鼎立大势、重大战役胜负与归宿之“实”；",
+    "start": 37.679,
+    "end": 41.599,
+    "duration": 3.92
+  },
+  {
+    "id": "sec0_step0_c1",
+    "dom_key": "sec0_step0_c1",
+    "text": "围绕美学理想虚构生发历史缝隙，令实服从虚。",
+    "start": 42.049,
+    "end": 46.049,
+    "duration": 4.0
+  },
+  {
+    "id": "sec0_step1_c0",
+    "dom_key": "sec0_step1_c0",
+    "text": "“关羽过五关斩六将”“温酒斩华雄”“草船借箭”“借东风”多属艺术虚构或移花接木，",
+    "start": 46.499,
+    "end": 52.699,
+    "duration": 6.2
+  },
+  {
+    "id": "sec0_step1_c1",
+    "dom_key": "sec0_step1_c1",
+    "text": "兼具大局信实与传奇魅力。",
+    "start": 53.149,
+    "end": 55.509,
+    "duration": 2.36
+  },
+  {
+    "id": "sec1_title_c0",
+    "dom_key": "sec1_title_c0",
+    "text": "02 · 塑造“智绝”兼忠贞化身诸葛亮",
+    "start": 55.959,
+    "end": 59.479,
+    "duration": 3.52
+  },
+  {
+    "id": "sec1_step0_c0",
+    "dom_key": "sec1_step0_c0",
+    "text": "战略预见三分；",
+    "start": 59.929,
+    "end": 61.249,
+    "duration": 1.32
+  },
+  {
+    "id": "sec1_step0_c1",
+    "dom_key": "sec1_step0_c1",
+    "text": "外交军事舌战群儒、巧激周瑜、草船借箭、空城退敌；",
+    "start": 61.779,
+    "end": 66.579,
+    "duration": 4.8
+  },
+  {
+    "id": "sec1_step0_c2",
+    "dom_key": "sec1_step0_c2",
+    "text": "品格紧扣“鞠躬尽瘁，死而后已”；",
+    "start": 67.029,
+    "end": 69.749,
+    "duration": 2.72
+  },
+  {
+    "id": "sec1_step1_c0",
+    "dom_key": "sec1_step1_c0",
+    "text": "虽鲁迅评“状诸葛之多智而近妖”指部分夸饰之弊，",
+    "start": 70.199,
+    "end": 74.319,
+    "duration": 4.12
+  },
+  {
+    "id": "sec1_step1_c1",
+    "dom_key": "sec1_step1_c1",
+    "text": "仍为忠诚智慧的经典化身。",
+    "start": 74.769,
+    "end": 76.969,
+    "duration": 2.2
+  },
+  {
+    "id": "sec2_title_c0",
+    "dom_key": "sec2_title_c0",
+    "text": "03 · 长于全景式战争与心理谋略博弈",
+    "start": 77.419,
+    "end": 81.019,
+    "duration": 3.6
+  },
+  {
+    "id": "sec2_step0_c0",
+    "dom_key": "sec2_step0_c0",
+    "text": "数十场战役各具面貌，不重纯厮杀，着力写战前政治外交与心理较量。",
+    "start": 81.469,
+    "end": 86.989,
+    "duration": 5.52
+  },
+  {
+    "id": "sec2_step1_c0",
+    "dom_key": "sec2_step1_c0",
+    "text": "铺陈蒋干中计、周瑜打黄盖、诸葛亮借箭、庞统献连环计，",
+    "start": 87.519,
+    "end": 92.079,
+    "duration": 4.56
+  },
+  {
+    "id": "sec2_step1_c1",
+    "dom_key": "sec2_step1_c1",
+    "text": "终以火烧赤壁收束，呈现以弱胜强的战争辩证智慧。",
+    "start": 92.529,
+    "end": 96.689,
+    "duration": 4.16
+  },
+  {
+    "id": "sec3_title_c0",
+    "dom_key": "sec3_title_c0",
+    "text": "04 · 贯注“拥刘反曹”倾向与分合沧桑",
+    "start": 97.299,
+    "end": 100.779,
+    "duration": 3.48
+  },
+  {
+    "id": "sec3_step0_c0",
+    "dom_key": "sec3_step0_c0",
+    "text": "鲜明“拥刘反曹”，借刘备宽厚寄托民众对清明政治的渴望；",
+    "start": 101.229,
+    "end": 105.949,
+    "duration": 4.72
+  },
+  {
+    "id": "sec3_step1_c0",
+    "dom_key": "sec3_step1_c0",
+    "text": "以“天下大势，分久必合，合久必分”统领兴衰，",
+    "start": 106.399,
+    "end": 110.599,
+    "duration": 4.2
+  },
+  {
+    "id": "sec3_step1_c1",
+    "dom_key": "sec3_step1_c1",
+    "text": "毛宗岗本卷首添杨慎《临江仙》“浪花淘尽英雄”，",
+    "start": 111.049,
+    "end": 115.129,
+    "duration": 4.08
+  },
+  {
+    "id": "sec3_step1_c2",
+    "dom_key": "sec3_step1_c2",
+    "text": "于三国归晋中叹惋纷争流逝。",
+    "start": 115.579,
+    "end": 118.219,
+    "duration": 2.64
+  },
+  {
+    "id": "concl_c0",
+    "dom_key": "concl_c0",
+    "text": "《三国演义》依托“七分事实，三分虚构”法则，",
+    "start": 118.669,
+    "end": 122.189,
+    "duration": 3.52
+  },
+  {
+    "id": "concl_c1",
+    "dom_key": "concl_c1",
+    "text": "在战争博弈中塑造诸葛亮等忠义典型，贯注“拥刘反曹”理想与分合沧桑感，",
+    "start": 122.639,
+    "end": 128.479,
+    "duration": 5.84
+  },
+  {
+    "id": "concl_c2",
+    "dom_key": "concl_c2",
+    "text": "确立历史演义体制规范。",
+    "start": 128.929,
+    "end": 130.809,
+    "duration": 1.88
+  },
+  {
+    "id": "guard_c0",
+    "dom_key": "guard_c0",
+    "text": "防混：清代章学诚《丙辰札记》评“七分事实，三分虚构”；",
+    "start": 131.339,
+    "end": 136.099,
+    "duration": 4.76
+  },
+  {
+    "id": "guard_c1",
+    "dom_key": "guard_c1",
+    "text": "鲁迅评“状诸葛之多智而近妖”，",
+    "start": 136.629,
+    "end": 139.149,
+    "duration": 2.52
+  },
+  {
+    "id": "guard_c2",
+    "dom_key": "guard_c2",
+    "text": "并概括“三绝”（智绝诸葛、义绝关羽、奸绝曹操）。",
+    "start": 139.679,
+    "end": 143.759,
+    "duration": 4.08
+  },
+  {
+    "id": "drill0_c0",
+    "dom_key": "drill0_c0",
+    "text": "① 章学诚与鲁迅分别如何评《三国》虚实法则与诸葛亮？",
+    "start": 144.209,
+    "end": 149.849,
+    "duration": 5.64
+  },
+  {
+    "id": "drill1_c0",
+    "dom_key": "drill1_c0",
+    "text": "② 诸葛亮的四个智谋名段与赤壁之战四个连环谋略各是什么？",
+    "start": 150.299,
+    "end": 156.379,
+    "duration": 6.08
+  },
+  {
+    "id": "drill2_c0",
+    "dom_key": "drill2_c0",
+    "text": "③ 怎样理解全书“拥刘反曹”与“分久必合”苍凉感之间的张力？",
+    "start": 156.829,
+    "end": 162.749,
+    "duration": 5.92
+  }
+]

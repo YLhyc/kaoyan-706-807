@@ -1,0 +1,266 @@
+[
+  {
+    "id": "hook_c0",
+    "dom_key": "hook_c0",
+    "text": "先共源、再分立两极、后点明唐宋诗史演进律：",
+    "start": 0.0,
+    "end": 4.84,
+    "duration": 4.84
+  },
+  {
+    "id": "hook_c1",
+    "dom_key": "hook_c1",
+    "text": "先定下孟范同宗陶渊明田园血脉（同），",
+    "start": 4.969,
+    "end": 8.529,
+    "duration": 3.56
+  },
+  {
+    "id": "hook_c2",
+    "dom_key": "hook_c2",
+    "text": "再分别拆开盛唐隐士“只见桑麻不见劳苦”的空灵（孟）与南宋地方官直击“湖面亦收租”的稼穑纪实（范）（异），",
+    "start": 8.979,
+    "end": 17.939,
+    "duration": 8.96
+  },
+  {
+    "id": "hook_c3",
+    "dom_key": "hook_c3",
+    "text": "最后收束到唐诗重神韵与宋诗重纪实的历史转型。",
+    "start": 18.389,
+    "end": 22.709,
+    "duration": 4.32
+  },
+  {
+    "id": "intro_c0",
+    "dom_key": "intro_c0",
+    "text": "古代田园诗自陶渊明开创后经唐宋嬗变：",
+    "start": 23.239,
+    "end": 26.839,
+    "duration": 3.6
+  },
+  {
+    "id": "intro_c1",
+    "dom_key": "intro_c1",
+    "text": "盛唐孟浩然（山水田园）与南宋范成大（田园纪实）同承陶诗遗泽，",
+    "start": 27.289,
+    "end": 33.609,
+    "duration": 6.32
+  },
+  {
+    "id": "intro_c2",
+    "dom_key": "intro_c2",
+    "text": "却因时代与身份立场呈现出迥异风貌。",
+    "start": 34.059,
+    "end": 37.179,
+    "duration": 3.12
+  },
+  {
+    "id": "sec0_title_c0",
+    "dom_key": "sec0_title_c0",
+    "text": "01 · 同承陶渊明美学、观照乡村与人情",
+    "start": 37.629,
+    "end": 41.549,
+    "duration": 3.92
+  },
+  {
+    "id": "sec0_step0_c0",
+    "dom_key": "sec0_step0_c0",
+    "text": "均深承陶渊明田园诗风熏染，摆脱六朝空泛游仙隐逸套路，",
+    "start": 41.999,
+    "end": 46.799,
+    "duration": 4.8
+  },
+  {
+    "id": "sec0_step0_c1",
+    "dom_key": "sec0_step0_c1",
+    "text": "寄心乡村风光与草木；",
+    "start": 47.329,
+    "end": 49.329,
+    "duration": 2.0
+  },
+  {
+    "id": "sec0_step1_c0",
+    "dom_key": "sec0_step1_c0",
+    "text": "真切捕捉岁时节序与乡民淳厚风习，",
+    "start": 49.779,
+    "end": 52.899,
+    "duration": 3.12
+  },
+  {
+    "id": "sec0_step1_c1",
+    "dom_key": "sec0_step1_c1",
+    "text": "延续亲近自然、向往宁静真淳的田园传统。",
+    "start": 53.349,
+    "end": 57.069,
+    "duration": 3.72
+  },
+  {
+    "id": "sec1_title_c0",
+    "dom_key": "sec1_title_c0",
+    "text": "02 · 孟浩然：隐士闲适视角、写意清淡神韵",
+    "start": 57.519,
+    "end": 61.879,
+    "duration": 4.36
+  },
+  {
+    "id": "sec1_step0_c0",
+    "dom_key": "sec1_step0_c0",
+    "text": "盛唐气象与襄阳隐逸使孟浩然将田园视为抒写清高心境的审美空间；",
+    "start": 62.329,
+    "end": 68.449,
+    "duration": 6.12
+  },
+  {
+    "id": "sec1_step1_c0",
+    "dom_key": "sec1_step1_c0",
+    "text": "《过故人庄》“绿树村边合，",
+    "start": 68.899,
+    "end": 70.779,
+    "duration": 1.88
+  },
+  {
+    "id": "sec1_step1_c1",
+    "dom_key": "sec1_step1_c1",
+    "text": "青山郭外斜……把酒话桑麻”虽及桑麻却全无耕作劳苦态，",
+    "start": 71.229,
+    "end": 76.229,
+    "duration": 5.0
+  },
+  {
+    "id": "sec1_step1_c2",
+    "dom_key": "sec1_step1_c2",
+    "text": "平淡清远而神韵自出，显高华格调。",
+    "start": 76.759,
+    "end": 80.199,
+    "duration": 3.44
+  },
+  {
+    "id": "sec2_title_c0",
+    "dom_key": "sec2_title_c0",
+    "text": "03 · 范成大：地方官视角、纪实农事与民苦",
+    "start": 80.649,
+    "end": 84.849,
+    "duration": 4.2
+  },
+  {
+    "id": "sec2_step0_c0",
+    "dom_key": "sec2_step0_c0",
+    "text": "《四时田园杂兴》六十首合唐田园诗与农家讽谕传统，使农民成主角；",
+    "start": 85.299,
+    "end": 91.299,
+    "duration": 6.0
+  },
+  {
+    "id": "sec2_step1_c0",
+    "dom_key": "sec2_step1_c0",
+    "text": "“昼出耘田夜绩麻……也傍桑阴学种瓜”细录老少耕织；",
+    "start": 91.749,
+    "end": 96.109,
+    "duration": 4.36
+  },
+  {
+    "id": "sec2_step1_c1",
+    "dom_key": "sec2_step1_c1",
+    "text": "“采菱辛苦废犁锄……近来湖面亦收租”直面官豪苛税，深怀民生忧患。",
+    "start": 96.559,
+    "end": 102.479,
+    "duration": 5.92
+  },
+  {
+    "id": "sec3_title_c0",
+    "dom_key": "sec3_title_c0",
+    "text": "04 · 由空灵写意转向工细纪实、折射唐宋转型",
+    "start": 103.009,
+    "end": 107.809,
+    "duration": 4.8
+  },
+  {
+    "id": "sec3_step0_c0",
+    "dom_key": "sec3_step0_c0",
+    "text": "孟诗重神韵空灵意境，略琐碎农务求心境契合；",
+    "start": 108.339,
+    "end": 112.659,
+    "duration": 4.32
+  },
+  {
+    "id": "sec3_step0_c1",
+    "dom_key": "sec3_step0_c1",
+    "text": "范诗重纪实细节，纳耕织风俗赋税入诗；",
+    "start": 113.109,
+    "end": 116.349,
+    "duration": 3.24
+  },
+  {
+    "id": "sec3_step1_c0",
+    "dom_key": "sec3_step1_c0",
+    "text": "由隐士写意演进至稼穑民生，大幅拓宽古典田园诗的社会认识价值。",
+    "start": 116.799,
+    "end": 122.199,
+    "duration": 5.4
+  },
+  {
+    "id": "concl_c0",
+    "dom_key": "concl_c0",
+    "text": "孟浩然与范成大同承陶渊明诗脉，却分呈清淡写意与工细纪实两貌，",
+    "start": 122.729,
+    "end": 128.649,
+    "duration": 5.92
+  },
+  {
+    "id": "concl_c1",
+    "dom_key": "concl_c1",
+    "text": "从盛唐空灵闲适向宋代农事民生写实的演变，",
+    "start": 129.099,
+    "end": 133.219,
+    "duration": 4.12
+  },
+  {
+    "id": "concl_c2",
+    "dom_key": "concl_c2",
+    "text": "折射出唐宋诗歌向日常写实转型的历史规律。",
+    "start": 133.669,
+    "end": 137.349,
+    "duration": 3.68
+  },
+  {
+    "id": "guard_c0",
+    "dom_key": "guard_c0",
+    "text": "防混：孟浩然盛唐代表作《过故人庄》“把酒话桑麻”全无劳苦态；",
+    "start": 137.799,
+    "end": 142.759,
+    "duration": 4.96
+  },
+  {
+    "id": "guard_c1",
+    "dom_key": "guard_c1",
+    "text": "范成大南宋代表作《四时田园杂兴》“昼出耘田夜绩麻”直面“湖面亦收租”。",
+    "start": 143.289,
+    "end": 149.289,
+    "duration": 6.0
+  },
+  {
+    "id": "drill0_c0",
+    "dom_key": "drill0_c0",
+    "text": "① 写出《过故人庄》与《四时田园杂兴》的两组对照核心名句？",
+    "start": 149.739,
+    "end": 155.339,
+    "duration": 5.6
+  },
+  {
+    "id": "drill1_c0",
+    "dom_key": "drill1_c0",
+    "text": "② 结合隐士 vs 地方官两种身份，解释孟浩然与范成大的观照差异？",
+    "start": 155.789,
+    "end": 162.349,
+    "duration": 6.56
+  },
+  {
+    "id": "drill2_c0",
+    "dom_key": "drill2_c0",
+    "text": "③ 这组对比怎样折射出“唐诗重兴象神韵→宋诗重日常纪实”的历史转型？",
+    "start": 162.799,
+    "end": 169.759,
+    "duration": 6.96
+  }
+]

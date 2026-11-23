@@ -1,0 +1,338 @@
+[
+  {
+    "id": "hook_c0",
+    "dom_key": "hook_c0",
+    "text": "先以“赋比兴”解决情物交融的表达之法，",
+    "start": 0.0,
+    "end": 4.08,
+    "duration": 4.08
+  },
+  {
+    "id": "hook_c1",
+    "dom_key": "hook_c1",
+    "text": "再落于“重章叠句”营造民歌复奏结构，进而升华出“风雅美刺”写实精神，",
+    "start": 4.129,
+    "end": 9.609,
+    "duration": 5.48
+  },
+  {
+    "id": "hook_c2",
+    "dom_key": "hook_c2",
+    "text": "最后在语言层以“四言二二节拍”奠定汉语诗律基石。",
+    "start": 10.059,
+    "end": 14.339,
+    "duration": 4.28
+  },
+  {
+    "id": "intro_c0",
+    "dom_key": "intro_c0",
+    "text": "《诗经》是中国古代第一部诗歌总集与现实主义源头，",
+    "start": 14.789,
+    "end": 18.869,
+    "duration": 4.08
+  },
+  {
+    "id": "intro_c1",
+    "dom_key": "intro_c1",
+    "text": "反映西周至春秋中叶五百余年生活。",
+    "start": 19.319,
+    "end": 22.119,
+    "duration": 2.8
+  },
+  {
+    "id": "intro_c2",
+    "dom_key": "intro_c2",
+    "text": "《毛诗序》将“风雅颂”诗体与“赋比兴”技法合称《诗》之“六义”，",
+    "start": 22.569,
+    "end": 27.209,
+    "duration": 4.64
+  },
+  {
+    "id": "intro_c3",
+    "dom_key": "intro_c3",
+    "text": "并论风诗功用曰“风以动之，教以化之”。",
+    "start": 27.659,
+    "end": 31.019,
+    "duration": 3.36
+  },
+  {
+    "id": "sec0_title_c0",
+    "dom_key": "sec0_title_c0",
+    "text": "01 · 系统确立“赋、比、兴”表现手法",
+    "start": 31.549,
+    "end": 34.629,
+    "duration": 3.08
+  },
+  {
+    "id": "sec0_step0_c0",
+    "dom_key": "sec0_step0_c0",
+    "text": "“赋者，敷陈其事而直言之也”，",
+    "start": 35.159,
+    "end": 37.599,
+    "duration": 2.44
+  },
+  {
+    "id": "sec0_step0_c1",
+    "dom_key": "sec0_step0_c1",
+    "text": "如《豳风·七月》按岁时顺序铺叙农夫四季耕织艰辛；",
+    "start": 38.049,
+    "end": 42.249,
+    "duration": 4.2
+  },
+  {
+    "id": "sec0_step1_c0",
+    "dom_key": "sec0_step1_c0",
+    "text": "“比者，以彼物比此物也”，如《魏风·硕鼠》把贪婪剥削者比作大老鼠，讽刺辛辣；",
+    "start": 42.699,
+    "end": 49.699,
+    "duration": 7.0
+  },
+  {
+    "id": "sec0_step2_c0",
+    "dom_key": "sec0_step2_c0",
+    "text": "“兴者，先言他物以引起所咏之词也”，如《周南·关雎》以“关关雎鸠，",
+    "start": 50.149,
+    "end": 56.189,
+    "duration": 6.04
+  },
+  {
+    "id": "sec0_step2_c1",
+    "dom_key": "sec0_step2_c1",
+    "text": "在河之洲”起兴引出“窈窕淑女，君子好逑”；",
+    "start": 56.639,
+    "end": 59.999,
+    "duration": 3.36
+  },
+  {
+    "id": "sec0_step3_c0",
+    "dom_key": "sec0_step3_c0",
+    "text": "使客观物象与主观情感水乳交融，开创后世托物言志传统。",
+    "start": 60.449,
+    "end": 65.409,
+    "duration": 4.96
+  },
+  {
+    "id": "sec1_title_c0",
+    "dom_key": "sec1_title_c0",
+    "text": "02 · 采用重章叠句与回环复沓结构",
+    "start": 65.859,
+    "end": 69.299,
+    "duration": 3.44
+  },
+  {
+    "id": "sec1_step0_c0",
+    "dom_key": "sec1_step0_c0",
+    "text": "民歌广泛采用重章叠句，句式大致相同而仅更换少数同义或反义词，",
+    "start": 69.749,
+    "end": 75.509,
+    "duration": 5.76
+  },
+  {
+    "id": "sec1_step0_c1",
+    "dom_key": "sec1_step0_c1",
+    "text": "于反复吟唱中层层推进情感。",
+    "start": 76.039,
+    "end": 78.559,
+    "duration": 2.52
+  },
+  {
+    "id": "sec1_step1_c0",
+    "dom_key": "sec1_step1_c0",
+    "text": "《秦风·蒹葭》三章叠唱：时间从“白露为霜”至“未晞”“未已”，",
+    "start": 79.009,
+    "end": 83.689,
+    "duration": 4.68
+  },
+  {
+    "id": "sec1_step1_c1",
+    "dom_key": "sec1_step1_c1",
+    "text": "空间由“宛在水中央”换至“水中坻”“水中沚”，",
+    "start": 84.139,
+    "end": 87.499,
+    "duration": 3.36
+  },
+  {
+    "id": "sec1_step1_c2",
+    "dom_key": "sec1_step1_c2",
+    "text": "抒发可望而不可即的惆怅。",
+    "start": 87.949,
+    "end": 90.029,
+    "duration": 2.08
+  },
+  {
+    "id": "sec1_step2_c0",
+    "dom_key": "sec1_step2_c0",
+    "text": "既强化音乐节律，更营造反复低回、情韵绵长的抒情氛围。",
+    "start": 90.559,
+    "end": 95.599,
+    "duration": 5.04
+  },
+  {
+    "id": "sec2_title_c0",
+    "dom_key": "sec2_title_c0",
+    "text": "03 · 开创关怀民生的“风雅”美刺精神",
+    "start": 96.049,
+    "end": 99.449,
+    "duration": 3.4
+  },
+  {
+    "id": "sec2_step0_c0",
+    "dom_key": "sec2_step0_c0",
+    "text": "“国风”与“小雅”中的怨刺诗与讽谕诗扎根世俗土壤，直面社会矛盾。",
+    "start": 99.979,
+    "end": 104.859,
+    "duration": 4.88
+  },
+  {
+    "id": "sec2_step1_c0",
+    "dom_key": "sec2_step1_c0",
+    "text": "《魏风·伐檀》发出“不稼不穑，胡取禾三百廛兮”抗议；",
+    "start": 105.309,
+    "end": 109.709,
+    "duration": 4.4
+  },
+  {
+    "id": "sec2_step1_c1",
+    "dom_key": "sec2_step1_c1",
+    "text": "《豳风·东山》“零雨其濛”写征夫还乡酸楚；",
+    "start": 110.159,
+    "end": 113.519,
+    "duration": 3.36
+  },
+  {
+    "id": "sec2_step1_c2",
+    "dom_key": "sec2_step1_c2",
+    "text": "《小雅·采薇》“昔我往矣，杨柳依依；",
+    "start": 113.969,
+    "end": 116.889,
+    "duration": 2.92
+  },
+  {
+    "id": "sec2_step1_c3",
+    "dom_key": "sec2_step1_c3",
+    "text": "今我来思，雨雪霏霏”以乐景写哀。",
+    "start": 117.339,
+    "end": 120.219,
+    "duration": 2.88
+  },
+  {
+    "id": "sec2_step2_c0",
+    "dom_key": "sec2_step2_c0",
+    "text": "关注民生疾苦、干预现实，构成儒家“美刺”诗教优良传统。",
+    "start": 120.669,
+    "end": 125.309,
+    "duration": 4.64
+  },
+  {
+    "id": "sec3_title_c0",
+    "dom_key": "sec3_title_c0",
+    "text": "04 · 形成以四言为主的语言音律体式",
+    "start": 125.839,
+    "end": 129.399,
+    "duration": 3.56
+  },
+  {
+    "id": "sec3_step0_c0",
+    "dom_key": "sec3_step0_c0",
+    "text": "确立四言为主、二二节拍整齐节奏，同时吸纳二至八字长短句打破板滞。",
+    "start": 129.849,
+    "end": 135.689,
+    "duration": 5.84
+  },
+  {
+    "id": "sec3_step1_c0",
+    "dom_key": "sec3_step1_c0",
+    "text": "善用叠字拟声词，如《小雅·伐木》“伐木丁丁，鸟鸣嘤嘤”，",
+    "start": 136.139,
+    "end": 141.099,
+    "duration": 4.96
+  },
+  {
+    "id": "sec3_step1_c1",
+    "dom_key": "sec3_step1_c1",
+    "text": "《郑风·子衿》“青青子衿，悠悠我心”，摹声状物、声律和谐；",
+    "start": 141.549,
+    "end": 146.829,
+    "duration": 5.28
+  },
+  {
+    "id": "sec3_step2_c0",
+    "dom_key": "sec3_step2_c0",
+    "text": "广用双声叠韵与自然押韵，为汉魏以后五、七言诗歌提供语言音律滋养。",
+    "start": 147.359,
+    "end": 153.639,
+    "duration": 6.28
+  },
+  {
+    "id": "concl_c0",
+    "dom_key": "concl_c0",
+    "text": "《诗经》以赋、比、兴技法、重章复沓音乐结构与二二节拍四言体式，",
+    "start": 154.089,
+    "end": 159.489,
+    "duration": 5.4
+  },
+  {
+    "id": "concl_c1",
+    "dom_key": "concl_c1",
+    "text": "将先秦民间歌咏与周代礼乐文化凝为一体，",
+    "start": 159.939,
+    "end": 163.499,
+    "duration": 3.56
+  },
+  {
+    "id": "concl_c2",
+    "dom_key": "concl_c2",
+    "text": "开创直面现实的风雅美刺精神与含蓄言志传统，滋养汉魏乐府至唐宋诗坛。",
+    "start": 163.949,
+    "end": 170.429,
+    "duration": 6.48
+  },
+  {
+    "id": "guard_c0",
+    "dom_key": "guard_c0",
+    "text": "防混：《诗经》是北方黄河流域现实主义源头（四言为主）；",
+    "start": 170.879,
+    "end": 175.759,
+    "duration": 4.88
+  },
+  {
+    "id": "guard_c1",
+    "dom_key": "guard_c1",
+    "text": "《楚辞》是南方浪漫主义源头（杂言骚体，多用“兮”字）。",
+    "start": 176.209,
+    "end": 180.249,
+    "duration": 4.04
+  },
+  {
+    "id": "drill0_c0",
+    "dom_key": "drill0_c0",
+    "text": "① 何谓《诗》之“六义”？",
+    "start": 180.699,
+    "end": 182.459,
+    "duration": 1.76
+  },
+  {
+    "id": "drill0_c1",
+    "dom_key": "drill0_c1",
+    "text": "赋比兴各自代表篇目与名句？",
+    "start": 182.909,
+    "end": 185.189,
+    "duration": 2.28
+  },
+  {
+    "id": "drill1_c0",
+    "dom_key": "drill1_c0",
+    "text": "② 《蒹葭》如何通过换字推进时空与怅惘？",
+    "start": 185.639,
+    "end": 190.079,
+    "duration": 4.44
+  },
+  {
+    "id": "drill2_c0",
+    "dom_key": "drill2_c0",
+    "text": "③ 《伐檀》《采薇》与《伐木》《子衿》分别印证哪两段论点？",
+    "start": 190.609,
+    "end": 196.329,
+    "duration": 5.72
+  }
+]

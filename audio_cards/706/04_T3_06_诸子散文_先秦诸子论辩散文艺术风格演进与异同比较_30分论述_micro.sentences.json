@@ -1,0 +1,266 @@
+[
+  {
+    "id": "hook_c0",
+    "dom_key": "hook_c0",
+    "text": "先一条线串完体裁三阶段总脉络（语录体→对话论辩→专题论文），",
+    "start": 0.0,
+    "end": 6.24,
+    "duration": 6.24
+  },
+  {
+    "id": "hook_c1",
+    "dom_key": "hook_c1",
+    "text": "再按先秦思想三大学派依次分家对比：",
+    "start": 6.289,
+    "end": 9.249,
+    "duration": 2.96
+  },
+  {
+    "id": "hook_c2",
+    "dom_key": "hook_c2",
+    "text": "《论语》至《孟子》儒家雄辩演化、《老子》至《庄子》道家哲诗奇想、最后到法家韩非与荀子立起冷峻周密论证法度。",
+    "start": 9.699,
+    "end": 18.219,
+    "duration": 8.52
+  },
+  {
+    "id": "intro_c0",
+    "dom_key": "intro_c0",
+    "text": "春秋战国“百家争鸣”催生先秦诸子散文，",
+    "start": 18.789,
+    "end": 22.189,
+    "duration": 3.4
+  },
+  {
+    "id": "intro_c1",
+    "dom_key": "intro_c1",
+    "text": "伴随学说争鸣逐步奠定古代说理散文的文体法度与风格谱系。",
+    "start": 22.639,
+    "end": 27.559,
+    "duration": 4.92
+  },
+  {
+    "id": "sec0_title_c0",
+    "dom_key": "sec0_title_c0",
+    "text": "01 · 文体演进三阶：语录 → 对话 → 专题论文",
+    "start": 28.009,
+    "end": 32.169,
+    "duration": 4.16
+  },
+  {
+    "id": "sec0_step0_c0",
+    "dom_key": "sec0_step0_c0",
+    "text": "春秋末《论语》呈短小“语录体”，辞约义丰；",
+    "start": 32.619,
+    "end": 36.099,
+    "duration": 3.48
+  },
+  {
+    "id": "sec0_step1_c0",
+    "dom_key": "sec0_step1_c0",
+    "text": "战国中《墨子》《孟子》转“对话式论辩体”（《庄子》寓言构篇抒情）；",
+    "start": 36.549,
+    "end": 41.469,
+    "duration": 4.92
+  },
+  {
+    "id": "sec0_step2_c0",
+    "dom_key": "sec0_step2_c0",
+    "text": "战国末《荀子》《韩非子》标有篇名、结构完整，",
+    "start": 41.919,
+    "end": 45.359,
+    "duration": 3.44
+  },
+  {
+    "id": "sec0_step2_c1",
+    "dom_key": "sec0_step2_c1",
+    "text": "成“专题论文体”成熟范式。",
+    "start": 45.809,
+    "end": 48.049,
+    "duration": 2.24
+  },
+  {
+    "id": "sec1_title_c0",
+    "dom_key": "sec1_title_c0",
+    "text": "02 · 儒家：由《论语》雍容转向《孟子》气势雄辩",
+    "start": 48.499,
+    "end": 52.779,
+    "duration": 4.28
+  },
+  {
+    "id": "sec1_step0_c0",
+    "dom_key": "sec1_step0_c0",
+    "text": "《论语》雍容雅致、言近旨远；",
+    "start": 53.229,
+    "end": 55.509,
+    "duration": 2.28
+  },
+  {
+    "id": "sec1_step0_c1",
+    "dom_key": "sec1_step0_c1",
+    "text": "孟子“予岂好辩哉，予不得已也”，转而犀利雄辩；",
+    "start": 55.959,
+    "end": 59.879,
+    "duration": 3.92
+  },
+  {
+    "id": "sec1_step1_c0",
+    "dom_key": "sec1_step1_c0",
+    "text": "擅类比、欲擒故纵与排比对偶，“五十步笑百步”讽梁惠王，",
+    "start": 60.329,
+    "end": 65.049,
+    "duration": 4.72
+  },
+  {
+    "id": "sec1_step1_c1",
+    "dom_key": "sec1_step1_c1",
+    "text": "“揠苗助长”阐养“浩然之气”，充沛刚健。",
+    "start": 65.579,
+    "end": 68.779,
+    "duration": 3.2
+  },
+  {
+    "id": "sec2_title_c0",
+    "dom_key": "sec2_title_c0",
+    "text": "03 · 道家：突破名辩、以寓言奇想显超旷境",
+    "start": 69.229,
+    "end": 73.589,
+    "duration": 4.36
+  },
+  {
+    "id": "sec2_step0_c0",
+    "dom_key": "sec2_step0_c0",
+    "text": "《老子》言约义丰、韵散结合、多正言若反格言；",
+    "start": 74.039,
+    "end": 77.839,
+    "duration": 3.8
+  },
+  {
+    "id": "sec2_step0_c1",
+    "dom_key": "sec2_step0_c1",
+    "text": "《庄子》推至哲诗交融高峰；",
+    "start": 78.289,
+    "end": 80.329,
+    "duration": 2.04
+  },
+  {
+    "id": "sec2_step1_c0",
+    "dom_key": "sec2_step1_c0",
+    "text": "弃正面逻辑驳难，用“寓言、重言、卮言”，",
+    "start": 80.859,
+    "end": 84.419,
+    "duration": 3.56
+  },
+  {
+    "id": "sec2_step1_c1",
+    "dom_key": "sec2_step1_c1",
+    "text": "《逍遥游》借北冥大鹏与蜩学鸠对照，汪洋恣肆仪态万方。",
+    "start": 84.869,
+    "end": 89.669,
+    "duration": 4.8
+  },
+  {
+    "id": "sec3_title_c0",
+    "dom_key": "sec3_title_c0",
+    "text": "04 · 法家与末期诸子：冷峻剖析与谨严论证法度",
+    "start": 90.119,
+    "end": 94.759,
+    "duration": 4.64
+  },
+  {
+    "id": "sec3_step0_c0",
+    "dom_key": "sec3_step0_c0",
+    "text": "立足功利人性论，《孤愤》《说难》洞察君臣利害，条分缕析；",
+    "start": 95.369,
+    "end": 99.849,
+    "duration": 4.48
+  },
+  {
+    "id": "sec3_step0_c1",
+    "dom_key": "sec3_step0_c1",
+    "text": "善借“买椟还珠”“自相矛盾”“守株待兔”透辟说理；",
+    "start": 100.299,
+    "end": 104.059,
+    "duration": 3.76
+  },
+  {
+    "id": "sec3_step1_c0",
+    "dom_key": "sec3_step1_c0",
+    "text": "同荀子博学详密论说文一道，奠定后世说理文结构严谨、逻辑周密典范。",
+    "start": 104.509,
+    "end": 110.589,
+    "duration": 6.08
+  },
+  {
+    "id": "concl_c0",
+    "dom_key": "concl_c0",
+    "text": "先秦诸子散文历经语录体、对话体向专题论文成熟，",
+    "start": 111.039,
+    "end": 115.199,
+    "duration": 4.16
+  },
+  {
+    "id": "concl_c1",
+    "dom_key": "concl_c1",
+    "text": "形成儒家道义雄辩、道家寓言奇想与法家冷峻剖析并峙的风格谱系，",
+    "start": 115.649,
+    "end": 121.289,
+    "duration": 5.64
+  },
+  {
+    "id": "concl_c2",
+    "dom_key": "concl_c2",
+    "text": "立下古代散文论辩法度。",
+    "start": 121.819,
+    "end": 123.899,
+    "duration": 2.08
+  },
+  {
+    "id": "guard_c0",
+    "dom_key": "guard_c0",
+    "text": "防混：严格记住体制演进三步：",
+    "start": 124.349,
+    "end": 126.789,
+    "duration": 2.44
+  },
+  {
+    "id": "guard_c1",
+    "dom_key": "guard_c1",
+    "text": "《论语》语录体 → 《墨》《孟》对话式论辩体（《庄子》以寓言构篇） → 《荀子》《韩非子》专题论文体。",
+    "start": 127.239,
+    "end": 134.199,
+    "duration": 6.96
+  },
+  {
+    "id": "drill0_c0",
+    "dom_key": "drill0_c0",
+    "text": "① 背全先秦诸子散文“语录体→对话论辩体→专题论文体”三阶代表作？",
+    "start": 134.649,
+    "end": 141.209,
+    "duration": 6.56
+  },
+  {
+    "id": "drill1_c0",
+    "dom_key": "drill1_c0",
+    "text": "② 对照孟子“五十步笑百步”雄辩、庄子“北冥大鹏”汪洋、韩非“买椟还珠”冷峻之风格差异？",
+    "start": 141.659,
+    "end": 149.539,
+    "duration": 7.88
+  },
+  {
+    "id": "drill2_c0",
+    "dom_key": "drill2_c0",
+    "text": "③ 回答 2017 年真题：",
+    "start": 150.069,
+    "end": 152.709,
+    "duration": 2.64
+  },
+  {
+    "id": "drill2_c1",
+    "dom_key": "drill2_c1",
+    "text": "《荀子》《孟子》《庄子》《韩非子》四家论辩异同怎么抓要点？",
+    "start": 153.159,
+    "end": 157.599,
+    "duration": 4.44
+  }
+]

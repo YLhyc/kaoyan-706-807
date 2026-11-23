@@ -1,0 +1,298 @@
+[
+  {
+    "id": "hook_c0",
+    "dom_key": "hook_c0",
+    "text": "紧扣“一承一继、同而不同”比较逻辑：",
+    "start": 0.0,
+    "end": 4.0,
+    "duration": 4.0
+  },
+  {
+    "id": "hook_c1",
+    "dom_key": "hook_c1",
+    "text": "先梳理从“以诗为词”推进到“以文为词”的文体破格递进，",
+    "start": 4.049,
+    "end": 8.449,
+    "duration": 4.4
+  },
+  {
+    "id": "hook_c2",
+    "dom_key": "hook_c2",
+    "text": "再解释北宋文臣超脱与南宋归正豪杰悲壮的情感反差，",
+    "start": 8.899,
+    "end": 13.419,
+    "duration": 4.52
+  },
+  {
+    "id": "hook_c3",
+    "dom_key": "hook_c3",
+    "text": "继而对比用典“浑化如盐 vs 用经用史讽世”，",
+    "start": 13.869,
+    "end": 17.469,
+    "duration": 3.6
+  },
+  {
+    "id": "hook_c4",
+    "dom_key": "hook_c4",
+    "text": "最后定格豪放兼备婉约的双璧地位。",
+    "start": 17.919,
+    "end": 20.839,
+    "duration": 2.92
+  },
+  {
+    "id": "intro_c0",
+    "dom_key": "intro_c0",
+    "text": "苏轼以“以诗为词”拓宽词境，辛弃疾以“以文为词”深化变革。",
+    "start": 21.289,
+    "end": 26.569,
+    "duration": 5.28
+  },
+  {
+    "id": "intro_c1",
+    "dom_key": "intro_c1",
+    "text": "周济《宋四家词选》评“东坡天趣独到处，殆成绝诣……稼轩则沉着痛快，有辙可循”。",
+    "start": 27.019,
+    "end": 33.699,
+    "duration": 6.68
+  },
+  {
+    "id": "sec0_title_c0",
+    "dom_key": "sec0_title_c0",
+    "text": "01 · 革新路径：“以诗为词”递进至“以文为词”",
+    "start": 34.149,
+    "end": 38.069,
+    "duration": 3.92
+  },
+  {
+    "id": "sec0_step0_c0",
+    "dom_key": "sec0_step0_c0",
+    "text": "确立“诗词一体”，称词“盖诗之裔”，力主“自是一家”，",
+    "start": 38.519,
+    "end": 42.479,
+    "duration": 3.96
+  },
+  {
+    "id": "sec0_step0_c1",
+    "dom_key": "sec0_step0_c1",
+    "text": "广用标题小序将诗之立意题材移入词，使词诗意化哲理化；",
+    "start": 43.089,
+    "end": 48.089,
+    "duration": 5.0
+  },
+  {
+    "id": "sec0_step1_c0",
+    "dom_key": "sec0_step1_c0",
+    "text": "在苏轼基础上打破对称句式限制，",
+    "start": 48.539,
+    "end": 51.419,
+    "duration": 2.88
+  },
+  {
+    "id": "sec0_step1_c1",
+    "dom_key": "sec0_step1_c1",
+    "text": "将先秦散文辞赋章法、问答设论与古文句法融入词中，",
+    "start": 51.869,
+    "end": 56.549,
+    "duration": 4.68
+  },
+  {
+    "id": "sec0_step1_c2",
+    "dom_key": "sec0_step1_c2",
+    "text": "兼具纵横气势与严密逻辑。",
+    "start": 56.999,
+    "end": 59.399,
+    "duration": 2.4
+  },
+  {
+    "id": "sec1_title_c0",
+    "dom_key": "sec1_title_c0",
+    "text": "02 · 情感底色：清旷超然 vs 英雄悲壮",
+    "start": 59.849,
+    "end": 63.849,
+    "duration": 4.0
+  },
+  {
+    "id": "sec1_step0_c0",
+    "dom_key": "sec1_step0_c0",
+    "text": "身处北宋承平党争贬谪，借佛道哲思超越困顿：",
+    "start": 64.299,
+    "end": 68.739,
+    "duration": 4.44
+  },
+  {
+    "id": "sec1_step0_c1",
+    "dom_key": "sec1_step0_c1",
+    "text": "定慧院“拣尽寒枝不肯栖”、赤壁“一尊还酹江月”、沙湖“也无风雨也无晴”；",
+    "start": 69.189,
+    "end": 75.709,
+    "duration": 6.52
+  },
+  {
+    "id": "sec1_step1_c0",
+    "dom_key": "sec1_step1_c0",
+    "text": "身处南宋偏安危局，作为“归正人”报国无门，“把吴钩看了，阑干拍遍”，",
+    "start": 76.159,
+    "end": 82.039,
+    "duration": 5.88
+  },
+  {
+    "id": "sec1_step1_c1",
+    "dom_key": "sec1_step1_c1",
+    "text": "《破阵子》梦回连营骤转“可怜白发生”。",
+    "start": 82.489,
+    "end": 85.409,
+    "duration": 2.92
+  },
+  {
+    "id": "sec2_title_c0",
+    "dom_key": "sec2_title_c0",
+    "text": "03 · 使事用典：浑化无痕 vs 用经用史讽世",
+    "start": 85.859,
+    "end": 90.339,
+    "duration": 4.48
+  },
+  {
+    "id": "sec2_step0_c0",
+    "dom_key": "sec2_step0_c0",
+    "text": "以诗法入词，点化典故浑然如水中着盐，",
+    "start": 90.789,
+    "end": 94.349,
+    "duration": 3.56
+  },
+  {
+    "id": "sec2_step0_c1",
+    "dom_key": "sec2_step0_c1",
+    "text": "《江城子·密州出猎》化用孙权射虎、冯唐持节而全无堆砌；",
+    "start": 94.799,
+    "end": 99.599,
+    "duration": 4.8
+  },
+  {
+    "id": "sec2_step1_c0",
+    "dom_key": "sec2_step1_c0",
+    "text": "精于“用经用史”，刘辰翁赞“牵雅颂入郑卫”，",
+    "start": 100.049,
+    "end": 103.449,
+    "duration": 3.4
+  },
+  {
+    "id": "sec2_step1_c1",
+    "dom_key": "sec2_step1_c1",
+    "text": "《永遇乐·京口北固亭怀古》百余字连用孙权、刘裕、刘义隆、佛狸祠与廉颇五典切中时弊。",
+    "start": 103.899,
+    "end": 111.499,
+    "duration": 7.6
+  },
+  {
+    "id": "sec3_title_c0",
+    "dom_key": "sec3_title_c0",
+    "text": "04 · 共筑豪放基石、并兼多元词风",
+    "start": 111.949,
+    "end": 115.589,
+    "duration": 3.64
+  },
+  {
+    "id": "sec3_step0_c0",
+    "dom_key": "sec3_step0_c0",
+    "text": "豪放外兼备丰富词风：苏有《江城子》“十年生死两茫茫”深沉悼亡；",
+    "start": 116.039,
+    "end": 121.799,
+    "duration": 5.76
+  },
+  {
+    "id": "sec3_step0_c1",
+    "dom_key": "sec3_step0_c1",
+    "text": "辛有《清平乐·村居》田园天真与谐谑自嘲；",
+    "start": 122.249,
+    "end": 125.929,
+    "duration": 3.68
+  },
+  {
+    "id": "sec3_step1_c0",
+    "dom_key": "sec3_step1_c0",
+    "text": "苏指明“向上一路”，辛率南宋辛派推向高峰，",
+    "start": 126.379,
+    "end": 130.019,
+    "duration": 3.64
+  },
+  {
+    "id": "sec3_step1_c1",
+    "dom_key": "sec3_step1_c1",
+    "text": "共奠豪放词与古诗并峙之地位。",
+    "start": 130.549,
+    "end": 133.029,
+    "duration": 2.48
+  },
+  {
+    "id": "concl_c0",
+    "dom_key": "concl_c0",
+    "text": "苏轼“以诗为词”注入清旷胸襟，",
+    "start": 133.479,
+    "end": 136.119,
+    "duration": 2.64
+  },
+  {
+    "id": "concl_c1",
+    "dom_key": "concl_c1",
+    "text": "辛弃疾“以文为词”融化经史典故与散文句法写英雄悲慨，",
+    "start": 136.569,
+    "end": 141.569,
+    "duration": 5.0
+  },
+  {
+    "id": "concl_c2",
+    "dom_key": "concl_c2",
+    "text": "一承一继把豪放词推至与五七言诗歌并峙高度。",
+    "start": 142.019,
+    "end": 146.099,
+    "duration": 4.08
+  },
+  {
+    "id": "guard_c0",
+    "dom_key": "guard_c0",
+    "text": "防混：周济《宋四家词选》评“东坡天趣独到处，",
+    "start": 146.549,
+    "end": 150.709,
+    "duration": 4.16
+  },
+  {
+    "id": "guard_c1",
+    "dom_key": "guard_c1",
+    "text": "殆成绝诣……稼轩则沉着痛快，有辙可循”；",
+    "start": 151.159,
+    "end": 154.839,
+    "duration": 3.68
+  },
+  {
+    "id": "guard_c2",
+    "dom_key": "guard_c2",
+    "text": "刘辰翁赞辛弃疾“牵雅颂入郑卫”。",
+    "start": 155.289,
+    "end": 158.049,
+    "duration": 2.76
+  },
+  {
+    "id": "drill0_c0",
+    "dom_key": "drill0_c0",
+    "text": "① 周济《宋四家词选》与刘辰翁对苏辛各有哪些精准评语？",
+    "start": 158.499,
+    "end": 164.419,
+    "duration": 5.92
+  },
+  {
+    "id": "drill1_c0",
+    "dom_key": "drill1_c0",
+    "text": "② 结合作品对照“以诗为词 vs 以文为词”“清旷超然 vs 英雄悲壮”“浑化用典 vs 用经用史”？",
+    "start": 164.869,
+    "end": 173.909,
+    "duration": 9.04
+  },
+  {
+    "id": "drill2_c0",
+    "dom_key": "drill2_c0",
+    "text": "③ 为何说苏辛均非单调豪放而兼具多元审美面貌？",
+    "start": 174.359,
+    "end": 179.959,
+    "duration": 5.6
+  }
+]

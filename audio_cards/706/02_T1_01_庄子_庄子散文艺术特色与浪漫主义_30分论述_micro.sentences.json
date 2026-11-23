@@ -1,0 +1,274 @@
+[
+  {
+    "id": "hook_c0",
+    "dom_key": "hook_c0",
+    "text": "先解决“拿什么说理”（三言寓言），",
+    "start": 0.0,
+    "end": 3.6,
+    "duration": 3.6
+  },
+  {
+    "id": "hook_c1",
+    "dom_key": "hook_c1",
+    "text": "再放飞“思绪怎么飞”（鲲鹏梦蝶奇想），",
+    "start": 3.649,
+    "end": 6.729,
+    "duration": 3.08
+  },
+  {
+    "id": "hook_c2",
+    "dom_key": "hook_c2",
+    "text": "落成“文章怎么排”（汪洋恣肆章法），",
+    "start": 7.179,
+    "end": 9.859,
+    "duration": 2.68
+  },
+  {
+    "id": "hook_c3",
+    "dom_key": "hook_c3",
+    "text": "最后亮出“如何回看俗世与传给后代”（辛辣讽刺+滋养太白东坡）。",
+    "start": 10.309,
+    "end": 16.069,
+    "duration": 5.76
+  },
+  {
+    "id": "intro_c0",
+    "dom_key": "intro_c0",
+    "text": "《庄子》是先秦诸子散文高峰与浪漫主义源头。",
+    "start": 16.519,
+    "end": 19.919,
+    "duration": 3.4
+  },
+  {
+    "id": "intro_c1",
+    "dom_key": "intro_c1",
+    "text": "庄子突破语录与专题论辩板滞，以奇幻想象融哲思于诗意，",
+    "start": 20.369,
+    "end": 25.489,
+    "duration": 5.12
+  },
+  {
+    "id": "intro_c2",
+    "dom_key": "intro_c2",
+    "text": "鲁迅在《汉文学史纲要》赞其“晚周诸子之作，莫能先也”。",
+    "start": 25.939,
+    "end": 30.619,
+    "duration": 4.68
+  },
+  {
+    "id": "sec0_title_c0",
+    "dom_key": "sec0_title_c0",
+    "text": "01 · 善用“三言”与寓言化理为象",
+    "start": 31.069,
+    "end": 34.109,
+    "duration": 3.04
+  },
+  {
+    "id": "sec0_step0_c0",
+    "dom_key": "sec0_step0_c0",
+    "text": "建立“寓言”“重言”“卮言”为主体的表述，秉持“寓言十九，藉外论之”；",
+    "start": 34.559,
+    "end": 39.359,
+    "duration": 4.8
+  },
+  {
+    "id": "sec0_step1_c0",
+    "dom_key": "sec0_step1_c0",
+    "text": "《庖丁解牛》以游刃有余喻养生，《秋水》河伯北海喻认知有限，",
+    "start": 39.809,
+    "end": 44.569,
+    "duration": 4.76
+  },
+  {
+    "id": "sec0_step1_c1",
+    "dom_key": "sec0_step1_c1",
+    "text": "《人间世》“螳臂当车”警示，《养生主》薪火相传譬喻，",
+    "start": 45.019,
+    "end": 48.899,
+    "duration": 3.88
+  },
+  {
+    "id": "sec0_step1_c2",
+    "dom_key": "sec0_step1_c2",
+    "text": "化抽象哲理为鲜活形象。",
+    "start": 49.349,
+    "end": 51.429,
+    "duration": 2.08
+  },
+  {
+    "id": "sec1_title_c0",
+    "dom_key": "sec1_title_c0",
+    "text": "02 · 展开雄奇飞腾的浪漫想象",
+    "start": 51.879,
+    "end": 54.959,
+    "duration": 3.08
+  },
+  {
+    "id": "sec1_step0_c0",
+    "dom_key": "sec1_step0_c0",
+    "text": "《逍遥游》开篇写鲲鹏“水击三千里，抟扶摇而上者九万里”，",
+    "start": 55.409,
+    "end": 60.409,
+    "duration": 5.0
+  },
+  {
+    "id": "sec1_step0_c1",
+    "dom_key": "sec1_step0_c1",
+    "text": "以壮阔图景寄寓精神超越；",
+    "start": 60.939,
+    "end": 63.099,
+    "duration": 2.16
+  },
+  {
+    "id": "sec1_step1_c0",
+    "dom_key": "sec1_step1_c0",
+    "text": "《齐物论》末以轻灵笔触写庄周梦蝶，借物我泯灭展现物化互通诗意，",
+    "start": 63.549,
+    "end": 68.909,
+    "duration": 5.36
+  },
+  {
+    "id": "sec1_step1_c1",
+    "dom_key": "sec1_step1_c1",
+    "text": "注入自由浪漫气息。",
+    "start": 69.359,
+    "end": 70.999,
+    "duration": 1.64
+  },
+  {
+    "id": "sec2_title_c0",
+    "dom_key": "sec2_title_c0",
+    "text": "03 · 形成汪洋恣肆的自由章法气势",
+    "start": 71.529,
+    "end": 74.929,
+    "duration": 3.4
+  },
+  {
+    "id": "sec2_step0_c0",
+    "dom_key": "sec2_step0_c0",
+    "text": "刘熙载《艺概》评其“意出尘外，怪生笔端”。",
+    "start": 75.459,
+    "end": 78.539,
+    "duration": 3.08
+  },
+  {
+    "id": "sec2_step1_c0",
+    "dom_key": "sec2_step1_c0",
+    "text": "不设呆板提纲，由核心意象随物赋形、层层生发；",
+    "start": 78.989,
+    "end": 83.269,
+    "duration": 4.28
+  },
+  {
+    "id": "sec2_step1_c1",
+    "dom_key": "sec2_step1_c1",
+    "text": "常连类比喻、正反翻案，句式长短错落，如巨澜奔涌或机锋毕露，",
+    "start": 83.719,
+    "end": 89.279,
+    "duration": 5.56
+  },
+  {
+    "id": "sec2_step1_c2",
+    "dom_key": "sec2_step1_c2",
+    "text": "与其自由主旨互为表里。",
+    "start": 89.729,
+    "end": 91.769,
+    "duration": 2.04
+  },
+  {
+    "id": "sec3_title_c0",
+    "dom_key": "sec3_title_c0",
+    "text": "04 · 诙谐辛辣讽刺与深远文学滋养",
+    "start": 92.299,
+    "end": 95.739,
+    "duration": 3.44
+  },
+  {
+    "id": "sec3_step0_c0",
+    "dom_key": "sec3_step0_c0",
+    "text": "《秋水》将梁国相印比作腐鼠、高洁志趣比鹓雏；",
+    "start": 96.189,
+    "end": 100.309,
+    "duration": 4.12
+  },
+  {
+    "id": "sec3_step0_c1",
+    "dom_key": "sec3_step0_c1",
+    "text": "《列御寇》以曹商舔痔得车讽阿附权贵，显独立风骨；",
+    "start": 100.759,
+    "end": 105.079,
+    "duration": 4.32
+  },
+  {
+    "id": "sec3_step1_c0",
+    "dom_key": "sec3_step1_c0",
+    "text": "以汪洋文风与寓言传统滋养司马迁、阮籍、李白、苏轼，",
+    "start": 105.529,
+    "end": 110.249,
+    "duration": 4.72
+  },
+  {
+    "id": "sec3_step1_c1",
+    "dom_key": "sec3_step1_c1",
+    "text": "成文人安顿心灵的精神源泉。",
+    "start": 110.699,
+    "end": 113.099,
+    "duration": 2.4
+  },
+  {
+    "id": "concl_c0",
+    "dom_key": "concl_c0",
+    "text": "《庄子》借“三言”寓言、奇幻想象与汪洋恣肆章法将哲理化为诗意散文，",
+    "start": 113.549,
+    "end": 119.349,
+    "duration": 5.8
+  },
+  {
+    "id": "concl_c1",
+    "dom_key": "concl_c1",
+    "text": "其自由与讽世品格深远影响汉赋、魏晋玄风及李白、苏轼等后代作家。",
+    "start": 119.799,
+    "end": 125.719,
+    "duration": 5.92
+  },
+  {
+    "id": "guard_c0",
+    "dom_key": "guard_c0",
+    "text": "防混：鲁迅在《汉文学史纲要》赞其“晚周诸子之作，莫能先也”；",
+    "start": 126.169,
+    "end": 131.569,
+    "duration": 5.4
+  },
+  {
+    "id": "guard_c1",
+    "dom_key": "guard_c1",
+    "text": "刘熙载《艺概》评其“意出尘外，怪生笔端”。",
+    "start": 132.099,
+    "end": 135.179,
+    "duration": 3.08
+  },
+  {
+    "id": "drill0_c0",
+    "dom_key": "drill0_c0",
+    "text": "① 庄子“三言”与四个核心寓言篇目各是什么？",
+    "start": 135.629,
+    "end": 140.189,
+    "duration": 4.56
+  },
+  {
+    "id": "drill1_c0",
+    "dom_key": "drill1_c0",
+    "text": "② 《逍遥游》《齐物论》与《列御寇》各体现哪一项特质？",
+    "start": 140.639,
+    "end": 145.519,
+    "duration": 4.88
+  },
+  {
+    "id": "drill2_c0",
+    "dom_key": "drill2_c0",
+    "text": "③ 鲁迅《汉文学史纲要》与刘熙载《艺概》两句评语？",
+    "start": 146.049,
+    "end": 151.609,
+    "duration": 5.56
+  }
+]
