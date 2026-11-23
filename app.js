@@ -165,7 +165,7 @@
     if (!raw) return '';
     if (/^(blob:|data:)/i.test(raw)) return raw;
     if (/[?&]v=/.test(raw)) return raw;
-    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.6';
+    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.7';
     return raw + (raw.includes('?') ? '&' : '?') + 'v=' + encodeURIComponent(ver);
   }
 
@@ -3864,7 +3864,7 @@
           return;
         }
         // 若点击的是交互控件（按钮、链接、专属跳转胶囊、AI 伴学按钮、接力微缩句或挖空测验模式的填空词），由其自身专属事件接管
-        if (e.target.closest('button, a, input, .seal-btn, .en-audio-jump-pill, .card-ai-btn, .card-relay-btn, .relay-sent, .relay-toolbar, .relay-chain-bar, .relay-glue-row, .relay-inter-glue, .relay-t1-drawer, .relay-t1-chain-bar, .relay-origin-tip')) {
+        if (e.target.closest('button, a, input, .seal-btn, .en-audio-jump-pill, .card-ai-btn, .card-relay-btn, .relay-sent, .relay-toolbar, .relay-chain-bar, .relay-glue-row, .relay-inter-glue, .relay-t1-drawer, .relay-t1-chain-bar, .relay-origin-drawer, .relay-origin-tip')) {
           return;
         }
         if (state.clozeMode === 'keyword' && (e.target.closest('.cloze') || e.target.closest('.kw-red') || e.target.closest('.stream-kw'))) {
@@ -4159,7 +4159,9 @@
       elItem.dataset.clickBound = '1';
       elItem.addEventListener('click', (e) => {
         if (hasActiveTextSelection()) return;
-        if (e.target.closest('.card-ai-btn, .card-relay-btn, .relay-sent, .relay-toolbar, .relay-chain-bar, .relay-t1-drawer, .relay-t1-chain-bar')) return;
+        if (e.target.closest('.card-ai-btn, .card-relay-btn, .relay-toolbar, .relay-t1-drawer, .relay-t1-chain-bar, .relay-origin-drawer')) return;
+        if (e.target.closest('.relay-sent.masked')) return;
+        if (e.target.closest('.relay-chain-bar') && !e.target.closest('.relay-narrative-hook .recite-sent')) return;
         const isRangePicking = Boolean(
           state.rangeSelection &&
           (state.rangeSelection.step === 'pick-start' || state.rangeSelection.step === 'pick-end') &&
@@ -4336,7 +4338,9 @@
         enIntroBadges.forEach(ib => {
           ib.addEventListener('click', (e) => {
             if (hasActiveTextSelection()) return;
-            if (e.target.closest('.card-ai-btn, .card-relay-btn, .relay-sent, .relay-toolbar, .relay-chain-bar, .relay-t1-drawer, .relay-t1-chain-bar')) return;
+            if (e.target.closest('.card-ai-btn, .card-relay-btn, .relay-toolbar, .relay-t1-drawer, .relay-t1-chain-bar, .relay-origin-drawer')) return;
+        if (e.target.closest('.relay-sent.masked')) return;
+        if (e.target.closest('.relay-chain-bar') && !e.target.closest('.relay-narrative-hook .recite-sent')) return;
             e.stopPropagation();
             const targetCard = ib.closest('.en-essay-para') || ib.closest('.exam-section-card') || el.paperContent.querySelector('.en-full-essay-box');
             if (seekToFirstSentenceInCard(targetCard)) {
@@ -4366,9 +4370,41 @@
     }
   }
 
-  function buildRelaySpineHtml(sec, showRoles = true, roles = null) {
+  function renderRelaySlotHtml(slotMap, slotKey, fallbackHtml) {
+    if (slotMap && slotMap.has(slotKey)) {
+      const sl = slotMap.get(slotKey);
+      if (sl && Array.isArray(sl.clauses) && sl.clauses.length > 0) {
+        return sl.clauses
+          .map(c => `<span class="recite-sent" data-sent-id="${c.sent_id}">${c.html}</span>`)
+          .join('');
+      }
+    }
+    return fallbackHtml || '';
+  }
+
+  function buildRelaySpineHtml(sec, showRoles = true, roles = null, slotMap = null, secIdx = -1, isNounCollection = false) {
     const r = (label) => showRoles ? `<span class="relay-role">${label}</span>` : '';
     const cueHtml = sec.cue ? `<div class="relay-cue-line"><span class="relay-cue-tag">自检</span><span>${sec.cue}</span></div>` : '';
+    if (isNounCollection && sec.s1 && sec.s2 && sec.s3) {
+      const h1 = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s1`, sec.s1) : sec.s1;
+      const h2 = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s2`, sec.s2) : sec.s2;
+      const h3 = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s3`, sec.s3) : sec.s3;
+      return `${cueHtml}
+        <div class="relay-mj-grid">
+          <div class="relay-mj-cell">
+            <span class="relay-role">时空</span>
+            <div class="relay-sent" data-relay-step="s1">${h1}</div>
+          </div>
+          <div class="relay-mj-cell">
+            <span class="relay-role">特质</span>
+            <div class="relay-sent" data-relay-step="s2">${h2}</div>
+          </div>
+          <div class="relay-mj-cell">
+            <span class="relay-role">定位</span>
+            <div class="relay-sent" data-relay-step="s3">${h3}</div>
+          </div>
+        </div>`;
+    }
     if (Array.isArray(sec.steps) && sec.steps.length >= 2) {
       const steps = sec.steps;
       let inner = '';
@@ -4376,10 +4412,11 @@
         const isFirst = i === 0;
         const isLast = i === steps.length - 1;
         const stepAttr = isFirst ? 's1' : (isLast && steps.length >= 3 ? 's3' : 's2');
+        const stepHtml = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_step${i}`, txt || '') : (txt || '');
         inner += `
         <div class="relay-step">
           <span class="relay-dot"></span>
-          <div class="relay-sent" data-relay-step="${stepAttr}">${r(lbl || '')}${txt || ''}</div>
+          <div class="relay-sent" data-relay-step="${stepAttr}">${r(lbl || '')}${stepHtml}</div>
         </div>`;
         if (isFirst && sec.q1) {
           inner += `<div class="relay-glue-row">
@@ -4398,11 +4435,14 @@
     const labels = (Array.isArray(roles) && roles.length >= 3)
       ? roles
       : ['① 定局立桩', '② 落锚举例', '③ 收果拔高'];
+    const s1Html = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s1`, sec.s1 || '') : (sec.s1 || '');
+    const s2Html = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s2`, sec.s2 || '') : (sec.s2 || '');
+    const s3Html = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s3`, sec.s3 || '') : (sec.s3 || '');
     return `${cueHtml}
       <div class="relay-spine">
         <div class="relay-step">
           <span class="relay-dot"></span>
-          <div class="relay-sent" data-relay-step="s1">${r(labels[0])}${sec.s1 || ''}</div>
+          <div class="relay-sent" data-relay-step="s1">${r(labels[0])}${s1Html}</div>
         </div>
         ${sec.q1 ? `<div class="relay-glue-row">
           <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
@@ -4410,7 +4450,7 @@
         </div>` : ''}
         <div class="relay-step">
           <span class="relay-dot"></span>
-          <div class="relay-sent" data-relay-step="s2">${r(labels[1])}${sec.s2 || ''}</div>
+          <div class="relay-sent" data-relay-step="s2">${r(labels[1])}${s2Html}</div>
         </div>
         ${sec.q2 ? `<div class="relay-glue-row">
           <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
@@ -4418,7 +4458,7 @@
         </div>` : ''}
         <div class="relay-step">
           <span class="relay-dot"></span>
-          <div class="relay-sent" data-relay-step="s3">${r(labels[2])}${sec.s3 || ''}</div>
+          <div class="relay-sent" data-relay-step="s3">${r(labels[2])}${s3Html}</div>
         </div>
       </div>`;
   }
@@ -4445,6 +4485,13 @@
 
   function renderRelayTrack2(trackObj, item) {
     const rm = item.relay_micro;
+    const slotMap = new Map();
+    if (Array.isArray(trackObj && trackObj.micro_slots)) {
+      trackObj.micro_slots.forEach(sl => {
+        if (sl && sl.slot_key) slotMap.set(sl.slot_key, sl);
+      });
+    }
+    const isDedicatedMicro = Boolean(trackObj && trackObj.dedicated_voice && slotMap.size > 0);
     const origWrap = document.createElement('div');
     origWrap.innerHTML = trackObj.html || '';
     const origBlocks = Array.from(origWrap.querySelectorAll('.logic-block-card'));
@@ -4452,8 +4499,23 @@
     const extractOriginBody = (blockIdx) => {
       const blk = origBlocks[blockIdx];
       if (!blk) return null;
-      return blk.querySelector('.gold-quote-body') || blk.querySelector('.logic-block-body');
+      const body = blk.querySelector('.gold-quote-body') || blk.querySelector('.logic-block-body');
+      if (body && isDedicatedMicro) {
+        body.querySelectorAll('.recite-sent, .t1-linked-sent, [data-sent-id], [data-sent-idx]').forEach(node => {
+          node.classList.remove('recite-sent', 't1-linked-sent', 'gold-sent-active');
+          delete node.dataset.sentId;
+          delete node.dataset.sentIdx;
+          delete node.dataset.linkedSentIdx;
+          delete node.dataset.start;
+          delete node.dataset.end;
+        });
+      }
+      return body;
     };
+
+    const originTipText = isDedicatedMicro
+      ? '考场原段对照（本轨已配微缩专配朗读；如需逐句听原段录音请切回轨道一）：'
+      : '考场原段（点击任意句跳播原录音）：';
 
     const wrap = document.createElement('div');
     wrap.className = 'paper-track2-wrap relay-track2-wrap';
@@ -4468,14 +4530,17 @@
           `<button type="button" class="relay-chain-node" data-jump-sec="${idx}">${idx + 1}. ${label}</button>${idx < arr.length - 1 ? '<span class="relay-chain-arrow">→</span>' : ''}`
         ).join('');
 
+    const hookHtml = rm.narrative_hook ? renderRelaySlotHtml(slotMap, 'hook', rm.narrative_hook) : '';
+    const guardHtml = rm.guard ? renderRelaySlotHtml(slotMap, 'guard', rm.guard) : '';
+
     wrap.innerHTML = `
       <div class="exam-spec-banner" style="background: linear-gradient(135deg, rgba(160, 90, 44, 0.08) 0%, rgba(200, 140, 60, 0.05) 100%); border-color: rgba(160, 90, 44, 0.2);">
         <div class="spec-chip" style="background: rgba(160, 90, 44, 0.12); color: #8A4B1A;">
           <svg fill="none" height="14" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="14"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
           <span>接力微缩逻辑版</span>
         </div>
-        <div class="spec-chip chip-type"><span>${rm.is_noun_collection ? '三阶名解速记' : '结构接力微缩'}</span></div>
-        <div class="spec-chip chip-score"><span>原段点读对照</span></div>
+        <div class="spec-chip chip-type"><span>${rm.is_noun_collection ? '三栏名解速记' : '结构接力微缩'}</span></div>
+        <div class="spec-chip chip-score"><span>${isDedicatedMicro ? '微缩专配逐句点读' : '原段点读对照'}</span></div>
       </div>
       <div class="exam-title-box">
         <span class="title-seal" style="border-color: #8A4B1A; color: #8A4B1A;">接力微缩</span>
@@ -4487,10 +4552,10 @@
           <span class="relay-chain-count">共 ${(rm.sections || []).length} 段接力</span>
         </div>
         <div class="relay-chain-nodes">${chainHtml}</div>
-        ${rm.narrative_hook ? `<div class="relay-narrative-hook"><span class="rnh-tag">记忆主线</span><span>${rm.narrative_hook}</span></div>` : ''}
+        ${rm.narrative_hook ? `<div class="relay-narrative-hook"><span class="rnh-tag">记忆主线</span><span>${hookHtml}</span></div>` : ''}
         ${rm.guard ? `<div class="relay-guard-strip">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span>${rm.guard}</span>
+          <span>${guardHtml}</span>
         </div>` : ''}
       </div>
       <div class="relay-toolbar" role="toolbar" aria-label="接力微缩背诵模式">
@@ -4509,11 +4574,12 @@
 
     const usedBlocks = new Set();
 
-    // 引论卡片（保留 origBlocks[0] 的 .t1-linked-sent）
+    // 引论卡片（保留 origBlocks[0] 的对照原段）
     if (rm.intro) {
       usedBlocks.add(0);
       const introCard = document.createElement('article');
       introCard.className = 'logic-block-card relay-bookend-card';
+      const introHtml = renderRelaySlotHtml(slotMap, 'intro', rm.intro);
       introCard.innerHTML = `
         <div class="logic-block-title" style="display:none;"><h3>【引论 · 总起微缩】</h3></div>
         <div class="relay-bookend-head">
@@ -4526,10 +4592,10 @@
             <span>对照原段</span>
           </button>
         </div>
-        <div class="relay-sent">${rm.intro}</div>
+        <div class="relay-sent">${introHtml}</div>
         <div class="relay-origin-drawer">
           <div class="relay-origin-body">
-            <div class="relay-origin-tip">考场原段（点击任意句跳播原录音）：</div>
+            <div class="relay-origin-tip">${originTipText}</div>
           </div>
         </div>
       `;
@@ -4546,11 +4612,12 @@
       card.className = 'logic-block-card relay-flow-card';
       card.id = `relay-sec-${idx}`;
       const numStr = String(idx + 1).padStart(2, '0');
+      const secTitleHtml = renderRelaySlotHtml(slotMap, `sec${idx}_title`, sec.title || '');
       card.innerHTML = `
         <div class="logic-block-title">
           <div class="relay-flow-head-left">
             <span class="relay-sec-num">${numStr}</span>
-            <h3>${sec.title || ''}</h3>
+            <h3>${secTitleHtml}</h3>
             ${sec.count_hook ? `<span class="relay-count-pill">${sec.count_hook}</span>` : ''}
           </div>
           <div class="relay-card-actions">
@@ -4564,10 +4631,10 @@
             </button>
           </div>
         </div>
-        ${buildRelaySpineHtml(sec, true, rm.roles)}
+        ${buildRelaySpineHtml(sec, true, rm.roles, slotMap, idx, Boolean(rm.is_noun_collection))}
         <div class="relay-origin-drawer">
           <div class="relay-origin-body">
-            <div class="relay-origin-tip">考场原段（点击任意句跳播原录音）：</div>
+            <div class="relay-origin-tip">${originTipText}</div>
           </div>
         </div>
       `;
@@ -4586,11 +4653,12 @@
       }
     });
 
-    // 结语卡片（保留最后一个 origBlock 的 .t1-linked-sent）
+    // 结语卡片（保留最后一个 origBlock 的对照原段）
     if (rm.conclusion) {
       const conclIdx = origBlocks.length - 1;
       const conclCard = document.createElement('article');
       conclCard.className = 'logic-block-card relay-bookend-card';
+      const conclHtml = renderRelaySlotHtml(slotMap, 'concl', rm.conclusion);
       conclCard.innerHTML = `
         <div class="logic-block-title" style="display:none;"><h3>【结语 · 总结升华】</h3></div>
         <div class="relay-bookend-head">
@@ -4603,10 +4671,10 @@
             <span>对照原段</span>
           </button>
         </div>
-        <div class="relay-sent">${rm.conclusion}</div>
+        <div class="relay-sent">${conclHtml}</div>
         <div class="relay-origin-drawer">
           <div class="relay-origin-body">
-            <div class="relay-origin-tip">考场原段（点击任意句跳播原录音）：</div>
+            <div class="relay-origin-tip">${originTipText}</div>
           </div>
         </div>
       `;
@@ -4624,7 +4692,7 @@
       if (Array.isArray(rm.drills) && rm.drills.length) {
         fHtml += `<section class="relay-drills-card">
           <div class="relay-footer-head"><span>合书闭眼抽查（${rm.drills.length} 问自检）</span></div>
-          <div class="relay-footer-list">${rm.drills.map(d => `<div class="relay-footer-item">${d}</div>`).join('')}</div>
+          <div class="relay-footer-list">${rm.drills.map((d, di) => `<div class="relay-footer-item">${renderRelaySlotHtml(slotMap, `drill${di}`, d)}</div>`).join('')}</div>
         </section>`;
       }
       if (rm.exam_variants && Array.isArray(rm.exam_variants.cases) && rm.exam_variants.cases.length) {
@@ -8185,7 +8253,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.5.6';
+  const APP_BUILD_ID = '3.5.7';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
@@ -9792,7 +9860,9 @@
     el.paperContent.querySelectorAll('.xt-day-point-card').forEach(card => {
       card.addEventListener('click', (e) => {
         if (hasActiveTextSelection()) return;
-        if (e.target.closest('.card-ai-btn, .card-relay-btn, .relay-sent, .relay-toolbar, .relay-chain-bar, .relay-t1-drawer, .relay-t1-chain-bar')) return;
+        if (e.target.closest('.card-ai-btn, .card-relay-btn, .relay-toolbar, .relay-t1-drawer, .relay-t1-chain-bar, .relay-origin-drawer')) return;
+        if (e.target.closest('.relay-sent.masked')) return;
+        if (e.target.closest('.relay-chain-bar') && !e.target.closest('.relay-narrative-hook .recite-sent')) return;
         const pIdx = parseInt(card.dataset.pointIdx, 10);
         if (state.rangeSelection && (state.rangeSelection.step === 'pick-start' || state.rangeSelection.step === 'pick-end')) {
           if (!isNaN(pIdx)) handleRangeSentencePick(pIdx);
@@ -10062,7 +10132,9 @@
     el.paperContent.querySelectorAll('.tj-point-card').forEach(pCard => {
       pCard.addEventListener('click', (e) => {
         if (hasActiveTextSelection()) return;
-        if (e.target.closest('.card-ai-btn, .card-relay-btn, .relay-sent, .relay-toolbar, .relay-chain-bar, .relay-t1-drawer, .relay-t1-chain-bar')) return;
+        if (e.target.closest('.card-ai-btn, .card-relay-btn, .relay-toolbar, .relay-t1-drawer, .relay-t1-chain-bar, .relay-origin-drawer')) return;
+        if (e.target.closest('.relay-sent.masked')) return;
+        if (e.target.closest('.relay-chain-bar') && !e.target.closest('.relay-narrative-hook .recite-sent')) return;
         const jIdx = pCard.dataset.jumpIdx !== undefined ? parseInt(pCard.dataset.jumpIdx, 10) : NaN;
         if (state.rangeSelection && (state.rangeSelection.step === 'pick-start' || state.rangeSelection.step === 'pick-end')) {
           if (!isNaN(jIdx) && jIdx >= 0) {

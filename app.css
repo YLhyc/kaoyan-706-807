@@ -14095,3 +14095,67 @@ body.dock-expanded .return-active-pill {
     padding-bottom: calc(164px + env(safe-area-inset-bottom, 12px)) !important;
   }
 }
+
+/* ==========================================================================
+   微缩专配音频点读联动 & 807 名解合辑三栏布局（与打印版 PDF 严丝合缝对齐）
+   ========================================================================== */
+.relay-mj-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 6px;
+}
+.relay-mj-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.relay-mj-cell .relay-role {
+  margin-right: 0;
+  font-size: 11.5px;
+  letter-spacing: 0.4px;
+}
+.relay-mj-cell .relay-sent {
+  flex: 1;
+  font-size: 14.5px;
+  line-height: 1.65;
+  padding: 7px 9px;
+}
+@media (max-width: 768px) {
+  .relay-mj-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.relay-track2-wrap .recite-sent {
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+.relay-track2-wrap .relay-sent:not(.masked) .recite-sent:hover,
+.relay-track2-wrap .relay-narrative-hook .recite-sent:hover,
+.relay-track2-wrap .relay-guard-strip .recite-sent:hover,
+.relay-track2-wrap .relay-footer-item .recite-sent:hover {
+  background: rgba(184, 51, 42, 0.08);
+}
+.relay-track2-wrap .relay-sent.masked .recite-sent,
+.relay-track2-wrap .relay-sent.masked .recite-sent.active-spotlight {
+  color: transparent !important;
+  background: transparent !important;
+}
+.relay-track2-wrap .relay-sent:not(.masked) .recite-sent.active-spotlight,
+.relay-track2-wrap .relay-narrative-hook .recite-sent.active-spotlight,
+.relay-track2-wrap .relay-guard-strip .recite-sent.active-spotlight,
+.relay-track2-wrap .relay-footer-item .recite-sent.active-spotlight,
+.relay-track2-wrap h3 .recite-sent.active-spotlight {
+  background: rgba(184, 51, 42, 0.13);
+  box-shadow: inset 0 -2px 0 rgba(184, 51, 42, 0.55);
+}
+[data-theme="dark"] .relay-track2-wrap .relay-sent:not(.masked) .recite-sent.active-spotlight,
+[data-theme="dark"] .relay-track2-wrap .relay-narrative-hook .recite-sent.active-spotlight,
+[data-theme="dark"] .relay-track2-wrap .relay-guard-strip .recite-sent.active-spotlight,
+[data-theme="dark"] .relay-track2-wrap .relay-footer-item .recite-sent.active-spotlight,
+[data-theme="dark"] .relay-track2-wrap h3 .recite-sent.active-spotlight {
+  background: rgba(232, 114, 98, 0.18);
+  box-shadow: inset 0 -2px 0 rgba(232, 114, 98, 0.65);
+}
