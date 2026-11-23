@@ -1,0 +1,194 @@
+[
+  {
+    "id": "hook_c0",
+    "dom_key": "hook_c0",
+    "text": "先拆解蒋光慈/洪灵菲模式如何走套路（失恋苦闷→战友感召→舍情投革），",
+    "start": 0.0,
+    "end": 7.28,
+    "duration": 7.28
+  },
+  {
+    "id": "hook_c1",
+    "dom_key": "hook_c1",
+    "text": "再批评其人物扁平、回避阵痛之概念化弊端，",
+    "start": 7.329,
+    "end": 10.889,
+    "duration": 3.56
+  },
+  {
+    "id": "hook_c2",
+    "dom_key": "hook_c2",
+    "text": "最后点破茅盾《蚀》三部曲“反而更早却更真实”地写出退潮期静女士、方罗兰、章秋柳的精神挣扎。",
+    "start": 11.419,
+    "end": 19.059,
+    "duration": 7.64
+  },
+  {
+    "id": "intro_c0",
+    "dom_key": "intro_c0",
+    "text": "大革命失败前后，以蒋光慈等后期创造社、太阳社作家为代表兴起“革命加恋爱”小说风潮，",
+    "start": 19.509,
+    "end": 27.029,
+    "duration": 7.52
+  },
+  {
+    "id": "intro_c1",
+    "dom_key": "intro_c1",
+    "text": "成三十年代初左翼通俗样式，而茅盾《蚀》三部曲实现了深刻超越。",
+    "start": 27.559,
+    "end": 32.919,
+    "duration": 5.36
+  },
+  {
+    "id": "sec0_title_c0",
+    "dom_key": "sec0_title_c0",
+    "text": "01 · 二元对抗公式叙事：以情爱包裹革命动员",
+    "start": 33.369,
+    "end": 37.929,
+    "duration": 4.56
+  },
+  {
+    "id": "sec0_step0_c0",
+    "dom_key": "sec0_step0_c0",
+    "text": "小资产青年恋情受挫陷入苦闷幻灭后，",
+    "start": 38.379,
+    "end": 41.819,
+    "duration": 3.44
+  },
+  {
+    "id": "sec0_step0_c1",
+    "dom_key": "sec0_step0_c1",
+    "text": "受革命者感召舍私情、投工农斗争并坚定信仰；",
+    "start": 42.269,
+    "end": 46.309,
+    "duration": 4.04
+  },
+  {
+    "id": "sec0_step1_c0",
+    "dom_key": "sec0_step1_c0",
+    "text": "见于蒋光慈《野祭》《冲出云围的月亮》、洪灵菲《流亡》，",
+    "start": 46.759,
+    "end": 51.039,
+    "duration": 4.28
+  },
+  {
+    "id": "sec0_step1_c1",
+    "dom_key": "sec0_step1_c1",
+    "text": "契合青年心理却因概念化削弱艺术力。",
+    "start": 51.489,
+    "end": 54.569,
+    "duration": 3.08
+  },
+  {
+    "id": "sec1_title_c0",
+    "dom_key": "sec1_title_c0",
+    "text": "02 · 陷入主观抒情狂热与人物概念化弊端",
+    "start": 55.099,
+    "end": 59.259,
+    "duration": 4.16
+  },
+  {
+    "id": "sec1_step0_c0",
+    "dom_key": "sec1_step0_c0",
+    "text": "缺对复杂阶级关系体察：人物正邪扁平，恋爱沦为宣讲政治载体；",
+    "start": 59.709,
+    "end": 65.029,
+    "duration": 5.32
+  },
+  {
+    "id": "sec1_step1_c0",
+    "dom_key": "sec1_step1_c0",
+    "text": "革命浪漫化为热血传奇，既难剖析知识分子思想转变阵痛，",
+    "start": 65.479,
+    "end": 70.479,
+    "duration": 5.0
+  },
+  {
+    "id": "sec1_step1_c1",
+    "dom_key": "sec1_step1_c1",
+    "text": "亦回避大革命退潮严峻考验。",
+    "start": 70.929,
+    "end": 73.409,
+    "duration": 2.48
+  },
+  {
+    "id": "sec2_title_c0",
+    "dom_key": "sec2_title_c0",
+    "text": "03 · 茅盾《蚀》三部曲：写退潮期精神创伤",
+    "start": 73.859,
+    "end": 77.979,
+    "duration": 4.12
+  },
+  {
+    "id": "sec2_step0_c0",
+    "dom_key": "sec2_step0_c0",
+    "text": "迥异于流行公式，茅盾在《幻灭》《动摇》《追求》摒弃廉价乐观，",
+    "start": 78.429,
+    "end": 83.709,
+    "duration": 5.28
+  },
+  {
+    "id": "sec2_step0_c1",
+    "dom_key": "sec2_step0_c1",
+    "text": "写尽动荡岁月青年精神困惑；",
+    "start": 84.159,
+    "end": 86.879,
+    "duration": 2.72
+  },
+  {
+    "id": "sec2_step1_c0",
+    "dom_key": "sec2_step1_c0",
+    "text": "静女士遭投机者玩弄后幻灭，方罗兰左右夹击优柔动摇，",
+    "start": 87.329,
+    "end": 91.969,
+    "duration": 4.64
+  },
+  {
+    "id": "sec2_step1_c1",
+    "dom_key": "sec2_step1_c1",
+    "text": "章秋柳借放浪情欲麻痹之畸形追求，升至现代社会心理剖析高度。",
+    "start": 92.419,
+    "end": 97.899,
+    "duration": 5.48
+  },
+  {
+    "id": "guard_c0",
+    "dom_key": "guard_c0",
+    "text": "防混：早期代表蒋光慈《野祭》《冲出云围的月亮》、洪灵菲《流亡》；",
+    "start": 98.349,
+    "end": 103.829,
+    "duration": 5.48
+  },
+  {
+    "id": "guard_c1",
+    "dom_key": "guard_c1",
+    "text": "茅盾《蚀》三部曲指《幻灭》（静女士）、《动摇》（方罗兰）、《追求》（章秋柳）。",
+    "start": 104.359,
+    "end": 109.559,
+    "duration": 5.2
+  },
+  {
+    "id": "drill0_c0",
+    "dom_key": "drill0_c0",
+    "text": "① 写出“革命加恋爱”模式的三部代表作及三步情节机制？",
+    "start": 110.009,
+    "end": 115.889,
+    "duration": 5.88
+  },
+  {
+    "id": "drill1_c0",
+    "dom_key": "drill1_c0",
+    "text": "② 剖析其为何会滑向“主观抒情狂热与人物心理概念化”？",
+    "start": 116.339,
+    "end": 121.739,
+    "duration": 5.4
+  },
+  {
+    "id": "drill2_c0",
+    "dom_key": "drill2_c0",
+    "text": "③ 对比蒋光慈与茅盾《蚀》三部曲（静女士/方罗兰/章秋柳）的艺术高下？",
+    "start": 122.229,
+    "end": 129.429,
+    "duration": 7.2
+  }
+]

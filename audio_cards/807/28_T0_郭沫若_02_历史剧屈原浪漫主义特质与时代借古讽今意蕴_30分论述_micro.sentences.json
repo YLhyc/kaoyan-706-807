@@ -1,0 +1,290 @@
+[
+  {
+    "id": "hook_c0",
+    "dom_key": "hook_c0",
+    "text": "创作观→英雄人格→诗化高潮→剧场功勋四步层进：",
+    "start": 0.0,
+    "end": 5.24,
+    "duration": 5.24
+  },
+  {
+    "id": "hook_c1",
+    "dom_key": "hook_c1",
+    "text": "1942“皖南事变”后重庆，",
+    "start": 5.289,
+    "end": 7.569,
+    "duration": 2.28
+  },
+  {
+    "id": "hook_c2",
+    "dom_key": "hook_c2",
+    "text": "郭沫若秉持“失事求似”影射国民党反共消极抗战，",
+    "start": 8.019,
+    "end": 11.819,
+    "duration": 3.8
+  },
+  {
+    "id": "hook_c3",
+    "dom_key": "hook_c3",
+    "text": "重塑不哀怨而刚烈的屈原（对照婵娟殉道、宋玉堕落），",
+    "start": 12.269,
+    "end": 17.069,
+    "duration": 4.8
+  },
+  {
+    "id": "hook_c4",
+    "dom_key": "hook_c4",
+    "text": "以《雷电颂》抒情独白达诗剧顶点，燃起国泰大戏院动员狂潮。",
+    "start": 17.519,
+    "end": 22.559,
+    "duration": 5.04
+  },
+  {
+    "id": "intro_c0",
+    "dom_key": "intro_c0",
+    "text": "抗战相持阶段“皖南事变”阴云下，",
+    "start": 23.009,
+    "end": 25.649,
+    "duration": 2.64
+  },
+  {
+    "id": "intro_c1",
+    "dom_key": "intro_c1",
+    "text": "郭沫若五幕历史剧《屈原》践行“失事求似”，",
+    "start": 26.179,
+    "end": 29.979,
+    "duration": 3.8
+  },
+  {
+    "id": "intro_c2",
+    "dom_key": "intro_c2",
+    "text": "塑殉道悲剧英雄并在大后方鼓舞民主抗争。",
+    "start": 30.429,
+    "end": 33.989,
+    "duration": 3.56
+  },
+  {
+    "id": "sec0_title_c0",
+    "dom_key": "sec0_title_c0",
+    "text": "01 · 践行“失事求似”、构筑借古讽今批判锋芒",
+    "start": 34.519,
+    "end": 38.879,
+    "duration": 4.36
+  },
+  {
+    "id": "sec0_step0_c0",
+    "dom_key": "sec0_step0_c0",
+    "text": "重把握历史精神不泥琐碎考据，允许次要史事大胆虚构开掘本质，",
+    "start": 39.329,
+    "end": 44.649,
+    "duration": 5.32
+  },
+  {
+    "id": "sec0_step0_c1",
+    "dom_key": "sec0_step0_c1",
+    "text": "即“失事求似”；",
+    "start": 45.099,
+    "end": 46.339,
+    "duration": 1.24
+  },
+  {
+    "id": "sec0_step1_c0",
+    "dom_key": "sec0_step1_c0",
+    "text": "写屈原联齐抗秦遭诬陷，",
+    "start": 46.789,
+    "end": 49.069,
+    "duration": 2.28
+  },
+  {
+    "id": "sec0_step1_c1",
+    "dom_key": "sec0_step1_c1",
+    "text": "以南后、张仪、楚怀王影射重庆国民党消极抗日、积极反共倒行逆施。",
+    "start": 49.519,
+    "end": 55.399,
+    "duration": 5.88
+  },
+  {
+    "id": "sec1_title_c0",
+    "dom_key": "sec1_title_c0",
+    "text": "02 · 承续浪漫激情、塑崇高刚烈悲剧英雄",
+    "start": 55.849,
+    "end": 60.009,
+    "duration": 4.16
+  },
+  {
+    "id": "sec1_step0_c0",
+    "dom_key": "sec1_step0_c0",
+    "text": "把《女神》激情注入剧作，",
+    "start": 60.459,
+    "end": 62.379,
+    "duration": 1.92
+  },
+  {
+    "id": "sec1_step0_c1",
+    "dom_key": "sec1_step0_c1",
+    "text": "一改传统哀怨悱恻失意文人为大义凛然、坚守理想的崇高英雄；",
+    "start": 62.829,
+    "end": 67.989,
+    "duration": 5.16
+  },
+  {
+    "id": "sec1_step1_c0",
+    "dom_key": "sec1_step1_c0",
+    "text": "婵娟误饮鸩酒代屈原殉难映忠贞；",
+    "start": 68.439,
+    "end": 71.519,
+    "duration": 3.08
+  },
+  {
+    "id": "sec1_step1_c1",
+    "dom_key": "sec1_step1_c1",
+    "text": "宋玉由崇拜堕为权贵弄臣，反衬屈原人格伟力。",
+    "start": 71.969,
+    "end": 76.209,
+    "duration": 4.24
+  },
+  {
+    "id": "sec2_title_c0",
+    "dom_key": "sec2_title_c0",
+    "text": "03 · 第五幕《雷电颂》独白、立诗剧合一典范",
+    "start": 76.739,
+    "end": 80.899,
+    "duration": 4.16
+  },
+  {
+    "id": "sec2_step0_c0",
+    "dom_key": "sec2_step0_c0",
+    "text": "屈原囚庙中借《雷电颂》将悲愤融于雷电暴风，呼喊“风！你咆哮吧！",
+    "start": 81.349,
+    "end": 86.949,
+    "duration": 5.6
+  },
+  {
+    "id": "sec2_step0_c1",
+    "dom_key": "sec2_step0_c1",
+    "text": "”，祈撕碎黑暗泥胎；",
+    "start": 87.399,
+    "end": 88.959,
+    "duration": 1.56
+  },
+  {
+    "id": "sec2_step1_c0",
+    "dom_key": "sec2_step1_c0",
+    "text": "自由体排比突破写实外部动作局限，升华为内心激情诗意宣泄，",
+    "start": 89.409,
+    "end": 94.929,
+    "duration": 5.52
+  },
+  {
+    "id": "sec2_step1_c1",
+    "dom_key": "sec2_step1_c1",
+    "text": "立现代抒情诗剧典范。",
+    "start": 95.459,
+    "end": 97.299,
+    "duration": 1.84
+  },
+  {
+    "id": "sec3_title_c0",
+    "dom_key": "sec3_title_c0",
+    "text": "04 · 激活战时剧场动员机制、定型史剧范式",
+    "start": 97.829,
+    "end": 102.229,
+    "duration": 4.4
+  },
+  {
+    "id": "sec3_step0_c0",
+    "dom_key": "sec3_step0_c0",
+    "text": "重庆国泰大戏院首演强烈呼应反独裁争民主呼声，",
+    "start": 102.679,
+    "end": 107.239,
+    "duration": 4.56
+  },
+  {
+    "id": "sec3_step0_c1",
+    "dom_key": "sec3_step0_c1",
+    "text": "将案头诗意与剧场共鸣结合，舞台成凝聚反抗的公共空间；",
+    "start": 107.689,
+    "end": 112.409,
+    "duration": 4.72
+  },
+  {
+    "id": "sec3_step1_c0",
+    "dom_key": "sec3_step1_c0",
+    "text": "融诗激情、史沉思与剧冲突于一体，建成民族特色现代浪漫主义历史剧范式。",
+    "start": 112.859,
+    "end": 119.499,
+    "duration": 6.64
+  },
+  {
+    "id": "concl_c0",
+    "dom_key": "concl_c0",
+    "text": "《屈原》以借古讽今眼光、刚烈英雄品格与诗剧交融建构开辟现代话剧抒情诗化道路，",
+    "start": 119.949,
+    "end": 126.829,
+    "duration": 6.88
+  },
+  {
+    "id": "concl_c1",
+    "dom_key": "concl_c1",
+    "text": "成浪漫主义历史剧经典。",
+    "start": 127.279,
+    "end": 129.119,
+    "duration": 1.84
+  },
+  {
+    "id": "guard_c0",
+    "dom_key": "guard_c0",
+    "text": "防混：创作于“皖南事变”后抗战大后方重庆；",
+    "start": 129.569,
+    "end": 133.329,
+    "duration": 3.76
+  },
+  {
+    "id": "guard_c1",
+    "dom_key": "guard_c1",
+    "text": "核心原则是“失事求似”（区别于严格考据历史剧）；",
+    "start": 133.779,
+    "end": 137.819,
+    "duration": 4.04
+  },
+  {
+    "id": "guard_c2",
+    "dom_key": "guard_c2",
+    "text": "高潮第五幕东皇太一庙《雷电颂》；",
+    "start": 138.269,
+    "end": 141.149,
+    "duration": 2.88
+  },
+  {
+    "id": "guard_c3",
+    "dom_key": "guard_c3",
+    "text": "关键对比人物：婵娟（殉道） vs 宋玉（堕落）。",
+    "start": 141.679,
+    "end": 145.319,
+    "duration": 3.64
+  },
+  {
+    "id": "drill0_c0",
+    "dom_key": "drill0_c0",
+    "text": "① 结合历史背景说明《屈原》如何借“失事求似”回应“皖南事变”后大后方局势？",
+    "start": 145.769,
+    "end": 153.009,
+    "duration": 7.24
+  },
+  {
+    "id": "drill1_c0",
+    "dom_key": "drill1_c0",
+    "text": "② 阐述婵娟、宋玉对照及第五幕东皇太一庙《雷电颂》独白对抒情诗剧的贡献？",
+    "start": 153.459,
+    "end": 160.859,
+    "duration": 7.4
+  },
+  {
+    "id": "drill2_c0",
+    "dom_key": "drill2_c0",
+    "text": "③ 回答 2025 名解《屈原》与 30 分郭沫若历史剧专论的组织方法？",
+    "start": 161.389,
+    "end": 168.789,
+    "duration": 7.4
+  }
+]

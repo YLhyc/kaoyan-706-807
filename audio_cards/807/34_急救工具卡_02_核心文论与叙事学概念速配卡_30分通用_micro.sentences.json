@@ -1,0 +1,434 @@
+[
+  {
+    "id": "hook_c0",
+    "dom_key": "hook_c0",
+    "text": "2026 真题已实考“以意逆志 + 意图谬误论《阿Q》”新题型！",
+    "start": 0.0,
+    "end": 5.84,
+    "duration": 5.84
+  },
+  {
+    "id": "hook_c1",
+    "dom_key": "hook_c1",
+    "text": "八组文论按“作者端/历史派（1–2孟子）→文本中心新批评派（3–4两谬误 + 6反讽 + 8张力悖论）→俄国形式与叙事学（5陌生化 + 7聚焦视角）”精准速配现当代名篇与 60 分文学评论！",
+    "start": 5.969,
+    "end": 22.415,
+    "duration": 16.446
+  },
+  {
+    "id": "intro_c0",
+    "dom_key": "intro_c0",
+    "text": "本卡专攻“用中外文论阐释经典作品”新型论述题与六十分文学评论写作，",
+    "start": 22.879,
+    "end": 28.639,
+    "duration": 5.76
+  },
+  {
+    "id": "intro_c1",
+    "dom_key": "intro_c1",
+    "text": "精选八组高频理论工具，每条配“精准定义+名篇套用示范”。",
+    "start": 29.089,
+    "end": 33.809,
+    "duration": 4.72
+  },
+  {
+    "id": "sec0_title_c0",
+    "dom_key": "sec0_title_c0",
+    "text": "01 · 速配01 以意逆志（孟子·逆推作者诗心）",
+    "start": 34.259,
+    "end": 39.019,
+    "duration": 4.76
+  },
+  {
+    "id": "sec0_step0_c0",
+    "dom_key": "sec0_step0_c0",
+    "text": "一、以意逆志：“不以文害辞，不以辞害志。",
+    "start": 39.469,
+    "end": 42.989,
+    "duration": 3.52
+  },
+  {
+    "id": "sec0_step0_c1",
+    "dom_key": "sec0_step0_c1",
+    "text": "以意逆志，是为得之”，主以己心意迎候体会作者诗心，反对拘泥字句；",
+    "start": 43.439,
+    "end": 49.439,
+    "duration": 6.0
+  },
+  {
+    "id": "sec0_step1_c0",
+    "dom_key": "sec0_step1_c0",
+    "text": "释《阿Q正传》忌泥偷萝卜画圈滑稽表象，",
+    "start": 49.889,
+    "end": 53.289,
+    "duration": 3.4
+  },
+  {
+    "id": "sec0_step1_c1",
+    "dom_key": "sec0_step1_c1",
+    "text": "须逆推鲁迅“画出沉默国民魂灵”及揭精神胜利法救世之志。",
+    "start": 53.739,
+    "end": 58.659,
+    "duration": 4.92
+  },
+  {
+    "id": "sec1_title_c0",
+    "dom_key": "sec1_title_c0",
+    "text": "02 · 速配02 知人论世（孟子·身世语境考辨）",
+    "start": 59.109,
+    "end": 63.869,
+    "duration": 4.76
+  },
+  {
+    "id": "sec1_step0_c0",
+    "dom_key": "sec1_step0_c0",
+    "text": "二、知人论世：理解作品不能孤立就文论文，",
+    "start": 64.319,
+    "end": 68.319,
+    "duration": 4.0
+  },
+  {
+    "id": "sec1_step0_c1",
+    "dom_key": "sec1_step0_c1",
+    "text": "须结合创作者身世生平、思想立场与时代背景；",
+    "start": 68.769,
+    "end": 72.969,
+    "duration": 4.2
+  },
+  {
+    "id": "sec1_step1_c0",
+    "dom_key": "sec1_step1_c0",
+    "text": "读《狂人日记》与杂文，",
+    "start": 73.419,
+    "end": 75.219,
+    "duration": 1.8
+  },
+  {
+    "id": "sec1_step1_c1",
+    "dom_key": "sec1_step1_c1",
+    "text": "须联辛亥流产后新文化反礼教潮与鲁迅“呐喊”启蒙心境，",
+    "start": 75.669,
+    "end": 80.269,
+    "duration": 4.6
+  },
+  {
+    "id": "sec1_step1_c2",
+    "dom_key": "sec1_step1_c2",
+    "text": "辨“吃人”历史沉重。",
+    "start": 80.719,
+    "end": 82.199,
+    "duration": 1.48
+  },
+  {
+    "id": "sec2_title_c0",
+    "dom_key": "sec2_title_c0",
+    "text": "03 · 速配03 意图谬误（新批评·文本自足独立）",
+    "start": 82.649,
+    "end": 87.209,
+    "duration": 4.56
+  },
+  {
+    "id": "sec2_step0_c0",
+    "dom_key": "sec2_step0_c0",
+    "text": "三、意图谬误（意图谬见）：",
+    "start": 87.659,
+    "end": 89.819,
+    "duration": 2.16
+  },
+  {
+    "id": "sec2_step0_c1",
+    "dom_key": "sec2_step0_c1",
+    "text": "维姆萨特与比尔兹利批评以作者主观创作意图取代文本自身意义，",
+    "start": 90.349,
+    "end": 95.309,
+    "duration": 4.96
+  },
+  {
+    "id": "sec2_step0_c2",
+    "dom_key": "sec2_step0_c2",
+    "text": "主张文本诞生即独立自足；",
+    "start": 95.759,
+    "end": 98.279,
+    "duration": 2.52
+  },
+  {
+    "id": "sec2_step1_c0",
+    "dom_key": "sec2_step1_c0",
+    "text": "审《阿Q正传》，“精神胜利法”与末章“大团圆”讽刺结构所蕴普世人性荒诞，",
+    "start": 98.729,
+    "end": 105.009,
+    "duration": 6.28
+  },
+  {
+    "id": "sec2_step1_c1",
+    "dom_key": "sec2_step1_c1",
+    "text": "远超鲁迅最初设想局部讽刺。",
+    "start": 105.459,
+    "end": 108.019,
+    "duration": 2.56
+  },
+  {
+    "id": "sec3_title_c0",
+    "dom_key": "sec3_title_c0",
+    "text": "04 · 速配04 感受谬误（新批评·重文本肌质结构）",
+    "start": 108.549,
+    "end": 113.269,
+    "duration": 4.72
+  },
+  {
+    "id": "sec3_step0_c0",
+    "dom_key": "sec3_step0_c0",
+    "text": "四、感受谬误（感受谬见）：针对印象批评，",
+    "start": 113.719,
+    "end": 117.279,
+    "duration": 3.56
+  },
+  {
+    "id": "sec3_step0_c1",
+    "dom_key": "sec3_step0_c1",
+    "text": "反对混同作品本身与读者变动情绪反应，主回归具体文本肌质结构；",
+    "start": 117.729,
+    "end": 123.529,
+    "duration": 5.8
+  },
+  {
+    "id": "sec3_step1_c0",
+    "dom_key": "sec3_step1_c0",
+    "text": "评《雷雨》或陌生小说忌空泛说“令人感动悲凉”，",
+    "start": 123.979,
+    "end": 127.539,
+    "duration": 3.56
+  },
+  {
+    "id": "sec3_step1_c1",
+    "dom_key": "sec3_step1_c1",
+    "text": "须扣雷雨夜门窗意象、因果巧合与语言碰撞析张力。",
+    "start": 127.989,
+    "end": 132.149,
+    "duration": 4.16
+  },
+  {
+    "id": "sec4_title_c0",
+    "dom_key": "sec4_title_c0",
+    "text": "05 · 速配05 陌生化（什克洛夫斯基·打破自动化）",
+    "start": 132.599,
+    "end": 137.599,
+    "duration": 5.0
+  },
+  {
+    "id": "sec4_step0_c0",
+    "dom_key": "sec4_step0_c0",
+    "text": "五、陌生化：什克洛夫斯基指借语言扭曲、视角移位打破日常“自动化”感知，",
+    "start": 138.049,
+    "end": 144.369,
+    "duration": 6.32
+  },
+  {
+    "id": "sec4_step0_c1",
+    "dom_key": "sec4_step0_c1",
+    "text": "延长感受难度以唤醒审美；",
+    "start": 144.819,
+    "end": 147.059,
+    "duration": 2.24
+  },
+  {
+    "id": "sec4_step1_c0",
+    "dom_key": "sec4_step1_c0",
+    "text": "《狂人日记》借迫害狂错觉把长幼礼教陌生化为“吃人”；",
+    "start": 147.509,
+    "end": 151.749,
+    "duration": 4.24
+  },
+  {
+    "id": "sec4_step1_c1",
+    "dom_key": "sec4_step1_c1",
+    "text": "《孔乙己》用十二岁冷漠童眼制造冷峻悲感。",
+    "start": 152.199,
+    "end": 155.439,
+    "duration": 3.24
+  },
+  {
+    "id": "sec5_title_c0",
+    "dom_key": "sec5_title_c0",
+    "text": "06 · 速配06 反讽（布鲁克斯·语境歪曲背离）",
+    "start": 155.969,
+    "end": 160.289,
+    "duration": 4.32
+  },
+  {
+    "id": "sec5_step0_c0",
+    "dom_key": "sec5_step0_c0",
+    "text": "六、反讽：布鲁克斯指“语境对陈述语的明显歪曲”，",
+    "start": 160.819,
+    "end": 164.819,
+    "duration": 4.0
+  },
+  {
+    "id": "sec5_step0_c1",
+    "dom_key": "sec5_step0_c1",
+    "text": "字面与深层背离生含蓄锋芒；",
+    "start": 165.269,
+    "end": 167.829,
+    "duration": 2.56
+  },
+  {
+    "id": "sec5_step1_c0",
+    "dom_key": "sec5_step1_c0",
+    "text": "《阿Q正传》以“大团圆”题末章实写枪毙，成悲喜倒错反讽；",
+    "start": 168.279,
+    "end": 173.079,
+    "duration": 4.8
+  },
+  {
+    "id": "sec5_step1_c1",
+    "dom_key": "sec5_step1_c1",
+    "text": "张爱玲《金锁记》亦常以算计语调反衬畸变。",
+    "start": 173.529,
+    "end": 177.129,
+    "duration": 3.6
+  },
+  {
+    "id": "sec6_title_c0",
+    "dom_key": "sec6_title_c0",
+    "text": "07 · 速配07 叙述视角（聚焦：零聚焦vs有限聚焦）",
+    "start": 177.579,
+    "end": 182.779,
+    "duration": 5.2
+  },
+  {
+    "id": "sec6_step0_c0",
+    "dom_key": "sec6_step0_c0",
+    "text": "七、叙述视角（聚焦）：",
+    "start": 183.229,
+    "end": 185.189,
+    "duration": 1.96
+  },
+  {
+    "id": "sec6_step0_c1",
+    "dom_key": "sec6_step0_c1",
+    "text": "区分“全知（零聚焦）视角”与依托特定人物眼光的“有限（内/外聚焦）视角”；",
+    "start": 185.639,
+    "end": 191.479,
+    "duration": 5.84
+  },
+  {
+    "id": "sec6_step1_c0",
+    "dom_key": "sec6_step1_c0",
+    "text": "《祝福》用返乡知识分子“我”的第一人称有限视角看祥林嫂惨死，",
+    "start": 191.929,
+    "end": 196.569,
+    "duration": 4.64
+  },
+  {
+    "id": "sec6_step1_c1",
+    "dom_key": "sec6_step1_c1",
+    "text": "既留审视礼教客观间距，又暴露面对“灵魂有无”时的软弱。",
+    "start": 197.019,
+    "end": 201.579,
+    "duration": 4.56
+  },
+  {
+    "id": "sec7_title_c0",
+    "dom_key": "sec7_title_c0",
+    "text": "08 · 速配08 张力与悖论（退特·布鲁克斯诗学）",
+    "start": 202.029,
+    "end": 206.829,
+    "duration": 4.8
+  },
+  {
+    "id": "sec7_step0_c0",
+    "dom_key": "sec7_step0_c0",
+    "text": "八、张力与悖论：退特“张力”指外延与内涵协调统一；",
+    "start": 207.359,
+    "end": 211.679,
+    "duration": 4.32
+  },
+  {
+    "id": "sec7_step0_c1",
+    "dom_key": "sec7_step0_c1",
+    "text": "布鲁克斯“悖论”指表面矛盾中蕴深层真理；",
+    "start": 212.128,
+    "end": 215.528,
+    "duration": 3.4
+  },
+  {
+    "id": "sec7_step1_c0",
+    "dom_key": "sec7_step1_c0",
+    "text": "艾青“眼里常含泪水……爱得深沉”及穆旦《赞美》血火创痛与生的希望并存，",
+    "start": 215.978,
+    "end": 221.978,
+    "duration": 6.0
+  },
+  {
+    "id": "sec7_step1_c1",
+    "dom_key": "sec7_step1_c1",
+    "text": "正是伤痛与至爱碰撞之崇高张力。",
+    "start": 222.428,
+    "end": 225.108,
+    "duration": 2.68
+  },
+  {
+    "id": "guard_c0",
+    "dom_key": "guard_c0",
+    "text": "防混：专攻“文论阐释经典作品”论述题与 60 分文学评论；",
+    "start": 225.558,
+    "end": 230.318,
+    "duration": 4.76
+  },
+  {
+    "id": "guard_c1",
+    "dom_key": "guard_c1",
+    "text": "务必分清“新批评”这对姊妹谬误概念（分别从创作端与接受端界定“文本中心”）：",
+    "start": 230.848,
+    "end": 237.048,
+    "duration": 6.2
+  },
+  {
+    "id": "guard_c2",
+    "dom_key": "guard_c2",
+    "text": "“意图谬误”（排斥作者原意）与“感受谬误”（排斥读者主观情绪印象）。",
+    "start": 237.498,
+    "end": 242.578,
+    "duration": 5.08
+  },
+  {
+    "id": "drill0_c0",
+    "dom_key": "drill0_c0",
+    "text": "① 背全本卡 8 个文论术语的中外学者归属、核心定义及对应示范名篇？",
+    "start": 243.028,
+    "end": 249.828,
+    "duration": 6.8
+  },
+  {
+    "id": "drill1_c0",
+    "dom_key": "drill1_c0",
+    "text": "② 演练 2026 真题：",
+    "start": 250.358,
+    "end": 252.718,
+    "duration": 2.36
+  },
+  {
+    "id": "drill1_c1",
+    "dom_key": "drill1_c1",
+    "text": "怎样并用孟子“以意逆志”与新批评“意图谬误”双重视角解读《阿Q正传》？",
+    "start": 253.168,
+    "end": 258.648,
+    "duration": 5.48
+  },
+  {
+    "id": "drill2_c0",
+    "dom_key": "drill2_c0",
+    "text": "③ 60分文学评论遇到陌生短篇（如欧亨利/海明威/张爱玲），",
+    "start": 259.098,
+    "end": 264.818,
+    "duration": 5.72
+  },
+  {
+    "id": "drill2_c1",
+    "dom_key": "drill2_c1",
+    "text": "最优先抽其中哪 3 个工具入文？",
+    "start": 265.268,
+    "end": 268.028,
+    "duration": 2.76
+  }
+]
