@@ -2,321 +2,257 @@
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "痛点→理论→作品→体制功过：",
-    "start": 0.0,
-    "end": 3.84,
-    "duration": 3.84
+    "text": "痛点→理论→作品→体制功过：先用1942延安知识分子暴露/歌颂水土不服说明《讲话》为何诞生，",
+    "start": 0.22,
+    "end": 9.645,
+    "duration": 9.425
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "先用1942延安知识分子暴露/歌颂水土不服说明《讲话》为何诞生，",
-    "start": 3.889,
-    "end": 8.969,
-    "duration": 5.08
+    "text": "再背下全篇硬核得分点“为什么人/齿轮螺丝钉/普及提高/政治艺术双标/唯一源泉”五组命题，",
+    "start": 10.371,
+    "end": 18.504,
+    "duration": 8.133
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "再背下全篇硬核得分点“为什么人/齿轮螺丝钉/普及提高/政治艺术双标/唯一源泉”五组命题，",
-    "start": 9.419,
-    "end": 17.019,
-    "duration": 7.6
+    "text": "接着落实《兄妹开荒》、赵树理、《白毛女》民间转化实绩，",
+    "start": 19.291,
+    "end": 23.548,
+    "duration": 4.257
   },
   {
     "id": "hook_c3",
     "dom_key": "hook_c3",
-    "text": "接着落实《兄妹开荒》、赵树理、《白毛女》民间转化实绩，",
-    "start": 17.469,
-    "end": 21.629,
-    "duration": 4.16
-  },
-  {
-    "id": "hook_c4",
-    "dom_key": "hook_c4",
     "text": "最后辩证评定十七年体制功与限。",
-    "start": 22.079,
-    "end": 24.879,
-    "duration": 2.8
+    "start": 24.284,
+    "end": 26.783,
+    "duration": 2.499
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "毛泽东《在延安文艺座谈会上的讲话》是现代迈向当代一体化文学体制的枢纽，",
-    "start": 25.409,
-    "end": 31.009,
-    "duration": 5.6
+    "start": 27.526,
+    "end": 33.602,
+    "duration": 6.076
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "以“文艺为工农兵”决断破解五四“走向大众”难题，",
-    "start": 31.459,
-    "end": 35.219,
-    "duration": 3.76
+    "start": 34.381,
+    "end": 38.096,
+    "duration": 3.715
   },
   {
     "id": "intro_c2",
     "dom_key": "intro_c2",
     "text": "奠基“中国作风与中国气派”解放区文艺与十七年体制。",
-    "start": 35.669,
-    "end": 39.989,
-    "duration": 4.32
+    "start": 38.812,
+    "end": 43.08,
+    "duration": 4.268
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 直面战时痛点、化知识分子水土不服",
-    "start": 40.439,
-    "end": 44.239,
-    "duration": 3.8
+    "start": 43.762,
+    "end": 47.95,
+    "duration": 4.189
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
-    "text": "抗战奔赴延安的知识青年习惯亭子间情调与居高临下启蒙姿态，",
-    "start": 44.689,
-    "end": 50.009,
-    "duration": 5.32
-  },
-  {
-    "id": "sec0_step0_c1",
-    "dom_key": "sec0_step0_c1",
-    "text": "同陕北农村及工农兵产生脱节；",
-    "start": 50.459,
-    "end": 53.259,
-    "duration": 2.8
+    "text": "抗战奔赴延安的知识青年习惯亭子间情调与居高临下启蒙姿态，同陕北农村及工农兵产生脱节；",
+    "start": 48.652,
+    "end": 57.069,
+    "duration": 8.417
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "王实味《野百合花》引发“暴露还是歌颂”之争，",
-    "start": 53.789,
-    "end": 57.349,
-    "duration": 3.56
+    "text": "王实味《野百合花》引发“暴露还是歌颂”之争，《讲话》切中小资产阶级偏向，",
+    "start": 57.849,
+    "end": 63.433,
+    "duration": 5.585
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
-    "text": "《讲话》切中小资产阶级偏向，要求深入群众转向无产阶级立场。",
-    "start": 57.799,
-    "end": 62.959,
-    "duration": 5.16
+    "text": "要求深入群众转向无产阶级立场。",
+    "start": 64.193,
+    "end": 66.979,
+    "duration": 2.786
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 系统命题体系、立马克思主义中国化法则",
-    "start": 63.409,
-    "end": 67.809,
-    "duration": 4.4
+    "start": 67.714,
+    "end": 71.757,
+    "duration": 4.043
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
-    "text": "“为什么人的问题，是一个根本的问题，原则的问题”，立“为人民大众，",
-    "start": 68.339,
-    "end": 73.419,
-    "duration": 5.08
+    "text": "“为什么人的问题，是一个根本的问题，原则的问题”，立“为人民大众，首先为工农兵”；",
+    "start": 72.509,
+    "end": 78.706,
+    "duration": 6.197
   },
   {
     "id": "sec1_step0_c1",
     "dom_key": "sec1_step0_c1",
-    "text": "首先为工农兵”；",
-    "start": 73.869,
-    "end": 75.309,
-    "duration": 1.44
-  },
-  {
-    "id": "sec1_step0_c2",
-    "dom_key": "sec1_step0_c2",
     "text": "界定文艺从属政治，喻为“齿轮和螺丝钉”；",
-    "start": 75.759,
-    "end": 79.119,
-    "duration": 3.36
+    "start": 79.409,
+    "end": 82.746,
+    "duration": 3.337
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "战时“普及更为迫切”、在普及基础上提高；",
-    "start": 79.569,
-    "end": 82.769,
-    "duration": 3.2
+    "start": 83.473,
+    "end": 86.747,
+    "duration": 3.274
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "批评立“政治标准第一，艺术标准第二”；",
-    "start": 83.299,
-    "end": 86.139,
-    "duration": 2.84
+    "start": 87.474,
+    "end": 90.373,
+    "duration": 2.899
   },
   {
     "id": "sec1_step1_c2",
     "dom_key": "sec1_step1_c2",
     "text": "人民生活是唯一源泉、源于并高于生活。",
-    "start": 86.589,
-    "end": 89.949,
-    "duration": 3.36
+    "start": 91.103,
+    "end": 94.379,
+    "duration": 3.276
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 涤荡欧化藩篱、以民间形式重构文艺风格",
-    "start": 90.399,
-    "end": 95.159,
-    "duration": 4.76
+    "start": 95.102,
+    "end": 99.626,
+    "duration": 4.524
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "新秧歌《兄妹开荒》以旧形式装新内容；",
-    "start": 95.609,
-    "end": 98.729,
-    "duration": 3.12
+    "start": 100.41,
+    "end": 103.162,
+    "duration": 2.752
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
     "text": "赵树理《小二黑结婚》《李有才板话》创群众说唱“赵树理方向”；",
-    "start": 99.179,
-    "end": 103.459,
-    "duration": 4.28
+    "start": 103.891,
+    "end": 108.347,
+    "duration": 4.455
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "《白毛女》融民歌板腔与管弦乐去魅“白毛仙姑”，",
-    "start": 103.909,
-    "end": 107.509,
-    "duration": 3.6
+    "text": "《白毛女》融民歌板腔与管弦乐去魅“白毛仙姑”，炼“旧社会逼成鬼、新社会变成人”，",
+    "start": 109.117,
+    "end": 115.978,
+    "duration": 6.861
   },
   {
     "id": "sec2_step1_c1",
     "dom_key": "sec2_step1_c1",
-    "text": "炼“旧社会逼成鬼、新社会变成人”，达成意识形态与民间审美统一。",
-    "start": 108.039,
-    "end": 113.359,
-    "duration": 5.32
+    "text": "达成意识形态与民间审美统一。",
+    "start": 116.902,
+    "end": 119.558,
+    "duration": 2.656
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 重构组织权力形态、成十七年体制母本",
-    "start": 113.809,
-    "end": 118.089,
-    "duration": 4.28
+    "start": 120.269,
+    "end": 124.321,
+    "duration": 4.052
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
-    "text": "扭转少数精英垄断，确立工农兵主体地位并强化动员效能；",
-    "start": 118.539,
-    "end": 123.499,
-    "duration": 4.96
-  },
-  {
-    "id": "sec3_step0_c1",
-    "dom_key": "sec3_step0_c1",
-    "text": "塑造文联作协体制、集体写作与评价尺度；",
-    "start": 123.949,
-    "end": 127.589,
-    "duration": 3.64
+    "text": "扭转少数精英垄断，确立工农兵主体地位并强化动员效能；塑造文联作协体制、集体写作与评价尺度；",
+    "start": 125.041,
+    "end": 134.157,
+    "duration": 9.116
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
-    "text": "推动大众化民族化之余，",
-    "start": 128.039,
-    "end": 130.239,
-    "duration": 2.2
-  },
-  {
-    "id": "sec3_step1_c1",
-    "dom_key": "sec3_step1_c1",
-    "text": "在后世机械执行中亦带来政治挂帅压抑艺术个性与题材窄化局限。",
-    "start": 130.689,
-    "end": 136.289,
-    "duration": 5.6
+    "text": "推动大众化民族化之余，在后世机械执行中亦带来政治挂帅压抑艺术个性与题材窄化局限。",
+    "start": 134.888,
+    "end": 142.832,
+    "duration": 7.944
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "《讲话》是连接现当代文学的纲领性文献，",
-    "start": 136.739,
-    "end": 139.859,
-    "duration": 3.12
+    "start": 143.578,
+    "end": 146.711,
+    "duration": 3.133
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
-    "text": "在历史关头重塑中国文学的主体、功能、美学与体制，",
-    "start": 140.309,
-    "end": 144.709,
-    "duration": 4.4
-  },
-  {
-    "id": "concl_c2",
-    "dom_key": "concl_c2",
-    "text": "标志向当代人民文艺道路深层转折。",
-    "start": 145.159,
-    "end": 148.039,
-    "duration": 2.88
+    "text": "在历史关头重塑中国文学的主体、功能、美学与体制，标志向当代人民文艺道路深层转折。",
+    "start": 147.429,
+    "end": 155.817,
+    "duration": 8.389
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
-    "text": "防混：记住《讲话》（1942年）四大理论要点：",
-    "start": 148.489,
-    "end": 152.729,
-    "duration": 4.24
+    "text": "防混：记住《讲话》（1942年）四大理论要点：①为什么人（为人民大众，首先为工农兵） ②政治与文艺（齿轮螺丝钉） ③普及与提高 ④批评双重标准（政治第一、艺术第二）；",
+    "start": 156.565,
+    "end": 173.584,
+    "duration": 17.019
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
-    "text": "①为什么人（为人民大众，",
-    "start": 153.179,
-    "end": 155.659,
-    "duration": 2.48
-  },
-  {
-    "id": "guard_c2",
-    "dom_key": "guard_c2",
-    "text": "首先为工农兵） ②政治与文艺（齿轮螺丝钉） ③普及与提高 ④批评双重标准（政治第一、艺术第二）；",
-    "start": 156.109,
-    "end": 165.149,
-    "duration": 9.04
-  },
-  {
-    "id": "guard_c3",
-    "dom_key": "guard_c3",
     "text": "代表作品《兄妹开荒》、赵树理、新歌剧《白毛女》。",
-    "start": 165.599,
-    "end": 169.439,
-    "duration": 3.84
+    "start": 174.334,
+    "end": 178.144,
+    "duration": 3.81
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 一口气默背《讲话》的五大核心命题原文金句？",
-    "start": 169.889,
-    "end": 175.009,
-    "duration": 5.12
+    "start": 178.895,
+    "end": 183.768,
+    "duration": 4.873
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 说明《野百合花》论争背景以及《兄妹开荒》《李有才板话》《白毛女》的实践实绩？",
-    "start": 175.459,
-    "end": 183.059,
-    "duration": 7.6
+    "start": 184.492,
+    "end": 191.693,
+    "duration": 7.2
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 如何客观辩证地评价《讲话》作为当代“一体化体制母本”的功绩与历史局限？",
-    "start": 183.509,
-    "end": 190.829,
-    "duration": 7.32
+    "start": 192.408,
+    "end": 199.552,
+    "duration": 7.144
   }
 ]

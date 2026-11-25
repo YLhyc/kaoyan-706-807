@@ -3,176 +3,168 @@
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "围绕成都高公馆大家庭拆成三层清晰群像：",
-    "start": 0.0,
-    "end": 4.48,
-    "duration": 4.48
+    "start": 0.215,
+    "end": 4.787,
+    "duration": 4.572
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "专制吃人阵营（高老太爷/克明酿成鸣凤、瑞珏、蕙表妹、淑贞惨案）→中间妥协悲剧（觉新“作揖主义”两头落空）→青年觉醒出走（觉慧/觉民/淑英“树倒猢狲散”）。",
-    "start": 4.529,
-    "end": 17.129,
-    "duration": 12.6
+    "text": "专制吃人阵营（高老太爷/克明酿成鸣凤、瑞珏、蕙表妹、淑贞惨案）",
+    "start": 5.543,
+    "end": 11.943,
+    "duration": 6.4
+  },
+  {
+    "id": "hook_c2",
+    "dom_key": "hook_c2",
+    "text": "→中间妥协悲剧（觉新“作揖主义”两头落空）",
+    "start": 12.698,
+    "end": 16.28,
+    "duration": 3.582
+  },
+  {
+    "id": "hook_c3",
+    "dom_key": "hook_c3",
+    "text": "→青年觉醒出走（觉慧/觉民/淑英“树倒猢狲散”）。",
+    "start": 17.032,
+    "end": 21.321,
+    "duration": 4.289
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
-    "text": "巴金《家》《春》《秋》合称《激流三部曲》，",
-    "start": 17.739,
-    "end": 20.939,
-    "duration": 3.2
+    "text": "巴金《家》《春》《秋》合称《激流三部曲》，以成都高公馆大家庭衰亡为轴心，",
+    "start": 22.066,
+    "end": 28.077,
+    "duration": 6.011
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
-    "text": "以成都高公馆大家庭衰亡为轴心，系统控诉封建宗法制度罪恶。",
-    "start": 21.389,
-    "end": 26.749,
-    "duration": 5.36
+    "text": "系统控诉封建宗法制度罪恶。",
+    "start": 28.785,
+    "end": 31.052,
+    "duration": 2.267
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 解剖封建宗法专制、控诉礼教吃人",
-    "start": 27.199,
-    "end": 31.039,
-    "duration": 3.84
+    "start": 31.746,
+    "end": 35.516,
+    "duration": 3.769
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "高老太爷与克明化身专制权威，借虚伪伦理摧残青年生命幸福；",
-    "start": 31.489,
-    "end": 37.009,
-    "duration": 5.52
+    "start": 36.33,
+    "end": 42.315,
+    "duration": 5.985
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "《家》中鸣凤被指作妾投湖，瑞珏遭迷信“避血光之灾”逐出城外难产死；",
-    "start": 37.459,
-    "end": 43.419,
-    "duration": 5.96
+    "start": 43.099,
+    "end": 49.009,
+    "duration": 5.91
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "《春》《秋》蕙表妹病故、幼女淑贞投井，撕开礼教残酷面目。",
-    "start": 43.869,
-    "end": 48.629,
-    "duration": 4.76
+    "start": 49.78,
+    "end": 54.729,
+    "duration": 4.949
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 批判“作揖主义”、揭示妥协顺从悲剧",
-    "start": 49.079,
-    "end": 53.039,
-    "duration": 3.96
+    "start": 55.433,
+    "end": 59.334,
+    "duration": 3.902
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
-    "text": "觉新受新思潮影响却因责任束缚奉“作揖主义”不抵抗，",
-    "start": 53.489,
-    "end": 57.889,
-    "duration": 4.4
-  },
-  {
-    "id": "sec1_step0_c1",
-    "dom_key": "sec1_step0_c1",
-    "text": "对包办婚姻、梅表姐病逝与瑞珏惨死步步忍让；",
-    "start": 58.339,
-    "end": 62.299,
-    "duration": 3.96
+    "text": "觉新受新思潮影响却因责任束缚奉“作揖主义”不抵抗，对包办婚姻、梅表姐病逝与瑞珏惨死步步忍让；",
+    "start": 60.052,
+    "end": 68.92,
+    "duration": 8.868
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "结果既未保住亲人反客观充当礼教帮凶，",
-    "start": 62.749,
-    "end": 66.269,
-    "duration": 3.52
-  },
-  {
-    "id": "sec1_step1_c1",
-    "dom_key": "sec1_step1_c1",
-    "text": "直至《秋》克明死高家分崩方逐步醒悟走出泥淖。",
-    "start": 66.719,
-    "end": 70.519,
-    "duration": 3.8
+    "text": "结果既未保住亲人反客观充当礼教帮凶，直至《秋》克明死高家分崩方逐步醒悟走出泥淖。",
+    "start": 69.684,
+    "end": 77.364,
+    "duration": 7.68
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 歌颂叛逆青年觉醒与反抗、宣告解体",
-    "start": 70.969,
-    "end": 75.089,
-    "duration": 4.12
+    "start": 78.138,
+    "end": 82.135,
+    "duration": 3.997
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "觉慧破门第恋鸣凤、斥捉鬼闹剧、拒守孝枷锁登船东下；",
-    "start": 75.539,
-    "end": 80.819,
-    "duration": 5.28
+    "start": 82.879,
+    "end": 87.577,
+    "duration": 4.698
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "怯懦淑英在觉民琴等助下抗婚出走赴沪会合觉慧，",
-    "start": 81.269,
-    "end": 85.549,
-    "duration": 4.28
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "叛逆壮大与高家“树倒猢狲散”分家彰显旧宗法解体。",
-    "start": 85.999,
-    "end": 90.039,
-    "duration": 4.04
+    "text": "怯懦淑英在觉民琴等助下抗婚出走赴沪会合觉慧，叛逆壮大与高家“树倒猢狲散”分家彰显旧宗法解体。",
+    "start": 88.335,
+    "end": 97.067,
+    "duration": 8.732
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：《激流三部曲》指《家》《春》《秋》；",
-    "start": 90.489,
-    "end": 93.929,
-    "duration": 3.44
+    "start": 97.87,
+    "end": 101.189,
+    "duration": 3.319
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "核心人物严格对齐：高老太爷/克明（专制）、鸣凤/瑞珏/蕙表妹/淑贞（受害）、觉新（作揖主义）、觉慧/觉民/淑英（反抗）。",
-    "start": 94.379,
-    "end": 104.459,
-    "duration": 10.08
+    "start": 101.953,
+    "end": 113.403,
+    "duration": 11.45
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 写出《激流三部曲》三部书名及《家》《春》《秋》各自的控诉重心？",
-    "start": 104.909,
-    "end": 111.029,
-    "duration": 6.12
+    "start": 114.181,
+    "end": 120.456,
+    "duration": 6.275
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 解释巴金刻画觉新“作揖主义”相比单纯塑造坏人老太爷更深刻之处？",
-    "start": 111.479,
-    "end": 118.559,
-    "duration": 7.08
+    "start": 121.202,
+    "end": 128.296,
+    "duration": 7.093
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 回答 2025 年真题简答《巴金“激流三部曲”的艺术特点/思想内容》？",
-    "start": 119.009,
-    "end": 125.689,
-    "duration": 6.68
+    "start": 129.055,
+    "end": 135.883,
+    "duration": 6.828
   }
 ]

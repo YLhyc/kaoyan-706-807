@@ -3,208 +3,176 @@
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "写什么→谁在讲→为何活的三步对照式转型：",
-    "start": 0.0,
-    "end": 4.2,
-    "duration": 4.2
+    "start": 0.225,
+    "end": 4.89,
+    "duration": 4.665
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "1.题材从《现实一种》血腥拆解转向《活着》《许三观》体认底层坚韧；",
-    "start": 4.249,
-    "end": 10.009,
-    "duration": 5.76
+    "start": 5.622,
+    "end": 11.323,
+    "duration": 5.701
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "2.叙事视点从冰冷生理白描转向“炒猪肝”般烟火民间说话人；",
-    "start": 10.459,
-    "end": 15.899,
-    "duration": 5.44
+    "start": 12.144,
+    "end": 17.793,
+    "duration": 5.649
   },
   {
     "id": "hook_c3",
     "dom_key": "hook_c3",
     "text": "3.生命哲学从虚无荒诞死局升华为“卖血救一乐”的向死而生。",
-    "start": 16.349,
-    "end": 22.149,
-    "duration": 5.8
+    "start": 18.606,
+    "end": 24.18,
+    "duration": 5.574
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
-    "text": "八十年代末至九十年代，",
-    "start": 22.599,
-    "end": 24.559,
-    "duration": 1.96
+    "text": "八十年代末至九十年代，余华由激进“先锋形式实验”转向沉潜温厚“民间生存叙事”，",
+    "start": 24.934,
+    "end": 31.75,
+    "duration": 6.816
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
-    "text": "余华由激进“先锋形式实验”转向沉潜温厚“民间生存叙事”，",
-    "start": 25.009,
-    "end": 29.609,
-    "duration": 4.6
-  },
-  {
-    "id": "intro_c2",
-    "dom_key": "intro_c2",
     "text": "构成新时期当代小说文体演进的核心切片。",
-    "start": 30.059,
-    "end": 33.739,
-    "duration": 3.68
+    "start": 32.473,
+    "end": 36.129,
+    "duration": 3.656
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 叙事重心：形式暴力拆解 → 底层苦难体认",
-    "start": 34.269,
-    "end": 38.709,
-    "duration": 4.44
+    "start": 36.895,
+    "end": 41.016,
+    "duration": 4.122
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
-    "text": "《现实一种》写孩童相害引发兄弟报复乃至尸体拆解，",
-    "start": 39.159,
-    "end": 43.639,
-    "duration": 4.48
-  },
-  {
-    "id": "sec0_step0_c1",
-    "dom_key": "sec0_step0_c1",
-    "text": "冷酷摧毁宗法温情、视世界为荒诞迷宫；",
-    "start": 44.089,
-    "end": 47.689,
-    "duration": 3.6
+    "text": "《现实一种》写孩童相害引发兄弟报复乃至尸体拆解，冷酷摧毁宗法温情、视世界为荒诞迷宫；",
+    "start": 41.744,
+    "end": 50.184,
+    "duration": 8.44
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "九十年代《活着》《许三观卖血记》走出暴力迷狂，凝视平民坚韧承受，",
-    "start": 48.139,
-    "end": 53.619,
-    "duration": 5.48
-  },
-  {
-    "id": "sec0_step1_c1",
-    "dom_key": "sec0_step1_c1",
-    "text": "赋予微小生命厚重尊严。",
-    "start": 54.069,
-    "end": 56.109,
-    "duration": 2.04
+    "text": "九十年代《活着》《许三观卖血记》走出暴力迷狂，凝视平民坚韧承受，赋予微小生命厚重尊严。",
+    "start": 50.948,
+    "end": 58.761,
+    "duration": 7.813
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 叙事视角：冷漠零度叙事 → 民间说话人视点",
-    "start": 56.559,
-    "end": 61.319,
-    "duration": 4.76
+    "start": 59.614,
+    "end": 63.843,
+    "duration": 4.23
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "先锋阶段以生理学白描剔除道德人道关怀，将人物物化为被命运玩弄的零件；",
-    "start": 61.769,
-    "end": 67.969,
-    "duration": 6.2
+    "start": 64.631,
+    "end": 71.266,
+    "duration": 6.635
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "转型期在《许三观卖血记》吸纳民间说唱基因，",
-    "start": 68.419,
-    "end": 72.419,
-    "duration": 4.0
+    "start": 72.025,
+    "end": 75.71,
+    "duration": 3.685
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "借饥荒年用嘴给孩子“炒猪肝”及循环复沓对话，建烟火温情立场。",
-    "start": 72.869,
-    "end": 78.109,
-    "duration": 5.24
+    "start": 76.506,
+    "end": 82.085,
+    "duration": 5.579
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 生存哲学：虚无绝望 → 向死而生坚韧意志",
-    "start": 78.559,
-    "end": 83.479,
-    "duration": 4.92
+    "start": 82.858,
+    "end": 87.353,
+    "duration": 4.495
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "从揭示命运无从逃脱的死局，转向重新发现中国平民的生存韧性与和解力量；",
-    "start": 83.929,
-    "end": 90.369,
-    "duration": 6.44
+    "start": 88.074,
+    "end": 94.873,
+    "duration": 6.799
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "许三观为救非亲生病儿一乐乘船赴沪一路卖血至休克，以肉身极限践行大爱，",
-    "start": 90.819,
-    "end": 97.339,
-    "duration": 6.52
+    "start": 95.658,
+    "end": 102.083,
+    "duration": 6.425
   },
   {
     "id": "sec2_step1_c1",
     "dom_key": "sec2_step1_c1",
     "text": "终在家人共享烟火温情中和解，立向死而生哲学。",
-    "start": 97.789,
-    "end": 102.069,
-    "duration": 4.28
+    "start": 102.864,
+    "end": 107.058,
+    "duration": 4.194
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：先锋时期代表作《现实一种》《一九八六年》；",
-    "start": 102.519,
-    "end": 105.959,
-    "duration": 3.44
+    "start": 107.875,
+    "end": 111.869,
+    "duration": 3.994
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "九十年代转型代表作《活着》（福贵）与《许三观卖血记》（许三观卖血救一乐、“炒猪肝”）。",
-    "start": 106.649,
-    "end": 113.529,
-    "duration": 6.88
+    "start": 112.73,
+    "end": 119.632,
+    "duration": 6.902
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 用“题材重心/叙述视角/生存哲学”三步精准对照余华前后两期作品？",
-    "start": 113.979,
-    "end": 121.219,
-    "duration": 7.24
+    "start": 120.363,
+    "end": 128.225,
+    "duration": 7.862
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合《现实一种》与《许三观卖血记》“炒猪肝”“赴沪卖血”两个名场景对比口吻？",
-    "start": 121.669,
-    "end": 128.869,
-    "duration": 7.2
+    "start": 129.044,
+    "end": 136.571,
+    "duration": 7.527
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
-    "text": "③ 回答 2024 年西华师大真题简答：",
-    "start": 129.319,
-    "end": 132.999,
-    "duration": 3.68
-  },
-  {
-    "id": "drill2_c1",
-    "dom_key": "drill2_c1",
-    "text": "《从〈许三观卖血记〉看余华创作转型》？",
-    "start": 133.449,
-    "end": 136.489,
-    "duration": 3.04
+    "text": "③ 回答 2024 年西华师大真题简答：《从〈许三观卖血记〉看余华创作转型》？",
+    "start": 137.408,
+    "end": 144.665,
+    "duration": 7.257
   }
 ]

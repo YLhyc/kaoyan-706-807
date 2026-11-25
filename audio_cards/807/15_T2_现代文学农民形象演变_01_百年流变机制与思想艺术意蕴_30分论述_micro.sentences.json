@@ -3,264 +3,224 @@
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "严格按二十世纪四大历史时期纵切农民身份跃迁：",
-    "start": 0.0,
-    "end": 4.76,
-    "duration": 4.76
+    "start": 0.235,
+    "end": 5.12,
+    "duration": 4.884
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "“五四启蒙客体（闰土/阿Q/祥林嫂） → 三十年代破产挣扎者（旧毡帽/老通宝/祥子） → 延安翻身历史主体（小二黑/李有才/侯忠全） → 当代复杂个体（梁生宝/梁三老汉/陈奂生）”，",
-    "start": 4.809,
-    "end": 19.609,
-    "duration": 14.8
+    "start": 5.912,
+    "end": 22.077,
+    "duration": 16.165
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "人物链严丝合缝！",
-    "start": 20.059,
-    "end": 21.459,
-    "duration": 1.4
+    "start": 22.819,
+    "end": 24.0,
+    "duration": 1.181
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "自五四至新时期，现当代文学在深层意义上是一部中国农民精神变迁史与解放史，",
-    "start": 21.909,
-    "end": 28.989,
-    "duration": 7.08
+    "start": 24.766,
+    "end": 31.999,
+    "duration": 7.233
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "各期农民形象折射着时代思潮、社会变革与作家视野演进。",
-    "start": 29.439,
-    "end": 34.239,
-    "duration": 4.8
+    "start": 32.822,
+    "end": 38.254,
+    "duration": 5.431
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 五四启蒙期：病态国民与宗法受害者凝视",
-    "start": 34.689,
-    "end": 38.849,
-    "duration": 4.16
+    "start": 39.005,
+    "end": 43.025,
+    "duration": 4.02
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "启蒙作家秉持“哀其不幸，怒其不争”忧患意识解剖国民劣根性；",
-    "start": 39.299,
-    "end": 44.419,
-    "duration": 5.12
+    "start": 43.74,
+    "end": 48.934,
+    "duration": 5.195
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "《故乡》闰土一声“老爷”折宗法麻木；",
-    "start": 44.869,
-    "end": 47.309,
-    "duration": 2.44
+    "start": 49.767,
+    "end": 52.365,
+    "duration": 2.598
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "《阿Q正传》精神胜利法与画圆圈揭奴性；",
-    "start": 47.759,
-    "end": 51.199,
-    "duration": 3.44
+    "start": 53.067,
+    "end": 56.26,
+    "duration": 3.193
   },
   {
     "id": "sec0_step1_c2",
     "dom_key": "sec0_step1_c2",
     "text": "《祝福》祥林嫂“魂灵有无”遭四权绞杀。",
-    "start": 51.649,
-    "end": 54.529,
-    "duration": 2.88
+    "start": 57.026,
+    "end": 59.976,
+    "duration": 2.95
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 三十年代左翼与写实期：阶级压迫中挣扎",
-    "start": 54.979,
-    "end": 59.459,
-    "duration": 4.48
+    "start": 60.684,
+    "end": 65.026,
+    "duration": 4.343
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "文学由精神启蒙转向社会经济结构剖析：",
-    "start": 59.909,
-    "end": 63.269,
-    "duration": 3.36
+    "start": 65.808,
+    "end": 69.344,
+    "duration": 3.536
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "叶圣陶《多收了三五斗》“丰收成灾”；",
-    "start": 63.799,
-    "end": 66.519,
-    "duration": 2.72
+    "start": 70.093,
+    "end": 72.678,
+    "duration": 2.585
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "茅盾《春蚕》老通宝破产；",
-    "start": 67.049,
-    "end": 68.929,
-    "duration": 1.88
+    "start": 73.408,
+    "end": 75.079,
+    "duration": 1.671
   },
   {
     "id": "sec1_step1_c2",
     "dom_key": "sec1_step1_c2",
     "text": "老舍《骆驼祥子》进城沦“个人主义的末路鬼”，剖离土悲剧。",
-    "start": 69.459,
-    "end": 73.859,
-    "duration": 4.4
+    "start": 75.883,
+    "end": 80.398,
+    "duration": 4.515
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 延安与解放区期：翻身觉醒与历史主体确立",
-    "start": 74.309,
-    "end": 78.669,
-    "duration": 4.36
+    "start": 81.161,
+    "end": 85.738,
+    "duration": 4.577
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
-    "text": "赵树理《小二黑结婚》写青年顶住迷信恶霸争婚姻自主；",
-    "start": 79.119,
-    "end": 83.559,
-    "duration": 4.44
-  },
-  {
-    "id": "sec2_step0_c1",
-    "dom_key": "sec2_step0_c1",
-    "text": "《李有才板话》写农会基层斗争；",
-    "start": 84.009,
-    "end": 86.289,
-    "duration": 2.28
+    "text": "赵树理《小二黑结婚》写青年顶住迷信恶霸争婚姻自主；《李有才板话》写农会基层斗争；",
+    "start": 86.501,
+    "end": 93.807,
+    "duration": 7.306
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "丁玲《太阳照在桑干河上》除张裕民程仁外，",
-    "start": 86.739,
-    "end": 90.099,
-    "duration": 3.36
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "细写老农侯忠全由畏惧退地到真切觉醒的复杂心路。",
-    "start": 90.549,
-    "end": 94.909,
-    "duration": 4.36
+    "text": "丁玲《太阳照在桑干河上》除张裕民程仁外，细写老农侯忠全由畏惧退地到真切觉醒的复杂心路。",
+    "start": 94.57,
+    "end": 102.919,
+    "duration": 8.349
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 当代十七年至新时期：改造阵痛与复归",
-    "start": 95.439,
-    "end": 100.039,
-    "duration": 4.6
+    "start": 103.682,
+    "end": 107.941,
+    "duration": 4.258
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "柳青既塑互助合作新人梁生宝，",
-    "start": 100.569,
-    "end": 103.289,
-    "duration": 2.72
+    "start": 108.645,
+    "end": 111.019,
+    "duration": 2.374
   },
   {
     "id": "sec3_step0_c1",
     "dom_key": "sec3_step0_c1",
     "text": "也写勤劳耿直却背负小农私有习惯的“中间人物”梁三老汉，显改造艰巨；",
-    "start": 103.739,
-    "end": 109.619,
-    "duration": 5.88
+    "start": 111.849,
+    "end": 118.045,
+    "duration": 6.195
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
-    "text": "高晓声“陈奂生系列”写转型期农民在生活改善与精神惯性间的徘徊，",
-    "start": 110.069,
-    "end": 115.829,
-    "duration": 5.76
-  },
-  {
-    "id": "sec3_step1_c1",
-    "dom_key": "sec3_step1_c1",
-    "text": "接续鲁迅国民性关怀。",
-    "start": 116.279,
-    "end": 118.199,
-    "duration": 1.92
+    "text": "高晓声“陈奂生系列”写转型期农民在生活改善与精神惯性间的徘徊，接续鲁迅国民性关怀。",
+    "start": 118.781,
+    "end": 126.684,
+    "duration": 7.903
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "现当代农民形象历经“启蒙客体→挣扎者→革命主体→转型期复杂个体”演变，",
-    "start": 118.649,
-    "end": 125.089,
-    "duration": 6.44
+    "start": 127.422,
+    "end": 134.314,
+    "duration": 6.892
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "既是审美观念演进写照，也凝结二十世纪社会变革与民族反思经验。",
-    "start": 125.539,
-    "end": 131.219,
-    "duration": 5.68
+    "start": 135.015,
+    "end": 140.813,
+    "duration": 5.799
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
-    "text": "防混：四阶段典型人物链：",
-    "start": 131.669,
-    "end": 133.989,
-    "duration": 2.32
-  },
-  {
-    "id": "guard_c1",
-    "dom_key": "guard_c1",
-    "text": "①五四（闰土/阿Q/祥林嫂） ②30年代（《多收了三五斗》/《春蚕》老通宝/《骆驼祥子》） ③延安（小二黑/李有才/侯忠全） ④当代（梁生宝/梁三老汉/陈奂生）。",
-    "start": 134.439,
-    "end": 150.643,
-    "duration": 16.204
+    "text": "防混：四阶段典型人物链：①五四（闰土/阿Q/祥林嫂） ②30年代（《多收了三五斗》/《春蚕》老通宝/《骆驼祥子》） ③延安（小二黑/李有才/侯忠全） ④当代（梁生宝/梁三老汉/陈奂生）。",
+    "start": 141.589,
+    "end": 160.722,
+    "duration": 19.133
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 按“五四→30年代→延安→当代”四阶段背出全套 11 位农民典型人物链？",
-    "start": 151.109,
-    "end": 158.149,
-    "duration": 7.04
+    "start": 161.486,
+    "end": 169.078,
+    "duration": 7.592
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 说明不同时期作家看农民的视角怎样从“国民性灵魂→经济阶级→翻身主体→中间性与转型惯性”演变？",
-    "start": 158.599,
-    "end": 167.679,
-    "duration": 9.08
+    "start": 169.836,
+    "end": 180.417,
+    "duration": 10.581
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
-    "text": "③ 回答 2019 年材料分析思路：",
-    "start": 168.129,
-    "end": 171.289,
-    "duration": 3.16
-  },
-  {
-    "id": "drill2_c1",
-    "dom_key": "drill2_c1",
-    "text": "怎样把农民演变和知识分子演变放在同一时代坐标对读？",
-    "start": 171.739,
-    "end": 176.139,
-    "duration": 4.4
+    "text": "③ 回答 2019 年材料分析思路：怎样把农民演变和知识分子演变放在同一时代坐标对读？",
+    "start": 181.148,
+    "end": 189.923,
+    "duration": 8.774
   }
 ]

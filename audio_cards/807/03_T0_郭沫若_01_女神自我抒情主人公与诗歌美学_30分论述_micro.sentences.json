@@ -2,289 +2,241 @@
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "由“谁在抒情”到“心灵张力”再到“哲学与诗体”：",
-    "start": 0.0,
-    "end": 4.08,
-    "duration": 4.08
+    "text": "由“谁在抒情”到“心灵张力”再到“哲学与诗体”：先逐一清点《女神》里“大我/新人/神我/世界人”四维抒情自我，",
+    "start": 0.242,
+    "end": 10.036,
+    "duration": 9.794
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "先逐一清点《女神》里“大我/新人/神我/世界人”四维抒情自我，",
-    "start": 4.129,
-    "end": 9.449,
-    "duration": 5.32
+    "text": "紧接翻看火山背面不为人注意的孤独与矛盾张力，",
+    "start": 10.884,
+    "end": 14.871,
+    "duration": 3.987
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "紧接翻看火山背面不为人注意的孤独与矛盾张力，",
-    "start": 9.899,
-    "end": 13.659,
-    "duration": 3.76
+    "text": "再揭示斯宾诺莎泛神论如何化出地球海洋太阳壮美意象，",
+    "start": 15.631,
+    "end": 20.208,
+    "duration": 4.577
   },
   {
     "id": "hook_c3",
     "dom_key": "hook_c3",
-    "text": "再揭示斯宾诺莎泛神论如何化出地球海洋太阳壮美意象，",
-    "start": 14.109,
-    "end": 18.349,
-    "duration": 4.24
-  },
-  {
-    "id": "hook_c4",
-    "dom_key": "hook_c4",
     "text": "最后落于“情绪决定形式”的自由体解放。",
-    "start": 18.799,
-    "end": 21.799,
-    "duration": 3.0
+    "start": 20.96,
+    "end": 23.824,
+    "duration": 2.864
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
-    "text": "五四高潮时《女神》问世为现代新诗奠基之作，“个人的郁结，民族的郁结，",
-    "start": 22.329,
-    "end": 27.849,
-    "duration": 5.52
+    "text": "五四高潮时《女神》问世为现代新诗奠基之作，",
+    "start": 24.625,
+    "end": 28.385,
+    "duration": 3.76
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
-    "text": "在浪漫主义这里找到了喷火口”，",
-    "start": 28.299,
-    "end": 30.659,
-    "duration": 2.36
+    "text": "“个人的郁结，民族的郁结，在浪漫主义这里找到了喷火口”，",
+    "start": 29.163,
+    "end": 33.676,
+    "duration": 4.514
   },
   {
     "id": "intro_c2",
     "dom_key": "intro_c2",
     "text": "塑造多维自我抒情主人公与现代浪漫崇高范式。",
-    "start": 31.109,
-    "end": 35.229,
-    "duration": 4.12
+    "start": 34.43,
+    "end": 38.277,
+    "duration": 3.847
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 塑造多维抒情主人公、融合“小我”与“大我”",
-    "start": 35.679,
-    "end": 39.759,
-    "duration": 4.08
+    "start": 38.997,
+    "end": 42.853,
+    "duration": 3.856
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "①《凤凰涅槃》集香木自焚更生，象征民族重生之“大我”；",
-    "start": 40.209,
-    "end": 44.929,
-    "duration": 4.72
+    "start": 43.649,
+    "end": 48.466,
+    "duration": 4.817
   },
   {
     "id": "sec0_step0_c1",
     "dom_key": "sec0_step0_c1",
-    "text": "②《女神之再生》拒绝修补旧天高唱“创造新鲜的太阳”，",
-    "start": 45.379,
-    "end": 50.099,
-    "duration": 4.72
-  },
-  {
-    "id": "sec0_step0_c2",
-    "dom_key": "sec0_step0_c2",
-    "text": "塑另造天地“新人”；",
-    "start": 50.549,
-    "end": 52.229,
-    "duration": 1.68
+    "text": "②《女神之再生》拒绝修补旧天高唱“创造新鲜的太阳”，塑另造天地“新人”；",
+    "start": 49.237,
+    "end": 55.631,
+    "duration": 6.394
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "③《天狗》吞食日月高呼“我便是我”之“神我”；",
-    "start": 52.679,
-    "end": 56.559,
-    "duration": 3.88
+    "start": 56.441,
+    "end": 60.169,
+    "duration": 3.728
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "④《晨安》向世界文明致敬之“世界人”，具象化五四时代狂飙。",
-    "start": 57.009,
-    "end": 62.489,
-    "duration": 5.48
+    "start": 60.931,
+    "end": 66.003,
+    "duration": 5.072
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 揭示狂飙背后的矛盾与沉郁、见心灵脉动",
-    "start": 62.939,
-    "end": 67.179,
-    "duration": 4.24
+    "start": 66.705,
+    "end": 71.103,
+    "duration": 4.398
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "不止于狂热宣泄，深藏旧体制废墟上的孤独、眷恋与忏悔：",
-    "start": 67.629,
-    "end": 71.989,
-    "duration": 4.36
+    "start": 71.914,
+    "end": 76.871,
+    "duration": 4.958
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "《天狗》自我膨胀伴随剥皮食肉凌迟；",
-    "start": 72.439,
-    "end": 75.239,
-    "duration": 2.8
+    "start": 77.615,
+    "end": 80.524,
+    "duration": 2.909
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "《湘累》创造后陷寥寂；",
-    "start": 75.689,
-    "end": 77.409,
-    "duration": 1.72
+    "start": 81.237,
+    "end": 82.945,
+    "duration": 1.708
   },
   {
     "id": "sec1_step1_c2",
     "dom_key": "sec1_step1_c2",
     "text": "《凤凰涅槃》终归“一切的一，和谐”泛神消融，真实度量启蒙裂变心脉。",
-    "start": 77.939,
-    "end": 83.339,
-    "duration": 5.4
+    "start": 83.708,
+    "end": 89.494,
+    "duration": 5.786
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 引入泛神论哲学、立狂飙壮美意象体系",
-    "start": 83.789,
-    "end": 88.229,
-    "duration": 4.44
+    "start": 90.244,
+    "end": 94.301,
+    "duration": 4.058
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
-    "text": "借斯宾诺莎泛神论提“我即是神”，化“泛我论”机制，",
-    "start": 88.679,
-    "end": 92.839,
-    "duration": 4.16
-  },
-  {
-    "id": "sec2_step0_c1",
-    "dom_key": "sec2_step0_c1",
-    "text": "山川雷电海洋皆成情感外化；",
-    "start": 93.289,
-    "end": 95.929,
-    "duration": 2.64
+    "text": "借斯宾诺莎泛神论提“我即是神”，化“泛我论”机制，山川雷电海洋皆成情感外化；",
+    "start": 95.002,
+    "end": 102.037,
+    "duration": 7.035
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "扫除纤细阴柔感伤，《立在地球边上放号》将地球海洋太阳推向极境，",
-    "start": 96.379,
-    "end": 101.539,
-    "duration": 5.16
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "颂“力的绘画”与“力的舞蹈”。",
-    "start": 101.989,
-    "end": 104.069,
-    "duration": 2.08
+    "text": "扫除纤细阴柔感伤，《立在地球边上放号》将地球海洋太阳推向极境，颂“力的绘画”与“力的舞蹈”。",
+    "start": 102.757,
+    "end": 110.734,
+    "duration": 7.978
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 打破声律镣铐、立“情绪决定形式”自由体",
-    "start": 104.599,
-    "end": 108.679,
-    "duration": 4.08
+    "start": 111.59,
+    "end": 115.675,
+    "duration": 4.084
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
-    "text": "反对旧格律与尝试派规约，主“诗的本职专在抒情”，",
-    "start": 109.129,
-    "end": 113.249,
-    "duration": 4.12
-  },
-  {
-    "id": "sec3_step0_c1",
-    "dom_key": "sec3_step0_c1",
-    "text": "外在节律服从内在情感自然流淌；",
-    "start": 113.779,
-    "end": 116.339,
-    "duration": 2.56
+    "text": "反对旧格律与尝试派规约，主“诗的本职专在抒情”，外在节律服从内在情感自然流淌；",
+    "start": 116.495,
+    "end": 123.773,
+    "duration": 7.278
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
-    "text": "《天狗》长短错落爆发自由体；",
-    "start": 116.789,
-    "end": 119.069,
-    "duration": 2.28
-  },
-  {
-    "id": "sec3_step1_c1",
-    "dom_key": "sec3_step1_c1",
-    "text": "《炉中煤》用重叠排比复沓造深沉回环声律，拓宽新诗表现力。",
-    "start": 119.519,
-    "end": 124.519,
-    "duration": 5.0
+    "text": "《天狗》长短错落爆发自由体；《炉中煤》用重叠排比复沓造深沉回环声律，拓宽新诗表现力。",
+    "start": 124.538,
+    "end": 132.455,
+    "duration": 7.917
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "郭沫若《女神》以喷火口之势统一民族精神、泛神哲学与诗体革命，",
-    "start": 125.049,
-    "end": 130.409,
-    "duration": 5.36
+    "start": 133.223,
+    "end": 138.746,
+    "duration": 5.523
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "开创中国现代浪漫主义新诗崭新篇章。",
-    "start": 130.859,
-    "end": 134.019,
-    "duration": 3.16
+    "start": 139.491,
+    "end": 142.811,
+    "duration": 3.319
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：《女神》主张“诗的本职专在抒情”与泛神论“我即是神”；",
-    "start": 134.469,
-    "end": 139.429,
-    "duration": 4.96
+    "start": 143.551,
+    "end": 148.547,
+    "duration": 4.996
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "注意区分郭沫若“太阳/海洋/地球”狂飙壮美意象与艾青“土地/太阳”深沉忧郁意象。",
-    "start": 139.879,
-    "end": 146.599,
-    "duration": 6.72
+    "start": 149.309,
+    "end": 156.454,
+    "duration": 7.145
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 背清《女神》中“大我、新人、神我、世界人”四重抒情主人公及对应代表诗？",
-    "start": 147.129,
-    "end": 154.689,
-    "duration": 7.56
+    "start": 157.261,
+    "end": 164.722,
+    "duration": 7.462
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合《天狗》《湘累》《立在地球边上放号》说明“狂飙背后的孤独”与“泛我论壮美”？",
-    "start": 155.139,
-    "end": 161.979,
-    "duration": 6.84
+    "start": 165.456,
+    "end": 173.036,
+    "duration": 7.58
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 如何用《天狗》《炉中煤》论证“情绪决定形式”的现代自由诗革命？",
-    "start": 162.429,
-    "end": 168.989,
-    "duration": 6.56
+    "start": 173.958,
+    "end": 180.471,
+    "duration": 6.512
   }
 ]

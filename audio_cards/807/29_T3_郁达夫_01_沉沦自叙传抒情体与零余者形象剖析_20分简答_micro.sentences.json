@@ -3,216 +3,152 @@
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "紧扣《沉沦》在创造社早期开创“自叙传”文体、刻画带弱国屈辱痛感的“零余者”、终至“感伤病态美”到后期《迟桂花》人性和谐净化的流变三步推演。",
-    "start": 0.0,
-    "end": 11.92,
-    "duration": 11.92
+    "start": 0.223,
+    "end": 13.222,
+    "duration": 12.998
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
-    "text": "作为五四前期创造社核心小说家，",
-    "start": 11.969,
-    "end": 14.729,
-    "duration": 2.76
+    "text": "作为五四前期创造社核心小说家，郁达夫以短篇集《沉沦》打破重外部情节定势，",
+    "start": 14.072,
+    "end": 20.55,
+    "duration": 6.478
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
-    "text": "郁达夫以短篇集《沉沦》打破重外部情节定势，",
-    "start": 15.179,
-    "end": 19.019,
-    "duration": 3.84
-  },
-  {
-    "id": "intro_c2",
-    "dom_key": "intro_c2",
     "text": "开创现代“自叙传”抒情小说流派，抒写出退潮期青年苦闷。",
-    "start": 19.469,
-    "end": 24.509,
-    "duration": 5.04
+    "start": 21.25,
+    "end": 26.425,
+    "duration": 5.175
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 首创直抒胸臆“自叙传”主情小说体制",
-    "start": 25.039,
-    "end": 29.079,
-    "duration": 4.04
+    "start": 27.109,
+    "end": 30.917,
+    "duration": 3.808
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "吸收浪漫主义及日本“私小说”，主张一切文学皆作家“自叙传”；",
-    "start": 29.529,
-    "end": 34.409,
-    "duration": 4.88
+    "start": 31.608,
+    "end": 36.581,
+    "duration": 4.974
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "《沉沦》弱化戏剧波折，以“他”的精神抑郁为主脉，",
-    "start": 34.859,
-    "end": 38.379,
-    "duration": 3.52
+    "start": 37.335,
+    "end": 40.879,
+    "duration": 3.544
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "穿插日记自白、景物烘托与坦率独白，掀个性解放风潮。",
-    "start": 38.829,
-    "end": 43.509,
-    "duration": 4.68
+    "start": 41.626,
+    "end": 46.69,
+    "duration": 5.064
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 刻画压抑反抗的“零余者”抒情主人公",
-    "start": 44.039,
-    "end": 47.679,
-    "duration": 3.64
+    "start": 47.371,
+    "end": 51.125,
+    "duration": 3.754
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
-    "text": "异乡有志难申青年：《沉沦》留日生既遭青春期灵肉压抑，",
-    "start": 48.209,
-    "end": 53.209,
-    "duration": 5.0
-  },
-  {
-    "id": "sec1_step0_c1",
-    "dom_key": "sec1_step0_c1",
-    "text": "又受弱国屈辱爱国痛感夹击；",
-    "start": 53.659,
-    "end": 56.059,
-    "duration": 2.4
+    "text": "异乡有志难申青年：《沉沦》留日生既遭青春期灵肉压抑，又受弱国屈辱爱国痛感夹击；",
+    "start": 51.872,
+    "end": 59.397,
+    "duration": 7.525
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "孤立自我嫌恶中投海自尽，疾呼“祖国呀，祖国！",
-    "start": 56.509,
-    "end": 60.709,
-    "duration": 4.2
-  },
-  {
-    "id": "sec1_step1_c1",
-    "dom_key": "sec1_step1_c1",
-    "text": "我的死是你害我的！",
-    "start": 61.239,
-    "end": 62.719,
-    "duration": 1.48
-  },
-  {
-    "id": "sec1_step1_c2",
-    "dom_key": "sec1_step1_c2",
-    "text": "”，成五四青年精神失落写照。",
-    "start": 63.169,
-    "end": 65.529,
-    "duration": 2.36
+    "text": "孤立自我嫌恶中投海自尽，疾呼“祖国呀，祖国！我的死是你害我的！”，成五四青年精神失落写照。",
+    "start": 60.172,
+    "end": 68.515,
+    "duration": 8.343
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 坦诚“感伤病态美”与后期人性净化流变",
-    "start": 65.979,
-    "end": 70.259,
-    "duration": 4.28
+    "start": 69.237,
+    "end": 73.351,
+    "duration": 4.114
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "《春风沉醉的晚上》写亭子间文人与女工陈二妹“同是天涯沦落人”，",
-    "start": 70.709,
-    "end": 75.949,
-    "duration": 5.24
+    "start": 74.103,
+    "end": 79.582,
+    "duration": 5.479
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
     "text": "赋“倡优士子”古典悲悯以平民色泽；",
-    "start": 76.399,
-    "end": 79.439,
-    "duration": 3.04
+    "start": 80.398,
+    "end": 83.322,
+    "duration": 2.924
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "后期《迟桂花》转向宁静和谐人性净化，",
-    "start": 79.969,
-    "end": 83.129,
-    "duration": 3.16
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "并深远影响废名、庐隐等主观抒情小说。",
-    "start": 83.579,
-    "end": 86.939,
-    "duration": 3.36
+    "text": "后期《迟桂花》转向宁静和谐人性净化，并深远影响废名、庐隐等主观抒情小说。",
+    "start": 84.058,
+    "end": 90.959,
+    "duration": 6.901
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
-    "text": "防混：《沉沦》为五四前期创造社小说代表，临终呼喊“祖国呀，祖国！",
-    "start": 87.389,
-    "end": 92.789,
-    "duration": 5.4
+    "text": "防混：《沉沦》为五四前期创造社小说代表，临终呼喊“祖国呀，祖国！我的死是你害我的！”；",
+    "start": 91.705,
+    "end": 99.591,
+    "duration": 7.886
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
-    "text": "我的死是你害我的！”；",
-    "start": 93.319,
-    "end": 95.239,
-    "duration": 1.92
-  },
-  {
-    "id": "guard_c2",
-    "dom_key": "guard_c2",
-    "text": "早期尚有《春风沉醉的晚上》（1923），",
-    "start": 95.689,
-    "end": 98.649,
-    "duration": 2.96
-  },
-  {
-    "id": "guard_c3",
-    "dom_key": "guard_c3",
-    "text": "后期代表转变作品记住《迟桂花》（1932）。",
-    "start": 99.179,
-    "end": 102.419,
-    "duration": 3.24
+    "text": "早期尚有《春风沉醉的晚上》（1923），后期代表转变作品记住《迟桂花》（1932）。",
+    "start": 100.317,
+    "end": 107.533,
+    "duration": 7.216
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 厘清郁达夫前期《沉沦》《春风沉醉的晚上》与后期转变作《迟桂花》的分期定位？",
-    "start": 102.869,
-    "end": 110.189,
-    "duration": 7.32
+    "start": 108.307,
+    "end": 116.215,
+    "duration": 7.908
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
-    "text": "② 结合日记独白结构、双痛感“零余者”与“祖国呀，",
-    "start": 110.639,
-    "end": 114.799,
-    "duration": 4.16
-  },
-  {
-    "id": "drill1_c1",
-    "dom_key": "drill1_c1",
-    "text": "祖国”解释创造社主观抒情力？",
-    "start": 115.249,
-    "end": 117.769,
-    "duration": 2.52
+    "text": "② 结合日记独白结构、双痛感“零余者”与“祖国呀，祖国”解释创造社主观抒情力？",
+    "start": 116.975,
+    "end": 124.824,
+    "duration": 7.849
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 说明“倡优士子”古典悲悯到了《春风沉醉的晚上》怎样接续到现代底层女工身上？",
-    "start": 118.219,
-    "end": 126.059,
-    "duration": 7.84
+    "start": 125.579,
+    "end": 133.088,
+    "duration": 7.51
   }
 ]

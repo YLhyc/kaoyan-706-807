@@ -3,184 +3,184 @@
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "“双纵向主脉 + 四维比较锁”现当代全真题救急总闸：",
-    "start": 0.0,
-    "end": 5.28,
-    "duration": 5.28
+    "start": 0.223,
+    "end": 5.514,
+    "duration": 5.291
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "凡遇百年演变题顺抽“乡土农民5步链”或“都市知识分子6站链”；",
-    "start": 5.329,
-    "end": 10.369,
-    "duration": 5.04
+    "start": 6.27,
+    "end": 11.606,
+    "duration": 5.336
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "凡遇陌生双家对比题一律切出“语境→心理姿态→视角修辞→史脉”同框互证。",
-    "start": 10.899,
-    "end": 17.059,
-    "duration": 6.16
+    "start": 12.392,
+    "end": 18.803,
+    "duration": 6.411
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "碰见跨越现当代演变综合大题或未背过的双家比较题，",
-    "start": 17.509,
-    "end": 22.229,
-    "duration": 4.72
+    "start": 19.6,
+    "end": 24.241,
+    "duration": 4.641
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
-    "text": "可即刻调用“两条核心演进主脉”与“横切四维通用公式”，",
-    "start": 22.679,
-    "end": 27.119,
-    "duration": 4.44
-  },
-  {
-    "id": "intro_c2",
-    "dom_key": "intro_c2",
-    "text": "现场串联已背单篇成文。",
-    "start": 27.569,
-    "end": 29.729,
-    "duration": 2.16
+    "text": "可即刻调用“两条核心演进主脉”与“横切四维通用公式”，现场串联已背单篇成文。",
+    "start": 25.021,
+    "end": 31.728,
+    "duration": 6.707
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 主脉一：乡土叙事与农民观百年演进线",
-    "start": 30.259,
-    "end": 34.699,
-    "duration": 4.44
+    "start": 32.555,
+    "end": 36.649,
+    "duration": 4.095
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
-    "text": "五四鲁迅《阿Q正传》《祝福》启蒙剖析劣根→三十年代沈从文《边城》湘西抒情赞原始人性→四十年代赵树理《小二黑结婚》写改造翻身；",
-    "start": 35.149,
-    "end": 45.629,
-    "duration": 10.48
+    "text": "五四鲁迅《阿Q正传》《祝福》启蒙剖析劣根",
+    "start": 37.413,
+    "end": 40.669,
+    "duration": 3.256
+  },
+  {
+    "id": "sec0_step0_c1",
+    "dom_key": "sec0_step0_c1",
+    "text": "→三十年代沈从文《边城》湘西抒情赞原始人性",
+    "start": 41.383,
+    "end": 45.352,
+    "duration": 3.969
+  },
+  {
+    "id": "sec0_step0_c2",
+    "dom_key": "sec0_step0_c2",
+    "text": "→四十年代赵树理《小二黑结婚》写改造翻身；",
+    "start": 46.095,
+    "end": 49.542,
+    "duration": 3.447
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "新时期初汪曾祺《受戒》复归日常和美→寻根文学韩少功阿城深掘文化根性。",
-    "start": 46.079,
-    "end": 52.239,
-    "duration": 6.16
+    "start": 50.258,
+    "end": 56.846,
+    "duration": 6.588
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 主脉二：都市体验与知识分子精神史线",
-    "start": 52.769,
-    "end": 56.769,
-    "duration": 4.0
+    "start": 57.575,
+    "end": 61.6,
+    "duration": 4.025
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "郁达夫《沉沦》敞开零余痛感→三十年代曹禺《雷雨》《子夜》接入宗法与金融危机；",
-    "start": 57.299,
-    "end": 63.579,
-    "duration": 6.28
+    "start": 62.338,
+    "end": 68.86,
+    "duration": 6.522
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "抗战钱锺书《围城》讽文明夹缝、张爱玲《金锁记》剖苍凉人欲→新时期朦胧诗高擎良知再转入新写实零度审视庸常。",
-    "start": 64.029,
-    "end": 73.909,
-    "duration": 9.88
+    "text": "抗战钱锺书《围城》讽文明夹缝、张爱玲《金锁记》剖苍凉人欲",
+    "start": 69.595,
+    "end": 74.448,
+    "duration": 4.853
+  },
+  {
+    "id": "sec1_step1_c1",
+    "dom_key": "sec1_step1_c1",
+    "text": "→新时期朦胧诗高擎良知再转入新写实零度审视庸常。",
+    "start": 75.161,
+    "end": 79.769,
+    "duration": 4.608
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 技法：比较题“四维同框横切”推演骨架",
-    "start": 74.439,
-    "end": 78.959,
-    "duration": 4.52
+    "start": 80.521,
+    "end": 84.715,
+    "duration": 4.194
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "严禁先甲后乙两张皮！",
-    "start": 79.409,
-    "end": 81.409,
-    "duration": 2.0
+    "start": 85.471,
+    "end": 87.535,
+    "duration": 2.064
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
-    "text": "按“四维同框横切”对撞：",
-    "start": 81.859,
-    "end": 83.779,
-    "duration": 1.92
-  },
-  {
-    "id": "sec2_step0_c2",
-    "dom_key": "sec2_step0_c2",
-    "text": "一比历史语境与题材重心、二比人物心理或主体姿态、三比视角意象与修辞、四比百年现代化进程价值承接；",
-    "start": 84.229,
-    "end": 92.789,
-    "duration": 8.56
+    "text": "按“四维同框横切”对撞：一比历史语境与题材重心、二比人物心理或主体姿态、三比视角意象与修辞、四比百年现代化进程价值承接；",
+    "start": 88.261,
+    "end": 99.523,
+    "duration": 11.262
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "每点紧扣各自一个核心细节（如祥子与祥林嫂、延安与京派）交错印证。",
-    "start": 93.239,
-    "end": 98.999,
-    "duration": 5.76
+    "start": 100.243,
+    "end": 106.973,
+    "duration": 6.73
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
-    "text": "防混：注意两个必考节点定位，",
-    "start": 99.449,
-    "end": 101.689,
-    "duration": 2.24
+    "text": "防混：注意两个必考节点定位，乡土线是“启蒙剖析→田园抒情→翻身改造→日常和美→文化寻根”；",
+    "start": 107.793,
+    "end": 116.919,
+    "duration": 9.126
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
-    "text": "乡土线是“启蒙剖析→田园抒情→翻身改造→日常和美→文化寻根”；",
-    "start": 102.139,
-    "end": 107.739,
-    "duration": 5.6
-  },
-  {
-    "id": "guard_c2",
-    "dom_key": "guard_c2",
     "text": "对比题必须四维同框横切，切忌先甲后乙写成两截！",
-    "start": 108.269,
-    "end": 112.749,
-    "duration": 4.48
+    "start": 117.659,
+    "end": 122.737,
+    "duration": 5.077
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 合书无遗漏默背“乡土农民5站链”与“都市知识分子6站链”全部人名书名？",
-    "start": 113.199,
-    "end": 120.199,
-    "duration": 7.0
+    "start": 123.448,
+    "end": 130.771,
+    "duration": 7.323
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 解释 2014 年开放式综论（如“谈谈最喜欢的现当代戏剧或女作家”）怎样用四维骨架快速扩篇？",
-    "start": 120.649,
-    "end": 129.369,
-    "duration": 8.72
+    "start": 131.635,
+    "end": 141.131,
+    "duration": 9.496
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 如何避免比较题常犯的“前甲后乙两张皮”重大扣分点？",
-    "start": 129.819,
-    "end": 135.859,
-    "duration": 6.04
+    "start": 141.922,
+    "end": 147.569,
+    "duration": 5.647
   }
 ]
