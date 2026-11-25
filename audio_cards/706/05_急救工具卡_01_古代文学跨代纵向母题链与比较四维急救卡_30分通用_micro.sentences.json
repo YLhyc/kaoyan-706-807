@@ -2,265 +2,225 @@
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "双引擎考试急救工具：",
-    "start": 0.0,
-    "end": 2.88,
-    "duration": 2.88
+    "text": "双引擎考试急救工具：遇未背跨代演变大题直接抽出“诗史、浪漫、市井女性、隐逸田园”四条纵向母题链拼装；",
+    "start": 0.22,
+    "end": 10.811,
+    "duration": 10.591
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "遇未背跨代演变大题直接抽出“诗史、浪漫、市井女性、隐逸田园”四条纵向母题链拼装；",
-    "start": 3.009,
-    "end": 10.129,
-    "duration": 7.12
-  },
-  {
-    "id": "hook_c2",
-    "dom_key": "hook_c2",
-    "text": "遇陌生双家比较题一律套用“题材→心态→技法→史位”四维横切同框对敲，",
-    "start": 10.659,
-    "end": 17.179,
-    "duration": 6.52
-  },
-  {
-    "id": "hook_c3",
-    "dom_key": "hook_c3",
-    "text": "严禁前甲后乙两张皮！",
-    "start": 17.629,
-    "end": 19.389,
-    "duration": 1.76
+    "text": "遇陌生双家比较题一律套用“题材→心态→技法→史位”四维横切同框对敲，严禁前甲后乙两张皮！",
+    "start": 11.564,
+    "end": 20.341,
+    "duration": 8.778
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "考场遇手卷未收原题的跨代演变或陌生比较大题，可调取已背单篇要点，",
-    "start": 19.839,
-    "end": 26.199,
-    "duration": 6.36
+    "start": 21.091,
+    "end": 27.464,
+    "duration": 6.374
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "依托“四条纵向母题链”与“比较横切四维法”快速拼装成篇。",
-    "start": 26.649,
-    "end": 31.169,
-    "duration": 4.52
+    "start": 28.234,
+    "end": 32.818,
+    "duration": 4.584
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 链条一：现实主义与“诗史”精神链",
-    "start": 31.699,
-    "end": 35.299,
-    "duration": 3.6
+    "start": 33.552,
+    "end": 37.123,
+    "duration": 3.571
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
-    "text": "《诗经》风雅写民苦→汉乐府“感于哀乐，",
-    "start": 35.749,
-    "end": 38.829,
-    "duration": 3.08
+    "text": "《诗经》风雅写民苦→汉乐府“感于哀乐，缘事而发”重叙事→杜甫即事名篇立“诗史”",
+    "start": 37.845,
+    "end": 44.342,
+    "duration": 6.497
   },
   {
     "id": "sec0_step0_c1",
     "dom_key": "sec0_step0_c1",
-    "text": "缘事而发”重叙事→杜甫即事名篇立“诗史”→白居易新乐府倡讽谕救时弊；",
-    "start": 39.279,
-    "end": 45.439,
-    "duration": 6.16
+    "text": "→白居易新乐府倡讽谕救时弊；",
+    "start": 45.067,
+    "end": 47.304,
+    "duration": 2.237
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "由民间自然咏叹、两汉底层叙事定型，",
-    "start": 45.889,
-    "end": 49.329,
-    "duration": 3.44
-  },
-  {
-    "id": "sec0_step1_c1",
-    "dom_key": "sec0_step1_c1",
-    "text": "演进至唐代儒者自觉记录动乱与针砭政治。",
-    "start": 49.779,
-    "end": 53.379,
-    "duration": 3.6
+    "text": "由民间自然咏叹、两汉底层叙事定型，演进至唐代儒者自觉记录动乱与针砭政治。",
+    "start": 48.06,
+    "end": 55.463,
+    "duration": 7.404
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 链条二：浪漫抒情与狂狷精神链",
-    "start": 53.829,
-    "end": 57.749,
-    "duration": 3.92
+    "start": 56.165,
+    "end": 59.683,
+    "duration": 3.518
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
-    "text": "《庄子》寓言汪洋恣肆→屈原《离骚》香草美人铸忠怨→李白放歌抒盛唐狂傲→苏轼“以诗为词”拓旷达超脱；",
-    "start": 58.199,
-    "end": 66.199,
-    "duration": 8.0
+    "text": "《庄子》寓言汪洋恣肆→屈原《离骚》香草美人铸忠怨→李白放歌抒盛唐狂傲",
+    "start": 60.443,
+    "end": 66.907,
+    "duration": 6.463
+  },
+  {
+    "id": "sec1_step0_c1",
+    "dom_key": "sec1_step0_c1",
+    "text": "→苏轼“以诗为词”拓旷达超脱；",
+    "start": 67.661,
+    "end": 69.957,
+    "duration": 2.295
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "战国逍遥与抗争交汇，在盛唐张扬为个体自信，",
-    "start": 66.649,
-    "end": 70.809,
-    "duration": 4.16
-  },
-  {
-    "id": "sec1_step1_c1",
-    "dom_key": "sec1_step1_c1",
-    "text": "经宋代贬谪淬炼化为逆境自适境界。",
-    "start": 71.259,
-    "end": 74.419,
-    "duration": 3.16
+    "text": "战国逍遥与抗争交汇，在盛唐张扬为个体自信，经宋代贬谪淬炼化为逆境自适境界。",
+    "start": 70.695,
+    "end": 78.714,
+    "duration": 8.019
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 链条三：市井觉醒与女性悲剧链",
-    "start": 74.869,
-    "end": 78.629,
-    "duration": 3.76
+    "start": 79.461,
+    "end": 83.127,
+    "duration": 3.666
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
-    "text": "《窦娥冤》控酷吏冤狱→《西厢记》争婚姻自主→《牡丹亭》倡生死至情→《红楼梦》写宝黛情殇与宗法挽歌；",
-    "start": 79.079,
-    "end": 87.439,
-    "duration": 8.36
+    "text": "《窦娥冤》控酷吏冤狱→《西厢记》争婚姻自主→《牡丹亭》倡生死至情",
+    "start": 83.879,
+    "end": 89.034,
+    "duration": 5.155
+  },
+  {
+    "id": "sec2_step0_c1",
+    "dom_key": "sec2_step0_c1",
+    "text": "→《红楼梦》写宝黛情殇与宗法挽歌；",
+    "start": 89.808,
+    "end": 92.306,
+    "duration": 2.499
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "随市民阶层壮大，由承受外部官僚迫害抗争，",
-    "start": 87.889,
-    "end": 91.809,
-    "duration": 3.92
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "转向礼教压抑追问直至揭示整个宗法体制腐朽衰落。",
-    "start": 92.259,
-    "end": 96.379,
-    "duration": 4.12
+    "text": "随市民阶层壮大，由承受外部官僚迫害抗争，转向礼教压抑追问直至揭示整个宗法体制腐朽衰落。",
+    "start": 93.013,
+    "end": 101.784,
+    "duration": 8.771
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 链条四：隐逸情怀与山水田园链",
-    "start": 96.909,
-    "end": 100.869,
-    "duration": 3.96
+    "start": 102.534,
+    "end": 106.22,
+    "duration": 3.686
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "陶渊明躬耕冲淡真淳→王维静逸禅意、孟浩然清淡自然→范成大《四时田园杂兴》直面农事劳苦；",
-    "start": 101.319,
-    "end": 109.159,
-    "duration": 7.84
+    "start": 106.945,
+    "end": 115.54,
+    "duration": 8.594
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "由六朝守节独善、盛唐空灵观照，发展到南宋兼纳写实令稼穑租税成重心。",
-    "start": 109.609,
-    "end": 116.049,
-    "duration": 6.44
+    "start": 116.325,
+    "end": 123.197,
+    "duration": 6.871
   },
   {
     "id": "sec4_title_c0",
     "dom_key": "sec4_title_c0",
     "text": "05 · 技法总纲：比较题“横切四维法”拼装公式",
-    "start": 116.579,
-    "end": 120.899,
-    "duration": 4.32
+    "start": 123.908,
+    "end": 127.818,
+    "duration": 3.909
   },
   {
     "id": "sec4_step0_c0",
     "dom_key": "sec4_step0_c0",
     "text": "严禁先写完甲再写完乙！",
-    "start": 121.349,
-    "end": 123.269,
-    "duration": 1.92
+    "start": 128.526,
+    "end": 130.79,
+    "duration": 2.264
   },
   {
     "id": "sec4_step0_c1",
     "dom_key": "sec4_step0_c1",
-    "text": "统一“横切四维法”同框对敲：",
-    "start": 123.719,
-    "end": 126.039,
-    "duration": 2.32
-  },
-  {
-    "id": "sec4_step0_c2",
-    "dom_key": "sec4_step0_c2",
-    "text": "一比题材选材取向、二比创作心态与时代境遇、三比意象结构与语言声律、四比文体演变承接地位；",
-    "start": 126.489,
-    "end": 133.969,
-    "duration": 7.48
+    "text": "统一“横切四维法”同框对敲：一比题材选材取向、二比创作心态与时代境遇、三比意象结构与语言声律、四比文体演变承接地位；",
+    "start": 131.549,
+    "end": 142.415,
+    "duration": 10.865
   },
   {
     "id": "sec4_step1_c0",
     "dom_key": "sec4_step1_c0",
     "text": "每段紧扣各自一句代表作或人物交错对读，稳固不失点。",
-    "start": 134.419,
-    "end": 138.779,
-    "duration": 4.36
+    "start": 143.191,
+    "end": 148.087,
+    "duration": 4.897
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
-    "text": "防混：考场遇陌生比较大题，严禁“先写完甲再写完乙（两张皮）”，",
-    "start": 139.229,
-    "end": 144.429,
-    "duration": 5.2
-  },
-  {
-    "id": "guard_c1",
-    "dom_key": "guard_c1",
-    "text": "必须按“四维横切”每段同时对敲甲乙！",
-    "start": 144.879,
-    "end": 147.839,
-    "duration": 2.96
+    "text": "防混：考场遇陌生比较大题，严禁“先写完甲再写完乙（两张皮）”，必须按“四维横切”每段同时对敲甲乙！",
+    "start": 148.967,
+    "end": 158.591,
+    "duration": 9.624
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 合书一口气背全古代文学“现实诗史 / 浪漫狂狷 / 女性市井 / 山水田园”4条×4节点母题链？",
-    "start": 148.289,
-    "end": 157.169,
-    "duration": 8.88
+    "start": 159.438,
+    "end": 169.489,
+    "duration": 10.051
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 面对陌生比较题（如柳永vs周邦彦/高适vs岑参）怎样即时套出四段大纲？",
-    "start": 157.619,
-    "end": 166.059,
-    "duration": 8.44
+    "start": 170.244,
+    "end": 178.558,
+    "duration": 8.313
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 考场比较题的大忌是什么？",
-    "start": 166.509,
-    "end": 169.189,
-    "duration": 2.68
+    "start": 179.245,
+    "end": 182.568,
+    "duration": 3.324
   },
   {
     "id": "drill2_c1",
     "dom_key": "drill2_c1",
     "text": "每段例证该如何安排？",
-    "start": 169.639,
-    "end": 171.439,
-    "duration": 1.8
+    "start": 183.263,
+    "end": 185.125,
+    "duration": 1.862
   }
 ]

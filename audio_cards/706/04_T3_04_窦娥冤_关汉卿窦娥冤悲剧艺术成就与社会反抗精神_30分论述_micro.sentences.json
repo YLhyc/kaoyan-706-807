@@ -2,281 +2,193 @@
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "写实土壤→人物觉醒→浪漫抗议→本色唱腔：",
-    "start": 0.0,
-    "end": 4.52,
-    "duration": 4.52
+    "text": "写实土壤→人物觉醒→浪漫抗议→本色唱腔：先看底层寡妇窦娥如何被赛卢医、张驴儿、贪官桃杌步步逼死，",
+    "start": 0.236,
+    "end": 10.562,
+    "duration": 10.327
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "先看底层寡妇窦娥如何被赛卢医、张驴儿、贪官桃杌步步逼死，",
-    "start": 4.569,
-    "end": 9.769,
-    "duration": 5.2
+    "text": "再追她由认命孝顺到【滚绣球】指天斥地的觉醒弧线，紧接三桩超现实誓愿为清白作证，",
+    "start": 11.344,
+    "end": 18.841,
+    "duration": 7.497
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "再追她由认命孝顺到【滚绣球】指天斥地的觉醒弧线，",
-    "start": 10.219,
-    "end": 14.619,
-    "duration": 4.4
-  },
-  {
-    "id": "hook_c3",
-    "dom_key": "hook_c3",
-    "text": "紧接三桩超现实誓愿为清白作证，最后赞其本色当行唱辞之震撼。",
-    "start": 15.069,
-    "end": 20.709,
-    "duration": 5.64
+    "text": "最后赞其本色当行唱辞之震撼。",
+    "start": 19.568,
+    "end": 22.264,
+    "duration": 2.696
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "关汉卿《窦娥冤》（全名《感天动地窦娥冤》）写元代黑暗下无辜寡妇冤案，",
-    "start": 21.159,
-    "end": 26.839,
-    "duration": 5.68
+    "start": 22.993,
+    "end": 28.557,
+    "duration": 5.564
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "王国维《宋元戏曲考》赞“即列之于世界大悲剧中，亦无愧色也”。",
-    "start": 27.369,
-    "end": 32.209,
-    "duration": 4.84
+    "start": 29.339,
+    "end": 34.308,
+    "duration": 4.969
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 植根严酷现实、塑善良坚贞女性",
-    "start": 32.659,
-    "end": 36.539,
-    "duration": 3.88
+    "start": 35.064,
+    "end": 38.562,
+    "duration": 3.498
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
-    "text": "童养媳早寡奉养蔡婆婆，",
-    "start": 36.989,
-    "end": 39.269,
-    "duration": 2.28
-  },
-  {
-    "id": "sec0_step0_c1",
-    "dom_key": "sec0_step0_c1",
-    "text": "遭赛卢医赖账、张驴儿父子勒索诬陷及贪官桃杌酷刑草菅人命；",
-    "start": 39.719,
-    "end": 45.119,
-    "duration": 5.4
+    "text": "童养媳早寡奉养蔡婆婆，遭赛卢医赖账、张驴儿父子勒索诬陷及贪官桃杌酷刑草菅人命；",
+    "start": 39.277,
+    "end": 47.26,
+    "duration": 7.983
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "护婆免杖而屈招显仁孝，公堂法场拒逼婚见底层女性不屈尊严。",
-    "start": 45.569,
-    "end": 51.009,
-    "duration": 5.44
+    "start": 48.098,
+    "end": 53.527,
+    "duration": 5.429
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 写实交融浪漫、三桩誓愿感天动地",
-    "start": 51.539,
-    "end": 55.379,
-    "duration": 3.84
+    "start": 54.36,
+    "end": 58.086,
+    "duration": 3.727
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
-    "text": "第三折法场受刑化用东海孝妇传说，",
-    "start": 55.829,
-    "end": 58.829,
-    "duration": 3.0
-  },
-  {
-    "id": "sec1_step0_c1",
-    "dom_key": "sec1_step0_c1",
-    "text": "立“血溅白练”“六月飞雪”“亢旱三年”誓愿并一一体现；",
-    "start": 59.359,
-    "end": 63.439,
-    "duration": 4.08
+    "text": "第三折法场受刑化用东海孝妇传说，立“血溅白练”“六月飞雪”“亢旱三年”誓愿并一一体现；",
+    "start": 58.84,
+    "end": 66.308,
+    "duration": 7.468
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "以超现实奇景证实清白，对贪官恶霸行警世裁决，",
-    "start": 63.889,
-    "end": 68.529,
-    "duration": 4.64
-  },
-  {
-    "id": "sec1_step1_c1",
-    "dom_key": "sec1_step1_c1",
-    "text": "将个人冤屈升华为撼动天地的社会抗议。",
-    "start": 68.979,
-    "end": 72.179,
-    "duration": 3.2
+    "text": "以超现实奇景证实清白，对贪官恶霸行警世裁决，将个人冤屈升华为撼动天地的社会抗议。",
+    "start": 67.019,
+    "end": 75.34,
+    "duration": 8.321
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 由忍辱顺从到【滚绣球】愤慨斥天",
-    "start": 72.629,
-    "end": 76.469,
-    "duration": 3.84
+    "start": 76.074,
+    "end": 79.687,
+    "duration": 3.613
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
-    "text": "起初敬畏天命守分，幻想官府作主；",
-    "start": 76.919,
-    "end": 80.159,
-    "duration": 3.24
-  },
-  {
-    "id": "sec2_step0_c1",
-    "dom_key": "sec2_step0_c1",
-    "text": "酷刑铸冤后幻想击碎；",
-    "start": 80.689,
-    "end": 82.569,
-    "duration": 1.88
+    "text": "起初敬畏天命守分，幻想官府作主；酷刑铸冤后幻想击碎；",
+    "start": 80.429,
+    "end": 85.568,
+    "duration": 5.139
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "【滚绣球】唱出“为善的受贫穷更命短……地也，你不分好歹何为地！",
-    "start": 83.099,
-    "end": 88.059,
-    "duration": 4.96
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "天也，你错勘贤愚枉做天！",
-    "start": 88.509,
-    "end": 90.989,
-    "duration": 2.48
-  },
-  {
-    "id": "sec2_step1_c2",
-    "dom_key": "sec2_step1_c2",
-    "text": "”，直指天理权威。",
-    "start": 91.439,
-    "end": 92.679,
-    "duration": 1.24
+    "text": "【滚绣球】唱出“为善的受贫穷更命短……地也，你不分好歹何为地！天也，你错勘贤愚枉做天！”，直指天理权威。",
+    "start": 86.37,
+    "end": 95.459,
+    "duration": 9.09
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 曲词本色当行而激越悲壮",
-    "start": 93.209,
-    "end": 96.409,
-    "duration": 3.2
+    "start": 96.139,
+    "end": 99.114,
+    "duration": 2.975
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
-    "text": "发挥元杂剧本色派所长，融市井口语、民间俗谚与精炼雅语，",
-    "start": 96.859,
-    "end": 101.859,
-    "duration": 5.0
-  },
-  {
-    "id": "sec3_step0_c1",
-    "dom_key": "sec3_step0_c1",
-    "text": "质朴自然无文饰艰深之弊；",
-    "start": 102.309,
-    "end": 104.509,
-    "duration": 2.2
+    "text": "发挥元杂剧本色派所长，融市井口语、民间俗谚与精炼雅语，质朴自然无文饰艰深之弊；",
+    "start": 99.878,
+    "end": 107.922,
+    "duration": 8.045
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "绝望悲愤处如泣如诉、韵律急促有力，确立古典戏曲悲剧崇高典范。",
-    "start": 104.959,
-    "end": 110.799,
-    "duration": 5.84
+    "start": 108.66,
+    "end": 114.521,
+    "duration": 5.86
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "《窦娥冤》以底层寡妇由忍辱顺从到【滚绣球】斥天的抗争轨迹与三桩誓愿，",
-    "start": 111.249,
-    "end": 117.649,
-    "duration": 6.4
+    "start": 115.315,
+    "end": 121.44,
+    "duration": 6.125
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "将本色民间曲辞与尖锐冲突结合，无愧世界大悲剧之赞誉。",
-    "start": 118.099,
-    "end": 123.259,
-    "duration": 5.16
+    "start": 122.205,
+    "end": 127.38,
+    "duration": 5.174
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：王国维《宋元戏曲考》盛赞“即列之于世界大悲剧中，亦无愧色也”；",
-    "start": 123.709,
-    "end": 129.709,
-    "duration": 6.0
+    "start": 128.133,
+    "end": 134.358,
+    "duration": 6.225
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
-    "text": "注意第三折高潮曲牌为【滚绣球】，",
-    "start": 130.239,
-    "end": 132.839,
-    "duration": 2.6
-  },
-  {
-    "id": "guard_c2",
-    "dom_key": "guard_c2",
-    "text": "三桩誓愿为血溅白练、六月飞雪、亢旱三年。",
-    "start": 133.289,
-    "end": 137.089,
-    "duration": 3.8
+    "text": "注意第三折高潮曲牌为【滚绣球】，三桩誓愿为血溅白练、六月飞雪、亢旱三年。",
+    "start": 135.161,
+    "end": 142.321,
+    "duration": 7.16
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
-    "text": "① 回答 2020 真题：《窦娥冤》为什么“含冤而死”，",
-    "start": 137.539,
-    "end": 141.659,
-    "duration": 4.12
-  },
-  {
-    "id": "drill0_c1",
-    "dom_key": "drill0_c1",
-    "text": "又为什么能“感天动地”？",
-    "start": 142.189,
-    "end": 143.549,
-    "duration": 1.36
+    "text": "① 回答 2020 真题：《窦娥冤》为什么“含冤而死”，又为什么能“感天动地”？",
+    "start": 143.183,
+    "end": 150.01,
+    "duration": 6.827
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
-    "text": "② 说出赛卢医、张驴儿、桃杌的作恶链条，",
-    "start": 144.119,
-    "end": 148.039,
-    "duration": 3.92
-  },
-  {
-    "id": "drill1_c1",
-    "dom_key": "drill1_c1",
-    "text": "以及三桩誓愿与【滚绣球】唱词？",
-    "start": 148.489,
-    "end": 151.049,
-    "duration": 2.56
+    "text": "② 说出赛卢医、张驴儿、桃杌的作恶链条，以及三桩誓愿与【滚绣球】唱词？",
+    "start": 150.774,
+    "end": 158.215,
+    "duration": 7.441
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 王国维《宋元戏曲考》对全剧给出什么至高定位？",
-    "start": 151.499,
-    "end": 156.579,
-    "duration": 5.08
+    "start": 158.927,
+    "end": 164.125,
+    "duration": 5.198
   }
 ]

@@ -2,249 +2,225 @@
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "四重“由先向后”的长篇写人演进史：",
-    "start": 0.0,
-    "end": 3.92,
-    "duration": 3.92
+    "text": "四重“由先向后”的长篇写人演进史：先是从道德类型（三绝）进化到复杂性格（宋江李逵），",
+    "start": 0.221,
+    "end": 8.732,
+    "duration": 8.511
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "先是从道德类型（三绝）进化到复杂性格（宋江李逵），",
-    "start": 3.969,
-    "end": 8.809,
-    "duration": 4.84
+    "text": "再从出场即定型进化到环境逼变（林冲），接着从朝堂战场下沉到市井细事，",
+    "start": 9.471,
+    "end": 16.412,
+    "duration": 6.941
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "再从出场即定型进化到环境逼变（林冲），接着从朝堂战场下沉到市井细事，",
-    "start": 9.259,
-    "end": 15.659,
-    "duration": 6.4
-  },
-  {
-    "id": "hook_c3",
-    "dom_key": "hook_c3",
     "text": "最后由文白语体升级为纯熟个性口语。",
-    "start": 16.109,
-    "end": 19.509,
-    "duration": 3.4
+    "start": 17.128,
+    "end": 20.419,
+    "duration": 3.291
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "《三国演义》与《水浒传》同胎息宋元说话伎艺。",
-    "start": 19.959,
-    "end": 23.519,
-    "duration": 3.56
+    "start": 21.128,
+    "end": 24.793,
+    "duration": 3.665
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "从前者到后者标志古代小说写人由“特征化”走向“性格化”演进，",
-    "start": 23.969,
-    "end": 29.049,
-    "duration": 5.08
+    "start": 25.522,
+    "end": 31.071,
+    "duration": 5.549
   },
   {
     "id": "intro_c2",
     "dom_key": "intro_c2",
     "text": "唐顺之、王慎中赞《水浒传》“《史记》而下，便是此书”。",
-    "start": 29.499,
-    "end": 33.899,
-    "duration": 4.4
+    "start": 31.832,
+    "end": 35.802,
+    "duration": 3.97
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 塑造观念：道德类型化 → 复杂性格化",
-    "start": 34.429,
-    "end": 38.309,
-    "duration": 3.88
+    "start": 36.587,
+    "end": 40.28,
+    "duration": 3.693
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "受正统观念与史实制约，偏重特征化定型，",
-    "start": 38.759,
-    "end": 42.399,
-    "duration": 3.64
+    "start": 41.028,
+    "end": 44.595,
+    "duration": 3.567
   },
   {
     "id": "sec0_step0_c1",
     "dom_key": "sec0_step0_c1",
     "text": "毛宗岗概括“智绝”诸葛、“义绝”关羽、“奸绝”曹操，高大却略单一；",
-    "start": 42.849,
-    "end": 47.849,
-    "duration": 5.0
+    "start": 45.32,
+    "end": 50.96,
+    "duration": 5.64
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "投向普通人与复杂人性：宋江兼具仗义豪气与忠君权谋，",
-    "start": 48.299,
-    "end": 53.459,
-    "duration": 5.16
-  },
-  {
-    "id": "sec0_step1_c1",
-    "dom_key": "sec0_step1_c1",
-    "text": "李逵兼有赤诚天真与粗鲁暴躁，打破非黑即白。",
-    "start": 53.909,
-    "end": 57.749,
-    "duration": 3.84
+    "text": "投向普通人与复杂人性：宋江兼具仗义豪气与忠君权谋，李逵兼有赤诚天真与粗鲁暴躁，打破非黑即白。",
+    "start": 51.704,
+    "end": 61.379,
+    "duration": 9.675
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 性格机制：静态定型 → 环境逼出动态发展",
-    "start": 58.199,
-    "end": 62.599,
-    "duration": 4.4
+    "start": 62.105,
+    "end": 66.329,
+    "duration": 4.224
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "人物往往出场即定型，靠重大事件反复渲染既定特征；",
-    "start": 63.049,
-    "end": 67.649,
-    "duration": 4.6
+    "start": 67.088,
+    "end": 71.864,
+    "duration": 4.776
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "着力表现环境逼迫下的流动转变：林冲遭高太尉陷害初时屈从，",
-    "start": 68.099,
-    "end": 73.379,
-    "duration": 5.28
+    "text": "着力表现环境逼迫下的流动转变：林冲遭高太尉陷害初时屈从，野猪林后仍存幻想，",
+    "start": 72.616,
+    "end": 79.667,
+    "duration": 7.051
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
-    "text": "野猪林后仍存幻想，直待山神庙听明毒计方杀仇上梁山，具深厚现实主义力。",
-    "start": 73.909,
-    "end": 80.509,
-    "duration": 6.6
+    "text": "直待山神庙听明毒计方杀仇上梁山，具深厚现实主义力。",
+    "start": 80.468,
+    "end": 85.563,
+    "duration": 5.095
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 活动空间：庙堂战阵 → 市井江湖日常",
-    "start": 80.959,
-    "end": 84.879,
-    "duration": 3.92
+    "start": 86.334,
+    "end": 90.424,
+    "duration": 4.09
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "人物多活跃于朝堂谋议、会盟与沙场，富帝王将相威仪，少生活细碎描写；",
-    "start": 85.329,
-    "end": 91.689,
-    "duration": 6.36
+    "start": 91.157,
+    "end": 97.429,
+    "duration": 6.272
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "把英雄置入集市酒肆细民之间，擅写烟火动作：",
-    "start": 92.219,
-    "end": 96.299,
-    "duration": 4.08
+    "text": "把英雄置入集市酒肆细民之间，",
+    "start": 98.235,
+    "end": 100.779,
+    "duration": 2.544
   },
   {
     "id": "sec2_step1_c1",
     "dom_key": "sec2_step1_c1",
-    "text": "杨志卖刀之窘迫、武松醉打猛虎与在嫂嫂挑逗下从礼貌推辞到怒斥的细致过渡。",
-    "start": 96.749,
-    "end": 103.549,
-    "duration": 6.8
+    "text": "擅写烟火动作：杨志卖刀之窘迫、武松醉打猛虎与在嫂嫂挑逗下从礼貌推辞到怒斥的细致过渡。",
+    "start": 101.508,
+    "end": 109.892,
+    "duration": 8.384
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 叙事语言：浅近文白 → 纯熟个性化白话",
-    "start": 103.999,
-    "end": 108.519,
-    "duration": 4.52
+    "start": 110.708,
+    "end": 114.906,
+    "duration": 4.198
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "浅近文言文白相杂，庄重典雅却限制个性化口吻；",
-    "start": 108.969,
-    "end": 113.409,
-    "duration": 4.44
+    "start": 115.659,
+    "end": 119.986,
+    "duration": 4.327
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
-    "text": "纯熟北方白话口语达到金圣叹《读第五才子书法》所赞“一样人，",
-    "start": 113.859,
-    "end": 118.659,
-    "duration": 4.8
-  },
-  {
-    "id": "sec3_step1_c1",
-    "dom_key": "sec3_step1_c1",
-    "text": "便还他一样说话”：鲁智深豪爽、林冲斯文、李逵粗野跃然纸上。",
-    "start": 119.109,
-    "end": 124.469,
-    "duration": 5.36
+    "text": "纯熟北方白话口语达到金圣叹《读第五才子书法》所赞“一样人，便还他一样说话”：鲁智深豪爽、林冲斯文、李逵粗野跃然纸上。",
+    "start": 120.768,
+    "end": 130.998,
+    "duration": 10.23
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "从《三国演义》到《水浒传》，长篇小说完成由政治类型向市井性格的跨越，",
-    "start": 124.919,
-    "end": 130.519,
-    "duration": 5.6
+    "start": 131.741,
+    "end": 137.871,
+    "duration": 6.13
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "由静态向动态、文白向纯熟白话演进，为《金瓶梅》《红楼梦》开辟道路。",
-    "start": 130.969,
-    "end": 136.449,
-    "duration": 5.48
+    "start": 138.568,
+    "end": 144.712,
+    "duration": 6.144
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：毛宗岗概括《三国演义》“智绝”“义绝”“奸绝”；",
-    "start": 136.899,
-    "end": 141.059,
-    "duration": 4.16
+    "start": 145.523,
+    "end": 150.037,
+    "duration": 4.514
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "明人唐顺之、王慎中赞《水浒传》“《史记》而下，便是此书”。",
-    "start": 141.509,
-    "end": 146.229,
-    "duration": 4.72
+    "start": 150.78,
+    "end": 155.142,
+    "duration": 4.362
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 《三国》到《水浒》在“观念、机制、空间、语言”四维完成了哪四次跃升？",
-    "start": 146.759,
-    "end": 153.519,
-    "duration": 6.76
+    "start": 155.924,
+    "end": 163.625,
+    "duration": 7.701
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 用“三绝”对比宋江/李逵/林冲，讲清“特征化”与“性格化”之别？",
-    "start": 153.969,
-    "end": 160.569,
-    "duration": 6.6
+    "start": 164.345,
+    "end": 170.906,
+    "duration": 6.562
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 列出《三国》《水浒》人物语言差异与金圣叹《读第五才子书法》名评？",
-    "start": 161.019,
-    "end": 167.179,
-    "duration": 6.16
+    "start": 171.63,
+    "end": 178.159,
+    "duration": 6.529
   }
 ]

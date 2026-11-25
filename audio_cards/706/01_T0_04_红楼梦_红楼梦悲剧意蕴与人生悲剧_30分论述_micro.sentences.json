@@ -3,296 +3,240 @@
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "由骨到肉再到韵：先定下“爱情→女性→家族”三重悲剧的思想高度，",
-    "start": 0.0,
-    "end": 5.96,
-    "duration": 5.96
+    "start": 0.219,
+    "end": 6.747,
+    "duration": 6.527
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "再靠双线网状结构把百态细节暗扣进去，",
-    "start": 6.009,
-    "end": 9.529,
-    "duration": 3.52
+    "text": "再靠双线网状结构把百态细节暗扣进去，进而打破脸谱写出凤姐黛玉之复杂人性，",
+    "start": 7.514,
+    "end": 14.317,
+    "duration": 6.803
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "进而打破脸谱写出凤姐黛玉之复杂人性，",
-    "start": 9.979,
-    "end": 13.259,
-    "duration": 3.28
-  },
-  {
-    "id": "hook_c3",
-    "dom_key": "hook_c3",
     "text": "最后用神话判词予实景笼上命运苍凉感。",
-    "start": 13.709,
-    "end": 17.029,
-    "duration": 3.32
+    "start": 15.061,
+    "end": 18.452,
+    "duration": 3.39
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "《红楼梦》是中国古典长篇章回小说集大成之作。",
-    "start": 17.479,
-    "end": 21.239,
-    "duration": 3.76
+    "start": 19.26,
+    "end": 23.073,
+    "duration": 3.813
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "曹雪芹“披阅十载，增删五次”，打破才子佳人大团圆旧套；",
-    "start": 21.689,
-    "end": 26.529,
-    "duration": 4.84
+    "start": 23.804,
+    "end": 28.455,
+    "duration": 4.651
   },
   {
     "id": "intro_c2",
     "dom_key": "intro_c2",
     "text": "鲁迅赞其“自有《红楼梦》出来以后，传统的思想和写法都打破了”。",
-    "start": 26.979,
-    "end": 31.579,
-    "duration": 4.6
+    "start": 29.205,
+    "end": 33.89,
+    "duration": 4.686
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 构筑三重交织的必然悲剧意蕴",
-    "start": 32.029,
-    "end": 35.389,
-    "duration": 3.36
+    "start": 34.648,
+    "end": 37.979,
+    "duration": 3.331
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
-    "text": "青年反叛者爱情婚姻悲剧：贾宝玉与林黛玉精神契合的“木石前盟”，",
-    "start": 35.839,
-    "end": 41.239,
-    "duration": 5.4
-  },
-  {
-    "id": "sec0_step0_c1",
-    "dom_key": "sec0_step0_c1",
-    "text": "被家族利益“金玉良缘”扼杀；",
-    "start": 41.689,
-    "end": 43.809,
-    "duration": 2.12
+    "text": "青年反叛者爱情婚姻悲剧：贾宝玉与林黛玉精神契合的“木石前盟”，被家族利益“金玉良缘”扼杀；",
+    "start": 38.718,
+    "end": 46.577,
+    "duration": 7.858
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "大观园女性命运悲剧：“千红一哭，万艳同悲”，",
-    "start": 44.259,
-    "end": 48.219,
-    "duration": 3.96
-  },
-  {
-    "id": "sec0_step1_c1",
-    "dom_key": "sec0_step1_c1",
-    "text": "晴雯、鸳鸯、迎春皆难逃被摧残厄运；",
-    "start": 48.669,
-    "end": 52.349,
-    "duration": 3.68
+    "text": "大观园女性命运悲剧：“千红一哭，万艳同悲”，晴雯、鸳鸯、迎春皆难逃被摧残厄运；",
+    "start": 47.29,
+    "end": 55.078,
+    "duration": 7.788
   },
   {
     "id": "sec0_step2_c0",
     "dom_key": "sec0_step2_c0",
-    "text": "封建贵族家族衰败悲剧：百年贾府崩塌，终致“落了片白茫茫大地真干净”，",
-    "start": 52.799,
-    "end": 58.679,
-    "duration": 5.88
-  },
-  {
-    "id": "sec0_step2_c1",
-    "dom_key": "sec0_step2_c1",
-    "text": "揭示美好价值必然毁灭。",
-    "start": 59.129,
-    "end": 61.169,
-    "duration": 2.04
+    "text": "封建贵族家族衰败悲剧：百年贾府崩塌，终致“落了片白茫茫大地真干净”，揭示美好价值必然毁灭。",
+    "start": 55.838,
+    "end": 64.67,
+    "duration": 8.832
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 确立双线网状结构与日常伏笔",
-    "start": 61.619,
-    "end": 65.019,
-    "duration": 3.4
+    "start": 65.406,
+    "end": 68.599,
+    "duration": 3.193
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
-    "text": "摆脱单线与串珠旧局，创造以大观园为中心的网状全景结构，",
-    "start": 65.469,
-    "end": 70.549,
-    "duration": 5.08
-  },
-  {
-    "id": "sec1_step0_c1",
-    "dom_key": "sec1_step0_c1",
-    "text": "紧织贾府盛衰与宝黛爱情双线；",
-    "start": 70.999,
-    "end": 73.759,
-    "duration": 2.76
+    "text": "摆脱单线与串珠旧局，创造以大观园为中心的网状全景结构，紧织贾府盛衰与宝黛爱情双线；",
+    "start": 69.41,
+    "end": 77.541,
+    "duration": 8.131
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "借元妃省亲、宝玉挨打、抄检大观园与黛死钗嫁推动转折；",
-    "start": 74.209,
-    "end": 79.129,
-    "duration": 4.92
+    "start": 78.309,
+    "end": 83.881,
+    "duration": 5.572
   },
   {
     "id": "sec1_step2_c0",
     "dom_key": "sec1_step2_c0",
     "text": "在饮酒作诗、家长里短白描中暗伏生死线索，草蛇灰线、伏脉千里。",
-    "start": 79.579,
-    "end": 85.699,
-    "duration": 6.12
+    "start": 84.623,
+    "end": 90.498,
+    "duration": 5.875
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 打破类型化套路写复杂人物群像",
-    "start": 86.149,
-    "end": 90.029,
-    "duration": 3.88
+    "start": 91.265,
+    "end": 94.671,
+    "duration": 3.406
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "突破忠奸善恶脸谱定型，以精微心理与多维视角写活真实人性；",
-    "start": 90.479,
-    "end": 95.679,
-    "duration": 5.2
+    "start": 95.41,
+    "end": 101.09,
+    "duration": 5.68
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "王熙凤既是贪婪弄权、逼死尤二姐的狠辣管家，",
-    "start": 96.129,
-    "end": 99.929,
-    "duration": 3.8
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "又是精明能干、偶周济刘姥姥的能人；",
-    "start": 100.459,
-    "end": 103.379,
-    "duration": 2.92
+    "text": "王熙凤既是贪婪弄权、逼死尤二姐的狠辣管家，又是精明能干、偶周济刘姥姥的能人；",
+    "start": 101.828,
+    "end": 108.836,
+    "duration": 7.007
   },
   {
     "id": "sec2_step2_c0",
     "dom_key": "sec2_step2_c0",
     "text": "林黛玉既有敏感孤高、多愁善感一面，更有才情横溢、自尊自爱的诗人本色。",
-    "start": 103.829,
-    "end": 109.909,
-    "duration": 6.08
+    "start": 109.541,
+    "end": 116.151,
+    "duration": 6.61
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 运用虚实相生的预叙象征笔法",
-    "start": 110.519,
-    "end": 113.919,
-    "duration": 3.4
+    "start": 116.835,
+    "end": 120.144,
+    "duration": 3.309
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
-    "text": "开篇以女娲补天遗石、通灵宝玉缘起，",
-    "start": 114.369,
-    "end": 117.609,
-    "duration": 3.24
-  },
-  {
-    "id": "sec3_step0_c1",
-    "dom_key": "sec3_step0_c1",
-    "text": "前五回借十二钗判词、《好了歌》及十二支曲暗示命运；",
-    "start": 118.059,
-    "end": 122.379,
-    "duration": 4.32
+    "text": "开篇以女娲补天遗石、通灵宝玉缘起，前五回借十二钗判词、《好了歌》及十二支曲暗示命运；",
+    "start": 120.94,
+    "end": 128.874,
+    "duration": 7.934
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "现实中又以元宵灯谜、中秋联诗与大观园四时景致呼应悲剧结局；",
-    "start": 122.829,
-    "end": 128.549,
-    "duration": 5.72
+    "start": 129.588,
+    "end": 135.427,
+    "duration": 5.84
   },
   {
     "id": "sec3_step2_c0",
     "dom_key": "sec3_step2_c0",
     "text": "“真事隐去，假语村言”虚实相生，于写实之上笼罩深沉人生感慨。",
-    "start": 128.999,
-    "end": 134.359,
-    "duration": 5.36
+    "start": 136.146,
+    "end": 141.706,
+    "duration": 5.56
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "《红楼梦》写尽封建家族与美梦幻灭。",
-    "start": 134.809,
-    "end": 137.609,
-    "duration": 2.8
+    "start": 142.531,
+    "end": 145.557,
+    "duration": 3.026
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
-    "text": "王国维《红楼梦评论》赞为“悲剧中之悲剧”，鲁迅论其“悲凉之雾，",
-    "start": 138.139,
-    "end": 143.139,
-    "duration": 5.0
+    "text": "王国维《红楼梦评论》赞为“悲剧中之悲剧”，",
+    "start": 146.31,
+    "end": 149.24,
+    "duration": 2.93
   },
   {
     "id": "concl_c2",
     "dom_key": "concl_c2",
-    "text": "遍被华林，然呼吸而领会之者，独宝玉一人而已”。",
-    "start": 143.589,
-    "end": 147.869,
-    "duration": 4.28
+    "text": "鲁迅论其“悲凉之雾，遍被华林，然呼吸而领会之者，独宝玉一人而已”。",
+    "start": 149.978,
+    "end": 156.177,
+    "duration": 6.198
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：注意王国维在《红楼梦评论》称其“悲剧中之悲剧”，",
-    "start": 148.319,
-    "end": 152.919,
-    "duration": 4.6
+    "start": 156.963,
+    "end": 161.569,
+    "duration": 4.605
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "鲁迅赞其“传统的思想和写法都打破了”及“悲凉之雾，遍被华林”。",
-    "start": 153.369,
-    "end": 158.169,
-    "duration": 4.8
+    "start": 162.317,
+    "end": 167.289,
+    "duration": 4.973
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 《红楼梦》三重悲剧如何层层递进？",
-    "start": 158.619,
-    "end": 162.939,
-    "duration": 4.32
+    "start": 168.049,
+    "end": 172.228,
+    "duration": 4.179
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 网状叙事靠哪四个枢纽事件与哪虚实六组伏笔勾连？",
-    "start": 163.389,
-    "end": 169.069,
-    "duration": 5.68
+    "start": 172.968,
+    "end": 178.856,
+    "duration": 5.888
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 王国维《红楼梦评论》与鲁迅对本作各有哪句权威定评？",
-    "start": 169.519,
-    "end": 175.439,
-    "duration": 5.92
+    "start": 179.636,
+    "end": 185.396,
+    "duration": 5.76
   }
 ]

@@ -2,289 +2,217 @@
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "由“心”到“象”再到“架”与“体”：",
-    "start": 0.0,
-    "end": 3.08,
-    "duration": 3.08
+    "text": "由“心”到“象”再到“架”与“体”：全诗灵魂在九死未悔的“美政”忠贞，",
+    "start": 0.217,
+    "end": 6.172,
+    "duration": 5.954
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "全诗灵魂在九死未悔的“美政”忠贞，",
-    "start": 3.209,
-    "end": 6.009,
-    "duration": 2.8
+    "text": "这份人格洁癖外化为系统的“香草美人”象征，",
+    "start": 6.9,
+    "end": 10.24,
+    "duration": 3.34
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "这份人格洁癖外化为系统的“香草美人”象征，",
-    "start": 6.459,
-    "end": 9.859,
-    "duration": 3.4
-  },
-  {
-    "id": "hook_c3",
-    "dom_key": "hook_c3",
-    "text": "受挫后飞升天界求索却因俯瞰旧乡跌回悲剧，",
-    "start": 10.309,
-    "end": 14.509,
-    "duration": 4.2
-  },
-  {
-    "id": "hook_c4",
-    "dom_key": "hook_c4",
-    "text": "最终以长短“兮”字骚体铸成奇伟诗章。",
-    "start": 14.959,
-    "end": 18.279,
-    "duration": 3.32
+    "text": "受挫后飞升天界求索却因俯瞰旧乡跌回悲剧，最终以长短“兮”字骚体铸成奇伟诗章。",
+    "start": 10.975,
+    "end": 18.534,
+    "duration": 7.559
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "《离骚》是浪漫主义政治抒情长诗，打破集体歌唱与四言格局，",
-    "start": 18.729,
-    "end": 23.489,
-    "duration": 4.76
+    "start": 19.267,
+    "end": 24.511,
+    "duration": 5.244
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "司马迁《史记·屈原贾生列传》赞其“虽与日月争光可也”。",
-    "start": 23.939,
-    "end": 28.579,
-    "duration": 4.64
+    "start": 25.235,
+    "end": 29.605,
+    "duration": 4.371
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 确立“美政”理想与忠贞气节",
-    "start": 29.109,
-    "end": 32.109,
-    "duration": 3.0
+    "start": 30.352,
+    "end": 33.435,
+    "duration": 3.083
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
-    "text": "贯彻修明法度、举贤授能之“美政”，忧国哀叹“长太息以掩涕兮，",
-    "start": 32.639,
-    "end": 37.839,
-    "duration": 5.2
-  },
-  {
-    "id": "sec0_step0_c1",
-    "dom_key": "sec0_step0_c1",
-    "text": "哀民生之多艰”。",
-    "start": 38.409,
-    "end": 39.769,
-    "duration": 1.36
+    "text": "贯彻修明法度、举贤授能之“美政”，忧国哀叹“长太息以掩涕兮，哀民生之多艰”。",
+    "start": 34.163,
+    "end": 40.886,
+    "duration": 6.722
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "遭谗疏远仍不随流俗，宣告“亦余心之所善兮，虽九死其犹未悔”，",
-    "start": 40.219,
-    "end": 45.939,
-    "duration": 5.72
-  },
-  {
-    "id": "sec0_step1_c1",
-    "dom_key": "sec0_step1_c1",
-    "text": "将生命系于楚国存亡。",
-    "start": 46.389,
-    "end": 48.549,
-    "duration": 2.16
+    "text": "遭谗疏远仍不随流俗，宣告“亦余心之所善兮，虽九死其犹未悔”，将生命系于楚国存亡。",
+    "start": 41.627,
+    "end": 49.43,
+    "duration": 7.803
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 开创系统的“香草美人”象征体系",
-    "start": 48.999,
-    "end": 52.439,
-    "duration": 3.44
+    "start": 50.206,
+    "end": 53.525,
+    "duration": 3.319
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "拓展《诗经》比兴，以辟芷、秋兰、木兰、宿莽等喻纯洁志行，",
-    "start": 52.889,
-    "end": 58.209,
-    "duration": 5.32
+    "start": 54.213,
+    "end": 59.519,
+    "duration": 5.305
   },
   {
     "id": "sec1_step0_c1",
     "dom_key": "sec1_step0_c1",
     "text": "“朝饮木兰之坠露兮，夕餐秋菊之落英”；",
-    "start": 58.659,
-    "end": 62.059,
-    "duration": 3.4
+    "start": 60.214,
+    "end": 63.315,
+    "duration": 3.102
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "以萧艾喻谗谄宵小，以“美人”及求女寄托贤君知己，",
-    "start": 62.509,
-    "end": 66.829,
-    "duration": 4.32
-  },
-  {
-    "id": "sec1_step1_c1",
-    "dom_key": "sec1_step1_c1",
-    "text": "升华为人格与政治寓托符号。",
-    "start": 67.279,
-    "end": 69.799,
-    "duration": 2.52
+    "text": "以萧艾喻谗谄宵小，以“美人”及求女寄托贤君知己，升华为人格与政治寓托符号。",
+    "start": 64.049,
+    "end": 71.097,
+    "duration": 7.047
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 构筑虚实交织的天界神游构架",
-    "start": 70.329,
-    "end": 73.849,
-    "duration": 3.52
+    "start": 71.846,
+    "end": 75.262,
+    "duration": 3.416
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
-    "text": "前半立足现实自叙出身修身与遭谗；",
-    "start": 74.299,
-    "end": 77.619,
-    "duration": 3.32
-  },
-  {
-    "id": "sec2_step0_c1",
-    "dom_key": "sec2_step0_c1",
-    "text": "后半命羲和、望舒、驾飞龙叩九重天门并从灵氛巫咸之占上下求索；",
-    "start": 78.069,
-    "end": 83.989,
-    "duration": 5.92
+    "text": "前半立足现实自叙出身修身与遭谗；后半命羲和、望舒、驾飞龙叩九重天门并从灵氛巫咸之占上下求索；",
+    "start": 76.025,
+    "end": 85.889,
+    "duration": 9.864
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "云霓之上“陟升皇之赫戏兮，忽临睨夫旧乡”，仆夫悲、马怀顾，",
-    "start": 84.439,
-    "end": 89.479,
-    "duration": 5.04
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "从神界剧烈跌回现实悲剧。",
-    "start": 90.009,
-    "end": 92.329,
-    "duration": 2.32
+    "text": "云霓之上“陟升皇之赫戏兮，忽临睨夫旧乡”，仆夫悲、马怀顾，从神界剧烈跌回现实悲剧。",
+    "start": 86.688,
+    "end": 94.639,
+    "duration": 7.951
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 创立“骚体”新体与楚地声韵",
-    "start": 92.859,
-    "end": 95.979,
-    "duration": 3.12
+    "start": 95.353,
+    "end": 98.364,
+    "duration": 3.011
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
-    "text": "吸收楚地民歌与巫祭乐歌创立长短错落“骚体”，",
-    "start": 96.429,
-    "end": 100.549,
-    "duration": 4.12
-  },
-  {
-    "id": "sec3_step0_c1",
-    "dom_key": "sec3_step0_c1",
-    "text": "打破《诗经》四言整齐格局；",
-    "start": 101.079,
-    "end": 103.119,
-    "duration": 2.04
+    "text": "吸收楚地民歌与巫祭乐歌创立长短错落“骚体”，打破《诗经》四言整齐格局；",
+    "start": 99.091,
+    "end": 105.548,
+    "duration": 6.457
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "广用方言语气词“兮”置于句中或句末，拖长叹息呼告营造长歌当哭节奏，",
-    "start": 103.649,
-    "end": 109.969,
-    "duration": 6.32
+    "start": 106.318,
+    "end": 112.492,
+    "duration": 6.174
   },
   {
     "id": "sec3_step1_c1",
     "dom_key": "sec3_step1_c1",
     "text": "融名物词采直接孕育汉代辞赋。",
-    "start": 110.419,
-    "end": 112.939,
-    "duration": 2.52
+    "start": 113.249,
+    "end": 116.134,
+    "duration": 2.885
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "屈原以美政坚守为核心，",
-    "start": 113.469,
-    "end": 115.749,
-    "duration": 2.28
+    "start": 116.856,
+    "end": 118.846,
+    "duration": 1.99
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "借“香草美人”象征、天界神游与骚体句式完成由集体歌谣向个体长诗跨越，",
-    "start": 116.199,
-    "end": 122.079,
-    "duration": 5.88
+    "start": 119.561,
+    "end": 126.425,
+    "duration": 6.864
   },
   {
     "id": "concl_c2",
     "dom_key": "concl_c2",
     "text": "孕育汉代辞赋并积淀深厚爱国传统。",
-    "start": 122.729,
-    "end": 125.809,
-    "duration": 3.08
+    "start": 127.152,
+    "end": 130.204,
+    "duration": 3.052
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：司马迁赞屈原“虽与日月争光可也”；",
-    "start": 126.259,
-    "end": 130.019,
-    "duration": 3.76
+    "start": 131.033,
+    "end": 134.656,
+    "duration": 3.623
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
-    "text": "注意区分屈原与庄子：庄子神游超脱尘世，",
-    "start": 130.469,
-    "end": 134.229,
-    "duration": 3.76
-  },
-  {
-    "id": "guard_c2",
-    "dom_key": "guard_c2",
-    "text": "屈原升腾终因“忽临睨夫旧乡”跌回现实悲剧。",
-    "start": 134.679,
-    "end": 138.719,
-    "duration": 4.04
+    "text": "注意区分屈原与庄子：庄子神游超脱尘世，屈原升腾终因“忽临睨夫旧乡”跌回现实悲剧。",
+    "start": 135.434,
+    "end": 143.398,
+    "duration": 7.964
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 《离骚》“香草/恶草/美人”三层象征体系怎么对应？",
-    "start": 139.169,
-    "end": 144.209,
-    "duration": 5.04
+    "start": 144.147,
+    "end": 149.711,
+    "duration": 5.563
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 为什么说屈原天界神游最终仍跌回现实悲剧？",
-    "start": 144.659,
-    "end": 149.619,
-    "duration": 4.96
+    "start": 150.478,
+    "end": 155.805,
+    "duration": 5.327
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 司马迁与“骚体”分别如何概括《离骚》的地位与体式特征？",
-    "start": 150.069,
-    "end": 155.989,
-    "duration": 5.92
+    "start": 156.55,
+    "end": 162.396,
+    "duration": 5.845
   }
 ]

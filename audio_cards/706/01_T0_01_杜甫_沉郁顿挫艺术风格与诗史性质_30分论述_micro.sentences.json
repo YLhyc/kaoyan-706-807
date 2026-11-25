@@ -3,384 +3,312 @@
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "安史乱世激发儒家仁心，先定下“沉郁顿挫”审美底色，",
-    "start": 0.0,
-    "end": 5.32,
-    "duration": 5.32
+    "start": 0.22,
+    "end": 5.75,
+    "duration": 5.53
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "进而迫使其突破盛唐兴象写下古体“诗史”，",
-    "start": 5.369,
-    "end": 8.849,
-    "duration": 3.48
+    "text": "进而迫使其突破盛唐兴象写下古体“诗史”，同时把家国悲慨注入近体律诗锤炼至极，",
+    "start": 6.463,
+    "end": 14.221,
+    "duration": 7.758
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "同时把家国悲慨注入近体律诗锤炼至极，",
-    "start": 9.299,
-    "end": 12.819,
-    "duration": 3.52
-  },
-  {
-    "id": "hook_c3",
-    "dom_key": "hook_c3",
     "text": "最终承前启后为唐宋三派确立宗师法门。",
-    "start": 13.349,
-    "end": 16.989,
-    "duration": 3.64
+    "start": 15.082,
+    "end": 18.875,
+    "duration": 3.793
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "杜甫是中国古典诗歌现实主义传统集大成者。",
-    "start": 17.439,
-    "end": 21.239,
-    "duration": 3.8
+    "start": 19.63,
+    "end": 23.31,
+    "duration": 3.68
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "安史之乱之际，他将个人身世之悲与国家兴亡之痛融为一体，",
-    "start": 21.769,
-    "end": 26.609,
-    "duration": 4.84
+    "start": 24.044,
+    "end": 29.176,
+    "duration": 5.131
   },
   {
     "id": "intro_c2",
     "dom_key": "intro_c2",
-    "text": "以沉郁顿挫风范与即事名篇笔法，真实记录动乱年代民生疾苦，",
-    "start": 27.059,
-    "end": 32.059,
-    "duration": 5.0
-  },
-  {
-    "id": "intro_c3",
-    "dom_key": "intro_c3",
-    "text": "确立“诗圣”地位。",
-    "start": 32.509,
-    "end": 33.829,
-    "duration": 1.32
+    "text": "以沉郁顿挫风范与即事名篇笔法，真实记录动乱年代民生疾苦，确立“诗圣”地位。",
+    "start": 29.956,
+    "end": 36.996,
+    "duration": 7.04
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 标举“沉郁顿挫”核心风格",
-    "start": 34.279,
-    "end": 37.079,
-    "duration": 2.8
+    "start": 37.721,
+    "end": 40.457,
+    "duration": 2.736
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "标举“沉郁顿挫”风格特质：“沉郁”侧重悲慨深厚（源于仁心）；",
-    "start": 37.529,
-    "end": 42.529,
-    "duration": 5.0
+    "start": 41.192,
+    "end": 45.859,
+    "duration": 4.667
   },
   {
     "id": "sec0_step0_c1",
     "dom_key": "sec0_step0_c1",
     "text": "“顿挫”指声调抑扬、波浪起伏与反复低回（源于儒家中和节制）。",
-    "start": 42.979,
-    "end": 48.139,
-    "duration": 5.16
+    "start": 46.626,
+    "end": 51.978,
+    "duration": 5.352
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "《自京赴奉先县咏怀五百字》：",
-    "start": 48.669,
-    "end": 51.029,
-    "duration": 2.36
+    "text": "《自京赴奉先县咏怀五百字》：①抱负落空郁勃",
+    "start": 52.714,
+    "end": 56.811,
+    "duration": 4.097
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
-    "text": "①抱负落空郁勃→②转骊山行乐→③揭“朱门酒肉臭，",
-    "start": 51.479,
-    "end": 56.559,
-    "duration": 5.08
+    "text": "→②转骊山行乐→③揭“朱门酒肉臭，路有冻死骨”叹“荣枯咫尺异”",
+    "start": 57.514,
+    "end": 64.148,
+    "duration": 6.634
   },
   {
     "id": "sec0_step1_c2",
     "dom_key": "sec0_step1_c2",
-    "text": "路有冻死骨”叹“荣枯咫尺异”→④惊闻幼子饿卒仍忧念失业流民与远戍士卒；",
-    "start": 57.169,
-    "end": 64.129,
-    "duration": 6.96
+    "text": "→④惊闻幼子饿卒仍忧念失业流民与远戍士卒；",
+    "start": 64.846,
+    "end": 69.489,
+    "duration": 4.643
   },
   {
     "id": "sec0_step2_c0",
     "dom_key": "sec0_step2_c0",
     "text": "意深法曲，将忧国伤时之情写得余韵无穷。",
-    "start": 64.659,
-    "end": 68.299,
-    "duration": 3.64
+    "start": 70.228,
+    "end": 73.964,
+    "duration": 3.736
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 确立“诗史”实录叙事传统",
-    "start": 68.749,
-    "end": 71.789,
-    "duration": 3.04
+    "start": 74.667,
+    "end": 77.305,
+    "duration": 2.638
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
-    "text": "确立“诗史”叙事传统：不仅据实记录安史之乱前后风貌，",
-    "start": 72.239,
-    "end": 76.839,
-    "duration": 4.6
-  },
-  {
-    "id": "sec1_step0_c1",
-    "dom_key": "sec1_step0_c1",
-    "text": "更以仁者情怀写出战乱中下层百姓辛酸境遇。",
-    "start": 77.289,
-    "end": 81.209,
-    "duration": 3.92
+    "text": "确立“诗史”叙事传统：不仅据实记录安史之乱前后风貌，更以仁者情怀写出战乱中下层百姓辛酸境遇。",
+    "start": 78.044,
+    "end": 86.745,
+    "duration": 8.701
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "打破盛唐偏重玲珑兴象格局，以五七言古体即事名篇，",
-    "start": 81.659,
-    "end": 86.299,
-    "duration": 4.64
-  },
-  {
-    "id": "sec1_step1_c1",
-    "dom_key": "sec1_step1_c1",
-    "text": "着力生活细节真实刻画；",
-    "start": 86.749,
-    "end": 88.709,
-    "duration": 1.96
+    "text": "打破盛唐偏重玲珑兴象格局，以五七言古体即事名篇，着力生活细节真实刻画；",
+    "start": 87.462,
+    "end": 94.513,
+    "duration": 7.051
   },
   {
     "id": "sec1_step2_c0",
     "dom_key": "sec1_step2_c0",
     "text": "“三吏三别”《石壕吏》客观测写差吏夜捉与老妇泣诉；",
-    "start": 89.159,
-    "end": 93.719,
-    "duration": 4.56
+    "start": 95.279,
+    "end": 99.206,
+    "duration": 3.927
   },
   {
     "id": "sec1_step2_c1",
     "dom_key": "sec1_step2_c1",
-    "text": "《茅屋为秋风所破歌》困窘中呼号“安得广厦千万间，",
-    "start": 94.169,
-    "end": 98.409,
-    "duration": 4.24
-  },
-  {
-    "id": "sec1_step2_c2",
-    "dom_key": "sec1_step2_c2",
-    "text": "大庇天下寒士俱欢颜”；",
-    "start": 98.859,
-    "end": 100.939,
-    "duration": 2.08
+    "text": "《茅屋为秋风所破歌》困窘中呼号“安得广厦千万间，大庇天下寒士俱欢颜”；",
+    "start": 99.964,
+    "end": 105.987,
+    "duration": 6.023
   },
   {
     "id": "sec1_step3_c0",
     "dom_key": "sec1_step3_c0",
     "text": "使诗史兼有历史实录之真与深厚人道关怀。",
-    "start": 101.389,
-    "end": 105.069,
-    "duration": 3.68
+    "start": 106.772,
+    "end": 110.858,
+    "duration": 4.086
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 集古典律诗声律表现之大成",
-    "start": 105.519,
-    "end": 109.039,
-    "duration": 3.52
+    "start": 111.64,
+    "end": 114.722,
+    "duration": 3.081
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "打破早先近体应酬咏物狭隘格局，将重大时事与家国悲慨引入近体，",
-    "start": 109.489,
-    "end": 115.689,
-    "duration": 6.2
+    "start": 115.561,
+    "end": 121.556,
+    "duration": 5.995
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
     "text": "并以组诗拓展幅度：《秋兴八首》将山城秋色、漂泊与故国之思层层推进。",
-    "start": 116.139,
-    "end": 122.739,
-    "duration": 6.6
+    "start": 122.394,
+    "end": 128.345,
+    "duration": 5.952
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "技艺上追求“晚节渐于诗律细”（刘熙载称“少陵炼神”），",
-    "start": 123.189,
-    "end": 127.629,
-    "duration": 4.44
+    "text": "技艺上追求“晚节渐于诗律细”（刘熙载称“少陵炼神”），善用“拗救”变体；",
+    "start": 129.079,
+    "end": 134.766,
+    "duration": 5.688
   },
   {
     "id": "sec2_step1_c1",
     "dom_key": "sec2_step1_c1",
-    "text": "善用“拗救”变体；",
-    "start": 128.079,
-    "end": 129.479,
-    "duration": 1.4
-  },
-  {
-    "id": "sec2_step1_c2",
-    "dom_key": "sec2_step1_c2",
     "text": "《登高》八句皆对而流转自如，融万里悲秋与百年多病为一气；",
-    "start": 129.929,
-    "end": 134.529,
-    "duration": 4.6
+    "start": 135.601,
+    "end": 140.614,
+    "duration": 5.014
   },
   {
     "id": "sec2_step2_c0",
     "dom_key": "sec2_step2_c0",
-    "text": "胡应麟《诗薮》赞为“古今七言律第一”，",
-    "start": 135.059,
-    "end": 138.099,
-    "duration": 3.04
-  },
-  {
-    "id": "sec2_step2_c1",
-    "dom_key": "sec2_step2_c1",
-    "text": "足见其将律诗写得浑融流转、无迹可寻的造诣。",
-    "start": 138.549,
-    "end": 142.469,
-    "duration": 3.92
+    "text": "胡应麟《诗薮》赞为“古今七言律第一”，足见其将律诗写得浑融流转、无迹可寻的造诣。",
+    "start": 141.417,
+    "end": 148.18,
+    "duration": 6.763
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 承前启后开辟后世诗歌法门",
-    "start": 143.079,
-    "end": 146.639,
-    "duration": 3.56
+    "start": 148.985,
+    "end": 152.38,
+    "duration": 3.395
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "元稹盛赞“上薄风骚，下该沈、宋……尽得古今之体势”，",
-    "start": 147.089,
-    "end": 151.649,
-    "duration": 4.56
+    "start": 153.129,
+    "end": 157.865,
+    "duration": 4.736
   },
   {
     "id": "sec3_step0_c1",
     "dom_key": "sec3_step0_c1",
     "text": "公允概括其集六朝盛唐诗歌之大成的枢纽地位。",
-    "start": 152.179,
-    "end": 156.059,
-    "duration": 3.88
+    "start": 158.636,
+    "end": 162.529,
+    "duration": 3.893
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
-    "text": "中唐元白继承其缘事而发写生民疾苦路线，",
-    "start": 156.509,
-    "end": 160.269,
-    "duration": 3.76
+    "text": "中唐元白继承其缘事而发写生民疾苦路线，韩孟诗派得力奇崛造语与炼字之功，",
+    "start": 163.287,
+    "end": 170.361,
+    "duration": 7.074
   },
   {
     "id": "sec3_step1_c1",
     "dom_key": "sec3_step1_c1",
-    "text": "韩孟诗派得力奇崛造语与炼字之功，",
-    "start": 160.719,
-    "end": 163.719,
-    "duration": 3.0
-  },
-  {
-    "id": "sec3_step1_c2",
-    "dom_key": "sec3_step1_c2",
     "text": "宋代黄庭坚与江西诗派奉为宗、取法句法锤炼与老成境界；",
-    "start": 164.169,
-    "end": 169.729,
-    "duration": 5.56
+    "start": 171.089,
+    "end": 176.411,
+    "duration": 5.321
   },
   {
     "id": "sec3_step2_c0",
     "dom_key": "sec3_step2_c0",
     "text": "使杜甫成为历代诗坛共同推尊的典范。",
-    "start": 170.179,
-    "end": 173.219,
-    "duration": 3.04
+    "start": 177.14,
+    "end": 180.292,
+    "duration": 3.152
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "杜甫以儒家仁爱之心统摄沉郁顿挫诗风与即事名篇笔法，",
-    "start": 173.669,
-    "end": 178.429,
-    "duration": 4.76
+    "start": 181.055,
+    "end": 185.731,
+    "duration": 4.676
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "把个体遭际与唐代盛衰巨变融为一体，集古近体格律之大成，",
-    "start": 179.039,
-    "end": 183.999,
-    "duration": 4.96
+    "start": 186.506,
+    "end": 191.706,
+    "duration": 5.2
   },
   {
     "id": "concl_c2",
     "dom_key": "concl_c2",
     "text": "又为中唐新乐府运动开先声并深远影响宋代江西诗派。",
-    "start": 184.529,
-    "end": 189.489,
-    "duration": 4.96
+    "start": 192.56,
+    "end": 196.912,
+    "duration": 4.352
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
-    "text": "防混：杜甫“即事名篇”开中唐新乐府先声；",
-    "start": 189.939,
-    "end": 193.819,
-    "duration": 3.88
-  },
-  {
-    "id": "guard_c1",
-    "dom_key": "guard_c1",
-    "text": "元白“新乐府运动”倡导“文章合为时而著，歌诗合为事而作”。",
-    "start": 194.349,
-    "end": 199.109,
-    "duration": 4.76
+    "text": "防混：杜甫“即事名篇”开中唐新乐府先声；元白“新乐府运动”倡导“文章合为时而著，歌诗合为事而作”。",
+    "start": 197.718,
+    "end": 206.251,
+    "duration": 8.533
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 《自京赴奉先》四起四落哪四幕？",
-    "start": 199.559,
-    "end": 203.759,
-    "duration": 4.2
+    "start": 207.032,
+    "end": 211.185,
+    "duration": 4.153
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 杜甫以何种新题法突破盛唐“玲珑兴象”？",
-    "start": 204.208,
-    "end": 209.008,
-    "duration": 4.8
+    "start": 211.919,
+    "end": 217.067,
+    "duration": 5.148
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 胡应麟如何评《登高》？",
-    "start": 209.458,
-    "end": 211.778,
-    "duration": 2.32
+    "start": 217.809,
+    "end": 220.783,
+    "duration": 2.974
   },
   {
     "id": "drill2_c1",
     "dom_key": "drill2_c1",
     "text": "元白/韩孟/江西各学杜诗何处？",
-    "start": 212.428,
-    "end": 214.948,
-    "duration": 2.52
+    "start": 221.523,
+    "end": 224.459,
+    "duration": 2.936
   }
 ]

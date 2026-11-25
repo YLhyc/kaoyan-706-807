@@ -3,272 +3,216 @@
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "严格按时间轴“战国奠基 → 汉魏生命化 → 唐代家国高峰与反拨 → 宋代哲理超越”四阶段流变梳理，",
-    "start": 0.0,
-    "end": 8.52,
-    "duration": 8.52
+    "start": 0.254,
+    "end": 9.092,
+    "duration": 8.838
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "每步紧扣“自然物候怎么照进士人命运”，",
-    "start": 8.569,
-    "end": 11.409,
-    "duration": 2.84
-  },
-  {
-    "id": "hook_c2",
-    "dom_key": "hook_c2",
-    "text": "把 2025 真题点名四篇全数扣严。",
-    "start": 11.939,
-    "end": 15.299,
-    "duration": 3.36
+    "text": "每步紧扣“自然物候怎么照进士人命运”，把 2025 真题点名四篇全数扣严。",
+    "start": 9.884,
+    "end": 16.177,
+    "duration": 6.294
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "“悲秋”是古代核心抒情母题，自宋玉发“悲哉秋之为气也”浩叹以来，",
-    "start": 15.749,
-    "end": 21.269,
-    "duration": 5.52
+    "start": 16.995,
+    "end": 22.543,
+    "duration": 5.549
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "积淀为观照生命流逝、身世漂泊与家国兴亡的传统，",
-    "start": 21.719,
-    "end": 26.279,
-    "duration": 4.56
+    "start": 23.354,
+    "end": 27.624,
+    "duration": 4.27
   },
   {
     "id": "intro_c2",
     "dom_key": "intro_c2",
     "text": "陆机《文赋》云“遵四时以叹逝……悲落叶于劲秋”。",
-    "start": 26.809,
-    "end": 30.649,
-    "duration": 3.84
+    "start": 28.438,
+    "end": 32.168,
+    "duration": 3.729
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 战国宋玉《九辩》奠定悲秋原型",
-    "start": 31.179,
-    "end": 34.579,
-    "duration": 3.4
+    "start": 32.862,
+    "end": 36.264,
+    "duration": 3.402
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
-    "text": "《诗经》尚无固定悲秋母题；",
-    "start": 35.029,
-    "end": 37.069,
-    "duration": 2.04
-  },
-  {
-    "id": "sec0_step0_c1",
-    "dom_key": "sec0_step0_c1",
-    "text": "宋玉《九辩》开篇高吟“悲哉秋之为气也！",
-    "start": 37.639,
-    "end": 41.119,
-    "duration": 3.48
-  },
-  {
-    "id": "sec0_step0_c2",
-    "dom_key": "sec0_step0_c2",
-    "text": "萧瑟兮草木摇落而变衰”；",
-    "start": 41.569,
-    "end": 43.809,
-    "duration": 2.24
+    "text": "《诗经》尚无固定悲秋母题；宋玉《九辩》开篇高吟“悲哉秋之为气也！萧瑟兮草木摇落而变衰”；",
+    "start": 36.972,
+    "end": 44.974,
+    "duration": 8.002
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "将草木枯槁与寒士“坎廪兮贫士失职而志不平”绑定，",
-    "start": 44.259,
-    "end": 48.659,
-    "duration": 4.4
+    "start": 45.681,
+    "end": 50.07,
+    "duration": 4.389
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "借雁南游、霜露立因秋起兴、以自然零落叹生命沉沦之原型。",
-    "start": 49.109,
-    "end": 54.149,
-    "duration": 5.04
+    "start": 50.828,
+    "end": 56.17,
+    "duration": 5.342
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 汉魏六朝注入生命短促与流离之忧",
-    "start": 54.599,
-    "end": 58.359,
-    "duration": 3.76
+    "start": 56.966,
+    "end": 61.078,
+    "duration": 4.112
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "《秋风辞》“秋风起兮白云飞……少壮几时兮奈老何”感叹青春易逝；",
-    "start": 58.809,
-    "end": 63.969,
-    "duration": 5.16
+    "start": 61.782,
+    "end": 67.026,
+    "duration": 5.244
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "曹丕《燕歌行》“草木摇落露为霜”写思妇秋夜孤寂；",
-    "start": 64.419,
-    "end": 68.299,
-    "duration": 3.88
-  },
-  {
-    "id": "sec1_step1_c1",
-    "dom_key": "sec1_step1_c1",
-    "text": "潘岳《秋兴赋》感伤宦途华发，使秋成普遍寄托。",
-    "start": 68.949,
-    "end": 73.069,
-    "duration": 4.12
+    "text": "曹丕《燕歌行》“草木摇落露为霜”写思妇秋夜孤寂；潘岳《秋兴赋》感伤宦途华发，使秋成普遍寄托。",
+    "start": 67.738,
+    "end": 76.386,
+    "duration": 8.648
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 盛唐杜甫升华为忧国沉郁（兼刘禹锡反拨）",
-    "start": 73.519,
-    "end": 78.439,
-    "duration": 4.92
+    "start": 77.121,
+    "end": 81.735,
+    "duration": 4.613
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "《登高》“万里悲秋常作客，百年多病独登台”融个人与时代多艰；",
-    "start": 78.889,
-    "end": 84.209,
-    "duration": 5.32
+    "start": 82.495,
+    "end": 87.622,
+    "duration": 5.128
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
     "text": "《秋兴八首》借夔州秋望长安，达忧国忧民高峰；",
-    "start": 84.659,
-    "end": 88.619,
-    "duration": 3.96
+    "start": 88.397,
+    "end": 92.207,
+    "duration": 3.81
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "中唐刘禹锡《秋词》“自古逢秋悲寂寥，",
-    "start": 89.069,
-    "end": 92.389,
-    "duration": 3.32
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "我言秋日胜春朝”更以豪迈清朗反拨悲叹。",
-    "start": 92.919,
-    "end": 96.399,
-    "duration": 3.48
+    "text": "中唐刘禹锡《秋词》“自古逢秋悲寂寥，我言秋日胜春朝”更以豪迈清朗反拨悲叹。",
+    "start": 92.922,
+    "end": 100.404,
+    "duration": 7.482
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 宋代诗词赋转向内省与哲理超脱",
-    "start": 96.929,
-    "end": 100.849,
-    "duration": 3.92
+    "start": 101.2,
+    "end": 105.084,
+    "duration": 3.884
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
-    "text": "柳永《八声甘州》“一番洗清秋”抒羁旅愁；",
-    "start": 101.379,
-    "end": 104.539,
-    "duration": 3.16
-  },
-  {
-    "id": "sec3_step0_c1",
-    "dom_key": "sec3_step0_c1",
-    "text": "辛弃疾《丑奴儿》“却道天凉好个秋”道欲说还休苦闷；",
-    "start": 104.989,
-    "end": 109.109,
-    "duration": 4.12
+    "text": "柳永《八声甘州》“一番洗清秋”抒羁旅愁；辛弃疾《丑奴儿》“却道天凉好个秋”道欲说还休苦闷；",
+    "start": 105.82,
+    "end": 113.297,
+    "duration": 7.477
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "欧阳修《秋声赋》从“物过盛而当杀”体认天道；",
-    "start": 109.639,
-    "end": 113.119,
-    "duration": 3.48
+    "start": 114.081,
+    "end": 117.575,
+    "duration": 3.494
   },
   {
     "id": "sec3_step1_c1",
     "dom_key": "sec3_step1_c1",
     "text": "苏轼《赤壁赋》以“变与不变”哲思化解凋零悲情，赋予旷达超逸智慧。",
-    "start": 113.569,
-    "end": 118.849,
-    "duration": 5.28
+    "start": 118.351,
+    "end": 123.772,
+    "duration": 5.421
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "古代悲秋母题由宋玉发端、经汉魏流离之叹、盛唐忧国悲慨至宋代转向内省哲理超脱，",
-    "start": 119.299,
-    "end": 126.699,
-    "duration": 7.4
+    "start": 124.588,
+    "end": 132.445,
+    "duration": 7.857
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "集中映照士人在时间悲叹与家国担当间寻求精神安顿的心态。",
-    "start": 127.149,
-    "end": 132.109,
-    "duration": 4.96
+    "start": 133.219,
+    "end": 138.478,
+    "duration": 5.259
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
-    "text": "防混：陆机《文赋》名句“遵四时以叹逝……悲落叶于劲秋，",
-    "start": 132.559,
-    "end": 136.759,
-    "duration": 4.2
+    "text": "防混：陆机《文赋》名句“遵四时以叹逝……悲落叶于劲秋，喜柔条于芳春”；",
+    "start": 139.301,
+    "end": 145.567,
+    "duration": 6.266
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
-    "text": "喜柔条于芳春”；",
-    "start": 137.209,
-    "end": 138.729,
-    "duration": 1.52
-  },
-  {
-    "id": "guard_c2",
-    "dom_key": "guard_c2",
     "text": "纵向串联战国宋玉→汉武/曹丕/潘岳→唐杜甫（兼刘禹锡）→宋柳/辛/欧阳修/苏轼。",
-    "start": 139.179,
-    "end": 146.859,
-    "duration": 7.68
+    "start": 146.324,
+    "end": 154.521,
+    "duration": 8.197
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 默背陆机《文赋》概括文人感物的四句名言？",
-    "start": 147.309,
-    "end": 151.789,
-    "duration": 4.48
+    "start": 155.243,
+    "end": 159.971,
+    "duration": 4.728
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 按真题 2025 点名篇目顺序串联《九辩》《登高》《秋词》《秋声赋》各自定位？",
-    "start": 152.239,
-    "end": 160.119,
-    "duration": 7.88
+    "start": 160.707,
+    "end": 169.145,
+    "duration": 8.439
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 汉武、曹丕、潘岳、柳永、辛弃疾、苏轼如何补全这条千年弧线？",
-    "start": 160.609,
-    "end": 168.289,
-    "duration": 7.68
+    "start": 169.882,
+    "end": 177.772,
+    "duration": 7.889
   }
 ]

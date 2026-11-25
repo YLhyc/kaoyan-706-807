@@ -2,289 +2,209 @@
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "理论→题材→语言→格局四层步步推进：",
-    "start": 0.0,
-    "end": 4.2,
-    "duration": 4.2
+    "text": "理论→题材→语言→格局四层步步推进：先在《与元九书》立定“合为时合为事”总纲，",
+    "start": 0.223,
+    "end": 7.963,
+    "duration": 7.74
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "先在《与元九书》立定“合为时合为事”总纲，",
-    "start": 4.249,
-    "end": 7.449,
-    "duration": 3.2
+    "text": "再实践“即事名篇”创《新乐府》《秦中吟》写卖炭刈麦，",
+    "start": 8.681,
+    "end": 12.952,
+    "duration": 4.271
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "再实践“即事名篇”创《新乐府》《秦中吟》写卖炭刈麦，",
-    "start": 7.899,
-    "end": 12.259,
-    "duration": 4.36
+    "text": "进而在《新乐府序》提出通俗浅白与对比讽谕标准，",
+    "start": 13.717,
+    "end": 17.6,
+    "duration": 3.883
   },
   {
     "id": "hook_c3",
     "dom_key": "hook_c3",
-    "text": "进而在《新乐府序》提出通俗浅白与对比讽谕标准，",
-    "start": 12.709,
-    "end": 17.029,
-    "duration": 4.32
-  },
-  {
-    "id": "hook_c4",
-    "dom_key": "hook_c4",
     "text": "最后把讽谕诗置为四类之首推动中唐写实诗潮。",
-    "start": 17.479,
-    "end": 21.639,
-    "duration": 4.16
+    "start": 18.404,
+    "end": 22.483,
+    "duration": 4.079
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "白居易是中唐新乐府运动领袖，承《诗经》风雅与杜甫即事名篇传统，",
-    "start": 22.169,
-    "end": 28.009,
-    "duration": 5.84
+    "start": 23.345,
+    "end": 28.916,
+    "duration": 5.571
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "力主恢复诗歌美刺讽谕政教功能以反映民生疾苦。",
-    "start": 28.459,
-    "end": 32.539,
-    "duration": 4.08
+    "start": 29.737,
+    "end": 33.753,
+    "duration": 4.016
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 确立“合为时而著、合为事而作”纲领",
-    "start": 33.189,
-    "end": 36.669,
-    "duration": 3.48
+    "start": 34.555,
+    "end": 38.236,
+    "duration": 3.681
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
-    "text": "《与元九书》提出“文章合为时而著，歌诗合为事而作”，提出“根情，",
-    "start": 37.119,
-    "end": 41.999,
-    "duration": 4.88
-  },
-  {
-    "id": "sec0_step0_c1",
-    "dom_key": "sec0_step0_c1",
-    "text": "苗言，华声，实义”有机观；",
-    "start": 42.449,
-    "end": 44.769,
-    "duration": 2.32
+    "text": "《与元九书》提出“文章合为时而著，歌诗合为事而作”，提出“根情，苗言，华声，实义”有机观；",
+    "start": 39.032,
+    "end": 47.146,
+    "duration": 8.114
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "强调“补察时政，泄导人情”，扭转齐梁及大历吟风弄月流弊，",
-    "start": 45.219,
-    "end": 50.019,
-    "duration": 4.8
-  },
-  {
-    "id": "sec0_step1_c1",
-    "dom_key": "sec0_step1_c1",
-    "text": "引回直面民生正途。",
-    "start": 50.549,
-    "end": 52.229,
-    "duration": 1.68
+    "text": "强调“补察时政，泄导人情”，扭转齐梁及大历吟风弄月流弊，引回直面民生正途。",
+    "start": 47.844,
+    "end": 55.117,
+    "duration": 7.273
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 践行“即事名篇，无复依傍”原则",
-    "start": 52.759,
-    "end": 56.239,
-    "duration": 3.48
+    "start": 55.803,
+    "end": 59.162,
+    "duration": 3.359
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
-    "text": "摆脱古题旧壳，《新乐府》五十首与《秦中吟》十首专咏一事，",
-    "start": 56.689,
-    "end": 61.209,
-    "duration": 4.52
-  },
-  {
-    "id": "sec1_step0_c1",
-    "dom_key": "sec1_step0_c1",
-    "text": "“首句标其目，卒章显其志”；",
-    "start": 61.659,
-    "end": 64.379,
-    "duration": 2.72
+    "text": "摆脱古题旧壳，《新乐府》五十首与《秦中吟》十首专咏一事，“首句标其目，卒章显其志”；",
+    "start": 59.895,
+    "end": 67.006,
+    "duration": 7.111
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "《卖炭翁》“心忧炭贱愿天寒”写矛盾心理与宫市横暴；",
-    "start": 64.829,
-    "end": 69.109,
-    "duration": 4.28
+    "start": 67.738,
+    "end": 71.724,
+    "duration": 3.985
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "《观刈麦》“念此私自愧，尽日不能忘”深切自省同情。",
-    "start": 69.559,
-    "end": 73.999,
-    "duration": 4.44
+    "start": 72.508,
+    "end": 76.405,
+    "duration": 3.897
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · “其辞质而径，其言直而切”通俗诗风",
-    "start": 74.449,
-    "end": 78.529,
-    "duration": 4.08
+    "start": 77.109,
+    "end": 80.871,
+    "duration": 3.762
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
-    "text": "《新乐府序》定下质径、直切、核实、顺肆四准，",
-    "start": 78.979,
-    "end": 83.019,
-    "duration": 4.04
-  },
-  {
-    "id": "sec2_step0_c1",
-    "dom_key": "sec2_step0_c1",
-    "text": "浅显口语、免僻典、利播传；",
-    "start": 83.469,
-    "end": 86.109,
-    "duration": 2.64
+    "text": "《新乐府序》定下质径、直切、核实、顺肆四准，浅显口语、免僻典、利播传；",
+    "start": 81.578,
+    "end": 88.525,
+    "duration": 6.947
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "《轻肥》以白描对比映衬：“樽罍溢九酝，水陆罗八珍”直对“是岁江南旱，",
-    "start": 86.559,
-    "end": 92.559,
-    "duration": 6.0
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "衢州人食人”，震撼人心。",
-    "start": 93.009,
-    "end": 95.209,
-    "duration": 2.2
+    "text": "《轻肥》以白描对比映衬：“樽罍溢九酝，水陆罗八珍”直对“是岁江南旱，衢州人食人”，震撼人心。",
+    "start": 89.249,
+    "end": 97.459,
+    "duration": 8.21
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 以讽谕诗重塑品类、领起中唐写实潮",
-    "start": 95.739,
-    "end": 100.099,
-    "duration": 4.36
+    "start": 98.218,
+    "end": 102.217,
+    "duration": 3.999
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
-    "text": "将诗集分“讽谕”“闲适”“感伤”“杂律”四类并置讽谕居首，",
-    "start": 100.549,
-    "end": 104.949,
-    "duration": 4.4
-  },
-  {
-    "id": "sec3_step0_c1",
-    "dom_key": "sec3_step0_c1",
-    "text": "凸显“惟歌生民病”抱负；",
-    "start": 105.399,
-    "end": 107.359,
-    "duration": 1.96
+    "text": "将诗集分“讽谕”“闲适”“感伤”“杂律”四类并置讽谕居首，凸显“惟歌生民病”抱负；",
+    "start": 102.942,
+    "end": 109.882,
+    "duration": 6.941
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
-    "text": "虽有时偏重说教稍损含蓄，却带动元稹、张籍、王建群起创作，",
-    "start": 107.809,
-    "end": 113.409,
-    "duration": 5.6
-  },
-  {
-    "id": "sec3_step1_c1",
-    "dom_key": "sec3_step1_c1",
-    "text": "掀起中唐写实诗潮。",
-    "start": 113.859,
-    "end": 115.659,
-    "duration": 1.8
+    "text": "虽有时偏重说教稍损含蓄，却带动元稹、张籍、王建群起创作，掀起中唐写实诗潮。",
+    "start": 110.639,
+    "end": 118.306,
+    "duration": 7.666
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "白居易以“合为时为事”为纲，借通俗叙事直击民生疾苦；",
-    "start": 116.109,
-    "end": 120.629,
-    "duration": 4.52
+    "start": 119.082,
+    "end": 123.702,
+    "duration": 4.62
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
-    "text": "虽部分讽谕诗略显直露说教，但其发扬杜甫精神并带动元稹、张籍等，",
-    "start": 121.079,
-    "end": 126.799,
-    "duration": 5.72
-  },
-  {
-    "id": "concl_c2",
-    "dom_key": "concl_c2",
-    "text": "在中唐高扬现实主义传统。",
-    "start": 127.249,
-    "end": 129.449,
-    "duration": 2.2
+    "text": "虽部分讽谕诗略显直露说教，但其发扬杜甫精神并带动元稹、张籍等，在中唐高扬现实主义传统。",
+    "start": 124.5,
+    "end": 133.3,
+    "duration": 8.8
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
-    "text": "防混：白居易主张“文章合为时而著，歌诗合为事而作”，",
-    "start": 129.899,
-    "end": 134.379,
-    "duration": 4.48
+    "text": "防混：白居易主张“文章合为时而著，歌诗合为事而作”，理论文献是《与元九书》和《新乐府序》；",
+    "start": 134.127,
+    "end": 142.035,
+    "duration": 7.909
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
-    "text": "理论文献是《与元九书》和《新乐府序》；",
-    "start": 134.829,
-    "end": 137.669,
-    "duration": 2.84
-  },
-  {
-    "id": "guard_c2",
-    "dom_key": "guard_c2",
     "text": "诗集分“讽谕、闲适、感伤、杂律”四类。",
-    "start": 138.199,
-    "end": 141.439,
-    "duration": 3.24
+    "start": 142.741,
+    "end": 146.226,
+    "duration": 3.485
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 背诵《与元九书》核心主张与《新乐府序》四标准？",
-    "start": 141.889,
-    "end": 146.809,
-    "duration": 4.92
+    "start": 146.979,
+    "end": 151.925,
+    "duration": 4.946
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 《卖炭翁》《观刈麦》《轻肥》各体现新乐府哪些写实与对比技巧？",
-    "start": 147.259,
-    "end": 154.099,
-    "duration": 6.84
+    "start": 152.776,
+    "end": 159.092,
+    "duration": 6.316
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 白居易诗集“四分法”与同时代元稹/张籍/王建的群体意义？",
-    "start": 154.549,
-    "end": 160.789,
-    "duration": 6.24
+    "start": 159.886,
+    "end": 166.254,
+    "duration": 6.368
   }
 ]

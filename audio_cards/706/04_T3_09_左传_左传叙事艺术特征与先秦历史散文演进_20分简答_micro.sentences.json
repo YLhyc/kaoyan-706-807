@@ -2,201 +2,161 @@
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "体制革新→宏大战事→微观辞令人物：",
-    "start": 0.0,
-    "end": 4.2,
-    "duration": 4.2
+    "text": "体制革新→宏大战事→微观辞令人物：先指出它比《尚书》《春秋》前进了一大步——建构有血有肉的编年叙事体制，",
+    "start": 0.221,
+    "end": 10.579,
+    "duration": 10.358
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "先指出它比《尚书》《春秋》前进了一大步——建构有血有肉的编年叙事体制，",
-    "start": 4.249,
-    "end": 9.969,
-    "duration": 5.72
+    "text": "再看写战争如何重战前外交谋略而不只写砍杀，",
+    "start": 11.316,
+    "end": 15.435,
+    "duration": 4.119
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "再看写战争如何重战前外交谋略而不只写砍杀，",
-    "start": 10.419,
-    "end": 14.499,
-    "duration": 4.08
-  },
-  {
-    "id": "hook_c3",
-    "dom_key": "hook_c3",
     "text": "最后收束到言行细节写人与“文典而美”的行人辞令。",
-    "start": 14.949,
-    "end": 18.949,
-    "duration": 4.0
+    "start": 16.144,
+    "end": 20.555,
+    "duration": 4.411
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
-    "text": "《左传》（全称《春秋左氏传》）是我国第一部记事完备的编年体史书，",
-    "start": 19.399,
-    "end": 24.559,
-    "duration": 5.16
+    "text": "《左传》（全称《春秋左氏传》）是我国第一部记事完备的编年体史书，标志先秦叙事散文成熟。",
+    "start": 21.306,
+    "end": 28.916,
+    "duration": 7.609
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
-    "text": "标志先秦叙事散文成熟。",
-    "start": 25.009,
-    "end": 27.169,
-    "duration": 2.16
-  },
-  {
-    "id": "intro_c2",
-    "dom_key": "intro_c2",
     "text": "刘知幾《史通》赞“盖左氏为书，叙事之最”。",
-    "start": 27.699,
-    "end": 31.099,
-    "duration": 3.4
+    "start": 29.725,
+    "end": 32.655,
+    "duration": 2.93
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 确立编年详博体制、由记言转向写人",
-    "start": 31.549,
-    "end": 35.549,
-    "duration": 4.0
+    "start": 33.374,
+    "end": 37.286,
+    "duration": 3.911
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
-    "text": "摆脱《尚书》偏重记言与《春秋》过于简括，",
-    "start": 35.999,
-    "end": 39.239,
-    "duration": 3.24
-  },
-  {
-    "id": "sec0_step0_c1",
-    "dom_key": "sec0_step0_c1",
-    "text": "以《春秋》为纲详记二百余年列国争霸兴亡；",
-    "start": 39.689,
-    "end": 43.169,
-    "duration": 3.48
+    "text": "摆脱《尚书》偏重记言与《春秋》过于简括，以《春秋》为纲详记二百余年列国争霸兴亡；",
+    "start": 38.03,
+    "end": 44.826,
+    "duration": 6.796
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "交代因果脉络，穿插倒叙预叙，并开创“君子曰”直接评价史事人物，",
-    "start": 43.619,
-    "end": 48.979,
-    "duration": 5.36
-  },
-  {
-    "id": "sec0_step1_c1",
-    "dom_key": "sec0_step1_c1",
-    "text": "奠定史传文学基础。",
-    "start": 49.429,
-    "end": 51.149,
-    "duration": 1.72
+    "text": "交代因果脉络，穿插倒叙预叙，并开创“君子曰”直接评价史事人物，奠定史传文学基础。",
+    "start": 45.613,
+    "end": 53.167,
+    "duration": 7.554
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 全景描写战争、重政治谋略与胜败因果",
-    "start": 51.599,
-    "end": 55.919,
-    "duration": 4.32
+    "start": 53.903,
+    "end": 58.066,
+    "duration": 4.163
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "不局限两军厮杀，从政治、外交与礼义揭示胜败根源；",
-    "start": 56.369,
-    "end": 61.049,
-    "duration": 4.68
+    "start": 58.871,
+    "end": 63.795,
+    "duration": 4.924
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "于“城濮之战”“崤之战”“邲之战”详写战前君臣谋划与“退避三舍”外交退让，",
-    "start": 61.579,
-    "end": 67.339,
-    "duration": 5.76
+    "start": 64.552,
+    "end": 70.752,
+    "duration": 6.2
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "略写厮杀抓要害，战后总结教训，主次分明。",
-    "start": 67.869,
-    "end": 71.789,
-    "duration": 3.92
+    "start": 71.513,
+    "end": 75.282,
+    "duration": 3.769
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 言行细节刻画人物与典雅行人辞令",
-    "start": 72.239,
-    "end": 76.119,
-    "duration": 3.88
+    "start": 76.003,
+    "end": 79.715,
+    "duration": 3.712
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "少静止肖像，借冲突中动作言谈刻画晋文公成长、郑庄公机诈与武士忠义，细节传神；",
-    "start": 76.569,
-    "end": 83.529,
-    "duration": 6.96
+    "start": 80.433,
+    "end": 88.279,
+    "duration": 7.846
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "保留《史通》誉“文典而美，语博而奥”的“行人辞令”，",
-    "start": 83.979,
-    "end": 87.419,
-    "duration": 3.44
+    "start": 89.156,
+    "end": 92.817,
+    "duration": 3.66
   },
   {
     "id": "sec2_step1_c1",
     "dom_key": "sec2_step1_c1",
     "text": "如《烛之武退秦师》扣紧利害、委婉切理扭转危机，启迪战国策士散文。",
-    "start": 87.869,
-    "end": 93.829,
-    "duration": 5.96
+    "start": 93.589,
+    "end": 99.479,
+    "duration": 5.89
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
-    "text": "防混：唐代刘知幾《史通》赞《左传》“盖左氏为书，叙事之最”，",
-    "start": 94.279,
-    "end": 99.519,
-    "duration": 5.24
-  },
-  {
-    "id": "guard_c1",
-    "dom_key": "guard_c1",
-    "text": "赞其行人辞令“文典而美，语博而奥”。",
-    "start": 100.049,
-    "end": 102.969,
-    "duration": 2.92
+    "text": "防混：唐代刘知幾《史通》赞《左传》“盖左氏为书，叙事之最”，赞其行人辞令“文典而美，语博而奥”。",
+    "start": 100.256,
+    "end": 108.425,
+    "duration": 8.169
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 刘知幾《史通》对《左传》叙事和辞令的经典评语各是什么？",
-    "start": 103.419,
-    "end": 109.099,
-    "duration": 5.68
+    "start": 109.215,
+    "end": 115.346,
+    "duration": 6.131
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 从《尚书》《春秋》到《左传》，先秦史传完成了哪两大转型？",
-    "start": 109.549,
-    "end": 115.549,
-    "duration": 6.0
+    "start": 116.089,
+    "end": 122.338,
+    "duration": 6.249
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 结合城濮之战与《烛之武退秦师》概括《左传》写战与辞令特色？",
-    "start": 115.999,
-    "end": 122.439,
-    "duration": 6.44
+    "start": 123.052,
+    "end": 129.796,
+    "duration": 6.744
   }
 ]

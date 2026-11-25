@@ -2,313 +2,249 @@
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "比较题严格按“横切四维”逐段对敲：",
-    "start": 0.0,
-    "end": 3.88,
-    "duration": 3.88
+    "text": "比较题严格按“横切四维”逐段对敲：先比两人盛唐转型坐标与儒道侠思想根基，",
+    "start": 0.223,
+    "end": 7.643,
+    "duration": 7.42
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "先比两人盛唐转型坐标与儒道侠思想根基，",
-    "start": 3.929,
-    "end": 7.369,
-    "duration": 3.44
+    "text": "再比一泻千里与四起四落的情感审美，进而落到破律歌行与守律七律的体裁分化，",
+    "start": 8.388,
+    "end": 15.183,
+    "duration": 6.794
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "再比一泻千里与四起四落的情感审美，",
-    "start": 7.819,
-    "end": 10.939,
-    "duration": 3.12
-  },
-  {
-    "id": "hook_c3",
-    "dom_key": "hook_c3",
-    "text": "进而落到破律歌行与守律七律的体裁分化，",
-    "start": 11.389,
-    "end": 15.029,
-    "duration": 3.64
-  },
-  {
-    "id": "hook_c4",
-    "dom_key": "hook_c4",
     "text": "最后收束为唐宋浪漫与写实两大源流。",
-    "start": 15.479,
-    "end": 18.919,
-    "duration": 3.44
+    "start": 15.984,
+    "end": 19.653,
+    "duration": 3.669
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
-    "text": "李白与杜甫是古典诗歌双峰并峙的伟大诗人：李白把浪漫主义推向极盛，",
-    "start": 19.369,
-    "end": 25.169,
-    "duration": 5.8
+    "text": "李白与杜甫是古典诗歌双峰并峙的伟大诗人：李白把浪漫主义推向极盛，杜甫将现实主义发扬光大。",
+    "start": 20.415,
+    "end": 28.616,
+    "duration": 8.201
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
-    "text": "杜甫将现实主义发扬光大。",
-    "start": 25.619,
-    "end": 27.739,
-    "duration": 2.12
-  },
-  {
-    "id": "intro_c2",
-    "dom_key": "intro_c2",
     "text": "韩愈赞“李杜文章在，光焰万丈长”。",
-    "start": 28.189,
-    "end": 31.149,
-    "duration": 2.96
+    "start": 29.427,
+    "end": 32.063,
+    "duration": 2.635
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 思想追求：个体精神解放 vs 家国忧患",
-    "start": 31.599,
-    "end": 35.559,
-    "duration": 3.96
+    "start": 32.773,
+    "end": 37.049,
+    "duration": 4.275
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
-    "text": "身处盛唐全盛之际，兼融道家逍遥、侠义任情与建功抱负，",
-    "start": 36.009,
-    "end": 41.329,
-    "duration": 5.32
-  },
-  {
-    "id": "sec0_step0_c1",
-    "dom_key": "sec0_step0_c1",
-    "text": "傲立王侯高呼“安能摧眉折腰事权贵”；",
-    "start": 41.859,
-    "end": 44.979,
-    "duration": 3.12
+    "text": "身处盛唐全盛之际，兼融道家逍遥、侠义任情与建功抱负，傲立王侯高呼“安能摧眉折腰事权贵”；",
+    "start": 37.829,
+    "end": 46.727,
+    "duration": 8.899
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "亲历安史乱离，深扎儒家“仁民爱物”与“兼济天下”，",
-    "start": 45.429,
-    "end": 49.469,
-    "duration": 4.04
+    "start": 47.463,
+    "end": 51.428,
+    "duration": 3.964
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "在《自京赴奉先县咏怀五百字》发出“穷年忧黎元，叹息肠内热”；",
-    "start": 49.919,
-    "end": 55.439,
-    "duration": 5.52
+    "start": 52.179,
+    "end": 57.318,
+    "duration": 5.139
   },
   {
     "id": "sec0_step2_c0",
     "dom_key": "sec0_step2_c0",
     "text": "李白现盛唐个性飞扬，杜甫显盛唐转向深沉反思的担当。",
-    "start": 55.889,
-    "end": 60.809,
-    "duration": 4.92
+    "start": 58.009,
+    "end": 63.211,
+    "duration": 5.202
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 审美风貌：飘逸奔放 vs 沉郁顿挫",
-    "start": 61.339,
-    "end": 65.499,
-    "duration": 4.16
+    "start": 63.896,
+    "end": 67.523,
+    "duration": 3.627
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
-    "text": "崇尚“清水出芙蓉，天然去雕饰”，",
-    "start": 65.949,
-    "end": 68.669,
-    "duration": 2.72
-  },
-  {
-    "id": "sec1_step0_c1",
-    "dom_key": "sec1_step0_c1",
-    "text": "《将进酒》“君不见黄河之水天上来”一泻千里、纵横狂放；",
-    "start": 69.119,
-    "end": 73.879,
-    "duration": 4.76
+    "text": "崇尚“清水出芙蓉，天然去雕饰”，《将进酒》“君不见黄河之水天上来”一泻千里、纵横狂放；",
+    "start": 68.269,
+    "end": 75.829,
+    "duration": 7.56
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "以“沉郁顿挫”称绝，《登高》交融悲秋与多病，",
-    "start": 74.329,
-    "end": 77.609,
-    "duration": 3.28
-  },
-  {
-    "id": "sec1_step1_c1",
-    "dom_key": "sec1_step1_c1",
-    "text": "《咏怀五百字》历经四起四落；",
-    "start": 78.059,
-    "end": 80.699,
-    "duration": 2.64
+    "text": "以“沉郁顿挫”称绝，《登高》交融悲秋与多病，《咏怀五百字》历经四起四落；",
+    "start": 76.598,
+    "end": 82.551,
+    "duration": 5.953
   },
   {
     "id": "sec1_step2_c0",
     "dom_key": "sec1_step2_c0",
     "text": "李白美在飞扬奇伟的豪迈俊逸，杜甫美在深沉悲慨的郁勃低回。",
-    "start": 81.149,
-    "end": 86.389,
-    "duration": 5.24
+    "start": 83.273,
+    "end": 88.482,
+    "duration": 5.209
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 体裁法度：古体歌行绝句 vs 近体律诗",
-    "start": 86.839,
-    "end": 91.119,
-    "duration": 4.28
+    "start": 89.233,
+    "end": 93.438,
+    "duration": 4.204
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
-    "text": "摆脱声律羁绊，倾情古题乐府与歌行，",
-    "start": 91.569,
-    "end": 94.929,
-    "duration": 3.36
+    "text": "摆脱声律羁绊，倾情古题乐府与歌行，《梦游天姥吟留别》《蜀道难》驱遣神话夸张，",
+    "start": 94.163,
+    "end": 101.055,
+    "duration": 6.892
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
-    "text": "《梦游天姥吟留别》《蜀道难》驱遣神话夸张，兼擅五七言绝句自然天成；",
-    "start": 95.379,
-    "end": 101.219,
-    "duration": 5.84
+    "text": "兼擅五七言绝句自然天成；",
+    "start": 101.763,
+    "end": 104.024,
+    "duration": 2.261
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "最高成就在集律诗大成，追求“晚节渐于诗律细”、善用“拗救”与组诗，",
-    "start": 101.669,
-    "end": 107.269,
-    "duration": 5.6
+    "start": 104.785,
+    "end": 110.332,
+    "duration": 5.547
   },
   {
     "id": "sec2_step1_c1",
     "dom_key": "sec2_step1_c1",
     "text": "《秋兴八首》浑融流转而法度精严。",
-    "start": 107.719,
-    "end": 110.199,
-    "duration": 2.48
+    "start": 111.049,
+    "end": 113.55,
+    "duration": 2.501
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 诗史流派：开启后世浪漫与写实双源",
-    "start": 110.809,
-    "end": 115.129,
-    "duration": 4.32
+    "start": 114.295,
+    "end": 118.349,
+    "duration": 4.054
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "以飘逸豪放与个性解放，启迪中唐韩孟奇崛诗思与宋代苏轼、陆游豪迈诗风；",
-    "start": 115.579,
-    "end": 122.339,
-    "duration": 6.76
+    "start": 119.182,
+    "end": 126.481,
+    "duration": 7.299
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
-    "text": "以写实精神与精严法度，启迪中唐白居易新乐府运动，",
-    "start": 122.869,
-    "end": 127.629,
-    "duration": 4.76
-  },
-  {
-    "id": "sec3_step1_c1",
-    "dom_key": "sec3_step1_c1",
-    "text": "并为宋代黄庭坚与江西诗派所宗尚；",
-    "start": 128.079,
-    "end": 131.199,
-    "duration": 3.12
+    "text": "以写实精神与精严法度，启迪中唐白居易新乐府运动，并为宋代黄庭坚与江西诗派所宗尚；",
+    "start": 127.26,
+    "end": 135.29,
+    "duration": 8.03
   },
   {
     "id": "sec3_step2_c0",
     "dom_key": "sec3_step2_c0",
     "text": "共同在诗歌史上树立浪漫与现实两大典范。",
-    "start": 131.729,
-    "end": 135.129,
-    "duration": 3.4
+    "start": 136.08,
+    "end": 139.814,
+    "duration": 3.734
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "李白以飘逸狂放拓展古体歌行与绝句境界，",
-    "start": 135.579,
-    "end": 139.219,
-    "duration": 3.64
+    "start": 140.559,
+    "end": 144.163,
+    "duration": 3.604
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
-    "text": "杜甫则以沉郁顿挫与精严律法把写实诗史推至巅峰，",
-    "start": 139.669,
-    "end": 144.389,
-    "duration": 4.72
-  },
-  {
-    "id": "concl_c2",
-    "dom_key": "concl_c2",
-    "text": "二人开启浪漫与现实并行的双流传统。",
-    "start": 144.839,
-    "end": 147.919,
-    "duration": 3.08
+    "text": "杜甫则以沉郁顿挫与精严律法把写实诗史推至巅峰，二人开启浪漫与现实并行的双流传统。",
+    "start": 144.885,
+    "end": 153.188,
+    "duration": 8.303
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：杜甫赞李白“笔落惊风雨，诗成泣鬼神”；",
-    "start": 148.369,
-    "end": 152.569,
+    "start": 154.002,
+    "end": 158.202,
     "duration": 4.2
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "李白赞杜甫有别集赠诗；",
-    "start": 153.099,
-    "end": 155.299,
-    "duration": 2.2
+    "start": 158.969,
+    "end": 161.053,
+    "duration": 2.085
   },
   {
     "id": "guard_c2",
     "dom_key": "guard_c2",
     "text": "韩愈合赞“李杜文章在，光焰万丈长”。",
-    "start": 155.749,
-    "end": 158.829,
-    "duration": 3.08
+    "start": 161.787,
+    "end": 164.809,
+    "duration": 3.022
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 李白与杜甫在“思想渊源”和“体裁法度”上各有哪些鲜明对照？",
-    "start": 159.279,
-    "end": 165.319,
-    "duration": 6.04
+    "start": 165.562,
+    "end": 171.657,
+    "duration": 6.095
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合《将进酒》与《登高》《秋兴八首》对比飘逸与沉郁顿挫？",
-    "start": 165.769,
-    "end": 171.809,
-    "duration": 6.04
+    "start": 172.414,
+    "end": 178.316,
+    "duration": 5.902
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 列出唐宋诗坛分别继承李白、杜甫的具体诗人及流派？",
-    "start": 172.259,
-    "end": 178.259,
-    "duration": 6.0
+    "start": 179.055,
+    "end": 185.295,
+    "duration": 6.24
   }
 ]

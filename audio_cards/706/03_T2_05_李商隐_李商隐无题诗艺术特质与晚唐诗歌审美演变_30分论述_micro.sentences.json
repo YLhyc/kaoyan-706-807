@@ -2,281 +2,241 @@
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "诗体→心境→技艺→流向：先理解李商隐为何“摘题省事”改写无题心灵诗，",
-    "start": 0.0,
-    "end": 7.36,
-    "duration": 7.36
+    "text": "诗体→心境→技艺→流向：先理解李商隐为何“摘题省事”改写无题心灵诗，从而制造多义空间；",
+    "start": 0.223,
+    "end": 9.661,
+    "duration": 9.438
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "从而制造多义空间；",
-    "start": 7.409,
-    "end": 9.009,
-    "duration": 1.6
+    "text": "接着揭开晚唐党争与帝国暮景下的凄美底色；",
+    "start": 10.407,
+    "end": 14.43,
+    "duration": 4.022
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "接着揭开晚唐党争与帝国暮景下的凄美底色；",
-    "start": 9.459,
-    "end": 13.099,
-    "duration": 3.64
+    "text": "随后看他用珠泪、蝴蝶、玉烟与活用典故达到“沉博绝丽”；",
+    "start": 15.146,
+    "end": 20.397,
+    "duration": 5.251
   },
   {
     "id": "hook_c3",
     "dom_key": "hook_c3",
-    "text": "随后看他用珠泪、蝴蝶、玉烟与活用典故达到“沉博绝丽”；",
-    "start": 13.629,
-    "end": 18.549,
-    "duration": 4.92
-  },
-  {
-    "id": "hook_c4",
-    "dom_key": "hook_c4",
     "text": "最终落于唐诗向内向精微、西昆与婉约词演变之枢纽。",
-    "start": 18.999,
-    "end": 23.679,
-    "duration": 4.68
+    "start": 21.142,
+    "end": 25.932,
+    "duration": 4.79
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "李商隐身处晚唐藩镇党争夹缝，开创深情绵邈、绮丽精工“无题诗”范式，",
-    "start": 24.129,
-    "end": 30.369,
-    "duration": 6.24
+    "start": 26.772,
+    "end": 32.668,
+    "duration": 5.896
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "元好问《论诗三十首》赞“诗家总爱西昆好，独恨无人作郑笺”。",
-    "start": 30.819,
-    "end": 35.899,
-    "duration": 5.08
+    "start": 33.391,
+    "end": 37.709,
+    "duration": 4.318
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 创“无题”诗体、重心灵体验与多义",
-    "start": 36.429,
-    "end": 39.869,
-    "duration": 3.44
+    "start": 38.428,
+    "end": 41.82,
+    "duration": 3.392
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
-    "text": "淡化具体时地事件，或题“无题”或截取首二字，",
-    "start": 40.319,
-    "end": 44.159,
-    "duration": 3.84
-  },
-  {
-    "id": "sec0_step0_c1",
-    "dom_key": "sec0_step0_c1",
-    "text": "直接表现心灵情绪与整体心境；",
-    "start": 44.609,
-    "end": 47.249,
-    "duration": 2.64
+    "text": "淡化具体时地事件，或题“无题”或截取首二字，直接表现心灵情绪与整体心境；",
+    "start": 42.597,
+    "end": 49.335,
+    "duration": 6.738
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "《无题》“春蚕到死丝方尽，蜡炬成灰泪始干”写执着深情，",
-    "start": 47.699,
-    "end": 52.539,
-    "duration": 4.84
+    "start": 50.121,
+    "end": 54.754,
+    "duration": 4.633
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
-    "text": "《锦瑟》“一弦一柱思华年”统摄全篇，省略本事因果，",
-    "start": 52.989,
-    "end": 57.429,
-    "duration": 4.44
-  },
-  {
-    "id": "sec0_step1_c2",
-    "dom_key": "sec0_step1_c2",
-    "text": "兼容爱情与身世政治寄托。",
-    "start": 57.879,
-    "end": 60.199,
-    "duration": 2.32
+    "text": "《锦瑟》“一弦一柱思华年”统摄全篇，省略本事因果，兼容爱情与身世政治寄托。",
+    "start": 55.489,
+    "end": 61.506,
+    "duration": 6.017
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 构筑凄美怅惘基调、折射晚唐心境",
-    "start": 60.649,
-    "end": 64.849,
-    "duration": 4.2
+    "start": 62.193,
+    "end": 65.828,
+    "duration": 3.636
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "随帝国没落与党争失意，盛唐豪迈消退，代之以幽微孤独、失落与无力感；",
-    "start": 65.299,
-    "end": 71.299,
-    "duration": 6.0
+    "start": 66.537,
+    "end": 73.384,
+    "duration": 6.847
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "《昨夜星辰》写“心有灵犀一点通”契合与“走马兰台类转蓬”无奈；",
-    "start": 71.749,
-    "end": 76.429,
-    "duration": 4.68
+    "start": 74.176,
+    "end": 79.317,
+    "duration": 5.141
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "《乐游原》“夕阳无限好，只是近黄昏”成盛衰幻灭共声。",
-    "start": 76.879,
-    "end": 81.199,
-    "duration": 4.32
+    "start": 80.117,
+    "end": 84.598,
+    "duration": 4.481
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 精研意象用典、臻“沉博绝丽”境",
-    "start": 81.729,
-    "end": 85.449,
-    "duration": 3.72
+    "start": 85.333,
+    "end": 89.041,
+    "duration": 3.708
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
-    "text": "现“绮密瑰妍”“沉博绝丽”之风：",
-    "start": 85.899,
-    "end": 88.379,
-    "duration": 2.48
+    "text": "现“绮密瑰妍”“沉博绝丽”之风：化情绪为珠泪、玉烟、蓬山、青鸟跳跃组合，",
+    "start": 89.754,
+    "end": 96.413,
+    "duration": 6.658
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
-    "text": "化情绪为珠泪、玉烟、蓬山、青鸟跳跃组合，营造雾里看花凄艳诗境；",
-    "start": 88.829,
-    "end": 94.589,
-    "duration": 5.76
+    "text": "营造雾里看花凄艳诗境；",
+    "start": 97.128,
+    "end": 99.026,
+    "duration": 1.898
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "取情韵而不拘原事，《锦瑟》“庄生晓梦迷蝴蝶，望帝春心托杜鹃”喻迷惘，",
-    "start": 95.039,
-    "end": 101.639,
-    "duration": 6.6
+    "start": 99.784,
+    "end": 105.559,
+    "duration": 5.775
   },
   {
     "id": "sec2_step1_c1",
     "dom_key": "sec2_step1_c1",
     "text": "颈联“沧海月明珠有泪”等对仗浑融、哀痛难言。",
-    "start": 102.089,
-    "end": 105.969,
-    "duration": 3.88
+    "start": 106.315,
+    "end": 110.138,
+    "duration": 3.823
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 引领内向演进、启西昆体与婉约词",
-    "start": 106.499,
-    "end": 110.579,
-    "duration": 4.08
+    "start": 110.849,
+    "end": 114.804,
+    "duration": 3.954
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
-    "text": "标志唐诗由盛唐开阔外向转向幽微内心世界开掘，",
-    "start": 111.029,
-    "end": 115.429,
-    "duration": 4.4
-  },
-  {
-    "id": "sec3_step0_c1",
-    "dom_key": "sec3_step0_c1",
-    "text": "在李杜韩白后辟幽约深浑新境；",
-    "start": 115.879,
-    "end": 118.559,
-    "duration": 2.68
+    "text": "标志唐诗由盛唐开阔外向转向幽微内心世界开掘，在李杜韩白后辟幽约深浑新境；",
+    "start": 115.588,
+    "end": 123.205,
+    "duration": 7.616
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "催生宋初杨亿、钱惟演“西昆体”，并与温庭筠同滋养李煜及两宋婉约词风。",
-    "start": 119.009,
-    "end": 125.649,
-    "duration": 6.64
+    "start": 123.988,
+    "end": 130.793,
+    "duration": 6.805
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
-    "text": "李商隐无题诗以晚唐怅惘为底，",
-    "start": 126.099,
-    "end": 128.939,
-    "duration": 2.84
+    "text": "李商隐无题诗以晚唐怅惘为底，借典丽多义意象把盛唐外向诗风转向幽深内向，",
+    "start": 131.53,
+    "end": 138.996,
+    "duration": 7.467
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
-    "text": "借典丽多义意象把盛唐外向诗风转向幽深内向，",
-    "start": 129.389,
-    "end": 133.549,
-    "duration": 4.16
-  },
-  {
-    "id": "concl_c2",
-    "dom_key": "concl_c2",
     "text": "这种“沉博绝丽”美学既孕育宋初西昆体，也深厚滋养晚唐两宋婉约词风。",
-    "start": 133.999,
-    "end": 139.959,
-    "duration": 5.96
+    "start": 139.788,
+    "end": 146.23,
+    "duration": 6.442
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：元好问《论诗三十首》赞“诗家总爱西昆好，独恨无人作郑笺”；",
-    "start": 140.409,
-    "end": 145.889,
-    "duration": 5.48
+    "start": 146.985,
+    "end": 152.275,
+    "duration": 5.29
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "注意李商隐“沉博绝丽”开宋初西昆体与晚唐五代婉约词风。",
-    "start": 146.339,
-    "end": 151.459,
-    "duration": 5.12
+    "start": 153.034,
+    "end": 157.836,
+    "duration": 4.803
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 元好问对李商隐哪句诗评价最经典？",
-    "start": 151.909,
-    "end": 155.549,
-    "duration": 3.64
+    "start": 158.597,
+    "end": 162.823,
+    "duration": 4.226
   },
   {
     "id": "drill0_c1",
     "dom_key": "drill0_c1",
     "text": "“无题”命名机制有何妙处？",
-    "start": 155.999,
-    "end": 157.999,
-    "duration": 2.0
+    "start": 163.597,
+    "end": 165.576,
+    "duration": 1.979
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合《锦瑟》“庄生晓梦”与“沧海月明”两联解释“沉博绝丽”？",
-    "start": 158.449,
-    "end": 164.249,
-    "duration": 5.8
+    "start": 166.298,
+    "end": 172.321,
+    "duration": 6.024
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 概括李商隐在盛唐、中唐、宋初诗体与晚唐五代词之间的枢纽地位？",
-    "start": 164.699,
-    "end": 171.499,
-    "duration": 6.8
+    "start": 173.07,
+    "end": 180.725,
+    "duration": 7.656
   }
 ]
