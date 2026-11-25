@@ -143,6 +143,11 @@
   let loopGapAudioCtx = null;
   let loopGapKeepaliveNode = null;
   let bgBoundaryTimer = null;
+  let bgWatchdogTimer = null;
+  let isSwitchingAudioSrc = false;
+  let switchingSrcTimer = null;
+  let prefetchAudioEl = null;
+  let prefetchedAudioUrl = '';
   const muteLockReasons = new Map();
   let muteBaselineMuted = false;
   let lastLiveRepeatText = '';
@@ -153,10 +158,47 @@
   let pendingSeekTimer = null;
   let lastClickedSentGuard = null; // { idx, time, until }
 
+  function isIOSLikeEnv() {
+    if (typeof navigator === 'undefined') return false;
+    return (
+      /iPad|iPhone|iPod/.test(navigator.userAgent || '') ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
+      navigator.standalone === true
+    );
+  }
+
+  function isMobileOrStandalonePWA() {
+    if (isIOSLikeEnv()) return true;
+    if (typeof navigator !== 'undefined' && /Android|Mobile|HarmonyOS|MicroMessenger/i.test(navigator.userAgent || '')) {
+      return true;
+    }
+    try {
+      if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+        return true;
+      }
+    } catch (e) {}
+    return false;
+  }
+
   function clearBgBoundaryTimer() {
     if (bgBoundaryTimer) {
       clearTimeout(bgBoundaryTimer);
       bgBoundaryTimer = null;
+    }
+  }
+
+  function clearBgWatchdogTimer() {
+    if (bgWatchdogTimer) {
+      clearInterval(bgWatchdogTimer);
+      bgWatchdogTimer = null;
+    }
+  }
+
+  function clearSwitchingAudioSrc() {
+    isSwitchingAudioSrc = false;
+    if (switchingSrcTimer) {
+      clearTimeout(switchingSrcTimer);
+      switchingSrcTimer = null;
     }
   }
 
@@ -165,17 +207,97 @@
     if (!raw) return '';
     if (/^(blob:|data:)/i.test(raw)) return raw;
     if (/[?&]v=/.test(raw)) return raw;
-    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.7';
+    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.8';
     return raw + (raw.includes('?') ? '&' : '?') + 'v=' + encodeURIComponent(ver);
+  }
+
+  function assignAudioSource(url, autoPlay = false) {
+    const versioned = withAudioVersion(url);
+    if (!versioned) return;
+    ensureMainAudioMounted();
+    clearSwitchingAudioSrc();
+    if (autoPlay) {
+      isSwitchingAudioSrc = true;
+      switchingSrcTimer = setTimeout(() => {
+        isSwitchingAudioSrc = false;
+        switchingSrcTimer = null;
+      }, 450);
+    }
+    audio.preload = 'auto';
+    audio.src = versioned;
+    if (!autoPlay) {
+      try { audio.load(); } catch (e) {}
+    }
+    audio.playbackRate = state.speed;
+  }
+
+  function getNextTrackAudioUrl() {
+    try {
+      if (state.currentSubject === 'pol' && state.polSubMode === 'recite47' && state.currentTrack === 2 && state.activeItem?.track2?.subCards?.length > 1) {
+        const subCards = state.activeItem.track2.subCards;
+        const curIdx = subCards.findIndex(c => c.cardId === state.polSubCardId);
+        if (curIdx >= 0 && curIdx < subCards.length - 1) {
+          return subCards[curIdx + 1]?.audio || '';
+        }
+      }
+      const list = getCurrentItemsList();
+      const currIdx = Array.isArray(list) ? list.findIndex(x => x.id === state.activeItemId) : -1;
+      if (currIdx === -1 || currIdx >= list.length - 1) return '';
+      const nextItem = list[currIdx + 1];
+      if (!nextItem) return '';
+      if (state.currentSubject === 'pol') {
+        if (state.polSubMode === 'xutao16') {
+          return state.polXtVoice === 'anlang' ? (nextItem.anlang_audio || '') : (nextItem.voice_audio || '');
+        }
+        if (state.polSubMode === 'tuijie11') {
+          return nextItem.audio || '';
+        }
+        if (state.currentTrack === 1) {
+          return nextItem.track1?.audio || '';
+        }
+        return nextItem.track2?.subCards?.[0]?.audio || '';
+      }
+      const tr = state.currentTrack === 1 ? nextItem.track1 : nextItem.track2;
+      return tr?.audio || '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function scheduleNextTrackPrefetch() {
+    try {
+      if (typeof navigator !== 'undefined' && navigator.onLine === false) return;
+      if (state.playMode === 'item' || state.playMode === 'sentence' || state.playMode === 'range') return;
+      const nextRaw = getNextTrackAudioUrl();
+      const nextUrl = withAudioVersion(nextRaw);
+      if (!nextUrl || nextUrl === prefetchedAudioUrl) return;
+      prefetchedAudioUrl = nextUrl;
+      if (!prefetchAudioEl) {
+        prefetchAudioEl = document.createElement('audio');
+        prefetchAudioEl.preload = 'auto';
+        prefetchAudioEl.muted = true;
+        prefetchAudioEl.setAttribute('aria-hidden', 'true');
+        prefetchAudioEl.style.display = 'none';
+      }
+      prefetchAudioEl.src = nextUrl;
+    } catch (e) {}
   }
 
   function syncAudioMutedFromLocks() {
     try {
+      if (typeof document !== 'undefined' && document.hidden && muteLockReasons.size > 0) {
+        muteLockReasons.forEach(t => { if (t) clearTimeout(t); });
+        muteLockReasons.clear();
+      }
       audio.muted = muteLockReasons.size > 0;
     } catch (e) {}
   }
 
   function setInternalMuteLock(reason, maxMs = 0) {
+    if (typeof document !== 'undefined' && document.hidden) {
+      releaseAllInternalMuteLocks();
+      return;
+    }
     muteBaselineMuted = false;
     const prevTimer = muteLockReasons.get(reason);
     if (prevTimer) clearTimeout(prevTimer);
@@ -203,6 +325,10 @@
   }
 
   function reconcileStaleMuteLocks() {
+    if (typeof document !== 'undefined' && document.hidden) {
+      releaseAllInternalMuteLocks();
+      return;
+    }
     const hasActiveSeek = Boolean(pendingSeekTarget && pendingSeekTarget.token === seekToken);
     if (!hasActiveSeek) releaseInternalMuteLock('pendingSeek');
     if (!isLoopGapWaiting && !isLoopSeeking) releaseInternalMuteLock('loopGuard');
@@ -322,13 +448,28 @@
   }
 
   const audio = new Audio();
-  audio.preload = 'metadata';
+  audio.id = 'kaoyanMainAudio';
+  audio.preload = 'auto';
+  try {
+    audio.setAttribute('playsinline', '');
+    audio.setAttribute('webkit-playsinline', '');
+    audio.style.display = 'none';
+  } catch (e) {}
   window.state = state;
   window.audio = audio;
+
+  function ensureMainAudioMounted() {
+    try {
+      if (typeof document !== 'undefined' && document.body && !audio.parentNode) {
+        document.body.appendChild(audio);
+      }
+    } catch (e) {}
+  }
 
   const el = {};
 
   function engageLoopMuteGuard(maxMs = 150) {
+    if (typeof document !== 'undefined' && document.hidden) return;
     setInternalMuteLock('loopGuard', maxMs);
   }
 
@@ -337,6 +478,8 @@
   }
 
   function ensureAudioContextWarmed() {
+    // iOS/iPadOS Safari 与独立 PWA 下严禁空闲激活 AudioContext，避免锁屏切换时与 <audio> 争夺 AVAudioSession 中断态
+    if (isIOSLikeEnv()) return;
     try {
       const Ctx = window.AudioContext || window.webkitAudioContext;
       if (!Ctx) return;
@@ -348,27 +491,49 @@
   }
 
   function playAudioWithStateSync(label = 'Play', allowCanplayRetry = false) {
-    ensureAudioContextWarmed();
+    ensureMainAudioMounted();
+    if (typeof document !== 'undefined' && document.hidden) {
+      releaseAllInternalMuteLocks();
+    }
     const playGen = audioTrackGen;
+    const retryPlayOnReady = () => {
+      const onReady = () => {
+        if (playGen !== audioTrackGen || !hasAudioSource() || audio.error || !audio.paused) return;
+        audio.play().catch(err2 => {
+          if (playGen !== audioTrackGen) return;
+          if (err2 && err2.name === 'AbortError') return;
+          if (document.hidden) interruptedWhileHidden = true;
+          state.isPlaying = false;
+          updatePlayBtnUI();
+          updateMediaSessionState(true);
+        });
+      };
+      if (audio.readyState >= 2) {
+        setTimeout(onReady, 30);
+      } else {
+        audio.addEventListener('canplay', onReady, { once: true });
+      }
+    };
     const playPromise = audio.play();
     if (playPromise && typeof playPromise.catch === 'function') {
       playPromise.catch(err => {
         if (playGen !== audioTrackGen) return;
-        if (err && err.name === 'AbortError') return;
+        const isAbort = Boolean(err && err.name === 'AbortError');
+        if (isAbort) {
+          if (allowCanplayRetry && hasAudioSource() && !audio.error) {
+            retryPlayOnReady();
+          }
+          return;
+        }
         console.log(label + ' failed:', err);
         if (allowCanplayRetry && hasAudioSource() && !audio.error && audio.readyState < 2) {
-          audio.addEventListener('canplay', () => {
-            if (playGen !== audioTrackGen || !hasAudioSource() || audio.error || !audio.paused) return;
-            audio.play().catch(err2 => {
-              if (playGen !== audioTrackGen || (err2 && err2.name === 'AbortError')) return;
-              state.isPlaying = false;
-              updatePlayBtnUI();
-              updateMediaSessionState(true);
-            });
-          }, { once: true });
+          retryPlayOnReady();
           return;
         }
         if (audio.paused) {
+          if (document.hidden && (Date.now() - userInitiatedPauseAt > 800)) {
+            interruptedWhileHidden = true;
+          }
           state.isPlaying = false;
           updatePlayBtnUI();
           updateMediaSessionState(true);
@@ -379,14 +544,15 @@
   }
 
   function startLoopGapKeepalive() {
+    if (isMobileOrStandalonePWA()) return;
     try {
       ensureAudioContextWarmed();
       if (!loopGapAudioCtx) return;
       if (loopGapKeepaliveNode) return;
       const osc = loopGapAudioCtx.createOscillator();
       const gain = loopGapAudioCtx.createGain();
-      gain.gain.value = 0.00001;
-      osc.frequency.value = 1;
+      gain.gain.value = 0.00015;
+      osc.frequency.value = 220;
       osc.connect(gain);
       gain.connect(loopGapAudioCtx.destination);
       osc.start();
@@ -498,17 +664,13 @@
     }
 
     const gapMs = (useGap && !document.hidden) ? (Number(state.loopGapMs) || 0) : 0;
-    const isIOSLike = typeof navigator !== 'undefined' && (
-      /iPad|iPhone|iPod/.test(navigator.userAgent || '') ||
-      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
-      navigator.standalone === true
-    );
+    const keepMobileStreamAlive = isMobileOrStandalonePWA();
     if (gapMs > 0 && shouldResume && hasAudioSource()) {
       const myEpoch = ++loopGapEpoch;
       isLoopGapWaiting = true;
       state.isPlaying = true;
-      if (isIOSLike) {
-        // iOS / iPadOS PWA：保持主 <audio> 连续播放并加内部静音锁，绝不调用 audio.pause() 释放系统媒体会话
+      if (keepMobileStreamAlive) {
+        // 移动端与独立 PWA（iOS / iPadOS / Android）：保持主 <audio> 连续播放并加内部静音锁，绝不调用 audio.pause() 释放系统媒体会话
         setInternalMuteLock('loopGap', gapMs + 450);
         engageLoopMuteGuard(Math.max(180, Math.min(300, gapMs)));
         triggerLoopSeek(targetTime, targetSentIdx);
@@ -516,7 +678,7 @@
           playAudioWithStateSync('Loop gap keep-playing', true);
         }
       } else {
-        // 桌面端 / Android：先暂停再静音落位，避免边解码边 seek 引起切回首音口吃
+        // 桌面端：先暂停再静音落位，避免边解码边 seek 引起切回首音口吃
         engageLoopMuteGuard(Math.max(180, Math.min(300, gapMs)));
         try {
           if (!audio.paused) audio.pause();
@@ -551,7 +713,7 @@
           }
         };
         if (needReseek || audio.seeking) {
-          engageLoopMuteGuard(220);
+          if (!document.hidden) engageLoopMuteGuard(220);
           releaseInternalMuteLock('loopGap');
           if (needReseek) {
             try { setAudioPosition(targetTime); } catch (e) {}
@@ -575,7 +737,11 @@
         }
       }, gapMs);
     } else {
-      engageLoopMuteGuard(200);
+      if (!document.hidden) {
+        engageLoopMuteGuard(200);
+      } else {
+        releaseAllInternalMuteLocks();
+      }
       triggerLoopSeek(targetTime, targetSentIdx);
       updateHUDDisplay(targetTime);
       if (shouldResume && audio.paused) {
@@ -681,6 +847,8 @@
     seekToken++;
     manualSeekEpoch++;
     clearBgBoundaryTimer();
+    clearBgWatchdogTimer();
+    clearSwitchingAudioSrc();
     cancelLoopGapWait();
     clearPendingSeek(true);
     releaseAllInternalMuteLocks();
@@ -4061,9 +4229,7 @@
 
     // 1. 同步第一时间挂载音频并处理自动播放（保护 iOS Safari WebKit 用户手势与后台连播上下文）
     if (trackObj && trackObj.audio) {
-      audio.src = withAudioVersion(trackObj.audio);
-      audio.load();
-      audio.playbackRate = state.speed;
+      assignAudioSource(trackObj.audio, autoPlay);
 
       if (canCarrySameTimeline) {
         const carryEpoch = manualSeekEpoch;
@@ -4370,37 +4536,48 @@
     }
   }
 
+  function highlightRelayQuotes(htmlStr) {
+    if (!htmlStr || htmlStr.indexOf('“') === -1) return htmlStr || '';
+    return String(htmlStr).replace(/“([^”]+)”/g, (full, inner) => {
+      const plain = inner.replace(/<[^>]+>/g, '');
+      if (plain.length >= 5) {
+        return `“<span class="quote-cite">${inner}</span>”`;
+      }
+      return full;
+    });
+  }
+
   function renderRelaySlotHtml(slotMap, slotKey, fallbackHtml) {
     if (slotMap && slotMap.has(slotKey)) {
       const sl = slotMap.get(slotKey);
       if (sl && Array.isArray(sl.clauses) && sl.clauses.length > 0) {
         return sl.clauses
-          .map(c => `<span class="recite-sent" data-sent-id="${c.sent_id}">${c.html}</span>`)
+          .map(c => `<span class="recite-sent" data-sent-id="${c.sent_id}">${highlightRelayQuotes(c.html)}</span>`)
           .join('');
       }
     }
-    return fallbackHtml || '';
+    return highlightRelayQuotes(fallbackHtml || '');
   }
 
   function buildRelaySpineHtml(sec, showRoles = true, roles = null, slotMap = null, secIdx = -1, isNounCollection = false) {
-    const r = (label) => showRoles ? `<span class="relay-role">${label}</span>` : '';
+    const r = (label) => (showRoles && label) ? `<span class="relay-role">${label}</span>` : '';
     const cueHtml = sec.cue ? `<div class="relay-cue-line"><span class="relay-cue-tag">自检</span><span>${sec.cue}</span></div>` : '';
     if (isNounCollection && sec.s1 && sec.s2 && sec.s3) {
-      const h1 = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s1`, sec.s1) : sec.s1;
-      const h2 = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s2`, sec.s2) : sec.s2;
-      const h3 = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s3`, sec.s3) : sec.s3;
+      const h1 = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s1`, sec.s1) : highlightRelayQuotes(sec.s1);
+      const h2 = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s2`, sec.s2) : highlightRelayQuotes(sec.s2);
+      const h3 = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s3`, sec.s3) : highlightRelayQuotes(sec.s3);
       return `${cueHtml}
         <div class="relay-mj-grid">
           <div class="relay-mj-cell">
-            <span class="relay-role">时空</span>
+            <span class="relay-role relay-role-tag">时空</span>
             <div class="relay-sent" data-relay-step="s1">${h1}</div>
           </div>
           <div class="relay-mj-cell">
-            <span class="relay-role">特质</span>
+            <span class="relay-role relay-role-tag">特质</span>
             <div class="relay-sent" data-relay-step="s2">${h2}</div>
           </div>
           <div class="relay-mj-cell">
-            <span class="relay-role">定位</span>
+            <span class="relay-role relay-role-tag">定位</span>
             <div class="relay-sent" data-relay-step="s3">${h3}</div>
           </div>
         </div>`;
@@ -4412,11 +4589,15 @@
         const isFirst = i === 0;
         const isLast = i === steps.length - 1;
         const stepAttr = isFirst ? 's1' : (isLast && steps.length >= 3 ? 's3' : 's2');
-        const stepHtml = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_step${i}`, txt || '') : (txt || '');
+        const stepHtml = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_step${i}`, txt || '') : highlightRelayQuotes(txt || '');
+        const hasLbl = showRoles && Boolean(lbl && String(lbl).trim());
         inner += `
-        <div class="relay-step">
+        <div class="relay-step${hasLbl ? ' has-role-col' : ''}">
           <span class="relay-dot"></span>
-          <div class="relay-sent" data-relay-step="${stepAttr}">${r(lbl || '')}${stepHtml}</div>
+          <div class="relay-step-row">
+            ${hasLbl ? `<span class="relay-role relay-m-tag">${lbl}</span>` : ''}
+            <div class="relay-sent" data-relay-step="${stepAttr}">${stepHtml}</div>
+          </div>
         </div>`;
         if (isFirst && sec.q1) {
           inner += `<div class="relay-glue-row">
@@ -4435,30 +4616,39 @@
     const labels = (Array.isArray(roles) && roles.length >= 3)
       ? roles
       : ['① 定局立桩', '② 落锚举例', '③ 收果拔高'];
-    const s1Html = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s1`, sec.s1 || '') : (sec.s1 || '');
-    const s2Html = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s2`, sec.s2 || '') : (sec.s2 || '');
-    const s3Html = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s3`, sec.s3 || '') : (sec.s3 || '');
+    const s1Html = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s1`, sec.s1 || '') : highlightRelayQuotes(sec.s1 || '');
+    const s2Html = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s2`, sec.s2 || '') : highlightRelayQuotes(sec.s2 || '');
+    const s3Html = secIdx >= 0 ? renderRelaySlotHtml(slotMap, `sec${secIdx}_s3`, sec.s3 || '') : highlightRelayQuotes(sec.s3 || '');
     return `${cueHtml}
       <div class="relay-spine">
-        <div class="relay-step">
+        <div class="relay-step has-role-col">
           <span class="relay-dot"></span>
-          <div class="relay-sent" data-relay-step="s1">${r(labels[0])}${s1Html}</div>
+          <div class="relay-step-row">
+            ${r(labels[0])}
+            <div class="relay-sent" data-relay-step="s1">${s1Html}</div>
+          </div>
         </div>
         ${sec.q1 ? `<div class="relay-glue-row">
           <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           <span>${sec.q1}</span>
         </div>` : ''}
-        <div class="relay-step">
+        <div class="relay-step has-role-col">
           <span class="relay-dot"></span>
-          <div class="relay-sent" data-relay-step="s2">${r(labels[1])}${s2Html}</div>
+          <div class="relay-step-row">
+            ${r(labels[1])}
+            <div class="relay-sent" data-relay-step="s2">${s2Html}</div>
+          </div>
         </div>
         ${sec.q2 ? `<div class="relay-glue-row">
           <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           <span>${sec.q2}</span>
         </div>` : ''}
-        <div class="relay-step">
+        <div class="relay-step has-role-col">
           <span class="relay-dot"></span>
-          <div class="relay-sent" data-relay-step="s3">${r(labels[2])}${s3Html}</div>
+          <div class="relay-step-row">
+            ${r(labels[2])}
+            <div class="relay-sent" data-relay-step="s3">${s3Html}</div>
+          </div>
         </div>
       </div>`;
   }
@@ -4481,6 +4671,31 @@
         (step === 's3' && (state.relayMode === 'pile' || state.relayMode === 'reverse'));
       sEl.classList.toggle('masked', shouldMask);
     });
+  }
+
+  function getPlainZhLen(rawStr) {
+    return String(rawStr || '').replace(/<[^>]+>/g, '').replace(/\s+/g, '').length;
+  }
+
+  function buildRelayToolDiagramHtml(itemId) {
+    if (String(itemId || '').startsWith('706_05_急救工具卡')) {
+      return `
+        <div class="relay-tool-diagram" aria-label="706 跨代纵向母题链速览图">
+          <div class="rtd-pill rtd-accent">① 诗骚传统 → 李杜 → 韩白 → 苏辛</div>
+          <div class="rtd-pill">② 先秦史传 → 唐宋古文 → 明清</div>
+          <div class="rtd-pill">③ 志怪传奇 → 话本 → 章回四大</div>
+          <div class="rtd-pill rtd-solid">比较四维：时代 / 主题 / 技法 / 史位</div>
+        </div>`;
+    }
+    if (String(itemId || '').startsWith('807_33_急救工具卡')) {
+      return `
+        <div class="relay-tool-diagram rtd-3col" aria-label="807 现当代纵向母题链速览图">
+          <div class="rtd-pill rtd-solid">乡土农民：鲁 → 沈 → 赵 → 汪 → 寻根</div>
+          <div class="rtd-pill rtd-accent">都市知青：郁 → 曹茅 → 钱张 → 朦/写实</div>
+          <div class="rtd-pill">横切四维：语境 / 姿态 / 修辞 / 史脉</div>
+        </div>`;
+    }
+    return '';
   }
 
   function renderRelayTrack2(trackObj, item) {
@@ -4517,44 +4732,76 @@
       ? '考场原段对照（本轨已配微缩专配朗读；如需逐句听原段录音请切回轨道一）：'
       : '考场原段（点击任意句跳播原录音）：';
 
+    const t1PlainLen = Math.max(getPlainZhLen(item.track1 && item.track1.text), item.track1 && item.track1.char_count ? Number(item.track1.char_count) : 0, 1);
+    const microChars = rm.is_noun_collection
+      ? (rm.sections || []).reduce((acc, s) => acc + getPlainZhLen(s.s1) + getPlainZhLen(s.s2) + getPlainZhLen(s.s3), 0)
+      : getPlainZhLen(rm.intro) + getPlainZhLen(rm.conclusion) + (rm.sections || []).reduce((acc, s) => acc + (s.steps || []).reduce((a2, st) => a2 + getPlainZhLen(st[1]), 0), 0);
+    const compPct = Math.round((microChars * 100) / t1PlainLen);
+    const ratioDesc = rm.is_noun_collection
+      ? `共 ${(rm.sections || []).length} 题 · ①时空界定 → ②核心特质 → ③文学史定位`
+      : `原文 ${t1PlainLen} 字 → 逻辑微缩 ${microChars} 字（微缩率 ${compPct}%）`;
+
     const wrap = document.createElement('div');
     wrap.className = 'paper-track2-wrap relay-track2-wrap';
 
     const chainHtml = (Array.isArray(rm.chain_nodes) && rm.chain_nodes.length > 0)
       ? rm.chain_nodes.map((node, idx, arr) => {
-          const chip = `<button type="button" class="relay-chain-node relay-chain-node-v4" data-jump-sec="${idx}"><span class="rcn-role">${idx + 1}. ${node.role || ''}</span><span class="rcn-core">${node.core || ''}</span></button>`;
-          const trans = (idx < arr.length - 1) ? `<span class="relay-chain-arrow">${node.trans ? `${node.trans} →` : '→'}</span>` : '';
+          const numBadge = String(idx + 1).padStart(2, '0');
+          const chip = `<button type="button" class="relay-chain-node relay-chain-node-v4" data-jump-sec="${idx}">
+            <span class="rcn-head"><span class="rcn-num">${numBadge}</span><span class="rcn-role">${node.role || ''}</span></span>
+            <span class="rcn-core">${node.core || ''}</span>
+          </button>`;
+          const trans = (idx < arr.length - 1)
+            ? `<div class="relay-mm-edge" aria-hidden="true">
+                ${node.trans ? `<span class="relay-mm-why">${node.trans}</span>` : ''}
+                <svg class="relay-mm-arrow-h" viewBox="0 0 24 12" width="22" height="11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="6" x2="20" y2="6"/><polyline points="15 2 20 6 15 10"/></svg>
+                <svg class="relay-mm-arrow-v" viewBox="0 0 12 20" width="11" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="2" x2="6" y2="17"/><polyline points="2 13 6 17 10 13"/></svg>
+              </div>`
+            : '';
           return chip + trans;
         }).join('')
       : (rm.logic_chain || []).map((label, idx, arr) =>
-          `<button type="button" class="relay-chain-node" data-jump-sec="${idx}">${idx + 1}. ${label}</button>${idx < arr.length - 1 ? '<span class="relay-chain-arrow">→</span>' : ''}`
+          `<button type="button" class="relay-chain-node" data-jump-sec="${idx}"><span class="rcn-num">${String(idx + 1).padStart(2, '0')}</span> ${label}</button>${idx < arr.length - 1 ? '<span class="relay-chain-arrow">→</span>' : ''}`
         ).join('');
 
     const hookHtml = rm.narrative_hook ? renderRelaySlotHtml(slotMap, 'hook', rm.narrative_hook) : '';
-    const guardHtml = rm.guard ? renderRelaySlotHtml(slotMap, 'guard', rm.guard) : '';
+    const guardHtmlRaw = rm.guard ? renderRelaySlotHtml(slotMap, 'guard', rm.guard) : '';
+    const guardHtml = guardHtmlRaw.replace(/(^|<span[^>]*>)防混[：:]\s*/, '$1');
+    const toolDiagramHtml = buildRelayToolDiagramHtml(item.id);
+    const hookLabelText = rm.is_noun_collection ? '记忆串线' : '记忆串讲';
 
     wrap.innerHTML = `
-      <div class="exam-spec-banner" style="background: linear-gradient(135deg, rgba(160, 90, 44, 0.08) 0%, rgba(200, 140, 60, 0.05) 100%); border-color: rgba(160, 90, 44, 0.2);">
-        <div class="spec-chip" style="background: rgba(160, 90, 44, 0.12); color: #8A4B1A;">
+      <div class="exam-spec-banner relay-spec-banner">
+        <div class="spec-chip relay-chip-primary">
           <svg fill="none" height="14" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="14"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-          <span>接力微缩逻辑版</span>
+          <span>逻辑微缩导图版</span>
         </div>
         <div class="spec-chip chip-type"><span>${rm.is_noun_collection ? '三栏名解速记' : '结构接力微缩'}</span></div>
-        <div class="spec-chip chip-score"><span>${isDedicatedMicro ? '微缩专配逐句点读' : '原段点读对照'}</span></div>
+        <div class="spec-chip chip-score"><span>${isDedicatedMicro ? '云扬96k逐句点读' : '原段点读对照'}</span></div>
       </div>
-      <div class="exam-title-box">
-        <span class="title-seal" style="border-color: #8A4B1A; color: #8A4B1A;">接力微缩</span>
+      <div class="exam-title-box relay-title-box">
+        <div class="relay-title-top">
+          <span class="title-seal relay-title-seal">${item.level || 'T0'} · 逻辑微缩</span>
+          <span class="relay-ratio-pill">${ratioDesc}</span>
+        </div>
         <h2 class="exam-title-h2">${item.title || ''}</h2>
       </div>
-      <div class="relay-chain-bar">
+      <div class="relay-chain-bar relay-mindmap-card">
         <div class="relay-chain-head">
-          <span>全篇逻辑链 · 点击定位分论点</span>
-          <span class="relay-chain-count">共 ${(rm.sections || []).length} 段接力</span>
+          <span class="relay-mm-head-title">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 11.2 15.6 6.8M8.5 12.8l7.1 4.4"/></svg>
+            <span>因果逻辑导图 · 点击节点直达对应板块</span>
+          </span>
+          <span class="relay-chain-count">共 ${(rm.sections || []).length} ${rm.is_noun_collection ? '题' : '脉接力'}</span>
         </div>
-        <div class="relay-chain-nodes">${chainHtml}</div>
-        ${rm.narrative_hook ? `<div class="relay-narrative-hook"><span class="rnh-tag">记忆主线</span><span>${hookHtml}</span></div>` : ''}
+        <div class="relay-mm-root-row">
+          <span class="relay-mm-root-pill">${item.author ? `${item.author} · ` : ''}${item.topic || item.title || ''}</span>
+        </div>
+        <div class="relay-chain-nodes relay-mm-flow">${chainHtml}</div>
+        ${toolDiagramHtml}
+        ${rm.narrative_hook ? `<div class="relay-narrative-hook"><span class="rnh-tag">${hookLabelText}</span><span>${hookHtml}</span></div>` : ''}
         ${rm.guard ? `<div class="relay-guard-strip">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span class="relay-guard-tag">防混</span>
           <span>${guardHtml}</span>
         </div>` : ''}
       </div>
@@ -4574,7 +4821,7 @@
 
     const usedBlocks = new Set();
 
-    // 引论卡片（保留 origBlocks[0] 的对照原段）
+    // 引论卡片（PDF 左页“引”标 + 对照原段）
     if (rm.intro) {
       usedBlocks.add(0);
       const introCard = document.createElement('article');
@@ -4584,15 +4831,15 @@
         <div class="logic-block-title" style="display:none;"><h3>【引论 · 总起微缩】</h3></div>
         <div class="relay-bookend-head">
           <span class="relay-bookend-label">
-            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span>总起微缩（破题定位）</span>
+            <span class="relay-bookend-gutter">引</span>
+            <span>总起微缩（破题立意）</span>
           </span>
           <button type="button" class="relay-mini-btn relay-origin-toggle">
             <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
             <span>对照原段</span>
           </button>
         </div>
-        <div class="relay-sent">${introHtml}</div>
+        <div class="relay-sent relay-bookend-sent">${introHtml}</div>
         <div class="relay-origin-drawer">
           <div class="relay-origin-body">
             <div class="relay-origin-tip">${originTipText}</div>
@@ -4612,13 +4859,14 @@
       card.className = 'logic-block-card relay-flow-card';
       card.id = `relay-sec-${idx}`;
       const numStr = String(idx + 1).padStart(2, '0');
-      const secTitleHtml = renderRelaySlotHtml(slotMap, `sec${idx}_title`, sec.title || '');
+      const secTitleHtmlRaw = renderRelaySlotHtml(slotMap, `sec${idx}_title`, sec.title || '');
+      const secTitleHtml = secTitleHtmlRaw.replace(/(^|<span[^>]*>)\d{1,2}\s*[·.]\s*/, '$1');
       card.innerHTML = `
         <div class="logic-block-title">
           <div class="relay-flow-head-left">
             <span class="relay-sec-num">${numStr}</span>
             <h3>${secTitleHtml}</h3>
-            ${sec.count_hook ? `<span class="relay-count-pill">${sec.count_hook}</span>` : ''}
+            ${sec.count_hook ? `<span class="relay-count-pill">[${sec.count_hook}]</span>` : ''}
           </div>
           <div class="relay-card-actions">
             <button type="button" class="relay-mini-btn relay-origin-toggle">
@@ -4653,7 +4901,7 @@
       }
     });
 
-    // 结语卡片（保留最后一个 origBlock 的对照原段）
+    // 结语卡片（PDF 左页“结”标）
     if (rm.conclusion) {
       const conclIdx = origBlocks.length - 1;
       const conclCard = document.createElement('article');
@@ -4663,15 +4911,15 @@
         <div class="logic-block-title" style="display:none;"><h3>【结语 · 总结升华】</h3></div>
         <div class="relay-bookend-head">
           <span class="relay-bookend-label">
-            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <span>结语微缩（总结升华）</span>
+            <span class="relay-bookend-gutter">结</span>
+            <span>结语微缩（史位升华）</span>
           </span>
           <button type="button" class="relay-mini-btn relay-origin-toggle">
             <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
             <span>对照原段</span>
           </button>
         </div>
-        <div class="relay-sent">${conclHtml}</div>
+        <div class="relay-sent relay-bookend-sent">${conclHtml}</div>
         <div class="relay-origin-drawer">
           <div class="relay-origin-body">
             <div class="relay-origin-tip">${originTipText}</div>
@@ -4686,8 +4934,9 @@
     }
 
     if ((Array.isArray(rm.drills) && rm.drills.length) || (rm.exam_variants && Array.isArray(rm.exam_variants.cases))) {
+      const hasBoth = Boolean(Array.isArray(rm.drills) && rm.drills.length && rm.exam_variants && Array.isArray(rm.exam_variants.cases) && rm.exam_variants.cases.length);
       const footerBox = document.createElement('div');
-      footerBox.className = 'relay-v4-footer';
+      footerBox.className = `relay-v4-footer${hasBoth ? ' has-two-cols' : ''}`;
       let fHtml = '';
       if (Array.isArray(rm.drills) && rm.drills.length) {
         fHtml += `<section class="relay-drills-card">
@@ -4698,7 +4947,7 @@
       if (rm.exam_variants && Array.isArray(rm.exam_variants.cases) && rm.exam_variants.cases.length) {
         fHtml += `<section class="relay-variants-card">
           <div class="relay-footer-head"><span>西华师大真题考法变式与衍生拆解</span>${rm.exam_variants.freq ? `<span class="relay-freq-badge">${rm.exam_variants.freq}</span>` : ''}</div>
-          <div class="relay-footer-list">${rm.exam_variants.cases.map(c => `<div class="relay-footer-item">${c}</div>`).join('')}</div>
+          <div class="relay-footer-list">${rm.exam_variants.cases.map(c => `<div class="relay-footer-item">${highlightRelayQuotes(c)}</div>`).join('')}</div>
         </section>`;
       }
       footerBox.innerHTML = fHtml;
@@ -4712,7 +4961,9 @@
     wrap.querySelectorAll('.relay-chain-node').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const target = document.getElementById(`relay-sec-${btn.dataset.jumpSec}`);
+        const jumpIdx = btn.dataset.jumpSec;
+        const target = document.getElementById(`relay-sec-${jumpIdx}`);
+        wrap.querySelectorAll('.relay-chain-node').forEach(n => n.classList.toggle('mm-node-active', n === btn));
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
@@ -5031,8 +5282,8 @@
       if (!isCurrentSeekValid()) return;
       ensureAudioContextWarmed();
       if (audio.paused) {
-        // 慢网或大跨度跳转时暂静音并在同步手势内起音，到位即恢复有声，杜绝首音重复/口吃
-        if ((audio.readyState < 2 || (audio.seeking && Math.abs((audio.currentTime || 0) - targetTime) > 0.08)) && targetTime >= 0 && pendingSeekTarget && pendingSeekTarget.token === myToken) {
+        // 慢网或大跨度跳转时暂静音并在同步手势内起音，到位即恢复有声，杜绝首音重复/口吃；锁屏或后台严禁静音以保 OS 音频会话
+        if (!document.hidden && (audio.readyState < 2 || (audio.seeking && Math.abs((audio.currentTime || 0) - targetTime) > 0.08)) && targetTime >= 0 && pendingSeekTarget && pendingSeekTarget.token === myToken) {
           pendingSeekTarget.mutedForSeek = true;
           setInternalMuteLock('pendingSeek', 3800);
         }
@@ -5727,6 +5978,14 @@
               s.cardEl.classList.remove('loop-sec-active');
             }
           });
+          if (el.paperContent) {
+            const activeCardId = sec && sec.cardEl ? sec.cardEl.id : '';
+            const mm = /^relay-sec-(\d+)$/.exec(activeCardId);
+            const jumpTarget = mm ? mm[1] : null;
+            el.paperContent.querySelectorAll('.relay-chain-node[data-jump-sec]').forEach(btn => {
+              btn.classList.toggle('mm-node-active', jumpTarget !== null && btn.dataset.jumpSec === jumpTarget);
+            });
+          }
           updateOutlineDrawerActive(activeSecIdx);
           updateSystemMediaSession(sec, total);
         }
@@ -5762,7 +6021,7 @@
   function updateMediaSessionState(forcePos = false) {
     if (!('mediaSession' in navigator)) return;
     try {
-      navigator.mediaSession.playbackState = (state.isPlaying && (!audio.paused || isLoopGapWaiting)) ? 'playing' : 'paused';
+      navigator.mediaSession.playbackState = (state.isPlaying && (!audio.paused || isLoopGapWaiting || isSwitchingAudioSrc)) ? 'playing' : 'paused';
       const now = Date.now();
       if ((forcePos || now - lastMediaPosSyncTs >= 900) && typeof navigator.mediaSession.setPositionState === 'function') {
         const dur = audio.duration;
@@ -5891,6 +6150,16 @@
         }
         audio.pause();
       });
+      try {
+        navigator.mediaSession.setActionHandler('stop', () => {
+          userInitiatedPauseAt = Date.now();
+          if (isLoopGapWaiting) {
+            pauseDuringGapWait();
+            return;
+          }
+          audio.pause();
+        });
+      } catch (e) {}
       navigator.mediaSession.setActionHandler('previoustrack', () => {
         if (state.mediaTrackMode === 'sentence') {
           jumpToAdjacentSentence(-1);
@@ -6204,7 +6473,29 @@
       clearBgBoundaryTimer();
       if (!document.hidden || !state.isPlaying || audio.paused || isLoopGapWaiting) return;
       const cutoff = getActiveLoopCutoffSec();
-      if (!isFinite(cutoff)) return;
+      if (!isFinite(cutoff)) {
+        const dur = audio.duration;
+        if (state.playMode === 'item' && dur && isFinite(dur) && dur > 1.2) {
+          const cur = (typeof expectedCurTime === 'number' && isFinite(expectedCurTime))
+            ? expectedCurTime
+            : (audio.currentTime || 0);
+          const rate = (audio.playbackRate && isFinite(audio.playbackRate) && audio.playbackRate > 0) ? audio.playbackRate : 1;
+          const wrapAt = Math.max(0.5, dur - 0.25);
+          const waitMs = Math.max(80, Math.min(2000, Math.round(((wrapAt - cur) / rate) * 1000)));
+          bgBoundaryTimer = setTimeout(() => {
+            bgBoundaryTimer = null;
+            if (!document.hidden || !state.isPlaying || audio.paused || state.playMode !== 'item') return;
+            const nowT = audio.currentTime || 0;
+            const nowDur = audio.duration || 0;
+            if (nowDur > 1.2 && nowT >= nowDur - 0.3 && !isLoopSeeking) {
+              performLoopTransition(0, { targetSentIdx: state.activeSentences?.length ? 0 : null, shouldResume: true, useGap: false });
+            } else {
+              scheduleBgBoundaryCheck();
+            }
+          }, waitMs);
+        }
+        return;
+      }
       const cur = (typeof expectedCurTime === 'number' && isFinite(expectedCurTime))
         ? expectedCurTime
         : (audio.currentTime || 0);
@@ -6220,6 +6511,28 @@
           scheduleBgBoundaryCheck();
         }
       }, waitMs);
+    }
+
+    function startBgWatchdog() {
+      clearBgWatchdogTimer();
+      if (!document.hidden || !state.isPlaying) return;
+      bgWatchdogTimer = setInterval(() => {
+        if (!document.hidden || !state.isPlaying) {
+          clearBgWatchdogTimer();
+          return;
+        }
+        reconcileStaleMuteLocks();
+        if (audio.paused || isLoopGapWaiting || isSwitchingAudioSrc) return;
+        const cur = audio.currentTime || 0;
+        const dur = audio.duration || 0;
+        if (state.playMode === 'item' && dur > 1.2 && cur >= dur - 0.25 && !isLoopSeeking) {
+          performLoopTransition(0, { targetSentIdx: state.activeSentences?.length ? 0 : null, shouldResume: true, useGap: false });
+          return;
+        }
+        if (state.activeSentences && state.activeSentences.length > 0) {
+          handleLoopBoundary(cur, false);
+        }
+      }, 400);
     }
 
     // 60fps 高频毫秒级聚光同步引擎 (彻底消除 timeupdate 的 300ms 滞后与 1s 句子迟滞)
@@ -6388,7 +6701,8 @@
               state.loopCount++;
               const targetIdx = getFirstSentIndexInSection(curSec, nextSecStart);
               if (!(Number(state.loopGapMs) > 0 && shouldResume && !document.hidden)) {
-                engageLoopMuteGuard(110);
+                if (!document.hidden) engageLoopMuteGuard(110);
+                else releaseAllInternalMuteLocks();
                 triggerLoopSeek(curSec.start, targetIdx);
                 updateHUDDisplay(curSec.start);
                 if (shouldResume && audio.paused) playAudioWithStateSync('Section loop transition', true);
@@ -6518,8 +6832,10 @@
     }
 
     audio.addEventListener('play', () => {
+      clearSwitchingAudioSrc();
       state.isPlaying = true;
       if (audio.preload !== 'auto') audio.preload = 'auto';
+      if (document.hidden) releaseAllInternalMuteLocks();
       audio.playbackRate = state.speed;
       listenAnchor = makeListenAnchor();
 
@@ -6533,14 +6849,23 @@
       expandPlayerDock();
       ensureMediaMetadataPopulated();
       updateMediaSessionState(true);
-      if (document.hidden) scheduleBgBoundaryCheck();
+      scheduleNextTrackPrefetch();
+      if (document.hidden) {
+        scheduleBgBoundaryCheck();
+        startBgWatchdog();
+      }
       lastRafRunTs = Date.now();
       if (syncRafId) cancelAnimationFrame(syncRafId);
       syncRafId = requestAnimationFrame(runSyncLoop);
     });
 
     audio.addEventListener('pause', () => {
+      if (isSwitchingAudioSrc && state.isPlaying) {
+        updateMediaSessionState(true);
+        return;
+      }
       clearBgBoundaryTimer();
+      clearBgWatchdogTimer();
       accumulateListeningTime(true);
       if (isLoopGapWaiting) {
         if (syncRafId) {
@@ -6698,6 +7023,10 @@
       renderProgressTicks();
       ensureMediaMetadataPopulated();
       updateMediaSessionState(true);
+      if (state.isPlaying) {
+        scheduleNextTrackPrefetch();
+        if (document.hidden) scheduleBgBoundaryCheck();
+      }
     });
 
     audio.addEventListener('ratechange', () => {
@@ -6708,28 +7037,47 @@
 
     audio.addEventListener('seeking', () => { listenAnchor = null; });
     audio.addEventListener('playing', () => {
+      clearSwitchingAudioSrc();
       listenAnchor = makeListenAnchor();
-      if (!pendingSeekTarget || pendingSeekTarget.token !== seekToken || (!audio.seeking && Math.abs((audio.currentTime || 0) - pendingSeekTarget.time) <= 0.45)) {
-        releaseInternalMuteLock('pendingSeek');
+      if (document.hidden) {
+        releaseAllInternalMuteLocks();
+      } else {
+        if (!pendingSeekTarget || pendingSeekTarget.token !== seekToken || (!audio.seeking && Math.abs((audio.currentTime || 0) - pendingSeekTarget.time) <= 0.45)) {
+          releaseInternalMuteLock('pendingSeek');
+        }
+        if (!isLoopGapWaiting && !isLoopSeeking) {
+          releaseInternalMuteLock('loopGuard');
+        }
       }
-      if (!isLoopGapWaiting && !isLoopSeeking) {
-        releaseInternalMuteLock('loopGuard');
+      if (document.hidden) {
+        scheduleBgBoundaryCheck();
+        startBgWatchdog();
       }
-      if (document.hidden) scheduleBgBoundaryCheck();
     });
     audio.addEventListener('waiting', () => { accumulateListeningTime(true); listenAnchor = null; });
-    audio.addEventListener('emptied', () => { clearBgBoundaryTimer(); listenAnchor = null; listenContext = null; updateListenProgressUI(); });
+    audio.addEventListener('emptied', () => {
+      if (!state.isPlaying && !isSwitchingAudioSrc) {
+        clearBgBoundaryTimer();
+        clearBgWatchdogTimer();
+      }
+      listenAnchor = null;
+      listenContext = null;
+      updateListenProgressUI();
+    });
 
     window.addEventListener('pagehide', () => {
+      releaseAllInternalMuteLocks();
       flushPlaybackPosition();
     });
 
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
-        wasPlayingBeforeHidden = Boolean(state.isPlaying && (!audio.paused || isLoopGapWaiting));
+        wasPlayingBeforeHidden = Boolean(state.isPlaying && (!audio.paused || isLoopGapWaiting || isSwitchingAudioSrc));
         interruptedWhileHidden = false;
         flushPlaybackPosition();
-        // 锁屏/切后台瞬间若正处于停顿气口静音等待中，立刻解除等待并恢复真实音量，无需 pause->play
+        // 锁屏/切后台瞬间：立即清除所有内部静音锁，杜绝定时节流造成静音卡死或 OS 回收音频会话
+        releaseAllInternalMuteLocks();
+        // 若正处于停顿气口静音等待中，立刻解除等待并恢复真实音量，无需 pause->play
         if (isLoopGapWaiting && state.isPlaying && hasAudioSource()) {
           isLoopGapWaiting = false;
           loopGapEpoch++;
@@ -6738,8 +7086,6 @@
             loopGapTimer = null;
           }
           stopLoopGapKeepalive();
-          releaseInternalMuteLock('loopGap');
-          releaseInternalMuteLock('loopGuard');
           updateHUDDisplay(audio.currentTime || 0);
           updatePlayBtnUI();
           ensureMediaMetadataPopulated();
@@ -6749,16 +7095,23 @@
           }
         }
         scheduleBgBoundaryCheck();
+        startBgWatchdog();
         return;
       }
       if (document.visibilityState === 'visible') {
         clearBgBoundaryTimer();
+        clearBgWatchdogTimer();
         reconcileStaleMuteLocks();
         lastRafRunTs = 0;
         if (isLoopSeeking && (Date.now() - lastSeekTs >= 350)) {
           isLoopSeeking = false;
         }
-        if (state.isPlaying && audio.paused && !isLoopGapWaiting) {
+        if (!audio.paused && !state.isPlaying && hasAudioSource()) {
+          state.isPlaying = true;
+          updatePlayBtnUI();
+          updateMediaSessionState(true);
+        }
+        if (state.isPlaying && audio.paused && !isLoopGapWaiting && !isSwitchingAudioSrc) {
           state.isPlaying = false;
           updatePlayBtnUI();
           updateMediaSessionState(true);
@@ -6767,14 +7120,41 @@
           wasPlayingBeforeHidden = false;
           interruptedWhileHidden = false;
           const sentNum = (state.currentSentIndex >= 0) ? `（第 ${state.currentSentIndex + 1} 句）` : '';
-          showToast(`音频已因系统打断暂停${sentNum}`, 5500, {
-            label: '继续播放',
-            replaceKey: 'ios-interrupt-resume',
-            onClick: () => {
-              ensureAudioContextWarmed();
-              resumeAudioPlayback();
-            }
-          });
+          let recoveryFailed = false;
+          const tryAutoResume = () => {
+            if (!hasAudioSource()) return;
+            try {
+              state.isPlaying = true;
+              updatePlayBtnUI();
+              const p = playAudioWithStateSync('Foreground interruption auto-resume', true);
+              if (p && typeof p.catch === 'function') {
+                p.catch(() => {
+                  if (recoveryFailed) return;
+                  recoveryFailed = true;
+                  showToast(`音频已因系统打断暂停${sentNum}`, 5500, {
+                    label: '继续播放',
+                    replaceKey: 'ios-interrupt-resume',
+                    onClick: () => {
+                      ensureAudioContextWarmed();
+                      resumeAudioPlayback();
+                    }
+                  });
+                });
+              }
+            } catch (e) {}
+          };
+          if (!audio.error) {
+            tryAutoResume();
+          } else {
+            showToast(`音频已因系统打断暂停${sentNum}`, 5500, {
+              label: '继续播放',
+              replaceKey: 'ios-interrupt-resume',
+              onClick: () => {
+                ensureAudioContextWarmed();
+                resumeAudioPlayback();
+              }
+            });
+          }
         } else {
           wasPlayingBeforeHidden = false;
           interruptedWhileHidden = false;
@@ -6812,6 +7192,8 @@
       const isOffline = typeof navigator !== 'undefined' && navigator.onLine === false;
       console.warn('Audio decode/pipeline error:', errCode, audio.error.message || '', curSrc);
       clearBgBoundaryTimer();
+      clearBgWatchdogTimer();
+      clearSwitchingAudioSrc();
       cancelLoopGapWait();
       clearPendingSeek(true);
       releaseAllInternalMuteLocks();
@@ -8253,7 +8635,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.5.7';
+  const APP_BUILD_ID = '3.5.8';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
@@ -9269,6 +9651,7 @@
   }
 
   function startApp() {
+    ensureMainAudioMounted();
     window.switchSubject = switchSubject;
     window.selectItem = selectItem;
     window.seekToSentence = seekToSentence;
@@ -9629,9 +10012,7 @@
       </div>`;
 
     if (chapter.track1 && chapter.track1.audio) {
-      audio.src = withAudioVersion(chapter.track1.audio);
-      audio.load();
-      audio.playbackRate = state.speed;
+      assignAudioSource(chapter.track1.audio, autoPlay);
       tryRestoreAudioTime(restoreTime, getPlaybackTimeKey(1));
       if (autoPlay) {
         playAudioWithStateSync('Pol T1 autoplay', true);
@@ -9736,9 +10117,7 @@
     resetAudioTrackPlayback(autoPlay);
     resetAudioProgressUI();
     if (card.audio) {
-      audio.src = withAudioVersion(card.audio);
-      audio.load();
-      audio.playbackRate = state.speed;
+      assignAudioSource(card.audio, autoPlay);
       if (state.activeItem) {
         tryRestoreAudioTime(restoreTime, getPlaybackTimeKey(2));
       }
@@ -9905,9 +10284,7 @@
     const audioSrc = voiceType === 'anlang' ? dayItem.anlang_audio : dayItem.voice_audio;
     resetAudioTrackPlayback(autoPlay && Boolean(audioSrc));
     if (audioSrc) {
-      audio.src = withAudioVersion(audioSrc);
-      audio.load();
-      audio.playbackRate = state.speed;
+      assignAudioSource(audioSrc, autoPlay);
     } else {
       clearAudioSource();
     }
@@ -10099,9 +10476,7 @@
     el.paperContent.innerHTML = `${topBarHtml}${secHtml}${pointsHtml}`;
 
     if (dayItem.audio) {
-      audio.src = withAudioVersion(dayItem.audio);
-      audio.load();
-      audio.playbackRate = state.speed;
+      assignAudioSource(dayItem.audio, autoPlay);
       tryRestoreAudioTime(restoreTime, getPlaybackTimeKey());
       if (autoPlay) playAudioWithStateSync('Tuijie autoplay', true);
     } else {
