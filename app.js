@@ -103,6 +103,13 @@
   let wasPlayingBeforeHidden = false;
   let interruptedWhileHidden = false;
   let userInitiatedPauseAt = 0;
+  let userPausedExplicitly = false;
+  let hiddenAtTs = 0;
+  let lockRecoveryAttempted = false;
+  let isResumingPlayback = false;
+  let resumingPlaybackTimer = null;
+  let track2PrefixSkipped = false;
+  let track2ManualExtraSpan = null; // { partGroup: 'prefix'|'suffix', start, end, endIdx } | null
 
   let isPolDataLoading = false;
   let polDataLoadPromise = null;
@@ -207,7 +214,7 @@
     if (!raw) return '';
     if (/^(blob:|data:)/i.test(raw)) return raw;
     if (/[?&]v=/.test(raw)) return raw;
-    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.9';
+    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.10';
     return raw + (raw.includes('?') ? '&' : '?') + 'v=' + encodeURIComponent(ver);
   }
 
@@ -221,7 +228,7 @@
       switchingSrcTimer = setTimeout(() => {
         isSwitchingAudioSrc = false;
         switchingSrcTimer = null;
-      }, 450);
+      }, 2200);
     }
     audio.preload = 'auto';
     audio.src = versioned;
@@ -272,29 +279,36 @@
       const nextUrl = withAudioVersion(nextRaw);
       if (!nextUrl || nextUrl === prefetchedAudioUrl) return;
       prefetchedAudioUrl = nextUrl;
-      if (!prefetchAudioEl) {
-        prefetchAudioEl = document.createElement('audio');
-        prefetchAudioEl.preload = 'auto';
-        prefetchAudioEl.muted = true;
-        prefetchAudioEl.setAttribute('aria-hidden', 'true');
-        prefetchAudioEl.style.display = 'none';
+      // 第一性原理：严禁在文档内创建第二枚 <audio muted> 预加载节点，避免 iOS WebKit 多媒体实例竞争导致锁屏停播与耳机控制失焦
+      if (typeof fetch === 'function') {
+        const resolved = new URL(nextUrl, window.location.href).href;
+        if (/^https?:/i.test(resolved)) {
+          fetch(resolved, {
+            method: 'GET',
+            headers: { Range: 'bytes=0-131071' },
+            credentials: 'same-origin'
+          }).catch(() => {});
+        }
       }
-      prefetchAudioEl.src = nextUrl;
     } catch (e) {}
   }
 
   function syncAudioMutedFromLocks() {
     try {
-      if (typeof document !== 'undefined' && document.hidden && muteLockReasons.size > 0) {
-        muteLockReasons.forEach(t => { if (t) clearTimeout(t); });
-        muteLockReasons.clear();
+      if ((typeof document !== 'undefined' && document.hidden) || isIOSLikeEnv()) {
+        if (muteLockReasons.size > 0) {
+          muteLockReasons.forEach(t => { if (t) clearTimeout(t); });
+          muteLockReasons.clear();
+        }
+        audio.muted = false;
+        return;
       }
       audio.muted = muteLockReasons.size > 0;
     } catch (e) {}
   }
 
   function setInternalMuteLock(reason, maxMs = 0) {
-    if (typeof document !== 'undefined' && document.hidden) {
+    if ((typeof document !== 'undefined' && document.hidden) || isIOSLikeEnv()) {
       releaseAllInternalMuteLocks();
       return;
     }
@@ -469,7 +483,7 @@
   const el = {};
 
   function engageLoopMuteGuard(maxMs = 150) {
-    if (typeof document !== 'undefined' && document.hidden) return;
+    if ((typeof document !== 'undefined' && document.hidden) || isIOSLikeEnv()) return;
     setInternalMuteLock('loopGuard', maxMs);
   }
 
@@ -490,18 +504,56 @@
     } catch (e) {}
   }
 
+  function markResumingPlayback(ms = 900) {
+    isResumingPlayback = true;
+    if (resumingPlaybackTimer) clearTimeout(resumingPlaybackTimer);
+    resumingPlaybackTimer = setTimeout(() => {
+      isResumingPlayback = false;
+      resumingPlaybackTimer = null;
+    }, ms);
+  }
+
+  function clearResumingPlayback() {
+    isResumingPlayback = false;
+    if (resumingPlaybackTimer) {
+      clearTimeout(resumingPlaybackTimer);
+      resumingPlaybackTimer = null;
+    }
+  }
+
   function playAudioWithStateSync(label = 'Play', allowCanplayRetry = false) {
     ensureMainAudioMounted();
-    if (typeof document !== 'undefined' && document.hidden) {
+    if ((typeof document !== 'undefined' && document.hidden) || isIOSLikeEnv()) {
       releaseAllInternalMuteLocks();
     }
+    userPausedExplicitly = false;
+    audio.playbackRate = state.speed;
+    if (audio.error && hasAudioSource()) {
+      const curSrc = audio.getAttribute('src') || audio.src;
+      if (curSrc) {
+        try {
+          audio.src = curSrc;
+          audio.load();
+        } catch (e) {}
+      }
+    } else if (audio.readyState === 0 && audio.networkState === 3 && hasAudioSource()) {
+      try { audio.load(); } catch (e) {}
+    }
     const playGen = audioTrackGen;
+    markResumingPlayback(1200);
     const retryPlayOnReady = () => {
+      let retried = false;
       const onReady = () => {
+        if (retried) return;
+        retried = true;
+        audio.removeEventListener('canplay', onReady);
+        audio.removeEventListener('loadeddata', onReady);
         if (playGen !== audioTrackGen || !hasAudioSource() || audio.error || !audio.paused) return;
+        // 直接在 canplay 事件回调内同步拉起 play()，严禁套 setTimeout 丢失 iOS 后台媒体激活令牌
         audio.play().catch(err2 => {
           if (playGen !== audioTrackGen) return;
           if (err2 && err2.name === 'AbortError') return;
+          clearResumingPlayback();
           if (document.hidden) interruptedWhileHidden = true;
           state.isPlaying = false;
           updatePlayBtnUI();
@@ -509,9 +561,10 @@
         });
       };
       if (audio.readyState >= 2) {
-        setTimeout(onReady, 30);
+        onReady();
       } else {
         audio.addEventListener('canplay', onReady, { once: true });
+        audio.addEventListener('loadeddata', onReady, { once: true });
       }
     };
     const playPromise = audio.play();
@@ -522,6 +575,8 @@
         if (isAbort) {
           if (allowCanplayRetry && hasAudioSource() && !audio.error) {
             retryPlayOnReady();
+          } else {
+            clearResumingPlayback();
           }
           return;
         }
@@ -530,6 +585,7 @@
           retryPlayOnReady();
           return;
         }
+        clearResumingPlayback();
         if (audio.paused) {
           if (document.hidden && (Date.now() - userInitiatedPauseAt > 800)) {
             interruptedWhileHidden = true;
@@ -582,6 +638,10 @@
 
   function pauseDuringGapWait() {
     cancelLoopGapWait();
+    clearResumingPlayback();
+    userPausedExplicitly = true;
+    wasPlayingBeforeHidden = false;
+    interruptedWhileHidden = false;
     state.isPlaying = false;
     try {
       if (!audio.paused) audio.pause();
@@ -612,8 +672,14 @@
       loopSeekTimer = null;
     }
     xtIntroAutoSkipped = false;
+    track2PrefixSkipped = false;
+    track2ManualExtraSpan = null;
     lastAudioErrorRecoverSrc = '';
+    clearResumingPlayback();
     if (!autoPlay) {
+      userPausedExplicitly = true;
+      wasPlayingBeforeHidden = false;
+      interruptedWhileHidden = false;
       try {
         if (!audio.paused) audio.pause();
       } catch (e) {}
@@ -623,6 +689,104 @@
         syncRafId = null;
       }
     }
+  }
+
+  const TRACK2_BODY_PARTS = new Set([
+    'intro',
+    'section_title',
+    'step',
+    'noun_title',
+    'noun_s1',
+    'noun_s2',
+    'noun_s3',
+    'conclusion'
+  ]);
+
+  function isTrack2RelayMicroActive() {
+    return Boolean(
+      state.currentTrack === 2 &&
+      state.currentSubject !== 'en' &&
+      state.currentSubject !== 'pol' &&
+      state.activeItem &&
+      state.activeItem.relay_micro &&
+      state.activeItem.track2 &&
+      Array.isArray(state.activeItem.track2.micro_slots) &&
+      state.activeItem.track2.micro_slots.length > 0 &&
+      state.activeSentences &&
+      state.activeSentences.length > 0
+    );
+  }
+
+  function getTrack2SlotPartMap() {
+    const partBySentId = new Map();
+    if (!isTrack2RelayMicroActive()) return partBySentId;
+    state.activeItem.track2.micro_slots.forEach(sl => {
+      const part = sl && sl.part ? String(sl.part) : '';
+      (sl && Array.isArray(sl.clauses) ? sl.clauses : []).forEach(c => {
+        if (c && c.sent_id !== undefined && c.sent_id !== null) {
+          partBySentId.set(String(c.sent_id), part);
+        }
+      });
+    });
+    return partBySentId;
+  }
+
+  /**
+   * 计算轨道二逻辑微缩的“正式正文”边界（严格从“引”到主体各点/“结”，排除标题、“记忆串讲/串线”与尾端“防混/抽查”）
+   */
+  function getTrack2BodyBounds() {
+    if (!isTrack2RelayMicroActive()) return null;
+    const partBySentId = getTrack2SlotPartMap();
+    const sents = state.activeSentences;
+    let firstIdx = -1;
+    let lastIdx = -1;
+    const bodySentences = [];
+    for (let i = 0; i < sents.length; i++) {
+      const s = sents[i];
+      const part = partBySentId.get(String(s.id)) || '';
+      if (TRACK2_BODY_PARTS.has(part)) {
+        if (firstIdx === -1) firstIdx = i;
+        lastIdx = i;
+        bodySentences.push(s);
+      }
+    }
+    if (firstIdx === -1 || lastIdx < firstIdx) return null;
+    const firstSent = sents[firstIdx];
+    const lastSent = sents[lastIdx];
+    const afterSent = (lastIdx + 1 < sents.length) ? sents[lastIdx + 1] : null;
+    const startTime = typeof firstSent.start === 'number' ? firstSent.start : parseFloat(firstSent.start || 0);
+    const endTime = typeof lastSent.end === 'number' ? lastSent.end : parseFloat(lastSent.end || (afterSent ? afterSent.start : Infinity));
+    const afterStart = afterSent ? (typeof afterSent.start === 'number' ? afterSent.start : parseFloat(afterSent.start)) : Infinity;
+    const cutoff = getLoopCutoff(startTime, endTime, afterStart);
+    return {
+      startIdx: firstIdx,
+      endIdx: lastIdx,
+      startTime,
+      endTime,
+      afterStart,
+      cutoff,
+      bodySentences,
+      partBySentId
+    };
+  }
+
+  function maybeSkipTrack2Prefix(cur) {
+    if (isLoopSeeking) return false;
+    if (pendingSeekTarget && pendingSeekTarget.token === seekToken) return false;
+    if (track2ManualExtraSpan) return false;
+    const bounds = getTrack2BodyBounds();
+    if (!bounds || bounds.startTime <= 0.15) return false;
+    if (cur >= bounds.startTime - 0.12) {
+      track2PrefixSkipped = true;
+      return false;
+    }
+    if (track2PrefixSkipped && state.playMode !== 'item' && state.playMode !== 'sequence') {
+      return false;
+    }
+    if (audio.readyState < 1) return false;
+    track2PrefixSkipped = true;
+    triggerLoopSeek(bounds.startTime, bounds.startIdx);
+    return true;
   }
 
   function maybeSkipXutaoIntro(cur) {
@@ -1211,6 +1375,8 @@
     }
     state.playMode = modeId;
     state.loopCount = 0;
+    track2ManualExtraSpan = null;
+    track2PrefixSkipped = false;
     localStorage.setItem('kaoyan_play_mode', modeId);
     updatePlayModeUI(showToastNotice);
     if (modeId === 'range' && !hasValidRangeSelection()) {
@@ -1225,13 +1391,26 @@
       if (hasAudioSource()) {
         state.isPlaying = true;
         updatePlayBtnUI();
-        audio.play().catch(() => {
-          state.isPlaying = false;
-          updatePlayBtnUI();
-        });
+        playAudioWithStateSync('Loop mode change resume', true);
       } else {
         state.isPlaying = false;
         updatePlayBtnUI();
+      }
+    }
+
+    // 轨道二切换为完全循环/顺序模式时，若光标仍位于“记忆串讲”前导区或尾端“防混/抽查”区，立即回归正式正文起点（“引”或第 1 题）
+    if (modeId === 'item' || modeId === 'sequence') {
+      const t2Bounds = getTrack2BodyBounds();
+      const curPos = audio.currentTime || 0;
+      if (t2Bounds && (curPos < t2Bounds.startTime - 0.12 || curPos > t2Bounds.endTime + 0.12)) {
+        track2PrefixSkipped = true;
+        if (hasAudioSource() && audio.readyState >= 1) {
+          triggerLoopSeek(t2Bounds.startTime, t2Bounds.startIdx);
+          updateHUDDisplay(t2Bounds.startTime);
+        } else {
+          state.currentSentIndex = t2Bounds.startIdx;
+          highlightSentence(t2Bounds.startIdx);
+        }
       }
     }
 
@@ -1668,6 +1847,9 @@
     state.sleepTimerMode = 'off';
     state.sleepTimerEndAt = 0;
     userInitiatedPauseAt = Date.now();
+    userPausedExplicitly = true;
+    wasPlayingBeforeHidden = false;
+    interruptedWhileHidden = false;
     if (isLoopGapWaiting) cancelLoopGapWait();
     if (!audio.paused) {
       try { audio.pause(); } catch (e) {}
@@ -2810,10 +2992,14 @@
     const source = audio.getAttribute('src') || '';
     const duration = Number(audio.duration);
     if (!source || !state.activeItemId || !Number.isFinite(duration) || duration <= 0) return null;
-    const identity = `${state.currentSubject}|${state.activeItemId}|${state.currentTrack}|${source}`;
+    const t2Bounds = getTrack2BodyBounds();
+    const countedSentences = (t2Bounds && t2Bounds.bodySentences && t2Bounds.bodySentences.length > 0)
+      ? t2Bounds.bodySentences
+      : (state.activeSentences || []);
+    const identity = `${state.currentSubject}|${state.activeItemId}|${state.currentTrack}|${t2Bounds ? 'body|' : ''}${source}`;
     if (listenContext && listenContext.identity === identity && listenContext.duration === duration &&
         listenContext.sentences === state.activeSentences && listenContext.sections === currentFrameworkSections) return listenContext;
-    const windows = listenTracker.union((state.activeSentences || []).map(s => [Number(s.start), Math.min(duration, Number(s.end))]));
+    const windows = listenTracker.union(countedSentences.map(s => [Number(s.start), Math.min(duration, Number(s.end))]));
     if (!windows.length) return null; // Do not credit an unknown or not-yet-loaded timeline.
     let hash = 2166136261;
     for (const char of JSON.stringify(windows)) hash = Math.imul(hash ^ char.charCodeAt(0), 16777619) >>> 0;
@@ -4288,6 +4474,37 @@
     renderRangeLoopUI();
     notifyPaperRendered();
 
+    // 轨道二逻辑微缩默认从正文（“引”或第 1 题）起播，跳过开篇标题与“如何记忆/记忆串讲”
+    if (trackObj && trackObj.audio && !canCarrySameTimeline) {
+      const cueGen = audioTrackGen;
+      const cueEpoch = manualSeekEpoch;
+      const applyTrack2BodyEntryCue = () => {
+        if (cueGen !== audioTrackGen || cueEpoch !== manualSeekEpoch) return;
+        if (track2ManualExtraSpan) return;
+        const t2Bounds = getTrack2BodyBounds();
+        if (!t2Bounds || t2Bounds.startTime <= 0.15) return;
+        const curPos = audio.currentTime || 0;
+        if (curPos < t2Bounds.startTime - 0.12 || curPos > t2Bounds.endTime + 0.12) {
+          track2PrefixSkipped = true;
+          try { setAudioPosition(t2Bounds.startTime); } catch (e) {}
+          const dur = audio.duration || 0;
+          if (el.timeCurrent) el.timeCurrent.textContent = formatTime(t2Bounds.startTime);
+          if (dur > 0 && el.progressFill) el.progressFill.style.width = Math.min(100, (t2Bounds.startTime / dur) * 100) + '%';
+          if (!audio.paused || state.isPlaying) {
+            state.currentSentIndex = t2Bounds.startIdx;
+            highlightSentence(t2Bounds.startIdx);
+          }
+          updateHUDDisplay(t2Bounds.startTime);
+        }
+      };
+      if (audio.readyState >= 1) {
+        // 若 tryRestoreAudioTime 在本帧内已落位到正文中部，applyTrack2BodyEntryCue 仅在外溢或未跳过前置区时介入
+        applyTrack2BodyEntryCue();
+      } else {
+        audio.addEventListener('loadedmetadata', applyTrack2BodyEntryCue, { once: true });
+      }
+    }
+
     // 若未命中内置包且有 sFile，发起异步非阻塞 fetch 进行补充校准
     if (sFile && (!window.KAOYAN_SENTENCES || !window.KAOYAN_SENTENCES[sFile])) {
       fetch(sFile + '?t=' + Date.now())
@@ -5174,6 +5391,20 @@
       }
 
       if (targetSent) {
+        const partMap = getTrack2SlotPartMap();
+        if (partMap.size > 0) {
+          const clickedPart = partMap.get(String(targetSent.id)) || '';
+          if (clickedPart && !TRACK2_BODY_PARTS.has(clickedPart)) {
+            track2ManualExtraSpan = {
+              partGroup: (clickedPart === 'title' || clickedPart === 'hook') ? 'prefix' : 'suffix'
+            };
+          } else {
+            track2ManualExtraSpan = null;
+            track2PrefixSkipped = true;
+          }
+        } else {
+          track2ManualExtraSpan = null;
+        }
         if (state.playMode === 'range' && hasValidRangeSelection() && targetIdx !== -1) {
           const rs = state.rangeSelection;
           if (targetIdx < rs.startIdx || targetIdx > rs.endIdx) {
@@ -5281,12 +5512,14 @@
     const playAndEnforceTarget = () => {
       if (!isCurrentSeekValid()) return;
       ensureAudioContextWarmed();
+      userPausedExplicitly = false;
       if (audio.paused) {
-        // 慢网或大跨度跳转时暂静音并在同步手势内起音，到位即恢复有声，杜绝首音重复/口吃；锁屏或后台严禁静音以保 OS 音频会话
-        if (!document.hidden && (audio.readyState < 2 || (audio.seeking && Math.abs((audio.currentTime || 0) - targetTime) > 0.08)) && targetTime >= 0 && pendingSeekTarget && pendingSeekTarget.token === myToken) {
+        // 慢网或大跨度跳转时暂静音并在同步手势内起音，到位即恢复有声，杜绝首音重复/口吃；iOS/锁屏或后台严禁静音以保 OS 音频会话
+        if (!document.hidden && !isIOSLikeEnv() && (audio.readyState < 2 || (audio.seeking && Math.abs((audio.currentTime || 0) - targetTime) > 0.08)) && targetTime >= 0 && pendingSeekTarget && pendingSeekTarget.token === myToken) {
           pendingSeekTarget.mutedForSeek = true;
           setInternalMuteLock('pendingSeek', 3800);
         }
+        markResumingPlayback(1000);
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
@@ -5300,6 +5533,25 @@
               releaseInternalMuteLock('pendingSeek');
               pendingSeekTarget.mutedForSeek = false;
             }
+            if (e && e.name === 'AbortError' && isCurrentSeekValid() && !audio.error) {
+              const onRetryReady = () => {
+                audio.removeEventListener('canplay', onRetryReady);
+                audio.removeEventListener('loadeddata', onRetryReady);
+                if (!isCurrentSeekValid() || !audio.paused || audio.error) return;
+                if (audio.readyState >= 1 && Math.abs((audio.currentTime || 0) - targetTime) > 0.25) {
+                  applySeek();
+                }
+                audio.play().catch(() => { clearResumingPlayback(); });
+              };
+              if (audio.readyState >= 2) {
+                onRetryReady();
+              } else {
+                audio.addEventListener('canplay', onRetryReady, { once: true });
+                audio.addEventListener('loadeddata', onRetryReady, { once: true });
+              }
+              return;
+            }
+            clearResumingPlayback();
             console.log('Audio play failed:', e);
           });
         }
@@ -6021,7 +6273,8 @@
   function updateMediaSessionState(forcePos = false) {
     if (!('mediaSession' in navigator)) return;
     try {
-      navigator.mediaSession.playbackState = (state.isPlaying && (!audio.paused || isLoopGapWaiting || isSwitchingAudioSrc)) ? 'playing' : 'paused';
+      const shouldReportPlaying = (state.isPlaying && (!audio.paused || isLoopGapWaiting || isSwitchingAudioSrc || isResumingPlayback));
+      navigator.mediaSession.playbackState = shouldReportPlaying ? 'playing' : 'paused';
       const now = Date.now();
       if ((forcePos || now - lastMediaPosSyncTs >= 900) && typeof navigator.mediaSession.setPositionState === 'function') {
         const dur = audio.duration;
@@ -6138,25 +6391,63 @@
 
     try {
       navigator.mediaSession.setActionHandler('play', () => {
+        // 第一性原理：锁屏/AirPods 拉起继续播放时，必须在回调同步栈第一时间清除禁用态并直接触发 audio.play()，
+        // 绝不在 audio.play() 之前刷 metadata/playbackState 把会话覆写回 paused！
+        userInitiatedPauseAt = 0;
+        userPausedExplicitly = false;
+        wasPlayingBeforeHidden = false;
+        interruptedWhileHidden = false;
+        lockRecoveryAttempted = false;
         ensureAudioContextWarmed();
-        ensureMediaMetadataPopulated();
-        resumeAudioPlayback();
+        if (isLoopGapWaiting) cancelLoopGapWait();
+        if (hasAudioSource()) {
+          releaseAllInternalMuteLocks();
+          state.isPlaying = true;
+          try { navigator.mediaSession.playbackState = 'playing'; } catch (e) {}
+          const t2Bounds = getTrack2BodyBounds();
+          if (t2Bounds && !track2ManualExtraSpan && audio.readyState >= 1) {
+            const curPos = audio.currentTime || 0;
+            if (curPos < t2Bounds.startTime - 0.12 || curPos > t2Bounds.endTime + 0.12) {
+              track2PrefixSkipped = true;
+              try { setAudioPosition(t2Bounds.startTime); } catch (e) {}
+            }
+          }
+          playAudioWithStateSync('MediaSession remote play', true);
+          ensureMediaMetadataPopulated();
+          updateMediaSessionState(true);
+          updatePlayBtnUI();
+        } else {
+          resumeAudioPlayback();
+          ensureMediaMetadataPopulated();
+        }
       });
       navigator.mediaSession.setActionHandler('pause', () => {
         userInitiatedPauseAt = Date.now();
+        userPausedExplicitly = true;
+        wasPlayingBeforeHidden = false;
+        interruptedWhileHidden = false;
+        clearResumingPlayback();
         if (isLoopGapWaiting) {
           pauseDuringGapWait();
           return;
         }
+        state.isPlaying = false;
+        try { navigator.mediaSession.playbackState = 'paused'; } catch (e) {}
         audio.pause();
       });
       try {
         navigator.mediaSession.setActionHandler('stop', () => {
           userInitiatedPauseAt = Date.now();
+          userPausedExplicitly = true;
+          wasPlayingBeforeHidden = false;
+          interruptedWhileHidden = false;
+          clearResumingPlayback();
           if (isLoopGapWaiting) {
             pauseDuringGapWait();
             return;
           }
+          state.isPlaying = false;
+          try { navigator.mediaSession.playbackState = 'paused'; } catch (e) {}
           audio.pause();
         });
       } catch (e) {}
@@ -6382,25 +6673,33 @@
     ensureAudioContextWarmed();
     if (isLoopGapWaiting) {
       userInitiatedPauseAt = Date.now();
+      userPausedExplicitly = true;
       pauseDuringGapWait();
       return;
     }
     if (audio.paused) resumeAudioPlayback();
     else {
       userInitiatedPauseAt = Date.now();
+      userPausedExplicitly = true;
+      wasPlayingBeforeHidden = false;
+      interruptedWhileHidden = false;
+      clearResumingPlayback();
       audio.pause();
     }
   }
 
   function resumeAudioPlayback() {
+    userInitiatedPauseAt = 0;
+    userPausedExplicitly = false;
+    wasPlayingBeforeHidden = false;
+    interruptedWhileHidden = false;
+    lockRecoveryAttempted = false;
     ensureAudioContextWarmed();
     if (isLoopGapWaiting) cancelLoopGapWait();
     const hasSrc = hasAudioSource();
-    if (hasSrc) {
-      expandPlayerDock();
-    }
     if (audio.paused) {
       if (!hasSrc) {
+        if (hasSrc) expandPlayerDock();
         if (state.currentSubject === 'pol' && state.polSubMode === 'recite47' && state.currentTrack === 2) {
           showToast('当前为纯图表速览卡片，无伴读音频，可点击后续考点卡片播放', 2200);
         } else {
@@ -6416,9 +6715,19 @@
             return;
           }
         }
+        if (!track2ManualExtraSpan && (state.playMode === 'item' || state.playMode === 'sequence')) {
+          const t2Bounds = getTrack2BodyBounds();
+          if (t2Bounds && audio.readyState >= 1) {
+            const curPos = audio.currentTime || 0;
+            if (curPos < t2Bounds.startTime - 0.12 || curPos > t2Bounds.endTime + 0.12) {
+              track2PrefixSkipped = true;
+              try { setAudioPosition(t2Bounds.startTime); } catch (e) {}
+            }
+          }
+        }
         if (audio.error) {
           const resumeIdx = (state.currentSentIndex >= 0 && state.activeSentences?.[state.currentSentIndex]) ? state.currentSentIndex : 0;
-          if (state.activeSentences && state.activeSentences[resumeIdx]) {
+          if (!document.hidden && state.activeSentences && state.activeSentences[resumeIdx]) {
             seekToSentence(resumeIdx, state.activeSentences[resumeIdx].start);
             return;
           }
@@ -6428,9 +6737,15 @@
             audio.load();
           }
         }
-        ensureMediaMetadataPopulated();
+        state.isPlaying = true;
         playAudioWithStateSync('Resume play', true);
+        if (!document.hidden) expandPlayerDock();
+        ensureMediaMetadataPopulated();
+        updateMediaSessionState(true);
+        updatePlayBtnUI();
       }
+    } else if (hasSrc && !document.hidden) {
+      expandPlayerDock();
     }
   }
   const togglePlay = toggleAudioPlayback;
@@ -6466,6 +6781,10 @@
         const nextSecStart = nextSec && typeof nextSec.start === 'number' ? nextSec.start : Infinity;
         return getLoopCutoff(curSec.start, curSec.end, nextSecStart);
       }
+      if (!track2ManualExtraSpan && (state.playMode === 'item' || state.playMode === 'sequence')) {
+        const t2Bounds = getTrack2BodyBounds();
+        if (t2Bounds) return t2Bounds.cutoff;
+      }
       return Infinity;
     }
 
@@ -6488,7 +6807,8 @@
             const nowT = audio.currentTime || 0;
             const nowDur = audio.duration || 0;
             if (nowDur > 1.2 && nowT >= nowDur - 0.3 && !isLoopSeeking) {
-              performLoopTransition(0, { targetSentIdx: state.activeSentences?.length ? 0 : null, shouldResume: true, useGap: false });
+              const t2B = !track2ManualExtraSpan ? getTrack2BodyBounds() : null;
+              performLoopTransition(t2B ? t2B.startTime : 0, { targetSentIdx: t2B ? t2B.startIdx : (state.activeSentences?.length ? 0 : null), shouldResume: true, useGap: false });
             } else {
               scheduleBgBoundaryCheck();
             }
@@ -6526,7 +6846,8 @@
         const cur = audio.currentTime || 0;
         const dur = audio.duration || 0;
         if (state.playMode === 'item' && dur > 1.2 && cur >= dur - 0.25 && !isLoopSeeking) {
-          performLoopTransition(0, { targetSentIdx: state.activeSentences?.length ? 0 : null, shouldResume: true, useGap: false });
+          const t2B = !track2ManualExtraSpan ? getTrack2BodyBounds() : null;
+          performLoopTransition(t2B ? t2B.startTime : 0, { targetSentIdx: t2B ? t2B.startIdx : (state.activeSentences?.length ? 0 : null), shouldResume: true, useGap: false });
           return;
         }
         if (state.activeSentences && state.activeSentences.length > 0) {
@@ -6630,11 +6951,17 @@
           return 'handled';
         }
 
+        const t2BoundsSent = !track2ManualExtraSpan ? getTrack2BodyBounds() : null;
         const sent = state.activeSentences[state.currentSentIndex];
-        const nextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
+        const canAdvanceNextSent = (state.currentSentIndex + 1 < state.activeSentences.length) &&
+          (!t2BoundsSent || state.currentSentIndex < t2BoundsSent.endIdx);
+        const nextSent = canAdvanceNextSent ? state.activeSentences[state.currentSentIndex + 1] : null;
         const sStart = typeof sent.start === 'number' ? sent.start : parseFloat(sent.start || 0);
-        const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (nextSent ? nextSent.start : Infinity));
-        const nextStart = nextSent ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start)) : Infinity;
+        const rawNextSent = (state.currentSentIndex + 1 < state.activeSentences.length) ? state.activeSentences[state.currentSentIndex + 1] : null;
+        const sEnd = typeof sent.end === 'number' ? sent.end : parseFloat(sent.end || (rawNextSent ? rawNextSent.start : Infinity));
+        const nextStart = nextSent
+          ? (typeof nextSent.start === 'number' ? nextSent.start : parseFloat(nextSent.start))
+          : (rawNextSent ? (typeof rawNextSent.start === 'number' ? rawNextSent.start : parseFloat(rawNextSent.start)) : Infinity);
         const loopCutoff = getLoopCutoff(sStart, sEnd, nextStart);
         const targetReps = state.playMode === 'sentence' ? Infinity : Math.max(2, Number(state.sentenceRepeatCount) || 3);
 
@@ -6673,6 +7000,38 @@
           }
           updateHUDDisplay(cur);
           return 'handled';
+        }
+      }
+
+      if (state.playMode === 'item' || state.playMode === 'sequence') {
+        const rawT2Bounds = getTrack2BodyBounds();
+        if (rawT2Bounds && track2ManualExtraSpan && track2ManualExtraSpan.partGroup === 'prefix' &&
+            cur >= rawT2Bounds.startTime + 0.12 && cur <= rawT2Bounds.cutoff) {
+          track2ManualExtraSpan = null;
+          track2PrefixSkipped = true;
+        }
+        const t2Bounds = !track2ManualExtraSpan ? rawT2Bounds : null;
+        if (t2Bounds) {
+          if (isLoopSeeking && (Date.now() - lastSeekTs >= 350)) {
+            isLoopSeeking = false;
+          }
+          if (!isEnded && isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+            return null;
+          }
+          if (isEnded || cur >= t2Bounds.cutoff || cur > t2Bounds.endTime) {
+            if (state.playMode === 'item') {
+              performLoopTransition(t2Bounds.startTime, {
+                targetSentIdx: t2Bounds.startIdx,
+                shouldResume,
+                useGap: false
+              });
+              return 'handled';
+            }
+            accumulateListeningTime(true);
+            cancelLoopGapWait();
+            playNextItem();
+            return 'finished';
+          }
         }
       }
 
@@ -6785,7 +7144,7 @@
         }
 
         // 政治徐涛16天带背原声前奏导言区自动跳过 (每轨仅触发一次，不抢夺手动拖条)
-        if (maybeSkipXutaoIntro(cur)) {
+        if (maybeSkipXutaoIntro(cur) || maybeSkipTrack2Prefix(cur)) {
           syncRafId = requestAnimationFrame(runSyncLoop);
           return;
         }
@@ -6833,20 +7192,24 @@
 
     audio.addEventListener('play', () => {
       clearSwitchingAudioSrc();
+      clearResumingPlayback();
+      userPausedExplicitly = false;
+      lockRecoveryAttempted = false;
       state.isPlaying = true;
       if (audio.preload !== 'auto') audio.preload = 'auto';
-      if (document.hidden) releaseAllInternalMuteLocks();
+      if (document.hidden || isIOSLikeEnv()) releaseAllInternalMuteLocks();
       audio.playbackRate = state.speed;
       listenAnchor = makeListenAnchor();
 
-      // 政治徐涛16天带背原声前奏导言区自动跳过（若用户刚主动点选过句子且在寻求目标时刻，不覆盖）
+      // 政治徐涛16天带背原声前奏导言区与轨道二“记忆串讲”前置区自动跳过（若用户刚主动点选过句子，不覆盖）
       maybeSkipXutaoIntro(audio.currentTime || 0);
+      maybeSkipTrack2Prefix(audio.currentTime || 0);
       if (pendingSeekTarget && pendingSeekTarget.token === seekToken && audio.readyState >= 1 && !audio.seeking && (Date.now() - pendingSeekTarget.startedAt > 120) && Math.abs(audio.currentTime - pendingSeekTarget.time) > 0.35) {
         try { setAudioPosition(pendingSeekTarget.time); } catch (e) {}
       }
 
       updatePlayBtnUI();
-      expandPlayerDock();
+      if (!document.hidden) expandPlayerDock();
       ensureMediaMetadataPopulated();
       updateMediaSessionState(true);
       scheduleNextTrackPrefetch();
@@ -6864,9 +7227,6 @@
         updateMediaSessionState(true);
         return;
       }
-      clearBgBoundaryTimer();
-      clearBgWatchdogTimer();
-      accumulateListeningTime(true);
       if (isLoopGapWaiting) {
         if (syncRafId) {
           cancelAnimationFrame(syncRafId);
@@ -6875,10 +7235,43 @@
         updateMediaSessionState(true);
         return;
       }
+      const pauseNow = Date.now();
+      const isExplicitRecentUserPause = userPausedExplicitly || (pauseNow - userInitiatedPauseAt <= 1000);
+      const isLockMomentGlitch = Boolean(
+        document.hidden &&
+        !isExplicitRecentUserPause &&
+        wasPlayingBeforeHidden &&
+        !lockRecoveryAttempted &&
+        hiddenAtTs > 0 &&
+        (pauseNow - hiddenAtTs <= 1200) &&
+        hasAudioSource() &&
+        !audio.error
+      );
+      if (isLockMomentGlitch) {
+        // 刚锁屏瞬间因 iOS WebKit 切换音频会话偶发 pause，立即尝试一次后台无感续播，防止锁屏立刻停音
+        lockRecoveryAttempted = true;
+        releaseAllInternalMuteLocks();
+        playAudioWithStateSync('Lock transition immediate recover', true);
+        updateMediaSessionState(true);
+        return;
+      }
+      clearResumingPlayback();
+      clearBgBoundaryTimer();
+      clearBgWatchdogTimer();
+      accumulateListeningTime(true);
       clearPendingSeek(true);
       releaseAllInternalMuteLocks();
-      if (document.hidden && (Date.now() - userInitiatedPauseAt > 800)) {
-        interruptedWhileHidden = true;
+      if (document.hidden && !isExplicitRecentUserPause) {
+        // 锁屏后（>1.2s）AirPods/锁屏原生控制或 OS 直接暂停：记录为隐式后台停播并清理自动续播标记，严禁解锁屏幕后擅自起播
+        if (hiddenAtTs > 0 && (pauseNow - hiddenAtTs > 1200)) {
+          wasPlayingBeforeHidden = false;
+          interruptedWhileHidden = false;
+        } else {
+          interruptedWhileHidden = true;
+        }
+      } else if (isExplicitRecentUserPause) {
+        wasPlayingBeforeHidden = false;
+        interruptedWhileHidden = false;
       }
       state.isPlaying = false;
       flushPlaybackPosition();
@@ -6964,8 +7357,8 @@
       }
 
       if (state.activeSentences && state.activeSentences.length > 0) {
-        // 徐涛26天带背原声前奏导言区自动跳至第一考点
-        if (!audio.paused && state.isPlaying && maybeSkipXutaoIntro(cur)) {
+        // 徐涛26天带背原声前奏导言区与轨道二“记忆串讲”自动跳至正文第一考点
+        if (!audio.paused && state.isPlaying && (maybeSkipXutaoIntro(cur) || maybeSkipTrack2Prefix(cur))) {
           return;
         }
 
@@ -6999,13 +7392,15 @@
 
     audio.addEventListener('ended', () => {
       clearBgBoundaryTimer();
+      clearResumingPlayback();
       accumulateListeningTime(true);
       if (state.sleepTimerMode === 'end_of_item') {
         triggerSleepTimerStop('本篇已播完，定时停播已生效');
         return;
       }
       if (state.playMode === 'item') {
-        performLoopTransition(0, { targetSentIdx: state.activeSentences?.length ? 0 : null, shouldResume: true, useGap: false });
+        const t2B = !track2ManualExtraSpan ? getTrack2BodyBounds() : null;
+        performLoopTransition(t2B ? t2B.startTime : 0, { targetSentIdx: t2B ? t2B.startIdx : (state.activeSentences?.length ? 0 : null), shouldResume: true, useGap: false });
         return;
       }
       const loopRes = handleLoopBoundary(audio.duration || audio.currentTime || 0, true);
@@ -7072,7 +7467,9 @@
 
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
-        wasPlayingBeforeHidden = Boolean(state.isPlaying && (!audio.paused || isLoopGapWaiting || isSwitchingAudioSrc));
+        hiddenAtTs = Date.now();
+        lockRecoveryAttempted = false;
+        wasPlayingBeforeHidden = Boolean(state.isPlaying && (!audio.paused || isLoopGapWaiting || isSwitchingAudioSrc || isResumingPlayback));
         interruptedWhileHidden = false;
         flushPlaybackPosition();
         // 锁屏/切后台瞬间：立即清除所有内部静音锁，杜绝定时节流造成静音卡死或 OS 回收音频会话
@@ -7088,17 +7485,21 @@
           stopLoopGapKeepalive();
           updateHUDDisplay(audio.currentTime || 0);
           updatePlayBtnUI();
-          ensureMediaMetadataPopulated();
-          updateMediaSessionState(true);
           if (audio.paused) {
             playAudioWithStateSync('Background gap flush', true);
           }
+        }
+        if (state.isPlaying && hasAudioSource()) {
+          ensureMediaMetadataPopulated();
+          updateMediaSessionState(true);
         }
         scheduleBgBoundaryCheck();
         startBgWatchdog();
         return;
       }
       if (document.visibilityState === 'visible') {
+        hiddenAtTs = 0;
+        lockRecoveryAttempted = false;
         clearBgBoundaryTimer();
         clearBgWatchdogTimer();
         reconcileStaleMuteLocks();
@@ -7108,6 +7509,7 @@
         }
         if (!audio.paused && !state.isPlaying && hasAudioSource()) {
           state.isPlaying = true;
+          userPausedExplicitly = false;
           updatePlayBtnUI();
           updateMediaSessionState(true);
         }
@@ -7116,48 +7518,28 @@
           updatePlayBtnUI();
           updateMediaSessionState(true);
         }
-        if (wasPlayingBeforeHidden && (interruptedWhileHidden || audio.paused) && !isLoopGapWaiting && hasAudioSource()) {
-          wasPlayingBeforeHidden = false;
-          interruptedWhileHidden = false;
+        // 第一性原理：绝不在解锁亮屏回到前台时擅自自动恢复播放（彻底根治锁屏暂停/停播后解锁偷跑自动外放）；
+        // 若确系后台非用户操作被打断，仅展示可点击“继续播放”胶囊由用户主动确认拉起。
+        const shouldOfferResumeToast = Boolean(
+          wasPlayingBeforeHidden &&
+          interruptedWhileHidden &&
+          !userPausedExplicitly &&
+          audio.paused &&
+          !isLoopGapWaiting &&
+          hasAudioSource()
+        );
+        wasPlayingBeforeHidden = false;
+        interruptedWhileHidden = false;
+        if (shouldOfferResumeToast) {
           const sentNum = (state.currentSentIndex >= 0) ? `（第 ${state.currentSentIndex + 1} 句）` : '';
-          let recoveryFailed = false;
-          const tryAutoResume = () => {
-            if (!hasAudioSource()) return;
-            try {
-              state.isPlaying = true;
-              updatePlayBtnUI();
-              const p = playAudioWithStateSync('Foreground interruption auto-resume', true);
-              if (p && typeof p.catch === 'function') {
-                p.catch(() => {
-                  if (recoveryFailed) return;
-                  recoveryFailed = true;
-                  showToast(`音频已因系统打断暂停${sentNum}`, 5500, {
-                    label: '继续播放',
-                    replaceKey: 'ios-interrupt-resume',
-                    onClick: () => {
-                      ensureAudioContextWarmed();
-                      resumeAudioPlayback();
-                    }
-                  });
-                });
-              }
-            } catch (e) {}
-          };
-          if (!audio.error) {
-            tryAutoResume();
-          } else {
-            showToast(`音频已因系统打断暂停${sentNum}`, 5500, {
-              label: '继续播放',
-              replaceKey: 'ios-interrupt-resume',
-              onClick: () => {
-                ensureAudioContextWarmed();
-                resumeAudioPlayback();
-              }
-            });
-          }
-        } else {
-          wasPlayingBeforeHidden = false;
-          interruptedWhileHidden = false;
+          showToast(`音频已暂停${sentNum}`, 4200, {
+            label: '继续播放',
+            replaceKey: 'ios-interrupt-resume',
+            onClick: () => {
+              ensureAudioContextWarmed();
+              resumeAudioPlayback();
+            }
+          });
         }
         if (state.isPlaying && !audio.paused && state.activeSentences && state.activeSentences.length > 0) {
           const cur = audio.currentTime || 0;
@@ -8635,7 +9017,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.5.9';
+  const APP_BUILD_ID = '3.5.10';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {

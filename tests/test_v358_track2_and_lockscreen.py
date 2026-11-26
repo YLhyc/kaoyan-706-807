@@ -230,6 +230,16 @@ def main():
             # 3. Lock-Screen / Background PWA Playback Regression Checks
             ctx = browser.new_context(viewport={"width": 390, "height": 844})
             page = ctx.new_page()
+            page.add_init_script("""
+              window.__testMediaHandlers = {};
+              if (navigator.mediaSession && typeof navigator.mediaSession.setActionHandler === 'function') {
+                const origSet = navigator.mediaSession.setActionHandler.bind(navigator.mediaSession);
+                navigator.mediaSession.setActionHandler = (action, fn) => {
+                  window.__testMediaHandlers[action] = fn;
+                  return origSet(action, fn);
+                };
+              }
+            """)
             page.goto(base_url, wait_until="domcontentloaded", timeout=25000)
             page.wait_for_function("() => !!window.audio && !!window.state && !!window.selectItem", timeout=25000)
 
@@ -308,13 +318,117 @@ def main():
               const statePlayingAfterNextCanplay = window.state.isPlaying;
               const mutedAfterNext = a.muted;
 
-              // Test C: Background item mode pre-EOF watchdog wraps before hitting ended
+              // Test C: Background item mode pre-EOF/body-end wraps straight back to Track 2 formal body start ("引", NOT 0s/hook)
               window.state.playMode = 'item';
+              const item2BodyFirst = window.state.activeSentences.find(s => String(s.id).startsWith('intro_') || String(s.id).startsWith('sec0_title_'));
+              const item2ExpectedStart = item2BodyFirst ? item2BodyFirst.start : 0;
               mockTime = mockDur - 0.15;
               mockPaused = false;
               await new Promise(r => setTimeout(r, 700));
               const wrappedTime = mockTime;
               const wrappedStillPlaying = window.state.isPlaying && !a.paused && !a.muted;
+
+              // Test D (v3.5.10 Track 2 Body Scope): loading Track 2 skips title/hook; item wraps at bodyEnd->bodyStart; sequence exits at bodyEnd->next item bodyStart
+              mockHidden = false;
+              mockVis = 'visible';
+              document.dispatchEvent(new Event('visibilitychange'));
+              await new Promise(r => setTimeout(r, 40));
+
+              window.selectItem('706_01_T0_01_杜甫_沉郁顿挫艺术风格与诗史性质_30分论述', false);
+              await new Promise(r => setTimeout(r, 80));
+              const dufuSents = window.state.activeSentences;
+              const dufuIntro = dufuSents.find(s => String(s.id) === 'intro_c0');
+              const dufuLastBody = dufuSents.filter(s => /^(intro|sec\\d+_|concl)_/.test(String(s.id))).slice(-1)[0];
+              const dufuGuard = dufuSents.find(s => String(s.id).startsWith('guard_'));
+              const singleAudioTagCount = document.querySelectorAll('audio').length;
+
+              // Check Track 2 initial cue & item loop skipping hook/guard/drill
+              document.getElementById('btn-loop-mode');
+              window.state.playMode = 'item';
+              mockTime = 4.5; // inside hook ("记忆串讲")
+              mockPaused = false;
+              window.state.isPlaying = true;
+              a.dispatchEvent(new Event('play'));
+              await new Promise(r => setTimeout(r, 80));
+              const skippedHookTime = mockTime;
+
+              // Simulate reaching body end (concl end) in item mode -> wraps back to intro_c0.start (NOT 0, NOT into guard)
+              mockTime = dufuLastBody.end + 0.02;
+              a.dispatchEvent(new Event('timeupdate'));
+              await new Promise(r => setTimeout(r, 80));
+              const wrappedAtBodyEndTime = mockTime;
+
+              // Simulate reaching body end in sequence mode -> advances to next item at its bodyStart (skipping guard/drill & next item's hook)
+              window.state.playMode = 'sequence';
+              mockPaused = false;
+              window.state.isPlaying = true;
+              await new Promise(r => setTimeout(r, 170)); // wait past 150ms isLoopSeeking lock
+              mockTime = dufuLastBody.end + 0.02;
+              a.dispatchEvent(new Event('timeupdate'));
+              await new Promise(r => setTimeout(r, 100));
+              const seqNextItemId = window.state.activeItemId;
+              const seqNextIntro = window.state.activeSentences.find(s => String(s.id) === 'intro_c0');
+              const seqNextStartTime = mockTime;
+
+              // Test E (v3.5.10 Lockscreen/AirPods Pause-Resume-Unlock):
+              // E1: Simulate mediaSession remote handlers directly via monkeypatch spy captured on navigator.mediaSession
+              const activeHandlers = window.__testMediaHandlers || {};
+              // E2: Pause via AirPods/Lockscreen while locked, then resume via mediaSession play while STILL locked (Bug 2b), then pause again and unlock (Bug 2c)
+              mockHidden = true;
+              mockVis = 'hidden';
+              document.dispatchEvent(new Event('visibilitychange'));
+              mockPaused = false;
+              window.state.isPlaying = true;
+              a.dispatchEvent(new Event('play'));
+              await new Promise(r => setTimeout(r, 50));
+
+              let mediaPlayResumedLocked = false;
+              let pauseWhileLockedState = '';
+              let resumeWhileLockedState = '';
+              let pausedAfterUnlock = false;
+              let statePlayingAfterUnlock = true;
+
+              if (typeof activeHandlers.pause === 'function' && typeof activeHandlers.play === 'function') {
+                activeHandlers.pause();
+                await new Promise(r => setTimeout(r, 30));
+                pauseWhileLockedState = navigator.mediaSession.playbackState;
+
+                // Press AirPods / Lockscreen Play while STILL locked (hidden=true)
+                mockReady = 1; // test low readyState during wakeup
+                activeHandlers.play();
+                mockReady = 4;
+                a.dispatchEvent(new Event('canplay'));
+                await new Promise(r => setTimeout(r, 60));
+                resumeWhileLockedState = navigator.mediaSession.playbackState;
+                mediaPlayResumedLocked = window.state.isPlaying && !a.paused && !a.muted;
+
+                // Now press AirPods / Lockscreen Pause again while locked, then UNLOCK screen (Bug 2c: must NOT auto-play!)
+                activeHandlers.pause();
+                await new Promise(r => setTimeout(r, 40));
+                mockHidden = false;
+                mockVis = 'visible';
+                document.dispatchEvent(new Event('visibilitychange'));
+                await new Promise(r => setTimeout(r, 60));
+                pausedAfterUnlock = a.paused;
+                statePlayingAfterUnlock = window.state.isPlaying;
+              }
+
+              // E3: Native OS pause (>1.5s after lock, e.g. AirPods without mediaSession callback) then unlock -> MUST stay paused (Bug 2c)
+              mockPaused = false;
+              window.state.isPlaying = true;
+              a.dispatchEvent(new Event('play'));
+              mockHidden = true;
+              mockVis = 'hidden';
+              document.dispatchEvent(new Event('visibilitychange'));
+              await new Promise(r => setTimeout(r, 1300));
+              mockPaused = true;
+              a.dispatchEvent(new Event('pause'));
+              await new Promise(r => setTimeout(r, 30));
+              mockHidden = false;
+              mockVis = 'visible';
+              document.dispatchEvent(new Event('visibilitychange'));
+              await new Promise(r => setTimeout(r, 50));
+              const nativePauseStayedPausedOnUnlock = a.paused && !window.state.isPlaying;
 
               return {
                 mutedBeforeLock,
@@ -326,7 +440,22 @@ def main():
                 statePlayingAfterNextCanplay,
                 mutedAfterNext,
                 wrappedTime,
+                item2ExpectedStart,
                 wrappedStillPlaying,
+                singleAudioTagCount,
+                dufuIntroStart: dufuIntro ? dufuIntro.start : -1,
+                dufuGuardStart: dufuGuard ? dufuGuard.start : -1,
+                skippedHookTime,
+                wrappedAtBodyEndTime,
+                seqNextItemId,
+                seqNextIntroStart: seqNextIntro ? seqNextIntro.start : -1,
+                seqNextStartTime,
+                pauseWhileLockedState,
+                resumeWhileLockedState,
+                mediaPlayResumedLocked,
+                pausedAfterUnlock,
+                statePlayingAfterUnlock,
+                nativePauseStayedPausedOnUnlock,
               };
             }""")
             check(
@@ -345,8 +474,36 @@ def main():
                 json.dumps(bg_res, ensure_ascii=False),
             )
             check(
-                bg_res["wrappedTime"] < 1.0 and bg_res["wrappedStillPlaying"] is True,
-                "Background item mode watchdog seamlessly wraps before EOF unmuted",
+                abs(bg_res["wrappedTime"] - bg_res["item2ExpectedStart"]) < 0.5 and bg_res["wrappedStillPlaying"] is True,
+                "Background Track 2 item mode seamlessly wraps directly to formal body start unmuted",
+                json.dumps(bg_res),
+            )
+            check(
+                bg_res["singleAudioTagCount"] <= 1,
+                "Only a single <audio> element exists (no competing muted prefetch <audio> for iOS WebKit)",
+                json.dumps(bg_res),
+            )
+            check(
+                abs(bg_res["skippedHookTime"] - bg_res["dufuIntroStart"]) < 0.25
+                and abs(bg_res["wrappedAtBodyEndTime"] - bg_res["dufuIntroStart"]) < 0.25
+                and bg_res["wrappedAtBodyEndTime"] < bg_res["dufuGuardStart"],
+                "Track 2 item loop skips title/hook, stops before guard/drill, and wraps straight to intro",
+                json.dumps(bg_res),
+            )
+            check(
+                bg_res["seqNextItemId"] != "706_01_T0_01_杜甫_沉郁顿挫艺术风格与诗史性质_30分论述"
+                and abs(bg_res["seqNextStartTime"] - bg_res["seqNextIntroStart"]) < 0.25,
+                "Track 2 sequence mode finishes at bodyEnd and lands on next item formal body start",
+                json.dumps(bg_res, ensure_ascii=False),
+            )
+            check(
+                bg_res["pauseWhileLockedState"] == "paused"
+                and bg_res["resumeWhileLockedState"] == "playing"
+                and bg_res["mediaPlayResumedLocked"] is True
+                and bg_res["pausedAfterUnlock"] is True
+                and bg_res["statePlayingAfterUnlock"] is False
+                and bg_res["nativePauseStayedPausedOnUnlock"] is True,
+                "Lockscreen/AirPods pause resumes cleanly while locked and NEVER auto-plays on unlock",
                 json.dumps(bg_res),
             )
 
