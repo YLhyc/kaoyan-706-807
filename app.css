@@ -14378,6 +14378,24 @@ body.dock-expanded .return-active-pill {
   font-weight: 600;
   line-height: 1.25;
   word-break: keep-all;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.relay-step:has(.gold-sent-active) .relay-step-row .relay-role {
+  background: var(--vermilion);
+  border-color: var(--vermilion);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(156, 43, 30, 0.22);
+}
+[data-theme="dark"] .relay-step:has(.gold-sent-active) .relay-step-row .relay-role {
+  background: #d96b5b;
+  border-color: #d96b5b;
+  color: #161412;
+}
+.relay-title-box .exam-title-h2 .recite-sent {
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 2px 4px;
+  margin: -2px -4px;
 }
 .relay-step-row .relay-sent {
   max-width: none;

@@ -207,7 +207,7 @@
     if (!raw) return '';
     if (/^(blob:|data:)/i.test(raw)) return raw;
     if (/[?&]v=/.test(raw)) return raw;
-    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.8';
+    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.9';
     return raw + (raw.includes('?') ? '&' : '?') + 'v=' + encodeURIComponent(ver);
   }
 
@@ -4784,7 +4784,7 @@
           <span class="title-seal relay-title-seal">${item.level || 'T0'} · 逻辑微缩</span>
           <span class="relay-ratio-pill">${ratioDesc}</span>
         </div>
-        <h2 class="exam-title-h2">${item.title || ''}</h2>
+        <h2 class="exam-title-h2">${slotMap.has('title') ? renderRelaySlotHtml(slotMap, 'title', item.title || '') : (item.title || '')}</h2>
       </div>
       <div class="relay-chain-bar relay-mindmap-card">
         <div class="relay-chain-head">
@@ -8635,7 +8635,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.5.8';
+  const APP_BUILD_ID = '3.5.9';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {

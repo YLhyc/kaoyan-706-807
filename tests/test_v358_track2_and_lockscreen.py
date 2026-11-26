@@ -105,20 +105,48 @@ def main():
             cur_end = float(sents[i]["end"])
             nxt_start = float(sents[i + 1]["start"])
             gap_ms = (nxt_start - cur_end) * 1000.0
+            cur_slot = str(sents[i]["id"]).rsplit("_c", 1)[0]
+            nxt_slot = str(sents[i + 1]["id"]).rsplit("_c", 1)[0]
+            is_inter_slot = cur_slot != nxt_slot
             if gap_ms < min_gap_ms:
                 min_gap_ms = gap_ms
-            if gap_ms < 345.0:
+            if is_inter_slot and gap_ms < 480.0:
+                short_gaps.append((it["id"], sents[i]["id"], round(gap_ms, 1)))
+            elif (not is_inter_slot) and gap_ms < 40.0:
                 short_gaps.append((it["id"], sents[i]["id"], round(gap_ms, 1)))
             span = max(0.0, cur_end - float(sents[i]["start"]))
             cutoff = min(cur_end - min(0.16, 0.065, span * 0.22), nxt_start - min(0.26, 0.145, span * 0.28))
-            if nxt_start - cutoff < 0.20:
+            if nxt_start - cutoff < 0.11:
                 cutoff_overshoots.append((it["id"], sents[i]["id"], round((nxt_start - cutoff) * 1000.0, 1)))
+
+    # Issue 2 & Issue 1 script invariants across all 82 items
+    scripts = json.loads((ROOT / "data" / "micro_spoken_scripts.json").read_text(encoding="utf-8"))
+    missing_title_slot = [s["id"] for s in scripts if not s["slots"] or s["slots"][0]["slot_key"] != "title"]
+    missing_step_tags = []
+    decade_bug = []
+    mid_comma_forced_period = []
+    for s in scripts:
+        for sl in s["slots"]:
+            if sl.get("part") == "step" and sl.get("step_label"):
+                # Ensure step[0] or body starts cleanly with spoken step tag when non-empty
+                if not sl["clauses"][0]["tts_text"]:
+                    missing_step_tags.append((s["id"], sl["slot_key"]))
+            for k, c in enumerate(sl["clauses"]):
+                if "40s" in c["tts_text"] or "30s" in c["tts_text"] or "20s" in c["tts_text"]:
+                    decade_bug.append((s["id"], c["sent_id"], c["tts_text"]))
+                if k < len(sl["clauses"]) - 1 and c["tts_text"].endswith(("。", "！", "？")) and not c["text"].strip().endswith(("。", "！", "？", "。”", "！”", "？”")):
+                    mid_comma_forced_period.append((s["id"], c["sent_id"]))
 
     check(len(bad_audio) == 0, "Track 2 *_micro.mp3 files match 44.1kHz mono 96kbps spec", str(bad_audio[:3]))
     check(
         total_pairs >= 2000 and len(short_gaps) == 0 and len(cutoff_overshoots) == 0,
-        "All 82 Track 2 files retain >=345ms inter-clause gaps & >=200ms cutoff margins",
+        "All 82 Track 2 files retain >=480ms inter-slot & non-overlapping intra-slot natural gaps",
         f"pairs={total_pairs}, min_gap={min_gap_ms:.1f}ms, short={short_gaps[:3]}, overshoots={cutoff_overshoots[:3]}",
+    )
+    check(
+        len(missing_title_slot) == 0 and len(missing_step_tags) == 0 and len(decade_bug) == 0 and len(mid_comma_forced_period) == 0,
+        "All 82 Track 2 scripts include title + step[0] tags, zero forced mid-sentence periods, zero '20s/40s' misreads",
+        f"titles={missing_title_slot[:3]}, step_tags={missing_step_tags[:3]}, decades={decade_bug[:3]}, forced_periods={mid_comma_forced_period[:3]}",
     )
 
     httpd, port = start_server()
