@@ -1,170 +1,162 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "寻根文学·思潮发生机制与文化审美反思",
+    "start": 0.134,
+    "end": 3.961,
+    "duration": 3.827
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "理论发生（韩少功《文学的“根”》跳出政治社会学）",
-    "start": 0.223,
-    "end": 4.649,
-    "duration": 4.425
+    "text": "理论发生（韩少功《文学的“根”》跳出政治社会学）→文化精神内核（阿城《棋王》王一生淡泊守道家骨气）→现代派技法结合民俗（李杭育/贾平凹/莫言），",
+    "start": 4.55,
+    "end": 19.471,
+    "duration": 14.921
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "→文化精神内核（阿城《棋王》王一生淡泊守道家骨气）",
-    "start": 5.436,
-    "end": 9.54,
-    "duration": 4.104
-  },
-  {
-    "id": "hook_c2",
-    "dom_key": "hook_c2",
-    "text": "→现代派技法结合民俗（李杭育/贾平凹/莫言），清晰勾勒八十年代中期寻根潮。",
-    "start": 10.279,
-    "end": 17.22,
-    "duration": 6.942
+    "text": "清晰勾勒八十年代中期寻根潮。",
+    "start": 19.572,
+    "end": 22.188,
+    "duration": 2.616
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "八十年代中期面对反思文学局限与西方现代主义冲击，文坛兴起“寻根”思潮，",
-    "start": 17.998,
-    "end": 24.578,
-    "duration": 6.58
+    "start": 22.762,
+    "end": 29.597,
+    "duration": 6.835
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "跳出单一政治社会学批判，向民族历史文化心理探求资源。",
-    "start": 25.308,
-    "end": 30.207,
-    "duration": 4.899
+    "start": 29.767,
+    "end": 35.04,
+    "duration": 5.272
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 发表理论宣言、确立“寻根”创作自觉",
-    "start": 31.019,
-    "end": 34.792,
-    "duration": 3.773
+    "start": 35.614,
+    "end": 39.493,
+    "duration": 3.879
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "韩少功《文学的“根”》提“文学有根，文学之根应深植于民族传统文化的土壤里”；",
-    "start": 35.535,
-    "end": 41.271,
-    "duration": 5.736
+    "start": 40.067,
+    "end": 46.98,
+    "duration": 6.913
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "呼唤从楚辞浪漫奇诡、道家清虚自守与地域民俗汲养分，由外部社会批判转向民族文化心理开掘。",
-    "start": 42.071,
-    "end": 51.029,
-    "duration": 8.958
+    "start": 47.554,
+    "end": 57.397,
+    "duration": 9.843
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 发掘儒道人格精神、重建自尊品格",
-    "start": 51.723,
-    "end": 55.577,
-    "duration": 3.854
+    "start": 57.97,
+    "end": 61.928,
+    "duration": 3.957
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "在现代转型迷失中重拾传统文化美好品格；",
-    "start": 56.284,
-    "end": 60.051,
-    "duration": 3.766
+    "start": 62.515,
+    "end": 67.032,
+    "duration": 4.517
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "阿城《棋王》写“棋呆子”王一生把“吃饱”作底线，",
-    "start": 60.783,
-    "end": 63.948,
-    "duration": 3.166
+    "text": "阿城《棋王》写“棋呆子”王一生把“吃饱”作底线，车轮战以一敌九下盲棋连胜八人言和，",
+    "start": 67.619,
+    "end": 76.186,
+    "duration": 8.567
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
-    "text": "车轮战以一敌九下盲棋连胜八人言和，淡泊自守、超然自尊显道家精神当代延续。",
-    "start": 64.672,
-    "end": 71.908,
-    "duration": 7.235
+    "text": "淡泊自守、超然自尊显道家精神当代延续。",
+    "start": 76.46,
+    "end": 80.339,
+    "duration": 3.879
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 融现代主义象征与地域民俗、拓宽文体",
-    "start": 72.629,
-    "end": 76.798,
-    "duration": 4.168
+    "start": 80.926,
+    "end": 85.248,
+    "duration": 4.322
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "告别单线叙事，吸收拉美魔幻现实主义与现代象征手法，呈鲜明地域风貌；",
-    "start": 77.533,
-    "end": 84.026,
-    "duration": 6.494
+    "start": 85.835,
+    "end": 93.568,
+    "duration": 7.733
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "李杭育“葛川江系列”写吴越水乡、贾平凹“商州系列”绘秦岭风俗、莫言早期写齐鲁传奇，",
-    "start": 84.782,
-    "end": 91.99,
-    "duration": 7.208
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "拓宽艺术表现力。",
-    "start": 92.689,
-    "end": 93.934,
-    "duration": 1.246
+    "text": "李杭育“葛川江系列”写吴越水乡、贾平凹“商州系列”绘秦岭风俗、莫言早期写齐鲁传奇，拓宽艺术表现力。",
+    "start": 94.155,
+    "end": 104.089,
+    "duration": 9.934
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：核心理论韩少功《文学的“根”》；",
-    "start": 94.699,
-    "end": 97.476,
-    "duration": 2.777
+    "start": 104.663,
+    "end": 107.748,
+    "duration": 3.085
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "核心代表作记住阿城《棋王》（王一生下盲棋）、李杭育“葛川江系列”、贾平凹“商州系列”、莫言早期齐鲁传奇。",
-    "start": 98.274,
-    "end": 107.022,
-    "duration": 8.748
+    "start": 108.01,
+    "end": 117.227,
+    "duration": 9.218
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 背全韩少功宣言文章篇名与“深植民族传统文化土壤”核心主张？",
-    "start": 107.725,
-    "end": 114.249,
-    "duration": 6.524
+    "start": 117.814,
+    "end": 124.623,
+    "duration": 6.809
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合阿城《棋王》王一生“以一敌九下盲棋”阐发道家自尊与文化救赎？",
-    "start": 114.978,
-    "end": 122.203,
-    "duration": 7.225
+    "start": 125.21,
+    "end": 132.214,
+    "duration": 7.004
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 列出李杭育、贾平凹、莫言的寻根地域系列及外吸拉美魔幻的融合特征？",
-    "start": 122.941,
-    "end": 130.637,
-    "duration": 7.696
+    "start": 132.801,
+    "end": 140.639,
+    "duration": 7.838
   }
 ]

@@ -1,178 +1,178 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "李劼人·死水微澜地域文化特色与晚清社会风俗画",
+    "start": 0.134,
+    "end": 4.56,
+    "duration": 4.426
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "紧扣“中国的左拉”大河小说风土与历史切面三层收束：",
-    "start": 0.238,
-    "end": 5.337,
-    "duration": 5.099
+    "text": "紧扣“中国的左拉”大河小说风土与历史切面三层收束：1.方言俚语再现天回镇赶场袍哥茶馆民俗画；",
+    "start": 5.149,
+    "end": 14.836,
+    "duration": 9.687
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "1.方言俚语再现天回镇赶场袍哥茶馆民俗画；",
-    "start": 6.068,
-    "end": 10.187,
-    "duration": 4.119
+    "text": "2.邓幺姑（蔡大嫂）背离木讷丈夫恋罗歪嘴又转嫁顾天成的鲜活反叛；",
+    "start": 15.058,
+    "end": 21.693,
+    "duration": 6.635
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "2.邓幺姑（蔡大嫂）背离木讷丈夫恋罗歪嘴又转嫁顾天成的鲜活反叛；",
-    "start": 10.929,
-    "end": 17.611,
-    "duration": 6.681
-  },
-  {
-    "id": "hook_c3",
-    "dom_key": "hook_c3",
     "text": "3.借袍哥/镇商/洋教三股势力写甲午至辛丑前夜死水下的惊雷暗涌。",
-    "start": 18.366,
-    "end": 24.931,
-    "duration": 6.565
+    "start": 22.033,
+    "end": 29.141,
+    "duration": 7.108
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "三十年代中期李劼人《死水微澜》为“大河小说”三部曲开山之作，",
-    "start": 25.786,
-    "end": 31.122,
-    "duration": 5.337
+    "start": 29.715,
+    "end": 34.923,
+    "duration": 5.207
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "再现晚清中西碰撞在四川激起的波澜，郭沫若赞其为“中国的左拉”。",
-    "start": 31.895,
-    "end": 37.285,
-    "duration": 5.391
+    "start": 35.262,
+    "end": 40.717,
+    "duration": 5.455
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 铺陈浓郁巴蜀民俗、绘晚清内陆全景",
-    "start": 38.002,
-    "end": 41.781,
-    "duration": 3.779
+    "start": 41.304,
+    "end": 45.3,
+    "duration": 3.996
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "以成都近郊天回镇为舞台，细描甲午战争至《辛丑条约》前后四川乡镇滞重生活；",
-    "start": 42.574,
-    "end": 49.593,
-    "duration": 7.02
+    "start": 45.874,
+    "end": 53.568,
+    "duration": 7.694
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "熟用四川方言俚语，再现吃茶摆龙门阵、赶场庙会、袍哥拜码头与婚丧嫁娶，绘川西民俗画卷。",
-    "start": 50.339,
-    "end": 58.815,
-    "duration": 8.477
+    "start": 54.155,
+    "end": 63.542,
+    "duration": 9.387
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 塑造泼辣底层女性典型、显突破礼教活力",
-    "start": 59.557,
-    "end": 63.926,
-    "duration": 4.369
+    "start": 64.129,
+    "end": 68.66,
+    "duration": 4.53
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "邓幺姑（蔡大嫂）美丽泼辣能干，渴望体面生活，迥异于传统温顺闺秀；",
-    "start": 64.653,
-    "end": 70.868,
-    "duration": 6.215
+    "start": 69.246,
+    "end": 76.186,
+    "duration": 6.939
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "不满木讷丈夫蔡兴顺，与袍哥头目罗歪嘴大胆相恋；",
-    "start": 71.648,
-    "end": 76.011,
-    "duration": 4.363
+    "start": 76.773,
+    "end": 82.331,
+    "duration": 5.559
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "罗潜逃后为护家尊果断转嫁投靠洋教的顾天成，显复杂女性生命活力。",
-    "start": 76.733,
-    "end": 82.76,
-    "duration": 6.027
+    "start": 82.528,
+    "end": 88.829,
+    "duration": 6.301
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 白描中西碰撞漩涡、剖时代巨变“微澜”",
-    "start": 83.499,
-    "end": 87.576,
-    "duration": 4.077
+    "start": 89.403,
+    "end": 93.647,
+    "duration": 4.244
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "借民间帮会罗歪嘴、小镇商人蔡兴顺及投靠洋教作威作福的顾天成蜕变；",
-    "start": 88.31,
-    "end": 94.814,
-    "duration": 6.504
+    "start": 94.233,
+    "end": 101.706,
+    "duration": 7.473
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "真实折射西方殖民势力渗入内陆引起的阶层分化震荡，写尽晚清表面如死水、内里暗流涌动之真实。",
-    "start": 95.555,
-    "end": 104.077,
-    "duration": 8.522
+    "start": 102.293,
+    "end": 112.097,
+    "duration": 9.804
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：李劼人“大河小说”三部曲开山之作（郭沫若赞“中国的左拉”）；",
-    "start": 104.894,
-    "end": 110.335,
-    "duration": 5.441
+    "start": 112.671,
+    "end": 118.113,
+    "duration": 5.442
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "专名务必写准：“天回镇”“罗歪嘴”；",
-    "start": 111.044,
-    "end": 113.768,
-    "duration": 2.724
+    "start": 118.478,
+    "end": 121.459,
+    "duration": 2.981
   },
   {
     "id": "guard_c2",
     "dom_key": "guard_c2",
     "text": "人物：邓幺姑（蔡大嫂）、蔡兴顺、罗歪嘴（袍哥）、顾天成（投洋教）。",
-    "start": 114.488,
-    "end": 120.885,
-    "duration": 6.398
+    "start": 121.707,
+    "end": 128.243,
+    "duration": 6.535
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 准确写出作者“李劼人”、三部曲“大河小说”、地点“天回镇”与“中国的左拉”评语？",
-    "start": 121.632,
-    "end": 128.985,
-    "duration": 7.353
+    "start": 128.817,
+    "end": 136.355,
+    "duration": 7.538
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合邓幺姑（蔡大嫂）周旋三男的脉络，分析其如何打破传统闺秀悲情套路？",
-    "start": 129.792,
-    "end": 137.956,
-    "duration": 8.164
+    "start": 136.929,
+    "end": 144.962,
+    "duration": 8.033
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 回答 2026 真题名解《〈死水微澜〉》及川西地域风俗画简答题？",
-    "start": 138.704,
-    "end": 145.298,
-    "duration": 6.594
+    "start": 145.536,
+    "end": 152.475,
+    "duration": 6.939
   }
 ]

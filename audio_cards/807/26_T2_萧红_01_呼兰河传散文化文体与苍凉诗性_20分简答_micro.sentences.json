@@ -1,170 +1,170 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "萧红·呼兰河传散文化文体与苍凉诗性",
+    "start": 0.134,
+    "end": 3.896,
+    "duration": 3.762
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "紧扣茅盾三喻与文体内核三步成篇：1.结构上用儿童有限视角串联散文化风俗图景；",
-    "start": 0.221,
-    "end": 8.748,
-    "duration": 8.527
+    "start": 4.485,
+    "end": 13.182,
+    "duration": 8.697
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "2.情感上把“祖父后花园的暖”和“大泥坑冷酷”硬并置出张力；",
-    "start": 9.601,
-    "end": 14.71,
-    "duration": 5.109
+    "start": 13.404,
+    "end": 19.328,
+    "duration": 5.923
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "3.主题上直剖十二岁小团圆媳妇“三次沸水洗澡”遭乡邻围观惨死，写出集体无意识悲凉。",
-    "start": 15.439,
-    "end": 23.416,
-    "duration": 7.977
+    "start": 19.628,
+    "end": 27.253,
+    "duration": 7.625
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "四十年代初萧红旅居香港写成《呼兰河传》，开辟地域与女性体验“诗化小说”路径，",
-    "start": 24.3,
-    "end": 30.929,
-    "duration": 6.629
+    "start": 27.84,
+    "end": 34.779,
+    "duration": 6.939
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "茅盾誉为“一篇叙事诗，一幅多彩的风土画，一串凄婉的歌谣”。",
-    "start": 31.665,
-    "end": 36.467,
-    "duration": 4.802
+    "start": 35.067,
+    "end": 40.092,
+    "duration": 5.025
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 突破线性叙事、辟写意散文化文体范式",
-    "start": 37.165,
-    "end": 41.161,
-    "duration": 3.996
+    "start": 40.679,
+    "end": 44.818,
+    "duration": 4.14
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "打破戏剧冲突与连贯情节主线，借天真儿童的有限视角道来边陲小镇风土、庙会与生老病死；",
-    "start": 41.894,
-    "end": 50.174,
-    "duration": 8.281
+    "start": 45.392,
+    "end": 54.506,
+    "duration": 9.114
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "以散文自由笔调结构为独立又精神呼应的风俗图景，具实感与诗意韵致。",
-    "start": 50.963,
-    "end": 57.058,
-    "duration": 6.096
+    "start": 55.093,
+    "end": 61.928,
+    "duration": 6.835
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 并置童年暖意与生存严酷、显冷暖张力",
-    "start": 57.788,
-    "end": 61.943,
-    "duration": 4.154
+    "start": 62.515,
+    "end": 66.798,
+    "duration": 4.283
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "澄澈笔墨写祖父后花园黄瓜随便吃、蜻蜓任凭飞的纯真自由，予童年温暖抚慰；",
-    "start": 62.676,
-    "end": 69.556,
-    "duration": 6.881
+    "start": 67.371,
+    "end": 75.118,
+    "duration": 7.746
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "另一边冷峻写大泥坑吞牲畜、严冬冻裂房瓦与乡民麻木生存，温情与荒凉强对照传达绵长叹息。",
-    "start": 70.294,
-    "end": 79.292,
-    "duration": 8.998
+    "start": 75.705,
+    "end": 85.86,
+    "duration": 10.155
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 直面国民愚昧麻木、揭看客围观下悲凉",
-    "start": 80.009,
-    "end": 84.153,
-    "duration": 4.144
+    "start": 86.447,
+    "end": 90.873,
+    "duration": 4.426
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "健壮活泼十二岁小团圆媳妇仅因不合妇德遭婆婆毒打，",
-    "start": 85.036,
-    "end": 89.453,
-    "duration": 4.417
+    "start": 91.447,
+    "end": 97.292,
+    "duration": 5.845
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
     "text": "在乡邻起哄看客围观下三次按入滚烫热水“洗澡治病”昏厥夭折；",
-    "start": 90.273,
-    "end": 95.829,
-    "duration": 5.557
+    "start": 97.567,
+    "end": 103.178,
+    "duration": 5.611
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "施暴与围观中的麻木冷漠将乡土陈腐与集体无意识残酷揭示得触目惊心。",
-    "start": 96.564,
-    "end": 102.912,
-    "duration": 6.349
+    "start": 103.765,
+    "end": 110.938,
+    "duration": 7.173
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
-    "text": "防混：四十年代初旅居香港写成；",
-    "start": 103.724,
-    "end": 106.902,
-    "duration": 3.178
+    "text": "防混：四十年代初旅居香港写成；茅盾名评“一篇叙事诗，一幅多彩的风土画，一串凄婉的歌谣”；",
+    "start": 111.525,
+    "end": 120.443,
+    "duration": 8.918
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
-    "text": "茅盾名评“一篇叙事诗，一幅多彩的风土画，一串凄婉的歌谣”；",
-    "start": 107.628,
-    "end": 112.435,
-    "duration": 4.807
-  },
-  {
-    "id": "guard_c2",
-    "dom_key": "guard_c2",
     "text": "核心意象对比：祖父后花园（暖） vs 东二道街大泥坑 & 小团圆媳妇热水澡（冷酷）。",
-    "start": 113.187,
-    "end": 120.384,
-    "duration": 7.197
+    "start": 120.666,
+    "end": 128.048,
+    "duration": 7.382
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 背诵茅盾为《呼兰河传》写的三个经典比喻定评？",
-    "start": 121.15,
-    "end": 126.416,
-    "duration": 5.266
+    "start": 128.621,
+    "end": 134.102,
+    "duration": 5.481
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 从“散文化儿童视角”“后花园vs大泥坑冷暖并置”“小团圆媳妇看客围观”三步复述全篇？",
-    "start": 127.142,
-    "end": 136.043,
-    "duration": 8.9
+    "start": 134.676,
+    "end": 143.816,
+    "duration": 9.14
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 回答 2023 真题简答《萧红〈呼兰河传〉内容与风格》怎么组织材料？",
-    "start": 136.815,
-    "end": 143.725,
-    "duration": 6.91
+    "start": 144.403,
+    "end": 151.55,
+    "duration": 7.147
   }
 ]

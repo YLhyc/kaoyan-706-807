@@ -1,186 +1,170 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "张爱玲·传奇小说文体范式与苍凉美学",
+    "start": 0.134,
+    "end": 3.727,
+    "duration": 3.593
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "写什么日常（倾城之恋）→剖多深心理（金锁记）",
-    "start": 0.234,
-    "end": 4.955,
-    "duration": 4.721
+    "text": "写什么日常（倾城之恋）→剖多深心理（金锁记）→用什么意象造冷艳感（月亮泪珠/葱绿配桃红），",
+    "start": 4.303,
+    "end": 13.729,
+    "duration": 9.426
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "→用什么意象造冷艳感（月亮泪珠/葱绿配桃红），",
-    "start": 5.694,
-    "end": 9.783,
-    "duration": 4.089
-  },
-  {
-    "id": "hook_c2",
-    "dom_key": "hook_c2",
     "text": "三点紧扣四十年代沦陷区上海“苍凉美学”。",
-    "start": 10.563,
-    "end": 13.961,
-    "duration": 3.398
+    "start": 14.042,
+    "end": 17.765,
+    "duration": 3.723
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "四十年代沦陷区上海，张爱玲以《传奇》小说集在抗战宏大叙事之外开辟都市现代“传奇”视界，独树苍凉美学。",
-    "start": 14.672,
-    "end": 24.099,
-    "duration": 9.427
+    "start": 18.352,
+    "end": 27.817,
+    "duration": 9.465
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 聚焦乱世日常世俗、揭示荒凉苍凉底色",
-    "start": 24.795,
-    "end": 29.146,
-    "duration": 4.351
+    "start": 28.404,
+    "end": 32.856,
+    "duration": 4.452
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "避开非黑即白意识形态，凝视都市男女物质欲望与生存心理博弈；",
-    "start": 29.878,
-    "end": 35.093,
-    "duration": 5.215
+    "start": 33.443,
+    "end": 39.341,
+    "duration": 5.897
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "白流苏与范柳原在浅水湾斤斤计较自私盘算，",
-    "start": 35.82,
-    "end": 39.547,
-    "duration": 3.727
+    "start": 39.928,
+    "end": 45.187,
+    "duration": 5.259
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
-    "text": "直到战火漫卷香港、断壁残垣生死边缘方获得平凡婚姻，",
-    "start": 40.227,
-    "end": 45.037,
-    "duration": 4.811
-  },
-  {
-    "id": "sec0_step1_c2",
-    "dom_key": "sec0_step1_c2",
-    "text": "凸显小人物在时代倾覆中的脆弱宿命。",
-    "start": 45.777,
-    "end": 48.696,
-    "duration": 2.919
+    "text": "直到战火漫卷香港、断壁残垣生死边缘方获得平凡婚姻，凸显小人物在时代倾覆中的脆弱宿命。",
+    "start": 45.488,
+    "end": 53.846,
+    "duration": 8.358
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 深潜潜意识暗角、解剖病态心理畸变",
-    "start": 49.455,
-    "end": 53.244,
-    "duration": 3.789
+    "start": 54.42,
+    "end": 58.351,
+    "duration": 3.931
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "融传统世情白描与西方现代心理分析为一体；",
-    "start": 53.99,
-    "end": 57.896,
-    "duration": 3.906
+    "start": 58.938,
+    "end": 63.976,
+    "duration": 5.038
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "曹七巧受门第歧视与病残丈夫折磨，将情感寄于金钱，",
-    "start": 58.686,
-    "end": 63.443,
-    "duration": 4.757
+    "text": "曹七巧受门第歧视与病残丈夫折磨，将情感寄于金钱，戴上黄金枷锁后折磨芝寿致死、拆散长安婚事；",
+    "start": 64.563,
+    "end": 75.513,
+    "duration": 10.949
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
-    "text": "戴上黄金枷锁后折磨芝寿致死、拆散长安婚事；",
-    "start": 64.269,
-    "end": 68.375,
-    "duration": 4.106
-  },
-  {
-    "id": "sec1_step1_c2",
-    "dom_key": "sec1_step1_c2",
     "text": "识破季泽骗局时打翻的酸梅汤滴落如迟迟夜漏，写尽被礼教与金欲吞噬之悲。",
-    "start": 69.09,
-    "end": 75.573,
-    "duration": 6.483
+    "start": 75.839,
+    "end": 82.748,
+    "duration": 6.909
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 古典白描融意象主义、造斑斓鬼气意象",
-    "start": 76.298,
-    "end": 80.355,
-    "duration": 4.057
+    "start": 83.322,
+    "end": 87.553,
+    "duration": 4.231
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "华美冷艳，善用陌生化的通感、奇诡比喻与强对比色彩；",
-    "start": 81.179,
-    "end": 85.811,
-    "duration": 4.632
+    "start": 88.14,
+    "end": 93.946,
+    "duration": 5.806
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "将三十年前月亮比作“红黄湿晕，像朵云轩信笺落泪珠”；",
-    "start": 86.57,
-    "end": 91.378,
-    "duration": 4.807
+    "start": 94.52,
+    "end": 100.222,
+    "duration": 5.702
   },
   {
     "id": "sec2_step1_c1",
     "dom_key": "sec2_step1_c1",
     "text": "“葱绿配桃红”感官刺激背后弥漫繁华散尽的末世虚无，成苍凉美学范式。",
-    "start": 92.09,
-    "end": 98.137,
-    "duration": 6.047
+    "start": 100.496,
+    "end": 106.785,
+    "duration": 6.288
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：四十年代沦陷区上海《传奇》小说集；",
-    "start": 98.883,
-    "end": 102.508,
-    "duration": 3.625
+    "start": 107.358,
+    "end": 111.303,
+    "duration": 3.944
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "重点代表作：《倾城之恋》（白流苏、范柳原，香港沦陷促成婚姻）与《金锁记》（曹七巧、芝寿、长安、季泽、酸梅汤夜漏）。",
-    "start": 103.261,
-    "end": 114.429,
-    "duration": 11.168
+    "start": 111.629,
+    "end": 122.787,
+    "duration": 11.158
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 结合《倾城之恋》说明“香港沦陷”与“平凡婚姻”之间的荒诞苍凉逻辑？",
-    "start": 115.192,
-    "end": 121.965,
-    "duration": 6.773
+    "start": 123.361,
+    "end": 130.144,
+    "duration": 6.783
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合曹七巧、芝寿、长安、季泽及“酸梅汤”细节分析《金锁记》心理病态？",
-    "start": 122.68,
-    "end": 130.522,
-    "duration": 7.843
+    "start": 130.731,
+    "end": 138.49,
+    "duration": 7.759
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 概括张爱玲在《传奇》中融合古典世情白描与西方心理/意象主义的独特范式？",
-    "start": 131.274,
-    "end": 139.568,
-    "duration": 8.294
+    "start": 139.077,
+    "end": 147.423,
+    "duration": 8.345
   }
 ]

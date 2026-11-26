@@ -1,146 +1,146 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "现代文学知识分子形象演变·百年流变机制与精神困境",
+    "start": 0.134,
+    "end": 5.055,
+    "duration": 4.921
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "紧扣三代“出路与困境”：先看五四狂人觉醒后《彷徨》吕纬甫、魏连殳脱离民众走入死局；",
-    "start": 0.236,
-    "end": 8.281,
-    "duration": 8.044
+    "start": 5.631,
+    "end": 14.406,
+    "duration": 8.775
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再看30-40年代分化成觉慧奔向革命、方罗兰动摇与方鸿渐陷入文化《围城》；",
-    "start": 9.028,
-    "end": 16.248,
-    "duration": 7.219
+    "start": 14.732,
+    "end": 22.01,
+    "duration": 7.278
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "最后看解放区陆萍/章品·文采及当代陆文婷在重压下的坚守。",
-    "start": 17.092,
-    "end": 22.63,
-    "duration": 5.539
+    "start": 22.111,
+    "end": 27.865,
+    "duration": 5.754
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "自五四以来，中国现当代知识分子形象的文学书写深刻折射知识阶层在启蒙、抗争与历史转折中的精神困境与道路抉择。",
-    "start": 23.408,
-    "end": 34.54,
-    "duration": 11.132
+    "start": 28.452,
+    "end": 39.714,
+    "duration": 11.262
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 五四启蒙期：先觉者觉醒与苦闷徘徊",
-    "start": 35.243,
-    "end": 39.044,
-    "duration": 3.801
+    "start": 40.301,
+    "end": 44.206,
+    "duration": 3.905
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "《狂人日记》先驱看破礼教“吃人”；随后新文化分化，《彷徨》剖析脱离民众的个人孤立困境；",
-    "start": 39.784,
-    "end": 47.319,
-    "duration": 7.536
+    "start": 44.793,
+    "end": 53.594,
+    "duration": 8.801
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "《在酒楼上》吕纬甫教读“子曰诗云”颓唐；《孤独者》魏连殳妥协为军阀幕僚，揭示个体反叛之死局。",
-    "start": 48.063,
-    "end": 56.201,
-    "duration": 8.138
+    "start": 54.168,
+    "end": 63.894,
+    "duration": 9.726
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 大革命退潮至四十年代：分化与精神围困",
-    "start": 56.949,
-    "end": 61.183,
-    "duration": 4.235
+    "start": 64.455,
+    "end": 68.868,
+    "duration": 4.413
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "巴金《家》觉慧决裂家庭奔向新生活；茅盾《动摇》方罗兰在左右势力间优柔动摇；",
-    "start": 62.004,
-    "end": 68.83,
-    "duration": 6.826
+    "start": 69.455,
+    "end": 78.36,
+    "duration": 8.905
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "钱锺书《围城》方鸿渐留学归国却在婚恋谋职与三闾大学进退失据，显中西文明夹击下精神困顿。",
-    "start": 69.669,
-    "end": 77.789,
-    "duration": 8.12
+    "start": 78.934,
+    "end": 89.05,
+    "duration": 10.116
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 解放区及当代期：投身工农、挫折中守理想",
-    "start": 78.547,
-    "end": 83.214,
-    "duration": 4.667
+    "start": 89.624,
+    "end": 94.519,
+    "duration": 4.895
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
-    "text": "丁玲《在医院中》借女医生陆萍写科学与小生产习气冲突；",
-    "start": 84.046,
-    "end": 88.522,
-    "duration": 4.476
-  },
-  {
-    "id": "sec2_step0_c1",
-    "dom_key": "sec2_step0_c1",
-    "text": "《太阳照在桑干河上》树深入实际章品、批评教条文采；",
-    "start": 89.322,
-    "end": 93.662,
-    "duration": 4.34
+    "text": "丁玲《在医院中》借女医生陆萍写科学与小生产习气冲突；《太阳照在桑干河上》树深入实际章品、批评教条文采；",
+    "start": 95.093,
+    "end": 106.003,
+    "duration": 10.91
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "谌容《人到中年》眼科医生陆文婷重压下恪守医者良知，显历尽沧桑后的精神坚守。",
-    "start": 94.422,
-    "end": 101.378,
-    "duration": 6.956
+    "start": 106.577,
+    "end": 114.897,
+    "duration": 8.319
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：知识分子演变三段人物链：①五四（狂人/吕纬甫/魏连殳） ②30–40年代（觉慧/方罗兰/方鸿渐） ③解放区及当代（丁玲《在医院中》陆萍/章品·文采/谌容《人到中年》陆文婷）。",
-    "start": 102.201,
-    "end": 120.319,
-    "duration": 18.119
+    "start": 115.483,
+    "end": 135.283,
+    "duration": 19.799
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 背全知识分子百年演变的九位代表人物及出处作品？",
-    "start": 121.032,
-    "end": 126.613,
-    "duration": 5.581
+    "start": 135.857,
+    "end": 141.637,
+    "duration": 5.78
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 解释鲁迅“无根反叛的死局”与钱锺书“文明夹缝围城”两种精神困境的差别？",
-    "start": 127.419,
-    "end": 134.93,
-    "duration": 7.511
+    "start": 142.224,
+    "end": 149.58,
+    "duration": 7.356
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 结合丁玲与谌容作品说明解放区至新时期知识分子与群众关系及良知坚守？",
-    "start": 135.649,
-    "end": 143.939,
-    "duration": 8.29
+    "start": 150.167,
+    "end": 158.603,
+    "duration": 8.436
   }
 ]

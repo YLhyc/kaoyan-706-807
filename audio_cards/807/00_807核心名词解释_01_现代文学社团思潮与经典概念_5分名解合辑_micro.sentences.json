@@ -1,922 +1,882 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "现代社团思潮与经典名解合辑",
+    "start": 0.134,
+    "end": 4.065,
+    "duration": 3.931
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "把16道现代名解按“五四社团争鸣→廿年代派别分化→左翼战时与解放区新风→人物与名篇代表”四层记忆，",
-    "start": 0.223,
-    "end": 10.413,
-    "duration": 10.19
+    "start": 4.641,
+    "end": 16.02,
+    "duration": 11.379
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "每题死守“时空→特质代表→定位”三格。",
-    "start": 11.214,
-    "end": 14.297,
-    "duration": 3.083
+    "start": 16.347,
+    "end": 19.744,
+    "duration": 3.397
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 文学研究会",
-    "start": 14.988,
-    "end": 16.63,
-    "duration": 1.643
+    "start": 20.331,
+    "end": 22.114,
+    "duration": 1.783
   },
   {
     "id": "sec0_s1_c0",
     "dom_key": "sec0_s1_c0",
     "text": "五四时期在北京成立的中国现代文学史上第一个纯文学社团。",
-    "start": 17.355,
-    "end": 23.178,
-    "duration": 5.823
+    "start": 22.688,
+    "end": 28.716,
+    "duration": 6.028
   },
   {
     "id": "sec0_s2_c0",
     "dom_key": "sec0_s2_c0",
     "text": "由周作人、茅盾、叶圣陶、郑振铎等发起，以《小说月报》为主要阵地。",
-    "start": 24.042,
-    "end": 30.95,
-    "duration": 6.908
+    "start": 29.29,
+    "end": 36.411,
+    "duration": 7.121
   },
   {
     "id": "sec0_s2_c1",
     "dom_key": "sec0_s2_c1",
     "text": "核心主张“为人生而艺术”，反对消遣与游戏文学，提倡写实主义与问题小说。",
-    "start": 31.749,
-    "end": 38.036,
-    "duration": 6.286
+    "start": 36.998,
+    "end": 43.442,
+    "duration": 6.444
   },
   {
     "id": "sec0_s2_c2",
     "dom_key": "sec0_s2_c2",
     "text": "代表作有叶圣陶《潘先生在难中》、冰心《超人》《斯人独憔悴》等。",
-    "start": 38.741,
-    "end": 44.023,
-    "duration": 5.283
+    "start": 44.029,
+    "end": 49.51,
+    "duration": 5.481
   },
   {
     "id": "sec0_s3_c0",
     "dom_key": "sec0_s3_c0",
     "text": "它确立了中国现代现实主义文学的主流传统。",
-    "start": 44.81,
-    "end": 49.354,
-    "duration": 4.544
+    "start": 50.097,
+    "end": 54.836,
+    "duration": 4.739
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 创造社",
-    "start": 50.094,
-    "end": 51.414,
-    "duration": 1.321
+    "start": 55.423,
+    "end": 56.854,
+    "duration": 1.431
   },
   {
     "id": "sec1_s1_c0",
     "dom_key": "sec1_s1_c0",
     "text": "五四时期在日本东京成立的著名浪漫主义文学社团。",
-    "start": 52.1,
-    "end": 57.06,
-    "duration": 4.96
+    "start": 57.428,
+    "end": 62.544,
+    "duration": 5.116
   },
   {
     "id": "sec1_s2_c0",
     "dom_key": "sec1_s2_c0",
     "text": "主要发起人有郭沫若、郁达夫、成仿吾等，后迁回国内，主办《创造季刊》等刊物。",
-    "start": 57.882,
-    "end": 65.693,
-    "duration": 7.81
+    "start": 63.131,
+    "end": 71.359,
+    "duration": 8.228
   },
   {
     "id": "sec1_s2_c1",
     "dom_key": "sec1_s2_c1",
     "text": "核心主张“为艺术而艺术”，强调文学是自我个性的自由表现，注重主观直抒胸臆与青春苦闷抒发。",
-    "start": 66.557,
-    "end": 75.204,
-    "duration": 8.647
+    "start": 71.946,
+    "end": 80.942,
+    "duration": 8.996
   },
   {
     "id": "sec1_s2_c2",
     "dom_key": "sec1_s2_c2",
     "text": "代表作有郭沫若《女神》、郁达夫《沉沦》。",
-    "start": 75.926,
-    "end": 78.964,
-    "duration": 3.038
+    "start": 81.529,
+    "end": 84.849,
+    "duration": 3.319
   },
   {
     "id": "sec1_s3_c0",
     "dom_key": "sec1_s3_c0",
     "text": "后期转向倡导无产阶级革命文学，对现代浪漫主义思潮贡献突出。",
-    "start": 79.748,
-    "end": 86.506,
-    "duration": 6.758
+    "start": 85.423,
+    "end": 92.401,
+    "duration": 6.978
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 新月派",
-    "start": 87.249,
-    "end": 88.642,
-    "duration": 1.394
+    "start": 92.988,
+    "end": 94.523,
+    "duration": 1.535
   },
   {
     "id": "sec2_s1_c0",
     "dom_key": "sec2_s1_c0",
     "text": "二十年代中后期活跃于北京、上海的重要现代诗歌与文学流派。",
-    "start": 89.389,
-    "end": 95.771,
-    "duration": 6.382
+    "start": 95.097,
+    "end": 101.685,
+    "duration": 6.588
   },
   {
     "id": "sec2_s2_c0",
     "dom_key": "sec2_s2_c0",
     "text": "以徐志摩、闻一多、梁实秋为核心，主办《晨报副刊·诗镌》《新月》月刊。",
-    "start": 96.601,
-    "end": 103.707,
-    "duration": 7.106
+    "start": 102.258,
+    "end": 110.057,
+    "duration": 7.798
   },
   {
     "id": "sec2_s2_c1",
     "dom_key": "sec2_s2_c1",
     "text": "针对早期白话诗散漫松弛的倾向，",
-    "start": 104.468,
-    "end": 107.226,
-    "duration": 2.759
+    "start": 110.644,
+    "end": 113.247,
+    "duration": 2.603
   },
   {
     "id": "sec2_s2_c2",
     "dom_key": "sec2_s2_c2",
     "text": "闻一多提出“戴着脚镣跳舞”的新格律诗主张与“音乐美、绘画美、建筑美”三美理论。",
-    "start": 107.988,
-    "end": 114.786,
-    "duration": 6.798
+    "start": 113.574,
+    "end": 120.5,
+    "duration": 6.926
   },
   {
     "id": "sec2_s2_c3",
     "dom_key": "sec2_s2_c3",
     "text": "代表作有闻一多《死水》、徐志摩《再别康桥》。",
-    "start": 115.559,
-    "end": 119.037,
-    "duration": 3.478
+    "start": 121.074,
+    "end": 124.875,
+    "duration": 3.801
   },
   {
     "id": "sec2_s3_c0",
     "dom_key": "sec2_s3_c0",
     "text": "该派有力推进了现代汉诗的格律化与形式规范。",
-    "start": 119.775,
-    "end": 124.671,
-    "duration": 4.896
+    "start": 125.449,
+    "end": 130.552,
+    "duration": 5.103
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 语丝文体",
-    "start": 125.461,
-    "end": 126.99,
-    "duration": 1.528
+    "start": 131.139,
+    "end": 132.817,
+    "duration": 1.679
   },
   {
     "id": "sec3_s1_c0",
     "dom_key": "sec3_s1_c0",
     "text": "二十年代中期伴随北京《语丝》周刊创刊而形成的一种现代散文文体范式。",
-    "start": 127.706,
-    "end": 134.535,
-    "duration": 6.829
+    "start": 133.391,
+    "end": 140.343,
+    "duration": 6.952
   },
   {
     "id": "sec3_s1_c1",
     "dom_key": "sec3_s1_c1",
     "text": "主要代表作家为鲁迅、周作人、林语堂、钱玄同等。",
-    "start": 135.246,
-    "end": 139.968,
-    "duration": 4.723
+    "start": 140.904,
+    "end": 145.825,
+    "duration": 4.921
   },
   {
     "id": "sec3_s2_c0",
     "dom_key": "sec3_s2_c0",
     "text": "其文体核心特质为“任意而谈，无所顾忌”，主张冲破传统桐城派文人雅调，",
-    "start": 140.795,
-    "end": 147.955,
-    "duration": 7.16
+    "start": 146.399,
+    "end": 153.69,
+    "duration": 7.291
   },
   {
     "id": "sec3_s2_c1",
     "dom_key": "sec3_s2_c1",
     "text": "广泛杂糅文言、白话与外来语，行文冷峻幽默、讽刺辛辣且富于哲理智性。",
-    "start": 148.714,
-    "end": 155.325,
-    "duration": 6.611
+    "start": 153.951,
+    "end": 160.786,
+    "duration": 6.835
   },
   {
     "id": "sec3_s3_c0",
     "dom_key": "sec3_s3_c0",
     "text": "代表作有鲁迅杂文与周作人小品散文，有力拓宽了中国现代随笔杂文的美学边界。",
-    "start": 156.078,
-    "end": 163.939,
-    "duration": 7.861
+    "start": 161.36,
+    "end": 169.38,
+    "duration": 8.02
   },
   {
     "id": "sec4_title_c0",
     "dom_key": "sec4_title_c0",
     "text": "05 · 现代评论派",
-    "start": 164.644,
-    "end": 166.369,
-    "duration": 1.725
+    "start": 169.967,
+    "end": 171.802,
+    "duration": 1.835
   },
   {
     "id": "sec4_s1_c0",
     "dom_key": "sec4_s1_c0",
     "text": "二十年代中期围绕北京《现代评论》周刊聚集的具有欧美自由主义倾向的知识分子流派。",
-    "start": 167.088,
-    "end": 174.935,
-    "duration": 7.846
+    "start": 172.389,
+    "end": 180.461,
+    "duration": 8.072
   },
   {
     "id": "sec4_s2_c0",
     "dom_key": "sec4_s2_c0",
     "text": "主要代表人物为胡适、陈西滢、王世杰等。",
-    "start": 175.773,
-    "end": 180.281,
-    "duration": 4.509
+    "start": 181.048,
+    "end": 185.799,
+    "duration": 4.752
   },
   {
     "id": "sec4_s2_c1",
     "dom_key": "sec4_s2_c1",
     "text": "在思想上主张英美绅士的平和稳健与法治渐进，倡导“闲话”文体；",
-    "start": 181.032,
-    "end": 186.638,
-    "duration": 5.605
+    "start": 186.373,
+    "end": 192.14,
+    "duration": 5.767
   },
   {
     "id": "sec4_s3_c0",
     "dom_key": "sec4_s3_c0",
     "text": "在文艺上强调学者式的理性公允与适度宽容，",
-    "start": 187.421,
-    "end": 192.088,
-    "duration": 4.667
+    "start": 192.727,
+    "end": 197.765,
+    "duration": 5.038
   },
   {
     "id": "sec4_s3_c1",
     "dom_key": "sec4_s3_c1",
     "text": "曾因“女师大风潮”等政治文化事件与鲁迅等语丝派展开激烈论战，",
-    "start": 192.918,
-    "end": 198.395,
-    "duration": 5.477
+    "start": 198.066,
+    "end": 203.69,
+    "duration": 5.624
   },
   {
     "id": "sec4_s3_c2",
     "dom_key": "sec4_s3_c2",
     "text": "展现了现代自由主义文人的复杂面貌。",
-    "start": 199.195,
-    "end": 202.098,
-    "duration": 2.904
+    "start": 203.899,
+    "end": 207.088,
+    "duration": 3.189
   },
   {
     "id": "sec5_title_c0",
     "dom_key": "sec5_title_c0",
     "text": "06 · 学衡派",
-    "start": 202.85,
-    "end": 204.225,
-    "duration": 1.375
+    "start": 207.675,
+    "end": 209.158,
+    "duration": 1.483
   },
   {
     "id": "sec5_s1_c0",
     "dom_key": "sec5_s1_c0",
     "text": "二十年代初以南京《学衡》杂志为核心阵地的文化保守主义知识分子群体。",
-    "start": 204.948,
-    "end": 211.625,
-    "duration": 6.677
+    "start": 209.745,
+    "end": 216.645,
+    "duration": 6.9
   },
   {
     "id": "sec5_s2_c0",
     "dom_key": "sec5_s2_c0",
     "text": "主要代表人物有梅光迪、胡先骕、吴宓等。",
-    "start": 212.422,
-    "end": 216.847,
-    "duration": 4.424
+    "start": 217.232,
+    "end": 221.893,
+    "duration": 4.66
   },
   {
     "id": "sec5_s3_c0",
     "dom_key": "sec5_s3_c0",
     "text": "受美国白璧德“新人文主义”思想影响，在文学革命大潮中主张“昌明国粹，融化新知”，",
-    "start": 217.672,
-    "end": 225.676,
-    "duration": 8.005
+    "start": 222.467,
+    "end": 230.76,
+    "duration": 8.293
   },
   {
     "id": "sec5_s3_c1",
     "dom_key": "sec5_s3_c1",
     "text": "强烈反对激进的新文化运动与废除文言文，捍卫传统儒家人伦道德与古文正统，",
-    "start": 226.416,
-    "end": 233.236,
-    "duration": 6.82
+    "start": 230.969,
+    "end": 238.078,
+    "duration": 7.108
   },
   {
     "id": "sec5_s3_c2",
     "dom_key": "sec5_s3_c2",
     "text": "客观上对反思激进主义思潮具有一定的文化史参照价值。",
-    "start": 234.0,
-    "end": 238.717,
-    "duration": 4.717
+    "start": 238.179,
+    "end": 242.93,
+    "duration": 4.752
   },
   {
     "id": "sec6_title_c0",
     "dom_key": "sec6_title_c0",
     "text": "07 · “革命加恋爱”小说",
-    "start": 239.418,
-    "end": 241.602,
-    "duration": 2.184
+    "start": 243.517,
+    "end": 245.847,
+    "duration": 2.33
   },
   {
     "id": "sec6_s1_c0",
     "dom_key": "sec6_s1_c0",
     "text": "大革命失败前后在左翼文学界迅速流行的一种都市政治通俗叙事模式。",
-    "start": 242.321,
-    "end": 249.023,
-    "duration": 6.702
+    "start": 246.434,
+    "end": 253.269,
+    "duration": 6.835
   },
   {
     "id": "sec6_s1_c1",
     "dom_key": "sec6_s1_c1",
     "text": "主要代表作家为蒋光慈、洪灵菲等。",
-    "start": 249.729,
-    "end": 252.84,
-    "duration": 3.111
+    "start": 253.856,
+    "end": 257.162,
+    "duration": 3.306
   },
   {
     "id": "sec6_s2_c0",
     "dom_key": "sec6_s2_c0",
-    "text": "其核心模式为小资产阶级知识青年在浪漫情爱受挫后，",
-    "start": 253.679,
-    "end": 259.488,
-    "duration": 5.81
+    "text": "其核心模式为小资产阶级知识青年在浪漫情爱受挫后，在革命战友感召下走向工农武装斗争，以革命抉择化解情爱幻灭。",
+    "start": 257.723,
+    "end": 270.001,
+    "duration": 12.278
   },
   {
     "id": "sec6_s2_c1",
     "dom_key": "sec6_s2_c1",
-    "text": "在革命战友感召下走向工农武装斗争，以革命抉择化解情爱幻灭。",
-    "start": 260.247,
-    "end": 266.07,
-    "duration": 5.822
-  },
-  {
-    "id": "sec6_s2_c2",
-    "dom_key": "sec6_s2_c2",
     "text": "代表作有蒋光慈《冲出云围的月亮》《野祭》、洪灵菲《流亡》。",
-    "start": 266.801,
-    "end": 271.484,
-    "duration": 4.683
+    "start": 270.588,
+    "end": 275.587,
+    "duration": 4.999
   },
   {
     "id": "sec6_s3_c0",
     "dom_key": "sec6_s3_c0",
     "text": "该模式虽具动员效应，但后期陷入公式化、概念化的创作弊端。",
-    "start": 272.22,
-    "end": 278.656,
-    "duration": 6.436
+    "start": 276.302,
+    "end": 282.876,
+    "duration": 6.574
   },
   {
     "id": "sec7_title_c0",
     "dom_key": "sec7_title_c0",
     "text": "08 · 九叶诗派",
-    "start": 279.357,
-    "end": 280.984,
-    "duration": 1.626
+    "start": 283.466,
+    "end": 285.235,
+    "duration": 1.77
   },
   {
     "id": "sec7_s1_c0",
     "dom_key": "sec7_s1_c0",
     "text": "四十年代后期活跃于国统区的现代主义诗歌流派。",
-    "start": 281.732,
-    "end": 286.538,
-    "duration": 4.805
+    "start": 285.822,
+    "end": 290.795,
+    "duration": 4.973
   },
   {
     "id": "sec7_s2_c0",
     "dom_key": "sec7_s2_c0",
     "text": "因八十年代初出版《九叶集》而得名，",
-    "start": 287.371,
-    "end": 291.311,
-    "duration": 3.94
+    "start": 291.382,
+    "end": 295.353,
+    "duration": 3.97
   },
   {
     "id": "sec7_s2_c1",
     "dom_key": "sec7_s2_c1",
     "text": "成员主要由上海都会诗人辛笛、杭约赫、陈敬容、唐湜、唐祈与西南联大诗人穆旦、郑敏、杜运燮、袁可嘉等构成。",
-    "start": 292.036,
-    "end": 302.324,
-    "duration": 10.289
+    "start": 295.679,
+    "end": 306.277,
+    "duration": 10.598
   },
   {
     "id": "sec7_s2_c2",
     "dom_key": "sec7_s2_c2",
-    "text": "诗派自觉反思标语口号化倾向，",
-    "start": 303.114,
-    "end": 305.738,
-    "duration": 2.624
+    "text": "诗派自觉反思标语口号化倾向，主张将现实主义历史苦难感与西方现代主义智性沉思融为一体，",
+    "start": 306.864,
+    "end": 315.405,
+    "duration": 8.541
   },
   {
     "id": "sec7_s2_c3",
     "dom_key": "sec7_s2_c3",
-    "text": "主张将现实主义历史苦难感与西方现代主义智性沉思融为一体，",
-    "start": 306.469,
-    "end": 311.866,
-    "duration": 5.397
-  },
-  {
-    "id": "sec7_s2_c4",
-    "dom_key": "sec7_s2_c4",
     "text": "开创“新诗现代化”的综合诗学范式。",
-    "start": 312.607,
-    "end": 315.305,
-    "duration": 2.698
+    "start": 315.614,
+    "end": 318.399,
+    "duration": 2.785
   },
   {
     "id": "sec7_s3_c0",
     "dom_key": "sec7_s3_c0",
     "text": "代表作有穆旦《赞美》《森林之魅》、杜运燮《秋》，标志着现代汉诗本体建构的成熟。",
-    "start": 316.025,
-    "end": 323.743,
-    "duration": 7.719
+    "start": 318.973,
+    "end": 327.084,
+    "duration": 8.111
   },
   {
     "id": "sec8_title_c0",
     "dom_key": "sec8_title_c0",
     "text": "09 · 山药蛋派",
-    "start": 324.458,
-    "end": 325.939,
-    "duration": 1.481
+    "start": 327.671,
+    "end": 329.311,
+    "duration": 1.64
   },
   {
     "id": "sec8_s1_c0",
     "dom_key": "sec8_s1_c0",
     "text": "发轫于抗战后期、正式形成于建国后五六十年代的山西农村现实主义文学流派。",
-    "start": 326.644,
-    "end": 333.96,
-    "duration": 7.316
+    "start": 329.872,
+    "end": 337.319,
+    "duration": 7.447
   },
   {
     "id": "sec8_s1_c1",
     "dom_key": "sec8_s1_c1",
     "text": "以赵树理为核心，主要作家有马烽、西戎、束为等，创作带有浓郁的晋东南乡土气息。",
-    "start": 334.707,
-    "end": 341.888,
-    "duration": 7.18
+    "start": 337.906,
+    "end": 345.209,
+    "duration": 7.304
   },
   {
     "id": "sec8_s2_c0",
     "dom_key": "sec8_s2_c0",
     "text": "作家坚持工农兵方向，以大众化的民间评书说唱笔调，描写农村宗法变革与封建迷信破除。",
-    "start": 342.652,
-    "end": 351.843,
-    "duration": 9.191
+    "start": 345.796,
+    "end": 355.313,
+    "duration": 9.517
   },
   {
     "id": "sec8_s2_c1",
     "dom_key": "sec8_s2_c1",
     "text": "代表作有赵树理《小二黑结婚》《李有才板话》。",
-    "start": 352.692,
-    "end": 356.111,
-    "duration": 3.419
+    "start": 355.9,
+    "end": 359.728,
+    "duration": 3.827
   },
   {
     "id": "sec8_s3_c0",
     "dom_key": "sec8_s3_c0",
     "text": "该派开创了现代小说民族化、大众化的成功范例。",
-    "start": 356.871,
-    "end": 361.867,
-    "duration": 4.996
+    "start": 360.314,
+    "end": 365.457,
+    "duration": 5.142
   },
   {
     "id": "sec9_title_c0",
     "dom_key": "sec9_title_c0",
     "text": "10 · 荷花淀派",
-    "start": 362.57,
-    "end": 364.216,
-    "duration": 1.647
+    "start": 366.044,
+    "end": 367.84,
+    "duration": 1.796
   },
   {
     "id": "sec9_s1_c0",
     "dom_key": "sec9_s1_c0",
     "text": "抗战时期及建国初期形成的以孙犁为代表的河北白洋淀乡土抒情文学流派。",
-    "start": 364.975,
-    "end": 373.021,
-    "duration": 8.046
+    "start": 368.426,
+    "end": 376.642,
+    "duration": 8.215
   },
   {
     "id": "sec9_s1_c1",
     "dom_key": "sec9_s1_c1",
     "text": "主要作家有孙犁、刘绍棠、从维熙等。",
-    "start": 373.783,
-    "end": 377.281,
-    "duration": 3.497
+    "start": 377.229,
+    "end": 380.912,
+    "duration": 3.684
   },
   {
     "id": "sec9_s2_c0",
     "dom_key": "sec9_s2_c0",
-    "text": "该派以战争风云为背景，避开残酷血腥厮杀，",
-    "start": 378.1,
-    "end": 382.867,
-    "duration": 4.767
+    "text": "该派以战争风云为背景，避开残酷血腥厮杀，转向开掘底层人民纯朴真挚的人性美与人情美，",
+    "start": 381.486,
+    "end": 391.629,
+    "duration": 10.142
   },
   {
     "id": "sec9_s2_c1",
     "dom_key": "sec9_s2_c1",
-    "text": "转向开掘底层人民纯朴真挚的人性美与人情美，语言清新秀丽、情景交融，",
-    "start": 383.616,
-    "end": 390.397,
-    "duration": 6.781
-  },
-  {
-    "id": "sec9_s2_c2",
-    "dom_key": "sec9_s2_c2",
-    "text": "具诗化小说特征。",
-    "start": 391.269,
-    "end": 392.66,
-    "duration": 1.392
+    "text": "语言清新秀丽、情景交融，具诗化小说特征。",
+    "start": 391.942,
+    "end": 395.886,
+    "duration": 3.944
   },
   {
     "id": "sec9_s3_c0",
     "dom_key": "sec9_s3_c0",
     "text": "代表作有孙犁《荷花淀》《芦花荡》，在现当代革命文学中独树一帜。",
-    "start": 393.433,
-    "end": 399.977,
-    "duration": 6.544
+    "start": 396.46,
+    "end": 403.308,
+    "duration": 6.848
   },
   {
     "id": "sec10_title_c0",
     "dom_key": "sec10_title_c0",
     "text": "11 · 繁漪",
-    "start": 400.693,
-    "end": 402.043,
-    "duration": 1.35
+    "start": 403.895,
+    "end": 405.405,
+    "duration": 1.509
   },
   {
     "id": "sec10_s1_c0",
     "dom_key": "sec10_s1_c0",
     "text": "曹禺话剧《雷雨》中的核心女主人公。",
-    "start": 402.776,
-    "end": 406.305,
-    "duration": 3.529
+    "start": 405.979,
+    "end": 409.61,
+    "duration": 3.632
   },
   {
     "id": "sec10_s1_c1",
     "dom_key": "sec10_s1_c1",
     "text": "中国现代戏剧史上塑造得尤为丰满的复杂女性典型。",
-    "start": 407.037,
-    "end": 411.302,
-    "duration": 4.265
+    "start": 410.197,
+    "end": 414.636,
+    "duration": 4.439
   },
   {
     "id": "sec10_s2_c0",
     "dom_key": "sec10_s2_c0",
-    "text": "她性格具有“雷雨”般原始、炽烈的生命蛮力，身陷周朴园冷酷封建专制窒息的周公馆，",
-    "start": 412.105,
-    "end": 420.175,
-    "duration": 8.07
-  },
-  {
-    "id": "sec10_s2_c1",
-    "dom_key": "sec10_s2_c1",
-    "text": "与继子周萍发生畸恋；",
-    "start": 420.933,
-    "end": 422.708,
-    "duration": 1.775
+    "text": "她性格具有“雷雨”般原始、炽烈的生命蛮力，身陷周朴园冷酷封建专制窒息的周公馆，与继子周萍发生畸恋；",
+    "start": 415.223,
+    "end": 425.561,
+    "duration": 10.338
   },
   {
     "id": "sec10_s3_c0",
     "dom_key": "sec10_s3_c0",
     "text": "遭周萍遗弃后由爱生恨，在雷雨之夜撕开一切虚伪遮羞布，",
-    "start": 423.501,
-    "end": 429.45,
-    "duration": 5.949
+    "start": 426.148,
+    "end": 432.657,
+    "duration": 6.509
   },
   {
     "id": "sec10_s3_c1",
     "dom_key": "sec10_s3_c1",
-    "text": "最终在乱伦罪孽与儿子死亡的惨烈冲击下精神崩溃，",
-    "start": 430.272,
-    "end": 434.786,
-    "duration": 4.514
-  },
-  {
-    "id": "sec10_s3_c2",
-    "dom_key": "sec10_s3_c2",
-    "text": "成为封建礼教压迫下的反抗者与殉葬品。",
-    "start": 435.569,
-    "end": 438.801,
-    "duration": 3.232
+    "text": "最终在乱伦罪孽与儿子死亡的惨烈冲击下精神崩溃，成为封建礼教压迫下的反抗者与殉葬品。",
+    "start": 432.88,
+    "end": 441.485,
+    "duration": 8.606
   },
   {
     "id": "sec11_title_c0",
     "dom_key": "sec11_title_c0",
     "text": "12 · 吴荪甫",
-    "start": 439.57,
-    "end": 441.113,
-    "duration": 1.543
+    "start": 442.072,
+    "end": 443.725,
+    "duration": 1.653
   },
   {
     "id": "sec11_s1_c0",
     "dom_key": "sec11_s1_c0",
     "text": "茅盾长篇小说《子夜》的主人公。",
-    "start": 441.809,
-    "end": 444.97,
-    "duration": 3.162
+    "start": 444.312,
+    "end": 447.54,
+    "duration": 3.228
   },
   {
     "id": "sec11_s1_c1",
     "dom_key": "sec11_s1_c1",
     "text": "中国现代文学史上极为丰满的民族资产阶级典型形象。",
-    "start": 445.703,
-    "end": 450.348,
-    "duration": 4.645
+    "start": 448.127,
+    "end": 452.931,
+    "duration": 4.804
   },
   {
     "id": "sec11_s2_c0",
     "dom_key": "sec11_s2_c0",
     "text": "他精明强干、怀抱“实业救国”工业宏图；",
-    "start": 451.171,
-    "end": 455.379,
-    "duration": 4.208
+    "start": 453.518,
+    "end": 457.97,
+    "duration": 4.452
   },
   {
     "id": "sec11_s3_c0",
     "dom_key": "sec11_s3_c0",
     "text": "对内勾结反动势力残酷镇压丝厂工潮，",
-    "start": 456.177,
-    "end": 460.471,
-    "duration": 4.294
+    "start": 458.557,
+    "end": 463.022,
+    "duration": 4.465
   },
   {
     "id": "sec11_s3_c1",
     "dom_key": "sec11_s3_c1",
     "text": "对外却在半殖民地畸形秩序中遭买办金融巨头赵伯韬的资本围剿与亲友背叛，",
-    "start": 461.213,
-    "end": 467.68,
-    "duration": 6.467
+    "start": 463.322,
+    "end": 470.157,
+    "duration": 6.835
   },
   {
     "id": "sec11_s3_c2",
     "dom_key": "sec11_s3_c2",
     "text": "最终在公债市场惨败破产，深刻印证了半殖民地中国民族实业救国抱负的破灭。",
-    "start": 468.429,
-    "end": 475.312,
-    "duration": 6.883
+    "start": 470.471,
+    "end": 477.093,
+    "duration": 6.622
   },
   {
     "id": "sec12_title_c0",
     "dom_key": "sec12_title_c0",
     "text": "13 · 《新青年》",
-    "start": 476.064,
-    "end": 477.597,
-    "duration": 1.533
+    "start": 477.68,
+    "end": 479.398,
+    "duration": 1.718
   },
   {
     "id": "sec12_s1_c0",
     "dom_key": "sec12_s1_c0",
     "text": "五四新文化运动的策源地与核心阵地杂志。",
-    "start": 478.337,
-    "end": 482.513,
-    "duration": 4.176
+    "start": 479.959,
+    "end": 484.255,
+    "duration": 4.296
   },
   {
     "id": "sec12_s2_c0",
     "dom_key": "sec12_s2_c0",
     "text": "陈独秀在上海创刊（初名《青年杂志》），后迁至北京。",
-    "start": 483.263,
-    "end": 488.514,
-    "duration": 5.251
+    "start": 484.842,
+    "end": 490.27,
+    "duration": 5.429
   },
   {
     "id": "sec12_s2_c1",
     "dom_key": "sec12_s2_c1",
     "text": "主要编委有李大钊、鲁迅、胡适、钱玄同等。",
-    "start": 489.285,
-    "end": 493.499,
-    "duration": 4.214
+    "start": 490.857,
+    "end": 495.27,
+    "duration": 4.413
   },
   {
     "id": "sec12_s3_c0",
     "dom_key": "sec12_s3_c0",
     "text": "杂志以“民主（德先生）与科学（赛先生）”为口号，",
-    "start": 494.256,
-    "end": 499.666,
-    "duration": 5.41
+    "start": 495.831,
+    "end": 501.078,
+    "duration": 5.246
   },
   {
     "id": "sec12_s3_c1",
     "dom_key": "sec12_s3_c1",
     "text": "发表《文学改良刍议》《文学革命论》与中国第一篇现代白话小说《狂人日记》，",
-    "start": 500.429,
-    "end": 506.201,
-    "duration": 5.772
+    "start": 501.378,
+    "end": 507.666,
+    "duration": 6.288
   },
   {
     "id": "sec12_s3_c2",
     "dom_key": "sec12_s3_c2",
     "text": "标志着中国现代思想启蒙与新文学革命的正式发轫。",
-    "start": 506.929,
-    "end": 511.249,
-    "duration": 4.32
+    "start": 507.967,
+    "end": 512.523,
+    "duration": 4.556
   },
   {
     "id": "sec13_title_c0",
     "dom_key": "sec13_title_c0",
     "text": "14 · 《死水微澜》",
-    "start": 512.006,
-    "end": 513.854,
-    "duration": 1.849
+    "start": 513.127,
+    "end": 515.027,
+    "duration": 1.9
   },
   {
     "id": "sec13_s1_c0",
     "dom_key": "sec13_s1_c0",
     "text": "三十年代中期李劼人发表的长篇小说。",
-    "start": 514.578,
-    "end": 518.328,
-    "duration": 3.75
+    "start": 515.601,
+    "end": 519.467,
+    "duration": 3.866
   },
   {
     "id": "sec13_s2_c0",
     "dom_key": "sec13_s2_c0",
     "text": "其“大河小说”三部曲开山之作。",
-    "start": 519.07,
-    "end": 522.507,
-    "duration": 3.437
+    "start": 520.054,
+    "end": 523.712,
+    "duration": 3.658
   },
   {
     "id": "sec13_s3_c0",
     "dom_key": "sec13_s3_c0",
     "text": "小说以晚清成都近郊天回镇为背景，",
-    "start": 523.298,
-    "end": 527.366,
-    "duration": 4.068
+    "start": 524.286,
+    "end": 528.517,
+    "duration": 4.231
   },
   {
     "id": "sec13_s3_c1",
     "dom_key": "sec13_s3_c1",
     "text": "通过邓幺姑（蔡大嫂）泼辣抗争、袍哥头目罗歪嘴的浮沉以及顾天成投靠洋教的曲折命运，",
-    "start": 528.179,
-    "end": 536.056,
-    "duration": 7.877
+    "start": 528.804,
+    "end": 536.863,
+    "duration": 8.059
   },
   {
     "id": "sec13_s3_c2",
     "dom_key": "sec13_s3_c2",
     "text": "原汁原味地展现了川西平原独特的民俗风情与社会结构，",
-    "start": 536.786,
-    "end": 541.227,
-    "duration": 4.442
+    "start": 536.977,
+    "end": 541.663,
+    "duration": 4.687
   },
   {
     "id": "sec13_s3_c3",
     "dom_key": "sec13_s3_c3",
     "text": "深刻剖析了近代中西文化剧烈冲突下内陆社会的暗涌。",
-    "start": 541.95,
-    "end": 546.443,
-    "duration": 4.493
+    "start": 541.886,
+    "end": 546.572,
+    "duration": 4.686
   },
   {
     "id": "sec14_title_c0",
     "dom_key": "sec14_title_c0",
     "text": "15 · 《茶馆》",
-    "start": 547.246,
-    "end": 548.687,
-    "duration": 1.441
+    "start": 547.159,
+    "end": 548.734,
+    "duration": 1.574
   },
   {
     "id": "sec14_s1_c0",
     "dom_key": "sec14_s1_c0",
     "text": "五十年代后期老舍创作的三幕话剧。",
-    "start": 549.394,
-    "end": 553.254,
-    "duration": 3.86
+    "start": 549.295,
+    "end": 553.278,
+    "duration": 3.983
   },
   {
     "id": "sec14_s2_c0",
     "dom_key": "sec14_s2_c0",
     "text": "中国当代现实主义话剧艺术的巅峰之作。",
-    "start": 554.046,
-    "end": 558.189,
-    "duration": 4.143
+    "start": 553.865,
+    "end": 558.239,
+    "duration": 4.374
   },
   {
     "id": "sec14_s3_c0",
     "dom_key": "sec14_s3_c0",
-    "text": "剧作打破传统因果戏结构，独创“图卷戏”散点透视范式，",
-    "start": 558.969,
-    "end": 564.559,
-    "duration": 5.59
+    "text": "剧作打破传统因果戏结构，独创“图卷戏”散点透视范式，借北京裕泰茶馆半个世纪的变迁，",
+    "start": 558.911,
+    "end": 568.038,
+    "duration": 9.127
   },
   {
     "id": "sec14_s3_c1",
     "dom_key": "sec14_s3_c1",
-    "text": "借北京裕泰茶馆半个世纪的变迁，生动串联起七十多位各阶层群像，",
-    "start": 565.312,
-    "end": 570.78,
-    "duration": 5.468
+    "text": "生动串联起七十多位各阶层群像，通过王利发等小人物的灭顶之灾，",
+    "start": 568.26,
+    "end": 573.975,
+    "duration": 5.715
   },
   {
     "id": "sec14_s3_c2",
     "dom_key": "sec14_s3_c2",
-    "text": "通过王利发等小人物的灭顶之灾，",
-    "start": 571.539,
-    "end": 574.063,
-    "duration": 2.524
-  },
-  {
-    "id": "sec14_s3_c3",
-    "dom_key": "sec14_s3_c3",
     "text": "揭示了清末、北洋军阀至国民党反动统治三代旧制度不可逆转的衰亡命运。",
-    "start": 574.759,
-    "end": 581.14,
-    "duration": 6.381
+    "start": 574.076,
+    "end": 580.325,
+    "duration": 6.249
   },
   {
     "id": "sec15_title_c0",
     "dom_key": "sec15_title_c0",
     "text": "16 · 《屈原》",
-    "start": 581.868,
-    "end": 583.244,
-    "duration": 1.375
+    "start": 580.912,
+    "end": 582.395,
+    "duration": 1.483
   },
   {
     "id": "sec15_s1_c0",
     "dom_key": "sec15_s1_c0",
     "text": "抗战相持阶段郭沫若在重庆创作的五幕浪漫主义历史剧。",
-    "start": 583.917,
-    "end": 589.719,
-    "duration": 5.802
+    "start": 582.956,
+    "end": 588.893,
+    "duration": 5.937
   },
   {
     "id": "sec15_s2_c0",
     "dom_key": "sec15_s2_c0",
     "text": "剧作秉持“失事求似”的美学原则，",
-    "start": 590.513,
-    "end": 593.943,
-    "duration": 3.431
+    "start": 589.48,
+    "end": 593.073,
+    "duration": 3.593
   },
   {
     "id": "sec15_s2_c1",
     "dom_key": "sec15_s2_c1",
     "text": "借战国时代楚国屈原坚持联齐抗秦、遭南后、靳尚与秦相张仪陷害的崇高悲剧，",
-    "start": 594.653,
-    "end": 601.844,
-    "duration": 7.192
+    "start": 593.36,
+    "end": 600.716,
+    "duration": 7.356
   },
   {
     "id": "sec15_s2_c2",
     "dom_key": "sec15_s2_c2",
     "text": "深刻讽喻国民党消极抗战、积极反共的黑暗现实。",
-    "start": 602.551,
-    "end": 606.741,
-    "duration": 4.19
+    "start": 601.003,
+    "end": 605.351,
+    "duration": 4.348
   },
   {
     "id": "sec15_s3_c0",
     "dom_key": "sec15_s3_c0",
     "text": "剧中屈原在东皇太一庙迸发出的《雷电颂》，以狂飙突进的诗情凝聚了中华民族宁死不屈的反侵略精神。",
-    "start": 607.515,
-    "end": 617.189,
-    "duration": 9.675
+    "start": 605.938,
+    "end": 615.885,
+    "duration": 9.947
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "名解三步公式：① 时空定位定性（何时何地谁创作/发起）→ ② 主张特质与代表作 → ③ 文学史地位；",
-    "start": 617.996,
-    "end": 628.404,
-    "duration": 10.408
+    "start": 616.459,
+    "end": 627.356,
+    "duration": 10.897
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "每题独立成块，考场控制在3-4分钟、80-120字。",
-    "start": 629.144,
-    "end": 634.217,
-    "duration": 5.074
+    "start": 627.553,
+    "end": 633.02,
+    "duration": 5.468
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 背出“为人生而艺术”（文学研究会）与“为艺术而艺术”（创造社）的阵地刊物、发起人与代表作？",
-    "start": 634.941,
-    "end": 644.362,
-    "duration": 9.421
+    "start": 633.594,
+    "end": 642.955,
+    "duration": 9.361
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 迅速区分20年代三股文风：新月派三美、语丝文体“任意而谈”、学衡派“昌明国粹，融化新知”？",
-    "start": 645.086,
-    "end": 654.376,
-    "duration": 9.29
+    "start": 643.542,
+    "end": 652.955,
+    "duration": 9.413
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 口述近五年真题高频点：吴荪甫（25）、《死水微澜》（26）、《茶馆》“图卷戏”（18/26）、《屈原》“失事求似”（25）？",
-    "start": 655.1,
-    "end": 667.375,
-    "duration": 12.274
+    "start": 653.542,
+    "end": 666.757,
+    "duration": 13.215
   }
 ]

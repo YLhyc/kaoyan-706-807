@@ -1,178 +1,170 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "鲁迅·故事新编历史小说创新",
+    "start": 0.134,
+    "end": 2.737,
+    "duration": 2.603
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "“古今杂糅油滑”破神圣→“庄严与荒诞并置”写悲凉→“打通三体”见晚期返璞归真，",
-    "start": 0.223,
-    "end": 7.975,
-    "duration": 7.752
+    "start": 3.326,
+    "end": 11.672,
+    "duration": 8.345
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "三步紧凑精准涵盖《理水》《奔月》《铸剑》《补天》《非攻》五篇核心例证。",
-    "start": 8.741,
-    "end": 14.861,
-    "duration": 6.12
+    "start": 11.998,
+    "end": 18.625,
+    "duration": 6.627
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "鲁迅晚期《故事新编》是历史小说文体试验划时代杰作，摒弃“据事直书”与政论套路，",
-    "start": 15.628,
-    "end": 22.501,
-    "duration": 6.873
+    "start": 19.212,
+    "end": 26.138,
+    "duration": 6.926
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "融合神话、现代心理与杂文笔法开创“新历史小说”。",
-    "start": 23.369,
-    "end": 27.859,
-    "duration": 4.49
+    "start": 26.321,
+    "end": 30.851,
+    "duration": 4.53
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · “古今杂糅”与戏谑“油滑”破历史光环",
-    "start": 28.557,
-    "end": 32.097,
-    "duration": 3.54
+    "start": 31.438,
+    "end": 35.304,
+    "duration": 3.866
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "依古代神话史料骨架打破时空界限，将现代口语、摩登细节与文人论战植入远古；",
-    "start": 32.897,
-    "end": 40.206,
-    "duration": 7.309
+    "start": 35.891,
+    "end": 44.002,
+    "duration": 8.111
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "文化山学者乘奇肱飞车考察大谈“古貌林”“O.K.”，与吃粗粮治水大禹滑稽对照，",
-    "start": 40.998,
-    "end": 47.91,
-    "duration": 6.912
+    "start": 44.589,
+    "end": 53.078,
+    "duration": 8.489
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "丑角式“油滑”成反讽现代病态知识分子之镜。",
-    "start": 48.657,
-    "end": 52.166,
-    "duration": 3.509
+    "start": 53.352,
+    "end": 57.362,
+    "duration": 4.009
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 庄严与荒诞并置、写先驱被消磨之悲",
-    "start": 52.883,
-    "end": 57.164,
-    "duration": 4.281
+    "start": 57.923,
+    "end": 62.323,
+    "duration": 4.4
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "故意将视点由创业高光移向功成后凡俗日常：《奔月》写后羿射尽野兽后每日吃乌鸦炸酱面的英雄末路；",
-    "start": 57.888,
-    "end": 66.715,
-    "duration": 8.827
+    "start": 62.896,
+    "end": 73.169,
+    "duration": 10.272
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "《铸剑》黑衣人与眉间尺惨烈复仇，在王公宫女围观金鼎沸水猎奇中沦为娱乐景观，",
-    "start": 67.584,
-    "end": 74.511,
-    "duration": 6.928
-  },
-  {
-    "id": "sec1_step1_c1",
-    "dom_key": "sec1_step1_c1",
-    "text": "写尽先驱牺牲被麻木消费之悲。",
-    "start": 75.318,
-    "end": 77.875,
-    "duration": 2.557
+    "text": "《铸剑》黑衣人与眉间尺惨烈复仇，在王公宫女围观金鼎沸水猎奇中沦为娱乐景观，写尽先驱牺牲被麻木消费之悲。",
+    "start": 73.743,
+    "end": 84.862,
+    "duration": 11.119
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 打通小说、神话与杂文界限的晚期境界",
-    "start": 78.58,
-    "end": 82.901,
-    "duration": 4.321
+    "start": 85.436,
+    "end": 89.888,
+    "duration": 4.452
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "融古代神话宏伟想象与现代杂文逻辑解剖为一炉：",
-    "start": 83.668,
-    "end": 87.653,
-    "duration": 3.985
+    "start": 90.462,
+    "end": 95.903,
+    "duration": 5.442
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "既有《补天》绚烂原始生命力，又有《非攻》墨子止战清醒务实，",
-    "start": 88.505,
-    "end": 93.019,
-    "duration": 4.514
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "嬉笑怒骂间藏文明困境哲思，显晚期返璞归真功力。",
-    "start": 93.72,
-    "end": 98.047,
-    "duration": 4.327
+    "text": "既有《补天》绚烂原始生命力，又有《非攻》墨子止战清醒务实，嬉笑怒骂间藏文明困境哲思，显晚期返璞归真功力。",
+    "start": 96.464,
+    "end": 106.828,
+    "duration": 10.364
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "《故事新编》以古今杂糅破格与消解神话深度拓展小说艺术边界，立现代历史小说探索美学高峰。",
-    "start": 98.797,
-    "end": 107.329,
-    "duration": 8.532
+    "start": 107.402,
+    "end": 116.099,
+    "duration": 8.697
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：《故事新编》共收八篇，重点记住《补天》《奔月》《理水》《铸剑》《非攻》；",
-    "start": 108.14,
-    "end": 115.074,
-    "duration": 6.935
+    "start": 116.673,
+    "end": 123.924,
+    "duration": 7.252
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "关键技法名“古今杂糅”与“油滑”。",
-    "start": 115.787,
-    "end": 118.091,
-    "duration": 2.304
+    "start": 124.081,
+    "end": 126.593,
+    "duration": 2.512
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 写出《故事新编》涉及“古今杂糅/油滑”“庄严/荒诞”“神话/务实”的五篇代表作？",
-    "start": 118.829,
-    "end": 126.9,
-    "duration": 8.072
+    "start": 127.18,
+    "end": 135.942,
+    "duration": 8.762
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合《理水》《奔月》《铸剑》讲透“油滑”与“先驱牺牲被消磨”二层深意？",
-    "start": 127.677,
-    "end": 134.798,
-    "duration": 7.121
+    "start": 136.529,
+    "end": 143.898,
+    "duration": 7.369
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 这部晚期集子如何突破“据事直书”旧例开创“新历史小说”？",
-    "start": 135.539,
-    "end": 141.847,
-    "duration": 6.307
+    "start": 144.485,
+    "end": 150.63,
+    "duration": 6.145
   }
 ]

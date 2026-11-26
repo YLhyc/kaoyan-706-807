@@ -1,810 +1,770 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "当代思潮流派与文论概念合辑",
+    "start": 0.134,
+    "end": 3.961,
+    "duration": 3.827
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "当代16题最怕“时代错位与流派混淆”：诗歌记住“朦胧（含蓄）→第三代（口语反崇高）→打工（流水线）”；",
-    "start": 0.221,
-    "end": 10.138,
-    "duration": 9.917
+    "start": 4.538,
+    "end": 14.81,
+    "duration": 10.272
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "小说按“伤痕→反思→寻根/改革→先锋/新写实”时间轴推进。",
-    "start": 10.855,
-    "end": 16.45,
-    "duration": 5.596
+    "start": 15.124,
+    "end": 20.774,
+    "duration": 5.65
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 朦胧诗",
-    "start": 17.147,
-    "end": 18.44,
-    "duration": 1.294
+    "start": 21.361,
+    "end": 22.753,
+    "duration": 1.392
   },
   {
     "id": "sec0_s1_c0",
     "dom_key": "sec0_s1_c0",
     "text": "新时期之初伴随《今天》杂志创立而崛起的重要现代诗歌流派。",
-    "start": 19.133,
-    "end": 25.336,
-    "duration": 6.204
+    "start": 23.34,
+    "end": 29.706,
+    "duration": 6.366
   },
   {
     "id": "sec0_s1_c1",
     "dom_key": "sec0_s1_c1",
     "text": "主要代表诗人有北岛、舒婷、顾城、江河等。",
-    "start": 26.1,
-    "end": 30.199,
-    "duration": 4.099
+    "start": 30.293,
+    "end": 34.589,
+    "duration": 4.296
   },
   {
     "id": "sec0_s2_c0",
     "dom_key": "sec0_s2_c0",
     "text": "诗群打破政治教条抒情，转向对主体独立尊严的确认与历史反思，",
-    "start": 31.043,
-    "end": 37.625,
-    "duration": 6.582
+    "start": 35.15,
+    "end": 41.841,
+    "duration": 6.692
   },
   {
     "id": "sec0_s2_c1",
     "dom_key": "sec0_s2_c1",
     "text": "广泛采用意象隐喻、象征通感与多义歧解手法，因语言含蓄晦涩而得名。",
-    "start": 38.394,
-    "end": 44.804,
-    "duration": 6.411
+    "start": 42.116,
+    "end": 49.042,
+    "duration": 6.926
   },
   {
     "id": "sec0_s2_c2",
     "dom_key": "sec0_s2_c2",
     "text": "代表作有北岛《回答》、舒婷《致橡树》。",
-    "start": 45.569,
-    "end": 48.394,
-    "duration": 2.825
+    "start": 49.616,
+    "end": 52.583,
+    "duration": 2.968
   },
   {
     "id": "sec0_s3_c0",
     "dom_key": "sec0_s3_c0",
     "text": "它开启了当代文学的人性复归与诗体革命。",
-    "start": 49.167,
-    "end": 53.637,
-    "duration": 4.47
+    "start": 53.17,
+    "end": 57.831,
+    "duration": 4.66
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 先锋小说",
-    "start": 54.349,
-    "end": 55.895,
-    "duration": 1.546
+    "start": 58.418,
+    "end": 60.083,
+    "duration": 1.666
   },
   {
     "id": "sec1_s1_c0",
     "dom_key": "sec1_s1_c0",
     "text": "八十年代中后期受西方后现代主义影响爆发的文体形式实验思潮。",
-    "start": 56.623,
-    "end": 63.229,
-    "duration": 6.606
+    "start": 60.67,
+    "end": 67.453,
+    "duration": 6.783
   },
   {
     "id": "sec1_s1_c1",
     "dom_key": "sec1_s1_c1",
     "text": "主要代表作家有马原、余华、格非、残雪等。",
-    "start": 63.989,
-    "end": 68.196,
-    "duration": 4.207
+    "start": 68.04,
+    "end": 72.414,
+    "duration": 4.374
   },
   {
     "id": "sec1_s2_c0",
     "dom_key": "sec1_s2_c0",
-    "text": "核心特征为打破传统因果情节与既定主题模式，",
-    "start": 69.004,
-    "end": 73.925,
-    "duration": 4.921
+    "text": "核心特征为打破传统因果情节与既定主题模式，注重叙事迷宫建构、零度暴力白描、时间拼贴与元叙事实验。",
+    "start": 72.988,
+    "end": 83.755,
+    "duration": 10.767
   },
   {
     "id": "sec1_s2_c1",
     "dom_key": "sec1_s2_c1",
-    "text": "注重叙事迷宫建构、零度暴力白描、时间拼贴与元叙事实验。",
-    "start": 74.666,
-    "end": 79.864,
-    "duration": 5.197
-  },
-  {
-    "id": "sec1_s2_c2",
-    "dom_key": "sec1_s2_c2",
     "text": "代表作有马原《冈底斯的诱惑》、余华《现实一种》。",
-    "start": 80.613,
-    "end": 84.227,
-    "duration": 3.614
+    "start": 84.342,
+    "end": 88.195,
+    "duration": 3.853
   },
   {
     "id": "sec1_s3_c0",
     "dom_key": "sec1_s3_c0",
     "text": "该思潮刷新了当代汉语小说的形式思维与叙事观念。",
-    "start": 84.964,
-    "end": 90.253,
-    "duration": 5.289
+    "start": 88.769,
+    "end": 94.224,
+    "duration": 5.455
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 寻根文学",
-    "start": 90.999,
-    "end": 92.589,
-    "duration": 1.59
+    "start": 94.811,
+    "end": 96.529,
+    "duration": 1.718
   },
   {
     "id": "sec2_s1_c0",
     "dom_key": "sec2_s1_c0",
     "text": "八十年代中期文坛兴起的向民族深层历史文化心理结构探寻的文学思潮。",
-    "start": 93.3,
-    "end": 100.186,
-    "duration": 6.886
+    "start": 97.103,
+    "end": 104.185,
+    "duration": 7.082
   },
   {
     "id": "sec2_s2_c0",
     "dom_key": "sec2_s2_c0",
     "text": "以韩少功发表《文学的“根”》为理论先导，代表作家有韩少功、阿城、李杭育、贾平凹等。",
-    "start": 101.029,
-    "end": 109.615,
-    "duration": 8.587
+    "start": 104.772,
+    "end": 113.729,
+    "duration": 8.957
   },
   {
     "id": "sec2_s2_c1",
     "dom_key": "sec2_s2_c1",
     "text": "主张跳出狭隘的政治社会学批判，深入儒道精神、地域风俗与原始野性中寻觅民族生命力。",
-    "start": 110.353,
-    "end": 118.225,
-    "duration": 7.872
+    "start": 114.303,
+    "end": 122.336,
+    "duration": 8.033
   },
   {
     "id": "sec2_s2_c2",
     "dom_key": "sec2_s2_c2",
     "text": "代表作有阿城《棋王》、韩少功《爸爸爸》。",
-    "start": 118.965,
-    "end": 122.039,
-    "duration": 3.073
+    "start": 122.923,
+    "end": 126.294,
+    "duration": 3.371
   },
   {
     "id": "sec2_s3_c0",
     "dom_key": "sec2_s3_c0",
     "text": "它拓展了当代小说的文化哲学深度。",
-    "start": 122.814,
-    "end": 126.526,
-    "duration": 3.712
+    "start": 126.881,
+    "end": 130.774,
+    "duration": 3.892
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 新写实小说",
-    "start": 127.274,
-    "end": 129.104,
-    "duration": 1.831
+    "start": 131.361,
+    "end": 133.326,
+    "duration": 1.965
   },
   {
     "id": "sec3_s1_c0",
     "dom_key": "sec3_s1_c0",
     "text": "八十年代末至九十年代初兴起于《钟山》等刊物的重要小说流派。",
-    "start": 129.836,
-    "end": 135.982,
-    "duration": 6.146
+    "start": 133.913,
+    "end": 140.07,
+    "duration": 6.158
   },
   {
     "id": "sec3_s1_c1",
     "dom_key": "sec3_s1_c1",
     "text": "主要代表作家有池莉、刘震云、方方等。",
-    "start": 136.758,
-    "end": 140.2,
-    "duration": 3.442
+    "start": 140.657,
+    "end": 144.302,
+    "duration": 3.645
   },
   {
     "id": "sec3_s2_c0",
     "dom_key": "sec3_s2_c0",
     "text": "核心特质为摒弃崇高神话与英雄叙事，转向呈现普通平民日常生存“毛茸茸的原生态”，",
-    "start": 141.019,
-    "end": 149.466,
-    "duration": 8.447
+    "start": 144.863,
+    "end": 153.404,
+    "duration": 8.541
   },
   {
     "id": "sec3_s2_c1",
     "dom_key": "sec3_s2_c1",
     "text": "以客观冷静的零度情感直面琐屑人生烦恼。",
-    "start": 150.226,
-    "end": 153.658,
-    "duration": 3.432
+    "start": 153.691,
+    "end": 157.323,
+    "duration": 3.632
   },
   {
     "id": "sec3_s2_c2",
     "dom_key": "sec3_s2_c2",
     "text": "代表作有池莉《烦恼人生》、刘震云《一地鸡毛》。",
-    "start": 154.433,
-    "end": 157.943,
-    "duration": 3.511
+    "start": 157.91,
+    "end": 161.711,
+    "duration": 3.801
   },
   {
     "id": "sec3_s3_c0",
     "dom_key": "sec3_s3_c0",
     "text": "它标志着现实主义文学向平民立场的回归。",
-    "start": 158.663,
-    "end": 163.181,
-    "duration": 4.519
+    "start": 162.298,
+    "end": 166.945,
+    "duration": 4.647
   },
   {
     "id": "sec4_title_c0",
     "dom_key": "sec4_title_c0",
     "text": "05 · 文化散文",
-    "start": 163.881,
-    "end": 165.503,
-    "duration": 1.622
+    "start": 167.532,
+    "end": 169.302,
+    "duration": 1.77
   },
   {
     "id": "sec4_s1_c0",
     "dom_key": "sec4_s1_c0",
     "text": "九十年代初随着余秋雨《文化苦旅》畅销而风靡文坛的一种学者型大散文范式。",
-    "start": 166.234,
-    "end": 173.545,
-    "duration": 7.311
+    "start": 169.876,
+    "end": 177.414,
+    "duration": 7.538
   },
   {
     "id": "sec4_s2_c0",
     "dom_key": "sec4_s2_c0",
     "text": "代表作家有余秋雨、张承志等。",
-    "start": 174.345,
-    "end": 177.934,
-    "duration": 3.589
+    "start": 177.988,
+    "end": 181.867,
+    "duration": 3.879
   },
   {
     "id": "sec4_s3_c0",
     "dom_key": "sec4_s3_c0",
-    "text": "其文体特征为将游记考察、历史掌故钩沉与个体生命哲学拷问深度结合，",
-    "start": 178.75,
-    "end": 186.405,
-    "duration": 7.655
+    "text": "其文体特征为将游记考察、历史掌故钩沉与个体生命哲学拷问深度结合，行文气势磅礴、抒情浓烈，",
+    "start": 182.428,
+    "end": 192.844,
+    "duration": 10.416
   },
   {
     "id": "sec4_s3_c1",
     "dom_key": "sec4_s3_c1",
-    "text": "行文气势磅礴、抒情浓烈，致力于在自然历史废墟上反思中华文明兴衰与文人宿命，",
-    "start": 187.17,
-    "end": 194.147,
-    "duration": 6.977
-  },
-  {
-    "id": "sec4_s3_c2",
-    "dom_key": "sec4_s3_c2",
-    "text": "提升了当代散文的文化厚度与公共传播力。",
-    "start": 194.917,
-    "end": 198.223,
-    "duration": 3.307
+    "text": "致力于在自然历史废墟上反思中华文明兴衰与文人宿命，提升了当代散文的文化厚度与公共传播力。",
+    "start": 193.066,
+    "end": 201.655,
+    "duration": 8.589
   },
   {
     "id": "sec5_title_c0",
     "dom_key": "sec5_title_c0",
     "text": "06 · 第三代诗歌",
-    "start": 198.977,
-    "end": 200.69,
-    "duration": 1.713
+    "start": 202.229,
+    "end": 204.064,
+    "duration": 1.835
   },
   {
     "id": "sec5_s1_c0",
     "dom_key": "sec5_s1_c0",
     "text": "八十年代中期继朦胧诗之后崛起的青年诗人群体（又称“后朦胧诗”或“新生代诗歌”）。",
-    "start": 201.41,
-    "end": 209.183,
-    "duration": 7.773
+    "start": 204.651,
+    "end": 212.293,
+    "duration": 7.642
   },
   {
     "id": "sec5_s2_c0",
     "dom_key": "sec5_s2_c0",
     "text": "代表派别有“莽汉主义”“他们”等，主要诗人有韩东、于坚等。",
-    "start": 209.973,
-    "end": 215.855,
-    "duration": 5.882
+    "start": 212.88,
+    "end": 218.842,
+    "duration": 5.963
   },
   {
     "id": "sec5_s3_c0",
     "dom_key": "sec5_s3_c0",
     "text": "核心主张“反崇高、反英雄、消解隐喻”，提出“诗到语言为止”，",
-    "start": 216.621,
-    "end": 222.89,
-    "duration": 6.269
+    "start": 219.403,
+    "end": 225.743,
+    "duration": 6.34
   },
   {
     "id": "sec5_s3_c1",
     "dom_key": "sec5_s3_c1",
-    "text": "以日常口语、游戏调侃与反讽姿态消解朦胧诗的英雄主义情结，",
-    "start": 223.63,
-    "end": 228.968,
-    "duration": 5.338
-  },
-  {
-    "id": "sec5_s3_c2",
-    "dom_key": "sec5_s3_c2",
-    "text": "开辟了平民日常诗学的新天地。",
-    "start": 229.683,
-    "end": 231.918,
-    "duration": 2.235
+    "text": "以日常口语、游戏调侃与反讽姿态消解朦胧诗的英雄主义情结，开辟了平民日常诗学的新天地。",
+    "start": 225.927,
+    "end": 234.298,
+    "duration": 8.371
   },
   {
     "id": "sec6_title_c0",
     "dom_key": "sec6_title_c0",
     "text": "07 · 打工诗歌",
-    "start": 232.639,
-    "end": 234.208,
-    "duration": 1.569
+    "start": 234.885,
+    "end": 236.59,
+    "duration": 1.705
   },
   {
     "id": "sec6_s1_c0",
     "dom_key": "sec6_s1_c0",
     "text": "九十年代随着我国南方沿海特区工业化与农民工进城潮兴起的新型底层诗歌流派。",
-    "start": 234.945,
-    "end": 242.615,
-    "duration": 7.67
+    "start": 237.177,
+    "end": 245.066,
+    "duration": 7.89
   },
   {
     "id": "sec6_s2_c0",
     "dom_key": "sec6_s2_c0",
     "text": "主要创作者为进城务工的流动劳工，新世纪以来涌现郑小琼、许立志等代表诗人。",
-    "start": 243.46,
-    "end": 251.549,
-    "duration": 8.089
+    "start": 245.653,
+    "end": 254.025,
+    "duration": 8.371
   },
   {
     "id": "sec6_s3_c0",
     "dom_key": "sec6_s3_c0",
     "text": "核心特质为真实直击流水线机器轰鸣、加班透支、工伤流血与异乡漂泊的肉体创痛与尊严诉求，",
-    "start": 252.406,
-    "end": 262.22,
-    "duration": 9.814
+    "start": 254.612,
+    "end": 264.728,
+    "duration": 10.116
   },
   {
     "id": "sec6_s3_c1",
     "dom_key": "sec6_s3_c1",
     "text": "语言粗粝真实、痛感直白，是中国当代工业文明底层劳工极具震撼力的生命证词。",
-    "start": 263.053,
-    "end": 270.187,
-    "duration": 7.134
+    "start": 264.924,
+    "end": 272.028,
+    "duration": 7.104
   },
   {
     "id": "sec7_title_c0",
     "dom_key": "sec7_title_c0",
     "text": "08 · “双百”方针",
-    "start": 271.011,
-    "end": 272.677,
-    "duration": 1.666
+    "start": 272.615,
+    "end": 274.437,
+    "duration": 1.822
   },
   {
     "id": "sec7_s1_c0",
     "dom_key": "sec7_s1_c0",
     "text": "五十年代中期党在领导文艺与科学研究工作中提出的核心指导方针。",
-    "start": 273.399,
-    "end": 280.205,
-    "duration": 6.806
+    "start": 275.011,
+    "end": 281.976,
+    "duration": 6.965
   },
   {
     "id": "sec7_s2_c0",
     "dom_key": "sec7_s2_c0",
     "text": "全称为“百花齐放，百家争鸣”，即艺术问题上百花齐放、学术问题上百家争鸣。",
-    "start": 280.996,
-    "end": 288.705,
-    "duration": 7.709
+    "start": 282.71,
+    "end": 290.626,
+    "duration": 7.916
   },
   {
     "id": "sec7_s3_c0",
     "dom_key": "sec7_s3_c0",
     "text": "旨在调动知识分子积极性，促进学术文化与社会主义文艺的多样繁荣，",
-    "start": 289.478,
-    "end": 296.267,
-    "duration": 6.79
+    "start": 291.215,
+    "end": 298.284,
+    "duration": 7.069
   },
   {
     "id": "sec7_s3_c1",
     "dom_key": "sec7_s3_c1",
     "text": "成为当代中国思想文化政策的重要基石，在当代文学体制演进中具有深远的历史影响。",
-    "start": 297.094,
-    "end": 304.363,
-    "duration": 7.269
+    "start": 298.559,
+    "end": 306.123,
+    "duration": 7.564
   },
   {
     "id": "sec8_title_c0",
     "dom_key": "sec8_title_c0",
     "text": "09 · 伤痕文学",
-    "start": 305.145,
-    "end": 306.717,
-    "duration": 1.572
+    "start": 306.697,
+    "end": 308.402,
+    "duration": 1.705
   },
   {
     "id": "sec8_s1_c0",
     "dom_key": "sec8_s1_c0",
     "text": "新时期初期随着卢新华短篇小说《伤痕》发表而命名并兴起的一股文学思潮。",
-    "start": 307.431,
-    "end": 314.752,
-    "duration": 7.321
+    "start": 308.989,
+    "end": 316.54,
+    "duration": 7.551
   },
   {
     "id": "sec8_s2_c0",
     "dom_key": "sec8_s2_c0",
     "text": "主要代表作有刘心武《班主任》、卢新华《伤痕》、王亚平《神圣的使命》等。",
-    "start": 315.587,
-    "end": 321.834,
-    "duration": 6.246
+    "start": 317.127,
+    "end": 323.87,
+    "duration": 6.744
   },
   {
     "id": "sec8_s3_c0",
     "dom_key": "sec8_s3_c0",
     "text": "核心特质是以控诉和哀怨的悲情笔调，真实展现动乱对普通人灵魂与肉体的摧残，",
-    "start": 322.611,
-    "end": 330.86,
-    "duration": 8.249
+    "start": 324.457,
+    "end": 332.816,
+    "duration": 8.358
   },
   {
     "id": "sec8_s3_c1",
     "dom_key": "sec8_s3_c1",
     "text": "呼唤人道主义关怀与真情复归，拉开了新时期文学反思历史的序幕。",
-    "start": 331.692,
-    "end": 336.988,
-    "duration": 5.296
+    "start": 333.103,
+    "end": 338.805,
+    "duration": 5.702
   },
   {
     "id": "sec9_title_c0",
     "dom_key": "sec9_title_c0",
     "text": "10 · 反思文学",
-    "start": 337.709,
-    "end": 339.264,
-    "duration": 1.556
+    "start": 339.392,
+    "end": 341.071,
+    "duration": 1.679
   },
   {
     "id": "sec9_s1_c0",
     "dom_key": "sec9_s1_c0",
     "text": "七十年代末在伤痕文学基础上深化发展起来的文学思潮。",
-    "start": 339.989,
-    "end": 345.572,
-    "duration": 5.583
+    "start": 341.658,
+    "end": 347.451,
+    "duration": 5.793
   },
   {
     "id": "sec9_s2_c0",
     "dom_key": "sec9_s2_c0",
     "text": "主要代表作家作品有茹志鹃《剪辑错了的故事》、高晓声“陈奂生系列”、古华《芙蓉镇》等。",
-    "start": 346.436,
-    "end": 354.2,
-    "duration": 7.764
+    "start": 348.038,
+    "end": 356.266,
+    "duration": 8.228
   },
   {
     "id": "sec9_s3_c0",
     "dom_key": "sec9_s3_c0",
     "text": "思潮不再局限于控诉个人受害遭遇，而是将批判视野延伸至建国后极左路线的历史渊源，",
-    "start": 355.02,
-    "end": 363.515,
-    "duration": 8.495
+    "start": 356.84,
+    "end": 365.602,
+    "duration": 8.762
   },
   {
     "id": "sec9_s3_c1",
     "dom_key": "sec9_s3_c1",
     "text": "从政治、经济与思想根源上展开深层反思，思想深度显著超越伤痕文学。",
-    "start": 364.315,
-    "end": 371.244,
-    "duration": 6.929
+    "start": 365.812,
+    "end": 373.011,
+    "duration": 7.2
   },
   {
     "id": "sec10_title_c0",
     "dom_key": "sec10_title_c0",
     "text": "11 · 改革文学",
-    "start": 371.944,
-    "end": 373.57,
-    "duration": 1.626
+    "start": 373.598,
+    "end": 375.329,
+    "duration": 1.731
   },
   {
     "id": "sec10_s1_c0",
     "dom_key": "sec10_s1_c0",
     "text": "七十年代末至八十年代初伴随工作重心转移和改革开放大潮兴起的文学思潮。",
-    "start": 374.277,
-    "end": 381.819,
-    "duration": 7.542
+    "start": 375.903,
+    "end": 383.649,
+    "duration": 7.746
   },
   {
     "id": "sec10_s2_c0",
     "dom_key": "sec10_s2_c0",
     "text": "主要代表作有蒋子龙《乔厂长上任记》、张洁《沉重的翅膀》等。",
-    "start": 382.677,
-    "end": 388.348,
-    "duration": 5.671
+    "start": 384.236,
+    "end": 390.615,
+    "duration": 6.379
   },
   {
     "id": "sec10_s3_c0",
     "dom_key": "sec10_s3_c0",
     "text": "核心特质是以火热的政治激情歌颂敢于打破体制僵化、勇挑重担的现代改革开拓者形象，",
-    "start": 389.118,
-    "end": 398.119,
-    "duration": 9.001
+    "start": 391.189,
+    "end": 400.068,
+    "duration": 8.879
   },
   {
     "id": "sec10_s3_c1",
     "dom_key": "sec10_s3_c1",
     "text": "真实反映新旧体制交替之际的观念博弈与时代阵痛，具有很强的现实干预性。",
-    "start": 398.84,
-    "end": 405.258,
-    "duration": 6.417
+    "start": 400.395,
+    "end": 406.783,
+    "duration": 6.388
   },
   {
     "id": "sec11_title_c0",
     "dom_key": "sec11_title_c0",
     "text": "12 · 《受戒》",
-    "start": 405.964,
-    "end": 407.253,
-    "duration": 1.29
+    "start": 407.37,
+    "end": 408.788,
+    "duration": 1.418
   },
   {
     "id": "sec11_s1_c0",
     "dom_key": "sec11_s1_c0",
     "text": "八十年代初汪曾祺发表的短篇小说代表作。",
-    "start": 407.943,
-    "end": 412.382,
-    "duration": 4.438
+    "start": 409.349,
+    "end": 413.905,
+    "duration": 4.556
   },
   {
     "id": "sec11_s2_c0",
     "dom_key": "sec11_s2_c0",
     "text": "小说以苏北高邮乡村庵赵庄为背景，打破戏剧性冲突，以从容散淡的笔致描摹水乡风物与和尚世俗生活。",
-    "start": 413.165,
-    "end": 423.364,
-    "duration": 10.199
+    "start": 414.492,
+    "end": 424.934,
+    "duration": 10.442
   },
   {
     "id": "sec11_s3_c0",
     "dom_key": "sec11_s3_c0",
     "text": "通过小和尚明海与农家少女小英子在荸荠田与渡船上的纯真爱恋，",
-    "start": 424.181,
-    "end": 430.81,
-    "duration": 6.629
+    "start": 425.521,
+    "end": 432.226,
+    "duration": 6.705
   },
   {
     "id": "sec11_s3_c1",
     "dom_key": "sec11_s3_c1",
-    "text": "展现了不受封建礼教束缚的健康自然人性美，",
-    "start": 431.56,
-    "end": 434.922,
-    "duration": 3.362
-  },
-  {
-    "id": "sec11_s3_c2",
-    "dom_key": "sec11_s3_c2",
-    "text": "确立了新时期“散文化小说”的抒情美学坐标。",
-    "start": 435.721,
-    "end": 438.953,
-    "duration": 3.233
+    "text": "展现了不受封建礼教束缚的健康自然人性美，确立了新时期“散文化小说”的抒情美学坐标。",
+    "start": 432.526,
+    "end": 439.556,
+    "duration": 7.03
   },
   {
     "id": "sec12_title_c0",
     "dom_key": "sec12_title_c0",
     "text": "13 · 《红岩》",
-    "start": 439.657,
-    "end": 441.142,
-    "duration": 1.485
+    "start": 440.143,
+    "end": 441.744,
+    "duration": 1.601
   },
   {
     "id": "sec12_s1_c0",
     "dom_key": "sec12_s1_c0",
     "text": "六十年代初罗广斌、杨益言创作的长篇革命历史小说。",
-    "start": 441.848,
-    "end": 447.678,
-    "duration": 5.829
+    "start": 442.318,
+    "end": 448.293,
+    "duration": 5.976
   },
   {
     "id": "sec12_s2_c0",
     "dom_key": "sec12_s2_c0",
     "text": "作品以重庆解放前夕渣滓洞、白公馆特务集中营为舞台，",
-    "start": 448.471,
-    "end": 454.122,
-    "duration": 5.651
+    "start": 448.88,
+    "end": 454.804,
+    "duration": 5.923
   },
   {
     "id": "sec12_s2_c1",
     "dom_key": "sec12_s2_c1",
     "text": "生动塑造了江姐、许云峰、华子良等视死如归的共产党人英雄群像，",
-    "start": 454.846,
-    "end": 460.947,
-    "duration": 6.101
+    "start": 455.078,
+    "end": 461.002,
+    "duration": 5.923
   },
   {
     "id": "sec12_s2_c2",
     "dom_key": "sec12_s2_c2",
     "text": "展现了残酷狱中斗争与越狱暴动，以崇高的革命英雄主义与牺牲精神；",
-    "start": 461.681,
-    "end": 467.677,
-    "duration": 5.996
+    "start": 461.263,
+    "end": 467.287,
+    "duration": 6.023
   },
   {
     "id": "sec12_s3_c0",
     "dom_key": "sec12_s3_c0",
     "text": "成为十七年中国当代革命历史题材小说的经典代表作。",
-    "start": 468.481,
-    "end": 473.635,
-    "duration": 5.154
+    "start": 467.874,
+    "end": 473.224,
+    "duration": 5.351
   },
   {
     "id": "sec13_title_c0",
     "dom_key": "sec13_title_c0",
     "text": "14 · 《文学革命论》",
-    "start": 474.38,
-    "end": 476.278,
-    "duration": 1.898
+    "start": 473.811,
+    "end": 475.854,
+    "duration": 2.043
   },
   {
     "id": "sec13_s1_c0",
     "dom_key": "sec13_s1_c0",
     "text": "五四文学革命纲领性文献。",
-    "start": 477.002,
-    "end": 479.937,
-    "duration": 2.935
+    "start": 476.428,
+    "end": 479.513,
+    "duration": 3.085
   },
   {
     "id": "sec13_s2_c0",
     "dom_key": "sec13_s2_c0",
     "text": "陈独秀在《新青年》发表，明确提出推倒贵族文学、古典文学与山林文学，",
-    "start": 480.708,
-    "end": 488.103,
-    "duration": 7.395
+    "start": 480.1,
+    "end": 487.716,
+    "duration": 7.616
   },
   {
     "id": "sec13_s2_c1",
     "dom_key": "sec13_s2_c1",
     "text": "建设国民文学、写实文学与社会文学的“三大主义”，不仅在形式上倡导白话文，",
-    "start": 488.802,
-    "end": 495.5,
-    "duration": 6.698
+    "start": 487.952,
+    "end": 494.904,
+    "duration": 6.952
   },
   {
     "id": "sec13_s2_c2",
     "dom_key": "sec13_s2_c2",
     "text": "更在思想内容上确立了现代文学面向平民大众与社会现实的革命方向；",
-    "start": 496.246,
-    "end": 502.117,
-    "duration": 5.871
+    "start": 495.005,
+    "end": 500.967,
+    "duration": 5.962
   },
   {
     "id": "sec13_s3_c0",
     "dom_key": "sec13_s3_c0",
     "text": "吹响了中国新文学运动全面决战的进军号角。",
-    "start": 502.922,
-    "end": 507.568,
-    "duration": 4.646
+    "start": 501.554,
+    "end": 506.501,
+    "duration": 4.947
   },
   {
     "id": "sec14_title_c0",
     "dom_key": "sec14_title_c0",
     "text": "15 · 鸳鸯蝴蝶派",
-    "start": 508.406,
-    "end": 510.243,
-    "duration": 1.837
+    "start": 507.088,
+    "end": 509.066,
+    "duration": 1.978
   },
   {
     "id": "sec14_s1_c0",
     "dom_key": "sec14_s1_c0",
     "text": "清末民初发端于上海租界、盛行于二十年代前后的现代都市大众通俗文学流派。",
-    "start": 510.978,
-    "end": 518.557,
-    "duration": 7.58
+    "start": 509.64,
+    "end": 517.4,
+    "duration": 7.759
   },
   {
     "id": "sec14_s2_c0",
     "dom_key": "sec14_s2_c0",
     "text": "主要刊物有《礼拜六》等，代表作家有包天笑、徐枕亚、张恨水等。",
-    "start": 519.393,
-    "end": 525.645,
-    "duration": 6.252
+    "start": 517.987,
+    "end": 524.561,
+    "duration": 6.575
   },
   {
     "id": "sec14_s3_c0",
     "dom_key": "sec14_s3_c0",
     "text": "作品以才子佳人言情、社会黑幕与武侠侦探为核心内容，迎合市民阶层消遣娱乐心理，",
-    "start": 526.459,
-    "end": 535.075,
-    "duration": 8.616
+    "start": 525.122,
+    "end": 534.053,
+    "duration": 8.931
   },
   {
     "id": "sec14_s3_c1",
     "dom_key": "sec14_s3_c1",
     "text": "是传统通俗小说向现代商业文化转型过渡的重要文学形态。",
-    "start": 535.833,
-    "end": 540.981,
-    "duration": 5.148
+    "start": 534.276,
+    "end": 539.691,
+    "duration": 5.416
   },
   {
     "id": "sec15_title_c0",
     "dom_key": "sec15_title_c0",
     "text": "16 · 乡土小说",
-    "start": 541.707,
-    "end": 543.394,
-    "duration": 1.687
+    "start": 540.278,
+    "end": 542.074,
+    "duration": 1.796
   },
   {
     "id": "sec15_s1_c0",
     "dom_key": "sec15_s1_c0",
     "text": "二十年代兴起、并由鲁迅在一九三五年《中国新文学大系》中概括总结的一个现代小说重要流派。",
-    "start": 544.11,
-    "end": 552.857,
-    "duration": 8.747
+    "start": 542.661,
+    "end": 551.709,
+    "duration": 9.048
   },
   {
     "id": "sec15_s2_c0",
     "dom_key": "sec15_s2_c0",
     "text": "主要代表作家为鲁彦、台静农、彭家煌等远离故土的游子。",
-    "start": 553.692,
-    "end": 559.696,
-    "duration": 6.004
+    "start": 552.296,
+    "end": 558.532,
+    "duration": 6.236
   },
   {
     "id": "sec15_s3_c0",
     "dom_key": "sec15_s3_c0",
     "text": "作家身处异乡都市，以悲悯而冷峻的现代启蒙眼光回望闭塞的原乡，",
-    "start": 560.484,
-    "end": 567.664,
-    "duration": 7.18
+    "start": 559.262,
+    "end": 566.553,
+    "duration": 7.291
   },
   {
     "id": "sec15_s3_c1",
     "dom_key": "sec15_s3_c1",
     "text": "深情描摹乡土风俗与国民劣根性，形成了写实批判与怀乡感伤交织的独特审美风貌。",
-    "start": 568.41,
-    "end": 575.817,
-    "duration": 7.407
+    "start": 566.776,
+    "end": 574.431,
+    "duration": 7.655
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "当代流派重分清“先后演进与区别”：伤痕→反思→寻根/改革→先锋/新写实；",
-    "start": 576.598,
-    "end": 584.435,
-    "duration": 7.837
+    "start": 575.02,
+    "end": 582.974,
+    "duration": 7.955
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "朦胧诗→第三代→打工诗，考场绝不张冠李戴。",
-    "start": 585.174,
-    "end": 589.142,
-    "duration": 3.968
+    "start": 583.145,
+    "end": 587.441,
+    "duration": 4.296
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
-    "text": "① 按时间轴串出新时期诗歌三代嬗变：朦胧诗（《回答》）",
-    "start": 589.887,
-    "end": 595.793,
-    "duration": 5.906
-  },
-  {
-    "id": "drill0_c1",
-    "dom_key": "drill0_c1",
-    "text": "→第三代（“反崇高”）→打工诗歌（郑小琼）？",
-    "start": 596.569,
-    "end": 599.851,
-    "duration": 3.282
+    "text": "① 按时间轴串出新时期诗歌三代嬗变：朦胧诗（《回答》）→第三代（“反崇高”）→打工诗歌（郑小琼）？",
+    "start": 588.028,
+    "end": 598.274,
+    "duration": 10.246
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 对比伤痕文学与反思文学的深度差异，再辨寻根（文化哲学）与新写实（“毛茸茸的原生态”）？",
-    "start": 600.579,
-    "end": 609.776,
-    "duration": 9.198
+    "start": 598.861,
+    "end": 607.883,
+    "duration": 9.022
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
-    "text": "③ 说清陈独秀《文学革命论》的“三大主义”、汪曾祺《受戒》的美学坐标，",
-    "start": 610.501,
-    "end": 616.946,
-    "duration": 6.445
-  },
-  {
-    "id": "drill2_c1",
-    "dom_key": "drill2_c1",
-    "text": "以及2026最新真题“打工诗歌”？",
-    "start": 617.688,
-    "end": 620.021,
-    "duration": 2.333
+    "text": "③ 说清陈独秀《文学革命论》的“三大主义”、汪曾祺《受戒》的美学坐标，以及2026最新真题“打工诗歌”？",
+    "start": 608.47,
+    "end": 617.935,
+    "duration": 9.465
   }
 ]

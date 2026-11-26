@@ -1,186 +1,162 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "沈从文·边城人性美与现代湘西乡土抒情范式",
+    "start": 0.134,
+    "end": 4.365,
+    "duration": 4.231
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "品格高度→人物纯美→文体诗调三步写活湘西神庙：1.老船夫、顺顺与“夜半山崖对歌”写尽淳朴“善与美”；",
-    "start": 0.245,
-    "end": 10.479,
-    "duration": 10.234
+    "start": 4.954,
+    "end": 15.89,
+    "duration": 10.936
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "2.山头黄麂般的翠翠与月下摘“虎耳草”传神捕捉自然之子；",
-    "start": 11.289,
-    "end": 16.487,
-    "duration": 5.197
+    "start": 16.1,
+    "end": 21.815,
+    "duration": 5.715
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "3.天保溺亡、傩送远走、老船夫雷雨夜逝留下一句叹息，定格“哀而不伤”牧歌范式。",
-    "start": 17.199,
-    "end": 24.652,
-    "duration": 7.453
+    "start": 21.916,
+    "end": 29.493,
+    "duration": 7.577
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
-    "text": "三十年代中期沈从文《边城》在现代文学史上筑起洋溢古朴德性与生命诗意的湘西“人性神庙”，",
-    "start": 25.366,
-    "end": 33.513,
-    "duration": 8.147
-  },
-  {
-    "id": "intro_c1",
-    "dom_key": "intro_c1",
-    "text": "为京派乡土抒情小说经典。",
-    "start": 34.326,
-    "end": 36.542,
-    "duration": 2.216
+    "text": "三十年代中期沈从文《边城》在现代文学史上筑起洋溢古朴德性与生命诗意的湘西“人性神庙”，为京派乡土抒情小说经典。",
+    "start": 30.08,
+    "end": 41.147,
+    "duration": 11.067
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 建构“善”与“美”、寄托重造品德理想",
-    "start": 37.314,
-    "end": 40.983,
-    "duration": 3.669
+    "start": 41.733,
+    "end": 45.652,
+    "duration": 3.918
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "避开尖锐阶级冲突，写边陲茶峒淳朴道德：老船夫摆渡五十年追还钱款、自备烟茶；船总顺顺豪爽乐善；",
-    "start": 41.785,
-    "end": 51.441,
-    "duration": 9.656
+    "start": 46.226,
+    "end": 57.279,
+    "duration": 11.054
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "天保与傩送同爱翠翠却摒弃倾轧，相约按风俗夜半山崖对歌展开“君子之争”，",
-    "start": 52.242,
-    "end": 59.041,
-    "duration": 6.799
-  },
-  {
-    "id": "sec0_step1_c1",
-    "dom_key": "sec0_step1_c1",
-    "text": "显未被金钱沾染之高尚人性。",
-    "start": 59.757,
-    "end": 62.027,
-    "duration": 2.27
+    "text": "天保与傩送同爱翠翠却摒弃倾轧，相约按风俗夜半山崖对歌展开“君子之争”，显未被金钱沾染之高尚人性。",
+    "start": 57.866,
+    "end": 68.49,
+    "duration": 10.624
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 刻画自然之子、塑优美含蓄少女典型",
-    "start": 62.734,
-    "end": 66.711,
-    "duration": 3.976
+    "start": 69.064,
+    "end": 73.178,
+    "duration": 4.114
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "翠翠如山头黄麂般天真灵动，端午赛龙舟喧嚣鼓声中与傩送偶遇，少女情窦朦胧萌动；",
-    "start": 67.43,
-    "end": 75.085,
-    "duration": 7.656
+    "start": 73.752,
+    "end": 82.644,
+    "duration": 8.892
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "借翠翠月夜歌声后梦中摘取虎耳草细节，细腻捕捉情愫与自然节律契合。",
-    "start": 75.852,
-    "end": 82.021,
-    "duration": 6.169
+    "start": 83.231,
+    "end": 90.6,
+    "duration": 7.369
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 诗意融散文笔调、立哀而不伤牧歌范式",
-    "start": 82.755,
-    "end": 86.77,
-    "duration": 4.015
+    "start": 91.187,
+    "end": 95.339,
+    "duration": 4.153
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "语言质朴明净融散文化叙事；",
-    "start": 87.465,
-    "end": 89.817,
-    "duration": 2.351
+    "start": 95.913,
+    "end": 99.467,
+    "duration": 3.554
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
-    "text": "恬淡中因人事错位与命运无常转悲：天保茨滩溺亡、傩送负气远走、老船夫雷雨夜悄逝，",
-    "start": 90.537,
-    "end": 98.15,
-    "duration": 7.613
-  },
-  {
-    "id": "sec2_step0_c2",
-    "dom_key": "sec2_step0_c2",
-    "text": "翠翠独守碧溪岨渡船；",
-    "start": 98.877,
-    "end": 100.665,
-    "duration": 1.788
+    "text": "恬淡中因人事错位与命运无常转悲：天保茨滩溺亡、傩送负气远走、老船夫雷雨夜悄逝，翠翠独守碧溪岨渡船；",
+    "start": 99.767,
+    "end": 109.753,
+    "duration": 9.986
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "篇末“这个人也许永远不回来了，也许明天回来”化苍凉为绵长叹息，立哀而不伤田园牧歌范式。",
-    "start": 101.417,
-    "end": 109.3,
-    "duration": 7.883
+    "start": 110.327,
+    "end": 118.855,
+    "duration": 8.528
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
-    "text": "防混：地名茶峒、碧溪岨；",
-    "start": 110.053,
-    "end": 112.495,
-    "duration": 2.442
+    "text": "防混：地名茶峒、碧溪岨；人物老船夫、翠翠、船总顺顺、天保（大老，唱不惯山歌让爱乘船出走，在茨滩溺亡）、傩送（二老）；",
+    "start": 119.429,
+    "end": 131.98,
+    "duration": 12.551
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
-    "text": "人物老船夫、翠翠、船总顺顺、天保（大老，唱不惯山歌让爱乘船出走，在茨滩溺亡）、傩送（二老）；",
-    "start": 113.224,
-    "end": 122.611,
-    "duration": 9.387
-  },
-  {
-    "id": "guard_c2",
-    "dom_key": "guard_c2",
     "text": "结尾名句“这个人也许永远不回来了，也许明天回来”。",
-    "start": 123.422,
-    "end": 127.266,
-    "duration": 3.843
+    "start": 132.293,
+    "end": 136.394,
+    "duration": 4.101
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 准确区分茶峒、碧溪岨、茨滩地名及天保（大老）与傩送（二老）的命运走向？",
-    "start": 127.996,
-    "end": 136.722,
-    "duration": 8.726
+    "start": 136.981,
+    "end": 145.404,
+    "duration": 8.423
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合“君子之争”与“梦摘虎耳草”阐明沈从文构建“人性神庙”的道德与审美追求？",
-    "start": 137.444,
-    "end": 145.51,
-    "duration": 8.066
+    "start": 145.991,
+    "end": 153.777,
+    "duration": 7.785
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 回答 2021 年简答《结合沈从文作品谈文学史贡献》怎么调用本篇？",
-    "start": 146.227,
-    "end": 153.245,
-    "duration": 7.018
+    "start": 154.364,
+    "end": 161.524,
+    "duration": 7.16
   }
 ]

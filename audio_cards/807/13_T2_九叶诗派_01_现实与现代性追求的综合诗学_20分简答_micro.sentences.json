@@ -1,170 +1,146 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "九叶诗派·现实与现代性追求的综合诗学",
+    "start": 0.134,
+    "end": 3.727,
+    "duration": 3.593
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "现实历史感（穆旦《赞美》《森林之魅》）+ 现代派智性沉思（杜运燮/郑敏/穆旦《诗八首》）= 破除“口号宣传 vs 脱离生活纯形式”二元对立，",
-    "start": 0.243,
-    "end": 13.233,
-    "duration": 12.99
+    "start": 4.303,
+    "end": 17.427,
+    "duration": 13.124
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "完成“新诗现代化”综合诗学。",
-    "start": 13.951,
-    "end": 16.211,
-    "duration": 2.26
+    "start": 17.74,
+    "end": 20.122,
+    "duration": 2.382
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "四十年代后期，西南联大（穆旦、郑敏、杜运燮、袁可嘉）与上海诗人（辛笛、杭约赫、陈敬容、唐祈、唐湜）合流成“九叶诗派”（时称“中国新诗派”），创“综合诗学”。",
-    "start": 16.901,
-    "end": 32.27,
-    "duration": 15.369
+    "start": 20.709,
+    "end": 35.708,
+    "duration": 14.999
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 融民族苦难体验、坚守历史介入品格",
-    "start": 32.98,
-    "end": 36.722,
-    "duration": 3.742
+    "start": 36.295,
+    "end": 40.135,
+    "duration": 3.84
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "八十年代初出版《九叶集》得名；战时拒绝逃避现实唯美倾向；",
-    "start": 37.419,
-    "end": 42.647,
-    "duration": 5.228
+    "start": 40.722,
+    "end": 47.179,
+    "duration": 6.457
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "穆旦《赞美》写北方原野背负重担农夫，《森林之魅》写滇缅丛林悲歌，",
-    "start": 43.41,
-    "end": 49.255,
-    "duration": 5.845
-  },
-  {
-    "id": "sec0_step1_c1",
-    "dom_key": "sec0_step1_c1",
-    "text": "歌颂忍辱抗争生机，具历史悲剧感。",
-    "start": 49.979,
-    "end": 53.017,
-    "duration": 3.038
+    "text": "穆旦《赞美》写北方原野背负重担农夫，《森林之魅》写滇缅丛林悲歌，歌颂忍辱抗争生机，具历史悲剧感。",
+    "start": 47.766,
+    "end": 58.937,
+    "duration": 11.171
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 借鉴西方现代诗艺、立“智性诗学”",
-    "start": 53.742,
-    "end": 57.283,
-    "duration": 3.54
+    "start": 59.511,
+    "end": 63.234,
+    "duration": 3.723
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "受艾略特、奥登、里尔克启发，主张感性体验与理性思辨结合；",
-    "start": 57.997,
-    "end": 63.356,
-    "duration": 5.359
+    "start": 63.821,
+    "end": 69.953,
+    "duration": 6.132
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "杜运燮《秋》以机智反讽消解滥觞感伤；",
-    "start": 64.09,
-    "end": 67.284,
-    "duration": 3.194
-  },
-  {
-    "id": "sec1_step1_c1",
-    "dom_key": "sec1_step1_c1",
-    "text": "郑敏哲学冥想生命；",
-    "start": 68.014,
-    "end": 69.544,
-    "duration": 1.53
-  },
-  {
-    "id": "sec1_step1_c2",
-    "dom_key": "sec1_step1_c2",
-    "text": "穆旦《诗八首》剖现代灵魂撕裂困境，潜入潜意识。",
-    "start": 70.291,
-    "end": 74.114,
-    "duration": 3.824
+    "text": "杜运燮《秋》以机智反讽消解滥觞感伤；郑敏哲学冥想生命；穆旦《诗八首》剖现代灵魂撕裂困境，潜入潜意识。",
+    "start": 70.54,
+    "end": 81.541,
+    "duration": 11.002
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 克服二元对立、探索“新诗现代化”综合路",
-    "start": 74.795,
-    "end": 78.881,
-    "duration": 4.086
+    "start": 82.115,
+    "end": 86.333,
+    "duration": 4.218
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "既警惕沦为政治口号附庸，又排斥脱离生活的形式游戏；",
-    "start": 79.586,
-    "end": 83.993,
-    "duration": 4.408
+    "start": 86.92,
+    "end": 92.088,
+    "duration": 5.168
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "借多维意象叠加、象征跳跃与戏剧化独白锤炼出兼顾内在骨力与张力的诗语，奠基现代新诗成熟标杆。",
-    "start": 84.711,
-    "end": 94.007,
-    "duration": 9.295
+    "start": 92.675,
+    "end": 103.221,
+    "duration": 10.546
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：四十年代后期（当时称“中国新诗派”，80年代合集《九叶集》出版得名）；",
-    "start": 94.83,
-    "end": 101.439,
-    "duration": 6.609
+    "start": 103.808,
+    "end": 110.448,
+    "duration": 6.64
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
-    "text": "9位核心诗人：穆旦、郑敏、杜运燮、袁可嘉、辛笛、杭约赫、陈敬容、唐祈、唐湜；",
-    "start": 102.164,
-    "end": 110.423,
-    "duration": 8.259
-  },
-  {
-    "id": "guard_c2",
-    "dom_key": "guard_c2",
-    "text": "穆旦名篇《赞美》《诗八首》。",
-    "start": 111.131,
-    "end": 113.108,
-    "duration": 1.977
+    "text": "9位核心诗人：穆旦、郑敏、杜运燮、袁可嘉、辛笛、杭约赫、陈敬容、唐祈、唐湜；穆旦名篇《赞美》《诗八首》。",
+    "start": 110.787,
+    "end": 121.984,
+    "duration": 11.197
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 背出九叶诗派西南联大 4 人与上海 5 人共九位核心诗人名单？",
-    "start": 113.881,
-    "end": 120.575,
-    "duration": 6.693
+    "start": 122.606,
+    "end": 129.35,
+    "duration": 6.744
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合穆旦《赞美》《森林之魅》《诗八首》与杜运燮《秋》论证“现实历史感 + 智性现代性”？",
-    "start": 121.347,
-    "end": 129.54,
-    "duration": 8.194
+    "start": 129.936,
+    "end": 138.698,
+    "duration": 8.762
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 说明“综合诗学”对解决三十年代以来左翼标语化与唯美孤立化对立的里程碑意义？",
-    "start": 130.287,
-    "end": 138.32,
-    "duration": 8.033
+    "start": 139.285,
+    "end": 147.475,
+    "duration": 8.189
   }
 ]

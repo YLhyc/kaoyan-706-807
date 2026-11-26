@@ -1,162 +1,154 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "茅盾·子夜吴荪甫性格悲剧与民族资产阶级困境",
+    "start": 0.134,
+    "end": 4.534,
+    "duration": 4.4
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "强悍雄心（机械工业时代王子）→内在矛盾（对内镇压工人、对外被迫公债投机）",
-    "start": 0.238,
-    "end": 7.891,
-    "duration": 7.653
+    "text": "强悍雄心（机械工业时代王子）→内在矛盾（对内镇压工人、对外被迫公债投机）→惨败宿命（赵伯韬资本围剿 + 杜竹斋倒戈 + 赴庐山牯岭避难），",
+    "start": 5.11,
+    "end": 19.393,
+    "duration": 14.283
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "→惨败宿命（赵伯韬资本围剿 + 杜竹斋倒戈 + 赴庐山牯岭避难），",
-    "start": 8.613,
-    "end": 14.038,
-    "duration": 5.424
-  },
-  {
-    "id": "hook_c2",
-    "dom_key": "hook_c2",
     "text": "三步把民族资产阶级困局写绝。",
-    "start": 14.797,
-    "end": 17.603,
-    "duration": 2.806
+    "start": 19.494,
+    "end": 22.11,
+    "duration": 2.616
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
-    "text": "三十年代初茅盾《子夜》确立现代社会剖析小说典范，",
-    "start": 18.326,
-    "end": 22.616,
-    "duration": 4.29
-  },
-  {
-    "id": "intro_c1",
-    "dom_key": "intro_c1",
-    "text": "主人公吴荪甫是现代文学史塑造最为丰满的民族资产阶级典型。",
-    "start": 23.374,
-    "end": 28.502,
-    "duration": 5.128
+    "text": "三十年代初茅盾《子夜》确立现代社会剖析小说典范，主人公吴荪甫是现代文学史塑造最为丰满的民族资产阶级典型。",
+    "start": 22.697,
+    "end": 32.969,
+    "duration": 10.272
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · “实业救国”宏图与现代企业家果断魄力",
-    "start": 29.215,
-    "end": 33.251,
-    "duration": 4.036
+    "start": 33.556,
+    "end": 37.696,
+    "duration": 4.14
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "游历欧美通晓管理，怀发展民族工业、抵外资倾销抱负：经营裕华丝厂并合组益中信托公司一举兼并八小厂；",
-    "start": 34.014,
-    "end": 43.293,
-    "duration": 9.278
+    "start": 38.283,
+    "end": 48.972,
+    "duration": 10.689
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "商场博弈中展现茅盾所称“二十世纪机械工业时代的英雄、骑士和王子”般刚毅魄力。",
-    "start": 44.09,
-    "end": 51.395,
-    "duration": 7.305
+    "start": 49.533,
+    "end": 57.67,
+    "duration": 8.137
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 深陷半殖民地环境、显“似强实弱”两重性",
-    "start": 52.118,
-    "end": 56.498,
-    "duration": 4.38
+    "start": 58.257,
+    "end": 62.709,
+    "duration": 4.452
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "面对裕华丝厂罢工勾结军警特务镇压、克扣工资开除工人，暴露资本家专断；",
-    "start": 57.208,
-    "end": 63.832,
-    "duration": 6.623
+    "start": 63.296,
+    "end": 71.081,
+    "duration": 7.785
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "遭帝国主义侵略、双桥镇破产与当局盘剥时缺抗衡根基，只得陷高风险公债投机，显似强实弱弱点。",
-    "start": 64.64,
-    "end": 73.958,
-    "duration": 9.319
+    "start": 71.668,
+    "end": 82.162,
+    "duration": 10.494
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 遭买办资本与亲信背叛夹击、破产宿命",
-    "start": 74.78,
-    "end": 78.917,
-    "duration": 4.137
+    "start": 82.749,
+    "end": 87.084,
+    "duration": 4.335
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "半殖民地经济下民族工业难独立：公债遭买办赵伯韬雄厚外资压迫，更遭二姐夫杜竹斋临阵倒戈；",
-    "start": 79.741,
-    "end": 88.262,
-    "duration": 8.521
+    "start": 87.658,
+    "end": 97.566,
+    "duration": 9.908
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "资金链断裂惨败，归家几欲开枪自尽，当晚黯然决定乘船赴庐山牯岭避难，印证旧中国实业救国梦破灭。",
-    "start": 89.032,
-    "end": 98.575,
-    "duration": 9.543
+    "start": 98.153,
+    "end": 109.011,
+    "duration": 10.858
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：茅盾《子夜》确立社会剖析小说典范；",
-    "start": 99.358,
-    "end": 103.038,
-    "duration": 3.68
+    "start": 109.598,
+    "end": 113.555,
+    "duration": 3.957
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "主角吴荪甫（裕华丝厂+益中信托公司），对头买办资本家赵伯韬，倒戈亲信二姐夫杜竹斋；",
-    "start": 103.806,
-    "end": 111.791,
-    "duration": 7.985
+    "start": 113.804,
+    "end": 122.11,
+    "duration": 8.306
   },
   {
     "id": "guard_c2",
     "dom_key": "guard_c2",
     "text": "结局当晚决定乘轮船赴庐山牯岭避难。",
-    "start": 112.509,
-    "end": 115.652,
-    "duration": 3.143
+    "start": 122.411,
+    "end": 125.873,
+    "duration": 3.463
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 写出吴荪甫所办丝厂、信托公司、对头买办、倒戈亲信及避难地点全部专名？",
-    "start": 116.407,
-    "end": 124.812,
-    "duration": 8.405
+    "start": 126.46,
+    "end": 135.079,
+    "duration": 8.619
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 分析吴荪甫在工人面前的“强”与在帝国主义/金融霸权面前的“弱”构成怎样的阶级两重性？",
-    "start": 125.606,
-    "end": 134.047,
-    "duration": 8.441
+    "start": 135.653,
+    "end": 144.232,
+    "duration": 8.58
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 回答 2025 名解“吴荪甫”如何凝练进本篇三步骨架？",
-    "start": 134.759,
-    "end": 140.785,
-    "duration": 6.026
+    "start": 144.819,
+    "end": 151.12,
+    "duration": 6.301
   }
 ]

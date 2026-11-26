@@ -1,178 +1,162 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "赵树理·“山药蛋派”评书体创新与农民形象塑造",
+    "start": 0.134,
+    "end": 4.3,
+    "duration": 4.166
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "紧扣“文艺大众化（赵树理方向）”三环节：1.结构用农民听得懂的“评书体 + 动作对话 + 顺口溜扣子”；",
-    "start": 0.234,
-    "end": 9.799,
-    "duration": 9.565
+    "start": 4.889,
+    "end": 14.172,
+    "duration": 9.283
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "2.写人不概念化——既塑小二黑小芹觉醒，又敢写二诸葛旧惯与村干部“小元”掌权蜕变；",
-    "start": 10.589,
-    "end": 18.068,
-    "duration": 7.479
+    "start": 14.381,
+    "end": 22.722,
+    "duration": 8.341
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "3.以晋东南乡俗直接开创当代“山药蛋派”。",
-    "start": 18.783,
-    "end": 22.665,
-    "duration": 3.883
+    "start": 23.049,
+    "end": 27.227,
+    "duration": 4.179
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
-    "text": "赵树理为解放区土生土长农民作家，",
-    "start": 23.416,
-    "end": 26.203,
-    "duration": 2.786
+    "text": "赵树理为解放区土生土长农民作家，代表文艺大众化“赵树理方向”与当代“山药蛋派”鼻祖，",
+    "start": 27.801,
+    "end": 34.962,
+    "duration": 7.16
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
-    "text": "代表文艺大众化“赵树理方向”与当代“山药蛋派”鼻祖，",
-    "start": 26.934,
-    "end": 31.083,
-    "duration": 4.149
-  },
-  {
-    "id": "intro_c2",
-    "dom_key": "intro_c2",
     "text": "立足晋东南变革创现代小说新格局。",
-    "start": 31.904,
-    "end": 35.065,
-    "duration": 3.161
+    "start": 35.171,
+    "end": 38.647,
+    "duration": 3.476
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 改造章回说唱、立现代“评书体”形式",
-    "start": 35.784,
-    "end": 39.413,
-    "duration": 3.63
+    "start": 39.22,
+    "end": 42.982,
+    "duration": 3.762
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "着眼写给识字人看并念给不识字人听，扬弃章回俗套取说书连贯有头有尾技法；",
-    "start": 40.155,
-    "end": 47.182,
-    "duration": 7.028
+    "start": 43.556,
+    "end": 51.745,
+    "duration": 8.189
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "《小二黑结婚》开篇直交代“刘家峧有两个神仙……”，动作口语替代冗长心理剖析，",
-    "start": 47.962,
-    "end": 54.245,
-    "duration": 6.284
-  },
-  {
-    "id": "sec0_step1_c1",
-    "dom_key": "sec0_step1_c1",
-    "text": "善设“扣子”穿插快板顺口溜。",
-    "start": 54.944,
-    "end": 57.266,
-    "duration": 2.322
+    "text": "《小二黑结婚》开篇直交代“刘家峧有两个神仙……”，动作口语替代冗长心理剖析，善设“扣子”穿插快板顺口溜。",
+    "start": 52.332,
+    "end": 62.579,
+    "duration": 10.246
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 秉“问题小说”眼光、写复杂两代农民",
-    "start": 58.001,
-    "end": 61.898,
-    "duration": 3.896
+    "start": 63.166,
+    "end": 67.188,
+    "duration": 4.022
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "小二黑、小芹以法律反抗恶霸包办；亦敏锐捕捉二诸葛占卦、三仙姑装神之沉重旧观念惯性；",
-    "start": 62.643,
-    "end": 71.028,
-    "duration": 8.385
+    "start": 67.775,
+    "end": 77.553,
+    "duration": 9.778
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "《李有才板话》借村干部“小元”当权架起胳膊耍威风蜕变，直揭权力腐蚀与改造艰难。",
-    "start": 71.791,
-    "end": 78.999,
-    "duration": 7.208
+    "start": 78.127,
+    "end": 86.589,
+    "duration": 8.463
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 融晋东南乡土民俗、奠基“山药蛋派”",
-    "start": 79.814,
-    "end": 83.662,
-    "duration": 3.848
+    "start": 87.176,
+    "end": 91.238,
+    "duration": 4.061
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
-    "text": "少写闲逸自然山水，专工婚丧、卜卦习俗与方言，以晋东南乡风承载严肃政策纠偏，",
-    "start": 84.371,
-    "end": 92.047,
-    "duration": 7.676
-  },
-  {
-    "id": "sec2_step0_c1",
-    "dom_key": "sec2_step0_c1",
-    "text": "统一政治倾向与写实真实；",
-    "start": 92.757,
-    "end": 95.107,
-    "duration": 2.349
+    "text": "少写闲逸自然山水，专工婚丧、卜卦习俗与方言，以晋东南乡风承载严肃政策纠偏，统一政治倾向与写实真实；",
+    "start": 91.812,
+    "end": 103.36,
+    "duration": 11.548
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "直接影响马烽、西戎等“山药蛋派”及十七年农村小说写作。",
-    "start": 95.836,
-    "end": 100.481,
-    "duration": 4.645
+    "start": 103.934,
+    "end": 109.597,
+    "duration": 5.663
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：四十年代代表作《小二黑结婚》（二诸葛/三仙姑/小二黑/小芹）与《李有才板话》（李有才/小元蜕变）；",
-    "start": 101.242,
-    "end": 110.929,
-    "duration": 9.687
+    "start": 110.184,
+    "end": 120.183,
+    "duration": 9.999
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "被称为“赵树理方向”，当代鼻祖级流派是“山药蛋派”（马烽、西戎）。",
-    "start": 111.661,
-    "end": 117.121,
-    "duration": 5.46
+    "start": 120.379,
+    "end": 125.665,
+    "duration": 5.285
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 背全《小二黑结婚》《李有才板话》中六位关键农民/旧俗/干部人物名字与代表倾向？",
-    "start": 117.886,
-    "end": 126.452,
-    "duration": 8.566
+    "start": 126.239,
+    "end": 134.988,
+    "duration": 8.749
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 说明赵树理怎样通过“动作对话替心理剖析 + 扣子顺口溜”克服五四新文学“欧化”隔膜？",
-    "start": 127.225,
-    "end": 135.977,
-    "duration": 8.752
+    "start": 135.575,
+    "end": 144.115,
+    "duration": 8.541
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 阐明“赵树理方向”与当代“山药蛋派”在文艺大众化、民族化史上的地位？",
-    "start": 136.723,
-    "end": 143.705,
-    "duration": 6.982
+    "start": 144.702,
+    "end": 151.889,
+    "duration": 7.186
   }
 ]

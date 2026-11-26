@@ -1,226 +1,186 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "曹禺·雷雨思想意蕴与艺术成就",
+    "start": 0.134,
+    "end": 3.206,
+    "duration": 3.072
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "思想深度→人性悖论→戏剧技艺三层硬核推进：先揭开周鲁两家背后“阶级罪恶 + 不可知命运”双重深度，",
-    "start": 0.223,
-    "end": 9.825,
-    "duration": 9.602
+    "text": "思想深度→人性悖论→戏剧技艺三层硬核推进：",
+    "start": 3.795,
+    "end": 9.093,
+    "duration": 5.298
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "再切入周朴园虚伪自恋与繁漪“雷雨式”蛮力的复杂人性，",
-    "start": 10.639,
-    "end": 14.849,
-    "duration": 4.21
+    "text": "先揭开周鲁两家背后“阶级罪恶 + 不可知命运”双重深度，",
+    "start": 9.173,
+    "end": 13.937,
+    "duration": 4.765
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
+    "text": "再切入周朴园虚伪自恋与繁漪“雷雨式”蛮力的复杂人性，",
+    "start": 14.212,
+    "end": 18.742,
+    "duration": 4.53
+  },
+  {
+    "id": "hook_c3",
+    "dom_key": "hook_c3",
     "text": "最后落到“三一律”高压一天与潜台词心灵动作，刚好30分极稳三足鼎立。",
-    "start": 15.556,
-    "end": 21.636,
-    "duration": 6.08
+    "start": 18.869,
+    "end": 25.183,
+    "duration": 6.314
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "三十年代曹禺《雷雨》标志中国现代话剧走向成熟，",
-    "start": 22.379,
-    "end": 26.444,
-    "duration": 4.065
+    "start": 25.757,
+    "end": 29.844,
+    "duration": 4.088
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
-    "text": "融西方古典技巧、古希腊命运悲剧与宗法家庭批判为一体，",
-    "start": 27.235,
-    "end": 32.239,
-    "duration": 5.005
-  },
-  {
-    "id": "intro_c2",
-    "dom_key": "intro_c2",
-    "text": "树现实主义与诗化美学交融典范。",
-    "start": 33.036,
-    "end": 35.782,
-    "duration": 2.746
+    "text": "融西方古典技巧、古希腊命运悲剧与宗法家庭批判为一体，树现实主义与诗化美学交融典范。",
+    "start": 30.028,
+    "end": 38.581,
+    "duration": 8.554
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 贯通社会历史批判与超越性命运哲思",
-    "start": 36.523,
-    "end": 40.342,
-    "duration": 3.82
+    "start": 39.168,
+    "end": 43.087,
+    "duration": 3.918
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "周鲁两家三十年纠葛与一日溃败撕破宗法伪善：",
-    "start": 41.07,
-    "end": 45.279,
-    "duration": 4.209
+    "start": 43.674,
+    "end": 49.037,
+    "duration": 5.364
   },
   {
     "id": "sec0_step0_c1",
     "dom_key": "sec0_step0_c1",
     "text": "周朴园江桥故意淹死两千二百小工、逼产后三天的侍萍大年三十抱子投河；",
-    "start": 46.075,
-    "end": 52.517,
-    "duration": 6.442
+    "start": 49.129,
+    "end": 55.743,
+    "duration": 6.614
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "序幕诉对神秘力量敬畏，郁热雷鸣中繁漪越反抗、周萍越逃、周冲越憧憬越坠毁灭，",
-    "start": 53.261,
-    "end": 60.836,
-    "duration": 7.576
-  },
-  {
-    "id": "sec0_step1_c1",
-    "dom_key": "sec0_step1_c1",
-    "text": "历史批判与命运之谜相互映照。",
-    "start": 61.556,
-    "end": 64.341,
-    "duration": 2.785
+    "text": "序幕诉对神秘力量敬畏，郁热雷鸣中繁漪越反抗、周萍越逃、周冲越憧憬越坠毁灭，历史批判与命运之谜相互映照。",
+    "start": 56.33,
+    "end": 67.579,
+    "duration": 11.249
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 打破脸谱模式、开掘复杂人性悖论",
-    "start": 65.096,
-    "end": 68.763,
-    "duration": 3.668
+    "start": 68.166,
+    "end": 71.954,
+    "duration": 3.788
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
-    "text": "留旧家具、关窗是掩饰早年罪孽的道德代偿；",
-    "start": 69.482,
-    "end": 73.391,
-    "duration": 3.909
-  },
-  {
-    "id": "sec1_step0_c1",
-    "dom_key": "sec1_step0_c1",
-    "text": "一旦活侍萍现身，立刻掏五千元支票赎买旧情，暴露冷酷自私；",
-    "start": 74.13,
-    "end": 79.343,
-    "duration": 5.213
+    "text": "留旧家具、关窗是掩饰早年罪孽的道德代偿；一旦活侍萍现身，立刻掏五千元支票赎买旧情，暴露冷酷自私；",
+    "start": 72.528,
+    "end": 83.477,
+    "duration": 10.95
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "深受新思潮濡染却深锁封建死屋，对周萍绝望依恋化为困兽之斗，玉石俱焚撕碎伪善，",
-    "start": 80.073,
-    "end": 88.249,
-    "duration": 8.176
-  },
-  {
-    "id": "sec1_step1_c1",
-    "dom_key": "sec1_step1_c1",
-    "text": "成极具张力“雷雨式性格”。",
-    "start": 89.0,
-    "end": 90.92,
-    "duration": 1.92
+    "text": "深受新思潮濡染却深锁封建死屋，对周萍绝望依恋化为困兽之斗，玉石俱焚撕碎伪善，成极具张力“雷雨式性格”。",
+    "start": 84.064,
+    "end": 95.704,
+    "duration": 11.64
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 回溯式高压结构与心灵动作性潜台词",
-    "start": 91.675,
-    "end": 95.465,
-    "duration": 3.79
+    "start": 96.29,
+    "end": 100.313,
+    "duration": 4.022
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
-    "text": "借“三一律”将两代三十年秘密与中间四幕浓缩在盛夏一天（上午到午夜）及周家客厅、鲁家住房两场景，",
-    "start": 96.238,
-    "end": 105.2,
-    "duration": 8.962
-  },
-  {
-    "id": "sec2_step0_c1",
-    "dom_key": "sec2_step0_c1",
-    "text": "回溯引爆一触即发；",
-    "start": 106.052,
-    "end": 107.677,
-    "duration": 1.625
+    "text": "借“三一律”将两代三十年秘密与中间四幕浓缩在盛夏一天（上午到午夜）及周家客厅、鲁家住房两场景，回溯引爆一触即发；",
+    "start": 100.9,
+    "end": 112.501,
+    "duration": 11.601
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "“逼喝苦药”平缓言辞暗涌家长专制绞杀；",
-    "start": 108.401,
-    "end": 111.613,
-    "duration": 3.212
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "周家客厅“辨认旧衬衣”把周朴园心理防线溃退外化为心灵交锋。",
-    "start": 112.349,
-    "end": 117.341,
-    "duration": 4.992
+    "text": "“逼喝苦药”平缓言辞暗涌家长专制绞杀；周家客厅“辨认旧衬衣”把周朴园心理防线溃退外化为心灵交锋。",
+    "start": 113.088,
+    "end": 123.152,
+    "duration": 10.064
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
-    "text": "《雷雨》将阶级解剖、命运玄思、人性悖论与精湛戏剧技巧融于一体，",
-    "start": 118.09,
-    "end": 123.756,
-    "duration": 5.665
-  },
-  {
-    "id": "concl_c1",
-    "dom_key": "concl_c1",
-    "text": "结束现代话剧草创摸索，确立经典范式。",
-    "start": 124.509,
-    "end": 127.929,
-    "duration": 3.42
+    "text": "《雷雨》将阶级解剖、命运玄思、人性悖论与精湛戏剧技巧融于一体，结束现代话剧草创摸索，确立经典范式。",
+    "start": 123.739,
+    "end": 133.673,
+    "duration": 9.934
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：专有名词固定写作“繁漪”（不写蘩漪）；",
-    "start": 128.674,
-    "end": 132.319,
-    "duration": 3.646
+    "start": 134.26,
+    "end": 137.93,
+    "duration": 3.671
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "中间四幕浓缩在盛夏一天（上午到午夜）与周家客厅、鲁家住房两个场景（全剧另有十年后序幕与尾声）。",
-    "start": 133.048,
-    "end": 142.019,
-    "duration": 8.97
+    "start": 138.231,
+    "end": 147.384,
+    "duration": 9.153
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 写出周朴园在哈尔滨、侍萍产后三天的两桩罪恶及支票细节？",
-    "start": 142.816,
-    "end": 149.359,
-    "duration": 6.544
+    "start": 147.97,
+    "end": 154.662,
+    "duration": 6.692
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 解释《雷雨》“阶级历史批判 + 命运不可知”双重悲剧层？",
-    "start": 150.102,
-    "end": 155.548,
-    "duration": 5.447
+    "start": 155.249,
+    "end": 161.029,
+    "duration": 5.78
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 结合“三一律”“回溯式”“逼喝苦药/旧衬衣”说明曹禺的现代话剧技巧？",
-    "start": 156.297,
-    "end": 163.396,
-    "duration": 7.099
+    "start": 161.603,
+    "end": 168.946,
+    "duration": 7.343
   }
 ]

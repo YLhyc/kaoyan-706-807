@@ -1,186 +1,194 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "五四文学革命·文学研究会与创造社比较",
+    "start": 0.134,
+    "end": 3.714,
+    "duration": 3.58
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "比较紧扣“同源分流、双峰对峙”三层对照：1.观念（《小说月报》“为人生”反消遣 vs “为艺术”尚直觉灵感）；",
-    "start": 0.234,
-    "end": 9.88,
-    "duration": 9.646
+    "start": 4.303,
+    "end": 14.692,
+    "duration": 10.39
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "2.方法（叶圣陶冷静写实 vs 郭郁浪漫直抒）；",
-    "start": 10.76,
-    "end": 14.886,
-    "duration": 4.125
+    "start": 14.837,
+    "end": 19.51,
+    "duration": 4.673
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "3.精神与后期演进（本土启蒙理性深耕写实 vs 留日苦闷反叛转向无产阶级革命文学）。",
-    "start": 15.606,
-    "end": 23.649,
-    "duration": 8.043
+    "start": 19.785,
+    "end": 27.696,
+    "duration": 7.911
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "文学研究会与创造社为现代新文学初期成立最早、影响最大两大社团，",
-    "start": 24.373,
-    "end": 30.653,
-    "duration": 6.28
+    "start": 28.283,
+    "end": 34.74,
+    "duration": 6.457
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "同源五四启蒙却呈现鲜明同源分流与双峰对峙格局。",
-    "start": 31.369,
-    "end": 36.084,
-    "duration": 4.715
+    "start": 34.924,
+    "end": 39.805,
+    "duration": 4.882
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 文学观念：“为人生”启蒙 vs “为艺术”自足",
-    "start": 36.816,
-    "end": 40.756,
-    "duration": 3.94
+    "start": 40.392,
+    "end": 44.675,
+    "duration": 4.283
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "以《小说月报》为阵地高扬“为人生而艺术”，反鸳鸯蝴蝶派游戏消遣，主研究人生、暴露病态；",
-    "start": 41.473,
-    "end": 49.159,
-    "duration": 7.686
+    "start": 45.262,
+    "end": 54.662,
+    "duration": 9.4
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "高举“为艺术而艺术”，视文学为内在情感要求，重直觉、灵感、主观自我与个性纯粹自由。",
-    "start": 49.906,
-    "end": 58.049,
-    "duration": 8.143
+    "start": 55.249,
+    "end": 65.652,
+    "duration": 10.403
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 创作方法：冷静写实主义 vs 主观浪漫抒情",
-    "start": 58.743,
-    "end": 63.289,
-    "duration": 4.546
+    "start": 66.239,
+    "end": 70.977,
+    "duration": 4.739
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "研究会恪守写实，冷静客观摹写底层与市民灰色生活，如叶圣陶《潘先生在难中》剖小市民妥协心理；",
-    "start": 64.09,
-    "end": 72.971,
-    "duration": 8.881
+    "start": 71.551,
+    "end": 81.537,
+    "duration": 9.986
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "创造社信奉浪漫主义与表现主义，直抒胸臆擅写反叛与病态心理，",
-    "start": 73.735,
-    "end": 79.31,
-    "duration": 5.575
+    "start": 82.124,
+    "end": 88.594,
+    "duration": 6.47
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "如郭沫若《女神》火山爆发与郁达夫《沉沦》自叙传。",
-    "start": 80.09,
-    "end": 83.945,
-    "duration": 3.855
+    "start": 88.947,
+    "end": 93.035,
+    "duration": 4.087
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 精神渊源与后期演进：社会理性 vs 感性反叛",
-    "start": 84.711,
-    "end": 89.552,
-    "duration": 4.841
+    "start": 93.608,
+    "end": 98.581,
+    "duration": 4.973
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "立足国内现实，承接启蒙沉稳社会批判理性，后期持续深化现实主义；",
-    "start": 90.271,
-    "end": 96.723,
-    "duration": 6.452
+    "start": 99.168,
+    "end": 107.188,
+    "duration": 8.02
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "崛起于留日青年异邦屈辱与苦闷，承接炽烈个性反叛激情，",
-    "start": 97.451,
-    "end": 102.366,
-    "duration": 4.915
+    "start": 107.775,
+    "end": 114.662,
+    "duration": 6.887
   },
   {
     "id": "sec2_step1_c1",
     "dom_key": "sec2_step1_c1",
     "text": "大革命退潮前后与太阳社一道倡“革命文学”，迅速转向无产阶级革命文学。",
-    "start": 103.15,
-    "end": 109.245,
-    "duration": 6.095
+    "start": 115.002,
+    "end": 121.472,
+    "duration": 6.47
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "两大社团各执一端又相辅相成，以双峰对峙多元探索共奠现代新文学现实主义与浪漫主义交相辉映格局。",
-    "start": 109.964,
-    "end": 119.521,
-    "duration": 9.557
+    "start": 122.059,
+    "end": 131.772,
+    "duration": 9.713
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：文学研究会（1921北京，周作人/茅盾/叶圣陶，《小说月报》）；",
-    "start": 120.304,
-    "end": 126.496,
-    "duration": 6.192
+    "start": 132.358,
+    "end": 138.985,
+    "duration": 6.627
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "创造社（1921东京，郭沫若/郁达夫/成仿吾，《创造》季刊），",
-    "start": 127.254,
-    "end": 132.687,
-    "duration": 5.433
+    "start": 139.312,
+    "end": 144.884,
+    "duration": 5.572
   },
   {
     "id": "guard_c2",
     "dom_key": "guard_c2",
     "text": "大革命退潮前后创造社与太阳社一道倡导“革命文学”。",
-    "start": 133.433,
-    "end": 138.023,
-    "duration": 4.591
+    "start": 144.985,
+    "end": 149.528,
+    "duration": 4.543
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 背清两大社团的成立年份、地点、代表发起人及核心刊物阵地？",
-    "start": 138.74,
-    "end": 145.575,
-    "duration": 6.835
+    "start": 150.115,
+    "end": 157.106,
+    "duration": 6.991
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 从“观念、方法与代表作、精神与后期转向”三层对照两社异同？",
-    "start": 146.329,
-    "end": 153.568,
-    "duration": 7.239
+    "start": 157.68,
+    "end": 165.27,
+    "duration": 7.59
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 解释创造社为什么会从五四“为艺术而艺术”180度大转向“革命文学”？",
-    "start": 154.342,
-    "end": 161.604,
-    "duration": 7.262
+    "start": 165.857,
+    "end": 173.2,
+    "duration": 7.343
   }
 ]

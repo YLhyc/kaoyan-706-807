@@ -1,162 +1,154 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "陈忠实·白鹿原史诗性品格与宗族文化反思",
+    "start": 0.134,
+    "end": 4.078,
+    "duration": 3.944
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "宏观家族史诗（白鹿两家映近代变局）",
-    "start": 0.22,
-    "end": 4.431,
-    "duration": 4.211
+    "text": "宏观家族史诗（白鹿两家映近代变局）→微观宗法与人性撕裂（白嘉轩族规 vs 田小娥破窑本能）→神秘文化追问（白鹿神话+朱先生+鹿子霖疯癫冻毙），",
+    "start": 4.667,
+    "end": 19.966,
+    "duration": 15.298
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "→微观宗法与人性撕裂（白嘉轩族规 vs 田小娥破窑本能）",
-    "start": 5.197,
-    "end": 10.066,
-    "duration": 4.869
-  },
-  {
-    "id": "hook_c2",
-    "dom_key": "hook_c2",
-    "text": "→神秘文化追问（白鹿神话+朱先生+鹿子霖疯癫冻毙），三层把关中平原厚重感立起来。",
-    "start": 10.791,
-    "end": 18.544,
-    "duration": 7.753
+    "text": "三层把关中平原厚重感立起来。",
+    "start": 20.08,
+    "end": 22.956,
+    "duration": 2.877
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
-    "text": "九十年代初陈忠实《白鹿原》为当代贡献厚重现实主义力作，",
-    "start": 19.334,
-    "end": 24.324,
-    "duration": 4.991
+    "text": "九十年代初陈忠实《白鹿原》为当代贡献厚重现实主义力作，以关中白鹿村半世纪变迁为缩影，",
+    "start": 23.517,
+    "end": 31.758,
+    "duration": 8.241
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
-    "text": "以关中白鹿村半世纪变迁为缩影，兼备史诗品格与宗族文化反思。",
-    "start": 25.056,
-    "end": 30.553,
-    "duration": 5.497
+    "text": "兼备史诗品格与宗族文化反思。",
+    "start": 31.929,
+    "end": 34.753,
+    "duration": 2.825
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 家族秘史与民族命运交织的宏阔图景",
-    "start": 31.235,
-    "end": 35.283,
-    "duration": 4.047
+    "start": 35.34,
+    "end": 39.597,
+    "duration": 4.257
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "跳出单一政治图解，将辛亥革命、军阀混战、抗战烽火至政权更迭融入白、鹿两大家族数代沉浮；",
-    "start": 36.089,
-    "end": 45.494,
-    "duration": 9.405
+    "start": 40.171,
+    "end": 50.873,
+    "duration": 10.702
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "从白嘉轩巧计换地到国共两党原上博弈，描绘宗法农耕社会走向现代解体的全景图卷。",
-    "start": 46.271,
-    "end": 54.178,
-    "duration": 7.907
+    "start": 51.46,
+    "end": 60.495,
+    "duration": 9.035
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 剖析儒家宗法伦理与人性本能冲突",
-    "start": 54.894,
-    "end": 58.734,
-    "duration": 3.84
+    "start": 61.082,
+    "end": 65.014,
+    "duration": 3.931
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "族长白嘉轩挺直腰杆祠堂动用族规，承载传统儒家仁义坚守与冷酷专断；",
-    "start": 59.425,
-    "end": 65.979,
-    "duration": 6.554
+    "start": 65.601,
+    "end": 73.126,
+    "duration": 7.525
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "田小娥与黑娃代表受抑生命野性与情欲，田小娥遭公公鹿三刺杀、瘟疫爆发后被砖塔镇压，",
-    "start": 66.7,
-    "end": 74.594,
-    "duration": 7.895
+    "start": 73.713,
+    "end": 82.878,
+    "duration": 9.166
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "揭示礼教对人性的自我反噬。",
-    "start": 75.322,
-    "end": 77.367,
-    "duration": 2.045
+    "start": 83.114,
+    "end": 85.326,
+    "duration": 2.213
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 融关中民间神话与写实、生深沉哲理追问",
-    "start": 78.112,
-    "end": 82.647,
-    "duration": 4.534
+    "start": 85.913,
+    "end": 90.652,
+    "duration": 4.739
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "将关中“白鹿神话”、圣人朱先生预言与冷静历史写实相结合；",
-    "start": 83.393,
-    "end": 88.639,
-    "duration": 5.246
+    "start": 91.239,
+    "end": 97.592,
+    "duration": 6.353
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "借鹿子霖机关算尽却家破人亡、风雪疯癫冻毙结局，",
-    "start": 89.44,
-    "end": 93.956,
-    "duration": 4.516
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "于兴替之上追问善恶报应、宗族消长与人性幽微，具苍茫历史感。",
-    "start": 94.68,
-    "end": 100.6,
-    "duration": 5.92
+    "text": "借鹿子霖机关算尽却家破人亡、风雪疯癫冻毙结局，于兴替之上追问善恶报应、宗族消长与人性幽微，具苍茫历史感。",
+    "start": 98.166,
+    "end": 110.391,
+    "duration": 12.226
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：核心人物记住族长白嘉轩（腰杆挺直/族规）、田小娥与黑娃（黑娃终遭枪决；田小娥遇刺后白鹿原闹瘟疫，被建砖塔镇压）、鹿三、鹿子霖（疯癫冻毙）、朱先生（圣人预言）。",
-    "start": 101.375,
-    "end": 117.692,
-    "duration": 16.317
+    "start": 110.965,
+    "end": 127.579,
+    "duration": 16.614
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 说出白嘉轩、田小娥、黑娃、鹿三、鹿子霖、朱先生在小说中的人物定位与最终归宿？",
-    "start": 118.44,
-    "end": 127.716,
-    "duration": 9.277
+    "start": 128.166,
+    "end": 137.566,
+    "duration": 9.4
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 阐明《白鹿原》如何以“白鹿两大家族+宗法本能冲突”体现文学与美学价值？",
-    "start": 128.44,
-    "end": 136.153,
-    "duration": 7.713
+    "start": 138.14,
+    "end": 145.964,
+    "duration": 7.825
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 解释“白鹿神话”与鹿子霖结局共同赋予作品怎样的历史苍茫感？",
-    "start": 136.9,
-    "end": 143.447,
-    "duration": 6.547
+    "start": 146.551,
+    "end": 153.243,
+    "duration": 6.692
   }
 ]

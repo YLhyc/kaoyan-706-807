@@ -1,562 +1,546 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "真题遗珠与现当代补充名解合辑",
+    "start": 0.134,
+    "end": 4.195,
+    "duration": 4.061
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "10道高性价比补遗题组：记住两条政策坐标（《延安讲话》定方向→第一次文代会定当代开端），",
-    "start": 0.225,
-    "end": 8.576,
-    "duration": 8.351
+    "start": 4.771,
+    "end": 13.442,
+    "duration": 8.671
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "一对地域镜像（京派沈从文/废名 vs 海派新感觉派/张爱玲），",
-    "start": 9.345,
-    "end": 14.706,
-    "duration": 5.361
+    "start": 13.691,
+    "end": 19.263,
+    "duration": 5.572
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "外加“三红一创”四组作者作品严丝合缝配对。",
-    "start": 15.503,
-    "end": 19.131,
-    "duration": 3.628
+    "start": 19.364,
+    "end": 23.048,
+    "duration": 3.684
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 延安文艺座谈会讲话",
-    "start": 19.842,
-    "end": 22.08,
-    "duration": 2.238
+    "start": 23.635,
+    "end": 26.003,
+    "duration": 2.369
   },
   {
     "id": "sec0_s1_c0",
     "dom_key": "sec0_s1_c0",
     "text": "抗战相持阶段毛泽东在延安发表的马克思主义文艺纲领性文献。",
-    "start": 22.805,
-    "end": 29.154,
-    "duration": 6.349
+    "start": 26.59,
+    "end": 33.061,
+    "duration": 6.47
   },
   {
     "id": "sec0_s2_c0",
     "dom_key": "sec0_s2_c0",
     "text": "讲话直面解放区文艺脱离群众与抗战实际的矛盾，",
-    "start": 29.953,
-    "end": 34.894,
-    "duration": 4.941
+    "start": 33.648,
+    "end": 38.79,
+    "duration": 5.142
   },
   {
     "id": "sec0_s2_c1",
     "dom_key": "sec0_s2_c1",
     "text": "明确提出文艺“为什么人”和“如何服务”的根本问题，确立文艺为工农兵服务的方向，",
-    "start": 35.649,
-    "end": 41.908,
-    "duration": 6.258
+    "start": 39.103,
+    "end": 45.704,
+    "duration": 6.601
   },
   {
     "id": "sec0_s2_c2",
     "dom_key": "sec0_s2_c2",
     "text": "强调作家深入工农兵生活并实现“化”的转变。",
-    "start": 42.636,
-    "end": 46.327,
-    "duration": 3.69
+    "start": 45.805,
+    "end": 49.411,
+    "duration": 3.606
   },
   {
     "id": "sec0_s3_c0",
     "dom_key": "sec0_s3_c0",
     "text": "它直接指导了赵树理《小二黑结婚》、丁玲《太阳照在桑干河上》及歌剧《白毛女》等解放区创作，",
-    "start": 47.093,
-    "end": 55.496,
-    "duration": 8.403
+    "start": 49.998,
+    "end": 58.655,
+    "duration": 8.658
   },
   {
     "id": "sec0_s3_c1",
     "dom_key": "sec0_s3_c1",
     "text": "成为中国当代文艺格局的直接思想源头。",
-    "start": 56.235,
-    "end": 59.384,
-    "duration": 3.149
+    "start": 58.956,
+    "end": 62.184,
+    "duration": 3.228
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 第一次文代会",
-    "start": 60.067,
-    "end": 61.7,
-    "duration": 1.632
+    "start": 62.771,
+    "end": 64.541,
+    "duration": 1.77
   },
   {
     "id": "sec1_s1_c0",
     "dom_key": "sec1_s1_c0",
     "text": "建国前夕在北平召开的中华全国文学艺术工作者代表大会的简称。",
-    "start": 62.435,
-    "end": 68.781,
-    "duration": 6.347
+    "start": 65.115,
+    "end": 71.598,
+    "duration": 6.483
   },
   {
     "id": "sec1_s2_c0",
     "dom_key": "sec1_s2_c0",
-    "text": "大会筹建全国文联，随后选举郭沫若为主席，",
-    "start": 69.581,
-    "end": 74.652,
-    "duration": 5.071
+    "text": "大会筹建全国文联，随后选举郭沫若为主席，并先后创刊《文艺报》《人民文学》等核心机关刊物，",
+    "start": 72.185,
+    "end": 81.572,
+    "duration": 9.387
   },
   {
     "id": "sec1_s2_c1",
     "dom_key": "sec1_s2_c1",
-    "text": "并先后创刊《文艺报》《人民文学》等核心机关刊物，",
-    "start": 75.394,
-    "end": 79.118,
-    "duration": 3.724
+    "text": "总结国统区与解放区两支文艺队伍的经验，",
+    "start": 81.794,
+    "end": 85.283,
+    "duration": 3.489
   },
   {
     "id": "sec1_s2_c2",
     "dom_key": "sec1_s2_c2",
-    "text": "总结国统区与解放区两支文艺队伍的经验，",
-    "start": 79.879,
-    "end": 83.383,
-    "duration": 3.505
-  },
-  {
-    "id": "sec1_s2_c3",
-    "dom_key": "sec1_s2_c3",
     "text": "正式将毛泽东文艺思想确立为新中国文艺的基本指导方针。",
-    "start": 84.131,
-    "end": 88.856,
-    "duration": 4.725
+    "start": 85.41,
+    "end": 90.214,
+    "duration": 4.804
   },
   {
     "id": "sec1_s3_c0",
     "dom_key": "sec1_s3_c0",
     "text": "这次会议在文学史分期中标志着中国现代文学阶段的结束与中国当代文学的正式开端。",
-    "start": 89.601,
-    "end": 97.711,
-    "duration": 8.11
+    "start": 90.801,
+    "end": 99.042,
+    "duration": 8.241
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 底层写作",
-    "start": 98.396,
-    "end": 99.976,
-    "duration": 1.581
+    "start": 99.629,
+    "end": 101.32,
+    "duration": 1.692
   },
   {
     "id": "sec2_s1_c0",
     "dom_key": "sec2_s1_c0",
     "text": "九十年代后期兴起并延续至新世纪初的重要当代现实主义写作潮流。",
-    "start": 100.705,
-    "end": 107.357,
-    "duration": 6.652
+    "start": 101.907,
+    "end": 108.847,
+    "duration": 6.939
   },
   {
     "id": "sec2_s2_c0",
     "dom_key": "sec2_s2_c0",
     "text": "写作主体自觉贴近社会转型期的下岗工人、农民工及城乡边缘弱势群体，",
-    "start": 108.304,
-    "end": 115.411,
-    "duration": 7.107
+    "start": 109.433,
+    "end": 116.633,
+    "duration": 7.2
   },
   {
     "id": "sec2_s2_c1",
     "dom_key": "sec2_s2_c1",
     "text": "延续五四“为人生”与关注“被损害者与被侮辱者”的写实传统。",
-    "start": 116.146,
-    "end": 120.789,
-    "duration": 4.643
+    "start": 116.894,
+    "end": 122.128,
+    "duration": 5.233
   },
   {
     "id": "sec2_s2_c2",
     "dom_key": "sec2_s2_c2",
     "text": "代表倾向包括方方早期写实转向、新世纪农民工叙事及打工诗歌群落。",
-    "start": 121.571,
-    "end": 127.691,
-    "duration": 6.119
+    "start": 122.715,
+    "end": 129.003,
+    "duration": 6.288
   },
   {
     "id": "sec2_s3_c0",
     "dom_key": "sec2_s3_c0",
     "text": "虽个别作品因商业迎合引来“消费苦难”之议，整体上仍彰显了当代文学深切的平民关怀。",
-    "start": 128.475,
-    "end": 137.289,
-    "duration": 8.813
+    "start": 129.59,
+    "end": 138.677,
+    "duration": 9.088
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 戴望舒",
-    "start": 138.106,
-    "end": 139.542,
-    "duration": 1.436
+    "start": 139.264,
+    "end": 140.813,
+    "duration": 1.548
   },
   {
     "id": "sec3_s1_c0",
     "dom_key": "sec3_s1_c0",
     "text": "三十年代以《现代》杂志为核心阵地的现代派诗歌主将。",
-    "start": 140.25,
-    "end": 145.595,
-    "duration": 5.345
+    "start": 141.4,
+    "end": 146.958,
+    "duration": 5.559
   },
   {
     "id": "sec3_s2_c0",
     "dom_key": "sec3_s2_c0",
     "text": "针对新月派过分追求外形格律齐整的倾向，他吸收法国象征主义暗示美学，",
-    "start": 146.448,
-    "end": 153.62,
-    "duration": 7.172
+    "start": 147.545,
+    "end": 154.732,
+    "duration": 7.186
   },
   {
     "id": "sec3_s2_c1",
     "dom_key": "sec3_s2_c1",
     "text": "提出诗歌“重在情绪的节奏”、追求散文自由与诗意朦胧。",
-    "start": 154.335,
-    "end": 159.202,
-    "duration": 4.868
+    "start": 154.993,
+    "end": 159.784,
+    "duration": 4.791
   },
   {
     "id": "sec3_s2_c2",
     "dom_key": "sec3_s2_c2",
     "text": "早期代表作《雨巷》以丁香姑娘象征可遇而不可求的怅惘，集作《我的记忆》《望舒草》颇具代表；",
-    "start": 159.967,
-    "end": 167.519,
-    "duration": 7.551
+    "start": 160.371,
+    "end": 168.43,
+    "duration": 8.059
   },
   {
     "id": "sec3_s3_c0",
     "dom_key": "sec3_s3_c0",
     "text": "抗战爆发后转向写实爱国抒情，著有《灾难的岁月》，完成了从个人迷惘到民族受难者的诗风转折。",
-    "start": 168.355,
-    "end": 177.477,
-    "duration": 9.122
+    "start": 169.004,
+    "end": 178.13,
+    "duration": 9.127
   },
   {
     "id": "sec4_title_c0",
     "dom_key": "sec4_title_c0",
     "text": "05 · 京派文学",
-    "start": 178.238,
-    "end": 179.907,
-    "duration": 1.669
+    "start": 178.717,
+    "end": 180.5,
+    "duration": 1.783
   },
   {
     "id": "sec4_s1_c0",
     "dom_key": "sec4_s1_c0",
     "text": "三十年代活跃于北方京津一带、以《大公报·文艺副刊》《水星》等刊物为阵地的自由主义文学群体。",
-    "start": 180.603,
-    "end": 189.239,
-    "duration": 8.636
+    "start": 181.087,
+    "end": 190.149,
+    "duration": 9.061
   },
   {
     "id": "sec4_s2_c0",
     "dom_key": "sec4_s2_c0",
     "text": "理论领袖有朱光潜、沈从文，主要作家包括废名、萧乾、芦焚及四十年代后的汪曾祺等。",
-    "start": 190.092,
-    "end": 199.172,
-    "duration": 9.08
+    "start": 190.735,
+    "end": 200.135,
+    "duration": 9.4
   },
   {
     "id": "sec4_s2_c1",
     "dom_key": "sec4_s2_c1",
     "text": "作家坚持文学自律与“稳健清正”品格，远离商业媚俗与党派喧嚣，",
-    "start": 199.964,
-    "end": 205.749,
-    "duration": 5.786
+    "start": 200.696,
+    "end": 206.594,
+    "duration": 5.897
   },
   {
     "id": "sec4_s2_c2",
     "dom_key": "sec4_s2_c2",
     "text": "擅以冲淡抒情之笔描摹乡村宗法风俗与未遭污染的常态人性美。",
-    "start": 206.479,
-    "end": 211.962,
-    "duration": 5.483
+    "start": 206.79,
+    "end": 212.57,
+    "duration": 5.78
   },
   {
     "id": "sec4_s3_c0",
     "dom_key": "sec4_s3_c0",
     "text": "代表作有沈从文《边城》、废名《竹林的故事》，拓展了现代抒情散文化小说路径。",
-    "start": 212.809,
-    "end": 220.19,
-    "duration": 7.381
+    "start": 213.144,
+    "end": 220.904,
+    "duration": 7.759
   },
   {
     "id": "sec5_title_c0",
     "dom_key": "sec5_title_c0",
     "text": "06 · 海派文学",
-    "start": 220.966,
-    "end": 222.582,
-    "duration": 1.616
+    "start": 221.491,
+    "end": 223.222,
+    "duration": 1.731
   },
   {
     "id": "sec5_s1_c0",
     "dom_key": "sec5_s1_c0",
     "text": "二三十至四十年代依托上海都会印刷市场与市民报刊兴起的现代城市文学流派。",
-    "start": 223.285,
-    "end": 230.784,
-    "duration": 7.499
+    "start": 223.795,
+    "end": 231.477,
+    "duration": 7.681
   },
   {
     "id": "sec5_s2_c0",
     "dom_key": "sec5_s2_c0",
-    "text": "创作阵营涵盖早期市民言情作家，",
-    "start": 231.607,
-    "end": 235.359,
-    "duration": 3.752
+    "text": "创作阵营涵盖早期市民言情作家，三十年代以施蛰存、刘呐鸥、穆时英为代表的“新感觉派”，",
+    "start": 232.064,
+    "end": 241.151,
+    "duration": 9.088
   },
   {
     "id": "sec5_s2_c1",
     "dom_key": "sec5_s2_c1",
-    "text": "三十年代以施蛰存、刘呐鸥、穆时英为代表的“新感觉派”，",
-    "start": 236.066,
-    "end": 240.868,
-    "duration": 4.803
-  },
-  {
-    "id": "sec5_s2_c2",
-    "dom_key": "sec5_s2_c2",
     "text": "以及四十年代张爱玲、苏青等都市生活写作。",
-    "start": 241.623,
-    "end": 245.566,
-    "duration": 3.943
+    "start": 241.387,
+    "end": 245.617,
+    "duration": 4.231
   },
   {
     "id": "sec5_s3_c0",
     "dom_key": "sec5_s3_c0",
-    "text": "作品紧扣现代都市霓虹消费、快节奏声色刺激、潜意识与心理焦虑，",
-    "start": 246.339,
-    "end": 253.056,
-    "duration": 6.716
+    "text": "作品紧扣现代都市霓虹消费、快节奏声色刺激、潜意识与心理焦虑，借鉴蒙太奇与精神分析技法，",
+    "start": 246.204,
+    "end": 255.943,
+    "duration": 9.739
   },
   {
     "id": "sec5_s3_c1",
     "dom_key": "sec5_s3_c1",
-    "text": "借鉴蒙太奇与精神分析技法，生动折射了半殖民地大都市奇异的现代性体验。",
-    "start": 253.828,
-    "end": 260.304,
-    "duration": 6.476
+    "text": "生动折射了半殖民地大都市奇异的现代性体验。",
+    "start": 256.139,
+    "end": 260.266,
+    "duration": 4.127
   },
   {
     "id": "sec6_title_c0",
     "dom_key": "sec6_title_c0",
     "text": "07 · 太阳社与“左联”",
-    "start": 261.05,
-    "end": 263.069,
-    "duration": 2.019
+    "start": 260.853,
+    "end": 263.013,
+    "duration": 2.16
   },
   {
     "id": "sec6_s1_c0",
     "dom_key": "sec6_s1_c0",
     "text": "大革命失败后在上海倡导并领导无产阶级革命文学的两个核心阵营。",
-    "start": 263.767,
-    "end": 270.251,
-    "duration": 6.485
+    "start": 263.75,
+    "end": 270.429,
+    "duration": 6.679
   },
   {
     "id": "sec6_s1_c1",
     "dom_key": "sec6_s1_c1",
     "text": "太阳社由蒋光慈、钱杏邨等主持，与后期创造社一道率先号召“革命文学”；",
-    "start": 271.069,
-    "end": 277.5,
-    "duration": 6.431
+    "start": 271.018,
+    "end": 277.605,
+    "duration": 6.588
   },
   {
     "id": "sec6_s2_c0",
     "dom_key": "sec6_s2_c0",
     "text": "随后在鲁迅、冯雪峰、沈端先等推动下联合更广泛左翼力量成立中国左翼作家联盟（简称“左联”），",
-    "start": 278.28,
-    "end": 287.884,
-    "duration": 9.604
+    "start": 278.192,
+    "end": 287.996,
+    "duration": 9.804
   },
   {
     "id": "sec6_s2_c1",
     "dom_key": "sec6_s2_c1",
     "text": "鲁迅在成立大会上发表《对于左翼作家联盟的意见》。",
-    "start": 288.635,
-    "end": 292.371,
-    "duration": 3.737
+    "start": 288.374,
+    "end": 292.332,
+    "duration": 3.957
   },
   {
     "id": "sec6_s3_c0",
     "dom_key": "sec6_s3_c0",
     "text": "它们坚持马克思主义文艺导向、反击文化“围剿”并倡导文艺大众化，凝聚了三十年代左翼文学主力。",
-    "start": 293.107,
-    "end": 302.291,
-    "duration": 9.183
+    "start": 292.919,
+    "end": 302.228,
+    "duration": 9.309
   },
   {
     "id": "sec7_title_c0",
     "dom_key": "sec7_title_c0",
     "text": "08 · 《围城》",
-    "start": 303.012,
-    "end": 304.321,
-    "duration": 1.309
+    "start": 302.815,
+    "end": 304.272,
+    "duration": 1.457
   },
   {
     "id": "sec7_s1_c0",
     "dom_key": "sec7_s1_c0",
     "text": "四十年代钱锺书创作的一部风格独异的现代长篇讽刺小说。",
-    "start": 305.032,
-    "end": 310.846,
-    "duration": 5.814
+    "start": 304.833,
+    "end": 310.795,
+    "duration": 5.962
   },
   {
     "id": "sec7_s2_c0",
     "dom_key": "sec7_s2_c0",
     "text": "小说围绕留学归来的方鸿渐从上海辗转内地三闾大学任教及恋爱婚变经历展开，",
-    "start": 311.644,
-    "end": 319.423,
-    "duration": 7.779
+    "start": 311.382,
+    "end": 319.272,
+    "duration": 7.89
   },
   {
     "id": "sec7_s2_c1",
     "dom_key": "sec7_s2_c1",
     "text": "借“城外的人想冲进去，城里的人想逃出来”人生喻象，",
-    "start": 320.165,
-    "end": 324.401,
-    "duration": 4.236
+    "start": 319.559,
+    "end": 323.959,
+    "duration": 4.4
   },
   {
     "id": "sec7_s2_c2",
     "dom_key": "sec7_s2_c2",
     "text": "辛辣剖示抗战年代受中西文化夹击的知识分子的怯懦、虚伪与精神失落。",
-    "start": 325.139,
-    "end": 331.366,
-    "duration": 6.227
+    "start": 324.06,
+    "end": 330.361,
+    "duration": 6.301
   },
   {
     "id": "sec7_s3_c0",
     "dom_key": "sec7_s3_c0",
     "text": "作品机智奇喻纷呈、反讽冷隽犀利，把中国现代世态讽刺小说推向新高峰。",
-    "start": 332.166,
-    "end": 339.871,
-    "duration": 7.705
+    "start": 330.948,
+    "end": 338.851,
+    "duration": 7.903
   },
   {
     "id": "sec8_title_c0",
     "dom_key": "sec8_title_c0",
     "text": "09 · 七月诗派",
-    "start": 340.607,
-    "end": 342.137,
-    "duration": 1.531
+    "start": 339.438,
+    "end": 341.104,
+    "duration": 1.666
   },
   {
     "id": "sec8_s1_c0",
     "dom_key": "sec8_s1_c0",
     "text": "抗战爆发后围绕胡风主编的《七月》《希望》杂志聚集起来的现实主义自由诗群体。",
-    "start": 342.863,
-    "end": 349.79,
-    "duration": 6.927
+    "start": 341.678,
+    "end": 348.812,
+    "duration": 7.134
   },
   {
     "id": "sec8_s2_c0",
     "dom_key": "sec8_s2_c0",
     "text": "主要诗人有艾青、田间、阿垅、绿原、鲁藜、牛汉、曾卓等，当代复出后曾编选诗合集《白色花》。",
-    "start": 350.618,
-    "end": 361.107,
-    "duration": 10.49
+    "start": 349.399,
+    "end": 360.062,
+    "duration": 10.663
   },
   {
     "id": "sec8_s3_c0",
     "dom_key": "sec8_s3_c0",
     "text": "诗派继承“主观战斗精神”诗论，摒弃唯美雕琢与标语空喊，追随自由诗体与“散文美”，",
-    "start": 361.871,
-    "end": 370.225,
-    "duration": 8.354
+    "start": 360.649,
+    "end": 369.476,
+    "duration": 8.827
   },
   {
     "id": "sec8_s3_c1",
     "dom_key": "sec8_s3_c1",
     "text": "以粗犷雄浑的力度、土地泥土意象歌吟抗战血火中的民族生机与生命体验，",
-    "start": 371.061,
-    "end": 377.234,
-    "duration": 6.173
+    "start": 369.672,
+    "end": 375.96,
+    "duration": 6.288
   },
   {
     "id": "sec8_s3_c2",
     "dom_key": "sec8_s3_c2",
     "text": "成为四十年代诗坛重要生力军。",
-    "start": 377.999,
-    "end": 380.66,
-    "duration": 2.66
+    "start": 376.061,
+    "end": 378.482,
+    "duration": 2.421
   },
   {
     "id": "sec9_title_c0",
     "dom_key": "sec9_title_c0",
     "text": "10 · “三红一创”",
-    "start": 381.385,
-    "end": 382.955,
-    "duration": 1.569
+    "start": 379.072,
+    "end": 380.894,
+    "duration": 1.822
   },
   {
     "id": "sec9_s1_c0",
     "dom_key": "sec9_s1_c0",
     "text": "当代“十七年”时期反映革命历史与农村合作化运动四部长篇小说的合称。",
-    "start": 383.708,
-    "end": 390.56,
-    "duration": 6.853
+    "start": 381.468,
+    "end": 388.512,
+    "duration": 7.043
   },
   {
     "id": "sec9_s2_c0",
     "dom_key": "sec9_s2_c0",
     "text": "具体指吴强《红日》、梁斌《红旗谱》、罗广斌与杨益言《红岩》以及柳青《创业史》（第一部）。",
-    "start": 391.398,
-    "end": 399.164,
-    "duration": 7.766
+    "start": 389.099,
+    "end": 397.053,
+    "duration": 7.955
   },
   {
     "id": "sec9_s3_c0",
     "dom_key": "sec9_s3_c0",
-    "text": "作品大多采取宏阔史诗结构与鲜明阶级人物谱系，",
-    "start": 400.053,
-    "end": 405.031,
-    "duration": 4.978
+    "text": "作品大多采取宏阔史诗结构与鲜明阶级人物谱系，讲述革命创业、地下斗争与乡土变革传奇，",
+    "start": 397.614,
+    "end": 407.183,
+    "duration": 9.569
   },
   {
     "id": "sec9_s3_c1",
     "dom_key": "sec9_s3_c1",
-    "text": "讲述革命创业、地下斗争与乡土变革传奇，",
-    "start": 405.759,
-    "end": 409.531,
-    "duration": 3.771
-  },
-  {
-    "id": "sec9_s3_c2",
-    "dom_key": "sec9_s3_c2",
     "text": "集中体现十七年长篇小说“红色经典”建构革命记忆与集体认同的美学范式。",
-    "start": 410.31,
-    "end": 416.322,
-    "duration": 6.011
+    "start": 407.31,
+    "end": 413.299,
+    "duration": 5.989
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "补遗真题高含金量题群：注意《延安讲话》与第一次文代会的时间衔接、京派vs海派地域分际、以及“三红一创”四部作品与作者准确配对。",
-    "start": 417.106,
-    "end": 429.245,
-    "duration": 12.138
+    "start": 413.886,
+    "end": 426.398,
+    "duration": 12.512
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 《延安讲话》的“两个根本问题”与《第一次文代会》在文学史分期上的界标意义各是什么？",
-    "start": 430.048,
-    "end": 437.484,
-    "duration": 7.436
+    "start": 426.972,
+    "end": 434.432,
+    "duration": 7.46
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 背准京派（朱光潜/沈从文《边城》）与海派（新感觉派施蛰存/穆时英+张爱玲）的阵地、品格差异？",
-    "start": 438.237,
-    "end": 448.778,
-    "duration": 10.541
+    "start": 435.006,
+    "end": 445.539,
+    "duration": 10.533
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 闭眼报出“三红一创”四部作品及其作者，区分“太阳社”与“左联”如何衔接成立？",
-    "start": 449.517,
-    "end": 457.539,
-    "duration": 8.022
+    "start": 446.126,
+    "end": 454.393,
+    "duration": 8.267
   }
 ]

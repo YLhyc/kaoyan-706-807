@@ -1,210 +1,210 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "鲁迅·狂人日记表现的深切与格式的特别启蒙意蕴",
+    "start": 0.134,
+    "end": 4.547,
+    "duration": 4.413
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "紧扣鲁迅自己概括的“表现的深切和格式的特别”三步立柱：",
-    "start": 0.222,
-    "end": 5.627,
-    "duration": 5.405
+    "start": 5.136,
+    "end": 10.552,
+    "duration": 5.416
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "先剖礼教“吃人”且全家全村构成“共谋网”与“未必无意不吃妹肉”之深切，",
-    "start": 6.391,
-    "end": 12.168,
-    "duration": 5.776
+    "start": 10.631,
+    "end": 16.632,
+    "duration": 6.002
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "再拆文言小序vs十三则白话日记复调框架与象征之特别，",
-    "start": 12.897,
-    "end": 18.072,
-    "duration": 5.175
+    "start": 16.746,
+    "end": 21.98,
+    "duration": 5.233
   },
   {
     "id": "hook_c3",
     "dom_key": "hook_c3",
     "text": "最后塑出“清醒疯子”自审与“救救孩子”启蒙高度。",
-    "start": 18.79,
-    "end": 22.508,
-    "duration": 3.719
+    "start": 22.332,
+    "end": 26.212,
+    "duration": 3.879
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "五四鲁迅发表于《新青年》的《狂人日记》是现代白话小说奠基之作。",
-    "start": 23.284,
-    "end": 28.219,
-    "duration": 4.935
+    "start": 26.799,
+    "end": 31.863,
+    "duration": 5.064
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "鲁迅自括其显示了“表现的深切和格式的特别”，树思想与形式革新典范。",
-    "start": 28.95,
-    "end": 34.87,
-    "duration": 5.92
+    "start": 32.437,
+    "end": 38.555,
+    "duration": 6.119
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · “表现的深切”：礼教“吃人”本质与社会共谋",
-    "start": 35.626,
-    "end": 39.6,
-    "duration": 3.974
+    "start": 39.142,
+    "end": 43.282,
+    "duration": 4.14
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "借狂人非常视角穿透仁义修辞，从历史字缝看出“吃人”二字，宣判专制传统；",
-    "start": 40.304,
-    "end": 47.22,
-    "duration": 6.916
+    "start": 43.869,
+    "end": 51.98,
+    "duration": 8.111
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "“古久先生”簿子、赵贵翁眼色、看客、何先生乃至于长兄织成共谋网；",
-    "start": 48.004,
-    "end": 54.041,
-    "duration": 6.037
+    "start": 52.567,
+    "end": 60.079,
+    "duration": 7.512
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "惊疑“未必无意之中，不吃了我妹子的几片肉”直剖伦理毒害，见启蒙清醒。",
-    "start": 54.817,
-    "end": 60.703,
-    "duration": 5.886
+    "start": 60.34,
+    "end": 66.342,
+    "duration": 6.002
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · “格式的特别”：复合叙事框架与心理象征",
-    "start": 61.426,
-    "end": 65.464,
-    "duration": 4.037
+    "start": 66.916,
+    "end": 71.081,
+    "duration": 4.166
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "开篇理性文言“小序”交代“赴某地候补矣”，隐喻正统对反叛的驯化收编；",
-    "start": 66.194,
-    "end": 71.861,
-    "duration": 5.667
+    "start": 71.655,
+    "end": 78.633,
+    "duration": 6.978
   },
   {
     "id": "sec1_step0_c1",
     "dom_key": "sec1_step0_c1",
     "text": "随后十三则白话日记呈非逻辑独白，形成互相拆解的结构反讽张力；",
-    "start": 72.586,
-    "end": 78.376,
-    "duration": 5.791
+    "start": 78.921,
+    "end": 84.936,
+    "duration": 6.015
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "融西方象征表现技巧，赋惨白月光、赵贵翁眼色、何先生诊脉以社会象征，立白话小说高度。",
-    "start": 79.15,
-    "end": 87.283,
-    "duration": 8.133
+    "start": 85.523,
+    "end": 95.04,
+    "duration": 9.517
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · “清醒的疯子”：自省与反抗绝望的启蒙精神",
-    "start": 88.093,
-    "end": 92.449,
-    "duration": 4.356
+    "start": 95.627,
+    "end": 100.131,
+    "duration": 4.504
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "既是逼真迫害妄想患者，更是最早质疑“从来如此，便对么？”的觉醒先驱，",
-    "start": 93.189,
-    "end": 99.353,
-    "duration": 6.164
+    "start": 100.718,
+    "end": 108.334,
+    "duration": 7.616
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
     "text": "敢于在“四千年吃人履历”中直面自身罪责；",
-    "start": 100.062,
-    "end": 103.334,
-    "duration": 3.272
+    "start": 108.504,
+    "end": 111.772,
+    "duration": 3.267
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "末发“救救孩子……”沉痛呼告，蕴含明知传统沉重却反抗绝望之勇气，",
-    "start": 104.026,
-    "end": 109.847,
-    "duration": 5.82
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "升华为挽救民族未来的启蒙宣言。",
-    "start": 110.562,
-    "end": 113.229,
-    "duration": 2.666
+    "text": "末发“救救孩子……”沉痛呼告，蕴含明知传统沉重却反抗绝望之勇气，升华为挽救民族未来的启蒙宣言。",
+    "start": 112.358,
+    "end": 122.592,
+    "duration": 10.233
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "《狂人日记》以“表现的深切”直击传统与国民性病灶，",
-    "start": 113.989,
-    "end": 117.97,
-    "duration": 3.981
+    "start": 123.179,
+    "end": 127.201,
+    "duration": 4.022
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "以“格式的特别”推动叙事从古典向现代转型，成五四先声与奠基之作。",
-    "start": 118.728,
-    "end": 124.786,
-    "duration": 6.058
+    "start": 127.528,
+    "end": 133.92,
+    "duration": 6.392
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：鲁迅自己概括其成就为“表现的深切和格式的特别”；",
-    "start": 125.568,
-    "end": 130.543,
-    "duration": 4.975
+    "start": 134.494,
+    "end": 139.532,
+    "duration": 5.038
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "末尾呐喊是“救救孩子……”，小序实为讽刺狂人被正统收编“赴某地候补”。",
-    "start": 131.295,
-    "end": 136.965,
-    "duration": 5.669
+    "start": 139.885,
+    "end": 145.795,
+    "duration": 5.91
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 结合文言小序、十三则白话日记与现代象征，解透什么是“格式的特别”？",
-    "start": 137.741,
-    "end": 145.281,
-    "duration": 7.54
+    "start": 146.382,
+    "end": 154.05,
+    "duration": 7.668
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合“四千年吃人履历”与“未必无意不吃妹子肉”，解释何谓“表现的深切”？",
-    "start": 145.985,
-    "end": 152.879,
-    "duration": 6.894
+    "start": 154.637,
+    "end": 161.368,
+    "duration": 6.731
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 回答 2014/2015 年真题简答：《狂人日记》中“狂人形象的意义”？",
-    "start": 153.607,
-    "end": 160.519,
-    "duration": 6.912
+    "start": 161.942,
+    "end": 168.946,
+    "duration": 7.004
   }
 ]

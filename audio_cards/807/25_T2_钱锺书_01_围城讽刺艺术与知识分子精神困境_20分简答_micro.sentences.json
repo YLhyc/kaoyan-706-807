@@ -1,178 +1,170 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "钱锺书·围城讽刺艺术与知识分子精神困境",
+    "start": 0.134,
+    "end": 4.156,
+    "duration": 4.022
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "哲学隐喻（围城内外皆困局）→修辞笔法（中西诗话通感机智讽刺）",
-    "start": 0.224,
-    "end": 7.038,
-    "duration": 6.814
+    "text": "哲学隐喻（围城内外皆困局）→修辞笔法（中西诗话通感机智讽刺）→社会剖面（三闾大学文凭官场灰暗），",
+    "start": 4.745,
+    "end": 15.474,
+    "duration": 10.728
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "→社会剖面（三闾大学文凭官场灰暗），三点写绝这部“新儒林外史”。",
-    "start": 7.758,
-    "end": 13.385,
-    "duration": 5.627
+    "text": "三点写绝这部“新儒林外史”。",
+    "start": 15.709,
+    "end": 18.091,
+    "duration": 2.382
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "四十年代中后期钱锺书《围城》以学者化笔墨写就剖析知识分子病态灵魂的“新儒林外史”。",
-    "start": 14.154,
-    "end": 21.56,
-    "duration": 7.406
+    "start": 18.665,
+    "end": 26.073,
+    "duration": 7.408
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · “围城”哲学隐喻：普遍生存悖论与困局",
-    "start": 22.285,
-    "end": 25.993,
-    "duration": 3.708
+    "start": 26.646,
+    "end": 30.5,
+    "duration": 3.853
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "借法国谚语指结婚如“被围困的城堡，城外想冲进去，城里想逃出来”；",
-    "start": 26.73,
-    "end": 32.44,
-    "duration": 5.71
+    "start": 31.087,
+    "end": 37.922,
+    "duration": 6.835
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "留归求职婚恋屡挫：在苏文纨与唐晓芙间错位，婚后与孙柔嘉消磨于琐碎争吵姑嫂龃龉，",
-    "start": 33.172,
-    "end": 40.435,
-    "duration": 7.263
+    "start": 38.495,
+    "end": 47.453,
+    "duration": 8.957
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "超越婚姻写尽欲望追寻与现实幻灭的生存悖论。",
-    "start": 41.202,
-    "end": 45.335,
-    "duration": 4.133
+    "start": 47.714,
+    "end": 52.114,
+    "duration": 4.4
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 博雅机智学者修辞：幽默辛辣智性讽刺",
-    "start": 46.058,
-    "end": 50.172,
-    "duration": 4.114
+    "start": 52.688,
+    "end": 56.893,
+    "duration": 4.205
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "融西方修辞与传统诗话妙喻，擅通感、反讽与旁逸斜出警句连环；",
-    "start": 50.907,
-    "end": 56.888,
-    "duration": 5.981
+    "start": 57.48,
+    "end": 64.81,
+    "duration": 7.33
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "戏谑鲍小姐装束为“熟食铺子”“局部的真理”，写李梅亭铁箱藏卡片西药一路丑态，",
-    "start": 57.7,
-    "end": 64.537,
-    "duration": 6.836
+    "start": 65.396,
+    "end": 73.182,
+    "duration": 7.785
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "在不露声色调侃中剖尽虚荣庸俗。",
-    "start": 65.287,
-    "end": 68.064,
-    "duration": 2.777
+    "start": 73.378,
+    "end": 76.554,
+    "duration": 3.176
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 解剖三闾大学众生相、揭知识界虚伪平庸",
-    "start": 68.889,
-    "end": 73.314,
-    "duration": 4.425
+    "start": 77.141,
+    "end": 81.75,
+    "duration": 4.608
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
-    "text": "赴三闾大学执教勾勒学术场域：校长高松年老谋深算、西洋史韩学愈靠买克莱登大学假文凭招摇，",
-    "start": 74.116,
-    "end": 82.66,
-    "duration": 8.544
-  },
-  {
-    "id": "sec2_step0_c1",
-    "dom_key": "sec2_step0_c1",
-    "text": "同事争课时倾轧；",
-    "start": 83.421,
-    "end": 84.708,
-    "duration": 1.287
+    "text": "赴三闾大学执教勾勒学术场域：校长高松年老谋深算、西洋史韩学愈靠买克莱登大学假文凭招摇，同事争课时倾轧；",
+    "start": 82.324,
+    "end": 93.82,
+    "duration": 11.496
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "深刻揭露旧官场恶习与半殖民地洋化文明杂交的知识界劣根性。",
-    "start": 85.475,
-    "end": 91.402,
-    "duration": 5.927
+    "start": 94.407,
+    "end": 100.838,
+    "duration": 6.431
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：四十年代中后期“新儒林外史”；",
-    "start": 92.229,
-    "end": 95.485,
-    "duration": 3.256
+    "start": 101.412,
+    "end": 104.797,
+    "duration": 3.384
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "主角方鸿渐（克莱登大学假博士）；",
-    "start": 96.229,
-    "end": 98.732,
-    "duration": 2.503
+    "start": 105.136,
+    "end": 107.726,
+    "duration": 2.59
   },
   {
     "id": "guard_c2",
     "dom_key": "guard_c2",
-    "text": "记住女性与学界对比人物：鲍小姐、苏文纨、唐晓芙、孙柔嘉；",
-    "start": 99.445,
-    "end": 104.471,
-    "duration": 5.026
-  },
-  {
-    "id": "guard_c3",
-    "dom_key": "guard_c3",
-    "text": "高松年、李梅亭、韩学愈。",
-    "start": 105.167,
-    "end": 107.573,
-    "duration": 2.406
+    "text": "记住女性与学界对比人物：鲍小姐、苏文纨、唐晓芙、孙柔嘉；高松年、李梅亭、韩学愈。",
+    "start": 108.092,
+    "end": 116.372,
+    "duration": 8.28
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 写出法国“围城”谚语出处及围绕方鸿渐的四位女性名字？",
-    "start": 108.278,
-    "end": 114.04,
-    "duration": 5.762
+    "start": 116.959,
+    "end": 122.83,
+    "duration": 5.871
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合鲍小姐“熟食铺子”、李梅亭铁箱、韩学愈“克莱登大学”三处例证说明其智性讽刺艺术？",
-    "start": 114.741,
-    "end": 123.718,
-    "duration": 8.976
+    "start": 123.404,
+    "end": 132.57,
+    "duration": 9.166
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 回答 2018 简答《钱锺书〈围城〉的文化意蕴》怎么从婚姻推向生存与文明反思？",
-    "start": 124.463,
-    "end": 131.804,
-    "duration": 7.341
+    "start": 133.157,
+    "end": 140.812,
+    "duration": 7.655
   }
 ]

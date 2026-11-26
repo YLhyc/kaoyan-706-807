@@ -1,170 +1,170 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "汪曾祺·散文化小说文体特质与和美诗学追求",
+    "start": 0.134,
+    "end": 4.339,
+    "duration": 4.205
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "文体→人性→语言三步承继京派：先破“剑拔弩张戏剧冲突”确立《受戒》的散文化写意画境，",
-    "start": 0.22,
-    "end": 8.51,
-    "duration": 8.291
+    "start": 4.928,
+    "end": 13.481,
+    "duration": 8.554
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再接续沈从文在《大淖记事》挖掘纯朴民间人性乌托邦与柔情救赎，",
-    "start": 9.257,
-    "end": 14.85,
-    "duration": 5.592
+    "start": 13.808,
+    "end": 19.692,
+    "duration": 5.884
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "最后归于“六朝笔记+明清小品+民间口语”的雅俗语言美学。",
-    "start": 15.571,
-    "end": 20.489,
-    "duration": 4.918
+    "start": 19.806,
+    "end": 24.805,
+    "duration": 4.999
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "八十年代初汪曾祺以《受戒》《大淖记事》重返文坛，",
-    "start": 21.194,
-    "end": 25.381,
-    "duration": 4.187
+    "start": 25.379,
+    "end": 29.91,
+    "duration": 4.53
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "在当代文学回归审美本体转折点上立独特坐标，成京派文学当代薪火传人。",
-    "start": 26.073,
-    "end": 32.551,
-    "duration": 6.478
+    "start": 30.184,
+    "end": 36.993,
+    "duration": 6.809
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 破情节中心律、辟“散文化小说”范式",
-    "start": 33.291,
-    "end": 36.696,
-    "duration": 3.405
+    "start": 37.567,
+    "end": 41.199,
+    "duration": 3.632
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "摒弃剑拔弩张冲突与因果锁链，倡“短篇小说要写得像散文一样随便”；",
-    "start": 37.419,
-    "end": 43.547,
-    "duration": 6.128
+    "start": 41.786,
+    "end": 48.49,
+    "duration": 6.705
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "大量铺叙庵赵庄民俗农事与和尚日常闲趣，",
-    "start": 44.293,
-    "end": 47.842,
-    "duration": 3.549
-  },
-  {
-    "id": "sec0_step1_c1",
-    "dom_key": "sec0_step1_c1",
-    "text": "荸荠田、芦花渡船上明海与小英子情爱自然流淌，成东方写意画境。",
-    "start": 48.567,
-    "end": 54.411,
-    "duration": 5.844
+    "text": "大量铺叙庵赵庄民俗农事与和尚日常闲趣，荸荠田、芦花渡船上明海与小英子情爱自然流淌，成东方写意画境。",
+    "start": 49.077,
+    "end": 60.469,
+    "duration": 11.392
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 承沈从文美学、建健康自然和美哲学",
-    "start": 55.147,
-    "end": 59.38,
-    "duration": 4.233
+    "start": 61.043,
+    "end": 65.404,
+    "duration": 4.361
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "极力发掘未被现代文明侵蚀的民间伦理与纯朴德行；",
-    "start": 60.121,
-    "end": 64.643,
-    "duration": 4.522
+    "start": 65.991,
+    "end": 71.341,
+    "duration": 5.351
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "挑夫锡匠自带自尊活力；",
-    "start": 65.389,
-    "end": 67.542,
-    "duration": 2.152
+    "start": 71.929,
+    "end": 75.522,
+    "duration": 3.593
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "十一子遭毒打后，巧云冲破流言淫威在众人注视下端参汤喂服，以纯粹柔情救赎苦难肉身，显和美哲学。",
-    "start": 68.268,
-    "end": 77.644,
-    "duration": 9.376
+    "start": 75.757,
+    "end": 85.509,
+    "duration": 9.752
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 融通文言与白话、炼洗练音乐语言",
-    "start": 78.399,
-    "end": 82.247,
-    "duration": 3.847
+    "start": 86.095,
+    "end": 90.066,
+    "duration": 3.97
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "秉持语言即文化本体观，融六朝笔记凝练、明清小品风致与纯正民间口语为一炉；",
-    "start": 83.014,
-    "end": 89.982,
-    "duration": 6.968
+    "start": 90.653,
+    "end": 98.946,
+    "duration": 8.293
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "句式短促空灵、用词精练，以“不着一字尽得风流”节制赋予小说雅俗共赏诗意神韵。",
-    "start": 90.869,
-    "end": 98.278,
-    "duration": 7.41
+    "start": 99.52,
+    "end": 107.787,
+    "duration": 8.267
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：代表作记住《受戒》（明海与小英子）和《大淖记事》（巧云与十一子）；",
-    "start": 99.051,
-    "end": 105.287,
-    "duration": 6.236
+    "start": 108.361,
+    "end": 114.584,
+    "duration": 6.223
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "汪曾祺是京派（沈从文）在当代新时期的传人。",
-    "start": 106.141,
-    "end": 110.109,
-    "duration": 3.967
+    "start": 114.924,
+    "end": 119.141,
+    "duration": 4.218
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 梳理汪曾祺与沈从文京派美学的承接关系及新时期初历史位置？",
-    "start": 110.838,
-    "end": 117.727,
-    "duration": 6.889
+    "start": 119.728,
+    "end": 126.785,
+    "duration": 7.056
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合《受戒》庵赵庄渡船与《大淖记事》巧云喂汤说明“散文化+和美哲学”？",
-    "start": 118.471,
-    "end": 126.266,
-    "duration": 7.795
+    "start": 127.358,
+    "end": 135.027,
+    "duration": 7.668
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 概括汪曾祺语言融合“六朝笔记/明清小品/民间口语”的特质？",
-    "start": 127.01,
-    "end": 133.863,
-    "duration": 6.853
+    "start": 135.614,
+    "end": 142.475,
+    "duration": 6.861
   }
 ]

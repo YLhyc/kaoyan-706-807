@@ -1,170 +1,162 @@
 [
   {
-    "id": "hook_c0",
-    "dom_key": "hook_c0",
-    "text": "精准对应“新写实三驾马车”一人一点：池莉《烦恼人生》（印家厚一日狼狈→原生态）+ 刘震云《一地鸡毛》（小林因变质豆腐与房子退化→消解崇高磨损）+ 方方《风景》（死婴亡灵冷眼→零度情感旁观），",
-    "start": 0.171,
-    "end": 18.276,
-    "duration": 18.104
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "新写实小说·生存本真状态呈现与零度情感叙事",
+    "start": 0.134,
+    "end": 4.482,
+    "duration": 4.348
   },
   {
-    "id": "hook_c1",
-    "dom_key": "hook_c1",
-    "text": "好记好写无敌稳！",
-    "start": 19.016,
-    "end": 20.375,
-    "duration": 1.358
+    "id": "hook_c0",
+    "dom_key": "hook_c0",
+    "text": "精准对应“新写实三驾马车”一人一点：池莉《烦恼人生》（印家厚一日狼狈→原生态）+ 刘震云《一地鸡毛》（小林因变质豆腐与房子退化→消解崇高磨损）+ 方方《风景》（死婴亡灵冷眼→零度情感旁观），好记好写无敌稳！",
+    "start": 5.071,
+    "end": 25.469,
+    "duration": 20.398
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
-    "text": "八十年代末至九十年代初伴随市场转型开启，",
-    "start": 21.141,
-    "end": 24.844,
-    "duration": 3.703
+    "text": "八十年代末至九十年代初伴随市场转型开启，池莉、刘震云、方方等掀起“新写实小说”流派，",
+    "start": 26.043,
+    "end": 34.467,
+    "duration": 8.423
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
-    "text": "池莉、刘震云、方方等掀起“新写实小说”流派，告别典型化原则与先锋形式实验。",
-    "start": 25.583,
-    "end": 32.602,
-    "duration": 7.019
+    "text": "告别典型化原则与先锋形式实验。",
+    "start": 34.728,
+    "end": 37.631,
+    "duration": 2.903
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 聚焦凡俗日常、呈“毛茸茸的原生态”",
-    "start": 33.309,
-    "end": 37.022,
-    "duration": 3.713
+    "start": 38.218,
+    "end": 42.032,
+    "duration": 3.814
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "摒弃非黑即白宏大叙事与概念说教，还生活以“毛茸茸的原生态”本真；",
-    "start": 37.785,
-    "end": 43.703,
-    "duration": 5.918
+    "start": 42.606,
+    "end": 48.985,
+    "duration": 6.379
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "《烦恼人生》写操作工印家厚清早至夜的一天：",
-    "start": 44.52,
-    "end": 48.137,
-    "duration": 3.617
+    "start": 49.572,
+    "end": 54.727,
+    "duration": 5.155
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "带儿乘渡轮、抢水、照料啼儿、应付妻子唠叨与单位纠纷，生存负荷纤毫毕现。",
-    "start": 48.872,
-    "end": 55.901,
-    "duration": 7.029
+    "start": 54.819,
+    "end": 62.123,
+    "duration": 7.304
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 消解崇高神话、直面民众微韧生存困境",
-    "start": 56.6,
-    "end": 60.784,
-    "duration": 4.183
+    "start": 62.71,
+    "end": 67.045,
+    "duration": 4.335
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "淡化救世主式英雄，投向在琐碎生活中挣扎的凡夫俗子；",
-    "start": 61.541,
-    "end": 66.15,
-    "duration": 4.609
+    "start": 67.619,
+    "end": 73.49,
+    "duration": 5.871
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "《一地鸡毛》写机关小职员小林由意气风发大学生退化为因一斤变质豆腐吵架、为分房调级钻营的庸碌市民，",
-    "start": 66.925,
-    "end": 76.095,
-    "duration": 9.17
-  },
-  {
-    "id": "sec1_step1_c1",
-    "dom_key": "sec1_step1_c1",
-    "text": "写出平庸磨损消耗。",
-    "start": 76.89,
-    "end": 78.381,
-    "duration": 1.49
+    "text": "《一地鸡毛》写机关小职员小林由意气风发大学生退化为因一斤变质豆腐吵架、为分房调级钻营的庸碌市民，写出平庸磨损消耗。",
+    "start": 74.077,
+    "end": 86.719,
+    "duration": 12.642
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 确立“零度情感”叙事、建冷静旁观视界",
-    "start": 79.126,
-    "end": 83.263,
-    "duration": 4.137
+    "start": 87.293,
+    "end": 91.537,
+    "duration": 4.244
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "克制主观道德审判与感伤喟叹，如冷眼摄影机般以节制语调记录流程；",
-    "start": 83.968,
-    "end": 90.053,
-    "duration": 6.085
+    "start": 92.111,
+    "end": 99.467,
+    "duration": 7.356
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "《风景》借死于襁褓的婴儿亡灵视角，",
-    "start": 90.863,
-    "end": 93.587,
-    "duration": 2.724
+    "start": 100.041,
+    "end": 104.35,
+    "duration": 4.309
   },
   {
     "id": "sec2_step1_c1",
     "dom_key": "sec2_step1_c1",
     "text": "不动声色叙述汉口棚户区一家粗鄙残酷却又顽强繁衍的生命图景，拓展艺术张力。",
-    "start": 94.351,
-    "end": 101.402,
-    "duration": 7.051
+    "start": 104.598,
+    "end": 111.68,
+    "duration": 7.082
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：八十年代末九十年代初“新写实三驾马车”必记作品：",
-    "start": 102.183,
-    "end": 107.278,
-    "duration": 5.094
+    "start": 112.254,
+    "end": 117.266,
+    "duration": 5.012
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "池莉《烦恼人生》（印家厚）、刘震云《一地鸡毛》（小林与变质豆腐）、方方《风景》（死于襁褓的婴儿视角）。",
-    "start": 108.07,
-    "end": 116.388,
-    "duration": 8.318
+    "start": 117.358,
+    "end": 126.134,
+    "duration": 8.775
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 对齐新写实“三驾马车”池莉、刘震云、方方的三部代表作与主人公/核心道具？",
-    "start": 117.168,
-    "end": 125.553,
-    "duration": 8.384
+    "start": 126.72,
+    "end": 135.443,
+    "duration": 8.723
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合作品讲透“毛茸茸的原生态”“消解崇高与磨损”“零度情感”三大核心概念？",
-    "start": 126.302,
-    "end": 133.981,
-    "duration": 7.678
+    "start": 136.017,
+    "end": 143.933,
+    "duration": 7.916
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 回答 2016 真题简答《1980年代后期新写实主义小说艺术特征》？",
-    "start": 134.727,
-    "end": 141.835,
-    "duration": 7.107
+    "start": 144.52,
+    "end": 151.876,
+    "duration": 7.356
   }
 ]

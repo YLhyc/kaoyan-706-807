@@ -1,234 +1,210 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "鲁迅·阿Q正传思想意蕴与艺术成就",
+    "start": 0.134,
+    "end": 3.531,
+    "duration": 3.397
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "由国民性病灶→辛亥历史局限",
-    "start": 0.213,
-    "end": 3.503,
-    "duration": 3.29
+    "text": "由国民性病灶→辛亥历史局限→普遍存在哲思→喜剧变惊悚美学：",
+    "start": 4.12,
+    "end": 12.179,
+    "duration": 8.059
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "→普遍存在哲思→喜剧变惊悚美学：先剖阿Q“精神胜利法”心理防御，",
-    "start": 4.259,
-    "end": 9.774,
-    "duration": 5.515
+    "text": "先剖阿Q“精神胜利法”心理防御，再放进未庄辛亥投机潮看清革命为何流产，",
+    "start": 12.258,
+    "end": 19.119,
+    "duration": 6.861
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "再放进未庄辛亥投机潮看清革命为何流产，继而从枪毙画押一刹那升华人类弱者自欺悖论，",
-    "start": 10.501,
-    "end": 18.499,
-    "duration": 7.999
-  },
-  {
-    "id": "hook_c3",
-    "dom_key": "hook_c3",
-    "text": "最后收束为“正传戏仿+狼眼睛惊悚”讽刺典范。",
-    "start": 19.214,
-    "end": 23.5,
-    "duration": 4.286
+    "text": "继而从枪毙画押一刹那升华人类弱者自欺悖论，最后收束为“正传戏仿+狼眼睛惊悚”讽刺典范。",
+    "start": 19.22,
+    "end": 27.592,
+    "duration": 8.371
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "《阿Q正传》是现代现实主义奠基经典，鲁迅秉持“画出这样沉默的国民的魂灵来”之志，",
-    "start": 24.25,
-    "end": 31.353,
-    "duration": 7.103
+    "start": 28.179,
+    "end": 35.587,
+    "duration": 7.408
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "将国民性批判、革命反思与生存哲思融于现代讽刺典范。",
-    "start": 32.06,
-    "end": 37.027,
-    "duration": 4.967
+    "start": 35.835,
+    "end": 41.055,
+    "duration": 5.22
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 深度解剖“精神胜利法”病灶",
-    "start": 37.751,
-    "end": 40.609,
-    "duration": 2.858
+    "start": 41.642,
+    "end": 44.688,
+    "duration": 3.046
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "阿Q处未庄赤贫雇农底层，面对压迫演化出病态心理防御：",
-    "start": 41.4,
-    "end": 46.09,
-    "duration": 4.691
+    "start": 45.275,
+    "end": 50.899,
+    "duration": 5.624
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "挨打靠“儿子打老子”幻觉取胜，受辱“自轻自贱”自封第一，更向弱小小尼姑转嫁暴虐；",
-    "start": 46.863,
-    "end": 54.231,
-    "duration": 7.368
+    "start": 51.473,
+    "end": 59.571,
+    "duration": 8.098
   },
   {
     "id": "sec0_step2_c0",
     "dom_key": "sec0_step2_c0",
     "text": "将屈辱化为虚妄自满，在麻痹中丧失反抗意识、甘当驯服工具，揭开民族自欺病灶。",
-    "start": 54.961,
-    "end": 62.198,
-    "duration": 7.237
+    "start": 60.158,
+    "end": 68.204,
+    "duration": 8.046
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 反思辛亥革命“不准革命”历史教训",
-    "start": 62.962,
-    "end": 66.525,
-    "duration": 3.563
+    "start": 68.791,
+    "end": 72.397,
+    "duration": 3.606
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "赵秀才、假洋鬼子借“盘辫子”与“自由党”趁势投机；",
-    "start": 67.278,
-    "end": 71.277,
-    "duration": 3.999
+    "start": 72.983,
+    "end": 78.451,
+    "duration": 5.468
   },
   {
     "id": "sec1_step0_c1",
     "dom_key": "sec1_step0_c1",
     "text": "阿Q将革命视为原始复仇占财，反遭假洋鬼子哭丧棒斥“不准革命”并沦为死囚替罪羊；",
-    "start": 71.985,
-    "end": 79.557,
-    "duration": 7.573
+    "start": 78.817,
+    "end": 86.863,
+    "duration": 8.046
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "指出缺乏深入启蒙与群众觉醒的外在政权更迭，注定无法撼动千年封建根基。",
-    "start": 80.31,
-    "end": 87.395,
-    "duration": 7.085
+    "start": 87.437,
+    "end": 94.936,
+    "duration": 7.499
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 升华弱者在绝境自欺求生的存在悖论",
-    "start": 88.12,
-    "end": 92.089,
-    "duration": 3.969
+    "start": 95.523,
+    "end": 99.675,
+    "duration": 4.153
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "肉体反抗通道堵死、尊严剥夺殆尽时，弱者靠幻想代偿虽缓剧痛，却推向更深荒诞；",
-    "start": 92.872,
-    "end": 100.642,
-    "duration": 7.769
+    "start": 100.249,
+    "end": 109.05,
+    "duration": 8.801
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "行刑画押生死关头，阿Q唯恐“圆圈画得不圆”的畸形焦虑，",
-    "start": 101.433,
-    "end": 106.2,
-    "duration": 4.767
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "展现人在死亡与荒谬面前盲目困境，具跨越时代存在哲思。",
-    "start": 106.95,
-    "end": 112.059,
-    "duration": 5.11
+    "text": "行刑画押生死关头，阿Q唯恐“圆圈画得不圆”的畸形焦虑，展现人在死亡与荒谬面前盲目困境，具跨越时代存在哲思。",
+    "start": 109.637,
+    "end": 120.743,
+    "duration": 11.106
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 史传文体戏仿与“以喜写悲”美学",
-    "start": 112.792,
-    "end": 116.363,
-    "duration": 3.571
+    "start": 121.33,
+    "end": 124.91,
+    "duration": 3.58
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "《序》以一本正经学术考据写姓氏终归“无可考”，颠覆封建正史“只为帝王将相立传”伦理秩序；",
-    "start": 117.06,
-    "end": 125.022,
-    "duration": 7.962
+    "start": 125.496,
+    "end": 133.92,
+    "duration": 8.423
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
-    "text": "前半滑稽反讽引人发笑，末章囚车游街直面街道如饥兽般的“狼眼睛”注视骤抵灵魂惊悚，",
-    "start": 125.724,
-    "end": 133.493,
-    "duration": 7.77
-  },
-  {
-    "id": "sec3_step1_c1",
-    "dom_key": "sec3_step1_c1",
-    "text": "成就精湛讽刺艺术。",
-    "start": 134.243,
-    "end": 135.85,
-    "duration": 1.606
+    "text": "前半滑稽反讽引人发笑，末章囚车游街直面街道如饥兽般的“狼眼睛”注视骤抵灵魂惊悚，成就精湛讽刺艺术。",
+    "start": 134.494,
+    "end": 145.118,
+    "duration": 10.624
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
-    "text": "《阿Q正传》融反封建锋芒、历史自省与存在哲思于一体，",
-    "start": 136.573,
-    "end": 141.055,
-    "duration": 4.482
-  },
-  {
-    "id": "concl_c1",
-    "dom_key": "concl_c1",
-    "text": "以入木三分剖析使阿Q超越未庄时空，成世界文学经典典型。",
-    "start": 141.82,
-    "end": 147.2,
-    "duration": 5.38
+    "text": "《阿Q正传》融反封建锋芒、历史自省与存在哲思于一体，以入木三分剖析使阿Q超越未庄时空，成世界文学经典典型。",
+    "start": 145.705,
+    "end": 156.394,
+    "duration": 10.689
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：与《狂人日记》区分：《狂人日记》写礼教“吃人”与日记体心理象征；",
-    "start": 147.972,
-    "end": 153.562,
-    "duration": 5.59
+    "start": 156.981,
+    "end": 162.956,
+    "duration": 5.976
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "《阿Q正传》写“精神胜利法”、辛亥革命脱离民众与“大团圆”史传戏仿。",
-    "start": 154.302,
-    "end": 159.717,
-    "duration": 5.415
+    "start": 163.257,
+    "end": 169.675,
+    "duration": 6.418
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 概括阿Q“精神胜利法”的三种典型心理操作？",
-    "start": 160.488,
-    "end": 165.38,
-    "duration": 4.892
+    "start": 170.236,
+    "end": 175.196,
+    "duration": 4.96
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合未庄辛亥闹剧说明为什么作者得出“缺乏群众觉醒的政权更迭注定流产”？",
-    "start": 166.1,
-    "end": 174.167,
-    "duration": 8.068
+    "start": 175.783,
+    "end": 183.92,
+    "duration": 8.137
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 分析2026真题视角：如何借“以意逆志”（救世初衷）与“意图谬误”（文本自身存在悲剧）阐释本篇？",
-    "start": 174.944,
-    "end": 184.845,
-    "duration": 9.901
+    "start": 184.494,
+    "end": 194.167,
+    "duration": 9.673
   }
 ]

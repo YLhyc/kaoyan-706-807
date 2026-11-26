@@ -1,202 +1,194 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "艾青·诗歌思想艺术特质与土地太阳意象群",
+    "start": 0.134,
+    "end": 4.222,
+    "duration": 4.088
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "“双意象 + 一诗体”三足稳立：1.以“土地+大堰河”立下深沉忧郁的苦难母爱根基；",
-    "start": 0.223,
-    "end": 8.117,
-    "duration": 7.894
+    "start": 4.811,
+    "end": 12.609,
+    "duration": 7.798
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "2.以“太阳+火把+黎明通知”高扬炽烈抗战救亡希望；",
-    "start": 8.907,
-    "end": 13.794,
-    "duration": 4.887
+    "start": 12.91,
+    "end": 18.039,
+    "duration": 5.129
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "3.以打破整齐格律的自由诗“散文美”引领新诗走向大众时代。",
-    "start": 14.571,
-    "end": 19.841,
-    "duration": 5.27
+    "start": 18.326,
+    "end": 23.542,
+    "duration": 5.216
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
-    "text": "三十年代危亡抗战时期，",
-    "start": 20.556,
-    "end": 22.796,
-    "duration": 2.24
+    "text": "三十年代危亡抗战时期，艾青《大堰河——我的保姆》《北方》《我爱这土地》开辟现实与时代交融新境，",
+    "start": 24.129,
+    "end": 32.501,
+    "duration": 8.371
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
-    "text": "艾青《大堰河——我的保姆》《北方》《我爱这土地》开辟现实与时代交融新境，",
-    "start": 23.505,
-    "end": 29.455,
-    "duration": 5.95
-  },
-  {
-    "id": "intro_c2",
-    "dom_key": "intro_c2",
     "text": "将深沉忧郁与民族抗争融于一体。",
-    "start": 30.199,
-    "end": 33.167,
-    "duration": 2.968
+    "start": 32.723,
+    "end": 36.16,
+    "duration": 3.436
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · “土地”与“大堰河”底色：挚爱劳苦大众",
-    "start": 33.907,
-    "end": 37.32,
-    "duration": 3.413
+    "start": 36.746,
+    "end": 40.339,
+    "duration": 3.593
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "成名作追忆用乳汁养己却死于四元棺材束草的农村保姆，刻画忍辱慈爱劳动妇女形象；",
-    "start": 38.062,
-    "end": 45.61,
-    "duration": 7.548
+    "start": 40.913,
+    "end": 49.727,
+    "duration": 8.814
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "《雪落在中国的土地上》叹“寒冷在封锁着中国呀”；",
-    "start": 46.363,
-    "end": 49.932,
-    "duration": 3.569
+    "start": 50.314,
+    "end": 55.834,
+    "duration": 5.52
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "《我爱这土地》化嘶哑飞鸟呼号“为什么我的眼里常含泪水？因为我对这土地爱得深沉”。",
-    "start": 50.741,
-    "end": 57.373,
-    "duration": 6.632
+    "start": 56.161,
+    "end": 63.842,
+    "duration": 7.681
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · “太阳”与“火把”象征：高扬救亡与理想",
-    "start": 58.08,
-    "end": 61.685,
-    "duration": 3.604
+    "start": 64.429,
+    "end": 68.204,
+    "duration": 3.775
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "赋予“太阳”驱散幽暗、冲破枷锁与迎民族新生的时代意蕴；",
-    "start": 62.528,
-    "end": 67.111,
-    "duration": 4.582
+    "start": 68.791,
+    "end": 74.923,
+    "duration": 6.132
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "《向太阳》迎烈日奔跑礼赞光明；",
-    "start": 67.839,
-    "end": 70.481,
-    "duration": 2.642
+    "start": 75.51,
+    "end": 79.311,
+    "duration": 3.801
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "《火把》借唐尼夜间火炬游行显献身意志；",
-    "start": 71.284,
-    "end": 74.502,
-    "duration": 3.218
+    "start": 79.637,
+    "end": 83.243,
+    "duration": 3.606
   },
   {
     "id": "sec1_step1_c2",
     "dom_key": "sec1_step1_c2",
     "text": "延安《黎明的通知》化为迎接新世界的明朗呼告。",
-    "start": 75.189,
-    "end": 78.596,
-    "duration": 3.407
+    "start": 83.569,
+    "end": 87.41,
+    "duration": 3.84
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 破格律与欧化、创立自由诗“散文美”",
-    "start": 79.383,
-    "end": 83.26,
-    "duration": 3.877
+    "start": 87.996,
+    "end": 91.889,
+    "duration": 3.892
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "反思新月派齐整雕琢，倡自由诗追求“散文美”与天然律动，",
-    "start": 84.072,
-    "end": 89.011,
-    "duration": 4.938
+    "start": 92.476,
+    "end": 98.907,
+    "duration": 6.431
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
     "text": "不拘押韵字数而用排比递进、长短交错与复沓造沉郁内在节奏；",
-    "start": 89.795,
-    "end": 95.336,
-    "duration": 5.541
+    "start": 99.103,
+    "end": 104.988,
+    "duration": 5.884
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "《雪落》反复咏叹流离、《北方》冷暖色彩立体造型，质朴阔大推向大众。",
-    "start": 96.055,
-    "end": 101.796,
-    "duration": 5.742
+    "start": 105.575,
+    "end": 112.709,
+    "duration": 7.134
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
-    "text": "艾青以“土地与太阳”双重意象塑造现代中国坚韧精神图腾，",
-    "start": 102.58,
-    "end": 107.602,
-    "duration": 5.022
-  },
-  {
-    "id": "concl_c1",
-    "dom_key": "concl_c1",
-    "text": "以散文美引导新诗回归泥土与人民，立扎根现实重要传统。",
-    "start": 108.381,
-    "end": 113.592,
-    "duration": 5.212
+    "text": "艾青以“土地与太阳”双重意象塑造现代中国坚韧精神图腾，以散文美引导新诗回归泥土与人民，立扎根现实重要传统。",
+    "start": 113.296,
+    "end": 124.337,
+    "duration": 11.041
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：艾青三大核心概念：①土地/大堰河（深沉忧郁母爱） ②太阳/火把/黎明的通知（光明救亡） ③诗歌的“散文美”（对抗新月派整齐格律与早期欧化）。",
-    "start": 114.414,
-    "end": 129.456,
-    "duration": 15.042
+    "start": 124.924,
+    "end": 140.339,
+    "duration": 15.416
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 梳理艾青三大关键词：“土地与大堰河 / 太阳与火把 / 诗歌的散文美”？",
-    "start": 130.272,
-    "end": 137.482,
-    "duration": 7.21
+    "start": 140.926,
+    "end": 148.256,
+    "duration": 7.33
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 举全五首核心代表诗篇及每篇对应的主题或修辞特色？",
-    "start": 138.263,
-    "end": 144.43,
-    "duration": 6.166
+    "start": 148.843,
+    "end": 155.157,
+    "duration": 6.314
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 回答 2023 年论述《艾青诗歌的特点》时，怎样组织三段做到既有例证又条理分明？",
-    "start": 145.162,
-    "end": 153.579,
-    "duration": 8.417
+    "start": 155.731,
+    "end": 164.363,
+    "duration": 8.632
   }
 ]

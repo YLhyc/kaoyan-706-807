@@ -1,178 +1,178 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "新月派·三美理论与新格律诗探索",
+    "start": 0.134,
+    "end": 3.245,
+    "duration": 3.111
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
-    "text": "紧扣闻一多“戴着脚镣跳舞”直切听觉",
-    "start": 0.222,
-    "end": 4.105,
-    "duration": 3.883
+    "text": "紧扣闻一多“戴着脚镣跳舞”直切听觉→视觉→空间三重建筑网格：",
+    "start": 3.834,
+    "end": 10.695,
+    "duration": 6.861
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "→视觉→空间三重建筑网格：先用“音尺（步）”建起不复古体却有停顿节拍的音乐美，",
-    "start": 4.838,
-    "end": 11.9,
-    "duration": 7.063
+    "text": "先用“音尺（步）”建起不复古体却有停顿节拍的音乐美，",
+    "start": 10.761,
+    "end": 15.356,
+    "duration": 4.595
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "再拿《死水》翡翠桃花撞污秽造出绘画美，",
-    "start": 12.724,
-    "end": 15.823,
-    "duration": 3.1
-  },
-  {
-    "id": "hook_c3",
-    "dom_key": "hook_c3",
-    "text": "最后以徐志摩《再别康桥》七节四行立定建筑对称美。",
-    "start": 16.612,
-    "end": 20.778,
-    "duration": 4.166
+    "text": "再拿《死水》翡翠桃花撞污秽造出绘画美，最后以徐志摩《再别康桥》七节四行立定建筑对称美。",
+    "start": 15.618,
+    "end": 23.673,
+    "duration": 8.055
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "二十年代中后期针对早期白话诗散漫“非诗化”倾向，闻一多、徐志摩发起格律化运动，",
-    "start": 21.739,
-    "end": 28.642,
-    "duration": 6.904
+    "start": 24.246,
+    "end": 31.967,
+    "duration": 7.72
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "闻一多《诗的格律》提“戴着脚镣跳舞”及“三美”理论。",
-    "start": 29.465,
-    "end": 33.06,
-    "duration": 3.595
+    "start": 32.306,
+    "end": 36.186,
+    "duration": 3.879
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · “音乐的美”：音尺节拍与内在和谐",
-    "start": 33.763,
-    "end": 37.207,
-    "duration": 3.444
+    "start": 36.773,
+    "end": 40.313,
+    "duration": 3.541
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "不复古旧律，按现代汉语语音以“音尺”（步）均齐规范诗行：字数可微差，",
-    "start": 37.926,
-    "end": 44.194,
-    "duration": 6.268
+    "start": 40.9,
+    "end": 47.865,
+    "duration": 6.965
   },
   {
     "id": "sec0_step0_c1",
     "dom_key": "sec0_step0_c1",
     "text": "但每行音尺数相等、停顿自然、押韵严谨；",
-    "start": 44.905,
-    "end": 48.585,
-    "duration": 3.68
+    "start": 48.14,
+    "end": 51.967,
+    "duration": 3.827
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "《死水》每行皆四音尺，平仄交错、韵脚咬合，庄重沉郁。",
-    "start": 49.371,
-    "end": 54.52,
-    "duration": 5.148
+    "start": 52.541,
+    "end": 59.037,
+    "duration": 6.496
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · “绘画的美”：色彩辞藻与审丑对比",
-    "start": 55.215,
-    "end": 58.84,
-    "duration": 3.625
+    "start": 59.624,
+    "end": 63.425,
+    "duration": 3.801
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "借鉴绘画造型原则，注重词藻视觉修饰与色彩对比；",
-    "start": 59.626,
-    "end": 63.961,
-    "duration": 4.335
+    "start": 64.012,
+    "end": 69.232,
+    "duration": 5.22
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "用“翡翠、桃花、罗绮、云霞”明艳色彩与“剩菜残羹、绿酒、白沫”污秽强烈反差，",
-    "start": 64.747,
-    "end": 72.103,
-    "duration": 7.355
+    "start": 69.819,
+    "end": 78.842,
+    "duration": 9.022
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "在审丑与审美冲突中达极高造型美。",
-    "start": 72.837,
-    "end": 75.927,
-    "duration": 3.09
+    "start": 79.064,
+    "end": 82.397,
+    "duration": 3.332
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · “建筑的美”：节的匀称与句的均齐",
-    "start": 76.705,
-    "end": 80.352,
-    "duration": 3.647
+    "start": 82.957,
+    "end": 86.719,
+    "duration": 3.762
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "要求视觉排版具建筑对称稳固感，即“节的匀称”与“句的齐整”；",
-    "start": 81.063,
-    "end": 86.095,
-    "duration": 5.033
+    "start": 87.293,
+    "end": 93.191,
+    "duration": 5.897
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "徐志摩《再别康桥》共七节、每节四行，参差中轻灵流动，“三美”建构为中国新诗确立现代形式规范。",
-    "start": 86.84,
-    "end": 95.718,
-    "duration": 8.879
+    "start": 93.778,
+    "end": 104.949,
+    "duration": 11.171
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：理论文献为闻一多《诗的格律》（提出“戴着脚镣跳舞”）；",
-    "start": 96.548,
-    "end": 101.041,
-    "duration": 4.493
+    "start": 105.536,
+    "end": 110.144,
+    "duration": 4.608
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "《死水》最集中体现“音乐美”与“绘画美”，徐志摩《再别康桥》最集中体现“建筑美”。",
-    "start": 101.953,
-    "end": 108.099,
-    "duration": 6.147
+    "start": 110.418,
+    "end": 117.123,
+    "duration": 6.705
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 背出闻一多“戴着脚镣跳舞”出处文献与“三美”准确名称？",
-    "start": 108.955,
-    "end": 114.618,
-    "duration": 5.663
+    "start": 117.697,
+    "end": 123.49,
+    "duration": 5.793
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 阐明“音尺（步）”原理，并分别用《死水》《再别康桥》实证音乐美、绘画美与建筑美？",
-    "start": 115.362,
-    "end": 124.193,
-    "duration": 8.831
+    "start": 124.077,
+    "end": 133.048,
+    "duration": 8.97
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 评价新月派对早起自由白话诗“散漫非诗化”的纠偏之功？",
-    "start": 125.073,
-    "end": 131.019,
-    "duration": 5.947
+    "start": 133.621,
+    "end": 139.792,
+    "duration": 6.171
   }
 ]
