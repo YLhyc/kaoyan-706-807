@@ -15,7 +15,7 @@
   <!-- 异步/非阻塞字体加载：优先采用 iOS/Android/Win 原生高清字系 (Songti SC / Kaiti SC / 苹方)，离线或无外网时 0 白屏首屏秒开 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="app.css?v=3.5.10">
+  <link rel="stylesheet" href="app.css?v=3.5.11">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -27,7 +27,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css" media="print" onload="this.media='all'">
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=3.5.10" defer></script>
+  <script src="data/kaoyan_data.js?v=3.5.11" defer></script>
 </head>
 <body>
 
@@ -268,7 +268,7 @@
       <div class="sidebar-footer">
         <div class="app-version-badge" id="appVersionBadge" title="点击检查更新">
           <span class="version-dot"></span>
-          <span id="versionText">版本 v3.5.10 · 金石朱墨全科双轨典藏版</span>
+          <span id="versionText">版本 v3.5.11 · 金石朱墨全科双轨典藏版</span>
         </div>
         <button id="btn-force-refresh" class="refresh-cache-btn" title="强制清除缓存并拉取最新版本">
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -606,9 +606,9 @@
   </nav>
 
 
-  <script src="listen_tracking.js?v=3.5.10" defer></script>
-  <script src="app.js?v=3.5.10" defer></script>
-  <script src="ai_sync.js?v=3.5.10" defer></script>
+  <script src="listen_tracking.js?v=3.5.11" defer></script>
+  <script src="app.js?v=3.5.11" defer></script>
+  <script src="ai_sync.js?v=3.5.11" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
@@ -837,7 +837,7 @@
         <div class="dash-listen-kpi-grid">
           <div class="dash-listen-kpi-item">
             <span class="dash-listen-kpi-val" id="dashTotalListenPasses">0</span>
-            <span class="dash-listen-kpi-label">听读遍数（含历史与补记）</span>
+            <span class="dash-listen-kpi-label">总听读遍数</span>
           </div>
           <div class="dash-listen-kpi-item">
             <span class="dash-listen-kpi-val is-seal" id="dashSealPassCount">0</span>
@@ -848,6 +848,25 @@
             <span class="dash-listen-kpi-label">0遍未开荒篇目</span>
           </div>
         </div>
+        <div class="dash-track-split-grid" id="dashTrackSplitGrid">
+          <div class="dash-track-split-card is-t1">
+            <div class="dash-track-split-head">
+              <span class="dash-track-split-tag">轨一 · 考场全篇</span>
+              <span class="dash-track-split-val"><strong id="dashT1Passes">0</strong> 遍</span>
+            </div>
+            <div class="dash-track-split-bar-bg"><div class="dash-track-split-bar-fill" id="dashT1SplitBar" style="width: 0%;"></div></div>
+            <div class="dash-track-split-sub" id="dashT1CoveredText">已听 0 题</div>
+          </div>
+          <div class="dash-track-split-card is-t2">
+            <div class="dash-track-split-head">
+              <span class="dash-track-split-tag">轨二 · 逻辑微缩</span>
+              <span class="dash-track-split-val"><strong id="dashT2Passes">0</strong> 遍</span>
+            </div>
+            <div class="dash-track-split-bar-bg"><div class="dash-track-split-bar-fill" id="dashT2SplitBar" style="width: 0%;"></div></div>
+            <div class="dash-track-split-sub" id="dashT2CoveredText">已听 0 题</div>
+          </div>
+        </div>
+        <div class="dash-extra-passes-note" id="dashExtraPassesNote" style="display: none;"></div>
         <div class="dash-top-listened-wrap" id="dashTopListenedList"></div>
       </div>
 
@@ -1145,11 +1164,11 @@
     </div>
     <h3 class="update-modal-title">正在同步云端新版本</h3>
     <div class="update-modal-badges">
-      <span class="update-badge-old" id="updateModalOldVer">v3.5.10</span>
+      <span class="update-badge-old" id="updateModalOldVer">v3.5.11</span>
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5 12h14M12 5l7 7-7 7"/>
       </svg>
-      <span class="update-badge-new" id="updateModalNewVer">v3.5.10</span>
+      <span class="update-badge-new" id="updateModalNewVer">v3.5.11</span>
     </div>
     <p class="update-modal-status" id="updateModalStatus">正在连接云端节点并校验资源清单...</p>
     <div class="update-progress-container">

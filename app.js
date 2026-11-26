@@ -214,7 +214,7 @@
     if (!raw) return '';
     if (/^(blob:|data:)/i.test(raw)) return raw;
     if (/[?&]v=/.test(raw)) return raw;
-    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.10';
+    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.11';
     return raw + (raw.includes('?') ? '&' : '?') + 'v=' + encodeURIComponent(ver);
   }
 
@@ -2042,6 +2042,13 @@
     el.dashTotalListenPasses = document.getElementById('dashTotalListenPasses');
     el.dashSealPassCount = document.getElementById('dashSealPassCount');
     el.dashZeroPassCount = document.getElementById('dashZeroPassCount');
+    el.dashT1Passes = document.getElementById('dashT1Passes');
+    el.dashT1SplitBar = document.getElementById('dashT1SplitBar');
+    el.dashT1CoveredText = document.getElementById('dashT1CoveredText');
+    el.dashT2Passes = document.getElementById('dashT2Passes');
+    el.dashT2SplitBar = document.getElementById('dashT2SplitBar');
+    el.dashT2CoveredText = document.getElementById('dashT2CoveredText');
+    el.dashExtraPassesNote = document.getElementById('dashExtraPassesNote');
     el.dashTopListenedList = document.getElementById('dashTopListenedList');
     el.btnDashExportData = document.getElementById('btnDashExportData');
     el.btnDashImportData = document.getElementById('btnDashImportData');
@@ -2543,7 +2550,7 @@
       } else {
         masteryBadgeHtml = `<span class="card-mastery-badge badge-unlearned" title="未背诵待攻克">待攻克</span>`;
       }
-      const listenBadgeHtml = renderListenCountBadgeHtml(getItemListenCount(item.id));
+      const listenBadgeHtml = renderListenCountBadgeHtml(getItemListenBreakdown(item.id));
 
       if (state.currentSubject === 'pol') {
         const isRecite47 = state.polSubMode === 'recite47';
@@ -2832,6 +2839,51 @@
     return Math.max(0, Math.floor(Number(state.studyLogs.itemListenCounts[itemId]) || 0));
   }
 
+  function getTrackListenBreakdownMap(logs = state.studyLogs) {
+    const byItem = {};
+    const lp = logs && logs.listenProgress;
+    if (!lp || typeof lp !== 'object') return byItem;
+    Object.entries(lp).forEach(([key, track]) => {
+      if (!track || !track.itemId) return;
+      const itemId = String(track.itemId);
+      const completed = Math.max(0, Math.floor(Number(listenTracker.total(track)) || 0));
+      if (completed <= 0) return;
+      const parts = String(key).split('|');
+      const trackNum = (parts.length >= 3 && (parts[2] === '1' || parts[2] === '2')) ? Number(parts[2]) : 0;
+      if (!byItem[itemId]) byItem[itemId] = { t1: 0, t2: 0 };
+      if (trackNum === 1) byItem[itemId].t1 += completed;
+      else if (trackNum === 2) byItem[itemId].t2 += completed;
+    });
+    return byItem;
+  }
+
+  function getItemListenBreakdown(itemId, cachedMap = null) {
+    const total = getItemListenCount(itemId);
+    if (!itemId || total <= 0) return { total: 0, t1: 0, t2: 0, extra: 0 };
+    const map = cachedMap || getTrackListenBreakdownMap();
+    const entry = map[itemId] || { t1: 0, t2: 0 };
+    let t1 = Math.max(0, Math.floor(entry.t1 || 0));
+    let t2 = Math.max(0, Math.floor(entry.t2 || 0));
+    if (t1 + t2 > total) {
+      // 若曾手动撤销计数使净总数低于分轨原始累计，优先保持总量对齐
+      if (t1 >= total) {
+        t1 = total;
+        t2 = 0;
+      } else {
+        t2 = Math.max(0, total - t1);
+      }
+    }
+    const extra = Math.max(0, total - t1 - t2);
+    return { total, t1, t2, extra };
+  }
+
+  function formatTrackSplitText(bd) {
+    const parts = [];
+    if (bd.t1 > 0) parts.push(`轨1×${bd.t1}`);
+    if (bd.t2 > 0) parts.push(`轨2×${bd.t2}`);
+    return parts.join('/');
+  }
+
   function getListenTierInfo(count) {
     const n = Math.max(0, Math.floor(Number(count) || 0));
     if (n <= 0) return { tier: 'none', label: '', shortLabel: '' };
@@ -2841,10 +2893,19 @@
     return { tier: 'seal', label: `已听 ${n} 遍`, shortLabel: `${n}遍` };
   }
 
-  function renderListenCountBadgeHtml(count) {
+  function renderListenCountBadgeHtml(countOrBreakdown) {
+    const bd = (countOrBreakdown && typeof countOrBreakdown === 'object')
+      ? countOrBreakdown
+      : { total: Number(countOrBreakdown) || 0, t1: 0, t2: 0, extra: Number(countOrBreakdown) || 0 };
+    const count = Math.max(0, Math.floor(Number(bd.total) || 0));
     const info = getListenTierInfo(count);
     if (info.tier === 'none') return '';
-    return `<span class="card-listen-badge tier-${info.tier}" title="听读记录 ${count} 遍（含历史记录与手动补记）">${info.shortLabel}</span>`;
+    const splitText = formatTrackSplitText(bd);
+    const titleDetail = splitText
+      ? `总听读 ${count} 遍（轨一×${bd.t1} · 轨二×${bd.t2}${bd.extra > 0 ? ` · 补记/历史×${bd.extra}` : ''}）`
+      : `听读记录 ${count} 遍（含历史记录与手动补记）`;
+    const splitHtml = splitText ? `<span class="clb-split">${splitText}</span>` : '';
+    return `<span class="card-listen-badge tier-${info.tier}" title="${escapeHtml(titleDetail)}"><span>${info.shortLabel}</span>${splitHtml}</span>`;
   }
 
   function findStudyItemTitleById(itemId) {
@@ -2869,7 +2930,7 @@
     if (!meta) return;
     const existing = meta.querySelector('.card-listen-badge');
     if (existing) existing.remove();
-    const html = renderListenCountBadgeHtml(getItemListenCount(itemId));
+    const html = renderListenCountBadgeHtml(getItemListenBreakdown(itemId));
     if (html) {
       meta.insertAdjacentHTML('beforeend', html);
     }
@@ -3072,7 +3133,8 @@
       if (credited) {
         updateHeaderListenBadgeUI();
         refreshSidebarListenBadge(context.itemId);
-        showToast('本轮正文覆盖已达 90%，整篇听读 +1', 2200);
+        const trName = state.currentTrack === 1 ? '轨一正文' : '轨二正文';
+        showToast(`本轮${trName}覆盖已达 90%，${trName} +1`, 2200);
       }
     }
     listenAnchor = next;
@@ -3431,14 +3493,22 @@
 
   function updateHeaderListenBadgeUI() {
     if (!el.btnListenCountAdd) return;
-    const count = getItemListenCount(state.activeItemId);
+    const bd = getItemListenBreakdown(state.activeItemId);
+    const count = bd.total;
     const info = getListenTierInfo(count);
     el.btnListenCountAdd.className = `paper-listen-badge tier-${info.tier}`;
+    const splitText = formatTrackSplitText(bd);
     if (el.paperListenText) {
-      el.paperListenText.textContent = count > 0 ? `听读 ${count} 遍 · +1` : '补记 +1';
+      if (count <= 0) {
+        el.paperListenText.textContent = '补记 +1';
+      } else if (splitText) {
+        el.paperListenText.textContent = `总 ${count} 遍 · ${splitText} · +1`;
+      } else {
+        el.paperListenText.textContent = `听读 ${count} 遍 · +1`;
+      }
     }
     el.btnListenCountAdd.title = count > 0
-      ? `听读记录 ${count} 遍，含历史记录与补记；新记录按单轨正文去重覆盖 ≥90% 自动 +1，点击补记`
+      ? `总听读 ${count} 遍（轨一×${bd.t1} · 轨二×${bd.t2}${bd.extra > 0 ? ` · 手动/历史×${bd.extra}` : ''}）；按单轨正文覆盖 ≥90% 自动 +1，点击补记 +1`
       : '按单轨正文去重覆盖 ≥90% 自动 +1；单段练习另行记录，点击可手动补记 +1';
     updateListenProgressUI();
   }
@@ -3652,33 +3722,59 @@
       ] : [])
     ];
     let totalListenPasses = 0;
+    let totalT1Passes = 0;
+    let totalT2Passes = 0;
+    let totalExtraPasses = 0;
+    let itemsWithT1 = 0;
+    let itemsWithT2 = 0;
     let sealPassCount = 0;
     let zeroPassCount = 0;
     const listenedItems = [];
+    const trackBreakdownMap = getTrackListenBreakdownMap(state.studyLogs);
     taggedAllItems.forEach((it) => {
-      const c = getItemListenCount(it.id);
+      const bd = getItemListenBreakdown(it.id, trackBreakdownMap);
+      const c = bd.total;
       totalListenPasses += c;
+      totalT1Passes += bd.t1;
+      totalT2Passes += bd.t2;
+      totalExtraPasses += bd.extra;
+      if (bd.t1 > 0) itemsWithT1++;
+      if (bd.t2 > 0) itemsWithT2++;
       if (c >= 10) sealPassCount++;
       if (c === 0) zeroPassCount++;
-      if (c > 0) listenedItems.push({ item: it, count: c });
+      if (c > 0) listenedItems.push({ item: it, count: c, breakdown: bd });
     });
     if (el.dashTotalListenPasses) el.dashTotalListenPasses.textContent = String(totalListenPasses);
     if (el.dashSealPassCount) el.dashSealPassCount.textContent = String(sealPassCount);
     if (el.dashZeroPassCount) el.dashZeroPassCount.textContent = String(zeroPassCount);
+    const totalAllItemsCount = Math.max(1, taggedAllItems.length);
+    if (el.dashT1Passes) el.dashT1Passes.textContent = String(totalT1Passes);
+    if (el.dashT1CoveredText) el.dashT1CoveredText.textContent = `已达标 ${itemsWithT1} / ${taggedAllItems.length} 篇`;
+    if (el.dashT1SplitBar) el.dashT1SplitBar.style.width = `${Math.round((itemsWithT1 / totalAllItemsCount) * 100)}%`;
+    if (el.dashT2Passes) el.dashT2Passes.textContent = String(totalT2Passes);
+    if (el.dashT2CoveredText) el.dashT2CoveredText.textContent = `已达标 ${itemsWithT2} / ${taggedAllItems.length} 篇`;
+    if (el.dashT2SplitBar) el.dashT2SplitBar.style.width = `${Math.round((itemsWithT2 / totalAllItemsCount) * 100)}%`;
+    if (el.dashExtraPassesNote) {
+      if (totalExtraPasses > 0) {
+        el.dashExtraPassesNote.textContent = `含历史基线与手动补记 ${totalExtraPasses} 遍`;
+        el.dashExtraPassesNote.style.display = 'block';
+      } else {
+        el.dashExtraPassesNote.style.display = 'none';
+      }
+    }
     if (el.dashTopListenedList) {
       listenedItems.sort((a, b) => b.count - a.count);
       const top5 = listenedItems.slice(0, 5);
       if (top5.length === 0) {
-        el.dashTopListenedList.innerHTML = '<div class="dash-top-empty">暂无精听遍数记录 · 完整听读 ≥75% 或点击题头「补记 +1」即可点亮金石印记</div>';
+        el.dashTopListenedList.innerHTML = '<div class="dash-top-empty">暂无精听遍数记录 · 完整听读 ≥90% 或点击题头「补记 +1」即可点亮金石印记</div>';
       } else {
         el.dashTopListenedList.innerHTML = `<div class="dash-top-subhead">精听熟读 Top ${top5.length}</div>` + top5.map((entry, i) => {
-          const tier = getListenTierInfo(entry.count).tier;
           return `
             <button type="button" class="dash-top-item-btn" data-jump-id="${escapeHtml(entry.item.id)}" data-jump-subj="${escapeHtml(entry.item.subj)}" data-jump-polmode="${escapeHtml(entry.item.polMode || '')}">
               <span class="dash-top-rank">${i + 1}</span>
               <span class="dash-top-subj sub-${escapeHtml(entry.item.subj)}">${escapeHtml(entry.item.subjLabel)}</span>
               <span class="dash-top-title">${escapeHtml(entry.item.title || '')}</span>
-              <span class="card-listen-badge tier-${tier}">${entry.count}遍</span>
+              ${renderListenCountBadgeHtml(entry.breakdown)}
             </button>`;
         }).join('');
         el.dashTopListenedList.querySelectorAll('.dash-top-item-btn').forEach(btn => {
@@ -9017,7 +9113,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.5.10';
+  const APP_BUILD_ID = '3.5.11';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
@@ -10153,6 +10249,7 @@
             recomputeListenAggregates(state.studyLogs);
           } else {
             ensureDeviceListenBuckets(state.studyLogs);
+            recomputeListenAggregates(state.studyLogs);
           }
           saveStudyLogs();
           updateHeaderListenBadgeUI();

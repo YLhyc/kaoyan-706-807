@@ -4781,6 +4781,9 @@ body {
 }
 
 .card-listen-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-size: 11px;
   font-family: var(--font-mono);
   font-weight: 700;
@@ -4790,6 +4793,14 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
   border: 1px solid transparent;
+}
+
+.card-listen-badge .clb-split {
+  font-size: 9.5px;
+  font-weight: 600;
+  opacity: 0.85;
+  padding-left: 4px;
+  border-left: 1px solid currentColor;
 }
 
 .card-listen-badge.tier-ink {
@@ -4888,6 +4899,104 @@ body {
 .dash-listen-kpi-label {
   font-size: 11px;
   color: var(--ink-muted);
+}
+
+.dash-track-split-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.dash-track-split-card {
+  background: var(--bg-body);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.dash-track-split-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.dash-track-split-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+}
+
+.dash-track-split-card.is-t1 .dash-track-split-tag {
+  color: var(--vermilion);
+}
+
+.dash-track-split-card.is-t2 .dash-track-split-tag {
+  color: #1f6755;
+}
+
+.dash-track-split-val {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-primary);
+}
+
+.dash-track-split-val strong {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.dash-track-split-bar-bg {
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(90, 82, 74, 0.12);
+  overflow: hidden;
+}
+
+.dash-track-split-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.35s ease;
+}
+
+.dash-track-split-card.is-t1 .dash-track-split-bar-fill {
+  background: var(--vermilion);
+}
+
+.dash-track-split-card.is-t2 .dash-track-split-bar-fill {
+  background: #216b58;
+}
+
+.dash-track-split-sub {
+  font-size: 10.5px;
+  color: var(--ink-muted);
+}
+
+.dash-extra-passes-note {
+  font-size: 11px;
+  color: var(--ink-muted);
+  text-align: right;
+  margin-top: -4px;
+}
+
+[data-theme="dark"] .dash-track-split-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: #383430;
+}
+
+[data-theme="dark"] .dash-track-split-card.is-t1 .dash-track-split-tag {
+  color: #ff8670;
+}
+
+[data-theme="dark"] .dash-track-split-card.is-t2 .dash-track-split-tag {
+  color: #79e0c3;
+}
+
+[data-theme="dark"] .dash-track-split-bar-bg {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .dash-top-listened-wrap {

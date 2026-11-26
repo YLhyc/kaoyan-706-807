@@ -216,6 +216,48 @@ def main():
                     page.screenshot(path=str(destination / "listen-progress-phone-dark.png"))
                     page.evaluate("document.documentElement.setAttribute('data-theme', 'parchment')")
             print("[PASS] Listening progress row fits phone, portrait/landscape tablet and desktop layouts")
+
+            # Scheme A UI verification: Track 1 + Track 2 split badges on header, sidebar card, and dashboard
+            scheme_a = page.evaluate("""() => {
+                const b = __kaoyanBridge;
+                const item = state.activeItem;
+                const key1 = `${state.currentSubject}|${item.id}|1|audit1`;
+                const key2 = `${state.currentSubject}|${item.id}|2|body|audit2`;
+                b.applyMergedStudyLogs({
+                    dates: [],
+                    listenProgress: {
+                        [key1]: {
+                            itemId: item.id,
+                            windows: [[0, 100]],
+                            wholeDevices: { dev_a: { completed: 2, coverage: [], bank: [], sealedAt: null } },
+                            practice: {}
+                        },
+                        [key2]: {
+                            itemId: item.id,
+                            windows: [[0, 60]],
+                            wholeDevices: { dev_a: { completed: 3, coverage: [], bank: [], sealedAt: null } },
+                            practice: {}
+                        }
+                    }
+                });
+                selectItem(item.id, false);
+                document.getElementById('btn-study-dashboard').click();
+                const headerText = document.getElementById('paperListenText').textContent;
+                const sideBadge = document.querySelector(`.question-card-item[data-id="${item.id}"] .card-listen-badge`);
+                const sideText = sideBadge ? sideBadge.textContent : '';
+                const t1Passes = document.getElementById('dashT1Passes').textContent;
+                const t2Passes = document.getElementById('dashT2Passes').textContent;
+                const topText = document.getElementById('dashTopListenedList').textContent;
+                const scrollOverflow = document.documentElement.scrollWidth > window.innerWidth + 1;
+                document.getElementById('studyDashboardClose').click();
+                return { headerText, sideText, t1Passes, t2Passes, topText, scrollOverflow };
+            }""")
+            assert scheme_a["headerText"] == "总 5 遍 · 轨1×2/轨2×3 · +1", scheme_a
+            assert "5遍" in scheme_a["sideText"] and "轨1×2/轨2×3" in scheme_a["sideText"], scheme_a
+            assert scheme_a["t1Passes"] == "2" and scheme_a["t2Passes"] == "3", scheme_a
+            assert "轨1×2/轨2×3" in scheme_a["topText"] and not scheme_a["scrollOverflow"], scheme_a
+            print("[PASS] Scheme A renders dual-track split listen counts cleanly on header, sidebar card and dashboard")
+
             browser.close()
     finally:
         server.shutdown()
