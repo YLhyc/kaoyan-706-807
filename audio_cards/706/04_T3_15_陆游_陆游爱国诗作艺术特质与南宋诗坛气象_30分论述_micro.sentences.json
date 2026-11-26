@@ -1,250 +1,234 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "陆游·爱国诗作艺术特质与南宋诗坛气象",
+    "start": 0.134,
+    "end": 3.935,
+    "duration": 3.801
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "精神内核→艺术来源→体裁多元→时代影响：先树立“终生复国大旗”的精神高度，",
-    "start": 0.238,
-    "end": 7.772,
-    "duration": 7.535
+    "start": 4.524,
+    "end": 12.127,
+    "duration": 7.603
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再解释艺术上如何破开江西诗派生涩、融合李白狂想与杜甫沉郁，",
-    "start": 8.576,
-    "end": 13.975,
-    "duration": 5.399
+    "start": 12.454,
+    "end": 18.312,
+    "duration": 5.858
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "继而补充他并不单一刚猛、更有游山西村与沈园七律工稳，",
-    "start": 14.692,
-    "end": 19.452,
-    "duration": 4.76
-  },
-  {
-    "id": "hook_c3",
-    "dom_key": "hook_c3",
-    "text": "最后定格振起南宋、激励后世救亡。",
-    "start": 20.211,
-    "end": 23.08,
-    "duration": 2.869
+    "text": "继而补充他并不单一刚猛、更有游山西村与沈园七律工稳，最后定格振起南宋、激励后世救亡。",
+    "start": 18.439,
+    "end": 26.602,
+    "duration": 8.163
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "陆游是南宋“中兴四大诗人”成就最著者。",
-    "start": 23.8,
-    "end": 27.072,
-    "duration": 3.272
+    "start": 27.176,
+    "end": 30.404,
+    "duration": 3.228
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "面对偏安沦丧现实，他吸取江西“活法”融汇李白飘逸与杜甫沉郁，九千余首为南宋注入刚健时代强音。",
-    "start": 27.78,
-    "end": 37.168,
-    "duration": 9.388
+    "start": 30.978,
+    "end": 40.365,
+    "duration": 9.387
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 抗敌复国贯穿一生、忧民痛国之慨",
-    "start": 37.867,
-    "end": 41.469,
-    "duration": 3.602
+    "start": 40.952,
+    "end": 44.701,
+    "duration": 3.749
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "绍兴和议后矢志不渝：《关山月》痛斥和戎偷安；",
-    "start": 42.212,
-    "end": 45.951,
-    "duration": 3.739
+    "start": 45.275,
+    "end": 50.04,
+    "duration": 4.765
   },
   {
     "id": "sec0_step0_c1",
     "dom_key": "sec0_step0_c1",
     "text": "《书愤》“楼船夜雪瓜洲渡，铁马秋风大散关”对照“镜中衰鬓”抒报国无门痛；临终《示儿》遗嘱；",
-    "start": 46.707,
-    "end": 54.454,
-    "duration": 7.748
+    "start": 50.353,
+    "end": 58.308,
+    "duration": 7.955
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "清末梁启超赞其“亘古男儿一放翁”，感染力穿透千古。",
-    "start": 55.184,
-    "end": 59.365,
-    "duration": 4.181
+    "start": 58.895,
+    "end": 63.946,
+    "duration": 5.051
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 融李白飘逸与杜甫沉郁、豪放而谨严",
-    "start": 60.15,
-    "end": 64.375,
-    "duration": 4.225
+    "start": 64.533,
+    "end": 68.881,
+    "duration": 4.348
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "《十一月四日风雨大作》“铁马冰河入梦来”如李白驰骋；",
-    "start": 65.116,
-    "end": 69.389,
-    "duration": 4.273
+    "start": 69.468,
+    "end": 74.48,
+    "duration": 5.012
   },
   {
     "id": "sec1_step0_c1",
     "dom_key": "sec1_step0_c1",
     "text": "《三月十七日夜醉中作》“破驿梦回灯欲死”直追杜甫沉雄；",
-    "start": 70.142,
-    "end": 74.552,
-    "duration": 4.41
+    "start": 74.832,
+    "end": 79.167,
+    "duration": 4.335
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "虽师从曾几并私淑吕本中，却跳出江西堆砌生涩牢笼，明朗晓畅驾驭严整章法，",
-    "start": 75.3,
-    "end": 82.558,
-    "duration": 7.259
+    "start": 79.741,
+    "end": 88.269,
+    "duration": 8.528
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "合赵翼《瓯北诗话》“看似奔放实则谨严”。",
-    "start": 83.428,
-    "end": 86.407,
-    "duration": 2.978
+    "start": 88.53,
+    "end": 91.576,
+    "duration": 3.046
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 广摄村居与沈园真情、尤擅七律工对",
-    "start": 87.139,
-    "end": 91.336,
-    "duration": 4.197
+    "start": 92.163,
+    "end": 96.55,
+    "duration": 4.387
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "《游山西村》“山重水复疑无路，柳暗花明又一村”、《临安春雨初霁》见生活之爱；",
-    "start": 92.135,
-    "end": 98.484,
-    "duration": 6.349
+    "start": 97.124,
+    "end": 104.688,
+    "duration": 7.564
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
     "text": "晚年《沈园》追忆唐氏“曾是惊鸿照影来”；",
-    "start": 99.271,
-    "end": 102.131,
-    "duration": 2.86
+    "start": 105.002,
+    "end": 108.477,
+    "duration": 3.476
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "七古七律七绝均精，尤以七律对仗工整而不纤巧，刘克庄赞“古人好对偶被放翁用尽”。",
-    "start": 102.849,
-    "end": 110.178,
-    "duration": 7.329
+    "start": 109.051,
+    "end": 117.605,
+    "duration": 8.554
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 扭转南宋颓靡诗风、激励救亡文学",
-    "start": 110.934,
-    "end": 114.594,
-    "duration": 3.66
+    "start": 118.179,
+    "end": 121.98,
+    "duration": 3.801
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "以黄钟大吕取代江西末流枯燥，与杨万里、范成大等共推宋诗南渡后开辟新生面；",
-    "start": 115.341,
-    "end": 122.854,
-    "duration": 7.513
+    "start": 122.554,
+    "end": 131.081,
+    "duration": 8.528
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
-    "text": "林景熙赞其承杜甫诗史，江湖派戴复古、刘克庄受其熏陶；",
-    "start": 123.639,
-    "end": 129.048,
-    "duration": 5.409
-  },
-  {
-    "id": "sec3_step1_c1",
-    "dom_key": "sec3_step1_c1",
-    "text": "虽闲居作偶滑易，家国大义长久感召近代救亡诗篇。",
-    "start": 129.808,
-    "end": 134.315,
-    "duration": 4.507
+    "text": "林景熙赞其承杜甫诗史，江湖派戴复古、刘克庄受其熏陶；虽闲居作偶滑易，家国大义长久感召近代救亡诗篇。",
+    "start": 131.668,
+    "end": 143.217,
+    "duration": 11.548
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "陆游将抗敌复国执念与平易晓畅融为一体，兼融李白豪迈与杜甫沉郁，",
-    "start": 135.08,
-    "end": 141.41,
-    "duration": 6.329
+    "start": 143.804,
+    "end": 150.443,
+    "duration": 6.64
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "与杨万里、范成大推动宋诗开新生面，爱国雄声激荡后代国难文学。",
-    "start": 142.12,
-    "end": 147.907,
-    "duration": 5.788
+    "start": 150.77,
+    "end": 156.824,
+    "duration": 6.054
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：南宋“中兴四大诗人”（杨万里、范成大、陆游、尤袤）中陆游成就最高；",
-    "start": 148.704,
-    "end": 156.206,
-    "duration": 7.501
+    "start": 157.411,
+    "end": 164.883,
+    "duration": 7.473
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
-    "text": "梁启超赞“亘古男儿一放翁”，赵翼评“看似奔放，实则谨严”，",
-    "start": 156.926,
-    "end": 161.51,
-    "duration": 4.584
-  },
-  {
-    "id": "guard_c2",
-    "dom_key": "guard_c2",
-    "text": "刘克庄赞“古人好对偶被放翁用尽”。",
-    "start": 162.232,
-    "end": 164.819,
-    "duration": 2.586
+    "text": "梁启超赞“亘古男儿一放翁”，赵翼评“看似奔放，实则谨严”，刘克庄赞“古人好对偶被放翁用尽”。",
+    "start": 165.041,
+    "end": 173.165,
+    "duration": 8.124
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 背诵梁启超、赵翼《瓯北诗话》、刘克庄评价陆游的三句名评？",
-    "start": 165.567,
-    "end": 171.845,
-    "duration": 6.278
+    "start": 173.752,
+    "end": 180.456,
+    "duration": 6.705
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 如何说明陆游在学习江西“活法”的同时兼融了李白豪放与杜甫沉郁？",
-    "start": 172.651,
-    "end": 179.541,
-    "duration": 6.89
+    "start": 181.03,
+    "end": 188.087,
+    "duration": 7.056
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 兼顾爱国壮怀、日常村居、沈园悼情列出六首陆游核心代表作？",
-    "start": 180.284,
-    "end": 187.275,
-    "duration": 6.991
+    "start": 188.674,
+    "end": 195.821,
+    "duration": 7.147
   }
 ]

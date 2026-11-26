@@ -1,234 +1,202 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "苏轼·以诗入词与宋代词坛地位",
+    "start": 0.134,
+    "end": 3.193,
+    "duration": 3.059
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "破立并举的“以诗为词”全链：先从观念破“词为艳科”拓出报国悼亡农村题材，",
-    "start": 0.228,
-    "end": 6.967,
-    "duration": 6.739
+    "start": 3.769,
+    "end": 11.02,
+    "duration": 7.252
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再把诗歌“标题小序”移植入词以增强纪实，接着注入黄州逆境淬炼的旷达理趣，",
-    "start": 7.739,
-    "end": 14.399,
-    "duration": 6.66
+    "start": 11.36,
+    "end": 18.169,
+    "duration": 6.809
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "最后不惜被讥“不葺之诗”松绑声律，直接为辛派铺路。",
-    "start": 15.115,
-    "end": 19.38,
-    "duration": 4.265
+    "start": 18.296,
+    "end": 22.488,
+    "duration": 4.192
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "苏轼以文人主体意识推行“以诗为词”，使词跃升为独立抒情诗体。",
-    "start": 20.123,
-    "end": 25.625,
-    "duration": 5.501
+    "start": 23.075,
+    "end": 28.686,
+    "duration": 5.611
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "胡寅《酒边词序》赞其“一洗绮罗香泽之态，摆脱绸缪宛转之度，使人登高望远，举首高歌”。",
-    "start": 26.438,
-    "end": 33.852,
-    "duration": 7.414
+    "start": 29.273,
+    "end": 36.941,
+    "duration": 7.668
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 破除“词为艳科”、诗词一体拓题材",
-    "start": 34.563,
-    "end": 38.231,
-    "duration": 3.668
+    "start": 37.528,
+    "end": 41.29,
+    "duration": 3.762
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "在《祭张子野文》称词“盖诗之裔”，力主“自是一家”，把词从歌伎口中解放；",
-    "start": 38.984,
-    "end": 44.871,
-    "duration": 5.887
+    "start": 41.877,
+    "end": 48.425,
+    "duration": 6.548
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "纳入怀古报国“射天狼”、悼亡“十年生死两茫茫”、农村“敲门试问野人家”，极大拓宽表现领域。",
-    "start": 45.67,
-    "end": 52.966,
-    "duration": 7.296
+    "start": 49.012,
+    "end": 57.865,
+    "duration": 8.853
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 广用标题与小序紧扣生活场景",
-    "start": 53.665,
-    "end": 57.189,
-    "duration": 3.523
+    "start": 58.452,
+    "end": 62.149,
+    "duration": 3.697
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "破除“有调无题”旧套，广用标题小序交代缘起、时地与场景；",
-    "start": 58.006,
-    "end": 62.761,
-    "duration": 4.755
+    "start": 62.736,
+    "end": 68.321,
+    "duration": 5.585
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "《水调歌头》序“丙辰中秋……兼怀子由”点怀弟之旨；",
-    "start": 63.526,
-    "end": 67.461,
-    "duration": 3.936
+    "start": 68.895,
+    "end": 74.219,
+    "duration": 5.325
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "《定风波》详记沙湖遇雨“同行皆狼狈，余独不觉”，补足词体叙事短处。",
-    "start": 68.19,
-    "end": 73.766,
-    "duration": 5.576
+    "start": 74.455,
+    "end": 80.743,
+    "duration": 6.288
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 融通性情理趣、立清旷豪迈词风",
-    "start": 74.542,
-    "end": 78.38,
-    "duration": 3.837
+    "start": 81.317,
+    "end": 85.3,
+    "duration": 3.983
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
-    "text": "定慧院“拣尽寒枝不肯栖”守孤高；",
-    "start": 79.098,
-    "end": 81.555,
-    "duration": 2.457
-  },
-  {
-    "id": "sec2_step0_c1",
-    "dom_key": "sec2_step0_c1",
-    "text": "赤壁“人生如梦，一尊还酹江月”遣苦闷；",
-    "start": 82.265,
-    "end": 85.347,
-    "duration": 3.081
-  },
-  {
-    "id": "sec2_step0_c2",
-    "dom_key": "sec2_step0_c2",
-    "text": "沙湖“也无风雨也无晴”达超然；",
-    "start": 86.067,
-    "end": 88.378,
-    "duration": 2.311
+    "text": "定慧院“拣尽寒枝不肯栖”守孤高；赤壁“人生如梦，一尊还酹江月”遣苦闷；沙湖“也无风雨也无晴”达超然；",
+    "start": 85.874,
+    "end": 96.433,
+    "duration": 10.559
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "融儒家坚守与佛道超脱为一体，确立清雄旷达士大夫词风典范。",
-    "start": 89.208,
-    "end": 94.752,
-    "duration": 5.544
+    "start": 97.007,
+    "end": 103.243,
+    "duration": 6.236
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 弱化音乐依附、开启南宋辛派路径",
-    "start": 95.524,
-    "end": 99.275,
-    "duration": 3.751
+    "start": 103.83,
+    "end": 107.722,
+    "duration": 3.892
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
-    "text": "虽被李清照评为“句读不葺之诗”，",
-    "start": 99.992,
-    "end": 102.686,
-    "duration": 2.694
-  },
-  {
-    "id": "sec3_step0_c1",
-    "dom_key": "sec3_step0_c1",
-    "text": "然王灼《碧鸡漫志》赞其“非心醉于音律者……指出向上一路，新天下耳目”；",
-    "start": 103.439,
-    "end": 109.31,
-    "duration": 5.871
+    "text": "虽被李清照评为“句读不葺之诗”，然王灼《碧鸡漫志》赞其“非心醉于音律者……指出向上一路，新天下耳目”；",
+    "start": 108.296,
+    "end": 117.891,
+    "duration": 9.595
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "奠基北宋豪放派，更直接启迪南宋张孝祥、辛弃疾“以文为词”与用经用史之风。",
-    "start": 110.095,
-    "end": 117.172,
-    "duration": 7.076
+    "start": 118.478,
+    "end": 126.173,
+    "duration": 7.694
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "苏轼以“以诗为词”借题序、理趣破“词为艳科”成见，减弱对音乐依附并提升文学品位，",
-    "start": 117.896,
-    "end": 125.065,
-    "duration": 7.17
+    "start": 126.733,
+    "end": 134.415,
+    "duration": 7.681
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "确立词与诗并列地位，开启南宋辛派新途。",
-    "start": 125.829,
-    "end": 129.287,
-    "duration": 3.458
+    "start": 134.689,
+    "end": 138.738,
+    "duration": 4.049
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
-    "text": "防混：苏轼“以诗为词”称词“盖诗之裔”；",
-    "start": 130.231,
-    "end": 133.96,
-    "duration": 3.73
-  },
-  {
-    "id": "guard_c1",
-    "dom_key": "guard_c1",
-    "text": "辛弃疾则进一步“以文为词”；",
-    "start": 134.695,
-    "end": 136.773,
-    "duration": 2.078
-  },
-  {
-    "id": "guard_c2",
-    "dom_key": "guard_c2",
-    "text": "李清照曾评苏词为“句读不葺之诗”。",
-    "start": 137.48,
-    "end": 140.372,
-    "duration": 2.892
+    "text": "防混：苏轼“以诗为词”称词“盖诗之裔”；辛弃疾则进一步“以文为词”；李清照曾评苏词为“句读不葺之诗”。",
+    "start": 139.325,
+    "end": 148.712,
+    "duration": 9.387
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 胡寅《酒边词序》与王灼《碧鸡漫志》如何评价苏词？",
-    "start": 141.093,
-    "end": 146.578,
-    "duration": 5.485
+    "start": 149.273,
+    "end": 154.975,
+    "duration": 5.702
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 《水调歌头》《定风波》小序各起到什么叙事铺垫作用？",
-    "start": 147.332,
-    "end": 152.861,
-    "duration": 5.529
+    "start": 155.562,
+    "end": 161.329,
+    "duration": 5.767
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 黄州三句词（定慧院/赤壁/沙湖）怎样呈现儒道释融合？",
-    "start": 153.651,
-    "end": 160.317,
-    "duration": 6.666
+    "start": 161.903,
+    "end": 168.946,
+    "duration": 7.043
   }
 ]

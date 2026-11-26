@@ -1,234 +1,226 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "《牡丹亭》·汤显祖至情理想与浪漫主义戏曲艺术",
+    "start": 0.134,
+    "end": 4.365,
+    "duration": 4.231
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "哲学宣言→梦幻冲突→曲辞风格→流脉影响：先从《题词》至情宣言定下“以情反理”魂魄，",
-    "start": 0.221,
-    "end": 8.668,
-    "duration": 8.447
+    "start": 4.954,
+    "end": 13.468,
+    "duration": 8.515
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再看杜丽娘死后为鬼自由、复生仍受礼教约束的“虚实双面”，",
-    "start": 9.418,
-    "end": 14.407,
-    "duration": 4.989
+    "start": 13.782,
+    "end": 18.976,
+    "duration": 5.194
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "接着赏《惊梦》与《闺塾》悲喜交映诗才，",
-    "start": 15.186,
-    "end": 17.974,
-    "duration": 2.788
-  },
-  {
-    "id": "hook_c3",
-    "dom_key": "hook_c3",
-    "text": "最后落到令《西厢》减价、滋养《长生》《红楼》。",
-    "start": 18.704,
-    "end": 22.38,
-    "duration": 3.675
+    "text": "接着赏《惊梦》与《闺塾》悲喜交映诗才，最后落到令《西厢》减价、滋养《长生》《红楼》。",
+    "start": 19.077,
+    "end": 26.225,
+    "duration": 7.147
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "汤显祖《牡丹亭》为“临川四梦”代表作。",
-    "start": 23.089,
-    "end": 25.985,
-    "duration": 2.896
+    "start": 26.799,
+    "end": 29.818,
+    "duration": 3.02
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "晚明理学禁锢下，作者秉持“以情反理”，将民间还魂故事改写为礼赞青春自由的浪漫主义传奇。",
-    "start": 26.774,
-    "end": 34.756,
-    "duration": 7.981
+    "start": 30.405,
+    "end": 38.647,
+    "duration": 8.241
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 张扬“至情”理想、反拨“灭人欲”礼教",
-    "start": 35.505,
-    "end": 38.946,
-    "duration": 3.441
+    "start": 39.233,
+    "end": 42.891,
+    "duration": 3.658
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "《牡丹亭题词》：“情不知所起，一往而深。生者可以死，死可以生。生而不可与死，死而不可复生者，皆非情之至也。”",
-    "start": 39.752,
-    "end": 49.841,
-    "duration": 10.089
+    "start": 43.478,
+    "end": 55.534,
+    "duration": 12.056
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "杜丽娘由《闺塾》读《关雎》萌春，入园因情入梦而死，鬼身依柳梦梅复生，",
-    "start": 50.594,
-    "end": 56.564,
-    "duration": 5.969
+    "start": 56.108,
+    "end": 63.529,
+    "duration": 7.421
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "连跨贞节关、鬼门关与金阶，肯定自然欲求。",
-    "start": 57.306,
-    "end": 61.074,
-    "duration": 3.767
+    "start": 63.687,
+    "end": 67.761,
+    "duration": 4.075
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 梦境幽明交错世态、构建虚实冲突",
-    "start": 61.821,
-    "end": 65.684,
-    "duration": 3.863
+    "start": 68.348,
+    "end": 72.357,
+    "duration": 4.009
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "秉“梦中之情，何必非真”，借《惊梦》《冥判》《魂游》写幽冥自由；",
-    "start": 66.399,
-    "end": 71.692,
-    "duration": 5.293
+    "start": 72.944,
+    "end": 80.027,
+    "duration": 7.082
   },
   {
     "id": "sec1_step0_c1",
     "dom_key": "sec1_step0_c1",
     "text": "然复生即直言“鬼可虚情，人须实礼”，复归人间约束；",
-    "start": 72.453,
-    "end": 77.073,
-    "duration": 4.62
+    "start": 80.236,
+    "end": 85.105,
+    "duration": 4.869
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "以南安太守杜宝、迂腐陈最良对立春香、花神、胡判官，令浪漫深植真实矛盾。",
-    "start": 77.842,
-    "end": 85.034,
-    "duration": 7.192
+    "start": 85.679,
+    "end": 94.206,
+    "duration": 8.528
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 诗化典雅曲辞与悲喜交融风格",
-    "start": 85.81,
-    "end": 89.375,
-    "duration": 3.565
+    "start": 94.793,
+    "end": 98.516,
+    "duration": 3.723
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "《惊梦》【皂罗袍】“原来姹紫嫣红开遍……良辰美景奈何天，赏心乐事谁家院”惜春叹命、动人心魄；",
-    "start": 90.107,
-    "end": 98.022,
-    "duration": 7.915
+    "start": 99.103,
+    "end": 108.165,
+    "duration": 9.061
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "融《闹殇》《写真》惨悲与《闺塾》春香、石道姑插科打诨，",
-    "start": 98.801,
-    "end": 103.327,
-    "duration": 4.526
+    "start": 108.752,
+    "end": 114.18,
+    "duration": 5.429
   },
   {
     "id": "sec2_step1_c1",
     "dom_key": "sec2_step1_c1",
     "text": "恰如王思任“笑者真笑，笑即有声；啼者真啼，啼即有泪”。",
-    "start": 104.12,
-    "end": 108.96,
-    "duration": 4.841
+    "start": 114.403,
+    "end": 119.441,
+    "duration": 5.038
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 开“临川派”主情先声、润泽清代剧与小说",
-    "start": 109.677,
-    "end": 113.918,
-    "duration": 4.241
+    "start": 120.002,
+    "end": 124.35,
+    "duration": 4.348
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "沈德符《万历野获编》记“家传户诵，几令《西厢》减价”，引领吴炳、孟称舜玉茗堂主情潮流；",
-    "start": 114.622,
-    "end": 122.353,
-    "duration": 7.731
+    "start": 124.936,
+    "end": 133.542,
+    "duration": 8.606
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "开启《长生殿》《桃花扇》，更令《红楼梦》第二十三回林黛玉闻“良辰美景”而心动神摇。",
-    "start": 123.148,
-    "end": 130.091,
-    "duration": 6.943
+    "start": 134.129,
+    "end": 142.11,
+    "duration": 7.981
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "汤显祖秉持“以情反理”，借杜丽娘死生奇幻与诗化曲辞冲破理学禁锢，",
-    "start": 130.923,
-    "end": 137.064,
-    "duration": 6.141
+    "start": 142.697,
+    "end": 149.05,
+    "duration": 6.353
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
-    "text": "融浪漫主义激情与世态讽刺为一炉，",
-    "start": 137.923,
-    "end": 140.628,
-    "duration": 2.705
-  },
-  {
-    "id": "concl_c2",
-    "dom_key": "concl_c2",
-    "text": "开“临川派”潮流并滋养《长生殿》《桃花扇》《红楼梦》。",
-    "start": 141.476,
-    "end": 145.791,
-    "duration": 4.315
+    "text": "融浪漫主义激情与世态讽刺为一炉，开“临川派”潮流并滋养《长生殿》《桃花扇》《红楼梦》。",
+    "start": 149.22,
+    "end": 156.98,
+    "duration": 7.759
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：核心理论见《牡丹亭题词》“生者可以死，死可以生”；",
-    "start": 146.577,
-    "end": 151.207,
-    "duration": 4.63
+    "start": 157.567,
+    "end": 162.488,
+    "duration": 4.921
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "明代沈德符《万历野获编》载“几令《西厢》减价”，王思任评“笑者真笑……啼即有泪”。",
-    "start": 151.944,
-    "end": 158.143,
-    "duration": 6.199
+    "start": 162.671,
+    "end": 169.701,
+    "duration": 7.03
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 背诵《牡丹亭题词》中对“至情”的经典论述？",
-    "start": 158.9,
-    "end": 163.307,
-    "duration": 4.407
+    "start": 170.275,
+    "end": 174.975,
+    "duration": 4.699
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 解释杜丽娘“鬼可虚情，人须实礼”与杜宝/陈最良代表的虚实冲突？",
-    "start": 164.041,
-    "end": 171.345,
-    "duration": 7.304
+    "start": 175.562,
+    "end": 182.8,
+    "duration": 7.239
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 列出王思任评语、沈德符记载与《红楼梦》第二十三回呼应细节？",
-    "start": 172.106,
-    "end": 178.768,
-    "duration": 6.663
+    "start": 183.387,
+    "end": 190.235,
+    "duration": 6.848
   }
 ]

@@ -1,218 +1,202 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "屈原·离骚思想意蕴与骚体艺术成就",
+    "start": 0.134,
+    "end": 3.518,
+    "duration": 3.384
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "由“心”到“象”再到“架”与“体”：全诗灵魂在九死未悔的“美政”忠贞，",
-    "start": 0.217,
-    "end": 6.172,
-    "duration": 5.954
+    "start": 4.107,
+    "end": 10.317,
+    "duration": 6.21
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "这份人格洁癖外化为系统的“香草美人”象征，",
-    "start": 6.9,
-    "end": 10.24,
-    "duration": 3.34
+    "text": "这份人格洁癖外化为系统的“香草美人”象征，受挫后飞升天界求索却因俯瞰旧乡跌回悲剧，",
+    "start": 10.644,
+    "end": 18.911,
+    "duration": 8.267
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "受挫后飞升天界求索却因俯瞰旧乡跌回悲剧，最终以长短“兮”字骚体铸成奇伟诗章。",
-    "start": 10.975,
-    "end": 18.534,
-    "duration": 7.559
+    "text": "最终以长短“兮”字骚体铸成奇伟诗章。",
+    "start": 19.038,
+    "end": 22.318,
+    "duration": 3.28
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "《离骚》是浪漫主义政治抒情长诗，打破集体歌唱与四言格局，",
-    "start": 19.267,
-    "end": 24.511,
-    "duration": 5.244
+    "start": 22.892,
+    "end": 28.464,
+    "duration": 5.572
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "司马迁《史记·屈原贾生列传》赞其“虽与日月争光可也”。",
-    "start": 25.235,
-    "end": 29.605,
-    "duration": 4.371
+    "start": 28.661,
+    "end": 34.089,
+    "duration": 5.429
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 确立“美政”理想与忠贞气节",
-    "start": 30.352,
-    "end": 33.435,
-    "duration": 3.083
+    "start": 34.676,
+    "end": 37.878,
+    "duration": 3.202
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "贯彻修明法度、举贤授能之“美政”，忧国哀叹“长太息以掩涕兮，哀民生之多艰”。",
-    "start": 34.163,
-    "end": 40.886,
-    "duration": 6.722
+    "start": 38.452,
+    "end": 46.094,
+    "duration": 7.642
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "遭谗疏远仍不随流俗，宣告“亦余心之所善兮，虽九死其犹未悔”，将生命系于楚国存亡。",
-    "start": 41.627,
-    "end": 49.43,
-    "duration": 7.803
+    "start": 46.681,
+    "end": 55.365,
+    "duration": 8.684
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 开创系统的“香草美人”象征体系",
-    "start": 50.206,
-    "end": 53.525,
-    "duration": 3.319
+    "start": 55.939,
+    "end": 59.35,
+    "duration": 3.41
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
-    "text": "拓展《诗经》比兴，以辟芷、秋兰、木兰、宿莽等喻纯洁志行，",
-    "start": 54.213,
-    "end": 59.519,
-    "duration": 5.305
-  },
-  {
-    "id": "sec1_step0_c1",
-    "dom_key": "sec1_step0_c1",
-    "text": "“朝饮木兰之坠露兮，夕餐秋菊之落英”；",
-    "start": 60.214,
-    "end": 63.315,
-    "duration": 3.102
+    "text": "拓展《诗经》比兴，以辟芷、秋兰、木兰、宿莽等喻纯洁志行，“朝饮木兰之坠露兮，夕餐秋菊之落英”；",
+    "start": 59.937,
+    "end": 70.482,
+    "duration": 10.546
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "以萧艾喻谗谄宵小，以“美人”及求女寄托贤君知己，升华为人格与政治寓托符号。",
-    "start": 64.049,
-    "end": 71.097,
-    "duration": 7.047
+    "start": 71.056,
+    "end": 79.584,
+    "duration": 8.528
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 构筑虚实交织的天界神游构架",
-    "start": 71.846,
-    "end": 75.262,
-    "duration": 3.416
+    "start": 80.171,
+    "end": 83.751,
+    "duration": 3.58
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "前半立足现实自叙出身修身与遭谗；后半命羲和、望舒、驾飞龙叩九重天门并从灵氛巫咸之占上下求索；",
-    "start": 76.025,
-    "end": 85.889,
-    "duration": 9.864
+    "start": 84.338,
+    "end": 95.404,
+    "duration": 11.067
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "云霓之上“陟升皇之赫戏兮，忽临睨夫旧乡”，仆夫悲、马怀顾，从神界剧烈跌回现实悲剧。",
-    "start": 86.688,
-    "end": 94.639,
-    "duration": 7.951
+    "start": 95.991,
+    "end": 104.962,
+    "duration": 8.97
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 创立“骚体”新体与楚地声韵",
-    "start": 95.353,
-    "end": 98.364,
-    "duration": 3.011
+    "start": 105.549,
+    "end": 108.725,
+    "duration": 3.176
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "吸收楚地民歌与巫祭乐歌创立长短错落“骚体”，打破《诗经》四言整齐格局；",
-    "start": 99.091,
-    "end": 105.548,
-    "duration": 6.457
+    "start": 109.299,
+    "end": 116.511,
+    "duration": 7.213
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
-    "text": "广用方言语气词“兮”置于句中或句末，拖长叹息呼告营造长歌当哭节奏，",
-    "start": 106.318,
-    "end": 112.492,
-    "duration": 6.174
-  },
-  {
-    "id": "sec3_step1_c1",
-    "dom_key": "sec3_step1_c1",
-    "text": "融名物词采直接孕育汉代辞赋。",
-    "start": 113.249,
-    "end": 116.134,
-    "duration": 2.885
+    "text": "广用方言语气词“兮”置于句中或句末，拖长叹息呼告营造长歌当哭节奏，融名物词采直接孕育汉代辞赋。",
+    "start": 117.098,
+    "end": 127.383,
+    "duration": 10.285
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
-    "text": "屈原以美政坚守为核心，",
-    "start": 116.856,
-    "end": 118.846,
-    "duration": 1.99
+    "text": "屈原以美政坚守为核心，借“香草美人”象征、天界神游与骚体句式完成由集体歌谣向个体长诗跨越，",
+    "start": 127.957,
+    "end": 137.292,
+    "duration": 9.335
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
-    "text": "借“香草美人”象征、天界神游与骚体句式完成由集体歌谣向个体长诗跨越，",
-    "start": 119.561,
-    "end": 126.425,
-    "duration": 6.864
-  },
-  {
-    "id": "concl_c2",
-    "dom_key": "concl_c2",
     "text": "孕育汉代辞赋并积淀深厚爱国传统。",
-    "start": 127.152,
-    "end": 130.204,
-    "duration": 3.052
+    "start": 137.58,
+    "end": 141.081,
+    "duration": 3.502
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：司马迁赞屈原“虽与日月争光可也”；",
-    "start": 131.033,
-    "end": 134.656,
-    "duration": 3.623
+    "start": 141.668,
+    "end": 145.561,
+    "duration": 3.892
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "注意区分屈原与庄子：庄子神游超脱尘世，屈原升腾终因“忽临睨夫旧乡”跌回现实悲剧。",
-    "start": 135.434,
-    "end": 143.398,
-    "duration": 7.964
+    "start": 145.835,
+    "end": 153.673,
+    "duration": 7.838
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 《离骚》“香草/恶草/美人”三层象征体系怎么对应？",
-    "start": 144.147,
-    "end": 149.711,
-    "duration": 5.563
+    "start": 154.26,
+    "end": 160.157,
+    "duration": 5.897
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 为什么说屈原天界神游最终仍跌回现实悲剧？",
-    "start": 150.478,
-    "end": 155.805,
-    "duration": 5.327
+    "start": 160.731,
+    "end": 166.212,
+    "duration": 5.481
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 司马迁与“骚体”分别如何概括《离骚》的地位与体式特征？",
-    "start": 156.55,
-    "end": 162.396,
-    "duration": 5.845
+    "start": 166.785,
+    "end": 172.904,
+    "duration": 6.119
   }
 ]

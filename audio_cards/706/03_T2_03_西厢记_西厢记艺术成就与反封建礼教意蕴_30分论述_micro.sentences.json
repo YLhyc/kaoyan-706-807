@@ -1,226 +1,218 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "《西厢记》·艺术成就与反封建礼教意蕴",
+    "start": 0.134,
+    "end": 3.466,
+    "duration": 3.332
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "主题→人物→结构→曲词：先树起“婚姻自主/以情抗礼”的思想旗帜，",
-    "start": 0.223,
-    "end": 6.971,
-    "duration": 6.748
+    "start": 4.042,
+    "end": 10.734,
+    "duration": 6.692
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再看旗帜下莺莺、张生、红娘各有分寸的反抗心理交锋，",
-    "start": 7.655,
-    "end": 12.984,
-    "duration": 5.33
+    "start": 11.061,
+    "end": 16.606,
+    "duration": 5.546
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "进而看“五本二十折”如何破除一本四折成规扣紧冲突，",
-    "start": 13.691,
-    "end": 18.108,
-    "duration": 4.417
+    "start": 16.72,
+    "end": 21.303,
+    "duration": 4.582
   },
   {
     "id": "hook_c3",
     "dom_key": "hook_c3",
     "text": "最后品读《长亭送别》文采与本色兼美之曲词。",
-    "start": 18.855,
-    "end": 22.721,
-    "duration": 3.866
+    "start": 21.564,
+    "end": 25.469,
+    "duration": 3.905
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "《西厢记》是元杂剧文人创作高峰。",
-    "start": 23.442,
-    "end": 25.998,
-    "duration": 2.556
+    "start": 26.043,
+    "end": 29.05,
+    "duration": 3.007
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
-    "text": "王实甫脱胎元稹《莺莺传》与董解元《西厢记诸宫调》，",
-    "start": 26.725,
-    "end": 30.601,
-    "duration": 3.876
+    "text": "王实甫脱胎元稹《莺莺传》与董解元《西厢记诸宫调》，喊出“愿普天下有情的都成了眷属”，",
+    "start": 29.624,
+    "end": 37.071,
+    "duration": 7.447
   },
   {
     "id": "intro_c2",
     "dom_key": "intro_c2",
-    "text": "喊出“愿普天下有情的都成了眷属”，朱权《太和正音谱》赞“花间美人”。",
-    "start": 31.406,
-    "end": 36.743,
-    "duration": 5.337
+    "text": "朱权《太和正音谱》赞“花间美人”。",
+    "start": 37.254,
+    "end": 40.027,
+    "duration": 2.772
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 确立以情抗礼、婚姻自主的主题",
-    "start": 37.52,
-    "end": 41.03,
-    "duration": 3.509
+    "start": 40.614,
+    "end": 44.219,
+    "duration": 3.606
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "否定“父母之命，媒妁之言”，崔张冲破名分门第礼法，把真诚爱情置于功名与礼教之上；",
-    "start": 41.792,
-    "end": 49.303,
-    "duration": 7.511
+    "start": 44.806,
+    "end": 53.542,
+    "duration": 8.736
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "揭破老夫人借“不招白衣女婿”赖婚逼考之虚伪，摆脱依附功名“报恩合礼”旧套，",
-    "start": 50.099,
-    "end": 56.324,
-    "duration": 6.225
-  },
-  {
-    "id": "sec0_step1_c1",
-    "dom_key": "sec0_step1_c1",
-    "text": "升华为反礼教思想力。",
-    "start": 57.12,
-    "end": 58.805,
-    "duration": 1.685
+    "text": "揭破老夫人借“不招白衣女婿”赖婚逼考之虚伪，摆脱依附功名“报恩合礼”旧套，升华为反礼教思想力。",
+    "start": 54.129,
+    "end": 63.464,
+    "duration": 9.335
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 精细刻画内心矛盾、塑反抗群像",
-    "start": 59.521,
-    "end": 62.992,
-    "duration": 3.471
+    "start": 64.038,
+    "end": 67.631,
+    "duration": 3.593
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "莺莺相国千金，于“闹简”“赖简”中呈现内热外冷的羞涩试探；张生志诚痴情、抛却功名乃至跳墙；",
-    "start": 63.723,
-    "end": 72.816,
-    "duration": 9.093
+    "start": 68.218,
+    "end": 78.269,
+    "duration": 10.051
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "侍女红娘机智泼辣，“拷红”中面对严刑巧用礼教信义反客为主，逼使老夫人屈服。",
-    "start": 73.523,
-    "end": 80.356,
-    "duration": 6.833
+    "start": 78.843,
+    "end": 86.628,
+    "duration": 7.785
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 首创“五本二十折”宏大严密结构",
-    "start": 81.087,
-    "end": 84.298,
-    "duration": 3.211
+    "start": 87.215,
+    "end": 90.691,
+    "duration": 3.476
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "突破一本四折及单角独唱成规，首创“五本二十折”联套，〔络丝娘煞尾〕接续前后、末旦轮唱；",
-    "start": 85.005,
-    "end": 92.892,
-    "duration": 7.887
+    "start": 91.278,
+    "end": 99.558,
+    "duration": 8.28
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "主辅双线由佛殿奇遇、兵围普救寺、白马解围至赖婚、琴心、拷红、长亭送别，环环相扣。",
-    "start": 93.607,
-    "end": 101.98,
-    "duration": 8.373
+    "start": 100.145,
+    "end": 109.376,
+    "duration": 9.231
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 兼备诗词雅趣与戏曲本色语言",
-    "start": 102.69,
-    "end": 106.213,
-    "duration": 3.523
+    "start": 109.95,
+    "end": 113.634,
+    "duration": 3.684
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
-    "text": "徐复祚赞“字字当行，言言本色”：第四本第三折“长亭送别”“碧云天，黄花地……总是离人泪”化范仲淹词境声泪俱下，",
-    "start": 106.953,
-    "end": 116.869,
-    "duration": 9.916
-  },
-  {
-    "id": "sec3_step0_c1",
-    "dom_key": "sec3_step0_c1",
-    "text": "红娘宾白则俏皮犀利；",
-    "start": 117.691,
-    "end": 119.497,
-    "duration": 1.806
+    "text": "徐复祚赞“字字当行，言言本色”：第四本第三折“长亭送别”“碧云天，黄花地……总是离人泪”化范仲淹词境声泪俱下，红娘宾白则俏皮犀利；",
+    "start": 114.22,
+    "end": 127.644,
+    "duration": 13.423
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "直接启迪明清《牡丹亭》《红楼梦》等反礼教名著。",
-    "start": 120.236,
-    "end": 124.122,
-    "duration": 3.886
+    "start": 128.218,
+    "end": 132.722,
+    "duration": 4.504
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "王实甫《西厢记》借崔张红反抗高扬婚姻自主，以五本联套与文采本色曲词登顶元杂剧，",
-    "start": 124.881,
-    "end": 132.386,
-    "duration": 7.505
+    "start": 133.309,
+    "end": 141.173,
+    "duration": 7.864
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "直接启迪明代《牡丹亭》与清代《红楼梦》反礼教精神。",
-    "start": 133.15,
-    "end": 137.114,
-    "duration": 3.964
+    "start": 141.46,
+    "end": 145.782,
+    "duration": 4.322
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：脱胎自唐代元稹《莺莺传》（悲剧收尾）与金代董解元《西厢记诸宫调》；",
-    "start": 137.893,
-    "end": 144.26,
-    "duration": 6.367
+    "start": 146.369,
+    "end": 152.8,
+    "duration": 6.431
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "朱权《太和正音谱》赞其曲词如“花间美人”，徐复祚赞“字字当行，言言本色”。",
-    "start": 145.083,
-    "end": 151.139,
-    "duration": 6.055
+    "start": 153.101,
+    "end": 159.532,
+    "duration": 6.431
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 《西厢记》经历了从唐代元稹到金代董解元再到王实甫的哪三次蜕变？",
-    "start": 151.872,
-    "end": 158.99,
-    "duration": 7.118
+    "start": 160.119,
+    "end": 167.475,
+    "duration": 7.356
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 解释“五本二十折”联套体制及“拷红”“长亭送别”的戏剧功能？",
-    "start": 159.734,
-    "end": 165.549,
-    "duration": 5.816
+    "start": 168.062,
+    "end": 174.415,
+    "duration": 6.353
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 朱权与徐复祚各用哪四字/八字评语高度概括该剧曲词艺术？",
-    "start": 166.293,
-    "end": 173.474,
-    "duration": 7.181
+    "start": 174.989,
+    "end": 182.318,
+    "duration": 7.33
   }
 ]

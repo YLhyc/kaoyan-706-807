@@ -1,194 +1,202 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "《窦娥冤》·关汉卿窦娥冤悲剧艺术成就与社会反抗精神",
+    "start": 0.134,
+    "end": 4.834,
+    "duration": 4.7
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "写实土壤→人物觉醒→浪漫抗议→本色唱腔：先看底层寡妇窦娥如何被赛卢医、张驴儿、贪官桃杌步步逼死，",
-    "start": 0.236,
-    "end": 10.562,
-    "duration": 10.327
+    "start": 5.423,
+    "end": 15.929,
+    "duration": 10.507
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再追她由认命孝顺到【滚绣球】指天斥地的觉醒弧线，紧接三桩超现实誓愿为清白作证，",
-    "start": 11.344,
-    "end": 18.841,
-    "duration": 7.497
+    "start": 16.204,
+    "end": 23.581,
+    "duration": 7.378
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "最后赞其本色当行唱辞之震撼。",
-    "start": 19.568,
-    "end": 22.264,
-    "duration": 2.696
+    "start": 23.856,
+    "end": 26.837,
+    "duration": 2.981
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "关汉卿《窦娥冤》（全名《感天动地窦娥冤》）写元代黑暗下无辜寡妇冤案，",
-    "start": 22.993,
-    "end": 28.557,
-    "duration": 5.564
+    "start": 27.424,
+    "end": 33.035,
+    "duration": 5.611
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "王国维《宋元戏曲考》赞“即列之于世界大悲剧中，亦无愧色也”。",
-    "start": 29.339,
-    "end": 34.308,
-    "duration": 4.969
+    "start": 33.309,
+    "end": 38.347,
+    "duration": 5.038
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 植根严酷现实、塑善良坚贞女性",
-    "start": 35.064,
-    "end": 38.562,
-    "duration": 3.498
+    "start": 38.921,
+    "end": 42.54,
+    "duration": 3.619
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "童养媳早寡奉养蔡婆婆，遭赛卢医赖账、张驴儿父子勒索诬陷及贪官桃杌酷刑草菅人命；",
-    "start": 39.277,
-    "end": 47.26,
-    "duration": 7.983
+    "start": 43.114,
+    "end": 52.527,
+    "duration": 9.413
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "护婆免杖而屈招显仁孝，公堂法场拒逼婚见底层女性不屈尊严。",
-    "start": 48.098,
-    "end": 53.527,
-    "duration": 5.429
+    "start": 53.114,
+    "end": 59.61,
+    "duration": 6.496
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 写实交融浪漫、三桩誓愿感天动地",
-    "start": 54.36,
-    "end": 58.086,
-    "duration": 3.727
+    "start": 60.184,
+    "end": 64.076,
+    "duration": 3.892
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "第三折法场受刑化用东海孝妇传说，立“血溅白练”“六月飞雪”“亢旱三年”誓愿并一一体现；",
-    "start": 58.84,
-    "end": 66.308,
-    "duration": 7.468
+    "start": 64.65,
+    "end": 73.568,
+    "duration": 8.918
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "以超现实奇景证实清白，对贪官恶霸行警世裁决，将个人冤屈升华为撼动天地的社会抗议。",
-    "start": 67.019,
-    "end": 75.34,
-    "duration": 8.321
+    "start": 74.155,
+    "end": 83.321,
+    "duration": 9.166
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 由忍辱顺从到【滚绣球】愤慨斥天",
-    "start": 76.074,
-    "end": 79.687,
-    "duration": 3.613
+    "start": 83.908,
+    "end": 87.67,
+    "duration": 3.762
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "起初敬畏天命守分，幻想官府作主；酷刑铸冤后幻想击碎；",
-    "start": 80.429,
-    "end": 85.568,
-    "duration": 5.139
+    "start": 88.256,
+    "end": 94.688,
+    "duration": 6.431
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "【滚绣球】唱出“为善的受贫穷更命短……地也，你不分好歹何为地！天也，你错勘贤愚枉做天！”，直指天理权威。",
-    "start": 86.37,
-    "end": 95.459,
-    "duration": 9.09
+    "start": 95.262,
+    "end": 106.186,
+    "duration": 10.924
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 曲词本色当行而激越悲壮",
-    "start": 96.139,
-    "end": 99.114,
-    "duration": 2.975
+    "start": 106.773,
+    "end": 109.87,
+    "duration": 3.098
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "发挥元杂剧本色派所长，融市井口语、民间俗谚与精炼雅语，质朴自然无文饰艰深之弊；",
-    "start": 99.878,
-    "end": 107.922,
-    "duration": 8.045
+    "start": 110.444,
+    "end": 119.193,
+    "duration": 8.749
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "绝望悲愤处如泣如诉、韵律急促有力，确立古典戏曲悲剧崇高典范。",
-    "start": 108.66,
-    "end": 114.521,
-    "duration": 5.86
+    "start": 119.767,
+    "end": 126.537,
+    "duration": 6.77
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "《窦娥冤》以底层寡妇由忍辱顺从到【滚绣球】斥天的抗争轨迹与三桩誓愿，",
-    "start": 115.315,
-    "end": 121.44,
-    "duration": 6.125
+    "start": 127.124,
+    "end": 133.555,
+    "duration": 6.431
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "将本色民间曲辞与尖锐冲突结合，无愧世界大悲剧之赞誉。",
-    "start": 122.205,
-    "end": 127.38,
-    "duration": 5.174
+    "start": 133.791,
+    "end": 139.024,
+    "duration": 5.233
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：王国维《宋元戏曲考》盛赞“即列之于世界大悲剧中，亦无愧色也”；",
-    "start": 128.133,
-    "end": 134.358,
-    "duration": 6.225
+    "start": 139.585,
+    "end": 145.782,
+    "duration": 6.197
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "注意第三折高潮曲牌为【滚绣球】，三桩誓愿为血溅白练、六月飞雪、亢旱三年。",
-    "start": 135.161,
-    "end": 142.321,
-    "duration": 7.16
+    "start": 146.03,
+    "end": 153.412,
+    "duration": 7.382
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 回答 2020 真题：《窦娥冤》为什么“含冤而死”，又为什么能“感天动地”？",
-    "start": 143.183,
-    "end": 150.01,
-    "duration": 6.827
+    "start": 153.973,
+    "end": 161.042,
+    "duration": 7.069
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 说出赛卢医、张驴儿、桃杌的作恶链条，以及三桩誓愿与【滚绣球】唱词？",
-    "start": 150.774,
-    "end": 158.215,
-    "duration": 7.441
+    "start": 161.629,
+    "end": 169.206,
+    "duration": 7.577
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 王国维《宋元戏曲考》对全剧给出什么至高定位？",
-    "start": 158.927,
-    "end": 164.125,
-    "duration": 5.198
+    "start": 169.793,
+    "end": 175.144,
+    "duration": 5.351
   }
 ]

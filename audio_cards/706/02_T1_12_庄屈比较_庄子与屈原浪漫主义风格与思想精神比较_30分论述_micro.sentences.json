@@ -1,210 +1,194 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "庄屈比较·庄子与屈原浪漫主义风格与思想精神比较",
+    "start": 0.134,
+    "end": 4.703,
+    "duration": 4.569
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "紧扣先秦南北文化双源对比：先切开“顺世逍遥 vs 殉道美政”的人生根本分歧，",
-    "start": 0.225,
-    "end": 7.294,
-    "duration": 7.069
+    "start": 5.292,
+    "end": 12.661,
+    "duration": 7.369
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "由此解释各自为何一个用“寓言破执”、一个用“香草立志”，",
-    "start": 8.006,
-    "end": 12.886,
-    "duration": 4.879
+    "start": 12.988,
+    "end": 17.974,
+    "duration": 4.986
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "进而点出同样神游九天、庄子超脱虚空而屈原回首旧乡的决定性差异，最后合论浪漫双基。",
-    "start": 13.612,
-    "end": 21.737,
-    "duration": 8.125
+    "start": 18.209,
+    "end": 26.147,
+    "duration": 7.938
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "庄子与屈原是古代浪漫主义两大源头，分表北方中原文化与南方荆楚文化。",
-    "start": 22.45,
-    "end": 29.032,
-    "duration": 6.582
+    "start": 26.733,
+    "end": 33.464,
+    "duration": 6.731
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "庄子奇幻诡谲（鲁迅赞“晚周诸子之作，莫能先也”），屈原奇伟瑰丽开创辞赋诗风。",
-    "start": 29.791,
-    "end": 36.704,
-    "duration": 6.914
+    "start": 34.051,
+    "end": 41.068,
+    "duration": 7.017
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 生命道路：无待逍遥 vs 美政忠贞",
-    "start": 37.423,
-    "end": 41.146,
-    "duration": 3.723
+    "start": 41.655,
+    "end": 45.495,
+    "duration": 3.84
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "立足“道”齐同物我，从名利倾轧中解脱，宁“曳尾于涂中”不受庙堂束缚，以退隐护守心灵自由；",
-    "start": 41.894,
-    "end": 49.569,
-    "duration": 7.675
+    "start": 46.082,
+    "end": 54.975,
+    "duration": 8.892
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "紧系个人与楚国存亡，坚持修明法度、举贤授能“美政”理想，誓言“虽九死其犹未悔”，",
-    "start": 50.337,
-    "end": 57.215,
-    "duration": 6.878
-  },
-  {
-    "id": "sec0_step1_c1",
-    "dom_key": "sec0_step1_c1",
-    "text": "以殉道彰显风骨。",
-    "start": 58.02,
-    "end": 59.404,
-    "duration": 1.384
+    "text": "紧系个人与楚国存亡，坚持修明法度、举贤授能“美政”理想，誓言“虽九死其犹未悔”，以殉道彰显风骨。",
+    "start": 55.562,
+    "end": 65.365,
+    "duration": 9.804
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 表现载体：三言寓言阐理 vs 香草美人抒情",
-    "start": 60.121,
-    "end": 64.601,
-    "duration": 4.481
+    "start": 65.939,
+    "end": 70.639,
+    "duration": 4.7
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "建“寓言、重言、卮言”，借《庖丁解牛》依乎天理、《秋水》鹓雏腐鼠嘲弄机心，破除执念；",
-    "start": 65.4,
-    "end": 73.353,
-    "duration": 7.953
+    "start": 71.213,
+    "end": 80.665,
+    "duration": 9.452
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "创立“香草美人”体系：辟芷秋兰喻高洁，恶草喻奸佞，美人寄托贤君知己，借象征高扬人格。",
-    "start": 74.093,
-    "end": 82.021,
-    "duration": 7.928
+    "start": 81.252,
+    "end": 90.352,
+    "duration": 9.101
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 神游方向：超脱尘世 vs 俯瞰跌回旧乡",
-    "start": 82.753,
-    "end": 87.126,
-    "duration": 4.373
+    "start": 90.939,
+    "end": 95.43,
+    "duration": 4.491
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "《逍遥游》大鹏“水击三千里，抟扶摇而上者九万里”，自在遨游而现实化为虚空，导向精神解脱；",
-    "start": 87.831,
-    "end": 95.803,
-    "duration": 7.972
+    "start": 96.004,
+    "end": 105.561,
+    "duration": 9.556
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "《离骚》叩九重天门却于云霓之上“陟升皇之赫戏兮，忽临睨夫旧乡”，",
-    "start": 96.534,
-    "end": 102.262,
-    "duration": 5.728
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "仆夫悲、马怀而不前，剧烈跌回现实悲剧。",
-    "start": 103.002,
-    "end": 106.552,
-    "duration": 3.55
+    "text": "《离骚》叩九重天门却于云霓之上“陟升皇之赫戏兮，忽临睨夫旧乡”，仆夫悲、马怀而不前，剧烈跌回现实悲剧。",
+    "start": 106.148,
+    "end": 117.436,
+    "duration": 11.288
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 共筑浪漫基因、双向滋养后代",
-    "start": 107.252,
-    "end": 110.52,
-    "duration": 3.267
+    "start": 118.023,
+    "end": 121.446,
+    "duration": 3.424
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "以汪洋气势与超脱灵气启迪魏晋玄风、陶渊明隐逸及李白盛唐豪迈；",
-    "start": 111.262,
-    "end": 117.635,
-    "duration": 6.372
+    "start": 122.033,
+    "end": 129.311,
+    "duration": 7.278
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "以忠贞与香草美人培育士人担当，滋养杜甫沉郁诗史与历代爱国诗文，共成浪漫两大基石。",
-    "start": 118.401,
-    "end": 126.732,
-    "duration": 8.331
+    "start": 129.885,
+    "end": 139.219,
+    "duration": 9.335
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "庄屈将奇伟浪漫想象推向极致，却分归超脱尘网与坚守家国：庄子寓言注入清旷哲理，",
-    "start": 127.526,
-    "end": 135.379,
-    "duration": 7.853
+    "start": 139.806,
+    "end": 147.67,
+    "duration": 7.864
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "屈原香草美人培育家国品格，共筑古典浪漫源头。",
-    "start": 136.151,
-    "end": 140.54,
-    "duration": 4.389
+    "start": 147.931,
+    "end": 152.631,
+    "duration": 4.7
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
-    "text": "防混：庄子代表先秦北方中原道家文化，屈原代表南方荆楚文化；",
-    "start": 141.32,
-    "end": 147.255,
-    "duration": 5.935
-  },
-  {
-    "id": "guard_c1",
-    "dom_key": "guard_c1",
-    "text": "庄屈在想象方向上极易混淆，关键句记“忽临睨夫旧乡”。",
-    "start": 148.052,
-    "end": 153.133,
-    "duration": 5.082
+    "text": "防混：庄子代表先秦北方中原道家文化，屈原代表南方荆楚文化；庄屈在想象方向上极易混淆，关键句记“忽临睨夫旧乡”。",
+    "start": 153.218,
+    "end": 165.027,
+    "duration": 11.809
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 庄子与屈原在“文化地域、生命态度、表意载体”上的三重对照？",
-    "start": 153.871,
-    "end": 160.365,
-    "duration": 6.494
+    "start": 165.601,
+    "end": 172.201,
+    "duration": 6.601
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 如何用“忽临睨夫旧乡”一句点穿庄屈神游想象的本质分野？",
-    "start": 161.126,
-    "end": 167.105,
-    "duration": 5.979
+    "start": 172.788,
+    "end": 178.881,
+    "duration": 6.093
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 二者分别启迪了后世哪几家代表作家或诗风？",
-    "start": 167.897,
-    "end": 173.03,
-    "duration": 5.133
+    "start": 179.468,
+    "end": 184.753,
+    "duration": 5.285
   }
 ]

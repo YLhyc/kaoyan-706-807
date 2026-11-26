@@ -1,186 +1,178 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "《儒林外史》·吴敬梓儒林外史讽刺艺术与串珠式结构特征",
+    "start": 0.134,
+    "end": 4.86,
+    "duration": 4.726
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "笔法→结构→理想三层收束：先用鲁迅“戚而能谐，婉而多讽”解透白描自露丑态的高段讽刺法，",
-    "start": 0.22,
-    "end": 8.974,
-    "duration": 8.754
+    "start": 5.449,
+    "end": 14.302,
+    "duration": 8.853
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再拆解“楔子王冕—中间接力—末回幽榜”的串珠结构，",
-    "start": 9.718,
-    "end": 14.141,
-    "duration": 4.422
+    "start": 14.55,
+    "end": 19.315,
+    "duration": 4.765
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "最后点明写批判之外仍设杜少卿等“真儒”精神标尺。",
-    "start": 14.88,
-    "end": 19.134,
-    "duration": 4.253
+    "start": 19.416,
+    "end": 23.933,
+    "duration": 4.517
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "吴敬梓《儒林外史》标志古代长篇讽刺小说成熟，",
-    "start": 19.892,
-    "end": 23.639,
-    "duration": 3.747
+    "start": 24.507,
+    "end": 28.738,
+    "duration": 4.231
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "鲁迅《中国小说史略》赞“秉持公心，指摘时弊……其文又戚而能谐，婉而多讽”。",
-    "start": 24.397,
-    "end": 30.62,
-    "duration": 6.224
+    "start": 29.025,
+    "end": 35.782,
+    "duration": 6.757
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 客观白描与矛盾对照：戚而能谐、婉而多讽",
-    "start": 31.382,
-    "end": 35.726,
-    "duration": 4.344
+    "start": 36.356,
+    "end": 40.886,
+    "duration": 4.53
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "摒弃浅露谩骂，用冷峻客观白描让人物在日常矛盾中自露真相，“无一贬词而情伪毕露”；",
-    "start": 36.506,
-    "end": 44.201,
-    "duration": 7.695
+    "start": 41.46,
+    "end": 49.923,
+    "duration": 8.463
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "严监生临终因两茎灯草不肯断气；",
-    "start": 44.977,
-    "end": 47.945,
-    "duration": 2.968
+    "start": 50.496,
+    "end": 54.897,
+    "duration": 4.4
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "范进中举前受尽胡屠户唾骂、发疯后则被奉为“文曲星”卑躬屈膝，滑稽中蕴受科举戕害之悲哀。",
-    "start": 48.714,
-    "end": 56.961,
-    "duration": 8.247
+    "start": 55.21,
+    "end": 63.985,
+    "duration": 8.775
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 首创以功名富贵为纲的“串珠式”结构",
-    "start": 57.674,
-    "end": 61.364,
-    "duration": 3.69
+    "start": 64.559,
+    "end": 68.425,
+    "duration": 3.866
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "鲁迅评“全书无主干，仅驱使各种人物，行列而来……虽云长篇，颇同短制”；",
-    "start": 62.156,
-    "end": 68.344,
-    "duration": 6.188
+    "start": 68.999,
+    "end": 76.094,
+    "duration": 7.095
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "以士人对功名富贵态度为内在主线，第一回王冕“楔子”敷陈大义，末回“幽榜”呼应，",
-    "start": 69.047,
-    "end": 75.596,
-    "duration": 6.549
-  },
-  {
-    "id": "sec1_step1_c1",
-    "dom_key": "sec1_step1_c1",
-    "text": "如丝穿珠串起两百余名人物。",
-    "start": 76.369,
-    "end": 78.854,
-    "duration": 2.485
+    "text": "以士人对功名富贵态度为内在主线，第一回王冕“楔子”敷陈大义，末回“幽榜”呼应，如丝穿珠串起两百余名人物。",
+    "start": 76.681,
+    "end": 86.967,
+    "duration": 10.285
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 批判锋芒与“真儒理想”标尺并存",
-    "start": 79.551,
-    "end": 83.201,
-    "duration": 3.65
+    "start": 87.554,
+    "end": 91.329,
+    "duration": 3.775
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
-    "text": "剖析周进、范进、匡超人精神堕落之余，",
-    "start": 83.929,
-    "end": 87.78,
-    "duration": 3.851
-  },
-  {
-    "id": "sec2_step0_c1",
-    "dom_key": "sec2_step0_c1",
-    "text": "特意安排王冕、杜少卿、庄绍光及市井四大奇人不慕荣利、自食其力；",
-    "start": 88.524,
-    "end": 94.808,
-    "duration": 6.283
+    "text": "剖析周进、范进、匡超人精神堕落之余，特意安排王冕、杜少卿、庄绍光及市井四大奇人不慕荣利、自食其力；",
+    "start": 91.916,
+    "end": 103.464,
+    "duration": 11.548
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "树立崇尚德行与独立人格的标尺，深刻影响晚清谴责小说发展。",
-    "start": 95.538,
-    "end": 100.744,
-    "duration": 5.206
+    "start": 104.038,
+    "end": 110.092,
+    "duration": 6.054
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：鲁迅《中国小说史略》评《儒林外史》“戚而能谐，婉而多讽”；",
-    "start": 101.622,
-    "end": 106.757,
-    "duration": 5.135
+    "start": 110.679,
+    "end": 116.381,
+    "duration": 5.702
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "概括结构为“虽云长篇，颇同短制”；",
-    "start": 107.551,
-    "end": 110.489,
-    "duration": 2.938
+    "start": 116.681,
+    "end": 119.675,
+    "duration": 2.994
   },
   {
     "id": "guard_c2",
     "dom_key": "guard_c2",
     "text": "第一回“楔子”是王冕，末回是“幽榜”。",
-    "start": 111.179,
-    "end": 113.786,
-    "duration": 2.607
+    "start": 119.885,
+    "end": 122.787,
+    "duration": 2.903
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 背诵鲁迅《中国小说史略》评价《儒林外史》讽刺与结构的两句名言？",
-    "start": 114.612,
-    "end": 121.189,
-    "duration": 6.577
+    "start": 123.361,
+    "end": 130.443,
+    "duration": 7.082
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合严监生两茎灯草与范进胡屠户，解释何为“白描矛盾、无一贬词”？",
-    "start": 121.974,
-    "end": 129.589,
-    "duration": 7.615
+    "start": 131.03,
+    "end": 138.855,
+    "duration": 7.825
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ “功名富贵”串珠结构与“真儒理想”正面人物怎样互为支撑？",
-    "start": 130.358,
-    "end": 136.529,
-    "duration": 6.171
+    "start": 139.442,
+    "end": 145.769,
+    "duration": 6.327
   }
 ]

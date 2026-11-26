@@ -1,234 +1,234 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "陶渊明·田园诗艺术特色与文化品格",
+    "start": 0.134,
+    "end": 3.57,
+    "duration": 3.437
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "写什么→怎么写→何等人→遗泽谁：先开创亲身躬耕的“田园题材”，",
-    "start": 0.221,
-    "end": 6.889,
-    "duration": 6.668
+    "start": 4.16,
+    "end": 10.578,
+    "duration": 6.418
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "为适配这种生活自然洗净雕饰写成“平淡自然”白描语言，",
-    "start": 7.669,
-    "end": 12.066,
-    "duration": 4.397
+    "start": 10.917,
+    "end": 15.708,
+    "duration": 4.791
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "背后支撑这一选择的是儒道兼融、不为五斗米折腰的人格风骨，",
-    "start": 12.835,
-    "end": 17.802,
-    "duration": 4.967
+    "start": 15.995,
+    "end": 21.12,
+    "duration": 5.125
   },
   {
     "id": "hook_c3",
     "dom_key": "hook_c3",
     "text": "最终成为王孟苏轼安身立命的精神家园。",
-    "start": 18.58,
-    "end": 21.915,
-    "duration": 3.335
+    "start": 21.317,
+    "end": 24.675,
+    "duration": 3.358
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "陶渊明是古典田园诗开创者，辞官归隐后突破玄言说理与雕琢风气，首将亲身农耕引入诗歌。",
-    "start": 22.684,
-    "end": 31.513,
-    "duration": 8.83
+    "start": 25.262,
+    "end": 34.272,
+    "duration": 9.009
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "苏轼《与苏辙书》赞其“质而实绮，癯而实腴”。",
-    "start": 32.234,
-    "end": 35.925,
-    "duration": 3.692
+    "start": 34.858,
+    "end": 38.62,
+    "duration": 3.762
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 开创田园题材、躬耕融于诗意",
-    "start": 36.618,
-    "end": 39.936,
-    "duration": 3.317
+    "start": 39.207,
+    "end": 42.631,
+    "duration": 3.423
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "非只赏景，而是以士大夫身份亲身躬耕，将耕作甘苦升华为精神选择；",
-    "start": 40.703,
-    "end": 46.891,
-    "duration": 6.187
+    "start": 43.218,
+    "end": 50.209,
+    "duration": 6.991
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "《归园田居·其一》绘“方宅十余亩，草屋八九间”村居；",
-    "start": 47.645,
-    "end": 51.846,
-    "duration": 4.2
+    "start": 50.796,
+    "end": 56.915,
+    "duration": 6.119
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "《其三》写“晨兴理荒秽，带月荷锄归”与“衣沾不足惜，但使愿无违”。",
-    "start": 52.563,
-    "end": 58.187,
-    "duration": 5.624
+    "start": 57.241,
+    "end": 63.1,
+    "duration": 5.858
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 追求“平淡自然”、淡中见警策",
-    "start": 58.879,
-    "end": 62.237,
-    "duration": 3.358
+    "start": 63.674,
+    "end": 67.136,
+    "duration": 3.463
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "摆脱玄言抽象说理与晋宋偶对雕饰，取家常口语白描，朴素中见绮丽；",
-    "start": 63.02,
-    "end": 69.098,
-    "duration": 6.078
+    "start": 67.723,
+    "end": 74.571,
+    "duration": 6.848
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
-    "text": "《饮酒·其五》“采菊东篱下，悠然见南山”物我两忘，",
-    "start": 69.833,
-    "end": 73.725,
-    "duration": 3.893
-  },
-  {
-    "id": "sec1_step1_c1",
-    "dom_key": "sec1_step1_c1",
-    "text": "“此中有真意，欲辨已忘言”化悟为言有尽意无穷之直觉。",
-    "start": 74.451,
-    "end": 79.279,
-    "duration": 4.827
+    "text": "《饮酒·其五》“采菊东篱下，悠然见南山”物我两忘，“此中有真意，欲辨已忘言”化悟为言有尽意无穷之直觉。",
+    "start": 75.132,
+    "end": 84.818,
+    "duration": 9.686
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 儒道兼融、树立固穷守节士格",
-    "start": 80.05,
-    "end": 83.592,
-    "duration": 3.542
+    "start": 85.392,
+    "end": 89.102,
+    "duration": 3.71
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "融儒家“安贫乐道、独善其身”与道家顺应自然旷达于一体，践行“不为五斗米折腰向乡里小儿”；",
-    "start": 84.34,
-    "end": 92.55,
-    "duration": 8.21
+    "start": 89.689,
+    "end": 98.529,
+    "duration": 8.84
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "《桃花源记》构想“不知有汉，无论魏晋”、自食其力的和平村落，寄托理想秩序向往。",
-    "start": 93.236,
-    "end": 99.734,
-    "duration": 6.498
+    "start": 99.103,
+    "end": 106.446,
+    "duration": 7.343
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 构筑唐宋士大夫精神家园",
-    "start": 100.553,
-    "end": 103.543,
-    "duration": 2.99
+    "start": 107.02,
+    "end": 110.235,
+    "duration": 3.215
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "经萧统推崇及宋代苏轼、朱熹发扬，地位日益崇高；",
-    "start": 104.339,
-    "end": 109.075,
-    "duration": 4.736
+    "start": 110.822,
+    "end": 116.381,
+    "duration": 5.559
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "盛唐王维、孟浩然与中唐韦应物、柳宗元推高山水田园诗；",
-    "start": 109.783,
-    "end": 114.931,
-    "duration": 5.148
+    "start": 116.968,
+    "end": 122.852,
+    "duration": 5.884
   },
   {
     "id": "sec3_step1_c1",
     "dom_key": "sec3_step1_c1",
     "text": "苏轼晚年作大量“和陶诗”，借其平淡旷达抚慰创伤，成为后世守节归宿。",
-    "start": 115.625,
-    "end": 121.732,
-    "duration": 6.107
+    "start": 123.153,
+    "end": 129.597,
+    "duration": 6.444
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "陶渊明以质朴白描与儒道兼融节操开辟诗意栖居新境，",
-    "start": 122.504,
-    "end": 127.281,
-    "duration": 4.777
+    "start": 130.171,
+    "end": 135.248,
+    "duration": 5.077
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "其“质而实绮，癯而实腴”艺术追求与守节典范启迪盛唐王孟并长久安顿后代士大夫心灵。",
-    "start": 128.029,
-    "end": 135.425,
-    "duration": 7.396
+    "start": 135.536,
+    "end": 143.451,
+    "duration": 7.916
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：苏轼在《与苏辙书》赞陶诗“质而实绮，癯而实腴”；",
-    "start": 136.288,
-    "end": 141.214,
-    "duration": 4.926
+    "start": 144.025,
+    "end": 149.089,
+    "duration": 5.064
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "注意区分陶渊明（偏重亲身躬耕与归隐田园）与谢灵运（山水游览模山范水）。",
-    "start": 141.946,
-    "end": 148.692,
-    "duration": 6.746
+    "start": 149.377,
+    "end": 156.303,
+    "duration": 6.926
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 苏轼《与苏辙书》评陶诗哪八个字？",
-    "start": 149.49,
-    "end": 153.685,
-    "duration": 4.195
+    "start": 156.877,
+    "end": 161.225,
+    "duration": 4.348
   },
   {
     "id": "drill0_c1",
     "dom_key": "drill0_c1",
     "text": "怎么印证在《归园田居》与《饮酒》中？",
-    "start": 154.386,
-    "end": 156.857,
-    "duration": 2.471
+    "start": 161.799,
+    "end": 164.584,
+    "duration": 2.785
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 陶渊明如何融汇儒家操守与道家顺应自然？",
-    "start": 157.601,
-    "end": 162.799,
-    "duration": 5.198
+    "start": 165.158,
+    "end": 170.469,
+    "duration": 5.312
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 列出萧统、唐代山水田园四家与苏轼对陶渊明的接受史？",
-    "start": 163.521,
-    "end": 170.129,
-    "duration": 6.608
+    "start": 171.056,
+    "end": 177.891,
+    "duration": 6.835
   }
 ]

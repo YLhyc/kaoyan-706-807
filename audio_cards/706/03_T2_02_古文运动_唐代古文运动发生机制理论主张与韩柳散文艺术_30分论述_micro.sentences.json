@@ -1,234 +1,218 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "古文运动·唐代古文运动发生机制理论主张与韩柳散文艺术",
+    "start": 0.134,
+    "end": 5.211,
+    "duration": 5.077
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "背景→理论→文体→双家实绩：先剖析为何中唐危局呼唤“假复古行革新”，",
-    "start": 0.225,
-    "end": 7.867,
-    "duration": 7.642
+    "start": 5.8,
+    "end": 13.208,
+    "duration": 7.408
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再系统梳理“文以明道/气盛言宜/不平则鸣”纲领，",
-    "start": 8.589,
-    "end": 12.653,
-    "duration": 4.064
+    "start": 13.508,
+    "end": 17.948,
+    "duration": 4.439
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "继而讲透散体如何在不排斥骈语精华下打破声病束缚，",
-    "start": 13.417,
-    "end": 18.004,
-    "duration": 4.586
+    "start": 18.062,
+    "end": 22.826,
+    "duration": 4.765
   },
   {
     "id": "hook_c3",
     "dom_key": "hook_c3",
     "text": "最后落到韩愈雄健与柳宗元峭拔、启蒙北宋革新。",
-    "start": 18.774,
-    "end": 22.973,
-    "duration": 4.199
+    "start": 23.153,
+    "end": 27.592,
+    "duration": 4.439
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "唐代古文运动是由韩愈、柳宗元领导的中唐散文革新运动，",
-    "start": 23.705,
-    "end": 28.604,
-    "duration": 4.899
+    "start": 28.179,
+    "end": 33.009,
+    "duration": 4.83
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
-    "text": "旨在恢复先秦两汉散文传统以破六朝骈俪浮靡，",
-    "start": 29.419,
-    "end": 33.68,
-    "duration": 4.262
-  },
-  {
-    "id": "intro_c2",
-    "dom_key": "intro_c2",
-    "text": "苏轼赞韩愈“文起八代之衰，道济天下之溺”。",
-    "start": 34.432,
-    "end": 37.878,
-    "duration": 3.446
+    "text": "旨在恢复先秦两汉散文传统以破六朝骈俪浮靡，苏轼赞韩愈“文起八代之衰，道济天下之溺”。",
+    "start": 33.309,
+    "end": 41.863,
+    "duration": 8.554
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 立足中唐危局与“假复古行革新”机制",
-    "start": 38.615,
-    "end": 42.547,
-    "duration": 3.932
+    "start": 42.424,
+    "end": 46.537,
+    "duration": 4.114
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "安史乱后藩镇割据、佛老削弱儒家伦理财税；声律对偶、浮靡的六朝骈体文难载严肃经世之道；",
-    "start": 43.265,
-    "end": 51.444,
-    "duration": 8.178
+    "start": 47.124,
+    "end": 56.381,
+    "duration": 9.257
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "韩柳效法先秦两汉散体，假复古之名行革新之实，以儒学复兴统摄文风变革。",
-    "start": 52.29,
-    "end": 59.266,
-    "duration": 6.975
+    "start": 56.942,
+    "end": 64.792,
+    "duration": 7.851
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 提出“文以明道”“气盛言宜”理论纲领",
-    "start": 59.991,
-    "end": 63.529,
-    "duration": 3.538
+    "start": 65.379,
+    "end": 69.141,
+    "duration": 3.762
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "韩倡导“文以明道”，柳主张“辅时及物”；方法上倡导“唯陈言之务去”、“师其意不师其辞”；",
-    "start": 64.336,
-    "end": 71.735,
-    "duration": 7.4
+    "start": 69.715,
+    "end": 78.555,
+    "duration": 8.84
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "提出“气盛则言之短长与声之高下者皆宜”，以“大凡物不得其平则鸣”揭示抒愤动因。",
-    "start": 72.508,
-    "end": 79.225,
-    "duration": 6.717
+    "start": 79.116,
+    "end": 87.54,
+    "duration": 8.423
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 革除骈靡、以单行散体拓表现空间",
-    "start": 80.013,
-    "end": 84.116,
-    "duration": 4.103
+    "start": 88.114,
+    "end": 92.344,
+    "duration": 4.231
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "打破排比对偶与声病音律长期束缚，倡导单行散体，句式长短错落、随情意自由舒卷；",
-    "start": 84.819,
-    "end": 92.58,
-    "duration": 7.761
+    "start": 92.931,
+    "end": 101.42,
+    "duration": 8.489
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
-    "text": "不盲排骈文，融合先秦两汉文言、六朝骈语精华与鲜活时语，",
-    "start": 93.399,
-    "end": 98.923,
-    "duration": 5.524
-  },
-  {
-    "id": "sec2_step1_c1",
-    "dom_key": "sec2_step1_c1",
-    "text": "力求“文从字顺”兼自铸新词，恢复叙史论辩描景之功。",
-    "start": 99.708,
-    "end": 104.318,
-    "duration": 4.611
+    "text": "不盲排骈文，融合先秦两汉文言、六朝骈语精华与鲜活时语，力求“文从字顺”兼自铸新词，恢复叙史论辩描景之功。",
+    "start": 102.007,
+    "end": 114.167,
+    "duration": 12.16
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 韩柳各擅胜场、奠定唐宋古文格局",
-    "start": 105.075,
-    "end": 109.094,
-    "duration": 4.019
+    "start": 114.728,
+    "end": 118.881,
+    "duration": 4.153
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "气势雄健、汪洋恣肆：《师说》批判耻师陋习，《马说》抒写人才埋没悲愤；",
-    "start": 109.811,
-    "end": 115.903,
-    "duration": 6.092
+    "start": 119.468,
+    "end": 126.706,
+    "duration": 7.239
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "峭拔清峻、笔锋犀利：《捕蛇者说》揭赋敛酷毒，《永州八记》融身世悲凉于自然清幽；",
-    "start": 116.684,
-    "end": 123.63,
-    "duration": 6.946
+    "start": 127.293,
+    "end": 135.378,
+    "duration": 8.085
   },
   {
     "id": "sec3_step1_c1",
     "dom_key": "sec3_step1_c1",
     "text": "二人同奠北宋欧苏诗文革新根基。",
-    "start": 124.383,
-    "end": 127.113,
-    "duration": 2.729
+    "start": 135.562,
+    "end": 139.18,
+    "duration": 3.619
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "唐代古文运动以复兴儒学与“文以明道”“气盛言宜”打破骈体束缚，",
-    "start": 127.841,
-    "end": 133.391,
-    "duration": 5.55
+    "start": 139.741,
+    "end": 145.652,
+    "duration": 5.91
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "韩愈雄奇与柳宗元清幽相得益彰，使散体回归正宗并先声启迪北宋欧苏诗文革新。",
-    "start": 134.194,
-    "end": 141.281,
-    "duration": 7.087
+    "start": 145.978,
+    "end": 153.542,
+    "duration": 7.564
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：苏轼赞韩愈“文起八代之衰，道济天下之溺”；",
-    "start": 142.09,
-    "end": 146.446,
-    "duration": 4.355
+    "start": 154.129,
+    "end": 158.829,
+    "duration": 4.7
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
-    "text": "韩愈核心主张“文以明道”“气盛言宜”“唯陈言之务去”“不平则鸣”，",
-    "start": 147.162,
-    "end": 152.548,
-    "duration": 5.386
-  },
-  {
-    "id": "guard_c2",
-    "dom_key": "guard_c2",
-    "text": "柳宗元核心主张“辅时及物”。",
-    "start": 153.367,
-    "end": 155.548,
-    "duration": 2.182
+    "text": "韩愈核心主张“文以明道”“气盛言宜”“唯陈言之务去”“不平则鸣”，柳宗元核心主张“辅时及物”。",
+    "start": 159.142,
+    "end": 167.722,
+    "duration": 8.58
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 概括中唐古文运动“以复古为革新”的社会与文体双重原因？",
-    "start": 156.315,
-    "end": 162.345,
-    "duration": 6.03
+    "start": 168.283,
+    "end": 174.558,
+    "duration": 6.275
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 完整背出韩柳散文四大理论核心及原句出处？",
-    "start": 163.073,
-    "end": 168.425,
-    "duration": 5.352
+    "start": 175.145,
+    "end": 180.613,
+    "duration": 5.468
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 结合《师说》《捕蛇者说》《永州八记》比较韩愈与柳宗元散文之别？",
-    "start": 169.157,
-    "end": 175.713,
-    "duration": 6.556
+    "start": 181.2,
+    "end": 188.035,
+    "duration": 6.835
   }
 ]

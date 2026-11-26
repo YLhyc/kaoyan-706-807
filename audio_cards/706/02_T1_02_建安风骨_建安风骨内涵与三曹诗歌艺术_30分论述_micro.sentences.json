@@ -1,266 +1,258 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "建安风骨·内涵与三曹诗歌艺术",
+    "start": 0.134,
+    "end": 3.141,
+    "duration": 3.007
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "先说清何谓“风”“骨”与曹丕“文气”理论，",
-    "start": 0.238,
-    "end": 4.097,
-    "duration": 3.858
+    "start": 3.73,
+    "end": 7.739,
+    "duration": 4.009
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再落到曹操、曹丕、曹植三父子各自艺术风貌与体裁突破，",
-    "start": 4.816,
-    "end": 10.449,
-    "duration": 5.634
+    "start": 8.092,
+    "end": 13.872,
+    "duration": 5.78
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "继而深挖乱世背后“惜年寿更欲不朽”的悲壮精神，",
-    "start": 11.197,
-    "end": 15.271,
-    "duration": 4.074
+    "start": 14.186,
+    "end": 18.104,
+    "duration": 3.918
   },
   {
     "id": "hook_c3",
     "dom_key": "hook_c3",
     "text": "最终指向陈子昂、李白高举“建安骨”革除浮靡的历史回响。",
-    "start": 16.038,
-    "end": 20.656,
-    "duration": 4.617
+    "start": 18.339,
+    "end": 23.464,
+    "duration": 5.125
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "汉末魏初乱世阵痛中迸发出的昂扬志气与深沉忧患，造就“建安风骨”。",
-    "start": 21.455,
-    "end": 27.426,
-    "duration": 5.971
+    "start": 24.051,
+    "end": 30.261,
+    "duration": 6.21
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "鲁迅称之为“文学的自觉时代”，刘勰《文心雕龙·时序》赞“志深而笔长，故梗概而多气也”。",
-    "start": 28.263,
-    "end": 35.295,
-    "duration": 7.032
+    "start": 30.848,
+    "end": 38.126,
+    "duration": 7.278
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · “风”“骨”交融与“文以气为主”",
-    "start": 36.03,
-    "end": 39.369,
-    "duration": 3.339
+    "start": 38.7,
+    "end": 41.524,
+    "duration": 2.825
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "“风”指充沛真挚的思想感情，“骨”指事理逻辑与刚健挺拔的文辞骨力。",
-    "start": 40.164,
-    "end": 45.59,
-    "duration": 5.426
+    "start": 42.111,
+    "end": 48.295,
+    "duration": 6.184
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
-    "text": "曹丕《典论·论文》提出“文以气为主，气之清浊有体，不可力强而致”，",
-    "start": 46.321,
-    "end": 52.022,
-    "duration": 5.702
+    "text": "曹丕《典论·论文》提出“文以气为主，气之清浊有体，不可力强而致”，摆脱汉儒经学附庸，",
+    "start": 48.882,
+    "end": 57.344,
+    "duration": 8.463
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
-    "text": "摆脱汉儒经学附庸，直抒胸臆而悲壮不消沉、刚健不浅薄。",
-    "start": 52.728,
-    "end": 58.311,
-    "duration": 5.583
+    "text": "直抒胸臆而悲壮不消沉、刚健不浅薄。",
+    "start": 57.502,
+    "end": 61.316,
+    "duration": 3.814
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · “三曹”并起与五言七言体裁推进",
-    "start": 59.041,
-    "end": 62.537,
-    "duration": 3.496
+    "start": 61.89,
+    "end": 65.548,
+    "duration": 3.658
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "“古直悲凉”，借乐府旧题写时事：《蒿里行》“白骨露于野，千里无鸡鸣”，",
-    "start": 63.32,
-    "end": 69.163,
-    "duration": 5.842
+    "start": 66.135,
+    "end": 72.709,
+    "duration": 6.575
   },
   {
     "id": "sec1_step0_c1",
     "dom_key": "sec1_step0_c1",
     "text": "《短歌行》“对酒当歌，人生几何”，气象雄浑；",
-    "start": 69.904,
-    "end": 73.521,
-    "duration": 3.617
+    "start": 72.853,
+    "end": 76.641,
+    "duration": 3.788
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "“便娟婉约”，《燕歌行》为现存最早完整文人七言诗，深婉流丽；",
-    "start": 74.258,
-    "end": 79.075,
-    "duration": 4.818
+    "start": 77.215,
+    "end": 83.477,
+    "duration": 6.262
   },
   {
     "id": "sec1_step2_c0",
     "dom_key": "sec1_step2_c0",
     "text": "“骨气奇高，词采华茂”，前期《白马篇》咏游侠报国，后期《赠白马王彪》抒猜忌悲愤，",
-    "start": 79.823,
-    "end": 87.111,
-    "duration": 7.289
+    "start": 84.038,
+    "end": 92.436,
+    "duration": 8.397
   },
   {
     "id": "sec1_step2_c1",
     "dom_key": "sec1_step2_c1",
     "text": "情辞并茂，代表建安最高成就。",
-    "start": 87.865,
-    "end": 90.485,
-    "duration": 2.62
+    "start": 92.606,
+    "end": 95.522,
+    "duration": 2.916
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 深沉忧生而奋发立功的济世品格",
-    "start": 91.207,
-    "end": 94.754,
-    "duration": 3.546
+    "start": 96.108,
+    "end": 99.779,
+    "duration": 3.671
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "清醒体认生命短促而不沉溺消极避世，选择建功立业、著书立说对抗流年。",
-    "start": 95.48,
-    "end": 102.48,
-    "duration": 7.0
+    "start": 100.366,
+    "end": 108.086,
+    "duration": 7.72
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "曹丕《典论·论文》论“年寿有时而尽……未若文章之无穷”；",
-    "start": 103.243,
-    "end": 107.568,
-    "duration": 4.325
+    "start": 108.674,
+    "end": 114.74,
+    "duration": 6.067
   },
   {
     "id": "sec2_step1_c1",
     "dom_key": "sec2_step1_c1",
     "text": "曹植誓言“捐躯赴国难，视死忽如归”，于悲凉中激荡崇高英雄气概。",
-    "start": 108.289,
-    "end": 114.634,
-    "duration": 6.345
+    "start": 115.002,
+    "end": 121.368,
+    "duration": 6.366
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 树立后代革新浮靡诗风的精神旗帜",
-    "start": 115.4,
-    "end": 119.009,
-    "duration": 3.609
+    "start": 121.955,
+    "end": 125.678,
+    "duration": 3.723
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
-    "text": "针对南朝齐梁浮艳声色，初唐陈子昂《修竹篇序》疾呼“汉魏风骨，晋宋莫传”；",
-    "start": 119.725,
-    "end": 126.546,
-    "duration": 6.82
-  },
-  {
-    "id": "sec3_step0_c1",
-    "dom_key": "sec3_step0_c1",
-    "text": "盛唐李白高唱“蓬莱文章建安骨”；",
-    "start": 127.309,
-    "end": 130.017,
-    "duration": 2.709
+    "text": "针对南朝齐梁浮艳声色，初唐陈子昂《修竹篇序》疾呼“汉魏风骨，晋宋莫传”；盛唐李白高唱“蓬莱文章建安骨”；",
+    "start": 126.265,
+    "end": 137.982,
+    "duration": 11.718
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "真情实感与刚健气韵成为古典诗歌薪火相传的宝贵财富。",
-    "start": 130.808,
-    "end": 135.634,
-    "duration": 4.826
+    "start": 138.569,
+    "end": 143.959,
+    "duration": 5.39
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "建安风骨在乱世中统一了生命觉醒与济世抱负；",
-    "start": 136.382,
-    "end": 140.611,
-    "duration": 4.229
+    "start": 144.533,
+    "end": 148.829,
+    "duration": 4.296
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
-    "text": "“三曹”推动五言古诗与文人乐府自觉独立，",
-    "start": 141.359,
-    "end": 144.885,
-    "duration": 3.526
-  },
-  {
-    "id": "concl_c2",
-    "dom_key": "concl_c2",
-    "text": "其重真情、尚风力传统成为陈子昂、李白革除浮靡诗风的精神典范。",
-    "start": 145.619,
-    "end": 151.654,
-    "duration": 6.036
+    "text": "“三曹”推动五言古诗与文人乐府自觉独立，其重真情、尚风力传统成为陈子昂、李白革除浮靡诗风的精神典范。",
+    "start": 149.181,
+    "end": 159.662,
+    "duration": 10.481
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：鲁迅称建安为“文学的自觉时代”；",
-    "start": 152.485,
-    "end": 155.871,
-    "duration": 3.386
+    "start": 160.249,
+    "end": 163.894,
+    "duration": 3.645
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "刘勰《文心雕龙》赞“志深而笔长，故梗概而多气也”；",
-    "start": 156.631,
-    "end": 160.556,
-    "duration": 3.925
+    "start": 164.103,
+    "end": 168.594,
+    "duration": 4.491
   },
   {
     "id": "guard_c2",
     "dom_key": "guard_c2",
     "text": "曹丕《燕歌行》为现存最早完整文人七言诗。",
-    "start": 161.313,
-    "end": 164.755,
-    "duration": 3.442
+    "start": 168.856,
+    "end": 172.527,
+    "duration": 3.671
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 鲁迅与刘勰如何界定建安文学的历史地位？",
-    "start": 165.477,
-    "end": 170.358,
-    "duration": 4.881
+    "start": 173.114,
+    "end": 178.139,
+    "duration": 5.025
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② “三曹”各自风格评语、突破体裁与代表作各是什么？",
-    "start": 171.092,
-    "end": 176.951,
-    "duration": 5.858
+    "start": 178.713,
+    "end": 184.74,
+    "duration": 6.028
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 曹丕“文章不朽”与陈子昂《修竹篇序》有何呼应？",
-    "start": 177.68,
-    "end": 182.883,
-    "duration": 5.203
+    "start": 185.314,
+    "end": 190.509,
+    "duration": 5.194
   }
 ]

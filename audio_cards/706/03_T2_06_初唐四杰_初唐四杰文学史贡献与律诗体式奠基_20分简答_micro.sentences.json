@@ -1,162 +1,154 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "初唐四杰·文学史贡献与律诗体式奠基",
+    "start": 0.134,
+    "end": 3.701,
+    "duration": 3.567
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "紧扣“破浮艳→立律法→转视角”三步短平快推演：先批上官体扩题材为塞漠歌行，",
-    "start": 0.237,
-    "end": 7.976,
-    "duration": 7.739
+    "start": 4.29,
+    "end": 12.205,
+    "duration": 7.916
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "再由王杨把五言律诗音律黏对定型，",
-    "start": 8.776,
-    "end": 11.798,
-    "duration": 3.022
-  },
-  {
-    "id": "hook_c2",
-    "dom_key": "hook_c2",
-    "text": "最后按闻一多定评收束到寒士走出宫廷台阁的时代意义。",
-    "start": 12.521,
-    "end": 17.128,
-    "duration": 4.607
+    "text": "再由王杨把五言律诗音律黏对定型，最后按闻一多定评收束到寒士走出宫廷台阁的时代意义。",
+    "start": 12.519,
+    "end": 20.131,
+    "duration": 7.612
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "初唐四杰（王勃、杨炯、卢照邻、骆宾王）是唐高宗至武后时期革新先驱，",
-    "start": 17.865,
-    "end": 24.892,
-    "duration": 7.027
+    "start": 20.718,
+    "end": 27.722,
+    "duration": 7.004
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "标志唐诗摆脱六朝绮靡、走向盛唐气象的关键转折。",
-    "start": 25.615,
-    "end": 30.337,
-    "duration": 4.722
+    "start": 28.01,
+    "end": 32.644,
+    "duration": 4.634
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 扫除齐梁宫体、重振刚健骨气",
-    "start": 31.045,
-    "end": 34.652,
-    "duration": 3.607
+    "start": 33.231,
+    "end": 36.941,
+    "duration": 3.71
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "反上官体“争构纤微、骨气都尽”，倡刚健骨气；扩题材至市井、边塞、羁旅；",
-    "start": 35.436,
-    "end": 42.342,
-    "duration": 6.905
+    "start": 37.528,
+    "end": 45.795,
+    "duration": 8.267
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "杨炯《从军行》“宁为百夫长，胜作一书生”；",
-    "start": 43.072,
-    "end": 46.456,
-    "duration": 3.385
+    "start": 46.369,
+    "end": 51.133,
+    "duration": 4.765
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "卢照邻《长安古意》、骆宾王《帝京篇》铺写帝京兴衰，注入壮大悲慨。",
-    "start": 47.213,
-    "end": 52.526,
-    "duration": 5.313
+    "start": 51.291,
+    "end": 57.11,
+    "duration": 5.819
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 推动五言律诗定型、丰富排律篇制",
-    "start": 53.284,
-    "end": 56.819,
-    "duration": 3.535
+    "start": 57.697,
+    "end": 61.329,
+    "duration": 3.632
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "杨炯五律已合近体黏式律，摆脱永明体失黏繁琐；兼写五言长律丰富篇制；",
-    "start": 57.55,
-    "end": 63.982,
-    "duration": 6.432
+    "start": 61.916,
+    "end": 69.415,
+    "duration": 7.499
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "王勃《送杜少府之任蜀州》声律谐畅对仗工稳，“海内存知己，天涯若比邻”洗净悲酸儿女态。",
-    "start": 64.735,
-    "end": 72.068,
-    "duration": 7.333
+    "start": 69.989,
+    "end": 78.764,
+    "duration": 8.775
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 从宫廷台阁走向江山塞漠寒士抒怀",
-    "start": 72.786,
-    "end": 76.915,
-    "duration": 4.129
+    "start": 79.351,
+    "end": 83.66,
+    "duration": 4.309
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "才高位卑却怀抱建功自负，打破依附权贵应制旧习，直抒寒士不平与抱负；",
-    "start": 77.686,
-    "end": 84.481,
-    "duration": 6.795
+    "start": 84.246,
+    "end": 92.084,
+    "duration": 7.838
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "如闻一多《唐诗杂论》所论“从宫廷台阁走向江山与塞漠”，与陈子昂、沈宋同为盛唐铺路。",
-    "start": 85.34,
-    "end": 93.141,
-    "duration": 7.8
+    "start": 92.671,
+    "end": 101.068,
+    "duration": 8.397
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
-    "text": "防混：初唐四杰指王勃、杨炯、卢照邻、骆宾王；",
-    "start": 93.956,
-    "end": 98.801,
-    "duration": 4.845
-  },
-  {
-    "id": "guard_c1",
-    "dom_key": "guard_c1",
-    "text": "闻一多《唐诗杂论》赞四杰使诗境“从宫廷台阁走向江山与塞漠”。",
-    "start": 99.572,
-    "end": 104.803,
-    "duration": 5.231
+    "text": "防混：初唐四杰指王勃、杨炯、卢照邻、骆宾王；闻一多《唐诗杂论》赞四杰使诗境“从宫廷台阁走向江山与塞漠”。",
+    "start": 101.655,
+    "end": 112.735,
+    "duration": 11.08
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 写出初唐四杰全名、各自代表名篇及《送杜少府》声律价值？",
-    "start": 105.597,
-    "end": 112.175,
-    "duration": 6.578
+    "start": 113.322,
+    "end": 120.092,
+    "duration": 6.77
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 四杰是怎样摆脱永明体束缚确立五言律诗定型的？",
-    "start": 112.932,
-    "end": 118.483,
-    "duration": 5.551
+    "start": 120.679,
+    "end": 126.381,
+    "duration": 5.702
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 解释闻一多《唐诗杂论》“从宫廷台阁走向江山与塞漠”的深层含义？",
-    "start": 119.241,
-    "end": 126.352,
-    "duration": 7.111
+    "start": 126.955,
+    "end": 134.037,
+    "duration": 7.082
   }
 ]

@@ -1,242 +1,210 @@
 [
   {
+    "id": "title_c0",
+    "dom_key": "title_c0",
+    "text": "王维·山水田园诗艺术成就与禅意空灵美学",
+    "start": 0.134,
+    "end": 4.013,
+    "duration": 3.879
+  },
+  {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "感官画境→心法禅境→体式音律→宗派传承：先看他如何凭画家之眼在声光动静中写活“诗中有画”，",
-    "start": 0.23,
-    "end": 10.057,
-    "duration": 9.827
+    "start": 4.602,
+    "end": 14.575,
+    "duration": 9.973
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
-    "text": "再揭开佛法静观如何将山水跃入“无我”禅境，",
-    "start": 10.839,
-    "end": 14.779,
-    "duration": 3.94
+    "text": "再揭开佛法静观如何将山水跃入“无我”禅境，继而辨明其非唯独孤寂亦工边塞雄浑与五言圆转，",
+    "start": 14.889,
+    "end": 23.855,
+    "duration": 8.966
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
-    "text": "继而辨明其非唯独孤寂亦工边塞雄浑与五言圆转，",
-    "start": 15.527,
-    "end": 20.081,
-    "duration": 4.554
-  },
-  {
-    "id": "hook_c3",
-    "dom_key": "hook_c3",
     "text": "最后上承张九龄谢灵运、下启王士祯“神韵说”。",
-    "start": 20.873,
-    "end": 24.785,
-    "duration": 3.912
+    "start": 24.129,
+    "end": 28.425,
+    "duration": 4.296
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "王维是盛唐山水田园诗派最著大家，晚隐辋川将画理、音律与大乘禅理融入山水观照，",
-    "start": 25.603,
-    "end": 33.59,
-    "duration": 7.987
+    "start": 28.999,
+    "end": 37.318,
+    "duration": 8.319
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "创造静逸明秀、兴象玲珑之纯美诗境。",
-    "start": 34.387,
-    "end": 37.5,
-    "duration": 3.113
+    "start": 37.515,
+    "end": 40.834,
+    "duration": 3.319
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 融画法音律写景、“诗中有画”空间感",
-    "start": 38.229,
-    "end": 41.815,
-    "duration": 3.586
+    "start": 41.408,
+    "end": 45.222,
+    "duration": 3.814
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "苏轼评“诗中有画，画中有诗”，敏锐捕捉动态光影色彩与空间层次；",
-    "start": 42.561,
-    "end": 48.196,
-    "duration": 5.635
+    "start": 45.796,
+    "end": 52.097,
+    "duration": 6.301
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "《山居秋暝》“明月松间照，清泉石上流”静画动音相衬；",
-    "start": 48.928,
-    "end": 53.383,
-    "duration": 4.455
+    "start": 52.684,
+    "end": 58.568,
+    "duration": 5.884
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "《过香积寺》“日色冷青松”与《山中》“空翠湿人衣”妙用条件色生“冷”“湿”之感。",
-    "start": 54.198,
-    "end": 59.953,
-    "duration": 5.755
+    "start": 58.791,
+    "end": 64.766,
+    "duration": 5.976
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 禅宗空观观照、呈现“无我”禅境",
-    "start": 60.755,
-    "end": 64.228,
-    "duration": 3.473
+    "start": 65.34,
+    "end": 68.985,
+    "duration": 3.645
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "以澄心体会“无生”，令山水诗由六朝玄言理路跃入直观审美观照；",
-    "start": 65.01,
-    "end": 70.644,
-    "duration": 5.633
+    "start": 69.546,
+    "end": 76.003,
+    "duration": 6.457
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "《终南别业》“行到水穷处，坐看云起时”无心冥合；",
-    "start": 71.422,
-    "end": 75.27,
-    "duration": 3.849
+    "start": 76.59,
+    "end": 81.902,
+    "duration": 5.311
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "《鹿柴》人语夕照、《辛夷坞》“纷纷开且落”借微响生机反衬永恒空静。",
-    "start": 76.05,
-    "end": 81.498,
-    "duration": 5.447
+    "start": 82.189,
+    "end": 87.774,
+    "duration": 5.585
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 兼善古近诸体、从壮大到冲淡神韵",
-    "start": 82.24,
-    "end": 86.224,
-    "duration": 3.984
+    "start": 88.361,
+    "end": 92.527,
+    "duration": 4.166
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
-    "text": "五律五绝尤绝：早年出塞《使至塞上》“大漠孤烟直，长河落日圆”线条雄浑；",
-    "start": 87.002,
-    "end": 92.811,
-    "duration": 5.808
-  },
-  {
-    "id": "sec2_step0_c1",
-    "dom_key": "sec2_step0_c1",
-    "text": "晚年《辋川集》与五律不尚险怪；",
-    "start": 93.604,
-    "end": 96.085,
-    "duration": 2.481
+    "text": "五律五绝尤绝：早年出塞《使至塞上》“大漠孤烟直，长河落日圆”线条雄浑；晚年《辋川集》与五律不尚险怪；",
+    "start": 93.101,
+    "end": 103.594,
+    "duration": 10.494
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "用“竹喧”“莲动”“青苔”清浅意象配圆转音律，免大历佳句局促之弊，成冲淡神韵。",
-    "start": 96.863,
-    "end": 104.033,
-    "duration": 7.17
+    "start": 104.168,
+    "end": 112.644,
+    "duration": 8.476
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 汇通清澹源流、垂范后世意境审美",
-    "start": 104.776,
-    "end": 108.696,
-    "duration": 3.92
+    "start": 113.231,
+    "end": 117.331,
+    "duration": 4.101
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
-    "text": "承二谢写景及张九龄“清澹”之源，胡应麟《诗薮》评“本曲江之清澹，而益以风神”，",
-    "start": 109.477,
-    "end": 116.129,
-    "duration": 6.651
-  },
-  {
-    "id": "sec3_step0_c1",
-    "dom_key": "sec3_step0_c1",
-    "text": "与孟浩然共立山水田园宗主；",
-    "start": 116.942,
-    "end": 119.087,
-    "duration": 2.145
+    "text": "承二谢写景及张九龄“清澹”之源，胡应麟《诗薮》评“本曲江之清澹，而益以风神”，与孟浩然共立山水田园宗主；",
+    "start": 117.918,
+    "end": 128.074,
+    "duration": 10.155
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "滋养大历诗人、韦柳、宋代山水画论及清代王士祯“神韵说”。",
-    "start": 119.885,
-    "end": 125.046,
-    "duration": 5.16
+    "start": 128.648,
+    "end": 134.714,
+    "duration": 6.067
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
-    "text": "王维融画理构图、音律与禅宗空观营造“诗中有画，画中有诗”及物我冥合空灵境，",
-    "start": 125.822,
-    "end": 132.685,
-    "duration": 6.864
+    "text": "王维融画理构图、音律与禅宗空观营造“诗中有画，画中有诗”及物我冥合空灵境，汇通清澹源流，",
+    "start": 135.288,
+    "end": 143.829,
+    "duration": 8.541
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
-    "text": "汇通清澹源流，从大历诗人、韦柳直至清代王士祯“神韵说”留长久回响。",
-    "start": 133.501,
-    "end": 139.876,
-    "duration": 6.375
+    "text": "从大历诗人、韦柳直至清代王士祯“神韵说”留长久回响。",
+    "start": 143.973,
+    "end": 149.623,
+    "duration": 5.65
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
-    "text": "防混：苏轼评王维“诗中有画，画中有诗”；",
-    "start": 140.741,
-    "end": 144.415,
-    "duration": 3.674
-  },
-  {
-    "id": "guard_c1",
-    "dom_key": "guard_c1",
-    "text": "胡应麟评“本曲江之清澹，而益以风神”；",
-    "start": 145.197,
-    "end": 148.324,
-    "duration": 3.128
-  },
-  {
-    "id": "guard_c2",
-    "dom_key": "guard_c2",
-    "text": "清代王士祯“神韵说”即远宗王维。",
-    "start": 149.125,
-    "end": 151.823,
-    "duration": 2.698
+    "text": "防混：苏轼评王维“诗中有画，画中有诗”；胡应麟评“本曲江之清澹，而益以风神”；清代王士祯“神韵说”即远宗王维。",
+    "start": 150.197,
+    "end": 160.847,
+    "duration": 10.65
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 结合苏轼评语与三首诗句，分析王维捕捉光线声音的“画意”技巧？",
-    "start": 152.554,
-    "end": 159.436,
-    "duration": 6.882
+    "start": 161.434,
+    "end": 168.542,
+    "duration": 7.108
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合《终南别业》《鹿柴》《辛夷坞》讲透什么是“无我”禅境？",
-    "start": 160.234,
-    "end": 165.971,
-    "duration": 5.737
+    "start": 169.129,
+    "end": 175.118,
+    "duration": 5.989
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 梳理“二谢、张九龄→王孟→韦柳、大历、王士祯神韵说”的诗歌意境传承链？",
-    "start": 166.692,
-    "end": 175.4,
-    "duration": 8.708
+    "start": 175.692,
+    "end": 184.844,
+    "duration": 9.153
   }
 ]
