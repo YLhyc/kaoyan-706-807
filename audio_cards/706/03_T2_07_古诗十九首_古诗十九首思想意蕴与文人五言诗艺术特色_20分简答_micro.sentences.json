@@ -12,151 +12,151 @@
     "dom_key": "hook_c0",
     "text": "情感→意境→语言三阶一体：先写汉末乱世下士人生命短促焦虑与游子思妇情怨，",
     "start": 4.719,
-    "end": 12.739,
-    "duration": 8.02
+    "end": 12.882,
+    "duration": 8.163
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再借《诗经》比兴造“物我浑化”含蓄境与叠字舒缓韵律，",
-    "start": 13.014,
-    "end": 17.544,
-    "duration": 4.53
+    "start": 13.17,
+    "end": 17.726,
+    "duration": 4.556
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "最终沉淀为洗净汉赋僻词的“深衷浅貌”五言典范。",
-    "start": 17.671,
-    "end": 21.98,
+    "start": 17.853,
+    "end": 22.162,
     "duration": 4.309
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "《古诗十九首》最早见录南朝萧统《文选》，产于东汉末动荡之际。",
-    "start": 22.567,
-    "end": 27.67,
+    "start": 22.749,
+    "end": 27.852,
     "duration": 5.103
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "刘勰《文心雕龙》称“五言之冠冕”，钟嵘《诗品》赞“惊心动魄，可谓几乎一字千金”。",
-    "start": 28.257,
-    "end": 34.87,
+    "start": 28.439,
+    "end": 35.053,
     "duration": 6.614
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 生命短促焦虑与游子思妇悲怨",
-    "start": 35.457,
-    "end": 38.985,
+    "start": 35.64,
+    "end": 39.167,
     "duration": 3.528
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "仕途壅塞与乱世无常中感叹时光易逝，《生年不满百》“昼短苦夜长，何不秉烛游”写及时行乐背后深切苦闷；",
-    "start": 39.559,
-    "end": 50.183,
+    "start": 39.741,
+    "end": 50.365,
     "duration": 10.624
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "《涉江采芙蓉》道尽关山阻隔与漂泊之痛，标志东汉后期文人对个体生命情感的觉醒。",
-    "start": 50.77,
-    "end": 59.206,
+    "start": 50.952,
+    "end": 59.389,
     "duration": 8.436
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 文人化比兴造境与叠字回环格调",
-    "start": 59.78,
-    "end": 63.503,
+    "start": 59.963,
+    "end": 63.686,
     "duration": 3.723
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "发展《诗经》比兴，借风物造情景交融：《迢迢牵牛星》“盈盈一水间，脉脉不得语”借神话白描隔望苦，无一字直说离愁而自见；",
-    "start": 64.077,
-    "end": 75.717,
+    "start": 64.26,
+    "end": 75.899,
     "duration": 11.64
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "善用“行行重行行”“青青河畔草”等叠字，回环舒缓、哀而不伤。",
-    "start": 76.291,
-    "end": 82.735,
+    "start": 76.473,
+    "end": 82.917,
     "duration": 6.444
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 语言浅近精醇、形成深衷浅貌风范",
-    "start": 83.322,
-    "end": 87.449,
-    "duration": 4.127
+    "start": 83.504,
+    "end": 87.696,
+    "duration": 4.192
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "摆脱汉赋奇字僻词铺张习气，如家常絮语般平淡却浓缩厚重人生体悟；",
-    "start": 88.035,
-    "end": 95.794,
+    "start": 88.282,
+    "end": 96.042,
     "duration": 7.759
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "构成“浅浅寄言，深深道款”的深衷浅貌风格，推熟五言诗抒情力，成建安魏晋效法典范。",
-    "start": 96.382,
-    "end": 105.313,
+    "start": 96.629,
+    "end": 105.561,
     "duration": 8.931
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：最早见录于南朝萧统《文选》；刘勰称“五言之冠冕”，钟嵘赞“惊心动魄，可谓几乎一字千金”。",
-    "start": 105.9,
-    "end": 114.87,
+    "start": 106.148,
+    "end": 115.118,
     "duration": 8.97
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 最早见录何书？刘勰、钟嵘分别用哪两句话评价《古诗十九首》？",
-    "start": 115.457,
-    "end": 122.917,
+    "start": 115.705,
+    "end": 123.165,
     "duration": 7.46
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合《生年不满百》《涉江采芙蓉》《迢迢牵牛星》说明主题与比兴？",
-    "start": 123.504,
-    "end": 130.404,
+    "start": 123.752,
+    "end": 130.652,
     "duration": 6.9
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 什么是“哀而不伤”与“深衷浅貌”？",
-    "start": 130.978,
-    "end": 134.831,
+    "start": 131.226,
+    "end": 135.079,
     "duration": 3.853
   },
   {
     "id": "drill2_c1",
     "dom_key": "drill2_c1",
     "text": "它对建安五言诗有何意义？",
-    "start": 135.405,
-    "end": 137.657,
+    "start": 135.653,
+    "end": 137.904,
     "duration": 2.252
   }
 ]

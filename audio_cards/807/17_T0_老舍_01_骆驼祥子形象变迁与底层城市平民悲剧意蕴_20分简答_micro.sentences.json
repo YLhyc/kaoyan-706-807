@@ -12,175 +12,175 @@
     "dom_key": "hook_c0",
     "text": "严格对应“身份→命运→性格→成因”四环紧扣：刚进城带乡土健壮却也带小农自私（因），",
     "start": 5.592,
-    "end": 13.885,
-    "duration": 8.293
+    "end": 14.002,
+    "duration": 8.41
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "随后经买车“三起三落”掠夺击垮生路（轨），小福子之死压断脊梁使之沦为市井流氓（果），",
-    "start": 14.186,
-    "end": 21.815,
-    "duration": 7.629
+    "start": 14.29,
+    "end": 21.893,
+    "duration": 7.603
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "最后定性“个人主义的末路鬼”（理）。",
-    "start": 21.916,
-    "end": 24.324,
+    "start": 21.994,
+    "end": 24.402,
     "duration": 2.408
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "老舍《骆驼祥子》通过车夫祥子由“人”堕落为“鬼”的轨迹，宣告底层劳动者依靠孤立个人奋斗改变命运的幻灭。",
-    "start": 24.898,
-    "end": 33.907,
+    "start": 24.976,
+    "end": 33.985,
     "duration": 9.009
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 身份属性：乡土美德兼小农意识的新移民",
-    "start": 34.494,
-    "end": 38.985,
+    "start": 34.572,
+    "end": 39.063,
     "duration": 4.491
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "出身破产农村，初入北平健壮、勤劳要强，寄望买辆属于自己的洋车；",
-    "start": 39.559,
-    "end": 46.446,
+    "start": 39.637,
+    "end": 46.524,
     "duration": 6.887
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "保留狭隘自私个体哲学，信奉只靠自己力气吃饭，不信任同伴亦隔绝群体。",
-    "start": 47.033,
-    "end": 54.571,
+    "start": 47.111,
+    "end": 54.649,
     "duration": 7.538
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 人生轨迹：历经“三起三落”的物质掠夺",
-    "start": 55.158,
-    "end": 59.011,
+    "start": 55.236,
+    "end": 59.089,
     "duration": 3.853
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "①苦熬三年买新车被乱兵抢走（一落）；②卖骆驼攒钱被孙侦探敲诈一空（二落）；",
-    "start": 59.598,
-    "end": 69.285,
+    "start": 59.676,
+    "end": 69.363,
     "duration": 9.686
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "③被迫娶虎妞买车，因虎妞难产死只得卖车办丧（三落），诚实谋生出路被彻底堵死。",
-    "start": 69.858,
-    "end": 79.115,
+    "start": 69.937,
+    "end": 79.193,
     "duration": 9.257
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 性格流变：从自尊要强蜕变为麻木游民",
-    "start": 79.702,
-    "end": 84.324,
+    "start": 79.78,
+    "end": 84.402,
     "duration": 4.621
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "三落之后小福子在暗娼馆自缢切断最后精神寄托；",
-    "start": 84.911,
-    "end": 90.196,
+    "start": 84.989,
+    "end": 90.274,
     "duration": 5.285
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "他从讲体面纯朴青年堕为吃喝嫖赌、偷奸耍滑、出卖同伴阮明换赏钱的市井流氓，显健全人性被剥蚀过程。",
-    "start": 90.783,
-    "end": 101.433,
+    "start": 90.861,
+    "end": 101.511,
     "duration": 10.65
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 悲剧成因：社会压迫、都市腐蚀与奋斗局限",
-    "start": 102.007,
-    "end": 106.68,
-    "duration": 4.673
+    "start": 102.085,
+    "end": 106.628,
+    "duration": 4.543
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "既是乱兵、孙侦探与刘四爷外部盘剥产物，亦源于畸形都市对道德的腐蚀；",
-    "start": 107.267,
-    "end": 114.766,
+    "start": 107.215,
+    "end": 114.714,
     "duration": 7.499
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "老舍结尾定性“个人主义的末路鬼”，揭示脱离集体抗争终归失败。",
-    "start": 115.353,
-    "end": 122.006,
+    "start": 115.301,
+    "end": 121.954,
     "duration": 6.653
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "祥子的悲剧是淳朴劳动者在旧社会压迫下走向精神毁灭的写照，蕴含老舍对底层平民命运的悲悯与对旧制度控诉。",
-    "start": 122.593,
-    "end": 132.67,
+    "start": 122.541,
+    "end": 132.618,
     "duration": 10.077
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：牢记三起三落准确对应：①攒三年买车被乱兵抢走（一落） ②卖骆驼攒钱被孙侦探敲诈（二落） ③虎妞难产卖车办丧（三落）；",
-    "start": 133.243,
-    "end": 147.07,
+    "start": 133.191,
+    "end": 147.018,
     "duration": 13.827
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "结尾老舍定性“个人主义的末路鬼”。",
-    "start": 147.345,
-    "end": 149.974,
+    "start": 147.293,
+    "end": 149.922,
     "duration": 2.629
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 从“身份、轨迹（三起三落）、性格（由人变鬼）、成因”四维完整剖析祥子？",
-    "start": 150.549,
-    "end": 158.647,
+    "start": 150.496,
+    "end": 158.594,
     "duration": 8.098
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 精准复述一落、二落、三落与小福子/阮明事件，避免张冠李戴？",
-    "start": 159.233,
-    "end": 166.772,
+    "start": 159.181,
+    "end": 166.719,
     "duration": 7.538
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 联系现代农民进城主题，说明祥子悲剧何以超越普通贫民苦难控诉？",
-    "start": 167.358,
-    "end": 174.766,
+    "start": 167.306,
+    "end": 174.714,
     "duration": 7.408
   }
 ]

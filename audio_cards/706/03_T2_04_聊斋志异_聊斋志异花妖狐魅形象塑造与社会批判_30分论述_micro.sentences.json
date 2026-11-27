@@ -12,24 +12,24 @@
     "dom_key": "hook_c0",
     "text": "写妖反衬人→讽科举抒孤愤→鞭贪虐伸正义→志怪传奇合璧：",
     "start": 4.446,
-    "end": 10.656,
-    "duration": 6.21
+    "end": 10.643,
+    "duration": 6.197
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "先看蒲松龄如何把吃人妖怪改造成婴宁黄英般真纯理想化身，",
-    "start": 10.748,
-    "end": 16.424,
-    "duration": 5.676
+    "start": 10.722,
+    "end": 16.255,
+    "duration": 5.533
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "转头把积愤投向八股试官与阳间冥府黑暗，最后用鲁迅“用传奇法，而以志怪”概括其文言巅峰技。",
-    "start": 16.525,
-    "end": 25.287,
-    "duration": 8.762
+    "start": 16.62,
+    "end": 25.274,
+    "duration": 8.654
   },
   {
     "id": "intro_c0",
@@ -68,143 +68,143 @@
     "dom_key": "sec0_step1_c0",
     "text": "《婴宁》天真憨直笑对虚伪礼法；",
     "start": 51.616,
-    "end": 55.86,
-    "duration": 4.244
+    "end": 55.456,
+    "duration": 3.84
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "《黄英》种菊致富破士大夫清高迂腐；",
-    "start": 56.148,
-    "end": 59.389,
-    "duration": 3.241
+    "start": 55.718,
+    "end": 58.933,
+    "duration": 3.215
   },
   {
     "id": "sec0_step1_c2",
     "dom_key": "sec0_step1_c2",
     "text": "《阿绣》感于痴情成人之美，以异类反衬人间势利。",
-    "start": 59.65,
-    "end": 64.232,
-    "duration": 4.582
+    "start": 59.194,
+    "end": 63.712,
+    "duration": 4.517
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 辛辣讽刺八股科举弊端、抒士人苦闷",
-    "start": 64.819,
-    "end": 68.842,
-    "duration": 4.022
+    "start": 64.299,
+    "end": 68.36,
+    "duration": 4.061
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "《司文郎》盲僧鼻嗅辨文，怒斥考官“仆虽盲于目，而不盲于鼻，今帘中人并鼻盲矣”；",
-    "start": 69.416,
-    "end": 77.605,
+    "start": 68.934,
+    "end": 77.123,
     "duration": 8.189
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "《王子安》摹落魄秀才醉中连捷幻觉，讽逐名利丑态亦寓怀才不遇自伤。",
-    "start": 78.166,
-    "end": 85.73,
+    "start": 77.684,
+    "end": 85.248,
     "duration": 7.564
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 无情鞭挞贪官恶霸、替民伸张正义",
-    "start": 86.317,
-    "end": 90.313,
-    "duration": 3.996
+    "start": 85.835,
+    "end": 89.818,
+    "duration": 3.983
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "《促织》借微虫致百姓倾家，末冷讽“一人飞升，仙及鸡犬”直刺帝王官僚；",
-    "start": 90.9,
-    "end": 98.256,
+    "start": 90.405,
+    "end": 97.761,
     "duration": 7.356
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "《席方平》写城隍、郡司、冥王各级衙门贪赃酷虐尤胜阳间，锋芒犀利。",
-    "start": 98.843,
-    "end": 106.459,
+    "start": 98.348,
+    "end": 105.964,
     "duration": 7.616
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 兼融志怪传奇之长、创诗意简练叙事",
-    "start": 107.046,
-    "end": 111.316,
-    "duration": 4.27
+    "start": 106.551,
+    "end": 110.808,
+    "duration": 4.257
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "跳出六朝粗陈梗概，融先秦两汉典雅文言与山东方言俗语，文约事丰、因人庄谐；",
-    "start": 111.903,
-    "end": 120.248,
+    "start": 111.395,
+    "end": 119.74,
     "duration": 8.345
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "善写环境动作心理，引入诗词意象与“偶见鹘突，知复非人”含蓄笔法，令幻境幽婚富有诗意回味。",
-    "start": 120.809,
-    "end": 130.274,
+    "start": 120.301,
+    "end": 129.766,
     "duration": 9.465
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "蒲松龄在《聊斋志异》中以理想异类反衬世态炎凉，尖锐刺击科举与贪政，",
-    "start": 130.848,
-    "end": 137.032,
+    "start": 130.34,
+    "end": 136.524,
     "duration": 6.184
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "“用传奇法，而以志怪”融简练文言与诗意于一体，成文言短篇集大成之作。",
-    "start": 137.163,
-    "end": 144.18,
+    "start": 136.655,
+    "end": 143.673,
     "duration": 7.017
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：鲁迅《中国小说史略》评“用传奇法，而以志怪”；郭沫若赞“写鬼写妖高人一等，刺贪刺虐入骨三分”。",
-    "start": 144.754,
-    "end": 154.779,
+    "start": 144.246,
+    "end": 154.272,
     "duration": 10.025
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 鲁迅与郭沫若对《聊斋》分别有何经典评语？",
-    "start": 155.366,
-    "end": 160.587,
+    "start": 154.858,
+    "end": 160.079,
     "duration": 5.22
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 从《婴宁》《黄英》《司文郎》《促织》《席方平》各提炼核心讽喻点？",
-    "start": 161.174,
-    "end": 168.647,
+    "start": 160.666,
+    "end": 168.139,
     "duration": 7.473
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 解释什么是“用传奇法，而以志怪”及“偶见鹘突，知复非人”笔法？",
-    "start": 169.22,
-    "end": 176.029,
+    "start": 168.713,
+    "end": 175.522,
     "duration": 6.809
   }
 ]

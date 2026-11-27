@@ -142,6 +142,7 @@
   // 严密循环闭环与寻音防重入锁引擎 (Anti-Reentry & Drift-Prevention Engine)
   let isLoopSeeking = false;
   let loopSeekTimer = null;
+  let loopSeekTargetTime = null;
   let lastSeekTs = 0;
   let manualSeekEpoch = 0;
   let isLoopGapWaiting = false;
@@ -214,7 +215,7 @@
     if (!raw) return '';
     if (/^(blob:|data:)/i.test(raw)) return raw;
     if (/[?&]v=/.test(raw)) return raw;
-    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.11';
+    const ver = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : '3.5.12';
     return raw + (raw.includes('?') ? '&' : '?') + 'v=' + encodeURIComponent(ver);
   }
 
@@ -274,7 +275,7 @@
   function scheduleNextTrackPrefetch() {
     try {
       if (typeof navigator !== 'undefined' && navigator.onLine === false) return;
-      if (state.playMode === 'item' || state.playMode === 'sentence' || state.playMode === 'range') return;
+      if (state.playMode !== 'sequence') return;
       const nextRaw = getNextTrackAudioUrl();
       const nextUrl = withAudioVersion(nextRaw);
       if (!nextUrl || nextUrl === prefetchedAudioUrl) return;
@@ -439,12 +440,43 @@
       .map(item => item.node);
   }
 
+  function clearLoopSeekLock() {
+    isLoopSeeking = false;
+    loopSeekTargetTime = null;
+    if (loopSeekTimer) {
+      clearTimeout(loopSeekTimer);
+      loopSeekTimer = null;
+    }
+  }
+
+  function isLoopSeekInFlight(cur) {
+    if (!isLoopSeeking) return false;
+    const age = Date.now() - lastSeekTs;
+    if (age >= 850) {
+      clearLoopSeekLock();
+      return false;
+    }
+    if (
+      !audio.seeking &&
+      audio.readyState >= 2 &&
+      loopSeekTargetTime !== null &&
+      typeof cur === 'number' &&
+      Math.abs(cur - loopSeekTargetTime) <= 0.38 &&
+      age >= 35
+    ) {
+      clearLoopSeekLock();
+      return false;
+    }
+    return true;
+  }
+
   function triggerLoopSeek(targetTime, targetSentIdx = null) {
     const now = Date.now();
     if (isLoopSeeking && (now - lastSeekTs < 150)) {
       return;
     }
     isLoopSeeking = true;
+    loopSeekTargetTime = targetTime;
     lastSeekTs = now;
     try {
       setAudioPosition(targetTime);
@@ -458,7 +490,9 @@
     if (loopSeekTimer) clearTimeout(loopSeekTimer);
     loopSeekTimer = setTimeout(() => {
       isLoopSeeking = false;
-    }, 150);
+      loopSeekTargetTime = null;
+      loopSeekTimer = null;
+    }, 850);
   }
 
   const audio = new Audio();
@@ -828,30 +862,23 @@
     }
 
     const gapMs = (useGap && !document.hidden) ? (Number(state.loopGapMs) || 0) : 0;
-    const keepMobileStreamAlive = isMobileOrStandalonePWA();
     if (gapMs > 0 && shouldResume && hasAudioSource()) {
       const myEpoch = ++loopGapEpoch;
       isLoopGapWaiting = true;
       state.isPlaying = true;
-      if (keepMobileStreamAlive) {
-        // 移动端与独立 PWA（iOS / iPadOS / Android）：保持主 <audio> 连续播放并加内部静音锁，绝不调用 audio.pause() 释放系统媒体会话
-        setInternalMuteLock('loopGap', gapMs + 450);
+      // 第一性原理：前台停顿气口期间先暂停再寻音至 targetTime（包括 iOS 禁静音环境），
+      // 彻底杜绝边播边等待导致放完前两个字后二次回跳复读！若中途锁屏，visibilitychange 会立刻无感续播
+      if (!isIOSLikeEnv()) {
         engageLoopMuteGuard(Math.max(180, Math.min(300, gapMs)));
-        triggerLoopSeek(targetTime, targetSentIdx);
-        if (audio.paused) {
-          playAudioWithStateSync('Loop gap keep-playing', true);
-        }
-      } else {
-        // 桌面端：先暂停再静音落位，避免边解码边 seek 引起切回首音口吃
-        engageLoopMuteGuard(Math.max(180, Math.min(300, gapMs)));
-        try {
-          if (!audio.paused) audio.pause();
-        } catch (e) {}
-        startLoopGapKeepalive();
-        triggerLoopSeek(targetTime, targetSentIdx);
       }
+      try {
+        if (!audio.paused) audio.pause();
+      } catch (e) {}
+      startLoopGapKeepalive();
+      triggerLoopSeek(targetTime, targetSentIdx);
       updatePlayBtnUI();
       updateHUDDisplay(targetTime);
+      updateMediaSessionState(true);
       loopGapTimer = setTimeout(() => {
         if (myEpoch !== loopGapEpoch) return;
         isLoopGapWaiting = false;
@@ -862,7 +889,7 @@
           releaseLoopMuteGuard();
           return;
         }
-        const needReseek = Math.abs((audio.currentTime || 0) - targetTime) > 0.05;
+        const needReseek = Math.abs((audio.currentTime || 0) - targetTime) > 0.08;
         const startPlayCleanly = () => {
           if (myEpoch !== loopGapEpoch || !state.isPlaying || !hasAudioSource()) {
             releaseInternalMuteLock('loopGap');
@@ -877,7 +904,7 @@
           }
         };
         if (needReseek || audio.seeking) {
-          if (!document.hidden) engageLoopMuteGuard(220);
+          if (!document.hidden && !isIOSLikeEnv()) engageLoopMuteGuard(220);
           releaseInternalMuteLock('loopGap');
           if (needReseek) {
             try { setAudioPosition(targetTime); } catch (e) {}
@@ -891,7 +918,7 @@
               clearTimeout(fbTimer);
               startPlayCleanly();
             };
-            const fbTimer = setTimeout(onSettled, 120);
+            const fbTimer = setTimeout(onSettled, 140);
             audio.addEventListener('seeked', onSettled, { once: true });
           } else {
             startPlayCleanly();
@@ -1119,7 +1146,7 @@
         ...modeConfig,
         label: `句×${reps}`,
         name: `单句 / 考点精听（${reps}遍推进）`,
-        toast: `已开启【单句/考点 ×${reps}遍推进】· 每条连读 ${reps} 遍后自动切换下一条`,
+        toast: `已开启【单句/考点 ×${reps}遍推进】· 本篇循环连读 ${reps} 遍/句，不跨篇跳转`,
         iconSvg: '<polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path><circle cx="9.2" cy="12" r="1.25" fill="currentColor" stroke="none"></circle><circle cx="12" cy="12" r="1.25" fill="currentColor" stroke="none"></circle><circle cx="14.8" cy="12" r="1.25" fill="currentColor" stroke="none"></circle>'
       };
     }
@@ -1130,7 +1157,7 @@
           ...modeConfig,
           label: `段×${secReps}`,
           name: `单段精听（${secReps}遍推进）`,
-          toast: `已开启【单段 ×${secReps}遍推进】· 每段连读 ${secReps} 遍后自动切换下一段`,
+          toast: `已开启【单段 ×${secReps}遍推进】· 本篇循环连读 ${secReps} 遍/段，不跨篇跳转`,
           iconSvg: '<polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path><rect x="8.5" y="9.5" width="7" height="5" rx="1.2"></rect>'
         };
       }
@@ -1631,7 +1658,7 @@
         isCurrent: state.playMode === 'section',
         name: '单段循环 / 多遍推进',
         badge: secReps >= 2 ? `${secReps}遍推进` : '∞ 无限循环',
-        desc: '按板块/分论点背诵：选 2~10 遍读完自动推向下一段，或选 ∞ 在当前段内无限循环',
+        desc: '本篇内按板块背诵：选 2~10 遍逐段推进并在篇末从头续播，或选 ∞ 锁定单段无限循环',
         iconSvg: secMode.iconSvg,
         pills: [
           { val: 0, label: '∞ 无限', active: state.playMode === 'section' && secReps === 0 },
@@ -1653,7 +1680,7 @@
         isCurrent: state.playMode === 'loop3' || state.playMode === 'sentence',
         name: '单句循环 / 考点精听',
         badge: state.playMode === 'sentence' ? '∞ 无限单句' : `${sentReps}遍推进`,
-        desc: '徐涛考点 / 正文单句：选 2~10 遍逐条推进，或选 ∞ 无限单句循环',
+        desc: '本篇内逐句精听：选 2~10 遍逐句推进并在篇末从头续播，或选 ∞ 无限单句循环',
         iconSvg: loop3Mode.iconSvg,
         pills: [
           ...REPEAT_COUNT_OPTIONS.map(n => ({ val: n, label: `${n}遍`, active: state.playMode === 'loop3' && sentReps === n })),
@@ -6989,10 +7016,7 @@
         const rReps = Number(state.rangeRepeatCount) || 0;
         const targetRangeReps = rReps >= 2 ? rReps : Infinity;
 
-        if (isLoopSeeking && (Date.now() - lastSeekTs >= 350)) {
-          isLoopSeeking = false;
-        }
-        if (!isEnded && isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+        if (!isEnded && isLoopSeekInFlight(cur)) {
           updateHUDDisplay(cur);
           return 'handled';
         }
@@ -7018,7 +7042,7 @@
             return 'handled';
           }
         } else {
-          if (cur < rStart - 0.15 && !isLoopSeeking && shouldResume) {
+          if (cur < rStart - 0.15 && !isLoopSeekInFlight(cur) && shouldResume) {
             performLoopTransition(rStart, { targetSentIdx: startIdx, shouldResume: true, useGap: false });
             return 'handled';
           }
@@ -7039,10 +7063,7 @@
           state.currentSentIndex = initialIdx !== -1 ? initialIdx : 0;
           state.loopCount = 0;
         }
-        if (isLoopSeeking && (Date.now() - lastSeekTs >= 350)) {
-          isLoopSeeking = false;
-        }
-        if (!isEnded && isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+        if (!isEnded && isLoopSeekInFlight(cur)) {
           updateHUDDisplay(cur);
           return 'handled';
         }
@@ -7082,10 +7103,17 @@
               return 'handled';
             } else {
               accumulateListeningTime(true);
-              cancelLoopGapWait();
-              // 后台/锁屏自动连播切篇：绝不先 pause() 释放 iOS 媒体会话
-              playNextItem();
-              return 'finished';
+              const wrapIdx = t2BoundsSent ? t2BoundsSent.startIdx : 0;
+              const wrapSent = state.activeSentences[wrapIdx];
+              const wrapTime = wrapSent
+                ? (typeof wrapSent.start === 'number' ? wrapSent.start : parseFloat(wrapSent.start || 0))
+                : 0;
+              performLoopTransition(wrapTime, {
+                targetSentIdx: wrapIdx,
+                shouldResume,
+                useGap: true
+              });
+              return 'handled';
             }
           }
         } else {
@@ -7108,10 +7136,7 @@
         }
         const t2Bounds = !track2ManualExtraSpan ? rawT2Bounds : null;
         if (t2Bounds) {
-          if (isLoopSeeking && (Date.now() - lastSeekTs >= 350)) {
-            isLoopSeeking = false;
-          }
-          if (!isEnded && isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+          if (!isEnded && isLoopSeekInFlight(cur)) {
             return null;
           }
           if (isEnded || cur >= t2Bounds.cutoff || cur > t2Bounds.endTime) {
@@ -7139,10 +7164,7 @@
         const curSec = currentFrameworkSections[currentActiveSectionIndex];
         const nextSec = (currentActiveSectionIndex + 1 < currentFrameworkSections.length) ? currentFrameworkSections[currentActiveSectionIndex + 1] : null;
         if (curSec && typeof curSec.start === 'number' && typeof curSec.end === 'number' && curSec.end > curSec.start) {
-          if (isLoopSeeking && (Date.now() - lastSeekTs >= 350)) {
-            isLoopSeeking = false;
-          }
-          if (!isEnded && isLoopSeeking && (Date.now() - lastSeekTs < 150)) {
+          if (!isEnded && isLoopSeekInFlight(cur)) {
             updateHUDDisplay(cur);
             return 'handled';
           }
@@ -7155,20 +7177,12 @@
             if (state.loopCount + 1 < targetSecReps) {
               state.loopCount++;
               const targetIdx = getFirstSentIndexInSection(curSec, nextSecStart);
-              if (!(Number(state.loopGapMs) > 0 && shouldResume && !document.hidden)) {
-                if (!document.hidden) engageLoopMuteGuard(110);
-                else releaseAllInternalMuteLocks();
-                triggerLoopSeek(curSec.start, targetIdx);
-                updateHUDDisplay(curSec.start);
-                if (shouldResume && audio.paused) playAudioWithStateSync('Section loop transition', true);
-              } else {
-                performLoopTransition(curSec.start, {
-                  targetSentIdx: targetIdx,
-                  targetSecIdx: currentActiveSectionIndex,
-                  shouldResume,
-                  useGap: true
-                });
-              }
+              performLoopTransition(curSec.start, {
+                targetSentIdx: targetIdx,
+                targetSecIdx: currentActiveSectionIndex,
+                shouldResume,
+                useGap: true
+              });
               return 'handled';
             } else {
               state.loopCount = 0;
@@ -7185,10 +7199,16 @@
                 return 'handled';
               } else {
                 accumulateListeningTime(true);
-                cancelLoopGapWait();
-                // 后台/锁屏自动连播切篇：绝不先 pause() 释放 iOS 媒体会话
-                playNextItem();
-                return 'finished';
+                const firstSec = currentFrameworkSections[0];
+                const afterFirstSec = currentFrameworkSections.length > 1 ? currentFrameworkSections[1] : null;
+                const afterFirstStart = afterFirstSec && typeof afterFirstSec.start === 'number' ? afterFirstSec.start : Infinity;
+                performLoopTransition(firstSec.start, {
+                  targetSentIdx: getFirstSentIndexInSection(firstSec, afterFirstStart),
+                  targetSecIdx: 0,
+                  shouldResume,
+                  useGap: true
+                });
+                return 'handled';
               }
             }
           } else {
@@ -7395,12 +7415,8 @@
         }
         return;
       }
-      if (isLoopSeeking && Date.now() - lastSeekTs >= 60) {
-        isLoopSeeking = false;
-        if (loopSeekTimer) {
-          clearTimeout(loopSeekTimer);
-          loopSeekTimer = null;
-        }
+      if (isLoopSeeking && !audio.seeking && (loopSeekTargetTime === null || Math.abs((audio.currentTime || 0) - loopSeekTargetTime) <= 0.45)) {
+        clearLoopSeekLock();
       }
     });
 
@@ -7410,8 +7426,7 @@
           try { setAudioPosition(pendingSeekTarget.time); } catch (e) {}
         } else if (Math.abs(audio.currentTime - pendingSeekTarget.time) <= 0.45 && audio.readyState >= 2) {
           clearPendingSeek(true);
-          isLoopSeeking = false;
-          if (loopSeekTimer) { clearTimeout(loopSeekTimer); loopSeekTimer = null; }
+          clearLoopSeekLock();
         }
       }
     });
@@ -7448,8 +7463,8 @@
         return;
       }
 
-      if (isLoopSeeking && (Date.now() - lastSeekTs >= 350)) {
-        isLoopSeeking = false;
+      if (isLoopSeeking) {
+        isLoopSeekInFlight(cur);
       }
 
       if (state.activeSentences && state.activeSentences.length > 0) {
@@ -7504,6 +7519,12 @@
         return;
       }
       cancelLoopGapWait();
+      if (state.playMode !== 'sequence') {
+        // 非顺序播放模式（单句/单段/整题等）播至文末时留在当前篇目从头续播，绝不擅自跳下一篇
+        const t2B = !track2ManualExtraSpan ? getTrack2BodyBounds() : null;
+        performLoopTransition(t2B ? t2B.startTime : 0, { targetSentIdx: t2B ? t2B.startIdx : (state.activeSentences?.length ? 0 : null), shouldResume: true, useGap: false });
+        return;
+      }
       // 保持 state.isPlaying 以支持后台自动连播下一篇，若已是最后一篇由 playNextItem 负责收尾停播
       playNextItem();
     });
@@ -9113,7 +9134,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.5.11';
+  const APP_BUILD_ID = '3.5.12';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {

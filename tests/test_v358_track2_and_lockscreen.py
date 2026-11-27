@@ -355,6 +355,7 @@ def main():
               // Simulate reaching body end (concl end) in item mode -> wraps back to intro_c0.start (NOT 0, NOT into guard)
               mockTime = dufuLastBody.end + 0.02;
               a.dispatchEvent(new Event('timeupdate'));
+              a.dispatchEvent(new Event('seeked'));
               await new Promise(r => setTimeout(r, 80));
               const wrappedAtBodyEndTime = mockTime;
 
@@ -362,13 +363,82 @@ def main():
               window.state.playMode = 'sequence';
               mockPaused = false;
               window.state.isPlaying = true;
-              await new Promise(r => setTimeout(r, 170)); // wait past 150ms isLoopSeeking lock
               mockTime = dufuLastBody.end + 0.02;
               a.dispatchEvent(new Event('timeupdate'));
               await new Promise(r => setTimeout(r, 100));
               const seqNextItemId = window.state.activeItemId;
               const seqNextIntro = window.state.activeSentences.find(s => String(s.id) === 'intro_c0');
               const seqNextStartTime = mockTime;
+
+              // Test F (v3.5.12 Loop Stutter / Double-Read & End-of-Essay Mode Wrap):
+              // Re-select 杜甫 on Track 2 with iPhone PWA environment & loopGapMs=500
+              window.switchSubject('706');
+              await new Promise(r => setTimeout(r, 60));
+              window.selectItem('706_01_T0_01_杜甫_沉郁顿挫艺术风格与诗史性质_30分论述', false);
+              await new Promise(r => setTimeout(r, 80));
+              document.getElementById('tab-track-2').click();
+              await new Promise(r => setTimeout(r, 100));
+              const dufuId = window.state.activeItemId;
+              const sentsF = window.state.activeSentences;
+              const firstBodyIdxF = sentsF.findIndex(s => String(s.id) === 'intro_c0');
+              const lastBodyIdxF = sentsF.reduce((acc, s, idx) => (/^(intro|sec\\d+_|concl)_/.test(String(s.id)) ? idx : acc), -1);
+              const lastBodySent = sentsF[lastBodyIdxF];
+
+              // Count currentTime sets and verify during 500ms gap wait audio stays PAUSED & seeks ONCE cleanly
+              let seekSetLog = [];
+              const origCtDesc = Object.getOwnPropertyDescriptor(a, 'currentTime');
+              Object.defineProperty(a, 'currentTime', {
+                configurable: true,
+                get: () => mockTime,
+                set: (v) => {
+                  seekSetLog.push({ v: Number(v) || 0, paused: mockPaused, t: Date.now() });
+                  mockTime = Number(v) || 0;
+                }
+              });
+
+              // F1: loop3 (2 reps) at last body sentence -> wraps back to intro_c0 on SAME essay (never jumps to next item!)
+              window.state.playMode = 'loop3';
+              window.state.sentenceRepeatCount = 2;
+              window.state.loopGapMs = 500;
+              window.state.currentSentIndex = lastBodyIdxF;
+              window.state.loopCount = 1; // already on 2nd pass
+              mockPaused = false;
+              window.state.isPlaying = true;
+              mockTime = lastBodySent.end + 0.02;
+              seekSetLog = [];
+              a.dispatchEvent(new Event('timeupdate'));
+              await new Promise(r => setTimeout(r, 100));
+              const pausedDuringLoopGap = a.paused;
+              const seekCountMidGap = seekSetLog.length;
+              await new Promise(r => setTimeout(r, 520));
+              const seekCountAfterGap = seekSetLog.length;
+              const loop3WrappedSameItem = (window.state.activeItemId === dufuId);
+              const loop3WrappedToFirstBodySent = (window.state.currentSentIndex === firstBodyIdxF) && !a.paused;
+
+              // F2: section (2 reps) at last section -> wraps back to section 0 on SAME essay (never jumps to next item!)
+              window.state.playMode = 'section';
+              window.state.sectionRepeatCount = 2;
+              window.state.loopGapMs = 500;
+              window.state.loopCount = 1; // already on 2nd pass of last section
+              // Place time at end of last section (conclusion)
+              const secCards = document.querySelectorAll('.relay-track2-wrap .logic-block-card');
+              const lastCardSentEl = secCards[secCards.length - 1].querySelector('.recite-sent[data-sent-idx]');
+              const lastCardLastSent = sentsF[lastBodyIdxF];
+              // Simulate playback at last section end
+              mockPaused = false;
+              window.state.isPlaying = true;
+              window.seekToSentence(lastBodyIdxF, lastBodySent.start);
+              a.dispatchEvent(new Event('seeked'));
+              await new Promise(r => setTimeout(r, 120));
+              window.state.loopCount = 1;
+              mockTime = lastBodySent.end + 0.02;
+              seekSetLog = [];
+              a.dispatchEvent(new Event('timeupdate'));
+              await new Promise(r => setTimeout(r, 100));
+              const secPausedDuringGap = a.paused;
+              await new Promise(r => setTimeout(r, 520));
+              const secSeekCountAfterGap = seekSetLog.length;
+              const secWrappedSameItem = (window.state.activeItemId === dufuId) && !a.paused && (Math.abs(mockTime - sentsF[firstBodyIdxF].start) < 0.25);
 
               // Test E (v3.5.10 Lockscreen/AirPods Pause-Resume-Unlock):
               // E1: Simulate mediaSession remote handlers directly via monkeypatch spy captured on navigator.mediaSession
@@ -456,6 +526,14 @@ def main():
                 pausedAfterUnlock,
                 statePlayingAfterUnlock,
                 nativePauseStayedPausedOnUnlock,
+                pausedDuringLoopGap,
+                seekCountMidGap,
+                seekCountAfterGap,
+                loop3WrappedSameItem,
+                loop3WrappedToFirstBodySent,
+                secPausedDuringGap,
+                secSeekCountAfterGap,
+                secWrappedSameItem,
               };
             }""")
             check(
@@ -504,6 +582,18 @@ def main():
                 and bg_res["statePlayingAfterUnlock"] is False
                 and bg_res["nativePauseStayedPausedOnUnlock"] is True,
                 "Lockscreen/AirPods pause resumes cleanly while locked and NEVER auto-plays on unlock",
+                json.dumps(bg_res),
+            )
+            check(
+                bg_res["pausedDuringLoopGap"] is True
+                and bg_res["seekCountMidGap"] == 1
+                and bg_res["seekCountAfterGap"] == 1
+                and bg_res["loop3WrappedSameItem"] is True
+                and bg_res["loop3WrappedToFirstBodySent"] is True
+                and bg_res["secPausedDuringGap"] is True
+                and bg_res["secSeekCountAfterGap"] == 1
+                and bg_res["secWrappedSameItem"] is True,
+                "v3.5.12 loopGap pauses cleanly without 2-char double-seek stutter & loop3/section wrap within same essay",
                 json.dumps(bg_res),
             )
 
