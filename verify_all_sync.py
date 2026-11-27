@@ -76,10 +76,27 @@ for sub_title, manifest_name in subject_checks:
                 total_duplicate_ids += len(duplicates)
                 print(f"  Duplicate JSON sentence IDs in {item['id']} {t_key}: {duplicates}")
 
+            # 706/807 Track 2 renders dynamically from track2.micro_slots (v3.5.7+), not legacy static HTML
+            if t_key == "track2" and isinstance(t_obj.get("micro_slots"), list) and t_obj["micro_slots"]:
+                slot_cids = [
+                    str(c.get("sent_id"))
+                    for sl in t_obj["micro_slots"]
+                    for c in (sl.get("clauses") or [])
+                    if c.get("sent_id") is not None
+                ]
+                sub_spans += len(slot_cids)
+                missing_slots = set(sent_map) - set(slot_cids)
+                if missing_slots:
+                    sub_missing += len(missing_slots)
+                    print(f"  Missing micro_slots sent_ids in {item['id']} track2: {sorted(missing_slots)}")
+                slot_dups = {sid: cnt for sid, cnt in Counter(slot_cids).items() if cnt > 1}
+                if slot_dups:
+                    total_duplicate_ids += len(slot_dups)
+                    print(f"  Duplicate micro_slots sent_ids in {item['id']} track2: {slot_dups}")
+                continue
+
             soup = BeautifulSoup(t_obj.get("html", ""), "html.parser")
             spans = soup.find_all(attrs={"data-sent-id": True})
-            # Track 2 may repeat Track 1 quotes via t1-linked-sent. Those are
-            # optional references, not substitutes for its primary audio sentences.
             primary = [sp for sp in spans if not (t_key == "track2" and "t1-linked-sent" in sp.get("class", []))]
             primary_ids = [sp.get("data-sent-id") for sp in primary]
             missing_dom = set(sent_map) - set(primary_ids)

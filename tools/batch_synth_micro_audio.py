@@ -420,27 +420,8 @@ def apply_to_manifests(scripts_by_id: dict):
     MANIFEST_706.write_text(json.dumps(m706, ensure_ascii=False, indent=2), encoding="utf-8")
     MANIFEST_807.write_text(json.dumps(m807, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    if MANIFEST_ALL.exists():
-        all_m = json.loads(MANIFEST_ALL.read_text(encoding="utf-8"))
-        all_m["items_706"] = m706
-        all_m["items_807"] = m807
-        MANIFEST_ALL.write_text(json.dumps(all_m, ensure_ascii=False, indent=2), encoding="utf-8")
-
-        all_sents = {}
-        for subj_key in ("items_807", "items_706", "items_en"):
-            for it in all_m.get(subj_key, []):
-                for tk in ("track1", "track2"):
-                    sf = (it.get(tk) or {}).get("sentences_file", "").replace("\\", "/")
-                    if sf and (ROOT / sf).exists():
-                        all_sents[sf] = json.loads((ROOT / sf).read_text(encoding="utf-8"))
-        js_bundle = ROOT / "data" / "kaoyan_data.js"
-        js_bundle.write_text(
-            "// 2027 考研专业课双轨随身背诵手卷 · 离线全量数据与高保真研读包\n"
-            "// 彻底免疫浏览器 file:/// 下的 CORS 限制，双击即可秒开\n"
-            f"window.KAOYAN_MANIFEST = {json.dumps(all_m, ensure_ascii=False)};\n\n"
-            f"window.KAOYAN_SENTENCES = {json.dumps(all_sents, ensure_ascii=False)};\n",
-            encoding="utf-8",
-        )
+    from build_kaoyan_bundle import sync_all_manifests_and_bundle
+    sync_all_manifests_and_bundle(sync_t1_html=False)
     print(f"Manifests updated: {updated}/82 items linked to *_micro.mp3 & *_micro.sentences.json")
 
 

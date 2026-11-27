@@ -195,7 +195,12 @@ def main():
             for width, height in [(390, 844), (834, 1194), (1194, 834), (1440, 900)]:
                 page.set_viewport_size({"width": width, "height": height})
                 page.evaluate("document.getElementById('playerDock').classList.remove('dock-collapsed', 'dock-receded'); document.body.classList.add('dock-expanded')")
-                page.wait_for_timeout(400)
+                page.wait_for_function("""(vw) => {
+                    const dock = document.getElementById('playerDock');
+                    if (!dock) return false;
+                    const r = dock.getBoundingClientRect();
+                    return r.left >= -1 && r.right <= vw + 1 && !dock.getAnimations().some(a => a.playState === 'running');
+                }""", arg=width, timeout=2000)
                 page.evaluate("""() => {
                     document.getElementById('listenCoverageText').textContent = '本轨听读 2 遍 · 本轮覆盖 35%';
                     document.getElementById('listenPracticeText').textContent = '本次区间已完成 6 遍';

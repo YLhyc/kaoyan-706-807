@@ -617,28 +617,10 @@ def needs_track1_fix(rows: list[dict]) -> bool:
     return False
 
 
-def sync_t1_html_timestamps(html_str: str, sent_rows: list[dict]) -> str:
-    if not html_str or not sent_rows:
-        return html_str
-    by_id = {str(r["id"]): r for r in sent_rows}
-    by_idx = {str(i): r for i, r in enumerate(sent_rows)}
-
-    def _repl(m):
-        tag_txt = m.group(0)
-        m_idx = re.search(r'data-sent-idx="(\d+)"', tag_txt)
-        m_id = re.search(r'data-sent-id="([^"]+)"', tag_txt)
-        row = None
-        if m_idx and m_idx.group(1) in by_idx:
-            row = by_idx[m_idx.group(1)]
-        elif m_id and m_id.group(1) in by_id:
-            row = by_id[m_id.group(1)]
-        if not row:
-            return tag_txt
-        tag_txt = re.sub(r'data-start="[^"]*"', f'data-start="{row["start"]:.3f}"', tag_txt)
-        tag_txt = re.sub(r'data-end="[^"]*"', f'data-end="{row["end"]:.3f}"', tag_txt)
-        return tag_txt
-
-    return re.sub(r'<[^>]*(?:data-sent-idx|data-sent-id)[^>]*>', _repl, html_str)
+from build_kaoyan_bundle import (  # noqa: E402
+    MANIFEST_706, MANIFEST_807, ROOT as BUNDLE_ROOT,
+    sync_all_manifests_and_bundle, sync_t1_html_timestamps,
+)
 
 
 def resynth_one_t1(item: dict) -> tuple[bool, str]:
@@ -664,40 +646,6 @@ def resynth_one_t1(item: dict) -> tuple[bool, str]:
                 return False, f"FAIL: {exc}"
             time.sleep(2 * attempt)
     return False, "FAIL"
-
-
-def sync_all_manifests_and_bundle():
-    m706 = json.loads(MANIFEST_706.read_text(encoding="utf-8"))
-    m807 = json.loads(MANIFEST_807.read_text(encoding="utf-8"))
-    for items in (m706, m807):
-        for it in items:
-            sfile = (it.get("track1") or {}).get("sentences_file", "")
-            if sfile and (ROOT / sfile).exists():
-                rows = json.loads((ROOT / sfile).read_text(encoding="utf-8"))
-                it["track1"]["html"] = sync_t1_html_timestamps(it["track1"].get("html", ""), rows)
-    MANIFEST_706.write_text(json.dumps(m706, ensure_ascii=False, indent=2), encoding="utf-8")
-    MANIFEST_807.write_text(json.dumps(m807, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    all_m = json.loads(MANIFEST_ALL.read_text(encoding="utf-8"))
-    all_m["items_706"] = m706
-    all_m["items_807"] = m807
-    MANIFEST_ALL.write_text(json.dumps(all_m, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    all_sents = {}
-    for subj_key in ("items_807", "items_706", "items_en"):
-        for it in all_m.get(subj_key, []):
-            for tk in ("track1", "track2"):
-                sf = (it.get(tk) or {}).get("sentences_file", "").replace("\\", "/")
-                if sf and (ROOT / sf).exists():
-                    all_sents[sf] = json.loads((ROOT / sf).read_text(encoding="utf-8"))
-    (ROOT / "data" / "kaoyan_data.js").write_text(
-        "// 2027 考研专业课双轨随身背诵手卷 · 离线全量数据与高保真研读包\n"
-        "// 彻底免疫浏览器 file:/// 下的 CORS 限制，双击即可秒开\n"
-        f"window.KAOYAN_MANIFEST = {json.dumps(all_m, ensure_ascii=False)};\n\n"
-        f"window.KAOYAN_SENTENCES = {json.dumps(all_sents, ensure_ascii=False)};\n",
-        encoding="utf-8",
-    )
-    print("Synced Track 1 HTML data-start/end + kaoyan_all_manifest.json + data/kaoyan_data.js")
 
 
 def main():

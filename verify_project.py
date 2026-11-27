@@ -23,7 +23,15 @@ if hasattr(sys.stdout, 'reconfigure'):
 
 def main():
     root = Path(__file__).resolve().parent
-    TARGET_VER = '3.5.12'
+    version_file = root / "version.json"
+    if not version_file.exists():
+        print("❌ 缺失 version.json")
+        sys.exit(1)
+    v_data = json.loads(version_file.read_text(encoding="utf-8"))
+    TARGET_VER = str(v_data.get("version") or "").strip()
+    if not re.match(r"^\d+\.\d+\.\d+$", TARGET_VER):
+        print(f"❌ version.json 版本号格式非法: {TARGET_VER!r}")
+        sys.exit(1)
     TARGET_CACHE = f"kaoyan-all-in-one-v{TARGET_VER}"
 
     print("=" * 65)
@@ -80,10 +88,14 @@ def main():
             print(f"  ❌ sw.js 缓存键未更新为 v{TARGET_VER}")
         else:
             print(f"  ✓ sw.js 缓存标识已升级至 {TARGET_CACHE}")
+        stale_sw_vers = {v for v in re.findall(r"\?v=(\d+\.\d+\.\d+)", sw_text) if v != TARGET_VER}
+        if stale_sw_vers:
+            errors.append(f"sw.js 存在非当前版本查询参数: {sorted(stale_sw_vers)}")
+            print(f"  ❌ sw.js 存在过期版本引用: {sorted(stale_sw_vers)}")
         if f"?v={TARGET_VER}" not in sw_text:
             errors.append(f"sw.js ASSETS_TO_CACHE 静态资源未配置 ?v={TARGET_VER}")
             print(f"  ❌ sw.js 静态资源缺失版本戳 ?v={TARGET_VER}")
-        else:
+        elif not stale_sw_vers:
             print(f"  ✓ sw.js 静态资源统一配置 ?v={TARGET_VER}")
         if "Range" not in sw_text and "range" not in sw_text:
             errors.append("sw.js 未显式排除 Range 请求")
@@ -131,10 +143,10 @@ def main():
         else:
             print(f"  ✓ index.html: ai_sync.js 已接入 ?v={TARGET_VER}")
 
-        stale_script_vers = set(re.findall(r"\?v=(3\.0\.[0-8])", html_text))
+        stale_script_vers = {v for v in re.findall(r"\?v=(\d+\.\d+\.\d+)", html_text) if v != TARGET_VER}
         if stale_script_vers:
-            errors.append(f"index.html 存在过期版本参数: {stale_script_vers}")
-            print(f"  ❌ index.html 存在陈旧版本引用: {stale_script_vers}")
+            errors.append(f"index.html 存在过期版本参数: {sorted(stale_script_vers)}")
+            print(f"  ❌ index.html 存在陈旧版本引用: {sorted(stale_script_vers)}")
         else:
             print(f"  ✓ index.html: 核心脚本与样式表均已接入最新 ?v={TARGET_VER}")
 
@@ -149,9 +161,9 @@ def main():
             errors.append('Service Worker 必须预缓存 listen_tracking.js')
 
         # 检查 defer 属性
-        if 'kaoyan_data.js' not in html:
-            errors.append("kaoyan_data.js 未在 index.html 中引用")
-            print("  ❌ index.html 中的 kaoyan_data.js 未找到")
+        if not re.search(r'<script[^>]*src="data/kaoyan_data\.js[^"]*"[^>]*\bdefer\b', html):
+            errors.append("index.html 中的 kaoyan_data.js 未配置 defer 属性")
+            print("  ❌ index.html 中的 kaoyan_data.js 缺失 defer")
         else:
             print("  ✓ index.html 中的 kaoyan_data.js 正确配置了 defer (消除首屏阻塞)")
 
