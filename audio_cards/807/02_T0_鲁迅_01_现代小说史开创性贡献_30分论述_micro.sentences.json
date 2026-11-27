@@ -4,191 +4,191 @@
     "dom_key": "title_c0",
     "text": "鲁迅·现代小说史开创性贡献",
     "start": 0.134,
-    "end": 3.05,
-    "duration": 2.916
+    "end": 2.959,
+    "duration": 2.825
   },
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "体式→灵魂深度→叙事法则→形式实验四步定鼎现代小说史：",
-    "start": 3.639,
-    "end": 10.643,
+    "start": 3.548,
+    "end": 10.552,
     "duration": 7.004
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "先写《狂人日记》打破事件章法立起心理白话新体，再看题材从苦难展览转入国民灵魂深处，",
-    "start": 10.735,
-    "end": 19.132,
+    "start": 10.644,
+    "end": 19.041,
     "duration": 8.397
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "进而抽象出标志性的“看客结构”与“归乡模型”，最后收归“一篇有一篇之形式”的现代探索。",
-    "start": 19.233,
-    "end": 26.342,
+    "start": 19.142,
+    "end": 26.251,
     "duration": 7.108
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "五四《狂人日记》宣告现代白话小说确立，《呐喊》《彷徨》以自觉文体意识与精神深度树立现代小说经典范式。",
-    "start": 26.929,
-    "end": 36.745,
+    "start": 26.838,
+    "end": 36.654,
     "duration": 9.817
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 颠覆古典章法、立白话短篇文体范式",
-    "start": 37.332,
-    "end": 41.147,
+    "start": 37.241,
+    "end": 41.055,
     "duration": 3.814
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "《狂人日记》打破章回连贯情节与全知惯性，由“事件叙事”转向“心理叙事”；",
-    "start": 41.72,
-    "end": 49.115,
+    "start": 41.629,
+    "end": 49.024,
     "duration": 7.395
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "提炼洗练哲思现代白话告别过渡生硬，《阿Q正传》获与世界现代文学平视之艺术尊严。",
-    "start": 49.702,
-    "end": 58.334,
+    "start": 49.611,
+    "end": 58.243,
     "duration": 8.632
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 两大题材、将表现重心转向“灵魂深处”",
-    "start": 58.921,
-    "end": 63.139,
+    "start": 58.83,
+    "end": 63.048,
     "duration": 4.218
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "直面“病态社会中不幸的人们”而拒苦难展览，探照灯射向国民内在精神创伤：",
-    "start": 63.726,
-    "end": 71.055,
+    "start": 63.635,
+    "end": 70.964,
     "duration": 7.33
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "《药》聚焦华老栓买人血馒头愚昧；",
-    "start": 71.642,
-    "end": 75.378,
+    "start": 71.551,
+    "end": 75.287,
     "duration": 3.736
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "《故乡》震痛在于闰土那声“老爷”；",
-    "start": 75.614,
-    "end": 78.074,
+    "start": 75.523,
+    "end": 77.982,
     "duration": 2.46
   },
   {
     "id": "sec1_step1_c2",
     "dom_key": "sec1_step1_c2",
     "text": "《祝福》解剖祥林嫂在四权罗网中灵魂死灭。",
-    "start": 78.4,
-    "end": 82.514,
+    "start": 78.309,
+    "end": 82.423,
     "duration": 4.114
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 独创“看客结构”与“归乡模型”法则",
-    "start": 83.101,
-    "end": 86.641,
+    "start": 83.01,
+    "end": 86.55,
     "duration": 3.541
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "《孔乙己》酒客取乐、《祝福》嚼阿毛血泪、《药》伸长颈项如鸭子，“看与被看”推向“吃与被吃”寓言；",
-    "start": 87.228,
-    "end": 96.199,
+    "start": 87.137,
+    "end": 96.107,
     "duration": 8.97
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "《故乡》始于篷船终于篷船与《在酒楼上》开创“离去—归来—再离去”，写启蒙者遭遇荒寒进退失据。",
-    "start": 96.786,
-    "end": 105.834,
+    "start": 96.694,
+    "end": 105.743,
     "duration": 9.048
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · “一篇有一篇之形式”、融中西实验",
-    "start": 106.421,
-    "end": 109.975,
+    "start": 106.33,
+    "end": 109.884,
     "duration": 3.554
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "《狂人日记》文言小序+白话日记复调反讽；《孔乙己》十二岁小伙计有限视点；《阿Q正传》戏仿正史秩序；",
-    "start": 110.549,
-    "end": 120.587,
+    "start": 110.457,
+    "end": 120.495,
     "duration": 10.038
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "散文诗、象征与反讽浑融，拓宽现代小说审美疆界。",
-    "start": 121.161,
-    "end": 126.811,
+    "start": 121.069,
+    "end": 126.719,
     "duration": 5.65
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "鲁迅立现代小说之体、拓现代小说之深、创现代叙事之型、铸现代文学之魂，使现代小说起步便告别古典陈规。",
-    "start": 127.398,
-    "end": 137.592,
-    "duration": 10.194
+    "start": 127.306,
+    "end": 138.451,
+    "duration": 11.145
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：代表作为《呐喊》《彷徨》；概括鲁迅开创现代小说四个贡献时，避免只背作品名而不写“看客结构”“归乡模型”“一篇有一篇之形式”。",
-    "start": 138.179,
-    "end": 150.743,
-    "duration": 12.564
+    "start": 139.038,
+    "end": 151.693,
+    "duration": 12.655
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 写出概括鲁迅现代小说开创性贡献的“四字十六字”结语口诀？",
-    "start": 151.317,
-    "end": 157.683,
+    "start": 152.267,
+    "end": 158.634,
     "duration": 6.366
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合《药》《故乡》《祝福》讲透“拒绝苦难展览、掘灵魂深处”与“看客/归乡结构”？",
-    "start": 158.257,
-    "end": 166.368,
+    "start": 159.207,
+    "end": 167.318,
     "duration": 8.111
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 举出三篇说明何谓“一篇有一篇之形式”？",
-    "start": 166.942,
-    "end": 171.68,
+    "start": 167.892,
+    "end": 172.631,
     "duration": 4.739
   }
 ]

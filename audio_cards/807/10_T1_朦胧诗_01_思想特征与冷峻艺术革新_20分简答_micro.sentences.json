@@ -52,111 +52,111 @@
     "dom_key": "sec0_step0_c0",
     "text": "打破权威盲从思维，北岛《回答》以“告诉你吧，世界 / 我——不——相——信！”将主体塑造成挺立冰川废墟之上的思想硬汉；",
     "start": 37.818,
-    "end": 49.692,
-    "duration": 11.874
+    "end": 50.174,
+    "duration": 12.356
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "顾城《一代人》以两行张力诗句凝练浩劫一代对光明的探求，唤醒青年主体价值意识。",
-    "start": 50.279,
-    "end": 58.859,
+    "start": 50.761,
+    "end": 59.341,
     "duration": 8.58
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 呼唤温润人道情怀、立平等独立人格",
-    "start": 59.446,
-    "end": 63.638,
-    "duration": 4.192
+    "start": 59.928,
+    "end": 64.445,
+    "duration": 4.517
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "突破阶级论对情感的压抑，在真实人性领地重新发现爱与温情；",
-    "start": 64.225,
-    "end": 70.799,
-    "duration": 6.575
+    "start": 65.032,
+    "end": 71.698,
+    "duration": 6.666
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "舒婷《致橡树》拒作借高枝的凌霄花、拒作单调痴情鸟，以木棉与橡树并肩挺立风雨，",
-    "start": 71.373,
-    "end": 80.018,
+    "start": 72.271,
+    "end": 80.916,
     "duration": 8.645
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "立男女平等独立、灵魂呼应理想。",
-    "start": 80.175,
-    "end": 83.221,
+    "start": 81.074,
+    "end": 84.119,
     "duration": 3.046
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 破线性抒情、立隐喻象征现代诗性语法",
-    "start": 83.795,
-    "end": 88.338,
+    "start": 84.693,
+    "end": 89.237,
     "duration": 4.543
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "借鉴意象派与象征主义，广用意象跳跃、情绪通感与多义复调结构，化主观情为冷峻客观对应物；",
-    "start": 88.925,
-    "end": 98.351,
-    "duration": 9.426
+    "start": 89.824,
+    "end": 99.836,
+    "duration": 10.012
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "北岛《回答》并置“镀金的天空”与“冰川”寄寓荒诞，打破单一透明语义，极大拓宽审美空间。",
-    "start": 98.938,
-    "end": 107.062,
+    "start": 100.423,
+    "end": 108.547,
     "duration": 8.124
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：核心诗人北岛《回答》、顾城《一代人》、舒婷《致橡树》；",
-    "start": 107.649,
-    "end": 112.713,
+    "start": 109.133,
+    "end": 114.198,
     "duration": 5.064
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "艺术关键术语为“怀疑主义理性”“意象跳跃”“现代主义诗性语法”。",
-    "start": 112.988,
-    "end": 118.364,
+    "start": 114.472,
+    "end": 119.849,
     "duration": 5.377
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 背诵北岛《回答》、顾城《一代人》、舒婷《致橡树》在朦胧诗中的三位定位？",
-    "start": 118.951,
-    "end": 126.177,
+    "start": 120.436,
+    "end": 127.661,
     "duration": 7.226
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 解释 2022 真题“朦胧诗的思想特征”哪两点（怀疑理性主体尊严 + 人道平等爱情观）？",
-    "start": 126.764,
-    "end": 135.291,
+    "start": 128.248,
+    "end": 136.776,
     "duration": 8.528
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 如何理解“客观对应物、意象跳跃、多义复调”构成的现代主义诗性语法？",
-    "start": 135.878,
-    "end": 143.104,
+    "start": 137.363,
+    "end": 144.588,
     "duration": 7.226
   }
 ]

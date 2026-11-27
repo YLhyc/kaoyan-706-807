@@ -76,87 +76,87 @@
     "dom_key": "sec1_step0_c0",
     "text": "翠翠如山头黄麂般天真灵动，端午赛龙舟喧嚣鼓声中与傩送偶遇，少女情窦朦胧萌动；",
     "start": 73.869,
-    "end": 82.761,
-    "duration": 8.892
+    "end": 83.074,
+    "duration": 9.205
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "借翠翠月夜歌声后梦中摘取虎耳草细节，细腻捕捉情愫与自然节律契合。",
-    "start": 83.348,
-    "end": 90.717,
-    "duration": 7.369
+    "start": 83.661,
+    "end": 91.238,
+    "duration": 7.577
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 诗意融散文笔调、立哀而不伤牧歌范式",
-    "start": 91.304,
-    "end": 95.535,
+    "start": 91.825,
+    "end": 96.055,
     "duration": 4.231
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "语言质朴明净融散文化叙事；",
-    "start": 96.108,
-    "end": 99.662,
-    "duration": 3.554
+    "start": 96.629,
+    "end": 100.456,
+    "duration": 3.827
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
     "text": "恬淡中因人事错位与命运无常转悲：天保茨滩溺亡、傩送负气远走、老船夫雷雨夜悄逝，翠翠独守碧溪岨渡船；",
-    "start": 99.963,
-    "end": 109.949,
-    "duration": 9.986
+    "start": 100.692,
+    "end": 110.704,
+    "duration": 10.012
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "篇末“这个人也许永远不回来了，也许明天回来”化苍凉为绵长叹息，立哀而不伤田园牧歌范式。",
-    "start": 110.523,
-    "end": 119.05,
+    "start": 111.278,
+    "end": 119.805,
     "duration": 8.528
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：地名茶峒、碧溪岨；人物老船夫、翠翠、船总顺顺、天保（大老，唱不惯山歌让爱乘船出走，在茨滩溺亡）、傩送（二老）；",
-    "start": 119.624,
-    "end": 132.175,
-    "duration": 12.551
+    "start": 120.379,
+    "end": 133.126,
+    "duration": 12.746
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "结尾名句“这个人也许永远不回来了，也许明天回来”。",
-    "start": 132.489,
-    "end": 136.589,
-    "duration": 4.101
+    "start": 133.439,
+    "end": 137.553,
+    "duration": 4.114
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 准确区分茶峒、碧溪岨、茨滩地名及天保（大老）与傩送（二老）的命运走向？",
-    "start": 137.176,
-    "end": 145.6,
-    "duration": 8.423
+    "start": 138.14,
+    "end": 147.006,
+    "duration": 8.866
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合“君子之争”与“梦摘虎耳草”阐明沈从文构建“人性神庙”的道德与审美追求？",
-    "start": 146.187,
-    "end": 153.972,
+    "start": 147.593,
+    "end": 155.378,
     "duration": 7.785
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 回答 2021 年简答《结合沈从文作品谈文学史贡献》怎么调用本篇？",
-    "start": 154.559,
-    "end": 161.719,
+    "start": 155.965,
+    "end": 163.126,
     "duration": 7.16
   }
 ]

@@ -108,111 +108,111 @@
     "dom_key": "sec1_step1_c0",
     "text": "《齐物论》末以轻灵笔触写庄周梦蝶，借物我泯灭展现物化互通诗意，注入自由浪漫气息。",
     "start": 71.49,
-    "end": 80.109,
-    "duration": 8.619
+    "end": 80.239,
+    "duration": 8.749
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 形成汪洋恣肆的自由章法气势",
-    "start": 80.696,
-    "end": 84.028,
+    "start": 80.826,
+    "end": 84.158,
     "duration": 3.332
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "刘熙载《艺概》评其“意出尘外，怪生笔端”。",
-    "start": 84.602,
-    "end": 88.377,
+    "start": 84.732,
+    "end": 88.507,
     "duration": 3.775
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "不设呆板提纲，由核心意象随物赋形、层层生发；",
-    "start": 88.951,
-    "end": 93.989,
+    "start": 89.081,
+    "end": 94.119,
     "duration": 5.038
   },
   {
     "id": "sec2_step1_c1",
     "dom_key": "sec2_step1_c1",
     "text": "常连类比喻、正反翻案，句式长短错落，如巨澜奔涌或机锋毕露，与其自由主旨互为表里。",
-    "start": 94.277,
-    "end": 102.518,
+    "start": 94.407,
+    "end": 102.648,
     "duration": 8.241
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 诙谐辛辣讽刺与深远文学滋养",
-    "start": 103.092,
-    "end": 106.645,
+    "start": 103.222,
+    "end": 106.776,
     "duration": 3.554
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "《秋水》将梁国相印比作腐鼠、高洁志趣比鹓雏；《列御寇》以曹商舔痔得车讽阿附权贵，显独立风骨；",
-    "start": 107.232,
-    "end": 117.465,
-    "duration": 10.233
+    "start": 107.362,
+    "end": 117.817,
+    "duration": 10.455
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "以汪洋文风与寓言传统滋养司马迁、阮籍、李白、苏轼，成文人安顿心灵的精神源泉。",
-    "start": 118.053,
-    "end": 127.166,
+    "start": 118.404,
+    "end": 127.518,
     "duration": 9.114
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "《庄子》借“三言”寓言、奇幻想象与汪洋恣肆章法将哲理化为诗意散文，",
-    "start": 127.753,
-    "end": 134.38,
-    "duration": 6.627
+    "start": 128.105,
+    "end": 134.718,
+    "duration": 6.614
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "其自由与讽世品格深远影响汉赋、魏晋玄风及李白、苏轼等后代作家。",
-    "start": 134.602,
-    "end": 141.58,
-    "duration": 6.978
+    "start": 134.941,
+    "end": 142.114,
+    "duration": 7.173
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：鲁迅在《汉文学史纲要》赞其“晚周诸子之作，莫能先也”；刘熙载《艺概》评其“意出尘外，怪生笔端”。",
-    "start": 142.167,
-    "end": 151.151,
+    "start": 142.701,
+    "end": 151.685,
     "duration": 8.983
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 庄子“三言”与四个核心寓言篇目各是什么？",
-    "start": 151.738,
-    "end": 156.724,
+    "start": 152.271,
+    "end": 157.257,
     "duration": 4.986
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 《逍遥游》《齐物论》与《列御寇》各体现哪一项特质？",
-    "start": 157.285,
-    "end": 162.57,
+    "start": 157.818,
+    "end": 163.104,
     "duration": 5.285
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 鲁迅《汉文学史纲要》与刘熙载《艺概》两句评语？",
-    "start": 163.144,
-    "end": 168.364,
+    "start": 163.678,
+    "end": 168.898,
     "duration": 5.22
   }
 ]

@@ -3,8 +3,8 @@
 These rules codify invariants derived from past regressions (`v3.4.3–v3.5.12`) and are enforced automatically by `tests/run_release_gate.py`.
 
 ## 1. Dual-Track Audio & Voice Contracts (Never Mix or Blanket-Overwrite)
-- **Track 1 (`*_exam.mp3`)**: Must use **Aliyun CosyVoice (`cosyvoice-v2`, `longanlang` 龙安朗)** at native loudness (`~ -23 dB`, 44.1kHz mono 96kbps). Never overwrite Track 1 with Edge TTS (`YunyangNeural`).
-- **Track 2 (`*_micro.mp3`)**: Must use **Edge TTS (`zh-CN-YunyangNeural`, `-4%`, `volume=4dB`)**, 44.1kHz mono 96kbps.
+- **Track 1 (`*_exam.mp3`)**: Must use **Aliyun CosyVoice (`cosyvoice-v3-flash`, `longanlang_v3` 龙安朗, 48kHz source)** at native clarity (`~ -23 dB`, 44.1kHz mono 96kbps). Never overwrite Track 1 with Edge TTS (`YunyangNeural`) or low-band `cosyvoice-v2` (`22050Hz`).
+- **Track 2 (`*_micro.mp3`)**: Must use **Edge TTS (`zh-CN-YunyangNeural`, `-4%`, `volume=4dB`)**, 44.1kHz mono 96kbps. Avoid bare 1-char classical verb/preposition glues (`立平等`, `化主观情`) and bare noun stacks (`权威盲从思维`) in `tts_text` that trigger Edge TTS `WordBoundary` mis-splits; always validate via `tools/fix_micro_tts_phrasing.py` and WordBoundary audit before synthesis.
 - **Surgical Updates Only**: When fixing phrasing/prosody/timestamps, synthesize ONLY the specific items that fail audit rules. Preserve untouched `*_exam.mp3` and `*_micro.mp3` files byte-for-byte from `HEAD` unless a full rebuild is explicitly requested.
 - **No Forced Punctuation Mangling**: Never blindly rewrite mid-sentence commas/semicolons to periods (`。`). Expand decade abbreviations (`20s` -> `20年代`) and normalize ordinal dots (`1. ` -> `1、`) before TTS.
 

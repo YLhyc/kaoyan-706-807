@@ -11,6 +11,7 @@ __pycache__/
 !tools/build_kaoyan_bundle.py
 !tools/build_micro_scripts.py
 !tools/batch_synth_micro_audio.py
+!tools/fix_micro_tts_phrasing.py
 !tools/resynth_track1_clean.py
 !tools/tts_prosody.py
 !tools/bump_release.py

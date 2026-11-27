@@ -12,151 +12,151 @@
     "dom_key": "hook_c0",
     "text": "理论立界→生平折风→语言定宗：先用《词论》把词和诗、俗曲划清本体界限（不葺之诗vs词语尘下），",
     "start": 5.318,
-    "end": 15.291,
-    "duration": 9.973
+    "end": 15.838,
+    "duration": 10.52
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再看靖康南渡如何撕开她前期明快与后期凄苦的巨大落差，",
-    "start": 15.592,
-    "end": 20.89,
-    "duration": 5.298
+    "start": 16.139,
+    "end": 21.476,
+    "duration": 5.337
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "最后定格“寻常口语+精工炼字”的易安体风范。",
-    "start": 20.991,
-    "end": 24.688,
+    "start": 21.577,
+    "end": 25.274,
     "duration": 3.697
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "李清照是两宋之交婉约词代表，自成“易安体”。",
-    "start": 25.275,
-    "end": 29.311,
-    "duration": 4.035
+    "start": 25.861,
+    "end": 29.857,
+    "duration": 3.996
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "其词风演进与“词别是一家”主张均具重要贡献。",
-    "start": 29.898,
-    "end": 33.907,
+    "start": 30.444,
+    "end": 34.454,
     "duration": 4.009
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 《词论》倡“词别是一家”、护词体独立",
-    "start": 34.494,
-    "end": 37.943,
+    "start": 35.041,
+    "end": 38.49,
     "duration": 3.45
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "《词论》严分诗词，强调“分五音，分五声，分六律，分清浊轻重”，讲究铺叙故实情致；",
-    "start": 38.517,
-    "end": 47.136,
+    "start": 39.064,
+    "end": 47.683,
     "duration": 8.619
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "批苏轼欧阳修“往往不协音律”“句读不葺之诗”，批柳永“词语尘下”，力护词体审美边界。",
-    "start": 47.723,
-    "end": 55.626,
+    "start": 48.27,
+    "end": 56.173,
     "duration": 7.903
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 以南渡为界、由清丽明快转向沉痛苍凉",
-    "start": 56.213,
-    "end": 60.951,
+    "start": 56.76,
+    "end": 61.498,
     "duration": 4.739
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "生活美满写闺情游赏：《如梦令》“常记溪亭日暮，沉醉不知归路”，轻快充满生机；",
-    "start": 61.538,
-    "end": 69.35,
+    "start": 62.085,
+    "end": 69.897,
     "duration": 7.811
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "南渡国破家亡后写孤寂家国悲痛：《声声慢》“寻寻觅觅，冷冷清清，凄凄惨惨戚戚”十四叠字凄苦苍凉。",
-    "start": 69.937,
-    "end": 80.313,
-    "duration": 10.377
+    "start": 70.483,
+    "end": 81.407,
+    "duration": 10.923
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 寻常口语白描炼字、开创“易安体”",
-    "start": 80.887,
-    "end": 84.623,
+    "start": 81.981,
+    "end": 85.717,
     "duration": 3.736
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "善选日常细节与浅近家常语传深情，如《凤凰台上忆吹箫》“生怕离怀别苦，多少事、欲说还休”；",
-    "start": 85.197,
-    "end": 95.339,
-    "duration": 10.142
+    "start": 86.291,
+    "end": 96.576,
+    "duration": 10.285
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "工于白描造境与炼字如“绿肥红瘦”“人比黄花瘦”，素雅清婉，树宋代婉约典范。",
-    "start": 95.926,
-    "end": 104.024,
+    "start": 97.163,
+    "end": 105.261,
     "duration": 8.098
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：理论出处《词论》批评苏轼“句读不葺之诗”、批评柳永“词语尘下”；",
-    "start": 104.611,
-    "end": 110.665,
+    "start": 105.848,
+    "end": 111.902,
     "duration": 6.054
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "记住前期《如梦令》“绿肥红瘦”，后期《声声慢》十四叠字。",
-    "start": 111.004,
-    "end": 115.691,
-    "duration": 4.687
+    "start": 112.241,
+    "end": 116.928,
+    "duration": 4.686
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 完整背出《词论》核心立场及对苏轼、柳永的精准评语？",
-    "start": 116.278,
-    "end": 122.397,
+    "start": 117.515,
+    "end": 123.633,
     "duration": 6.119
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 对比《如梦令》与《声声慢》说出南渡前后词风蜕变？",
-    "start": 122.97,
-    "end": 128.699,
+    "start": 124.207,
+    "end": 129.936,
     "duration": 5.728
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 何为“易安体”？用“欲说还休”“绿肥红瘦”阐明其语言功夫？",
-    "start": 129.286,
-    "end": 136.029,
+    "start": 130.523,
+    "end": 137.266,
     "duration": 6.744
   }
 ]

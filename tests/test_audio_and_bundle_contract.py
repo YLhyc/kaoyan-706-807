@@ -41,9 +41,14 @@ def main():
     bad_t1_files = []
     bad_t1_gaps = []
     bad_t1_dots = []
+    bad_t1_cps = []
     bad_t2_files = []
     bad_t2_overlaps = []
+    bad_t2_cps = []
     bad_decades = []
+
+    def cjk_len(s: str) -> int:
+        return len(re.sub(r"[^0-9A-Za-z\u4e00-\u9fff]", "", s or ""))
 
     for it in items:
         iid = it["id"]
@@ -64,6 +69,11 @@ def main():
                     bad_decades.append((iid, "t1", txt[:24]))
                 if r["end"] <= r["start"]:
                     bad_t1_gaps.append((iid, i, "non_positive"))
+                else:
+                    n_ch = cjk_len(txt)
+                    cps = n_ch / max(0.01, r["end"] - r["start"])
+                    if n_ch >= 8 and (cps < 1.8 or cps > 9.5):
+                        bad_t1_cps.append((iid, i, round(cps, 2), txt[:18]))
                 if i + 1 < len(rows1):
                     g = rows1[i + 1]["start"] - r["end"]
                     if g < 0.04:
@@ -86,14 +96,27 @@ def main():
                     bad_decades.append((iid, "t2", txt[:24]))
                 if r["end"] <= r["start"]:
                     bad_t2_overlaps.append((iid, i, "non_positive"))
+                else:
+                    n_ch = cjk_len(txt)
+                    cps = n_ch / max(0.01, r["end"] - r["start"])
+                    if n_ch >= 8 and (cps < 1.5 or cps > 10.5):
+                        bad_t2_cps.append((iid, i, round(cps, 2), txt[:18]))
                 if i + 1 < len(rows2) and rows2[i + 1]["start"] < r["end"] - 0.002:
                     bad_t2_overlaps.append((iid, i, round(rows2[i + 1]["start"] - r["end"], 3)))
 
     check(not bad_t1_files, "All 82 Track 1 *_exam.mp3 and sentences exist", f"bad={bad_t1_files[:5]}")
     check(not bad_t1_gaps, "Track 1 monotonic timestamps and >=40ms inter-clause gaps", f"bad={bad_t1_gaps[:5]}")
+    check(not bad_t1_cps, "Track 1 speech-rate alignment sanity (1.8<=cps<=9.5)", f"bad={bad_t1_cps[:5]}")
     check(not bad_t2_files, "All 82 Track 2 *_micro.mp3, sentences & micro_slots exist", f"bad={bad_t2_files[:5]}")
     check(not bad_t2_overlaps, "Track 2 non-overlapping monotonic timestamps", f"bad={bad_t2_overlaps[:5]}")
+    check(not bad_t2_cps, "Track 2 speech-rate alignment sanity (1.5<=cps<=10.5)", f"bad={bad_t2_cps[:5]}")
     check(not bad_decades, "Zero unexpanded decade abbreviations (20s/40s)", f"bad={bad_decades[:5]}")
+
+    resynth_txt = (ROOT / "tools" / "resynth_track1_clean.py").read_text(encoding="utf-8")
+    check(
+        "cosyvoice-v2" not in resynth_txt and "MP3_22050HZ" not in resynth_txt,
+        "Track 1 synthesis script forbids low-band cosyvoice-v2 / 22050Hz",
+    )
 
     # 2. Bundle freshness & KAOYAN_BUILTIN_CLOZE integrity
     all_m = json.loads((DATA / "kaoyan_all_manifest.json").read_text(encoding="utf-8"))

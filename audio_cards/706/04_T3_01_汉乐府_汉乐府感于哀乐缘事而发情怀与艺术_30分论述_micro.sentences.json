@@ -12,223 +12,223 @@
     "dom_key": "hook_c0",
     "text": "灵魂→体式→写人→技法与传承：先从班固十二字定性切入底层疾苦内核，",
     "start": 4.107,
-    "end": 12.244,
-    "duration": 8.137
+    "end": 12.375,
+    "duration": 8.267
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "看重叙事内容如何催生出杂言、五言及1700余字《孔雀东南飞》，",
-    "start": 12.571,
-    "end": 18.768,
-    "duration": 6.197
+    "start": 12.701,
+    "end": 19.015,
+    "duration": 6.314
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "再细拆它如何靠晨起严妆、对答反讽写活人物，",
-    "start": 19.055,
-    "end": 23.191,
-    "duration": 4.135
+    "start": 19.116,
+    "end": 23.36,
+    "duration": 4.244
   },
   {
     "id": "hook_c3",
     "dom_key": "hook_c3",
     "text": "最后点明其如何经建安直哺杜甫“即事名篇”与白居易新乐府。",
-    "start": 23.439,
-    "end": 28.607,
-    "duration": 5.168
+    "start": 23.635,
+    "end": 28.868,
+    "duration": 5.233
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "两汉乐府民歌采自民间，继承《诗经》风雅，摆脱汉大赋浮华，",
-    "start": 29.194,
-    "end": 34.376,
+    "start": 29.455,
+    "end": 34.636,
     "duration": 5.181
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "班固《汉书·艺文志》概括为“感于哀乐，缘事而发”。",
-    "start": 34.52,
-    "end": 38.816,
+    "start": 34.78,
+    "end": 39.076,
     "duration": 4.296
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 确立“感于哀乐，缘事而发”写实魂",
-    "start": 39.403,
-    "end": 43.308,
+    "start": 39.663,
+    "end": 43.568,
     "duration": 3.905
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "“缘事而发”紧扣生活具体事件，“感于哀乐”倾注百姓真挚苦乐爱恨；",
-    "start": 43.882,
-    "end": 49.831,
-    "duration": 5.949
+    "start": 44.142,
+    "end": 50.092,
+    "duration": 5.95
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "《十五从军征》“八十始得归”控诉兵役残酷；",
-    "start": 50.418,
-    "end": 54.936,
+    "start": 50.679,
+    "end": 55.196,
     "duration": 4.517
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "《东门行》写“盎中无斗米储”拔剑而起；",
-    "start": 55.223,
-    "end": 58.36,
+    "start": 55.483,
+    "end": 58.62,
     "duration": 3.137
   },
   {
     "id": "sec0_step1_c2",
     "dom_key": "sec0_step1_c2",
     "text": "《妇病行》刻画病妇托孤、孤儿啼食惨状。",
-    "start": 58.635,
-    "end": 62.501,
+    "start": 58.895,
+    "end": 62.761,
     "duration": 3.866
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 由四言向杂言、五言与成熟叙事诗演进",
-    "start": 63.075,
-    "end": 67.631,
+    "start": 63.335,
+    "end": 67.891,
     "duration": 4.556
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "吸收楚声与民间曲调发展出杂言体与日臻成熟五言诗，为文人五言奠基；",
-    "start": 68.218,
-    "end": 75.821,
+    "start": 68.478,
+    "end": 76.081,
     "duration": 7.603
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "《孔雀东南飞》一千七百余字，绕刘兰芝遣归、阿兄逼嫁与双双殉情双线交错，标志古代叙事诗成熟。",
-    "start": 76.408,
-    "end": 86.498,
+    "start": 76.668,
+    "end": 86.759,
     "duration": 10.09
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 戏剧冲突中借对话与细节写活典型",
-    "start": 87.072,
-    "end": 91.303,
+    "start": 87.332,
+    "end": 91.563,
     "duration": 4.231
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "刘兰芝外柔内刚，离别晨起严妆“著我绣裌裙，事事四五通”以维护尊严；",
-    "start": 91.89,
-    "end": 99.154,
+    "start": 92.15,
+    "end": 99.415,
     "duration": 7.265
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
     "text": "配焦仲卿软弱、焦母专横、刘兄市侩，无不肖其声情；",
-    "start": 99.312,
-    "end": 104.389,
-    "duration": 5.077
+    "start": 99.559,
+    "end": 104.936,
+    "duration": 5.377
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "秦罗敷面对太守调戏，巧以夸耀夫婿诙谐言辞戏弄权贵，显机智骨气。",
-    "start": 104.976,
-    "end": 112.462,
-    "duration": 7.486
+    "start": 105.51,
+    "end": 113.451,
+    "duration": 7.942
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 融比兴复沓想象、哺育建安与唐诗",
-    "start": 113.049,
-    "end": 116.902,
-    "duration": 3.853
+    "start": 114.038,
+    "end": 118.725,
+    "duration": 4.686
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "《孔雀东南飞》起兴定调与合葬化鸟浪漫理想；《江南》“莲叶何田田，鱼戏莲叶东”复沓明朗乐感；",
-    "start": 117.489,
-    "end": 126.446,
+    "start": 119.312,
+    "end": 128.269,
     "duration": 8.957
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "直接哺育建安曹氏父子乐府，成唐代杜甫“即事名篇”与白居易“新乐府运动”源头。",
-    "start": 127.02,
-    "end": 134.727,
+    "start": 128.843,
+    "end": 136.55,
     "duration": 7.707
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "汉乐府立足“感于哀乐，缘事而发”，完成从四言向杂言、五言叙事诗过渡，",
-    "start": 135.314,
-    "end": 141.732,
-    "duration": 6.418
+    "start": 137.137,
+    "end": 143.594,
+    "duration": 6.457
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "其缘事写人传统直接哺育建安文学及唐代杜甫、白居易现实主义诗歌。",
-    "start": 142.007,
-    "end": 148.321,
+    "start": 143.882,
+    "end": 150.196,
     "duration": 6.314
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：班固在《汉书·艺文志》概括“感于哀乐，缘事而发”；",
-    "start": 148.908,
-    "end": 153.933,
+    "start": 150.783,
+    "end": 155.808,
     "duration": 5.025
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "《孔雀东南飞》是我国古代保存下来的最长叙事诗（约1700余字）。",
-    "start": 154.194,
-    "end": 159.597,
+    "start": 156.069,
+    "end": 161.472,
     "duration": 5.403
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 出自《汉书·艺文志》的汉乐府核心八字定评是什么？",
-    "start": 160.158,
-    "end": 165.535,
+    "start": 162.033,
+    "end": 167.41,
     "duration": 5.377
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 结合《孔雀东南飞》谈清汉乐府“体制长度、矛盾冲突、细节严妆、起兴化鸟”四处亮点？",
-    "start": 166.095,
-    "end": 175.248,
+    "start": 167.97,
+    "end": 177.123,
     "duration": 9.153
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 列出汉乐府与诗经、建安、杜甫、白居易之间的历史接力关系？",
-    "start": 175.835,
-    "end": 182.891,
+    "start": 177.71,
+    "end": 184.766,
     "duration": 7.056
   }
 ]
