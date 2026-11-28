@@ -2303,11 +2303,16 @@
         el.filterPillsWrap.appendChild(btn);
       });
     } else {
+      const subjList = state.currentSubject === '807'
+        ? (state.allData?.items_807 || [])
+        : (state.allData?.items_706 || []);
+      const countByTier = (lvl) => subjList.filter(x => x && x.level === lvl).length;
       const pills = [
-        { id: 'all', label: '全部考点' },
-        { id: 'T0', label: 'T0 极高频必背' },
-        { id: 'T1', label: 'T1 核心考点' },
-        { id: 'T2', label: 'T2 重点拓展' }
+        { id: 'all', label: `全部考点 (${subjList.length})` },
+        { id: 'T0', label: `T0 极高频必背 (${countByTier('T0')})` },
+        { id: 'T1', label: `T1 核心考点 (${countByTier('T1')})` },
+        { id: 'T2', label: `T2 重点拓展 (${countByTier('T2')})` },
+        { id: 'T3', label: `T3 压轴补强 (${countByTier('T3')})` }
       ];
       pills.forEach(p => {
         const btn = document.createElement('button');
@@ -5120,7 +5125,7 @@
           <span>逻辑微缩导图版</span>
         </div>
         <div class="spec-chip chip-type"><span>${rm.is_noun_collection ? '三栏名解速记' : '结构接力微缩'}</span></div>
-        <div class="spec-chip chip-score"><span>${isDedicatedMicro ? '云扬96k逐句点读' : '原段点读对照'}</span></div>
+        <div class="spec-chip chip-score"><span>${isDedicatedMicro ? '龙安朗96k逐句点读' : '原段点读对照'}</span></div>
       </div>
       <div class="exam-title-box relay-title-box">
         <div class="relay-title-top">
@@ -9137,7 +9142,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.5.16';
+  const APP_BUILD_ID = '3.5.17';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
