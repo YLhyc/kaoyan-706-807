@@ -3,192 +3,192 @@
     "id": "title_c0",
     "dom_key": "title_c0",
     "text": "艾青·诗歌思想艺术特质与土地太阳意象群",
-    "start": 0.354,
-    "end": 4.206,
-    "duration": 3.852
+    "start": 0.154,
+    "end": 4.886,
+    "duration": 4.732
   },
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "“双意象 + 一诗体”三足稳立：1.以“土地+大堰河”立下深沉忧郁的苦难母爱根基；",
-    "start": 5.294,
-    "end": 14.066,
-    "duration": 8.772
+    "start": 5.594,
+    "end": 13.766,
+    "duration": 8.172
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "2.以“太阳+火把+黎明通知”高扬炽烈抗战救亡希望；",
-    "start": 15.034,
-    "end": 19.766,
-    "duration": 4.732
+    "start": 14.124,
+    "end": 19.256,
+    "duration": 5.132
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "3.以打破整齐格律的自由诗“散文美”引领新诗走向大众时代。",
-    "start": 20.734,
-    "end": 26.466,
-    "duration": 5.732
+    "start": 19.534,
+    "end": 24.826,
+    "duration": 5.292
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "三十年代危亡抗战时期，艾青《大堰河——我的保姆》《北方》《我爱这土地》开辟现实与时代交融新境，",
-    "start": 27.474,
-    "end": 35.286,
-    "duration": 7.812
+    "start": 25.354,
+    "end": 33.286,
+    "duration": 7.932
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "将深沉忧郁与民族抗争融于一体。",
-    "start": 35.714,
-    "end": 38.806,
-    "duration": 3.092
+    "start": 33.434,
+    "end": 36.326,
+    "duration": 2.892
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · “土地”与“大堰河”底色：挚爱劳苦大众",
-    "start": 39.774,
-    "end": 43.946,
-    "duration": 4.172
+    "start": 36.981,
+    "end": 42.193,
+    "duration": 5.212
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "成名作追忆用乳汁养己却死于四元棺材束草的农村保姆，刻画忍辱慈爱劳动妇女形象；",
-    "start": 44.954,
-    "end": 54.806,
-    "duration": 9.852
+    "start": 42.643,
+    "end": 52.175,
+    "duration": 9.532
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "《雪落在中国的土地上》叹“寒冷在封锁着中国呀”；",
-    "start": 55.774,
-    "end": 60.826,
-    "duration": 5.052
+    "start": 52.703,
+    "end": 58.315,
+    "duration": 5.612
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "《我爱这土地》化嘶哑飞鸟呼号“为什么我的眼里常含泪水？因为我对这土地爱得深沉”。",
-    "start": 61.754,
-    "end": 69.386,
-    "duration": 7.632
+    "start": 58.513,
+    "end": 65.695,
+    "duration": 7.182
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · “太阳”与“火把”象征：高扬救亡与理想",
-    "start": 70.069,
-    "end": 74.161,
-    "duration": 4.092
+    "start": 66.287,
+    "end": 70.059,
+    "duration": 3.772
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "赋予“太阳”驱散幽暗、冲破枷锁与迎民族新生的时代意蕴；",
-    "start": 75.169,
-    "end": 80.941,
+    "start": 70.505,
+    "end": 76.277,
     "duration": 5.772
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "《向太阳》迎烈日奔跑礼赞光明；",
-    "start": 81.469,
-    "end": 85.281,
-    "duration": 3.812
+    "start": 76.779,
+    "end": 80.551,
+    "duration": 3.772
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "《火把》借唐尼夜间火炬游行显献身意志；",
-    "start": 85.469,
-    "end": 89.521,
-    "duration": 4.052
+    "start": 80.859,
+    "end": 84.871,
+    "duration": 4.012
   },
   {
     "id": "sec1_step1_c2",
     "dom_key": "sec1_step1_c2",
     "text": "延安《黎明的通知》化为迎接新世界的明朗呼告。",
-    "start": 89.709,
-    "end": 93.521,
-    "duration": 3.812
+    "start": 85.099,
+    "end": 88.711,
+    "duration": 3.612
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 破格律与欧化、创立自由诗“散文美”",
-    "start": 94.15,
-    "end": 98.002,
-    "duration": 3.852
+    "start": 89.283,
+    "end": 93.055,
+    "duration": 3.772
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "反思新月派齐整雕琢，倡自由诗追求“散文美”与天然律动，",
-    "start": 98.75,
-    "end": 105.882,
-    "duration": 7.132
+    "start": 93.559,
+    "end": 100.451,
+    "duration": 6.892
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
     "text": "不拘押韵字数而用排比递进、长短交错与复沓造沉郁内在节奏；",
-    "start": 106.19,
-    "end": 112.562,
-    "duration": 6.372
+    "start": 100.679,
+    "end": 106.691,
+    "duration": 6.012
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "《雪落》反复咏叹流离、《北方》冷暖色彩立体造型，质朴阔大推向大众。",
-    "start": 113.53,
-    "end": 121.542,
-    "duration": 8.012
+    "start": 107.219,
+    "end": 115.871,
+    "duration": 8.652
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "艾青以“土地与太阳”双重意象塑造现代中国坚韧精神图腾，以散文美引导新诗回归泥土与人民，立扎根现实重要传统。",
-    "start": 122.607,
-    "end": 133.722,
-    "duration": 11.115
+    "start": 116.492,
+    "end": 127.144,
+    "duration": 10.652
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：艾青三大核心概念：①土地/大堰河（深沉忧郁母爱） ②太阳/火把/黎明的通知（光明救亡） ③诗歌的“散文美”（对抗新月派整齐格律与早期欧化）。",
-    "start": 134.77,
-    "end": 148.582,
-    "duration": 13.812
+    "start": 127.798,
+    "end": 142.21,
+    "duration": 14.412
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 梳理艾青三大关键词：“土地与大堰河 / 太阳与火把 / 诗歌的散文美”？",
-    "start": 149.55,
-    "end": 157.042,
-    "duration": 7.492
+    "start": 142.822,
+    "end": 149.714,
+    "duration": 6.892
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 举全五首核心代表诗篇及每篇对应的主题或修辞特色？",
-    "start": 158.01,
-    "end": 164.142,
-    "duration": 6.132
+    "start": 150.18,
+    "end": 155.632,
+    "duration": 5.452
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 回答 2023 年论述《艾青诗歌的特点》时，怎样组织三段做到既有例证又条理分明？",
-    "start": 165.11,
-    "end": 173.482,
-    "duration": 8.372
+    "start": 156.155,
+    "end": 164.887,
+    "duration": 8.732
   }
 ]

@@ -3,216 +3,216 @@
     "id": "title_c0",
     "dom_key": "title_c0",
     "text": "李白·盛唐诗歌艺术特质与盛唐气象",
-    "start": 0.314,
+    "start": 0.154,
     "end": 3.766,
-    "duration": 3.452
+    "duration": 3.612
   },
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "人→境→体→格四步递进：先把“傲立王侯”的主体人格立住，再写出人格驱动下夸张奇幻的意境，",
-    "start": 4.734,
-    "end": 14.146,
-    "duration": 9.412
+    "start": 4.437,
+    "end": 14.849,
+    "duration": 10.412
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "自然解释为何必须打破近体律诗改投奔涌歌行，",
-    "start": 14.494,
-    "end": 19.506,
-    "duration": 5.012
+    "start": 15.077,
+    "end": 20.355,
+    "duration": 5.278
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "最后收束为“豪放歌行+清新绝句”双美并擅的浪漫高峰。",
-    "start": 19.974,
-    "end": 25.346,
-    "duration": 5.372
+    "start": 20.37,
+    "end": 25.489,
+    "duration": 5.119
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "李白是古典浪漫主义与“盛唐气象”的鲜明化身。",
-    "start": 26.394,
-    "end": 30.286,
-    "duration": 3.892
+    "start": 26.013,
+    "end": 29.705,
+    "duration": 3.692
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "杜甫赞“笔落惊风雨，诗成泣鬼神”，韩愈赞“李杜文章在，光焰万丈长”。",
-    "start": 31.294,
-    "end": 38.026,
-    "duration": 6.732
+    "start": 30.063,
+    "end": 37.275,
+    "duration": 7.212
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 塑造追求精神自由的主体人格",
-    "start": 39.034,
-    "end": 42.446,
-    "duration": 3.412
+    "start": 37.904,
+    "end": 41.196,
+    "duration": 3.292
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "权贵前高呼“安能摧眉折腰事权贵”；",
-    "start": 43.454,
-    "end": 47.986,
-    "duration": 4.532
+    "start": 41.724,
+    "end": 46.856,
+    "duration": 5.132
   },
   {
     "id": "sec0_step0_c1",
     "dom_key": "sec0_step0_c1",
     "text": "坎坷中坚信“长风破浪会有时，直挂云帆济沧海”；",
-    "start": 48.954,
-    "end": 53.646,
-    "duration": 4.692
+    "start": 47.214,
+    "end": 51.706,
+    "duration": 4.492
   },
   {
     "id": "sec0_step0_c2",
     "dom_key": "sec0_step0_c2",
     "text": "酒酣仍怀“天生我材必有用，千金散尽还复来”；",
-    "start": 54.694,
-    "end": 59.346,
-    "duration": 4.652
+    "start": 51.984,
+    "end": 56.556,
+    "duration": 4.572
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "兼融道家超脱、纵横家雄心与侠义精神，凝结盛唐蓬勃进取时代脉搏。",
-    "start": 60.314,
-    "end": 67.966,
-    "duration": 7.652
+    "start": 57.084,
+    "end": 64.136,
+    "duration": 7.052
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 展开奇幻想象与大胆夸张",
-    "start": 69.014,
-    "end": 71.906,
-    "duration": 2.892
+    "start": 64.844,
+    "end": 68.056,
+    "duration": 3.212
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "自由驱遣神话与星辰：《梦游天姥吟留别》以“势拔五岳掩赤城”引出仙人绚烂幻境；",
-    "start": 72.954,
-    "end": 81.726,
-    "duration": 8.772
+    "start": 68.584,
+    "end": 77.316,
+    "duration": 8.732
   },
   {
     "id": "sec1_step0_c1",
     "dom_key": "sec1_step0_c1",
     "text": "《蜀道难》“上有六龙回日之高标”化险阻为壮景；",
-    "start": 81.954,
-    "end": 86.446,
-    "duration": 4.492
+    "start": 77.704,
+    "end": 82.276,
+    "duration": 4.572
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "写愁思“白发三千丈”，写飞瀑“疑是银河落九天”，尽显阳刚魄力。",
-    "start": 86.974,
-    "end": 94.026,
-    "duration": 7.052
+    "start": 82.719,
+    "end": 90.091,
+    "duration": 7.372
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 突破声律羁绊、擅古题乐府歌行",
-    "start": 94.724,
-    "end": 98.656,
-    "duration": 3.932
+    "start": 90.626,
+    "end": 94.958,
+    "duration": 4.332
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "不拘近体粘对，倾力古题乐府与长篇歌行，如《将进酒》《行路难》三五七杂言错落、一泻千里；",
-    "start": 99.444,
-    "end": 108.896,
-    "duration": 9.452
+    "start": 95.486,
+    "end": 105.818,
+    "duration": 10.332
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "节奏大开大合，呈现出天马行空之姿，践行“清水出芙蓉，天然去雕饰”美学追求。",
-    "start": 109.904,
-    "end": 117.916,
-    "duration": 8.012
+    "start": 106.292,
+    "end": 113.744,
+    "duration": 7.452
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 兼备豪放与清新俊逸双重风神",
-    "start": 118.964,
-    "end": 122.616,
-    "duration": 3.652
+    "start": 114.383,
+    "end": 117.915,
+    "duration": 3.532
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "兼擅五七言绝句自然天成：七绝《早发白帝城》轻舟顺流、《望庐山瀑布》紫烟飞瀑，五绝《静夜思》明快真挚；",
-    "start": 123.744,
-    "end": 135.756,
-    "duration": 12.012
+    "start": 118.443,
+    "end": 129.815,
+    "duration": 11.372
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "胡应麟《诗薮》赞“太白五七言绝，字字神境，篇篇神物”，与杜甫双峰并峙。",
-    "start": 136.644,
-    "end": 144.296,
-    "duration": 7.652
+    "start": 130.343,
+    "end": 137.875,
+    "duration": 7.532
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "李白以布衣傲骨、雄奇想象与纵横歌行把盛唐气象化为个人神采，兼擅清新明丽五七言绝句，",
-    "start": 145.304,
-    "end": 154.476,
-    "duration": 9.172
+    "start": 138.583,
+    "end": 146.835,
+    "duration": 8.252
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "与杜甫双峰并峙，开拓了抒情自由与个性张扬的广阔天地。",
-    "start": 154.864,
-    "end": 160.076,
-    "duration": 5.212
+    "start": 147.063,
+    "end": 151.555,
+    "duration": 4.492
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：杜甫赞李白“笔落惊风雨，诗成泣鬼神”；胡应麟《诗薮》赞其绝句“太白五七言绝，字字神境，篇篇神物”。",
-    "start": 161.124,
-    "end": 172.916,
-    "duration": 11.792
+    "start": 152.195,
+    "end": 162.817,
+    "duration": 10.622
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 李白自由主体人格融合了哪三家思想？代表宣言句？",
-    "start": 173.884,
-    "end": 180.836,
-    "duration": 6.952
+    "start": 163.504,
+    "end": 169.646,
+    "duration": 6.142
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 为什么李白不喜近体律诗而倾情古题乐府与歌行？",
-    "start": 181.245,
-    "end": 188.057,
-    "duration": 6.812
+    "start": 170.111,
+    "end": 175.883,
+    "duration": 5.772
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 怎样用三首绝句与《诗薮》评语论证“清新俊逸”？",
-    "start": 189.025,
-    "end": 194.277,
-    "duration": 5.252
+    "start": 176.411,
+    "end": 182.103,
+    "duration": 5.692
   }
 ]

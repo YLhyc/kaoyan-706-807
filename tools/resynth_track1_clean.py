@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 resynth_track1_clean.py
-使用轨道一原版阿里云 CosyVoice v3 高清音色 (model="cosyvoice-v3-flash", voice="longanlang_v3" 龙安朗)，
+使用轨道一原版阿里云通义语音大模型高清音色 (model="qwen-audio-3.1-tts-flash", voice="longanlang_v3.1" 龙安朗)，
 仅对存在“逗号被强断句号/807序号点号停顿/无标点长句乱换气/句间间隙过窄”的轨道一篇目执行局部断句重修：
 1. 严格保留轨道一阿里云龙安朗原版音色与音量基准（~ -23dB）；
 2. 彻底废除旧版“每 30 字强制将逗号/分号改为句号”的切法，按真实句末/冒号流式送入完整句子；
@@ -291,8 +291,8 @@ def _merge_batch_sents_to_slots(sents: list[dict], batch_slots: list[str]) -> li
 def _synth_cosy_batch(batch_slots: list[str]) -> tuple[bytes, list[dict]]:
     cb = CosyCollector()
     syn = SpeechSynthesizer(
-        model="cosyvoice-v3-flash",
-        voice="longanlang_v3",
+        model="qwen-audio-3.1-tts-flash",
+        voice="longanlang_v3.1",
         format=AudioFormat.MP3_48000HZ_MONO_256KBPS,
         callback=cb,
         hot_fix=HOT_FIX,

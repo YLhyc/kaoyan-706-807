@@ -113,9 +113,21 @@ def main():
     check(not bad_decades, "Zero unexpanded decade abbreviations (20s/40s)", f"bad={bad_decades[:5]}")
 
     resynth_txt = (ROOT / "tools" / "resynth_track1_clean.py").read_text(encoding="utf-8")
+    micro_txt = (ROOT / "tools" / "batch_synth_micro_audio.py").read_text(encoding="utf-8")
     check(
-        "cosyvoice-v2" not in resynth_txt and "MP3_22050HZ" not in resynth_txt,
-        "Track 1 synthesis script forbids low-band cosyvoice-v2 / 22050Hz",
+        "qwen-audio-3.1-tts-flash" in resynth_txt
+        and "longanlang_v3.1" in resynth_txt
+        and "cosyvoice-v2" not in resynth_txt
+        and "cosyvoice-v3-flash" not in resynth_txt
+        and "MP3_22050HZ" not in resynth_txt,
+        "Track 1 synthesis script locks qwen-audio-3.1-tts-flash + longanlang_v3.1",
+    )
+    check(
+        "qwen-audio-3.1-tts-flash" in micro_txt
+        and "longanlang_v3.1" in micro_txt
+        and "cosyvoice-v3-flash" not in micro_txt
+        and "edge_tts" not in micro_txt,
+        "Track 2 synthesis script locks qwen-audio-3.1-tts-flash + longanlang_v3.1",
     )
 
     # 2. Bundle freshness & KAOYAN_BUILTIN_CLOZE integrity

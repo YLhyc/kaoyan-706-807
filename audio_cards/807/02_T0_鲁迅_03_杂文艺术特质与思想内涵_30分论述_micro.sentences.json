@@ -3,208 +3,208 @@
     "id": "title_c0",
     "dom_key": "title_c0",
     "text": "鲁迅·杂文艺术特质与思想内涵",
-    "start": 0.314,
-    "end": 3.246,
-    "duration": 2.932
+    "start": 0.154,
+    "end": 3.046,
+    "duration": 2.892
   },
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "媒介体裁→逆向思维→典型共名→语言诗性四层递进：依托报刊做到随物赋形“无体即有体”，",
-    "start": 4.254,
-    "end": 14.346,
-    "duration": 10.092
+    "start": 3.722,
+    "end": 13.974,
+    "duration": 10.252
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "思维核心是“正面文章反面看”解剖伪善，写法是“由个入类”概括出叭儿狗/二丑社会共名，",
-    "start": 14.814,
-    "end": 22.146,
-    "duration": 7.332
+    "start": 14.202,
+    "end": 22.374,
+    "duration": 8.172
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "最后落脚到主观诗性与庄谐反规范语言。",
-    "start": 22.654,
-    "end": 25.906,
-    "duration": 3.252
+    "start": 22.842,
+    "end": 26.294,
+    "duration": 3.452
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "鲁迅杂文依托现代报刊将闲话杂感重构为搏斗思想利刃，打破义理考据辞章分界，",
-    "start": 26.914,
-    "end": 34.886,
-    "duration": 7.972
+    "start": 26.822,
+    "end": 34.674,
+    "duration": 7.852
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "坚守“立人”理想，铸就兼具战斗性与诗性的自由文体典范。",
-    "start": 35.234,
-    "end": 39.966,
+    "start": 34.982,
+    "end": 39.714,
     "duration": 4.732
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · “无体即有体”、报刊即时介入现实",
-    "start": 40.894,
-    "end": 44.466,
-    "duration": 3.572
+    "start": 40.342,
+    "end": 44.034,
+    "duration": 3.692
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "依托《新青年》《语丝》《申报·自由谈》，倡导无体即有体，随物赋形穿梭逻辑论证、叙事、抒情与历史考据；",
-    "start": 45.394,
-    "end": 56.886,
-    "duration": 11.492
+    "start": 44.562,
+    "end": 55.934,
+    "duration": 11.372
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "从早期《热风》至后期《准风月谈》，演变为现代中国活的“人史”。",
-    "start": 57.894,
-    "end": 64.186,
-    "duration": 6.292
+    "start": 56.302,
+    "end": 62.554,
+    "duration": 6.252
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · “立人”轴心与“正面文章反面看”多疑思维",
-    "start": 65.194,
-    "end": 69.206,
-    "duration": 4.012
+    "start": 63.039,
+    "end": 66.971,
+    "duration": 3.932
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "以现代启蒙“立人”为轴心，毫不含糊解剖礼教、等级专制与奴性人格；",
-    "start": 70.174,
-    "end": 76.546,
-    "duration": 6.372
+    "start": 67.459,
+    "end": 73.871,
+    "duration": 6.412
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "“正面文章反面看”：《论“他妈的”》由日常国骂揭门第血统荒谬，",
-    "start": 77.554,
-    "end": 84.366,
+    "start": 74.381,
+    "end": 81.193,
     "duration": 6.812
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "《小杂感》《魏晋风度》刺破正人君子与名士伪善外壳。",
-    "start": 84.554,
-    "end": 89.406,
-    "duration": 4.852
+    "start": 81.501,
+    "end": 86.233,
+    "duration": 4.732
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · “由个入类”典型化、创造社会类型共名",
-    "start": 90.454,
-    "end": 94.426,
-    "duration": 3.972
+    "start": 86.895,
+    "end": 91.067,
+    "duration": 4.172
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "抓日常个案甚至“一鼻、一嘴、一毛”置于数千年历史长河勘探，提炼普遍社会人格符号；",
-    "start": 95.514,
-    "end": 104.246,
-    "duration": 8.732
+    "start": 91.521,
+    "end": 100.733,
+    "duration": 9.212
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "《论“费厄泼赖”应该缓行》提炼依附豪强“叭儿狗”，论战中塑造帮凶“二丑”与“带头羊”，获穿越历史生命力。",
-    "start": 105.214,
-    "end": 114.186,
-    "duration": 8.972
+    "start": 101.261,
+    "end": 111.433,
+    "duration": 10.172
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 深沉主观诗性与反规范拗体庄谐语言",
-    "start": 115.154,
-    "end": 119.446,
-    "duration": 4.292
+    "start": 112.094,
+    "end": 116.106,
+    "duration": 4.012
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "非冷漠政论：《记念刘和珍君》在“沉默与爆发”“写与不写”张力中回荡如交响乐；",
-    "start": 120.574,
-    "end": 128.506,
-    "duration": 7.932
+    "start": 116.634,
+    "end": 124.806,
+    "duration": 8.172
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "故意打破搭配造“有理的压迫”“跪着的造反”反规范拗体，复融典故俗语大词小用，成锋芒荒诞反讽风。",
-    "start": 129.514,
-    "end": 140.086,
-    "duration": 10.572
+    "start": 125.259,
+    "end": 135.911,
+    "duration": 10.652
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "鲁迅杂文将战斗社会功能与崇高文学品格融为一体，以自由形式开拓批判现实主义与主观抒情相统一的全新疆界。",
-    "start": 141.134,
-    "end": 151.706,
-    "duration": 10.572
+    "start": 136.619,
+    "end": 146.391,
+    "duration": 9.772
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：鲁迅杂文依托《新青年》《语丝》《申报·自由谈》生长；",
-    "start": 152.754,
-    "end": 157.726,
-    "duration": 4.972
+    "start": 147.099,
+    "end": 152.391,
+    "duration": 5.292
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "代表类型共名记“叭儿狗”“二丑”“带头羊”；",
-    "start": 158.774,
-    "end": 162.466,
-    "duration": 3.692
+    "start": 152.669,
+    "end": 155.961,
+    "duration": 3.292
   },
   {
     "id": "guard_c2",
     "dom_key": "guard_c2",
     "text": "语言特征记“反规范拗体”与“庄谐杂糅”。",
-    "start": 163.554,
-    "end": 167.086,
-    "duration": 3.532
+    "start": 156.319,
+    "end": 159.691,
+    "duration": 3.372
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 写出鲁迅杂文生根的三大报刊阵地与体现其超越时效的三个“类型共名”？",
-    "start": 168.094,
-    "end": 175.826,
-    "duration": 7.732
+    "start": 160.399,
+    "end": 168.251,
+    "duration": 7.852
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 阐明“无体即有体”“正面文章反面看”“由个入类”三大核心概念？",
-    "start": 176.874,
-    "end": 184.286,
-    "duration": 7.412
+    "start": 168.775,
+    "end": 175.267,
+    "duration": 6.492
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 结合《记念刘和珍君》和“跪着的造反”谈清其“诗性+拗体反讽”语言风格？",
-    "start": 184.814,
-    "end": 192.506,
-    "duration": 7.692
+    "start": 175.666,
+    "end": 182.478,
+    "duration": 6.812
   }
 ]

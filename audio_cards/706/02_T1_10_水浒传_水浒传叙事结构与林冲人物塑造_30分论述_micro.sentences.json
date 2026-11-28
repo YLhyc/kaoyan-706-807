@@ -3,232 +3,232 @@
     "id": "title_c0",
     "dom_key": "title_c0",
     "text": "《水浒传》·叙事结构与林冲人物塑造",
-    "start": 0.154,
-    "end": 3.782,
-    "duration": 3.628
+    "start": 0.134,
+    "end": 3.666,
+    "duration": 3.532
   },
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "架构→纵深人物→横向对比→语言成熟：先用“单人传奇串联”解释百零八将如何聚义，",
-    "start": 4.87,
-    "end": 12.882,
-    "duration": 8.012
+    "start": 4.151,
+    "end": 12.243,
+    "duration": 8.092
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再深入写林冲由忍让到杀仇“逼上梁山”的性格发展弧线，继而横向比较鲁、武、李“同中有异”，",
-    "start": 13.23,
-    "end": 21.362,
-    "duration": 8.132
+    "start": 12.631,
+    "end": 20.563,
+    "duration": 7.932
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "最后点明北方白话口语成就的写人高度。",
-    "start": 21.79,
-    "end": 24.802,
-    "duration": 3.012
+    "start": 20.791,
+    "end": 23.843,
+    "duration": 3.052
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "《水浒传》是中国第一部全面描写农民起义的长篇白话章回小说，揭示“官逼民反，乱自上作”。",
-    "start": 25.634,
-    "end": 33.902,
-    "duration": 8.268
+    "start": 24.251,
+    "end": 32.983,
+    "duration": 8.732
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "金圣叹赞其“文章不避重复，而自不重复”。",
-    "start": 34.91,
-    "end": 38.802,
-    "duration": 3.892
+    "start": 33.101,
+    "end": 36.953,
+    "duration": 3.852
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 单人传奇串联的链条式结构",
-    "start": 39.73,
-    "end": 42.782,
+    "start": 37.65,
+    "end": 40.702,
     "duration": 3.052
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "前七十回采用连环钩锁、百川入海的单线纵向链条式结构：集中数回专写一人传奇，",
-    "start": 43.79,
-    "end": 51.402,
+    "start": 41.217,
+    "end": 48.829,
     "duration": 7.612
   },
   {
     "id": "sec0_step0_c1",
     "dom_key": "sec0_step0_c1",
     "text": "被逼投山时顺势引出下一位，前人退居次席；",
-    "start": 51.79,
-    "end": 55.522,
-    "duration": 3.732
+    "start": 49.137,
+    "end": 52.829,
+    "duration": 3.692
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "鲁智深大闹野猪林、林冲风雪山神庙、杨志卖刀、武松景阳冈打虎，兼顾单篇紧凑与聚义宏阔。",
-    "start": 56.57,
-    "end": 65.502,
-    "duration": 8.932
+    "start": 53.357,
+    "end": 63.049,
+    "duration": 9.692
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 动态流动性：林冲的性格发展史",
-    "start": 66.51,
-    "end": 70.362,
-    "duration": 3.852
+    "start": 63.689,
+    "end": 67.141,
+    "duration": 3.452
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "摆脱说书人物静态定型，写出“豹子头林冲”在逼迫下的动态性格发展；",
-    "start": 71.37,
-    "end": 77.902,
-    "duration": 6.532
+    "start": 67.617,
+    "end": 73.549,
+    "duration": 5.932
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "①高衙内调戏时强忍退让→②误入白虎堂、野猪林仍幻想“重见天日”→③草料场起火，",
-    "start": 78.91,
-    "end": 89.142,
-    "duration": 10.232
+    "start": 74.077,
+    "end": 84.299,
+    "duration": 10.222
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "山神庙偷听陆谦密谋→④幻想彻底破灭，挺枪杀仇雪夜上梁山，揭示“逼上梁山”逻辑。",
-    "start": 89.41,
-    "end": 97.382,
-    "duration": 7.972
+    "start": 84.607,
+    "end": 93.419,
+    "duration": 8.812
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 相似冲突中“同而不同”的犯中求避",
-    "start": 98.035,
-    "end": 101.567,
-    "duration": 3.532
+    "start": 94.062,
+    "end": 97.914,
+    "duration": 3.852
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "善于相似冲突写活个性，金圣叹《读第五才子书法》赞“把一百八个人性格都写出来”；",
-    "start": 102.307,
-    "end": 110.119,
-    "duration": 7.812
+    "start": 98.328,
+    "end": 106.9,
+    "duration": 8.572
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "打虎：武松醉后神勇兼机敏沉着，李逵沂岭杀四虎则蛮力狂暴复仇；",
-    "start": 111.087,
-    "end": 117.899,
-    "duration": 6.812
+    "start": 107.373,
+    "end": 113.945,
+    "duration": 6.572
   },
   {
     "id": "sec2_step1_c1",
     "dom_key": "sec2_step1_c1",
     "text": "粗豪：鲁智深粗中有细、仗义疏财，李逵率真莽撞不顾法度。",
-    "start": 118.907,
-    "end": 125.039,
-    "duration": 6.132
+    "start": 114.223,
+    "end": 119.515,
+    "duration": 5.292
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 纯熟北方白话与传神动作写景",
-    "start": 125.927,
-    "end": 129.619,
-    "duration": 3.692
+    "start": 120.007,
+    "end": 123.619,
+    "duration": 3.612
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "从北方民间口语提炼洗练白话，做到“一样人，便还他一样说话”；",
-    "start": 130.587,
-    "end": 136.639,
-    "duration": 6.052
+    "start": 124.147,
+    "end": 130.559,
+    "duration": 6.412
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "写景如“那雪正下得紧”；",
-    "start": 137.607,
-    "end": 140.459,
-    "duration": 2.852
+    "start": 131.003,
+    "end": 134.135,
+    "duration": 3.132
   },
   {
     "id": "sec3_step1_c1",
     "dom_key": "sec3_step1_c1",
     "text": "写林冲山神庙搬大石靠门→听明阴谋→推石拽门→挺花枪拔刀杀敌，动作精准有力，标志古代白话小说语言成熟。",
-    "start": 141.467,
-    "end": 152.879,
-    "duration": 11.412
+    "start": 134.573,
+    "end": 145.705,
+    "duration": 11.132
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "《水浒传》借单人传奇链条式结构、林冲由忍到反的动态演变、“同而不同”对比以及传神白话动作白描，",
-    "start": 153.631,
-    "end": 162.859,
-    "duration": 9.228
+    "start": 146.336,
+    "end": 155.356,
+    "duration": 9.02
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "标志古代白话英雄传奇全面成熟。",
-    "start": 163.247,
-    "end": 165.979,
-    "duration": 2.732
+    "start": 155.371,
+    "end": 158.508,
+    "duration": 3.137
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：金圣叹赞《水浒传》“文章不避重复，而自不重复”“一样人，便还他一样说话”，",
-    "start": 166.987,
-    "end": 174.319,
-    "duration": 7.332
+    "start": 158.939,
+    "end": 166.391,
+    "duration": 7.452
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "并赞“把一百八个人性格都写出来”。",
-    "start": 174.747,
-    "end": 177.359,
-    "duration": 2.612
+    "start": 166.699,
+    "end": 169.671,
+    "duration": 2.972
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 什么是《水浒》前七十回“链条式”百川入海结构？",
-    "start": 178.287,
-    "end": 183.819,
-    "duration": 5.532
+    "start": 170.328,
+    "end": 175.14,
+    "duration": 4.812
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 完整复述林冲“安于现状→野猪林→山神庙”四步心理流变？",
-    "start": 184.867,
-    "end": 191.839,
-    "duration": 6.972
+    "start": 175.614,
+    "end": 181.466,
+    "duration": 5.852
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 怎样用武松/李逵/鲁智深说明金圣叹“文章不避重复，而自不重复”？",
-    "start": 192.262,
-    "end": 200.194,
-    "duration": 7.932
+    "start": 182.014,
+    "end": 189.306,
+    "duration": 7.292
   }
 ]

@@ -3,8 +3,8 @@
 """
 batch_synth_micro_audio.py
 为 706 (42篇) + 807 (40篇) 轨道二「逻辑微缩版」全量合成与轨道一完全同源的
-阿里云 CosyVoice v3 高清音色 (model="cosyvoice-v3-flash", voice="longanlang_v3" 龙安朗)：
-1. 与轨道一完全同源的阿里云龙安朗音色与原生响度基准（不额外叠加人工增益），彻底消除双轨音色割裂；
+阿里云通义语音大模型原生音色 (model="qwen-audio-3.1-tts-flash", voice="longanlang_v3.1" 龙安朗)：
+1. 与轨道一完全同源的 qwen-audio-3.1-tts-flash + longanlang_v3.1 音色与原生响度基准（不额外叠加人工增益），彻底消除双轨音色割裂；
 2. 挂载 706 + 807 全量文史专有名词与生僻多音字 HotFix 词典（直接使用规范汉字原文，杜绝假借谐音词干扰语调）；
 3. 基于 CosyVoice word_timestamp_enabled 词级时间戳 + 字符流精确序列对齐（SequenceMatcher），
    彻底免疫 `；` 分句或数字展开（2022->二零二二）造成的跨槽错并；
@@ -42,8 +42,8 @@ MANIFEST_706 = ROOT / "data" / "kaoyan_706_manifest.json"
 MANIFEST_807 = ROOT / "data" / "kaoyan_807_manifest.json"
 MANIFEST_ALL = ROOT / "data" / "kaoyan_all_manifest.json"
 
-MODEL_NAME = "cosyvoice-v3-flash"
-VOICE_NAME = "longanlang_v3"
+MODEL_NAME = "qwen-audio-3.1-tts-flash"
+VOICE_NAME = "longanlang_v3.1"
 SAMPLE_RATE = 44100
 
 HOT_FIX = HotFix(pronunciation=[

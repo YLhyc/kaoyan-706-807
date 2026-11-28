@@ -3,224 +3,224 @@
     "id": "title_c0",
     "dom_key": "title_c0",
     "text": "辛弃疾·稼轩词艺术成就与以文为词",
-    "start": 0.354,
-    "end": 4.006,
-    "duration": 3.652
+    "start": 0.154,
+    "end": 3.366,
+    "duration": 3.212
   },
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "由文入典、由战入谐：承接苏轼再向前一步“以文为词”引入辞赋设问，",
-    "start": 4.934,
-    "end": 12.826,
-    "duration": 7.892
+    "start": 4.063,
+    "end": 11.675,
+    "duration": 7.612
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "接着在字里行间密织经史典故刺痛南宋政局，随后用亲历沙场的铁马豪情写出极反差悲歌，",
-    "start": 13.214,
-    "end": 21.626,
-    "duration": 8.412
+    "start": 12.063,
+    "end": 20.555,
+    "duration": 8.492
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "同时兼擅村居清趣而聚合南宋辛派一宗。",
-    "start": 21.734,
-    "end": 25.626,
-    "duration": 3.892
+    "start": 20.783,
+    "end": 24.715,
+    "duration": 3.932
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "辛弃疾是南宋豪放词集大成者，“归正人”际遇令其将沙场壮怀注入词调。",
-    "start": 26.754,
-    "end": 33.606,
-    "duration": 6.852
+    "start": 25.243,
+    "end": 31.895,
+    "duration": 6.652
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "刘克庄赞“横绝六合，扫空万古”，周济《宋四家词选》评其“沉着痛快，有辙可循”。",
-    "start": 34.614,
-    "end": 42.186,
-    "duration": 7.572
+    "start": 32.173,
+    "end": 40.425,
+    "duration": 8.252
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 推行“以文为词”、入散文辞赋章法",
-    "start": 43.194,
-    "end": 47.286,
-    "duration": 4.092
+    "start": 41.133,
+    "end": 44.985,
+    "duration": 3.852
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "打破整齐拘束，引入散文辞赋章法、句式与议论。",
-    "start": 48.294,
-    "end": 53.586,
-    "duration": 5.292
+    "start": 45.513,
+    "end": 50.565,
+    "duration": 5.052
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "《沁园春·将止酒》仿汉赋宾主问答，《木兰花慢》借《天问》连用七问，",
-    "start": 54.594,
-    "end": 61.686,
-    "duration": 7.092
+    "start": 51.048,
+    "end": 57.7,
+    "duration": 6.652
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "《贺新郎》化《论语》及虚字，《摸鱼儿》层层设问倒折，既协律又纵横思辨。",
-    "start": 62.034,
-    "end": 68.646,
-    "duration": 6.612
+    "start": 58.008,
+    "end": 64.02,
+    "duration": 6.012
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 善用“用经用史”开展政治讽喻",
-    "start": 69.574,
-    "end": 73.026,
-    "duration": 3.452
+    "start": 64.701,
+    "end": 68.633,
+    "duration": 3.932
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "经史典故化为借古讽今利器，典故密织而不滞重。",
-    "start": 73.954,
-    "end": 78.926,
-    "duration": 4.972
+    "start": 69.161,
+    "end": 74.613,
+    "duration": 5.452
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "《永遇乐·京口北固亭怀古》以孙仲谋讽偷安，",
-    "start": 79.894,
-    "end": 85.426,
-    "duration": 5.532
+    "start": 75.111,
+    "end": 80.323,
+    "duration": 5.212
   },
   {
     "id": "sec1_step1_c1",
     "dom_key": "sec1_step1_c1",
     "text": "以刘裕“气吞万里如虎”对刘义隆“赢得仓皇北顾”警韩侂胄冒进，再借廉颇抒报国无门之悲。",
-    "start": 85.774,
-    "end": 94.586,
-    "duration": 8.812
+    "start": 80.631,
+    "end": 89.603,
+    "duration": 8.972
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 贯注沙场豪壮气概与军事意象群",
-    "start": 95.554,
-    "end": 99.286,
-    "duration": 3.732
+    "start": 90.252,
+    "end": 94.264,
+    "duration": 4.012
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "凭借亲率五十骑突袭金营的真实经历，大量引入刀剑、弓马、旌旗等罕见军事意象。",
-    "start": 100.058,
-    "end": 107.91,
-    "duration": 7.852
+    "start": 94.792,
+    "end": 103.044,
+    "duration": 8.252
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "《破阵子》极写“醉里挑灯看剑……沙场秋点兵”铁马壮阔，结句陡然跌落“可怜白发生”，迸发沉雄悲壮力。",
-    "start": 108.918,
-    "end": 120.41,
-    "duration": 11.492
+    "start": 103.408,
+    "end": 113.1,
+    "duration": 9.692
   },
   {
     "id": "sec3_title_c0",
     "dom_key": "sec3_title_c0",
     "text": "04 · 刚柔相济、确立宋词豪放宗师地位",
-    "start": 121.338,
-    "end": 125.55,
-    "duration": 4.212
+    "start": 113.618,
+    "end": 117.47,
+    "duration": 3.852
   },
   {
     "id": "sec3_step0_c0",
     "dom_key": "sec3_step0_c0",
     "text": "带湖瓢泉时期写下清新农村词与谐谑小品：《西江月》听蛙说丰年，",
-    "start": 126.558,
-    "end": 133.49,
-    "duration": 6.932
+    "start": 117.998,
+    "end": 125.37,
+    "duration": 7.372
   },
   {
     "id": "sec3_step0_c1",
     "dom_key": "sec3_step0_c1",
     "text": "《清平乐·村居》白描“最喜小儿无赖，溪头卧剥莲蓬”；",
-    "start": 133.758,
-    "end": 137.89,
-    "duration": 4.132
+    "start": 125.598,
+    "end": 130.25,
+    "duration": 4.652
   },
   {
     "id": "sec3_step1_c0",
     "dom_key": "sec3_step1_c0",
     "text": "聚拢南宋辛派词人群体，确立词与五七言诗歌分庭抗礼之地位。",
-    "start": 138.898,
-    "end": 145.43,
-    "duration": 6.532
+    "start": 130.778,
+    "end": 137.35,
+    "duration": 6.572
   },
   {
     "id": "concl_c0",
     "dom_key": "concl_c0",
     "text": "辛弃疾承苏轼而推行“以文为词”，融散文辞赋章法、经史典故与军事意象兼备清趣，",
-    "start": 146.478,
-    "end": 154.77,
-    "duration": 8.292
+    "start": 138.056,
+    "end": 147.748,
+    "duration": 9.692
   },
   {
     "id": "concl_c1",
     "dom_key": "concl_c1",
     "text": "带动南宋辛派词人，最终使词真正与五七言诗歌并驾齐驱。",
-    "start": 154.998,
-    "end": 159.97,
-    "duration": 4.972
+    "start": 147.896,
+    "end": 152.788,
+    "duration": 4.892
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：注意与苏轼区分：苏轼核心在“以诗为词”（标题小序、旷达理趣）；",
-    "start": 161.018,
-    "end": 166.87,
-    "duration": 5.852
+    "start": 153.496,
+    "end": 160.468,
+    "duration": 6.972
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "辛弃疾核心在“以文为词”（散文辞赋句式、用经用史、沙场意象）。",
-    "start": 167.918,
-    "end": 174.97,
-    "duration": 7.052
+    "start": 160.906,
+    "end": 166.598,
+    "duration": 5.692
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 辛弃疾“以文为词”具体融入了哪四种散文辞赋笔法（各举一词）？",
-    "start": 175.898,
-    "end": 183.95,
-    "duration": 8.052
+    "start": 167.305,
+    "end": 174.677,
+    "duration": 7.372
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 《永遇乐·京口北固亭怀古》中五典分别指向什么时弊与心境？",
-    "start": 184.958,
-    "end": 192.61,
-    "duration": 7.652
+    "start": 175.205,
+    "end": 182.017,
+    "duration": 6.812
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 对比《破阵子》与《清平乐·村居》说明刚柔相济风貌？",
-    "start": 193.618,
-    "end": 199.75,
-    "duration": 6.132
+    "start": 182.545,
+    "end": 187.917,
+    "duration": 5.372
   }
 ]
