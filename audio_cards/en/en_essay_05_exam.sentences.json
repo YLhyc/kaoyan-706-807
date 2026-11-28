@@ -1,72 +1,72 @@
 [
   {
     "id": "sent_p1_s1",
-    "text": "Notice: Volunteers Wanted",
-    "start": "0.045",
-    "end": "2.350",
-    "duration": "2.305"
+    "text": "Notice",
+    "start": "0.000",
+    "end": "0.688",
+    "duration": "0.688"
   },
   {
     "id": "sent_p1_s2",
-    "text": "In an effort to foster cross-cultural understanding on campus, the International Cultural Exchange Week will be grandly hosted from December 1st to 7th.",
-    "start": "2.995",
-    "end": "12.610",
-    "duration": "9.615"
+    "text": "December 20, 2026",
+    "start": "1.088",
+    "end": "3.992",
+    "duration": "2.904"
   },
   {
     "id": "sent_p1_s3",
-    "text": "This notice is issued for the purpose of recruiting 20 energetic and responsible student volunteers.",
-    "start": "13.385",
-    "end": "20.060",
-    "duration": "6.675"
+    "text": "This notice is issued for the purpose of recruiting a diligent student assistant for Professor Smith's research project on campus sports activities.",
+    "start": "4.392",
+    "end": "13.868",
+    "duration": "9.476"
   },
   {
     "id": "sent_p2_s1",
-    "text": "Prospective candidates are expected to fulfill the following qualifications.",
-    "start": "21.615",
-    "end": "26.370",
-    "duration": "4.755"
+    "text": "The relevant details are as follows.",
+    "start": "14.768",
+    "end": "16.972",
+    "duration": "2.204"
   },
   {
     "id": "sent_p2_s2",
-    "text": "Above all, applicants should demonstrate fluent oral English communication skills and basic cultural sensitivity.",
-    "start": "27.065",
-    "end": "34.770",
-    "duration": "7.705"
+    "text": "In the first place, the selected assistant will be responsible for collecting survey data and helping organize interviews on students' exercise habits.",
+    "start": "17.372",
+    "end": "26.868",
+    "duration": "9.496"
   },
   {
     "id": "sent_p2_s3",
-    "text": "In addition, prior volunteer experience and strong teamwork spirit will be viewed favorably.",
-    "start": "35.405",
-    "end": "41.810",
-    "duration": "6.405"
+    "text": "In the second place, applicants are expected to possess strong teamwork spirit, basic data analysis skills, and a keen interest in campus sports.",
+    "start": "27.268",
+    "end": "37.647",
+    "duration": "10.379"
   },
   {
     "id": "sent_p2_s4",
-    "text": "The primary responsibilities entail guiding international guests, coordinating exhibition booths, and facilitating cultural workshops.",
-    "start": "42.490",
-    "end": "51.860",
-    "duration": "9.370"
+    "text": "Not only can this position enrich your research experience, but it also offers a valuable chance to work closely with a distinguished scholar.",
+    "start": "38.046",
+    "end": "46.912",
+    "duration": "8.866"
   },
   {
     "id": "sent_p3_s1",
-    "text": "Those who are interested should submit an electronic application to volunteer_exchange@university.edu.cn before November 20th.",
-    "start": "53.375",
-    "end": "65.340",
-    "duration": "11.965"
+    "text": "Those interested should send a resume to sports_research@university.edu.cn before January 5.",
+    "start": "47.812",
+    "end": "60.711",
+    "duration": "12.899"
   },
   {
     "id": "sent_p3_s2",
-    "text": "We sincerely look forward to your active participation.",
-    "start": "66.155",
-    "end": "69.100",
-    "duration": "2.945"
+    "text": "Your active application is warmly welcomed!",
+    "start": "61.111",
+    "end": "63.724",
+    "duration": "2.613"
   },
   {
     "id": "sent_p3_s3",
-    "text": "The Organizing Committee, October 30th",
-    "start": "69.745",
-    "end": "72.760",
-    "duration": "3.015"
+    "text": "Li Ming",
+    "start": "64.124",
+    "end": "64.903",
+    "duration": "0.779"
   }
 ]

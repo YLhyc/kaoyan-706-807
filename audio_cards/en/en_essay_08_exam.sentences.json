@@ -1,65 +1,65 @@
 [
   {
     "id": "sent_p1_s1",
-    "text": "Dear Professor Williams,",
-    "start": "0.055",
-    "end": "1.590",
-    "duration": "1.535"
+    "text": "Dear Paul,",
+    "start": "0.000",
+    "end": "0.888",
+    "duration": "0.888"
   },
   {
     "id": "sent_p1_s2",
-    "text": "Having read your illuminating academic papers on artificial intelligence and cognitive linguistics with great admiration, I am writing to consult you regarding your graduate research projects and prospective student requirements.",
-    "start": "2.270",
-    "end": "16.120",
-    "duration": "13.850"
+    "text": "Thank you for your email and warm support for our upcoming campus event.",
+    "start": "1.288",
+    "end": "5.561",
+    "duration": "4.273"
+  },
+  {
+    "id": "sent_p1_s3",
+    "text": "I am writing to share details about the craftsmen's show and how you can assist with our preparation work.",
+    "start": "5.961",
+    "end": "12.209",
+    "duration": "6.248"
   },
   {
     "id": "sent_p2_s1",
-    "text": "As a fourth-year undergraduate student planning to apply for your research team, I would be exceedingly grateful if you could spare a few minutes to clarify three specific concerns.",
-    "start": "17.635",
-    "end": "28.960",
-    "duration": "11.325"
+    "text": "First, regarding the demonstration, the young craftsmen will bring traditional works like paper cutting and clay art, showing how they combine old skills with modern designs.",
+    "start": "13.109",
+    "end": "24.472",
+    "duration": "11.363"
   },
   {
     "id": "sent_p2_s2",
-    "text": "In the first place, could you please provide some guidance on the primary academic prerequisites your laboratory prioritizes?",
-    "start": "29.630",
-    "end": "37.280",
-    "duration": "7.650"
+    "text": "Students will certainly find it worthwhile to watch closely and make a small gift themselves.",
+    "start": "24.872",
+    "end": "30.671",
+    "duration": "5.799"
   },
   {
     "id": "sent_p2_s3",
-    "text": "In the second place, I wonder whether students from interdisciplinary backgrounds are encouraged to participate in your ongoing grants.",
-    "start": "37.905",
-    "end": "46.080",
-    "duration": "8.175"
-  },
-  {
-    "id": "sent_p2_s4",
-    "text": "Lastly, what foundational literature would you recommend reading before the upcoming interview?",
-    "start": "46.650",
-    "end": "52.320",
-    "duration": "5.670"
+    "text": "Second, as for the preparation work, it would be deeply appreciated if you could help arrange tables in the hall on Friday afternoon and guide other international students during the event.",
+    "start": "31.071",
+    "end": "43.237",
+    "duration": "12.166"
   },
   {
     "id": "sent_p3_s1",
-    "text": "Thank you very much for your precious guidance.",
-    "start": "53.875",
-    "end": "56.210",
-    "duration": "2.335"
+    "text": "Thank you again for your kindness.",
+    "start": "44.136",
+    "end": "46.059",
+    "duration": "1.923"
   },
   {
     "id": "sent_p3_s2",
-    "text": "I look forward to your valuable insights.",
-    "start": "56.890",
-    "end": "59.300",
-    "duration": "2.410"
+    "text": "Looking forward to working with you soon!",
+    "start": "46.459",
+    "end": "48.580",
+    "duration": "2.121"
   },
   {
     "id": "sent_p3_s3",
     "text": "Yours sincerely, Li Ming",
-    "start": "59.950",
-    "end": "62.170",
-    "duration": "2.220"
+    "start": "48.980",
+    "end": "51.083",
+    "duration": "2.103"
   }
 ]

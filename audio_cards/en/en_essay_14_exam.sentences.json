@@ -1,65 +1,65 @@
 [
   {
     "id": "sent_p1_s1",
-    "text": "As is subtly delineated in the cartoon above, a young scholar is sitting tranquilly beside a window, engrossed in a thick masterpiece, with his mind seemingly wandering across boundless realms of wisdom.",
-    "start": "0.055",
-    "end": "14.020",
-    "duration": "13.965"
+    "text": "The thought-provoking cartoon vividly depicts a young student sitting quietly beside a window, deeply absorbed in a classic book.",
+    "start": "0.000",
+    "end": "9.206",
+    "duration": "9.206"
   },
   {
     "id": "sent_p1_s2",
-    "text": "The profound insight implied here is obvious: systematic reading and deep contemplation constitute the most reliable ladder for personal growth and intellectual enlightenment.",
-    "start": "14.655",
-    "end": "26.660",
-    "duration": "12.005"
+    "text": "Simple as the drawing may seem, it conveys a timeless truth: deep reading serves as a reliable ladder toward personal growth and independent thinking.",
+    "start": "9.606",
+    "end": "20.290",
+    "duration": "10.684"
   },
   {
     "id": "sent_p2_s1",
-    "text": "Several prominent factors explain why deep reading remains irreplaceable in our fast-paced era.",
-    "start": "28.175",
-    "end": "34.550",
-    "duration": "6.375"
+    "text": "A multitude of factors explain why deep reading remains irreplaceable today.",
+    "start": "21.190",
+    "end": "26.116",
+    "duration": "4.926"
   },
   {
     "id": "sent_p2_s2",
-    "text": "In the first place, immersing oneself in classic literature enriches mental horizons and cultivates critical thinking, allowing us to perceive complexities beyond superficial appearances.",
-    "start": "35.190",
-    "end": "47.650",
-    "duration": "12.460"
+    "text": "Judging books solely by immediate practical use is far from wise; it is widely acknowledged that classics enrich our minds and broaden our horizons.",
+    "start": "26.516",
+    "end": "36.977",
+    "duration": "10.461"
   },
   {
     "id": "sent_p2_s3",
-    "text": "As Francis Bacon famously remarked, \"By reading we enrich the mind.\"",
-    "start": "48.295",
-    "end": "53.520",
-    "duration": "5.225"
+    "text": "In an era defined by fragmented videos, many youths find it challenging to stay focused and often fail to form deep insights.",
+    "start": "37.377",
+    "end": "46.485",
+    "duration": "9.108"
   },
   {
     "id": "sent_p2_s4",
-    "text": "In the second place, systematic reading serves as an effective antidote to the anxiety and intellectual shallowness triggered by sensationalized short-form videos.",
-    "start": "54.125",
-    "end": "65.150",
-    "duration": "11.025"
+    "text": "Those who adhere to daily reading build solid judgment, whereas people indulging in shallow screens gradually lose their critical thinking.",
+    "start": "46.885",
+    "end": "56.708",
+    "duration": "9.823"
   },
   {
     "id": "sent_p2_s5",
-    "text": "Confronted with fierce social competition, continuous knowledge accumulation alone provides the inner fortitude needed to overcome uncertainty.",
-    "start": "65.810",
-    "end": "75.880",
-    "duration": "10.070"
+    "text": "Not only does reading polish our character, but it also offers calm amidst intense modern anxiety.",
+    "start": "57.107",
+    "end": "64.078",
+    "duration": "6.971"
   },
   {
     "id": "sent_p3_s1",
-    "text": "In view of the above discussion, young students are encouraged to allocate dedicated time for daily reading and resist mindless digital distractions.",
-    "start": "77.445",
-    "end": "87.480",
-    "duration": "10.035"
+    "text": "In conclusion, nothing is more valuable than turning reading into a lifelong habit.",
+    "start": "64.978",
+    "end": "70.281",
+    "duration": "5.303"
   },
   {
     "id": "sent_p3_s2",
-    "text": "Only when we furnish our minds with profound wisdom can we maintain poise and achieve true greatness.",
-    "start": "88.145",
-    "end": "94.700",
-    "duration": "6.555"
+    "text": "Only when we combine thoughtful reading with steady action can we achieve genuine inner fulfillment.",
+    "start": "70.681",
+    "end": "77.512",
+    "duration": "6.831"
   }
 ]

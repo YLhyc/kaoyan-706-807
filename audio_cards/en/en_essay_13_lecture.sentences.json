@@ -1,93 +1,72 @@
 [
   {
     "id": "t2_intro",
-    "text": "下面进入大作文 05 · 人与自然与生态保护：绿色低碳发展与资源可持续利用答题骨架与变体精解。",
-    "start": "0.030",
-    "end": "10.270",
-    "duration": "10.240"
+    "text": "下面进入大作文 05 · 人与自然与生态保护：绿水青山与绿色低碳发展，英式思维与留白盲拼训练。",
+    "start": "0.000",
+    "end": "10.644",
+    "duration": "10.644"
   },
   {
-    "id": "t2_p1_cn",
-    "text": "第一段：绿水青山画卷描摹与人与自然和谐共生立意。",
-    "start": "11.395",
-    "end": "16.780",
-    "duration": "5.385"
+    "id": "t2_u1_cn",
+    "text": "【首段 · 荒山变青山】用 in which 定从和 with 独立主格写活“荒山变成绿林，鱼在清澈河水畅游”：",
+    "start": "11.544",
+    "end": "21.402",
+    "duration": "9.858"
   },
   {
-    "id": "t2_p1_en",
-    "text": "Barren hills transforming into luxuriant green forests; ecological preservation is a vital prerequisite for sustainable prosperity.",
-    "start": "17.485",
-    "end": "26.920",
-    "duration": "9.435"
+    "id": "t2_u1_en",
+    "text": "The striking cartoon vividly presents a magnificent scene in which barren hills turn into lush green forests, with fish swimming freely in crystal-clear rivers.",
+    "start": "23.202",
+    "end": "34.526",
+    "duration": "11.324"
   },
   {
-    "id": "t2_p1_tip_cn",
-    "text": "绿色生态黄金立意：vital prerequisites for the sustainable prosperity of human civilization.",
-    "start": "27.630",
-    "end": "34.330",
-    "duration": "6.700"
+    "id": "t2_u1_tip",
+    "text": "手术刀点拨：turn into 和 with fish swimming freely 简单精准，避免拼写不确定的生僻生态学词汇。",
+    "start": "35.026",
+    "end": "43.990",
+    "duration": "8.964"
   },
   {
-    "id": "t2_p1_tip_en",
-    "text": "Ecological preservation is a vital prerequisite for sustainable prosperity.",
-    "start": "35.075",
-    "end": "40.160",
-    "duration": "5.085"
+    "id": "t2_u2_cn",
+    "text": "【二段 · 批判短视与空喊口号】改写“短视企业没能权衡环境代价，只靠口号远远不够”：",
+    "start": "44.890",
+    "end": "53.048",
+    "duration": "8.158"
   },
   {
-    "id": "t2_p2_cn",
-    "text": "第二段：破坏生态反噬 vs 绿色发展红利对比，融入预防古谚。",
-    "start": "41.815",
-    "end": "48.030",
-    "duration": "6.215"
+    "id": "t2_u2_en",
+    "text": "Short-sighted companies often fail to weigh the severe cost, and relying solely on slogans is far from enough to protect nature.",
+    "start": "54.847",
+    "end": "63.816",
+    "duration": "8.969"
   },
   {
-    "id": "t2_p2_en",
-    "text": "Reckless exploitation of resources will disrupt ecological equilibrium; economic advancement should never be pursued at the expense of environment.",
-    "start": "48.745",
-    "end": "58.820",
-    "duration": "10.075"
+    "id": "t2_u2_tip",
+    "text": "手术刀点拨：连续嵌入 fail to 与 far from enough 两块免 not 积木，批判力度克制到位。",
+    "start": "64.316",
+    "end": "73.265",
+    "duration": "8.949"
   },
   {
-    "id": "t2_p2_tip_cn",
-    "text": "反向批判金句：Economic advancement should never be pursued at the exorbitant expense of a devastated environment.",
-    "start": "59.565",
-    "end": "67.450",
-    "duration": "7.885"
+    "id": "t2_u3_cn",
+    "text": "【尾段 · 以环境换增长零容忍】用 at the heavy expense of + Only in harmony with nature can mankind 收尾：",
+    "start": "74.165",
+    "end": "82.976",
+    "duration": "8.811"
   },
   {
-    "id": "t2_p2_tip_en",
-    "text": "Economic advancement should never be pursued at the exorbitant expense of a devastated environment.",
-    "start": "68.185",
-    "end": "74.560",
-    "duration": "6.375"
+    "id": "t2_u3_en",
+    "text": "Economic advancement must never be pursued at the heavy expense of a damaged environment. Only in harmony with nature can mankind secure a green, promising future.",
+    "start": "84.776",
+    "end": "96.105",
+    "duration": "11.329"
   },
   {
-    "id": "t2_p3_cn",
-    "text": "第三段：法制严惩与公众垃圾分类两手抓，以天人合一倒装收尾。",
-    "start": "76.225",
-    "end": "82.190",
-    "duration": "5.965"
-  },
-  {
-    "id": "t2_p3_en",
-    "text": "Stringent legal frameworks must be enforced; only in harmony with nature can mankind secure a thriving and promising future.",
-    "start": "82.925",
-    "end": "91.240",
-    "duration": "8.315"
-  },
-  {
-    "id": "t2_p3_tip_cn",
-    "text": "人与自然和谐倒装结语：Only in harmony with nature can mankind secure a thriving future.",
-    "start": "91.995",
-    "end": "99.890",
-    "duration": "7.895"
-  },
-  {
-    "id": "t2_p3_tip_en",
-    "text": "Only in harmony with nature can mankind secure a thriving and promising future.",
-    "start": "100.635",
-    "end": "106.250",
-    "duration": "5.615"
+    "id": "t2_u3_tip",
+    "text": "手术刀点拨：Only in harmony with nature 置句首接 can mankind，与环保主题天然契合。",
+    "start": "96.605",
+    "end": "104.011",
+    "duration": "7.406"
   }
 ]

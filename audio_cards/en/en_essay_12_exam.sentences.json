@@ -1,65 +1,65 @@
 [
   {
     "id": "sent_p1_s1",
-    "text": "As is subtly delineated in the cartoon above, amidst a torrential downpour, several passersby are holding a shared umbrella together and helping a disabled pedestrian navigate through the puddle.",
-    "start": "0.055",
-    "end": "13.440",
-    "duration": "13.385"
+    "text": "The heartwarming cartoon vividly depicts several passersby holding a shared umbrella in heavy rain, helping a pedestrian in need walk safely across the street.",
+    "start": "0.000",
+    "end": "10.924",
+    "duration": "10.924"
   },
   {
     "id": "sent_p1_s2",
-    "text": "The heartwarming scene conveys a profound truth: mutual assistance and collective goodwill are the indispensable glue that binds a civilized society together.",
-    "start": "14.070",
-    "end": "25.130",
-    "duration": "11.060"
+    "text": "Simple as this daily scene may seem, it conveys a profound truth: mutual help and collective goodwill serve as a vital cornerstone of a harmonious society.",
+    "start": "11.324",
+    "end": "22.812",
+    "duration": "11.488"
   },
   {
     "id": "sent_p2_s1",
-    "text": "The rationale behind this virtuous conduct is multifaceted.",
-    "start": "26.655",
-    "end": "30.360",
-    "duration": "3.705"
+    "text": "A multitude of reasons account for why civic kindness matters deeply.",
+    "start": "23.712",
+    "end": "28.133",
+    "duration": "4.421"
   },
   {
     "id": "sent_p2_s2",
-    "text": "First and foremost, when individuals confront sudden predicaments, timely support from others not only resolves imminent crises, but also restores faith in humanity.",
-    "start": "30.890",
-    "end": "42.370",
-    "duration": "11.480"
+    "text": "In the first place, timely help from strangers not only relieves urgent hardships, but also restores people's faith in humanity.",
+    "start": "28.533",
+    "end": "37.294",
+    "duration": "8.761"
   },
   {
     "id": "sent_p2_s3",
-    "text": "As the well-known proverb proclaims, \"Unity is strength.\"",
-    "start": "43.010",
-    "end": "47.270",
-    "duration": "4.260"
+    "text": "Selfish indifference isolates hearts and breeds distrust, whereas cooperative action fosters mutual trust and social warmth.",
+    "start": "37.694",
+    "end": "47.607",
+    "duration": "9.913"
   },
   {
     "id": "sent_p2_s4",
-    "text": "Selfish indifference merely isolates human hearts, whereas cooperative solidarity fosters reciprocal trust throughout the community.",
-    "start": "47.930",
-    "end": "57.350",
-    "duration": "9.420"
+    "text": "It is no exaggeration to say that living without empathy would be anything but pleasant.",
+    "start": "48.007",
+    "end": "53.453",
+    "duration": "5.446"
   },
   {
     "id": "sent_p2_s5",
-    "text": "A prime case in point is the selfless dedication of community volunteers who rushed to offer relief supplies during extreme weather disasters, illustrating that ordinary kindness can generate boundless strength.",
-    "start": "57.970",
-    "end": "71.590",
-    "duration": "13.620"
+    "text": "A vivid case in point is the rise of neighborhood volunteer teams during severe weather, demonstrating that small acts of care can create lasting strength.",
+    "start": "53.852",
+    "end": "64.558",
+    "duration": "10.706"
   },
   {
     "id": "sent_p3_s1",
-    "text": "To nurture this commendable spirit, it is imperative for the media and educational bodies to vigorously advocate civic responsibility and empathy.",
-    "start": "73.235",
-    "end": "82.560",
-    "duration": "9.325"
+    "text": "Therefore, we cannot attach too much importance to nurturing civic responsibility.",
+    "start": "65.458",
+    "end": "71.001",
+    "duration": "5.543"
   },
   {
     "id": "sent_p3_s2",
-    "text": "Only when every member of society extends a helping hand can we banish indifference and construct a society brimming with enduring warmth.",
-    "start": "83.165",
-    "end": "92.050",
-    "duration": "8.885"
+    "text": "Only when every citizen extends a helping hand can we banish cold indifference and build a society brimming with genuine warmth.",
+    "start": "71.401",
+    "end": "80.122",
+    "duration": "8.721"
   }
 ]

@@ -2,57 +2,57 @@
   {
     "id": "sent_p1_s1",
     "text": "Dear Professor Zhang,",
-    "start": "0.045",
-    "end": "1.450",
-    "duration": "1.405"
+    "start": "0.000",
+    "end": "1.356",
+    "duration": "1.356"
   },
   {
     "id": "sent_p1_s2",
-    "text": "I am writing this letter with sincere regret to apologize for being unable to attend tomorrow's academic symposium on modern linguistics as previously scheduled.",
-    "start": "2.145",
-    "end": "12.530",
-    "duration": "10.385"
+    "text": "I am writing to express my sincere apology for failing to attend tomorrow's seminar on modern literature as previously scheduled.",
+    "start": "1.756",
+    "end": "10.062",
+    "duration": "8.306"
   },
   {
     "id": "sent_p2_s1",
-    "text": "Much to my distress, our laboratory has just been assigned an emergency national research task, and I am designated to handle critical experimental data analysis under an extremely tight deadline.",
-    "start": "13.995",
-    "end": "27.210",
-    "duration": "13.215"
+    "text": "Much to my regret, an urgent academic data task assigned by our department this morning prevents me from leaving the campus tomorrow.",
+    "start": "10.962",
+    "end": "19.875",
+    "duration": "8.913"
   },
   {
     "id": "sent_p2_s2",
-    "text": "Because of this unanticipated circumstance, it is utterly impossible for me to be absent from the laboratory tomorrow.",
-    "start": "27.785",
-    "end": "34.990",
-    "duration": "7.205"
+    "text": "Because of this unexpected assignment, it is impossible for me to arrive on time.",
+    "start": "20.275",
+    "end": "25.066",
+    "duration": "4.791"
   },
   {
     "id": "sent_p2_s3",
-    "text": "I fully realize the inconvenience and disappointment my unexpected absence may cause to you and the research group.",
-    "start": "35.650",
-    "end": "42.580",
-    "duration": "6.930"
+    "text": "To make up for the inconvenience caused, I would like to submit my reading notes in advance via email.",
+    "start": "25.466",
+    "end": "31.754",
+    "duration": "6.288"
   },
   {
     "id": "sent_p3_s1",
-    "text": "Would it be possible for us to reschedule our meeting for next Tuesday?",
-    "start": "44.125",
-    "end": "48.080",
-    "duration": "3.955"
+    "text": "Would it be possible for us to reschedule our discussion for next Tuesday afternoon?",
+    "start": "32.654",
+    "end": "37.390",
+    "duration": "4.736"
   },
   {
     "id": "sent_p3_s2",
-    "text": "Please accept my deepest apologies once again for this regrettable situation.",
-    "start": "48.785",
-    "end": "53.710",
-    "duration": "4.925"
+    "text": "Once again, please accept my deepest apologies for any trouble caused.",
+    "start": "37.789",
+    "end": "42.528",
+    "duration": "4.739"
   },
   {
     "id": "sent_p3_s3",
     "text": "Yours sincerely, Li Ming",
-    "start": "54.330",
-    "end": "56.590",
-    "duration": "2.260"
+    "start": "42.928",
+    "end": "45.031",
+    "duration": "2.103"
   }
 ]

@@ -3,160 +3,160 @@
     "id": "title_c0",
     "dom_key": "title_c0",
     "text": "李清照·词作艺术风格演进与词别是一家理论贡献",
-    "start": 0.134,
-    "end": 4.729,
-    "duration": 4.595
+    "start": 0.314,
+    "end": 5.366,
+    "duration": 5.052
   },
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "理论立界→生平折风→语言定宗：先用《词论》把词和诗、俗曲划清本体界限（不葺之诗vs词语尘下），",
-    "start": 5.318,
-    "end": 15.838,
-    "duration": 10.52
+    "start": 6.374,
+    "end": 18.026,
+    "duration": 11.652
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再看靖康南渡如何撕开她前期明快与后期凄苦的巨大落差，",
-    "start": 16.139,
-    "end": 21.476,
-    "duration": 5.337
+    "start": 18.294,
+    "end": 23.746,
+    "duration": 5.452
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "最后定格“寻常口语+精工炼字”的易安体风范。",
-    "start": 21.577,
-    "end": 25.274,
-    "duration": 3.697
+    "start": 23.974,
+    "end": 28.106,
+    "duration": 4.132
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "李清照是两宋之交婉约词代表，自成“易安体”。",
-    "start": 25.861,
-    "end": 29.857,
-    "duration": 3.996
+    "start": 29.114,
+    "end": 33.006,
+    "duration": 3.892
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "其词风演进与“词别是一家”主张均具重要贡献。",
-    "start": 30.444,
-    "end": 34.454,
-    "duration": 4.009
+    "start": 34.014,
+    "end": 38.386,
+    "duration": 4.372
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 《词论》倡“词别是一家”、护词体独立",
-    "start": 35.041,
-    "end": 38.49,
-    "duration": 3.45
+    "start": 39.354,
+    "end": 43.326,
+    "duration": 3.972
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "《词论》严分诗词，强调“分五音，分五声，分六律，分清浊轻重”，讲究铺叙故实情致；",
-    "start": 39.064,
-    "end": 47.683,
-    "duration": 8.619
+    "start": 44.294,
+    "end": 54.026,
+    "duration": 9.732
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "批苏轼欧阳修“往往不协音律”“句读不葺之诗”，批柳永“词语尘下”，力护词体审美边界。",
-    "start": 48.27,
-    "end": 56.173,
-    "duration": 7.903
+    "start": 55.074,
+    "end": 63.006,
+    "duration": 7.932
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 以南渡为界、由清丽明快转向沉痛苍凉",
-    "start": 56.76,
-    "end": 61.498,
-    "duration": 4.739
+    "start": 63.934,
+    "end": 68.866,
+    "duration": 4.932
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "生活美满写闺情游赏：《如梦令》“常记溪亭日暮，沉醉不知归路”，轻快充满生机；",
-    "start": 62.085,
-    "end": 69.897,
-    "duration": 7.811
+    "start": 69.914,
+    "end": 79.046,
+    "duration": 9.132
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "南渡国破家亡后写孤寂家国悲痛：《声声慢》“寻寻觅觅，冷冷清清，凄凄惨惨戚戚”十四叠字凄苦苍凉。",
-    "start": 70.483,
-    "end": 81.407,
-    "duration": 10.923
+    "start": 80.094,
+    "end": 91.666,
+    "duration": 11.572
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 寻常口语白描炼字、开创“易安体”",
-    "start": 81.981,
-    "end": 85.717,
-    "duration": 3.736
+    "start": 92.674,
+    "end": 97.166,
+    "duration": 4.492
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "善选日常细节与浅近家常语传深情，如《凤凰台上忆吹箫》“生怕离怀别苦，多少事、欲说还休”；",
-    "start": 86.291,
-    "end": 96.576,
-    "duration": 10.285
+    "start": 97.874,
+    "end": 108.286,
+    "duration": 10.412
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "工于白描造境与炼字如“绿肥红瘦”“人比黄花瘦”，素雅清婉，树宋代婉约典范。",
-    "start": 97.163,
-    "end": 105.261,
-    "duration": 8.098
+    "start": 109.334,
+    "end": 117.986,
+    "duration": 8.652
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：理论出处《词论》批评苏轼“句读不葺之诗”、批评柳永“词语尘下”；",
-    "start": 105.848,
-    "end": 111.902,
-    "duration": 6.054
+    "start": 118.994,
+    "end": 125.326,
+    "duration": 6.332
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "记住前期《如梦令》“绿肥红瘦”，后期《声声慢》十四叠字。",
-    "start": 112.241,
-    "end": 116.928,
-    "duration": 4.686
+    "start": 126.334,
+    "end": 130.866,
+    "duration": 4.532
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 完整背出《词论》核心立场及对苏轼、柳永的精准评语？",
-    "start": 117.515,
-    "end": 123.633,
-    "duration": 6.119
+    "start": 131.794,
+    "end": 137.166,
+    "duration": 5.372
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 对比《如梦令》与《声声慢》说出南渡前后词风蜕变？",
-    "start": 124.207,
-    "end": 129.936,
-    "duration": 5.728
+    "start": 138.094,
+    "end": 143.866,
+    "duration": 5.772
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 何为“易安体”？用“欲说还休”“绿肥红瘦”阐明其语言功夫？",
-    "start": 130.523,
-    "end": 137.266,
-    "duration": 6.744
+    "start": 144.794,
+    "end": 151.926,
+    "duration": 7.132
   }
 ]

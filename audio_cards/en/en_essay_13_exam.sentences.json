@@ -1,65 +1,65 @@
 [
   {
     "id": "sent_p1_s1",
-    "text": "As is vividly depicted in the picture, a magnificent landscape shows barren hills transforming into luxuriant green forests, with fish swimming freely in clear streams.",
-    "start": "0.055",
-    "end": "11.830",
-    "duration": "11.775"
+    "text": "The striking cartoon vividly presents a magnificent scene in which barren hills turn into lush green forests, with fish swimming freely in crystal-clear rivers.",
+    "start": "0.000",
+    "end": "10.874",
+    "duration": "10.874"
   },
   {
     "id": "sent_p1_s2",
-    "text": "This contrast delivers an unmistakable message: ecological preservation and green development are vital prerequisites for the sustainable prosperity of human civilization.",
-    "start": "12.510",
-    "end": "24.410",
-    "duration": "11.900"
+    "text": "Simple as the picture may seem, it delivers a clear message: ecological protection is an indispensable prerequisite for the sustainable progress of humanity.",
+    "start": "11.274",
+    "end": "21.372",
+    "duration": "10.098"
   },
   {
     "id": "sent_p2_s1",
-    "text": "A multitude of compelling arguments substantiate the urgency of environmental protection.",
-    "start": "25.945",
-    "end": "31.900",
-    "duration": "5.955"
+    "text": "A host of compelling arguments account for the urgency of green development.",
+    "start": "22.272",
+    "end": "26.626",
+    "duration": "4.354"
   },
   {
     "id": "sent_p2_s2",
-    "text": "Chief among them is that reckless exploitation of natural resources and unrestrained pollution will inevitably disrupt the ecological equilibrium, ultimately inflicting irreversible damage upon human survival.",
-    "start": "32.555",
-    "end": "46.760",
-    "duration": "14.205"
+    "text": "Chief among these is that reckless exploitation of natural resources disrupts the delicate natural balance, yet short-sighted companies often fail to weigh the severe cost.",
+    "start": "27.026",
+    "end": "39.432",
+    "duration": "12.406"
   },
   {
     "id": "sent_p2_s3",
-    "text": "As the prudent saying asserts, \"An ounce of prevention is worth a pound of cure.\"",
-    "start": "47.405",
-    "end": "52.560",
-    "duration": "5.155"
+    "text": "As an old proverb warns, \"An ounce of prevention is worth a pound of cure.\"",
+    "start": "39.832",
+    "end": "45.041",
+    "duration": "5.209"
   },
   {
     "id": "sent_p2_s4",
-    "text": "By contrast, investing in renewable energy and low-carbon lifestyles not only guards pristine biodiversity, but also stimulates sustainable economic growth for future generations.",
-    "start": "53.265",
-    "end": "65.930",
-    "duration": "12.665"
-  },
-  {
-    "id": "sent_p2_s5",
-    "text": "Economic advancement should never be pursued at the exorbitant expense of a devastated environment.",
-    "start": "66.575",
-    "end": "72.950",
-    "duration": "6.375"
+    "text": "Relying solely on slogans is far from enough to protect nature; instead, adopting low-carbon lifestyles and clean energy not only safeguards biodiversity, but also drives long-term economic growth.",
+    "start": "45.441",
+    "end": "59.844",
+    "duration": "14.403"
   },
   {
     "id": "sent_p3_s1",
-    "text": "To ensure the co-prosperity of humanity and nature, stringent legal frameworks must be enforced to punish polluting enterprises, while citizens are supposed to practice waste classification conscientiously.",
-    "start": "74.425",
-    "end": "88.850",
-    "duration": "14.425"
+    "text": "In conclusion, economic advancement must never be pursued at the heavy expense of a damaged environment.",
+    "start": "60.743",
+    "end": "67.569",
+    "duration": "6.826"
   },
   {
     "id": "sent_p3_s2",
-    "text": "Only in harmony with nature can mankind secure a thriving and promising future.",
-    "start": "89.490",
-    "end": "95.160",
-    "duration": "5.670"
+    "text": "Strict laws should curb reckless pollution, while ordinary citizens are expected to practice green habits conscientiously.",
+    "start": "67.969",
+    "end": "75.622",
+    "duration": "7.653"
+  },
+  {
+    "id": "sent_p3_s3",
+    "text": "Only in harmony with nature can mankind conquer ecological crises and secure a green, promising future.",
+    "start": "76.022",
+    "end": "84.251",
+    "duration": "8.229"
   }
 ]

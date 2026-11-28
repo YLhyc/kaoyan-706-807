@@ -1,0 +1,72 @@
+[
+  {
+    "id": "t2_intro",
+    "text": "下面进入口袋 02 · 大作文口袋 10 句与三大极性框架卡，英式思维与留白盲拼训练。",
+    "start": "0.000",
+    "end": "8.188",
+    "duration": "8.188"
+  },
+  {
+    "id": "t2_u1_cn",
+    "text": "【正向极性 · 成因总起】不要写 There are many reasons。请用 account for 与 Chief among 倒装：",
+    "start": "9.088",
+    "end": "17.612",
+    "duration": "8.524"
+  },
+  {
+    "id": "t2_u1_en",
+    "text": "A multitude of economic and social factors easily account for this trend, and chief among them is that rapid growth has made it remarkably convenient to access quality resources.",
+    "start": "19.412",
+    "end": "31.870",
+    "duration": "12.458"
+  },
+  {
+    "id": "t2_u1_tip",
+    "text": "手术刀：account for 解释成因，Chief among 倒装接 made it 形式宾语。",
+    "start": "32.370",
+    "end": "38.801",
+    "duration": "6.431"
+  },
+  {
+    "id": "t2_u2_cn",
+    "text": "【负向极性 · 含蓄否定】批判坏习惯，不要写 not enough。请用 far from 与 whereas 对比：",
+    "start": "39.701",
+    "end": "47.500",
+    "duration": "7.799"
+  },
+  {
+    "id": "t2_u2_en",
+    "text": "Relying solely on rules is far from enough; those adhering to discipline reap rewards, whereas those indulging in ease fail to achieve growth.",
+    "start": "49.299",
+    "end": "59.032",
+    "duration": "9.733"
+  },
+  {
+    "id": "t2_u2_tip",
+    "text": "手术刀：far from 与 fail to 实现零 not 学术批判，whereas 撑起对比论证。",
+    "start": "59.532",
+    "end": "66.975",
+    "duration": "7.443"
+  },
+  {
+    "id": "t2_u3_cn",
+    "text": "【尾段压轴 · Only 倒装】提取“只有共同努力我们才能克服障碍”的正确倒装语序：",
+    "start": "67.875",
+    "end": "75.899",
+    "duration": "8.024"
+  },
+  {
+    "id": "t2_u3_en",
+    "text": "Not only can this spirit enrich individual life, but it also propels social progress; only through joint efforts can we conquer obstacles.",
+    "start": "77.699",
+    "end": "87.132",
+    "duration": "9.433"
+  },
+  {
+    "id": "t2_u3_tip",
+    "text": "手术刀：Only + 介词短语置句首时，can 提到 we 前，严禁逗号接 we can。",
+    "start": "87.632",
+    "end": "95.493",
+    "duration": "7.861"
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "t2_intro",
+    "text": "下面进入口袋 03 · 英式思维 5 把手术刀与 20 核心动词卡，英式思维与留白盲拼训练。",
+    "start": "0.000",
+    "end": "9.286",
+    "duration": "9.286"
+  },
+  {
+    "id": "t2_u1_cn",
+    "text": "【第一刀 · 物称主语】改写：If you visit the museum, you can see local history; because of persistence, people conquer problems：",
+    "start": "10.186",
+    "end": "19.809",
+    "duration": "9.623"
+  },
+  {
+    "id": "t2_u1_en",
+    "text": "A visit to the local museum enables visitors to gain a vivid glimpse into history, and unyielding perseverance empowers individuals to conquer severe challenges.",
+    "start": "21.609",
+    "end": "32.978",
+    "duration": "11.369"
+  },
+  {
+    "id": "t2_u1_tip",
+    "text": "手术刀：活动、时间、品质做主语；但感谢、道歉、承诺补救保留人称。",
+    "start": "33.478",
+    "end": "40.609",
+    "duration": "7.131"
+  },
+  {
+    "id": "t2_u2_cn",
+    "text": "【二三刀 · 隐去 I think 与流水逗号】改写：I think tech makes it easy to learn, and parks climbed, it reflects investment：",
+    "start": "41.509",
+    "end": "51.947",
+    "duration": "10.438"
+  },
+  {
+    "id": "t2_u2_en",
+    "text": "It is widely acknowledged that modern technology has made it remarkably convenient to access courses, while parks climbed steadily, vividly reflecting public investment.",
+    "start": "53.746",
+    "end": "65.637",
+    "duration": "11.891"
+  },
+  {
+    "id": "t2_u2_tip",
+    "text": "手术刀：锁定 make it + adj. + to do，逗号后用 doing 或 which 挂载。",
+    "start": "66.137",
+    "end": "73.140",
+    "duration": "7.003"
+  },
+  {
+    "id": "t2_u3_cn",
+    "text": "【四五刀 · 免 not 与微调倒装】改写“服务不好，看似简单但只有行动能圆梦”：",
+    "start": "74.040",
+    "end": "80.921",
+    "duration": "6.881"
+  },
+  {
+    "id": "t2_u3_en",
+    "text": "The service was far from satisfactory; simple as these steps may seem, only by taking action can we turn dreams into reality.",
+    "start": "82.721",
+    "end": "91.715",
+    "duration": "8.994"
+  },
+  {
+    "id": "t2_u3_tip",
+    "text": "手术刀：far from 替 not，Adj. as 与 Only by 后只提前一个 can。",
+    "start": "92.215",
+    "end": "99.341",
+    "duration": "7.126"
+  }
+]

@@ -1,72 +1,72 @@
 [
   {
     "id": "sent_p1_s1",
-    "text": "The pie chart provides a clear breakdown of the monthly expenditure distribution among fresh college graduates in 2025.",
-    "start": "0.055",
-    "end": "8.220",
-    "duration": "8.165"
+    "text": "The table clearly illustrates a remarkable upward trend in the ownership of major durable household appliances per 100 households in China from 2014 to 2023.",
+    "start": "0.000",
+    "end": "12.161",
+    "duration": "12.161"
   },
   {
     "id": "sent_p1_s2",
-    "text": "As is visibly indicated, basic food and catering accounts for the largest proportion at 45.0%, closely followed by intellectual enrichment and skill training at 25.0%.",
-    "start": "8.750",
-    "end": "23.960",
-    "duration": "15.210"
+    "text": "Specifically, air conditioners witnessed the sharpest surge, nearly doubling from 75.2 units in 2014 to 145.9 units in 2023.",
+    "start": "12.561",
+    "end": "26.162",
+    "duration": "13.601"
   },
   {
     "id": "sent_p1_s3",
-    "text": "Meanwhile, social entertainment and savings represent 18.0% and 12.0% respectively.",
-    "start": "24.565",
-    "end": "33.570",
-    "duration": "9.005"
+    "text": "Meanwhile, washing machines and refrigerators also climbed steadily, rising from 83.7 and 85.5 to 98.2 and 103.4 respectively.",
+    "start": "26.562",
+    "end": "39.688",
+    "duration": "13.126"
+  },
+  {
+    "id": "sent_p1_s4",
+    "text": "These figures vividly reflect the steady upgrading of Chinese residents' living standards.",
+    "start": "40.088",
+    "end": "45.672",
+    "duration": "5.584"
   },
   {
     "id": "sent_p2_s1",
-    "text": "A thorough examination reveals several understandable reasons behind this budgetary allocation.",
-    "start": "35.125",
-    "end": "41.170",
-    "duration": "6.045"
+    "text": "A multitude of economic and technological factors account for this encouraging shift.",
+    "start": "46.572",
+    "end": "51.865",
+    "duration": "5.293"
   },
   {
     "id": "sent_p2_s2",
-    "text": "To begin with, since food and daily sustenance remain basic survival necessities for recent graduates entering the job market, allocating the dominant share to catering is inevitable.",
-    "start": "41.770",
-    "end": "53.930",
-    "duration": "12.160"
+    "text": "Chief among these factors is that sustained economic growth has substantially enhanced families' purchasing power, enabling ordinary households to afford modern appliances that bring greater comfort.",
+    "start": "52.265",
+    "end": "65.554",
+    "duration": "13.289"
   },
   {
     "id": "sent_p2_s3",
-    "text": "More importantly, that educational investment occupies a remarkable quarter of the total expenditure demonstrates graduates' acute awareness of professional competitiveness.",
-    "start": "54.565",
-    "end": "64.920",
-    "duration": "10.355"
+    "text": "Equally important is that rapid technological innovation and fierce market competition have made it far more affordable to buy energy-saving products.",
+    "start": "65.953",
+    "end": "76.291",
+    "duration": "10.338"
   },
   {
     "id": "sent_p2_s4",
-    "text": "In an era marked by rapid industrial upgrading, continuous skill refinement has become an essential stepping stone to career development.",
-    "start": "65.535",
-    "end": "74.840",
-    "duration": "9.305"
-  },
-  {
-    "id": "sent_p2_s5",
-    "text": "Finally, allocating a sensible quota to savings reflects a mature financial attitude.",
-    "start": "75.495",
-    "end": "82.100",
-    "duration": "6.605"
+    "text": "Not only do these durable goods free people from tedious housework, but they also propel domestic consumption and industrial upgrading.",
+    "start": "76.691",
+    "end": "86.207",
+    "duration": "9.516"
   },
   {
     "id": "sent_p3_s1",
-    "text": "Overall, the spending pattern of contemporary college graduates is rational and forward-looking.",
-    "start": "83.675",
-    "end": "89.960",
-    "duration": "6.285"
+    "text": "Taking all these factors into account, residents' pursuit of high-quality life will continue to grow.",
+    "start": "87.107",
+    "end": "93.788",
+    "duration": "6.681"
   },
   {
     "id": "sent_p3_s2",
-    "text": "Cultivating disciplined financial planning will undoubtedly assist youngsters in establishing a solid foundation for future endeavors.",
-    "start": "90.610",
-    "end": "98.890",
-    "duration": "8.280"
+    "text": "Only through continuous innovation and supportive economic policies can we sustain this prosperity and further enhance public well-being.",
+    "start": "94.188",
+    "end": "103.132",
+    "duration": "8.944"
   }
 ]

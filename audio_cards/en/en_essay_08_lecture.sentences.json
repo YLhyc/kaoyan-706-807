@@ -1,93 +1,72 @@
 [
   {
     "id": "t2_intro",
-    "text": "下面进入小作文 08 · 询问与咨询信：考研报考意向与导师课题组要求咨询答题骨架与变体精解。",
-    "start": "0.030",
-    "end": "9.720",
-    "duration": "9.690"
+    "text": "下面进入小作文 08 · 2025 英一母题：回复 Paul（Q1+Q2 双问驱动），英式思维与留白盲拼训练。",
+    "start": "0.000",
+    "end": "10.459",
+    "duration": "10.459"
   },
   {
-    "id": "t2_p1_cn",
-    "text": "第一段：表达对导师前沿学术成果的敬佩并阐明求学咨询目的。",
-    "start": "10.835",
-    "end": "16.980",
-    "duration": "6.145"
+    "id": "t2_u1_cn",
+    "text": "【2025 真题 · 回信防懵开口】遇到别人来信提两个问题，不要乱套建议模板！先感谢对方支持，再一句话概括回复的两件事：",
+    "start": "11.359",
+    "end": "23.218",
+    "duration": "11.859"
   },
   {
-    "id": "t2_p1_en",
-    "text": "Having read your illuminating academic papers with great admiration, I am writing to consult you regarding your graduate research projects.",
-    "start": "17.705",
-    "end": "26.350",
-    "duration": "8.645"
+    "id": "t2_u1_en",
+    "text": "Thank you for your email and warm support for our upcoming campus event. I am writing to share details about the craftsmen's show and how you can assist with our preparation work.",
+    "start": "25.018",
+    "end": "35.412",
+    "duration": "10.394"
   },
   {
-    "id": "t2_p1_tip_cn",
-    "text": "学术咨询经典破题：Having read your illuminating papers with great admiration, I am writing to...",
-    "start": "27.095",
-    "end": "34.260",
-    "duration": "7.165"
+    "id": "t2_u1_tip",
+    "text": "手术刀点拨：首段明确复述 Q1（show details）与 Q2（assist with preparation），让阅卷人一眼看出完全审清题干。",
+    "start": "35.912",
+    "end": "45.975",
+    "duration": "10.063"
   },
   {
-    "id": "t2_p1_tip_en",
-    "text": "I am writing to consult you regarding your graduate research projects.",
-    "start": "34.995",
-    "end": "38.950",
-    "duration": "3.955"
+    "id": "t2_u2_cn",
+    "text": "【Q1 核销 · 工匠展示内容】注意避免 porcelain / embroidery 这类高危拼写词！改用 paper cutting and clay art，加形式宾语：",
+    "start": "46.875",
+    "end": "55.738",
+    "duration": "8.863"
   },
   {
-    "id": "t2_p2_cn",
-    "text": "第二段：礼貌客气提出三个具有深度、体现求学诚意的专业问题。",
-    "start": "40.645",
-    "end": "47.180",
-    "duration": "6.535"
+    "id": "t2_u2_en",
+    "text": "First, regarding the demonstration, the young craftsmen will bring traditional works like paper cutting and clay art, showing how they combine old skills with modern designs. Students will certainly find it worthwhile to watch closely.",
+    "start": "57.537",
+    "end": "73.220",
+    "duration": "15.683"
   },
   {
-    "id": "t2_p2_en",
-    "text": "In the first place, could you provide guidance on academic prerequisites? In the second place, are interdisciplinary students encouraged?",
-    "start": "47.885",
-    "end": "56.700",
-    "duration": "8.815"
+    "id": "t2_u2_tip",
+    "text": "手术刀点拨：regarding 引出 Q1，comma showing 树状挂载，再用 find it worthwhile to do 优雅拔高活动体验感。",
+    "start": "73.720",
+    "end": "83.486",
+    "duration": "9.766"
   },
   {
-    "id": "t2_p2_tip_cn",
-    "text": "委婉提问句型：I would be exceedingly grateful if you could clarify... / I wonder whether...",
-    "start": "57.395",
-    "end": "64.440",
-    "duration": "7.045"
+    "id": "t2_u3_cn",
+    "text": "【Q2 核销 · 安排筹备工作】用 as for 切换至第二个任务，并给出两条具体好写的安全分工（摆桌椅、引导留学生）：",
+    "start": "84.386",
+    "end": "96.082",
+    "duration": "11.696"
   },
   {
-    "id": "t2_p2_tip_en",
-    "text": "I wonder whether students from interdisciplinary backgrounds are encouraged.",
-    "start": "65.115",
-    "end": "69.290",
-    "duration": "4.175"
+    "id": "t2_u3_en",
+    "text": "Second, as for the preparation work, it would be deeply appreciated if you could help arrange tables in the hall on Friday afternoon and guide other international students during the event.",
+    "start": "97.882",
+    "end": "110.130",
+    "duration": "12.248"
   },
   {
-    "id": "t2_p3_cn",
-    "text": "第三段：诚挚感激导师在百忙之中的点拨指导。",
-    "start": "70.965",
-    "end": "75.750",
-    "duration": "4.785"
-  },
-  {
-    "id": "t2_p3_en",
-    "text": "Thank you very much for your precious guidance, and I look forward to your valuable insights.",
-    "start": "76.505",
-    "end": "81.370",
-    "duration": "4.865"
-  },
-  {
-    "id": "t2_p3_tip_cn",
-    "text": "求学者谦逊敬意收束句：Thank you for your precious guidance and valuable insights.",
-    "start": "82.045",
-    "end": "88.890",
-    "duration": "6.845"
-  },
-  {
-    "id": "t2_p3_tip_en",
-    "text": "Thank you very much for your precious guidance.",
-    "start": "89.555",
-    "end": "91.910",
-    "duration": "2.355"
+    "id": "t2_u3_tip",
+    "text": "手术刀点拨：First, regarding... 与 Second, as for... 是 2022–2025 连续 4 年多任务混合真题的万用劈段武器！",
+    "start": "110.630",
+    "end": "122.168",
+    "duration": "11.538"
   }
 ]

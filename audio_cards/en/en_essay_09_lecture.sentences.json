@@ -1,93 +1,72 @@
 [
   {
     "id": "t2_intro",
-    "text": "下面进入大作文 01 · 个人品质母题：坚持不懈、直面逆境与拒绝半途而废答题骨架与变体精解。",
-    "start": "0.030",
-    "end": "9.400",
-    "duration": "9.370"
+    "text": "下面进入大作文 01 · 个人品质母题：坚持不懈与直面逆境，英式思维与留白盲拼训练。",
+    "start": "0.000",
+    "end": "9.066",
+    "duration": "9.066"
   },
   {
-    "id": "t2_p1_cn",
-    "text": "第一段：图画对比描摹与象征寓意精准破题。",
-    "start": "10.535",
-    "end": "14.710",
-    "duration": "4.175"
+    "id": "t2_u1_cn",
+    "text": "【首段 · 物称对比+让步】不要用 We can see two people。用 cartoon vividly depicts 开头，再用 Simple as... may seem 点明坚持主旨：",
+    "start": "9.966",
+    "end": "23.320",
+    "duration": "13.354"
   },
   {
-    "id": "t2_p1_en",
-    "text": "While one collapses in exhaustion and surrenders halfway, the other advances bravely toward the summit with unwavering resolve; perseverance differentiates triumph from mediocrity.",
-    "start": "15.395",
-    "end": "27.930",
-    "duration": "12.535"
+    "id": "t2_u1_en",
+    "text": "The thought-provoking cartoon vividly depicts two climbers scaling a steep mountain. Simple as the drawing may seem, it underscores the vital significance of perseverance on our path to success.",
+    "start": "25.120",
+    "end": "39.088",
+    "duration": "13.968"
   },
   {
-    "id": "t2_p1_tip_cn",
-    "text": "反差描摹高分句式：While one does sth., the other does sth., which forms a sharp contrast.",
-    "start": "28.715",
-    "end": "36.720",
-    "duration": "8.005"
+    "id": "t2_u1_tip",
+    "text": "手术刀点拨：物称主语 + scaling 分词树状挂载 + 让步微调倒装，三句干净突破 55 词首段。",
+    "start": "39.588",
+    "end": "49.941",
+    "duration": "10.353"
   },
   {
-    "id": "t2_p1_tip_en",
-    "text": "Perseverance is the decisive factor that differentiates enduring triumph from regrettable mediocrity.",
-    "start": "37.245",
-    "end": "44.370",
-    "duration": "7.125"
+    "id": "t2_u2_cn",
+    "text": "【二段 · 物称+anything but】改写“坚持让人克服困难，成功之路并不轻松”：",
+    "start": "50.841",
+    "end": "57.579",
+    "duration": "6.738"
   },
   {
-    "id": "t2_p2_cn",
-    "text": "第二段：双因深度剖析，融入点睛谚语与正反对比论证。",
-    "start": "46.065",
-    "end": "51.010",
-    "duration": "4.945"
+    "id": "t2_u2_en",
+    "text": "Unyielding perseverance empowers ordinary individuals to conquer severe obstacles, whereas the road to excellence is anything but smooth.",
+    "start": "59.378",
+    "end": "68.797",
+    "duration": "9.419"
   },
   {
-    "id": "t2_p2_en",
-    "text": "Chief among them is that any monumental accomplishment inevitably requires persistent dedication; as the proverb puts it, 'Rome was not built in a day'.",
-    "start": "51.695",
-    "end": "62.050",
-    "duration": "10.355"
+    "id": "t2_u2_tip",
+    "text": "手术刀点拨：让“毅力”作主语搭配 empowers，后接 anything but smooth 替掉 is not easy。",
+    "start": "69.297",
+    "end": "77.341",
+    "duration": "8.044"
   },
   {
-    "id": "t2_p2_tip_cn",
-    "text": "经典比喻与对比：convert stumbling blocks into stepping stones; without tenacity, dreams remain idle daydreams.",
-    "start": "62.730",
-    "end": "72.000",
-    "duration": "9.270"
+    "id": "t2_u3_cn",
+    "text": "【二段对比 + 尾段收官】用 whereas 对比“坚持目标 vs 沉溺借口”，再用 Only when 压轴：",
+    "start": "78.241",
+    "end": "86.352",
+    "duration": "8.111"
   },
   {
-    "id": "t2_p2_tip_en",
-    "text": "Only those equipped with a resilient spirit can convert stumbling blocks into stepping stones.",
-    "start": "72.635",
-    "end": "78.130",
-    "duration": "5.495"
+    "id": "t2_u3_en",
+    "text": "Those who adhere to their goals tend to reap rewarding outcomes, while people indulging in excuses fail to fulfill their potential. Only when we persist through difficulties can we turn our ambitions into reality.",
+    "start": "88.152",
+    "end": "103.121",
+    "duration": "14.969"
   },
   {
-    "id": "t2_p3_cn",
-    "text": "第三段：总结提出青年行动建议并运用倒装句提分收官。",
-    "start": "79.765",
-    "end": "85.090",
-    "duration": "5.325"
-  },
-  {
-    "id": "t2_p3_en",
-    "text": "Only when we muster up the courage to surmount every obstacle on our journey can we ultimately harvest the fruits of genuine fulfillment.",
-    "start": "85.805",
-    "end": "94.480",
-    "duration": "8.675"
-  },
-  {
-    "id": "t2_p3_tip_cn",
-    "text": "考场最高分倒装架构：Only when we do sth. can we finally do sth.。",
-    "start": "95.255",
-    "end": "100.030",
-    "duration": "4.775"
-  },
-  {
-    "id": "t2_p3_tip_en",
-    "text": "Only when we muster up the courage to surmount every obstacle can we harvest the fruits of triumph.",
-    "start": "100.730",
-    "end": "106.560",
-    "duration": "5.830"
+    "id": "t2_u3_tip",
+    "text": "手术刀点拨：adhere to / indulge in / fail to / Only when ... can we 四重信号一次集齐。",
+    "start": "103.621",
+    "end": "113.254",
+    "duration": "9.633"
   }
 ]

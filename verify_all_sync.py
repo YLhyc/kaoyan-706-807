@@ -36,7 +36,7 @@ if not all_syntax_pass:
 # Step 1: Verify English, 706, and 807
 print("\n[Step 1] Verifying English, 706, and 807 HTML timestamps against sentences.json...")
 subject_checks = [
-    ("English 16 Essays", "kaoyan_en_manifest.json"),
+    ("English 20 Cards (Pocket + Exam)", "kaoyan_en_manifest.json"),
     ("706 Ancient (42 Items)", "kaoyan_706_manifest.json"),
     ("807 Contemporary (40 Items)", "kaoyan_807_manifest.json"),
 ]
@@ -261,8 +261,8 @@ for fpath in [os.path.join(ROOT, "index.html"), os.path.join(ROOT, "app.js"), os
     total_svg_issues += len(issues)
     print(f"  {base}: {count} SVGs, {len(issues)} attribute issues.")
 
-# Step 4: Verify Builtin Cloze 100% Match against 706/807 Track 1 Text
-print("\n[Step 4] Verifying KAOYAN_BUILTIN_CLOZE phrases against 706/807 Track 1 HTML...")
+# Step 4: Verify Builtin Cloze 100% Match against 706/807 Track 1 & English Track 1 Text
+print("\n[Step 4] Verifying KAOYAN_BUILTIN_CLOZE phrases against 706/807 & English Track 1...")
 kaoyan_data_text = Path(os.path.join(DATA_DIR, "kaoyan_data.js")).read_text(encoding="utf-8")
 m_cloze = re.search(r'window\.KAOYAN_BUILTIN_CLOZE\s*=\s*(\{[\s\S]*?\});\s*$', kaoyan_data_text)
 cloze_mismatches = 0
@@ -272,7 +272,7 @@ if not m_cloze:
 else:
     cloze_dict = json.loads(m_cloze.group(1))
     all_pro_items = []
-    for m_name in ("kaoyan_706_manifest.json", "kaoyan_807_manifest.json"):
+    for m_name in ("kaoyan_706_manifest.json", "kaoyan_807_manifest.json", "kaoyan_en_manifest.json"):
         all_pro_items.extend(json.loads(Path(os.path.join(DATA_DIR, m_name)).read_text(encoding="utf-8")))
     by_pro_id = {it["id"]: it for it in all_pro_items}
     checked_terms = 0
@@ -280,11 +280,14 @@ else:
         it = by_pro_id.get(item_id)
         if not it or not isinstance(entry, dict):
             continue
-        plain = re.sub(r"<[^>]+>", "", it.get("track1", {}).get("html", ""))
+        is_en = (it.get("subject") == "en")
+        plain = it.get("track1", {}).get("text", "") if is_en else re.sub(r"<[^>]+>", "", it.get("track1", {}).get("html", ""))
+        hay = plain.lower() if is_en else plain
         for field in ("skeleton", "scoring"):
             for term in entry.get(field, []) or []:
                 checked_terms += 1
-                if term not in plain:
+                needle = term.lower() if is_en else term
+                if needle not in hay:
                     cloze_mismatches += 1
                     print(f"  [Cloze Mismatch] {item_id} ({field}): {term}")
     print(f"  Checked {checked_terms} builtin cloze terms: {cloze_mismatches} mismatches.")

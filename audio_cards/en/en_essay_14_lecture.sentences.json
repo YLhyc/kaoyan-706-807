@@ -1,93 +1,72 @@
 [
   {
     "id": "t2_intro",
-    "text": "下面进入大作文 06 · 教育理念与青年修养：终身阅读、深度学习与拒绝精神内耗答题骨架与变体精解。",
-    "start": "0.030",
-    "end": "10.720",
-    "duration": "10.690"
+    "text": "下面进入大作文 06 · 教育与修养母题：终身阅读、深度学习与跨界视野，英式思维与留白盲拼训练。",
+    "start": "0.000",
+    "end": "9.741",
+    "duration": "9.741"
   },
   {
-    "id": "t2_p1_cn",
-    "text": "第一段：静坐窗前捧读经典的宁静神态描摹与智识启蒙立意。",
-    "start": "11.775",
-    "end": "18.070",
-    "duration": "6.295"
+    "id": "t2_u1_cn",
+    "text": "【首段 · 分词挂载描摹】描写青年“坐在窗边沉浸于经典书籍”，再过渡到“深度阅读是心智成长的阶梯”：",
+    "start": "10.641",
+    "end": "20.182",
+    "duration": "9.541"
   },
   {
-    "id": "t2_p1_en",
-    "text": "A young scholar is sitting tranquilly beside a window, engrossed in a masterpiece; reading constitutes the most reliable ladder for growth.",
-    "start": "18.755",
-    "end": "28.550",
-    "duration": "9.795"
+    "id": "t2_u1_en",
+    "text": "The thought-provoking cartoon vividly depicts a young student sitting quietly beside a window, deeply absorbed in a classic book. Deep reading serves as a reliable ladder toward personal growth.",
+    "start": "21.982",
+    "end": "36.355",
+    "duration": "14.373"
   },
   {
-    "id": "t2_p1_tip_cn",
-    "text": "深度阅读破题名句：systematic reading and deep contemplation constitute the most reliable ladder for intellectual enlightenment.",
-    "start": "29.350",
-    "end": "38.870",
-    "duration": "9.520"
+    "id": "t2_u1_tip",
+    "text": "手术刀点拨：sitting... deeply absorbed in... 同时示范了主动分词与被动分词（done）两类挂载。",
+    "start": "36.855",
+    "end": "45.461",
+    "duration": "8.606"
   },
   {
-    "id": "t2_p1_tip_en",
-    "text": "Reading constitutes the most reliable ladder for intellectual enlightenment.",
-    "start": "39.615",
-    "end": "44.300",
-    "duration": "4.685"
+    "id": "t2_u2_cn",
+    "text": "【二段 · 辩证批判+形式宾语】改写“仅以眼前实用评判书籍远非明智；年轻人在碎片时代觉得专注很难”：",
+    "start": "46.361",
+    "end": "56.194",
+    "duration": "9.833"
   },
   {
-    "id": "t2_p2_cn",
-    "text": "第二段：双重价值剖析，引用培根读书名言，并作为快餐短视频时代精神解毒剂。",
-    "start": "45.895",
-    "end": "53.990",
-    "duration": "8.095"
+    "id": "t2_u2_en",
+    "text": "Judging books solely by immediate practical use is far from wise; in an era defined by fragmented videos, many youths find it challenging to stay focused.",
+    "start": "57.993",
+    "end": "68.929",
+    "duration": "10.936"
   },
   {
-    "id": "t2_p2_en",
-    "text": "Immersing in classic literature enriches mental horizons; as Bacon remarked, 'By reading we enrich the mind'; reading serves as an antidote to anxiety.",
-    "start": "54.685",
-    "end": "66.110",
-    "duration": "11.425"
+    "id": "t2_u2_tip",
+    "text": "手术刀点拨：兼收 2022 跨学科辩证破误区模板（far from wise）与形式宾语（find it challenging to）。",
+    "start": "69.429",
+    "end": "78.658",
+    "duration": "9.229"
   },
   {
-    "id": "t2_p2_tip_cn",
-    "text": "当代浮躁解药隐喻：serves as an effective antidote to the anxiety and intellectual shallowness.",
-    "start": "66.835",
-    "end": "73.870",
-    "duration": "7.035"
+    "id": "t2_u3_cn",
+    "text": "【二段微调倒装 + 尾段】注意这里用了 Not only does reading 倒装，后面的动词怎么处理？请提取：",
+    "start": "79.558",
+    "end": "87.659",
+    "duration": "8.101"
   },
   {
-    "id": "t2_p2_tip_en",
-    "text": "Reading serves as an effective antidote to the anxiety triggered by short-form videos.",
-    "start": "74.585",
-    "end": "79.970",
-    "duration": "5.385"
+    "id": "t2_u3_en",
+    "text": "Not only does reading polish our character, but it also offers calm amidst intense modern anxiety. Only when we combine thoughtful reading with steady action can we achieve genuine inner fulfillment.",
+    "start": "89.459",
+    "end": "103.850",
+    "duration": "14.391"
   },
   {
-    "id": "t2_p3_cn",
-    "text": "第三段：鼓励每日专属阅读时间，以内心笃定致远倒装收尾。",
-    "start": "81.675",
-    "end": "87.390",
-    "duration": "5.715"
-  },
-  {
-    "id": "t2_p3_en",
-    "text": "Only when we furnish our minds with profound wisdom can we maintain poise and achieve true greatness.",
-    "start": "88.135",
-    "end": "94.830",
-    "duration": "6.695"
-  },
-  {
-    "id": "t2_p3_tip_cn",
-    "text": "青年修身哲理倒装句：Only when we furnish our minds with profound wisdom can we maintain poise.",
-    "start": "95.550",
-    "end": "104.310",
-    "duration": "8.760"
-  },
-  {
-    "id": "t2_p3_tip_en",
-    "text": "Only when we furnish our minds with profound wisdom can we achieve true greatness.",
-    "start": "105.025",
-    "end": "110.300",
-    "duration": "5.275"
+    "id": "t2_u3_tip",
+    "text": "手术刀点拨：does 已经扛起第三人称单数，所以 polish 必须用原形，而后半句 but it also 后必须恢复 offers 三单！",
+    "start": "104.350",
+    "end": "115.413",
+    "duration": "11.063"
   }
 ]

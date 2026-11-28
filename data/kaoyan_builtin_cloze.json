@@ -2247,5 +2247,404 @@
       "悖论"
     ],
     "model": "builtin-curated"
+  },
+  "en_pocket_03": {
+    "skeleton": [
+      "It is widely acknowledged",
+      "made it",
+      "far from",
+      "fail to",
+      "Nothing is more",
+      "anything but",
+      "Not only can",
+      "only by"
+    ],
+    "scoring": [
+      "glimpse into",
+      "dramatic surge",
+      "empowers",
+      "conquer severe challenges",
+      "climbed steadily",
+      "vividly reflecting",
+      "foster creativity"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_16": {
+    "skeleton": [
+      "clearly illustrates",
+      "Specifically",
+      "Meanwhile",
+      "respectively",
+      "account for",
+      "Chief among these factors",
+      "Equally important",
+      "Not only do",
+      "Only through"
+    ],
+    "scoring": [
+      "sharpest surge",
+      "nearly doubling",
+      "climbed steadily",
+      "living standards",
+      "purchasing power",
+      "far more affordable",
+      "domestic consumption",
+      "industrial upgrading",
+      "public well-being"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_pocket_01": {
+    "skeleton": [
+      "I am writing to",
+      "scheduled to host",
+      "deeply appreciated",
+      "Equally important",
+      "imperative that",
+      "Much to my regret",
+      "Not only can"
+    ],
+    "scoring": [
+      "constructive suggestions",
+      "greatly facilitate",
+      "consist of",
+      "rectify",
+      "prevented me from",
+      "broaden our horizons"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_pocket_02": {
+    "skeleton": [
+      "vividly depicts",
+      "Simple as",
+      "account for",
+      "Chief among",
+      "whereas",
+      "far from enough",
+      "Only through"
+    ],
+    "scoring": [
+      "sharp surge",
+      "accounting for",
+      "remarkably convenient",
+      "adhering to",
+      "indulging in",
+      "sustainable social progress",
+      "conquer obstacles"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_pocket_04": {
+    "skeleton": [
+      "vividly depicts",
+      "sharp contrast",
+      "clearly revealed",
+      "Meanwhile",
+      "clearly illustrates",
+      "respectively"
+    ],
+    "scoring": [
+      "unexpected rewards",
+      "surged remarkably",
+      "accompanying picture",
+      "sharpest surge",
+      "climbed steadily",
+      "living standards"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_01": {
+    "skeleton": [
+      "As a senior",
+      "I am writing to",
+      "deeply appreciated",
+      "Equally important",
+      "Simple as",
+      "not only can",
+      "favorable consideration"
+    ],
+    "scoring": [
+      "constructive suggestions",
+      "extend its opening hours",
+      "greatly facilitate",
+      "are expected to",
+      "concentrate effectively",
+      "study efficiency"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_02": {
+    "skeleton": [
+      "dissatisfaction with",
+      "What troubles me",
+      "deem it imperative",
+      "be taken",
+      "look forward to"
+    ],
+    "scoring": [
+      "indifferent attitude",
+      "far from satisfactory",
+      "failed to offer",
+      "unresolved",
+      "rectify this error",
+      "full refund"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_03": {
+    "skeleton": [
+      "Learning that",
+      "I am writing to",
+      "As a senior",
+      "which enables",
+      "Moreover",
+      "Not only can",
+      "at your convenience"
+    ],
+    "scoring": [
+      "well qualified",
+      "fluent in",
+      "having served as",
+      "organizational skills",
+      "manage daily tasks",
+      "resume is attached"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_04": {
+    "skeleton": [
+      "On behalf of",
+      "scheduled to take place",
+      "with the theme of",
+      "Knowing your",
+      "not only can",
+      "deeply appreciated"
+    ],
+    "scoring": [
+      "cordial invitation",
+      "meaningful sessions",
+      "live feedback",
+      "keen interest",
+      "elevate the quality",
+      "your availability"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_05": {
+    "skeleton": [
+      "This notice is issued",
+      "relevant details",
+      "In the first place",
+      "In the second place",
+      "Not only can",
+      "Those interested should"
+    ],
+    "scoring": [
+      "recruiting",
+      "responsible for",
+      "are expected to",
+      "teamwork spirit",
+      "research experience",
+      "distinguished scholar"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_06": {
+    "skeleton": [
+      "To enrich",
+      "scheduled to host",
+      "relevant details",
+      "not only can",
+      "Those interested should"
+    ],
+    "scoring": [
+      "campus life",
+      "each participant is expected to",
+      "serving as judges",
+      "display your talent",
+      "active participation"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_07": {
+    "skeleton": [
+      "sincere apology",
+      "Much to my regret",
+      "impossible for me",
+      "Would it be possible",
+      "Once again"
+    ],
+    "scoring": [
+      "failing to attend",
+      "prevents me from",
+      "make up for",
+      "inconvenience caused",
+      "reschedule"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_08": {
+    "skeleton": [
+      "Thank you for",
+      "I am writing to",
+      "First, regarding",
+      "Second, as for",
+      "deeply appreciated",
+      "Looking forward to"
+    ],
+    "scoring": [
+      "upcoming campus event",
+      "paper cutting",
+      "clay art",
+      "modern designs",
+      "find it worthwhile",
+      "arrange tables"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_09": {
+    "skeleton": [
+      "vividly depicts",
+      "Simple as",
+      "account for",
+      "widely acknowledged",
+      "anything but",
+      "Not only can",
+      "only when"
+    ],
+    "scoring": [
+      "unyielding perseverance",
+      "empowers",
+      "conquer severe obstacles",
+      "adhere to",
+      "reap rewarding outcomes",
+      "indulging in",
+      "ambitions into reality"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_10": {
+    "skeleton": [
+      "vividly depicts",
+      "On the one hand",
+      "On the other hand",
+      "far from wise",
+      "fail to realize",
+      "cannot attach too much",
+      "Only by"
+    ],
+    "scoring": [
+      "staring blankly",
+      "far-reaching impact",
+      "remarkably convenient",
+      "indulging in",
+      "heartfelt communication",
+      "mutual trust"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_11": {
+    "skeleton": [
+      "vividly depicts",
+      "Simple as",
+      "account for",
+      "Chief among these factors",
+      "Not only can",
+      "cannot attach too much",
+      "Only through"
+    ],
+    "scoring": [
+      "increasingly vibrant",
+      "rural revitalization",
+      "making it possible",
+      "cultural identity",
+      "pass down",
+      "folk customs",
+      "propel rural prosperity"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_12": {
+    "skeleton": [
+      "vividly depicts",
+      "Simple as",
+      "account for",
+      "whereas",
+      "anything but",
+      "case in point",
+      "Only when"
+    ],
+    "scoring": [
+      "collective goodwill",
+      "vital cornerstone",
+      "relieves urgent hardships",
+      "fosters mutual trust",
+      "civic responsibility",
+      "extends a helping hand"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_13": {
+    "skeleton": [
+      "vividly presents",
+      "Simple as",
+      "account for",
+      "Chief among these",
+      "fail to",
+      "far from enough",
+      "Only in harmony"
+    ],
+    "scoring": [
+      "indispensable prerequisite",
+      "sustainable progress",
+      "natural balance",
+      "low-carbon lifestyles",
+      "safeguards biodiversity",
+      "heavy expense"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_14": {
+    "skeleton": [
+      "vividly depicts",
+      "Simple as",
+      "far from wise",
+      "widely acknowledged",
+      "find it challenging",
+      "whereas",
+      "Only when"
+    ],
+    "scoring": [
+      "deeply absorbed in",
+      "independent thinking",
+      "broaden our horizons",
+      "fragmented videos",
+      "adhere to",
+      "critical thinking",
+      "inner fulfillment"
+    ],
+    "model": "builtin-curated"
+  },
+  "en_essay_15": {
+    "skeleton": [
+      "clearly revealed",
+      "Meanwhile",
+      "account for",
+      "widely acknowledged",
+      "Not only do",
+      "Only by"
+    ],
+    "scoring": [
+      "surged remarkably",
+      "accompanying picture",
+      "public investment",
+      "remarkably convenient",
+      "eco-friendly lifestyle",
+      "harmonious community",
+      "public well-being"
+    ],
+    "model": "builtin-curated"
   }
 }

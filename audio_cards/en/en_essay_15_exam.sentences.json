@@ -1,65 +1,65 @@
 [
   {
     "id": "sent_p1_s1",
-    "text": "The bar chart explicitly illustrates the dramatic variation in the proportion of regular physical exercise participants in our nation between 2018 and 2025.",
-    "start": "0.055",
-    "end": "11.690",
-    "duration": "11.635"
+    "text": "As is clearly revealed by the bar chart, the number of parks in a Chinese city surged remarkably from 406 in 2020 to 532 in 2021, and further climbed to 670 in 2022.",
+    "start": "0.000",
+    "end": "17.314",
+    "duration": "17.314"
   },
   {
     "id": "sent_p1_s2",
-    "text": "During this period, the percentage climbed remarkably from 28.5% to approximately 65.2%, reflecting an inspiring shift toward healthier living across all demographics.",
-    "start": "12.310",
-    "end": "27.270",
-    "duration": "14.960"
+    "text": "Meanwhile, the accompanying picture depicts residents exercising happily in a neighborhood fitness area, with a woman praising the newly built park right outside her home.",
+    "start": "17.714",
+    "end": "28.673",
+    "duration": "10.959"
+  },
+  {
+    "id": "sent_p1_s3",
+    "text": "Together, they vividly reflect the continuous improvement of urban living environments.",
+    "start": "29.073",
+    "end": "34.641",
+    "duration": "5.568"
   },
   {
     "id": "sent_p2_s1",
-    "text": "A combination of powerful drivers accounts for this noticeable upsurge.",
-    "start": "28.790",
-    "end": "33.750",
-    "duration": "4.960"
+    "text": "Several driving forces account for this welcome trend.",
+    "start": "35.541",
+    "end": "39.149",
+    "duration": "3.608"
   },
   {
     "id": "sent_p2_s2",
-    "text": "Foremost among them is that accompanied by steady economic growth, Chinese citizens enjoy elevated disposable income and increasingly prioritize physical wellness over mere material acquisition.",
-    "start": "34.475",
-    "end": "48.410",
-    "duration": "13.935"
+    "text": "In the first place, it is widely acknowledged that municipal governments have increased public investment in green spaces, making it remarkably convenient for citizens to relax and work out nearby.",
+    "start": "39.549",
+    "end": "52.432",
+    "duration": "12.883"
   },
   {
     "id": "sent_p2_s3",
-    "text": "Furthermore, extensive government investments in public sports infrastructure—such as municipal jogging tracks and community fitness parks—have significantly lowered the threshold for physical workout.",
-    "start": "49.005",
-    "end": "61.710",
-    "duration": "12.705"
+    "text": "Furthermore, as living standards rise, ordinary people find it increasingly vital to maintain physical health and embrace an eco-friendly lifestyle.",
+    "start": "52.832",
+    "end": "63.343",
+    "duration": "10.511"
   },
   {
     "id": "sent_p2_s4",
-    "text": "In addition, social media platforms and fitness applications have popularized active workouts as a trendy and invigorating lifestyle among youngsters.",
-    "start": "62.355",
-    "end": "72.380",
-    "duration": "10.025"
-  },
-  {
-    "id": "sent_p2_s5",
-    "text": "Health is rightfully recognized as the prerequisite for happiness.",
-    "start": "72.970",
-    "end": "76.980",
-    "duration": "4.010"
+    "text": "Not only do these pocket parks beautify urban neighborhoods, but they also foster harmonious community relations and boost public happiness.",
+    "start": "63.742",
+    "end": "73.430",
+    "duration": "9.688"
   },
   {
     "id": "sent_p3_s1",
-    "text": "To summarize, this encouraging trend mirrors societal progress and heightened life quality.",
-    "start": "78.365",
-    "end": "84.990",
-    "duration": "6.625"
+    "text": "From what has been discussed above, this green trend is sure to gain further momentum.",
+    "start": "74.330",
+    "end": "79.979",
+    "duration": "5.649"
   },
   {
     "id": "sent_p3_s2",
-    "text": "It is widely anticipated that regular physical exercise will gain greater momentum in the forthcoming years, ushering in a healthier nation.",
-    "start": "85.650",
-    "end": "95.760",
-    "duration": "10.110"
+    "text": "Only by prioritizing ecological construction and public well-being can we build more livable and vibrant cities.",
+    "start": "80.379",
+    "end": "88.108",
+    "duration": "7.729"
   }
 ]

@@ -1,93 +1,72 @@
 [
   {
     "id": "t2_intro",
-    "text": "下面进入大作文 07 · 英二真题图表（动态变化）：全民健身运动参与率显著增长答题骨架与变体精解。",
-    "start": "0.030",
-    "end": "10.120",
-    "duration": "10.090"
+    "text": "下面进入大作文 07 · 2024 英一母题（图文混合）：公园飙升与民生生态建设，英式思维与留白盲拼训练。",
+    "start": "0.000",
+    "end": "11.226",
+    "duration": "11.226"
   },
   {
-    "id": "t2_p1_cn",
-    "text": "第一段：图表题首句规范总述与动态增减数据精准表达。",
-    "start": "11.235",
-    "end": "17.220",
-    "duration": "5.985"
+    "id": "t2_u1_cn",
+    "text": "【2024 真题首段 · 两句合并图表与图画】先把公园数量 406、532、670 写清，再用 Meanwhile 切入健身区市民点赞：",
+    "start": "12.126",
+    "end": "25.680",
+    "duration": "13.554"
   },
   {
-    "id": "t2_p1_en",
-    "text": "The bar chart explicitly illustrates the dramatic variation; the percentage climbed remarkably from 28.5% to approximately 65.2%.",
-    "start": "17.965",
-    "end": "30.040",
-    "duration": "12.075"
+    "id": "t2_u1_en",
+    "text": "As is clearly revealed by the bar chart, the number of parks in a Chinese city surged remarkably from 406 in 2020 to 532 in 2021, and further climbed to 670 in 2022. Meanwhile, the accompanying picture depicts residents exercising happily in a neighborhood fitness area.",
+    "start": "27.480",
+    "end": "53.214",
+    "duration": "25.734"
   },
   {
-    "id": "t2_p1_tip_cn",
-    "text": "动态数据上升经典句：The percentage climbed remarkably from [A] to [B], reflecting an inspiring shift.",
-    "start": "30.735",
-    "end": "38.870",
-    "duration": "8.135"
+    "id": "t2_u1_tip",
+    "text": "手术刀点拨：千万别分开两段描述图表和图画！一句图表、一句 Meanwhile 图画、一句 Together 合龙，55 词刚刚好。",
+    "start": "53.714",
+    "end": "65.353",
+    "duration": "11.639"
   },
   {
-    "id": "t2_p1_tip_en",
-    "text": "The percentage climbed remarkably from 28.5% to approximately 65.2%.",
-    "start": "39.635",
-    "end": "47.640",
-    "duration": "8.005"
+    "id": "t2_u2_cn",
+    "text": "【二段抽屉 · 政府投资便利市民】表达“市政府加大绿地投入，使市民在家门口放松锻炼极其方便”：",
+    "start": "66.253",
+    "end": "75.202",
+    "duration": "8.949"
   },
   {
-    "id": "t2_p2_cn",
-    "text": "第二段：三维度因果推导（经济收入与健康观 + 政府市政设施红利 + 移动互联健身潮流）。",
-    "start": "49.345",
-    "end": "58.310",
-    "duration": "8.965"
+    "id": "t2_u2_en",
+    "text": "In the first place, it is widely acknowledged that municipal governments have increased public investment in green spaces, making it remarkably convenient for citizens to relax and work out nearby.",
+    "start": "77.001",
+    "end": "89.884",
+    "duration": "12.883"
   },
   {
-    "id": "t2_p2_en",
-    "text": "Citizens prioritize physical wellness; extensive government investments in sports infrastructure lowered the threshold; social media popularized workouts.",
-    "start": "58.995",
-    "end": "70.200",
-    "duration": "11.205"
+    "id": "t2_u2_tip",
+    "text": "手术刀点拨：同时运用 it is widely acknowledged that 和 , making it remarkably convenient for ... to do，句式饱满严谨。",
+    "start": "90.384",
+    "end": "102.247",
+    "duration": "11.863"
   },
   {
-    "id": "t2_p2_tip_cn",
-    "text": "图表驱动诱因分析：A combination of powerful drivers accounts for this noticeable upsurge.",
-    "start": "70.910",
-    "end": "77.240",
-    "duration": "6.330"
+    "id": "t2_u3_cn",
+    "text": "【二段升华 + 尾段】用 Not only do these pocket parks 点出美化社区与幸福感，再用 Only by 收束：",
+    "start": "103.147",
+    "end": "112.648",
+    "duration": "9.501"
   },
   {
-    "id": "t2_p2_tip_en",
-    "text": "Government investments in sports infrastructure have lowered the threshold for physical workout.",
-    "start": "77.915",
-    "end": "83.400",
-    "duration": "5.485"
+    "id": "t2_u3_en",
+    "text": "Not only do these pocket parks beautify urban neighborhoods, but they also foster harmonious community relations and boost public happiness. Only by prioritizing ecological construction and public well-being can we build more livable and vibrant cities.",
+    "start": "114.448",
+    "end": "132.112",
+    "duration": "17.664"
   },
   {
-    "id": "t2_p3_cn",
-    "text": "第三段：宏观社会学高度评价与未来趋势乐观前瞻。",
-    "start": "85.045",
-    "end": "90.710",
-    "duration": "5.665"
-  },
-  {
-    "id": "t2_p3_en",
-    "text": "This encouraging trend mirrors societal progress; it is widely anticipated that physical exercise will gain greater momentum in forthcoming years.",
-    "start": "91.415",
-    "end": "101.340",
-    "duration": "9.925"
-  },
-  {
-    "id": "t2_p3_tip_cn",
-    "text": "图表题展望收官句：It is widely anticipated that this trend will gain greater momentum in the forthcoming years.",
-    "start": "102.045",
-    "end": "109.490",
-    "duration": "7.445"
-  },
-  {
-    "id": "t2_p3_tip_en",
-    "text": "It is widely anticipated that regular physical exercise will gain greater momentum in the forthcoming years.",
-    "start": "110.205",
-    "end": "117.460",
-    "duration": "7.255"
+    "id": "t2_u3_tip",
+    "text": "手术刀点拨：2024 混合新题型属正向民生类，套用蓝图 A + 政府与个人双抽屉，稳入 17+ 第一档。",
+    "start": "132.612",
+    "end": "144.378",
+    "duration": "11.766"
   }
 ]

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "sent_p1_s1",
+    "text": "Dear Editor, as a senior at this university, I am writing to offer constructive suggestions on campus facilities.",
+    "start": "0.000",
+    "end": "7.794",
+    "duration": "7.794"
+  },
+  {
+    "id": "sent_p1_s2",
+    "text": "Thank you for your previous email asking about our upcoming campus cultural event.",
+    "start": "8.194",
+    "end": "13.048",
+    "duration": "4.854"
+  },
+  {
+    "id": "sent_p2_s1",
+    "text": "Notice: To enrich campus life, the Student Union is scheduled to host a singing contest in the hall next Friday.",
+    "start": "13.948",
+    "end": "21.651",
+    "duration": "7.703"
+  },
+  {
+    "id": "sent_p2_s2",
+    "text": "It would be deeply appreciated if the library could extend its opening hours, which would greatly facilitate daily study.",
+    "start": "22.051",
+    "end": "29.462",
+    "duration": "7.411"
+  },
+  {
+    "id": "sent_p2_s3",
+    "text": "Equally important is that each team is expected to consist of three to five students.",
+    "start": "29.862",
+    "end": "35.328",
+    "duration": "5.466"
+  },
+  {
+    "id": "sent_p3_s1",
+    "text": "I deem it imperative that prompt measures be taken to rectify this substandard service.",
+    "start": "36.228",
+    "end": "41.822",
+    "duration": "5.594"
+  },
+  {
+    "id": "sent_p3_s2",
+    "text": "Much to my regret, my tight exam schedule prevented me from attending the lecture on time.",
+    "start": "42.221",
+    "end": "48.182",
+    "duration": "5.961"
+  },
+  {
+    "id": "sent_p3_s3",
+    "text": "Not only can this exchange broaden our horizons, but it also strengthens mutual trust. Yours sincerely, Li Ming.",
+    "start": "48.582",
+    "end": "57.520",
+    "duration": "8.938"
+  }
+]

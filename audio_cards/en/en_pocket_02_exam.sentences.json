@@ -1,0 +1,72 @@
+[
+  {
+    "id": "sent_p1_s1",
+    "text": "The thought-provoking cartoon vividly depicts a meaningful scene in which young people face daily challenges.",
+    "start": "0.000",
+    "end": "7.264",
+    "duration": "7.264"
+  },
+  {
+    "id": "sent_p1_s2",
+    "text": "Meanwhile, the past decade has witnessed a sharp surge in public fitness participation, accounting for the main trend.",
+    "start": "7.664",
+    "end": "15.765",
+    "duration": "8.101"
+  },
+  {
+    "id": "sent_p1_s3",
+    "text": "Simple as the drawing may seem, it underscores the vital significance of perseverance.",
+    "start": "16.165",
+    "end": "22.076",
+    "duration": "5.911"
+  },
+  {
+    "id": "sent_p2_s1",
+    "text": "A multitude of economic and social factors easily account for this phenomenon.",
+    "start": "22.976",
+    "end": "27.719",
+    "duration": "4.743"
+  },
+  {
+    "id": "sent_p2_s2",
+    "text": "Chief among these factors is that rapid growth has made it remarkably convenient to access quality resources.",
+    "start": "28.119",
+    "end": "35.627",
+    "duration": "7.508"
+  },
+  {
+    "id": "sent_p2_s3",
+    "text": "Those adhering to long-term goals tend to reap rewards, whereas those indulging in ease end in regret.",
+    "start": "36.027",
+    "end": "43.848",
+    "duration": "7.821"
+  },
+  {
+    "id": "sent_p2_s4",
+    "text": "Relying solely on rules is far from enough, and many people fail to see its root cause.",
+    "start": "44.247",
+    "end": "50.551",
+    "duration": "6.304"
+  },
+  {
+    "id": "sent_p3_s1",
+    "text": "Judging complex issues solely by immediate utility is far from wise.",
+    "start": "51.451",
+    "end": "56.484",
+    "duration": "5.033"
+  },
+  {
+    "id": "sent_p3_s2",
+    "text": "Not only can this spirit enrich individual life, but it also propels sustainable social progress.",
+    "start": "56.884",
+    "end": "63.412",
+    "duration": "6.528"
+  },
+  {
+    "id": "sent_p3_s3",
+    "text": "Only through joint efforts can we conquer obstacles and embrace a brighter future.",
+    "start": "63.812",
+    "end": "68.855",
+    "duration": "5.043"
+  }
+]

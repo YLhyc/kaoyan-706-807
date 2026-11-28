@@ -3,152 +3,152 @@
     "id": "title_c0",
     "dom_key": "title_c0",
     "text": "章回小说·中国古代章回小说产生演进与文体特征",
-    "start": 0.134,
-    "end": 4.847,
-    "duration": 4.713
+    "start": 0.354,
+    "end": 4.566,
+    "duration": 4.212
   },
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "源流→回目与回末装置→语言结构演进：先从宋元瓦舍讲史追溯至《三国》《水浒》《金瓶梅》《红楼梦》四代演进，",
-    "start": 5.423,
-    "end": 17.049,
-    "duration": 11.627
+    "start": 5.534,
+    "end": 17.066,
+    "duration": 11.532
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再重点拆解“分回标目4步定型 + 欲知后事如何设悬”，",
-    "start": 17.219,
-    "end": 22.14,
-    "duration": 4.921
+    "start": 17.214,
+    "end": 21.946,
+    "duration": 4.732
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "最后落到说话人口吻、韵散结合与结构升级。",
-    "start": 22.241,
-    "end": 26.277,
-    "duration": 4.035
+    "start": 22.214,
+    "end": 26.066,
+    "duration": 3.852
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "章回小说是中国古代长篇小说主要体制，孕育于宋元讲史等说话伎艺，在明代趋于定型并走向繁荣。",
-    "start": 26.864,
-    "end": 35.691,
-    "duration": 8.827
+    "start": 27.074,
+    "end": 36.366,
+    "duration": 9.292
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 脱胎宋元说话讲史、由集体向独创演进",
-    "start": 36.265,
-    "end": 40.548,
-    "duration": 4.283
+    "start": 37.334,
+    "end": 42.226,
+    "duration": 4.892
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "源于宋元瓦舍“说话”特别是“讲史”话本，艺人分节讲说演化出分回标目与回末设悬；",
-    "start": 41.135,
-    "end": 48.868,
-    "duration": 7.733
+    "start": 43.274,
+    "end": 52.746,
+    "duration": 9.472
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "元末明初文人加工写定《三国志通俗演义》《水浒传》确立；《金瓶梅》开启文人独创世情；",
-    "start": 49.455,
-    "end": 58.061,
-    "duration": 8.606
+    "start": 53.834,
+    "end": 64.746,
+    "duration": 10.912
   },
   {
     "id": "sec0_step1_c1",
     "dom_key": "sec0_step1_c1",
     "text": "至《儒林外史》《红楼梦》达成熟高峰。",
-    "start": 58.348,
-    "end": 61.693,
-    "duration": 3.345
+    "start": 65.754,
+    "end": 69.126,
+    "duration": 3.372
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · 确立分回标目与回末设悬叙事体制",
-    "start": 62.267,
-    "end": 66.12,
-    "duration": 3.853
+    "start": 70.094,
+    "end": 74.226,
+    "duration": 4.132
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "由宋元平话长短参差→嘉靖本《三国》单句七字目→万历本《水浒》双句大致对偶→崇祯本《金瓶梅》双句工整对偶；",
-    "start": 66.707,
-    "end": 78.959,
-    "duration": 12.252
+    "start": 75.234,
+    "end": 87.326,
+    "duration": 12.092
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "每回首尾勾连，紧要处以“欲知后事如何，且听下回分解”煞尾，维系期待、串接长篇。",
-    "start": 79.52,
-    "end": 88.035,
-    "duration": 8.515
+    "start": 87.854,
+    "end": 96.426,
+    "duration": 8.572
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 说话人口吻、韵散结合与结构演进",
-    "start": 88.621,
-    "end": 92.748,
-    "duration": 4.127
+    "start": 97.134,
+    "end": 100.546,
+    "duration": 3.412
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "保留“话说”“且说”说话人口吻；行文韵散结合（插诗词评赞场景），融白话口语与雅化笔法；",
-    "start": 93.335,
-    "end": 103.1,
-    "duration": 9.765
+    "start": 101.286,
+    "end": 112.258,
+    "duration": 10.972
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "由《三国》《水浒》线性串联演进为《红楼梦》网状交叉布局，显示叙事艺术持续深化。",
-    "start": 103.687,
-    "end": 112.123,
-    "duration": 8.436
+    "start": 113.226,
+    "end": 121.958,
+    "duration": 8.732
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：记住回目定型三步：宋元平话长短不一 → 嘉靖本《三国》单句七字目 → 万历本《水浒》双句大致对偶 → 崇祯本《金瓶梅》双句工整对偶。",
-    "start": 112.697,
-    "end": 125.912,
-    "duration": 13.215
+    "start": 123.006,
+    "end": 136.978,
+    "duration": 13.972
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 说出章回小说从“讲史话本”到《红楼梦》的四代演进代表作品？",
-    "start": 126.473,
-    "end": 132.8,
-    "duration": 6.327
+    "start": 137.986,
+    "end": 144.638,
+    "duration": 6.652
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② 默背回目对偶定型的三个关键版本里程碑？",
-    "start": 133.387,
-    "end": 138.165,
-    "duration": 4.778
+    "start": 145.606,
+    "end": 151.578,
+    "duration": 5.972
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 概括章回小说在“发端语、韵散夹杂、回末设悬、结构趋势”上的文体特征？",
-    "start": 138.752,
-    "end": 146.876,
-    "duration": 8.124
+    "start": 152.586,
+    "end": 160.158,
+    "duration": 7.572
   }
 ]

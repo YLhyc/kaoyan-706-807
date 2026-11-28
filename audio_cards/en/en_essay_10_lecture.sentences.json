@@ -1,93 +1,72 @@
 [
   {
     "id": "t2_intro",
-    "text": "下面进入大作文 02 · 科技与现代生活母题：智能手机与数字化依赖的双刃剑答题骨架与变体精解。",
-    "start": "0.030",
-    "end": "10.090",
-    "duration": "10.060"
+    "text": "下面进入大作文 02 · 科技与现代生活：智能手机依赖与真实陪伴，英式思维与留白盲拼训练。",
+    "start": "0.000",
+    "end": "9.791",
+    "duration": "9.791"
   },
   {
-    "id": "t2_p1_cn",
-    "text": "第一段：极富画面感的细节描摹与文字说明点题。",
-    "start": "11.155",
-    "end": "15.640",
-    "duration": "4.485"
+    "id": "t2_u1_cn",
+    "text": "【首段 · 神态动作挂载】用 staring blankly 挂载描摹全员低头看手机，并顺手引出主题：",
+    "start": "10.691",
+    "end": "19.782",
+    "duration": "9.091"
   },
   {
-    "id": "t2_p1_en",
-    "text": "Instead of conversing warmly with one another, each person is staring fixatedly at their smartphone screen; a thought-provoking caption highlights the invisible barrier.",
-    "start": "16.385",
-    "end": "26.840",
-    "duration": "10.455"
+    "id": "t2_u1_en",
+    "text": "The satirical cartoon vividly depicts a family sitting around a dinner table, yet everyone is staring blankly at a smartphone screen instead of talking warmly.",
+    "start": "21.582",
+    "end": "32.160",
+    "duration": "10.578"
   },
   {
-    "id": "t2_p1_tip_cn",
-    "text": "讽刺画面对比破题法：Ironically, instead of doing A, people are doing B fixatedly.",
-    "start": "27.565",
-    "end": "34.680",
-    "duration": "7.115"
+    "id": "t2_u1_tip",
+    "text": "手术刀点拨：satirical 替换生僻词，staring blankly at 直接从《大作文终极手册》神态库拿来用。",
+    "start": "32.660",
+    "end": "41.538",
+    "duration": "8.878"
   },
   {
-    "id": "t2_p1_tip_en",
-    "text": "A thought-provoking caption highlights the invisible barrier erected by digital devices.",
-    "start": "35.430",
-    "end": "41.290",
-    "duration": "5.860"
+    "id": "t2_u2_cn",
+    "text": "【二段正面 · 科技便利】先承认科技的好处，不要写 technology lets people get news easily。请用 has made it remarkably convenient：",
+    "start": "42.438",
+    "end": "53.537",
+    "duration": "11.099"
   },
   {
-    "id": "t2_p2_cn",
-    "text": "第二段：双刃剑利弊对比分析，揭示精神异化危机。",
-    "start": "42.895",
-    "end": "47.910",
-    "duration": "5.015"
+    "id": "t2_u2_en",
+    "text": "Digital innovations have made it remarkably convenient for people to access vast information and handle daily tasks efficiently.",
+    "start": "55.336",
+    "end": "64.045",
+    "duration": "8.709"
   },
   {
-    "id": "t2_p2_en",
-    "text": "On the one hand, the boom of internet delivered convenience; on the other hand, excessive addiction has alienated authentic emotional ties between human beings.",
-    "start": "48.665",
-    "end": "59.360",
-    "duration": "10.695"
+    "id": "t2_u2_tip",
+    "text": "手术刀点拨：形式宾语 it 紧跟动词 made，后置不定式短语，重心稳健。",
+    "start": "64.545",
+    "end": "71.921",
+    "duration": "7.376"
   },
   {
-    "id": "t2_p2_tip_cn",
-    "text": "辩证论述框架：On the one hand, ... on the other hand, excessive addiction has inexorably alienated...",
-    "start": "60.145",
-    "end": "67.900",
-    "duration": "7.755"
+    "id": "t2_u3_cn",
+    "text": "【二段转折 + 尾段主仆倒装】批判“只靠屏幕找快乐远远不明智，人们没意识到情感代价”，结尾用 Only by... can we：",
+    "start": "72.821",
+    "end": "84.614",
+    "duration": "11.793"
   },
   {
-    "id": "t2_p2_tip_en",
-    "text": "Genuine dialogue and deep contemplation are gradually supplanted by fragmented trivialities.",
-    "start": "68.590",
-    "end": "75.400",
-    "duration": "6.810"
+    "id": "t2_u3_en",
+    "text": "Relying solely on virtual screens for happiness is far from wise, as countless individuals fail to realize the emotional cost. Only by treating smartphones as helpful tools rather than letting them dominate our lives can we preserve true warmth.",
+    "start": "86.414",
+    "end": "103.263",
+    "duration": "16.849"
   },
   {
-    "id": "t2_p3_cn",
-    "text": "第三段：总结提出理性驾驭原则与警示倒装句式。",
-    "start": "77.045",
-    "end": "81.820",
-    "duration": "4.775"
-  },
-  {
-    "id": "t2_p3_en",
-    "text": "Only by utilizing technology as an empowering servant rather than allowing it to become our tyrannical master can we preserve true warmth.",
-    "start": "82.565",
-    "end": "92.070",
-    "duration": "9.505"
-  },
-  {
-    "id": "t2_p3_tip_cn",
-    "text": "科技伦理主仆比喻倒装金句：Only by utilizing technology as a servant rather than a master can we...",
-    "start": "92.830",
-    "end": "100.420",
-    "duration": "7.590"
-  },
-  {
-    "id": "t2_p3_tip_en",
-    "text": "Only by utilizing technology as a servant rather than a tyrannical master can we preserve warmth.",
-    "start": "101.115",
-    "end": "107.690",
-    "duration": "6.575"
+    "id": "t2_u3_tip",
+    "text": "手术刀点拨：far from wise + fail to 双含蓄否定，cannot attach too much importance to 与 Only by 形成尾段双保险。",
+    "start": "103.763",
+    "end": "114.367",
+    "duration": "10.604"
   }
 ]

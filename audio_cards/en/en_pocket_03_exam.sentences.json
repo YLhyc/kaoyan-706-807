@@ -1,0 +1,72 @@
+[
+  {
+    "id": "sent_p1_s1",
+    "text": "A visit to the local museum enables visitors to gain a vivid glimpse into history.",
+    "start": "0.000",
+    "end": "5.554",
+    "duration": "5.554"
+  },
+  {
+    "id": "sent_p1_s2",
+    "text": "The past decade has witnessed a dramatic surge in public cultural participation.",
+    "start": "5.954",
+    "end": "10.798",
+    "duration": "4.844"
+  },
+  {
+    "id": "sent_p1_s3",
+    "text": "Unyielding perseverance empowers ordinary individuals to conquer severe challenges.",
+    "start": "11.198",
+    "end": "16.676",
+    "duration": "5.478"
+  },
+  {
+    "id": "sent_p2_s1",
+    "text": "It is widely acknowledged that modern technology has made it remarkably convenient to access courses.",
+    "start": "17.576",
+    "end": "23.927",
+    "duration": "6.351"
+  },
+  {
+    "id": "sent_p2_s2",
+    "text": "The number of city parks climbed steadily, vividly reflecting public investment.",
+    "start": "24.327",
+    "end": "29.860",
+    "duration": "5.533"
+  },
+  {
+    "id": "sent_p2_s3",
+    "text": "All entries submitted before Friday will be reviewed fairly.",
+    "start": "30.260",
+    "end": "34.093",
+    "duration": "3.833"
+  },
+  {
+    "id": "sent_p3_s1",
+    "text": "The service was far from satisfactory, and many people fail to realize the root cause.",
+    "start": "34.992",
+    "end": "40.800",
+    "duration": "5.808"
+  },
+  {
+    "id": "sent_p3_s2",
+    "text": "Nothing is more crucial than mutual trust, as the road ahead is anything but smooth.",
+    "start": "41.200",
+    "end": "46.681",
+    "duration": "5.481"
+  },
+  {
+    "id": "sent_p3_s3",
+    "text": "Not only can this habit foster creativity, but it also propels long-term success.",
+    "start": "47.081",
+    "end": "53.245",
+    "duration": "6.164"
+  },
+  {
+    "id": "sent_p3_s4",
+    "text": "Simple as these steps may seem, only by taking action can we turn dreams into reality.",
+    "start": "53.645",
+    "end": "59.929",
+    "duration": "6.284"
+  }
+]

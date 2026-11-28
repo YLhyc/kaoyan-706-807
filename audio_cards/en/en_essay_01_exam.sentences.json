@@ -2,64 +2,57 @@
   {
     "id": "sent_p1_s1",
     "text": "Dear Mr. President,",
-    "start": "0.055",
-    "end": "1.380",
-    "duration": "1.325"
+    "start": "0.000",
+    "end": "1.416",
+    "duration": "1.416"
   },
   {
     "id": "sent_p1_s2",
-    "text": "As a senior student at this university who spends considerable time reading in the library, I am writing this letter with the aim of putting forward some constructive suggestions to improve the current facilities and services.",
-    "start": "2.035",
-    "end": "15.520",
-    "duration": "13.485"
+    "text": "As a senior at this university who spends considerable time reading in the library, I am writing to offer constructive suggestions on improving its current facilities and services.",
+    "start": "1.816",
+    "end": "13.374",
+    "duration": "11.558"
   },
   {
     "id": "sent_p2_s1",
-    "text": "Having observed the daily study environment, I would like to lay emphasis on the following aspects.",
-    "start": "17.055",
-    "end": "23.350",
-    "duration": "6.295"
+    "text": "First and foremost, it would be deeply appreciated if the library could extend its opening hours during exam weeks, which would greatly facilitate students' revision.",
+    "start": "14.274",
+    "end": "25.198",
+    "duration": "10.924"
   },
   {
     "id": "sent_p2_s2",
-    "text": "In the first place, it is exceedingly advisable that the administration prolong the opening hours during examination weeks to accommodate students' intense revision schedules.",
-    "start": "24.025",
-    "end": "35.120",
-    "duration": "11.095"
+    "text": "Equally important is that more power outlets and silent study cubicles are expected to be added, as a quiet environment enables readers to concentrate effectively.",
+    "start": "25.598",
+    "end": "36.157",
+    "duration": "10.559"
   },
   {
     "id": "sent_p2_s3",
-    "text": "In the second place, the library is expected to introduce more power outlets and create designated silent study cubicles.",
-    "start": "35.730",
-    "end": "44.320",
-    "duration": "8.590"
-  },
-  {
-    "id": "sent_p2_s4",
-    "text": "Lastly, regular maintenance of academic databases and book resources should be reinforced to ensure prompt access to references.",
-    "start": "45.005",
-    "end": "53.490",
-    "duration": "8.485"
+    "text": "Simple as these adjustments may seem, not only can they enhance daily study efficiency, but they also reflect greater care for student needs.",
+    "start": "36.557",
+    "end": "46.083",
+    "duration": "9.526"
   },
   {
     "id": "sent_p3_s1",
-    "text": "Thank you for your time and favorable consideration of my recommendations.",
-    "start": "55.055",
-    "end": "59.130",
-    "duration": "4.075"
+    "text": "I would be honored if you could take my suggestions into favorable consideration.",
+    "start": "46.982",
+    "end": "51.316",
+    "duration": "4.334"
   },
   {
     "id": "sent_p3_s2",
-    "text": "I am genuinely looking forward to your earliest reply at your convenience.",
-    "start": "59.770",
-    "end": "64.200",
-    "duration": "4.430"
+    "text": "Looking forward to your earliest reply.",
+    "start": "51.716",
+    "end": "53.920",
+    "duration": "2.204"
   },
   {
     "id": "sent_p3_s3",
     "text": "Yours sincerely, Li Ming",
-    "start": "64.895",
-    "end": "67.110",
-    "duration": "2.215"
+    "start": "54.320",
+    "end": "56.561",
+    "duration": "2.241"
   }
 ]

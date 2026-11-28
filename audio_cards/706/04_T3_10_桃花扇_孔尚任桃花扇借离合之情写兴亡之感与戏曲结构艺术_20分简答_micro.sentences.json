@@ -3,168 +3,168 @@
     "id": "title_c0",
     "dom_key": "title_c0",
     "text": "《桃花扇》·孔尚任桃花扇借离合之情写兴亡之感与戏曲结构艺术",
-    "start": 0.134,
-    "end": 5.888,
-    "duration": 5.754
+    "start": 0.274,
+    "end": 6.166,
+    "duration": 5.892
   },
   {
     "id": "hook_c0",
     "dom_key": "hook_c0",
     "text": "紧扣《先声》“借离合之情，写兴亡之感”三层展开：先看侯李聚散怎样跟南明忠奸兴亡绑死，",
-    "start": 6.464,
-    "end": 14.797,
-    "duration": 8.332
+    "start": 7.134,
+    "end": 15.906,
+    "duration": 8.772
   },
   {
     "id": "hook_c1",
     "dom_key": "hook_c1",
     "text": "再追着“桃花扇”这一实物道具四次动作演变串起全剧四十出，",
-    "start": 15.136,
-    "end": 20.825,
-    "duration": 5.689
+    "start": 16.254,
+    "end": 22.026,
+    "duration": 5.772
   },
   {
     "id": "hook_c2",
     "dom_key": "hook_c2",
     "text": "最后落在白云庵打破大团圆“撕扇入道”的历史悲凉。",
-    "start": 20.978,
-    "end": 25.092,
-    "duration": 4.114
+    "start": 22.374,
+    "end": 26.386,
+    "duration": 4.012
   },
   {
     "id": "intro_c0",
     "dom_key": "intro_c0",
     "text": "孔尚任《桃花扇》与洪昇《长生殿》并称清初戏剧“双璧”，严守“征实求信”，",
-    "start": 25.679,
-    "end": 31.667,
-    "duration": 5.989
+    "start": 27.394,
+    "end": 34.806,
+    "duration": 7.412
   },
   {
     "id": "intro_c1",
     "dom_key": "intro_c1",
     "text": "试一出《先声》点明主旨：“借离合之情，写兴亡之感。”",
-    "start": 31.838,
-    "end": 36.316,
-    "duration": 4.478
+    "start": 35.194,
+    "end": 39.926,
+    "duration": 4.732
   },
   {
     "id": "sec0_title_c0",
     "dom_key": "sec0_title_c0",
     "text": "01 · 儿女情缘严密嵌入南明覆亡进程",
-    "start": 36.877,
-    "end": 40.522,
-    "duration": 3.645
+    "start": 40.894,
+    "end": 44.346,
+    "duration": 3.452
   },
   {
     "id": "sec0_step0_c0",
     "dom_key": "sec0_step0_c0",
     "text": "摆脱流连风月旧套，将侯方域与李香君聚散严密嵌入弘光朝廷建立、党争至覆亡进程；",
-    "start": 41.108,
-    "end": 49.936,
-    "duration": 8.827
+    "start": 45.394,
+    "end": 54.686,
+    "duration": 9.292
   },
   {
     "id": "sec0_step1_c0",
     "dom_key": "sec0_step1_c0",
     "text": "借浮沉揭马士英、阮大铖误国，歌颂史可法、李香君、柳敬亭气节；南明灭亡摧毁爱情归宿，国运支配个体离合。",
-    "start": 50.51,
-    "end": 62.383,
-    "duration": 11.874
+    "start": 55.654,
+    "end": 68.926,
+    "duration": 13.272
   },
   {
     "id": "sec1_title_c0",
     "dom_key": "sec1_title_c0",
     "text": "02 · “桃花扇”贯穿四十出的精巧结构",
-    "start": 62.97,
-    "end": 66.654,
-    "duration": 3.684
+    "start": 69.894,
+    "end": 73.306,
+    "duration": 3.412
   },
   {
     "id": "sec1_step0_c0",
     "dom_key": "sec1_step0_c0",
     "text": "一柄“桃花扇”串联四十出：定情题诗赠扇→逼嫁香君溅血诗扇→杨龙友点染成桃花扇→终局张瑶星撕扇；",
-    "start": 67.241,
-    "end": 79.089,
-    "duration": 11.848
+    "start": 74.314,
+    "end": 85.526,
+    "duration": 11.212
   },
   {
     "id": "sec1_step1_c0",
     "dom_key": "sec1_step1_c0",
     "text": "既是定情信物、香君气节象征，又是南明政局盛衰见证，双线交错脉络贯通。",
-    "start": 79.676,
-    "end": 87.761,
-    "duration": 8.085
+    "start": 86.614,
+    "end": 94.186,
+    "duration": 7.572
   },
   {
     "id": "sec2_title_c0",
     "dom_key": "sec2_title_c0",
     "text": "03 · 白云庵撕扇入道、升华悲凉史诗格调",
-    "start": 88.348,
-    "end": 92.41,
-    "duration": 4.061
+    "start": 95.194,
+    "end": 99.646,
+    "duration": 4.452
   },
   {
     "id": "sec2_step0_c0",
     "dom_key": "sec2_step0_c0",
     "text": "突破“破镜重圆”俗套，南京栖霞山白云庵劫后重聚之际，",
-    "start": 92.996,
-    "end": 98.764,
-    "duration": 5.767
+    "start": 100.346,
+    "end": 106.478,
+    "duration": 6.132
   },
   {
     "id": "sec2_step0_c1",
     "dom_key": "sec2_step0_c1",
     "text": "张瑶星呵斥“两个痴虫，你看国在哪里？家在哪里？君在哪里？父在哪里？”随后撕碎桃花扇；",
-    "start": 99.025,
-    "end": 108.881,
-    "duration": 9.856
+    "start": 106.786,
+    "end": 114.878,
+    "duration": 8.092
   },
   {
     "id": "sec2_step1_c0",
     "dom_key": "sec2_step1_c0",
     "text": "二人如梦忽醒、双双入道，割断花月情根升华至国家兴亡沧桑反思，具史诗格调。",
-    "start": 109.468,
-    "end": 117.917,
-    "duration": 8.45
+    "start": 115.846,
+    "end": 124.938,
+    "duration": 9.092
   },
   {
     "id": "guard_c0",
     "dom_key": "guard_c0",
     "text": "防混：清初戏曲“双璧”是孔尚任《桃花扇》与洪昇《长生殿》；",
-    "start": 118.504,
-    "end": 123.712,
-    "duration": 5.207
+    "start": 125.906,
+    "end": 131.438,
+    "duration": 5.532
   },
   {
     "id": "guard_c1",
     "dom_key": "guard_c1",
     "text": "《桃花扇》严守“征实求信”原则，结局是白云庵撕扇入道。",
-    "start": 124.051,
-    "end": 128.816,
-    "duration": 4.765
+    "start": 132.406,
+    "end": 137.658,
+    "duration": 5.252
   },
   {
     "id": "drill0_c0",
     "dom_key": "drill0_c0",
     "text": "① 《桃花扇》试一出《先声》的八字纲领与“征实求信”原则？",
-    "start": 129.403,
-    "end": 135.066,
-    "duration": 5.663
+    "start": 138.626,
+    "end": 144.398,
+    "duration": 5.772
   },
   {
     "id": "drill1_c0",
     "dom_key": "drill1_c0",
     "text": "② “一柄桃花扇”经历哪四折动作并发挥哪三重结构与象征职能？",
-    "start": 135.653,
-    "end": 142.279,
-    "duration": 6.627
+    "start": 145.406,
+    "end": 152.338,
+    "duration": 6.932
   },
   {
     "id": "drill2_c0",
     "dom_key": "drill2_c0",
     "text": "③ 复述白云庵结局的场景与张瑶星喝问如何升华史诗意蕴？",
-    "start": 142.853,
-    "end": 149.376,
-    "duration": 6.522
+    "start": 153.266,
+    "end": 160.358,
+    "duration": 7.092
   }
 ]

@@ -3541,6 +3541,26 @@ body {
   text-justify: auto !important;
 }
 
+/* 西文语境下挖空遮罩防截断与行高稳定 */
+[data-subject="en"] .cloze-keyword .cloze:not(.revealed),
+[data-subject="en"] .cloze-keyword-active .cloze:not(.revealed),
+[data-subject="en"] .cloze-blank:not(.revealed),
+.en-cloze:not(.revealed) {
+  min-width: 3.1em;
+  padding: 0 6px;
+  line-height: inherit;
+  vertical-align: baseline;
+  max-width: 100%;
+}
+
+[data-subject="en"] .cloze-keyword .cloze:not(.revealed)::after,
+[data-subject="en"] .cloze-keyword-active .cloze:not(.revealed)::after,
+[data-subject="en"] .cloze-blank:not(.revealed)::after,
+.en-cloze:not(.revealed)::after {
+  letter-spacing: 0.2px;
+  max-width: calc(100% - 4px);
+}
+
 /* ========================================================
    英语写作移动端专属横向宽度极致释放引擎 (Mobile Reading Width Optimization)
    解决嵌套 padding 累积高达 148px 导致单行仅容纳 4-5 词的严重窄屏痛点
@@ -3562,6 +3582,12 @@ body {
     padding: 16px 14px !important;
     border-radius: 16px !important;
     margin-bottom: 14px !important;
+  }
+
+  [data-subject="en"] .section-card-header {
+    margin: -16px -14px 14px -14px !important;
+    padding: 12px 14px 10px 14px !important;
+    border-radius: 15px 15px 0 0 !important;
   }
   
   .en-full-essay-box {
@@ -3590,6 +3616,12 @@ body {
     padding: 14px 12px !important;
     border-radius: 14px !important;
     margin-bottom: 12px !important;
+  }
+
+  [data-subject="en"] .section-card-header {
+    margin: -14px -12px 12px -12px !important;
+    padding: 11px 12px 9px 12px !important;
+    border-radius: 13px 13px 0 0 !important;
   }
 
   .en-full-essay-box {
@@ -3644,6 +3676,12 @@ body {
   [data-subject="en"] .exam-section-card {
     padding: 12px 10px !important;
     border-radius: 12px !important;
+  }
+
+  [data-subject="en"] .section-card-header {
+    margin: -12px -10px 12px -10px !important;
+    padding: 10px 10px 8px 10px !important;
+    border-radius: 11px 11px 0 0 !important;
   }
 
   .en-full-essay-box {

@@ -1,93 +1,72 @@
 [
   {
     "id": "t2_intro",
-    "text": "下面进入大作文 03 · 传统美德与文明礼仪：非物质文化遗产传承与文化自信答题骨架与变体精解。",
-    "start": "0.030",
-    "end": "10.420",
-    "duration": "10.390"
+    "text": "下面进入大作文 03 · 2023 英一母题：龙舟赛复兴与传统文化自信，英式思维与留白盲拼训练。",
+    "start": "0.000",
+    "end": "10.563",
+    "duration": "10.563"
   },
   {
-    "id": "t2_p1_cn",
-    "text": "第一段：非遗工匠传艺神态描摹与文化基石主旨升华。",
-    "start": "11.465",
-    "end": "16.710",
-    "duration": "5.245"
+    "id": "t2_u1_cn",
+    "text": "【2023 真题 · 对话怎么译】图中村民说“真好啊，咱们村的龙舟赛越来越热闹了”，如何用“with + remarking joyfully that”干净挂在句子上？",
+    "start": "11.463",
+    "end": "22.971",
+    "duration": "11.508"
   },
   {
-    "id": "t2_p1_en",
-    "text": "An elderly craftsman is enthusiastically teaching young apprentices traditional shadow puppetry; excellent traditional culture constitutes the spiritual cornerstone.",
-    "start": "17.445",
-    "end": "28.760",
-    "duration": "11.315"
+    "id": "t2_u1_en",
+    "text": "The heartwarming cartoon vividly depicts a lively dragon boat race in a village, with excited spectators cheering along the riverbank. Two villagers watch with bright smiles, one remarking joyfully that their village's dragon boat race is becoming increasingly vibrant.",
+    "start": "24.771",
+    "end": "44.629",
+    "duration": "19.858"
   },
   {
-    "id": "t2_p1_tip_cn",
-    "text": "工匠精神与文化底蕴立意句：constitutes the spiritual cornerstone of national rejuvenation.",
-    "start": "29.465",
-    "end": "37.080",
-    "duration": "7.615"
+    "id": "t2_u1_tip",
+    "text": "手术刀点拨：用 one remarking joyfully that 把中文台词转成间接引语，避免直译“真好啊”显得幼稚。",
+    "start": "45.129",
+    "end": "54.987",
+    "duration": "9.858"
   },
   {
-    "id": "t2_p1_tip_en",
-    "text": "Excellent traditional culture constitutes the spiritual cornerstone of national rejuvenation.",
-    "start": "37.805",
-    "end": "44.060",
-    "duration": "6.255"
+    "id": "t2_u2_cn",
+    "text": "【二段抽屉 · 经济与精神双轮驱动】用 Chief among 倒装点出“经济进步与乡村振兴让社区办得了文化活动”：",
+    "start": "55.887",
+    "end": "65.168",
+    "duration": "9.281"
   },
   {
-    "id": "t2_p2_cn",
-    "text": "第二段：双重价值递进论证，结合时代脉搏论证文化归属感。",
-    "start": "45.685",
-    "end": "52.130",
-    "duration": "6.445"
+    "id": "t2_u2_en",
+    "text": "Chief among these factors is that rapid economic progress and rural revitalization have substantially improved villagers' living standards, making it possible for local communities to organize richer cultural events.",
+    "start": "66.967",
+    "end": "81.825",
+    "duration": "14.858"
   },
   {
-    "id": "t2_p2_en",
-    "text": "Profound cultural traditions provide individuals with solid spiritual nourishment and a distinctive sense of belonging in a globalized era.",
-    "start": "52.825",
-    "end": "62.580",
-    "duration": "9.755"
+    "id": "t2_u2_tip",
+    "text": "手术刀点拨：结尾挂载 , making it possible for ... to do，一句兼顾“树状挂载”和“形式宾语”两把刀！",
+    "start": "82.325",
+    "end": "90.869",
+    "duration": "8.544"
   },
   {
-    "id": "t2_p2_tip_cn",
-    "text": "递进排比句型：not only tempers aesthetic sensibilities, but also safeguards moral integrity.",
-    "start": "63.365",
-    "end": "70.070",
-    "duration": "6.705"
+    "id": "t2_u3_cn",
+    "text": "【二段倒装 + 尾段收尾】串联 Not only can、cannot attach too much importance to 与 Only through 倒装：",
+    "start": "91.769",
+    "end": "100.545",
+    "duration": "8.776"
   },
   {
-    "id": "t2_p2_tip_en",
-    "text": "Integrating traditional wisdom into contemporary expressions breathes renewed vitality into our historical legacy.",
-    "start": "70.775",
-    "end": "78.090",
-    "duration": "7.315"
+    "id": "t2_u3_en",
+    "text": "Not only can traditional activities like dragon boat racing enrich community life, but they also strengthen unity among neighbors. Only through joint efforts from local governments and citizens can we keep our cultural roots alive.",
+    "start": "102.345",
+    "end": "118.608",
+    "duration": "16.263"
   },
   {
-    "id": "t2_p3_cn",
-    "text": "第三段：多方主体协同创新倡议，以恢弘气象倒装句结尾。",
-    "start": "79.775",
-    "end": "85.800",
-    "duration": "6.025"
-  },
-  {
-    "id": "t2_p3_en",
-    "text": "Only when the youth cherish cultural treasures with pride and creativity can our civilization shine with everlasting splendor on the world stage.",
-    "start": "86.575",
-    "end": "96.530",
-    "duration": "9.955"
-  },
-  {
-    "id": "t2_p3_tip_cn",
-    "text": "宏大文化叙事倒装句：Only when the youth cherish cultural treasures can our civilization shine with everlasting splendor.",
-    "start": "97.265",
-    "end": "106.210",
-    "duration": "8.945"
-  },
-  {
-    "id": "t2_p3_tip_en",
-    "text": "Only when the youth cherish cultural treasures can Chinese civilization shine with everlasting splendor.",
-    "start": "106.965",
-    "end": "113.910",
-    "duration": "6.945"
+    "id": "t2_u3_tip",
+    "text": "手术刀点拨：本篇 191 词完整集齐 7 大英式高分信号，而且全篇 zero 生僻高危拼写词！",
+    "start": "119.108",
+    "end": "128.849",
+    "duration": "9.741"
   }
 ]

@@ -1,93 +1,72 @@
 [
   {
     "id": "t2_intro",
-    "text": "下面进入小作文 02 · 投诉与维权信：网购商品质量破损与售后服务冷漠答题骨架与变体精解。",
-    "start": "0.030",
-    "end": "13.240",
-    "duration": "13.210"
+    "text": "下面进入小作文 02 · 投诉与维权信：网购图书破损与售后推诿，英式思维与留白盲拼训练。",
+    "start": "0.000",
+    "end": "10.338",
+    "duration": "10.338"
   },
   {
-    "id": "t2_p1_cn",
-    "text": "第一段：直入主题，表明正式投诉意向与事由。",
-    "start": "13.635",
-    "end": "16.370",
-    "duration": "2.735"
+    "id": "t2_u1_cn",
+    "text": "【首段 · 表达不满】不要写 I am angry and want to complain about。请用书面客体化投诉句式：",
+    "start": "11.238",
+    "end": "19.144",
+    "duration": "7.906"
   },
   {
-    "id": "t2_p1_en",
-    "text": "I am writing this letter to lodge a formal complaint concerning the substandard quality of the books I purchased and the unprofessional attitude of your staff.",
-    "start": "17.075",
-    "end": "26.490",
-    "duration": "9.415"
+    "id": "t2_u1_en",
+    "text": "I am writing to express my deep dissatisfaction with the damaged books I received from your store and the indifferent attitude of your staff.",
+    "start": "20.944",
+    "end": "29.123",
+    "duration": "8.179"
   },
   {
-    "id": "t2_p1_tip_cn",
-    "text": "加分短语：lodge a formal complaint 替换简单的 complain about。",
-    "start": "27.385",
-    "end": "32.570",
-    "duration": "5.185"
+    "id": "t2_u1_tip",
+    "text": "手术刀点拨：express my deep dissatisfaction with 是投诉信黄金安全表达，态度克制而有力。",
+    "start": "29.623",
+    "end": "39.241",
+    "duration": "9.618"
   },
   {
-    "id": "t2_p1_tip_en",
-    "text": "lodge a formal complaint",
-    "start": "33.215",
-    "end": "35.060",
-    "duration": "1.845"
+    "id": "t2_u2_cn",
+    "text": "【二段 · 含蓄否定剖析】中式写法：The books were not good, and the staff didn't help me。请用 far from 和 fail to 改写：",
+    "start": "40.141",
+    "end": "50.669",
+    "duration": "10.528"
   },
   {
-    "id": "t2_p2_cn",
-    "text": "第二段：客观列举事实细节，指出商品缺陷与服务失职。",
-    "start": "36.775",
-    "end": "42.160",
-    "duration": "5.385"
+    "id": "t2_u2_en",
+    "text": "Upon arrival, the book covers were torn and several pages were missing, which proved far from satisfactory, and your online agent failed to offer a clear explanation.",
+    "start": "52.468",
+    "end": "63.676",
+    "duration": "11.208"
   },
   {
-    "id": "t2_p2_en",
-    "text": "When the parcel arrived yesterday, I was shocked to find that the covers were torn and several key pages were missing.",
-    "start": "42.915",
-    "end": "49.860",
-    "duration": "6.945"
+    "id": "t2_u2_tip",
+    "text": "手术刀点拨：far from satisfactory 替掉 not good，failed to offer 替掉 didn't offer，立刻拉开书面学术感。",
+    "start": "64.176",
+    "end": "74.579",
+    "duration": "10.403"
   },
   {
-    "id": "t2_p2_tip_cn",
-    "text": "表达不满情感句型：Even more frustrating was that...",
-    "start": "50.585",
-    "end": "54.430",
-    "duration": "3.845"
+    "id": "t2_u3_cn",
+    "text": "【尾段 · 提出明确诉求】表达“我认为贵方必须立即采取措施纠错”，用好 deem it imperative that 虚拟句：",
+    "start": "75.479",
+    "end": "84.013",
+    "duration": "8.534"
   },
   {
-    "id": "t2_p2_tip_en",
-    "text": "Even more frustrating was that my inquiry was met with total indifference.",
-    "start": "55.185",
-    "end": "60.000",
-    "duration": "4.815"
+    "id": "t2_u3_en",
+    "text": "Therefore, I deem it imperative that prompt measures be taken to rectify this error through a replacement or a full refund.",
+    "start": "85.813",
+    "end": "94.062",
+    "duration": "8.249"
   },
   {
-    "id": "t2_p3_cn",
-    "text": "第三段：严肃督促整改，明确要求换货或全额退款。",
-    "start": "61.665",
-    "end": "67.370",
-    "duration": "5.705"
-  },
-  {
-    "id": "t2_p3_en",
-    "text": "Therefore, I deem it imperative that an immediate replacement or a full refund be arranged promptly.",
-    "start": "68.100",
-    "end": "74.400",
-    "duration": "6.300"
-  },
-  {
-    "id": "t2_p3_tip_cn",
-    "text": "高分虚拟语气句：I deem it imperative that sb. (should) do...",
-    "start": "75.135",
-    "end": "80.430",
-    "duration": "5.295"
-  },
-  {
-    "id": "t2_p3_tip_en",
-    "text": "I deem it imperative that effective rectifying measures be taken promptly.",
-    "start": "81.135",
-    "end": "85.820",
-    "duration": "4.685"
+    "id": "t2_u3_tip",
+    "text": "手术刀拆解：注意 that 从句里省略 should，直接用 be taken（被动）和 rectify（纠正整改）。",
+    "start": "94.562",
+    "end": "103.485",
+    "duration": "8.923"
   }
 ]

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "t2_intro",
+    "text": "下面进入口袋 01 · 小作文 8 句极简骨架与格式红线卡，英式思维与留白盲拼训练。",
+    "start": "0.000",
+    "end": "9.113",
+    "duration": "9.113"
+  },
+  {
+    "id": "t2_u1_cn",
+    "text": "【句型提取 · 书信礼貌建议】不要写 I think you should extend hours，用形式主语与挂载改写：",
+    "start": "10.013",
+    "end": "19.037",
+    "duration": "9.024"
+  },
+  {
+    "id": "t2_u1_en",
+    "text": "It would be deeply appreciated if the library could extend its opening hours, which would greatly facilitate daily study.",
+    "start": "20.837",
+    "end": "28.390",
+    "duration": "7.553"
+  },
+  {
+    "id": "t2_u1_tip",
+    "text": "手术刀：It would be deeply appreciated if 接逗号 which 挂载结果。",
+    "start": "28.890",
+    "end": "34.238",
+    "duration": "5.348"
+  },
+  {
+    "id": "t2_u2_cn",
+    "text": "【句型提取 · Notice 物称】不要写 We will hold，请用活动与队伍作主语：",
+    "start": "35.138",
+    "end": "42.356",
+    "duration": "7.218"
+  },
+  {
+    "id": "t2_u2_en",
+    "text": "The Student Union is scheduled to host a singing contest, and each team is expected to consist of three to five students.",
+    "start": "44.155",
+    "end": "52.283",
+    "duration": "8.128"
+  },
+  {
+    "id": "t2_u2_tip",
+    "text": "手术刀：is scheduled to host 与 consist of 搭配，记住 consist of 无被动。",
+    "start": "52.783",
+    "end": "60.681",
+    "duration": "7.898"
+  },
+  {
+    "id": "t2_u3_cn",
+    "text": "【句型提取 · 投诉与致歉】用形式宾语虚拟督促整改，并写出客观致歉原因：",
+    "start": "61.581",
+    "end": "69.692",
+    "duration": "8.111"
+  },
+  {
+    "id": "t2_u3_en",
+    "text": "I deem it imperative that prompt measures be taken to rectify this issue, and my tight schedule prevented me from attending on time.",
+    "start": "71.492",
+    "end": "80.466",
+    "duration": "8.974"
+  },
+  {
+    "id": "t2_u3_tip",
+    "text": "手术刀：deem it imperative that 接原形 be taken；道歉保留 I sincerely apologize。",
+    "start": "80.966",
+    "end": "88.499",
+    "duration": "7.533"
+  }
+]

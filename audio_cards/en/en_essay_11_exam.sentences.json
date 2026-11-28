@@ -1,65 +1,65 @@
 [
   {
     "id": "sent_p1_s1",
-    "text": "As is graphically portrayed in the illustration, an elderly craftsman is enthusiastically teaching young apprentices traditional shadow puppetry, with radiant smiles on their faces.",
-    "start": "0.045",
-    "end": "11.810",
-    "duration": "11.765"
+    "text": "The heartwarming cartoon vividly depicts a lively dragon boat race in a village, with excited spectators cheering along the riverbank.",
+    "start": "0.000",
+    "end": "8.696",
+    "duration": "8.696"
   },
   {
     "id": "sent_p1_s2",
-    "text": "The subtle implication conveyed here is unmistakable: excellent traditional culture constitutes the spiritual cornerstone of national rejuvenation and deserves perpetual preservation.",
-    "start": "12.450",
-    "end": "25.500",
-    "duration": "13.050"
+    "text": "Two villagers watch with bright smiles, one remarking joyfully that their village's dragon boat race is becoming increasingly vibrant.",
+    "start": "9.096",
+    "end": "18.099",
+    "duration": "9.003"
+  },
+  {
+    "id": "sent_p1_s3",
+    "text": "Simple as the drawing may seem, it clearly mirrors the revival of traditional Chinese culture in rural areas.",
+    "start": "18.499",
+    "end": "25.753",
+    "duration": "7.254"
   },
   {
     "id": "sent_p2_s1",
-    "text": "Several prominent factors account for the urgent revitalization of intangible cultural heritage.",
-    "start": "27.075",
-    "end": "33.380",
-    "duration": "6.305"
+    "text": "A multitude of factors can easily account for this encouraging phenomenon.",
+    "start": "26.653",
+    "end": "31.119",
+    "duration": "4.466"
   },
   {
     "id": "sent_p2_s2",
-    "text": "Chief among them is that profound cultural traditions provide individuals with solid spiritual nourishment and a distinctive sense of belonging in a globalized era.",
-    "start": "33.965",
-    "end": "44.720",
-    "duration": "10.755"
+    "text": "Chief among these factors is that rapid economic progress and rural revitalization have substantially improved villagers' living standards, making it possible for local communities to organize richer cultural events.",
+    "start": "31.519",
+    "end": "46.377",
+    "duration": "14.858"
   },
   {
     "id": "sent_p2_s3",
-    "text": "Traditional arts and virtues not only temper our aesthetic sensibilities, but also safeguard moral integrity amidst commercialized vulgarity.",
-    "start": "45.330",
-    "end": "55.730",
-    "duration": "10.400"
+    "text": "Equally crucial is that modern citizens increasingly attach greater importance to spiritual fulfillment and cultural identity.",
+    "start": "46.777",
+    "end": "55.058",
+    "duration": "8.281"
   },
   {
     "id": "sent_p2_s4",
-    "text": "Furthermore, integrating traditional wisdom into creative contemporary expressions breathes renewed vitality into our historical legacy.",
-    "start": "56.345",
-    "end": "65.190",
-    "duration": "8.845"
-  },
-  {
-    "id": "sent_p2_s5",
-    "text": "As a timeless saying reminds us, \"A tree cannot thrive without deep roots, nor can a civilization flourish without honoring its ancestral heritage.\"",
-    "start": "65.830",
-    "end": "76.300",
-    "duration": "10.470"
+    "text": "Not only can traditional activities like dragon boat racing enrich community life, but they also strengthen unity among neighbors and pass down fine heritage to younger generations.",
+    "start": "55.457",
+    "end": "68.230",
+    "duration": "12.773"
   },
   {
     "id": "sent_p3_s1",
-    "text": "Based on the discussion above, schools, cultural institutions, and the younger generation should collaborate dynamically to carry forward fine cultural legacies.",
-    "start": "77.845",
-    "end": "89.530",
-    "duration": "11.685"
+    "text": "Taking all these factors into account, we cannot attach too much importance to preserving traditional folk customs.",
+    "start": "69.130",
+    "end": "76.244",
+    "duration": "7.114"
   },
   {
     "id": "sent_p3_s2",
-    "text": "Only when the youth cherish cultural treasures with pride and creativity can Chinese civilization shine with everlasting splendor on the world stage.",
-    "start": "90.135",
-    "end": "99.710",
-    "duration": "9.575"
+    "text": "Only through joint efforts from local governments and citizens can we keep our cultural roots alive and propel rural prosperity.",
+    "start": "76.644",
+    "end": "85.242",
+    "duration": "8.598"
   }
 ]

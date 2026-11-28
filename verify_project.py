@@ -5,7 +5,7 @@
 1. 静态语法校验: node --check
 2. 版本清单一致性: version.json, sw.js, app.js, index.html
 3. DOM 关键锚点与 CSS 规则完整性
-4. 考题数据完整性: 807 (40) + 706 (42) + 英语 (16) = 98 篇
+4. 考题数据完整性: 807 (40) + 706 (42) + 英语 (20) = 102 篇
 """
 
 import sys
@@ -195,13 +195,13 @@ def main():
 
         print(f"  • 807 现当代文学: {len(i807)} 题 (预期 40)")
         print(f"  • 706 古代文学:   {len(i706)} 题 (预期 42)")
-        print(f"  • 考研英语写作:   {len(ien)} 篇 (预期 16)")
-        print(f"  • 全科题目总计:   {total} 题/篇 (预期 98)")
+        print(f"  • 考研英语写作:   {len(ien)} 篇 (预期 20)")
+        print(f"  • 全科题目总计:   {total} 题/篇 (预期 102)")
 
-        if len(i807) != 40 or len(i706) != 42 or len(ien) != 16 or total != 98:
+        if len(i807) != 40 or len(i706) != 42 or len(ien) != 20 or total != 102:
             errors.append(f"考题数量与预期不一致: 807={len(i807)}, 706={len(i706)}, en={len(ien)}, total={total}")
         else:
-            print("  ✓ 全科 98 道题目清单数据结构完整一致！")
+            print("  ✓ 全科 102 道题目清单数据结构完整一致！")
 
     print("\n" + "=" * 65)
     if errors:

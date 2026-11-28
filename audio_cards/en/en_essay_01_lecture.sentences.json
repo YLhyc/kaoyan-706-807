@@ -1,93 +1,72 @@
 [
   {
     "id": "t2_intro",
-    "text": "下面进入小作文 01 · 建议信：图书馆设施与自习服务优化答题骨架与变体精解。",
-    "start": "0.030",
-    "end": "7.630",
-    "duration": "7.600"
+    "text": "下面进入小作文 01 · 建议信：图书馆设施与自习服务优化，英式思维与留白盲拼训练。",
+    "start": "0.000",
+    "end": "8.633",
+    "duration": "8.633"
   },
   {
-    "id": "t2_p1_cn",
-    "text": "第一段：表明写信人身份与核心来意。",
-    "start": "8.755",
-    "end": "12.310",
-    "duration": "3.555"
+    "id": "t2_u1_cn",
+    "text": "【首段开口 · 身份 + 目的】不要写 I want to give you some advice。请用 As a senior 定从自我介绍，并换用精准搭配提出建议：",
+    "start": "9.533",
+    "end": "22.536",
+    "duration": "13.003"
   },
   {
-    "id": "t2_p1_en",
-    "text": "As a senior student at this university who spends considerable time reading in the library, I am writing this letter with the aim of putting forward some constructive suggestions to improve the current facilities and services.",
-    "start": "13.015",
-    "end": "26.500",
-    "duration": "13.485"
+    "id": "t2_u1_en",
+    "text": "As a senior at this university who spends considerable time reading in the library, I am writing to offer constructive suggestions on improving its current facilities and services.",
+    "start": "24.336",
+    "end": "36.324",
+    "duration": "11.988"
   },
   {
-    "id": "t2_p1_tip_cn",
-    "text": "加分替换词：putting forward suggestions 替换为 offering constructive proposals。",
-    "start": "27.245",
-    "end": "33.120",
-    "duration": "5.875"
+    "id": "t2_u1_tip",
+    "text": "手术刀点拨：offer constructive suggestions 替换 give advice；定语从句紧跟身份词，迅速建立写信合法性。",
+    "start": "36.824",
+    "end": "45.895",
+    "duration": "9.071"
   },
   {
-    "id": "t2_p1_tip_en",
-    "text": "offering constructive proposals",
-    "start": "33.795",
-    "end": "35.890",
-    "duration": "2.095"
+    "id": "t2_u2_cn",
+    "text": "【二段核心 · 形式主语 + , which】写给图书馆长提建议，不要说 I think you should open longer。请改为下对上礼貌虚拟 + 挂载结果：",
+    "start": "46.795",
+    "end": "61.418",
+    "duration": "14.623"
   },
   {
-    "id": "t2_p2_cn",
-    "text": "第二段：提出三条具有针对性与可操作性的具体建议。",
-    "start": "37.595",
-    "end": "42.770",
-    "duration": "5.175"
+    "id": "t2_u2_en",
+    "text": "First and foremost, it would be deeply appreciated if the library could extend its opening hours during exam weeks, which would greatly facilitate students' revision.",
+    "start": "63.217",
+    "end": "73.855",
+    "duration": "10.638"
   },
   {
-    "id": "t2_p2_en",
-    "text": "In the first place, it is exceedingly advisable that the administration prolong the opening hours during examination weeks to accommodate students' intense revision schedules.",
-    "start": "43.495",
-    "end": "54.620",
-    "duration": "11.125"
+    "id": "t2_u2_tip",
+    "text": "手术刀点拨：it would be deeply appreciated if 语气极得体，后半句用 , which would greatly facilitate 挂载成果，消灭流水逗号。",
+    "start": "74.355",
+    "end": "85.014",
+    "duration": "10.659"
   },
   {
-    "id": "t2_p2_tip_cn",
-    "text": "核心句型：虚拟语气 It is exceedingly advisable that sb. (should) do sth.。",
-    "start": "55.275",
-    "end": "62.590",
-    "duration": "7.315"
+    "id": "t2_u3_cn",
+    "text": "【二段升华 · 倒装双叠加】改写“这些小调整看似简单，但不仅提升效率还能体现关怀”：",
+    "start": "85.914",
+    "end": "94.280",
+    "duration": "8.366"
   },
   {
-    "id": "t2_p2_tip_en",
-    "text": "It is exceedingly advisable that the administration prolong the opening hours.",
-    "start": "63.330",
-    "end": "67.700",
-    "duration": "4.370"
+    "id": "t2_u3_en",
+    "text": "Simple as these adjustments may seem, not only can they enhance daily study efficiency, but they also reflect greater care for student needs.",
+    "start": "96.080",
+    "end": "105.913",
+    "duration": "9.833"
   },
   {
-    "id": "t2_p3_cn",
-    "text": "第三段：礼貌致谢并期待管理部门答复。",
-    "start": "69.345",
-    "end": "73.460",
-    "duration": "4.115"
-  },
-  {
-    "id": "t2_p3_en",
-    "text": "Thank you for your time and favorable consideration of my recommendations, and I am genuinely looking forward to your earliest reply at your convenience.",
-    "start": "74.205",
-    "end": "83.680",
-    "duration": "9.475"
-  },
-  {
-    "id": "t2_p3_tip_cn",
-    "text": "考场名言点睛：千里之行，始于足下。",
-    "start": "84.425",
-    "end": "88.760",
-    "duration": "4.335"
-  },
-  {
-    "id": "t2_p3_tip_en",
-    "text": "A journey of a thousand miles begins with a single step.",
-    "start": "89.495",
-    "end": "93.090",
-    "duration": "3.595"
+    "id": "t2_u3_tip",
+    "text": "手术刀拆解：句首 Simple as ... may seem 接 not only can 倒装，用 can 保住 enhance 原形，杜绝单三遗漏。",
+    "start": "106.413",
+    "end": "116.137",
+    "duration": "9.724"
   }
 ]

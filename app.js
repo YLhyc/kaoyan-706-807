@@ -2269,12 +2269,15 @@
     el.filterPillsWrap.innerHTML = '';
     
     if (state.currentSubject === 'en') {
+      const enList = state.allData?.items_en || [];
+      const countByCat = (cid) => enList.filter(x => x && x.category_id === cid).length;
       const pills = [
-        { id: 'all', label: '全部范文 (16)' },
-        { id: 'essay_letter', label: '高分书信 (6)' },
-        { id: 'essay_notice', label: '告示通知 (2)' },
-        { id: 'essay_picture', label: '真题图画 (6)' },
-        { id: 'essay_chart', label: '真题图表 (2)' }
+        { id: 'all', label: `全部 (${enList.length})` },
+        { id: 'essay_pocket', label: `口袋精华 (${countByCat('essay_pocket')})` },
+        { id: 'essay_letter', label: `高分书信 (${countByCat('essay_letter')})` },
+        { id: 'essay_notice', label: `告示通知 (${countByCat('essay_notice')})` },
+        { id: 'essay_picture', label: `真题图画 (${countByCat('essay_picture')})` },
+        { id: 'essay_chart', label: `混合与表格 (${countByCat('essay_chart')})` }
       ];
       pills.forEach(p => {
         const btn = document.createElement('button');
@@ -3713,7 +3716,7 @@
       else if (x.level === 'T1') t1Items.push(x);
     });
     itemsEn.forEach(x => {
-      if (x.category_id === 'essay_letter' || x.category_id === 'essay_picture') t0Items.push(x);
+      if (x.category_id === 'essay_pocket' || x.category_id === 'essay_letter' || x.category_id === 'essay_picture') t0Items.push(x);
       else t1Items.push(x);
     });
     if (window.KAOYAN_POL_DATA) {
@@ -9134,7 +9137,7 @@
   // ==========================================
   // PWA 自动热更新与版本检视服务
   // ==========================================
-  const APP_BUILD_ID = '3.5.14';
+  const APP_BUILD_ID = '3.5.15';
   let latestUpdatePayload = null;
 
   function showToast(msg, duration = 2500, actionOpt = null) {
@@ -11200,7 +11203,7 @@
     return false;
   }
 
-  const AI_CLOZE_SKIP_ANCESTOR = '.thesis-pill, .card-ai-btn, .card-relay-btn, .relay-glue-row, .relay-inter-glue, .relay-guard-strip, .relay-chain-bar, .relay-toolbar, .relay-t1-chain-bar, .relay-t1-drawer-head, .relay-bookend-label, .relay-role, .relay-origin-tip, .en-audio-jump-pill, .tj-point-jump-pill, .seal-btn, .pol-subcard-pills, .xt-voice-switcher, .section-card-header, .xt-day-point-header, .tj-card-header, .en-intro-badge, .en-task-prompt-box, .logic-block-title, .card-title, .tj-card-title, .tj-points-title, .xt-part-title, h1, h2, h3, h4, svg, button, a, script, style';
+  const AI_CLOZE_SKIP_ANCESTOR = '.thesis-pill, .card-ai-btn, .card-relay-btn, .relay-glue-row, .relay-inter-glue, .relay-guard-strip, .relay-chain-bar, .relay-toolbar, .relay-t1-chain-bar, .relay-t1-drawer-head, .relay-bookend-label, .relay-role, .relay-origin-tip, .en-audio-jump-pill, .tj-point-jump-pill, .seal-btn, .pol-subcard-pills, .xt-voice-switcher, .section-card-header, .xt-day-point-header, .tj-card-header, .en-intro-badge, .en-task-prompt-box, .en-outline-box, .en-audio-pill-note, .en-vocab-row, .en-blank-cue, .en-redline-list, .logic-block-title, .card-title, .tj-card-title, .tj-points-title, .xt-part-title, h1, h2, h3, h4, svg, button, a, script, style';
 
   function resetDynamicClozeDom() {
     if (!el.paperContent) return;
@@ -11482,7 +11485,10 @@
       if (kw.dataset.clozeFilteredOut === '1') return;
       const text = kw.textContent.trim().replace(/^[“《(\[{【（]+/, '');
       if (text.length > 0) {
-        const ghostPrefix = (/^[a-zA-Z]/.test(text) && text.length >= 8) ? text.slice(0, 2) : text.charAt(0);
+        const isEn = /^[a-zA-Z]/.test(text);
+        if (isEn) kw.classList.add('en-cloze');
+        const compactEnLen = isEn ? text.replace(/\s+/g, '').length : text.length;
+        const ghostPrefix = (isEn && compactEnLen >= 8) ? text.slice(0, 2) : text.charAt(0);
         kw.setAttribute('data-ghost', `${ghostPrefix}···`);
       }
     });

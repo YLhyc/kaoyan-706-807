@@ -136,14 +136,36 @@ def main():
         kc = json.loads(m_kc.group(1))
         check(km == all_m, "kaoyan_data.js KAOYAN_MANIFEST matches kaoyan_all_manifest.json")
         cloze_ref = json.loads((DATA / "kaoyan_builtin_cloze.json").read_text(encoding="utf-8"))
-        check(kc == cloze_ref and len(kc) == 82, "KAOYAN_BUILTIN_CLOZE matches data/kaoyan_builtin_cloze.json (82)")
+        check(kc == cloze_ref and len(kc) == 102, f"KAOYAN_BUILTIN_CLOZE matches data/kaoyan_builtin_cloze.json (102, got={len(kc)})")
         stale_sents = []
-        for it in items:
+        for it in items + (all_m.get("items_en") or []):
             for tk in ("track1", "track2"):
                 sf = it[tk]["sentences_file"].replace("\\", "/")
                 if ks.get(sf) != json.loads((ROOT / sf).read_text(encoding="utf-8")):
                     stale_sents.append(sf)
         check(not stale_sents, "kaoyan_data.js KAOYAN_SENTENCES matches all disk sentences.json", f"stale={stale_sents[:5]}")
+
+        en_items = all_m.get("items_en") or []
+        check(len(en_items) == 20, "English manifest has 20 cards (4 pocket + 16 essays)", f"got={len(en_items)}")
+        bad_en_files = []
+        bad_en_blanks = []
+        for it in en_items:
+            eid = it["id"]
+            for tk in ("track1", "track2"):
+                tobj = it.get(tk) or {}
+                mp3_p = ROOT / tobj.get("audio", "")
+                sf_p = ROOT / tobj.get("sentences_file", "")
+                if not mp3_p.exists() or not sf_p.exists():
+                    bad_en_files.append((eid, tk))
+                elif tk == "track2":
+                    rows = json.loads(sf_p.read_text(encoding="utf-8"))
+                    for j in range(len(rows) - 1):
+                        if str(rows[j].get("id", "")).endswith("_cn") and str(rows[j + 1].get("id", "")).endswith("_en"):
+                            g = float(rows[j + 1]["start"]) - float(rows[j]["end"])
+                            if g < 1.75:
+                                bad_en_blanks.append((eid, rows[j]["id"], round(g, 3)))
+        check(not bad_en_files, "All 20 English dual-track audio & sentences exist", f"bad={bad_en_files[:5]}")
+        check(not bad_en_blanks, "All 20 English Track 2 units keep >=1.8s retrieval silence blank", f"bad={bad_en_blanks[:5]}")
 
     # 3. app.js Loop & Seek Safety Invariants
     app_txt = (ROOT / "app.js").read_text(encoding="utf-8")

@@ -1,93 +1,72 @@
 [
   {
     "id": "t2_intro",
-    "text": "下面进入小作文 07 · 道歉与说明信：因突发科研任务无法按期赴会答题骨架与变体精解。",
-    "start": "0.030",
-    "end": "9.750",
-    "duration": "9.720"
+    "text": "下面进入小作文 07 · 道歉与说明信：因突发科研任务致歉并协商改期，英式思维与留白盲拼训练。",
+    "start": "0.000",
+    "end": "10.006",
+    "duration": "10.006"
   },
   {
-    "id": "t2_p1_cn",
-    "text": "第一段：直接陈述失约事实并表达深切歉意。",
-    "start": "10.825",
-    "end": "15.400",
-    "duration": "4.575"
+    "id": "t2_u1_cn",
+    "text": "【首段 · 保持书信温度】道歉和致谢不能全用物称！请保留 I am writing，同时用 failing to 替掉 not being able to：",
+    "start": "10.906",
+    "end": "20.422",
+    "duration": "9.516"
   },
   {
-    "id": "t2_p1_en",
-    "text": "I am writing this letter with sincere regret to apologize for being unable to attend tomorrow's symposium as previously scheduled.",
-    "start": "16.115",
-    "end": "24.500",
-    "duration": "8.385"
+    "id": "t2_u1_en",
+    "text": "I am writing to express my sincere apology for failing to attend tomorrow's seminar on modern literature as previously scheduled.",
+    "start": "22.222",
+    "end": "30.568",
+    "duration": "8.346"
   },
   {
-    "id": "t2_p1_tip_cn",
-    "text": "道歉母句：I am writing with sincere regret to apologize for being unable to do sth.。",
-    "start": "25.215",
-    "end": "30.780",
-    "duration": "5.565"
+    "id": "t2_u1_tip",
+    "text": "手术刀点拨：道歉与承诺补救属“红灯句”，必须亲自开口保住礼貌温度；failing to 使失约表述更地道。",
+    "start": "31.068",
+    "end": "40.149",
+    "duration": "9.081"
   },
   {
-    "id": "t2_p1_tip_en",
-    "text": "I am writing with sincere regret to apologize for being unable to attend the symposium.",
-    "start": "31.395",
-    "end": "36.630",
-    "duration": "5.235"
+    "id": "t2_u2_cn",
+    "text": "【二段 · 交代客观理由】不要写 I am too busy tomorrow so I can't go。请让“紧急任务”做主语 + prevent sb. from：",
+    "start": "41.049",
+    "end": "51.030",
+    "duration": "9.981"
   },
   {
-    "id": "t2_p2_cn",
-    "text": "第二段：解释合情合理、无可推卸的紧急客观事由（突发科研任务）。",
-    "start": "38.235",
-    "end": "44.680",
-    "duration": "6.445"
+    "id": "t2_u2_en",
+    "text": "Much to my regret, an urgent academic data task assigned by our department this morning prevents me from leaving the campus tomorrow.",
+    "start": "52.829",
+    "end": "61.730",
+    "duration": "8.901"
   },
   {
-    "id": "t2_p2_en",
-    "text": "Much to my distress, our laboratory has been assigned an emergency national research task, which prevents me from being absent.",
-    "start": "45.345",
-    "end": "53.630",
-    "duration": "8.285"
+    "id": "t2_u2_tip",
+    "text": "手术刀点拨：过去分词短语 assigned by... 后置压缩修饰任务，让原因客观可信、无推卸感。",
+    "start": "62.230",
+    "end": "70.561",
+    "duration": "8.331"
   },
   {
-    "id": "t2_p2_tip_cn",
-    "text": "情态副词状语短语：Much to my distress / Much to my regret, ...",
-    "start": "54.365",
-    "end": "59.640",
-    "duration": "5.275"
+    "id": "t2_u3_cn",
+    "text": "【补救 + 改期】记住道歉信不能光说对不起，要给方案：先提“提前发阅读笔记”，再委婉询问下周二改期：",
+    "start": "71.461",
+    "end": "81.605",
+    "duration": "10.144"
   },
   {
-    "id": "t2_p2_tip_en",
-    "text": "Much to my distress, our laboratory has been assigned an emergency research task.",
-    "start": "60.385",
-    "end": "65.290",
-    "duration": "4.905"
+    "id": "t2_u3_en",
+    "text": "To make up for the inconvenience caused, I would like to submit my reading notes in advance, and would it be possible to reschedule our discussion for next Tuesday?",
+    "start": "83.405",
+    "end": "92.716",
+    "duration": "9.311"
   },
   {
-    "id": "t2_p3_cn",
-    "text": "第三段：主动提供补救替代时间并重申歉意。",
-    "start": "67.065",
-    "end": "71.330",
-    "duration": "4.265"
-  },
-  {
-    "id": "t2_p3_en",
-    "text": "Would it be possible for us to reschedule our meeting for next Tuesday? Please accept my deepest apologies once again.",
-    "start": "72.075",
-    "end": "80.040",
-    "duration": "7.965"
-  },
-  {
-    "id": "t2_p3_tip_cn",
-    "text": "委婉改期商量句型：Would it be possible for us to reschedule our appointment for [Date]?",
-    "start": "80.805",
-    "end": "86.700",
-    "duration": "5.895"
-  },
-  {
-    "id": "t2_p3_tip_en",
-    "text": "Would it be possible for us to reschedule our meeting for next Tuesday?",
-    "start": "87.425",
-    "end": "91.400",
-    "duration": "3.975"
+    "id": "t2_u3_tip",
+    "text": "手术刀点拨：To make up for the inconvenience caused + reschedule 是道歉/婉拒信双保险搭配。",
+    "start": "93.216",
+    "end": "101.257",
+    "duration": "8.041"
   }
 ]

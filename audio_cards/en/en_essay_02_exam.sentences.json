@@ -2,64 +2,57 @@
   {
     "id": "sent_p1_s1",
     "text": "Dear Customer Service Manager,",
-    "start": "0.045",
-    "end": "1.930",
-    "duration": "1.885"
+    "start": "0.000",
+    "end": "1.868",
+    "duration": "1.868"
   },
   {
     "id": "sent_p1_s2",
-    "text": "I am writing this letter to lodge a formal complaint concerning the substandard quality of the books I purchased from your store and the unprofessional attitude of your staff.",
-    "start": "2.585",
-    "end": "13.180",
-    "duration": "10.595"
+    "text": "I am writing to express my deep dissatisfaction with the damaged books I received from your store and the indifferent attitude of your staff.",
+    "start": "2.268",
+    "end": "10.837",
+    "duration": "8.569"
   },
   {
     "id": "sent_p2_s1",
-    "text": "On October 25th, I ordered a set of reference books with Order Number 89214.",
-    "start": "14.595",
-    "end": "21.750",
-    "duration": "7.155"
+    "text": "Last week, I ordered a set of reference books under Order Number 89214.",
+    "start": "11.737",
+    "end": "18.576",
+    "duration": "6.839"
   },
   {
     "id": "sent_p2_s2",
-    "text": "However, when the parcel arrived yesterday, I was shocked to find that the covers were torn and several key pages were missing.",
-    "start": "22.395",
-    "end": "30.310",
-    "duration": "7.915"
+    "text": "However, upon arrival, the book covers were torn and several pages were missing, which proved far from satisfactory.",
+    "start": "18.976",
+    "end": "27.122",
+    "duration": "8.146"
   },
   {
     "id": "sent_p2_s3",
-    "text": "Even more frustrating was that when I contacted your online customer representative for a reasonable explanation, my request was met with total indifference.",
-    "start": "30.950",
-    "end": "41.240",
-    "duration": "10.290"
-  },
-  {
-    "id": "sent_p2_s4",
-    "text": "Such irresponsible conduct is completely unacceptable to long-term consumers.",
-    "start": "41.930",
-    "end": "46.800",
-    "duration": "4.870"
+    "text": "What troubles me most is that your online agent failed to offer a clear explanation when I reported the problem, leaving the issue unresolved.",
+    "start": "27.522",
+    "end": "36.813",
+    "duration": "9.291"
   },
   {
     "id": "sent_p3_s1",
-    "text": "Therefore, I deem it imperative that an immediate replacement or a full refund be arranged promptly.",
-    "start": "48.435",
-    "end": "54.720",
-    "duration": "6.285"
+    "text": "Therefore, I deem it imperative that prompt measures be taken to rectify this error through a replacement or a full refund.",
+    "start": "37.712",
+    "end": "46.033",
+    "duration": "8.321"
   },
   {
     "id": "sent_p3_s2",
-    "text": "Your swift attention and rectifying measures will be highly appreciated.",
-    "start": "55.355",
-    "end": "59.910",
-    "duration": "4.555"
+    "text": "I look forward to your favorable response soon.",
+    "start": "46.433",
+    "end": "49.529",
+    "duration": "3.096"
   },
   {
     "id": "sent_p3_s3",
     "text": "Yours sincerely, Li Ming",
-    "start": "60.510",
-    "end": "62.790",
-    "duration": "2.280"
+    "start": "49.929",
+    "end": "52.032",
+    "duration": "2.103"
   }
 ]

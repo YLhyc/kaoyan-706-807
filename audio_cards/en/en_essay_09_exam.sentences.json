@@ -1,72 +1,72 @@
 [
   {
     "id": "sent_p1_s1",
-    "text": "As is graphically portrayed in the illustration, two mountaineers are scaling a precipitous cliff: while one collapses on the ground in exhaustion and chooses to surrender halfway, the other advances bravely toward the summit with unwavering resolve.",
-    "start": "0.055",
-    "end": "16.540",
-    "duration": "16.485"
+    "text": "The thought-provoking cartoon vividly depicts two climbers scaling a steep mountain.",
+    "start": "0.000",
+    "end": "5.604",
+    "duration": "5.604"
   },
   {
     "id": "sent_p1_s2",
-    "text": "The deep implication of the cartoon is unmistakable: perseverance is the decisive factor that differentiates enduring triumph from regrettable mediocrity.",
-    "start": "17.390",
-    "end": "28.430",
-    "duration": "11.040"
+    "text": "While one stops halfway in exhaustion and chooses to quit, the other advances bravely toward the summit, wearing a determined look.",
+    "start": "6.004",
+    "end": "14.323",
+    "duration": "8.319"
+  },
+  {
+    "id": "sent_p1_s3",
+    "text": "Simple as the drawing may seem, it underscores the vital significance of perseverance on our path to success.",
+    "start": "14.723",
+    "end": "22.084",
+    "duration": "7.361"
   },
   {
     "id": "sent_p2_s1",
-    "text": "A multitude of driving factors account for this widespread phenomenon.",
-    "start": "29.955",
-    "end": "34.090",
-    "duration": "4.135"
+    "text": "A multitude of factors easily account for this contrast.",
+    "start": "22.984",
+    "end": "26.497",
+    "duration": "3.513"
   },
   {
     "id": "sent_p2_s2",
-    "text": "Chief among them is that any monumental accomplishment inevitably requires persistent dedication and enduring patience.",
-    "start": "34.695",
-    "end": "43.450",
-    "duration": "8.755"
+    "text": "It is widely acknowledged that any lasting achievement demands steady effort rather than short bursts of enthusiasm.",
+    "start": "26.897",
+    "end": "34.270",
+    "duration": "7.373"
   },
   {
     "id": "sent_p2_s3",
-    "text": "As an ancient proverb aptly puts it, \"Rome was not built in a day.\"",
-    "start": "44.030",
-    "end": "48.990",
-    "duration": "4.960"
+    "text": "Unyielding perseverance empowers ordinary individuals to conquer severe obstacles, whereas the road to excellence is anything but smooth.",
+    "start": "34.670",
+    "end": "44.089",
+    "duration": "9.419"
   },
   {
     "id": "sent_p2_s4",
-    "text": "Confronted with unforeseen hurdles, only those equipped with a resilient spirit can convert stumbling blocks into stepping stones.",
-    "start": "49.610",
-    "end": "57.840",
-    "duration": "8.230"
+    "text": "Those who adhere to their goals tend to reap rewarding outcomes, while people indulging in excuses often fail to fulfill their potential.",
+    "start": "44.488",
+    "end": "54.212",
+    "duration": "9.724"
   },
   {
     "id": "sent_p2_s5",
-    "text": "Furthermore, facing hardships bravely not only tempers one's willpower, but also unlocks latent potential that ordinary circumstances could never reveal.",
-    "start": "58.430",
-    "end": "69.330",
-    "duration": "10.900"
-  },
-  {
-    "id": "sent_p2_s6",
-    "text": "Without sustained tenacity, even the most ambitious aspirations will end up as idle daydreams.",
-    "start": "69.975",
-    "end": "76.460",
-    "duration": "6.485"
+    "text": "Not only can patience sharpen one's willpower, but it also lays a solid foundation for future growth.",
+    "start": "54.612",
+    "end": "61.590",
+    "duration": "6.978"
   },
   {
     "id": "sent_p3_s1",
-    "text": "Drawing upon the analysis above, it is imperative that youngsters cultivate unwavering tenacity in pursuit of their lifelong dreams.",
-    "start": "77.945",
-    "end": "86.840",
-    "duration": "8.895"
+    "text": "In conclusion, nothing is more indispensable than cultivating unremitting tenacity.",
+    "start": "62.490",
+    "end": "68.216",
+    "duration": "5.726"
   },
   {
     "id": "sent_p3_s2",
-    "text": "Only when we muster up the courage to surmount every obstacle on our journey can we ultimately harvest the fruits of genuine fulfillment.",
-    "start": "87.450",
-    "end": "96.110",
-    "duration": "8.660"
+    "text": "Challenging as our journey may appear, only when we persist through difficulties can we turn our ambitions into reality.",
+    "start": "68.616",
+    "end": "76.339",
+    "duration": "7.723"
   }
 ]

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "t2_intro",
+    "text": "下面进入口袋 04 · 2024–2025 英一新题型首段秒杀卡，英式思维与留白盲拼训练。",
+    "start": "0.000",
+    "end": "9.286",
+    "duration": "9.286"
+  },
+  {
+    "id": "t2_u1_cn",
+    "text": "【2024 混合题】如何用两句话合并“公园 406 增至 670”与“健身区点赞”？请盲拼：",
+    "start": "10.186",
+    "end": "20.907",
+    "duration": "10.721"
+  },
+  {
+    "id": "t2_u1_en",
+    "text": "As is clearly revealed by the bar chart, the number of city parks surged remarkably from 406 in 2020 to 670 in 2022. Meanwhile, the accompanying picture depicts a citizen smiling in a new fitness area.",
+    "start": "22.707",
+    "end": "40.501",
+    "duration": "17.794"
+  },
+  {
+    "id": "t2_u1_tip",
+    "text": "手术刀：先用 As is clearly revealed 吞数字，再用 Meanwhile 接入图画。",
+    "start": "41.001",
+    "end": "47.897",
+    "duration": "6.896"
+  },
+  {
+    "id": "t2_u2_cn",
+    "text": "【2025 纯表格】拒写流水账，请用“最大涨幅空调 + 次要两项 respectively 打包”写出：",
+    "start": "48.797",
+    "end": "58.073",
+    "duration": "9.276"
+  },
+  {
+    "id": "t2_u2_en",
+    "text": "Specifically, air conditioners witnessed the sharpest surge from 75.2 to 145.9, while washing machines and refrigerators climbed steadily to 98.2 and 103.4 respectively.",
+    "start": "59.872",
+    "end": "76.653",
+    "duration": "16.781"
+  },
+  {
+    "id": "t2_u2_tip",
+    "text": "手术刀：sharpest surge 锁极值，其余两项用 climbed steadily 与 respectively 打包。",
+    "start": "77.153",
+    "end": "85.659",
+    "duration": "8.506"
+  },
+  {
+    "id": "t2_u3_cn",
+    "text": "【点题过渡】用物称动词短语点明消费或民生升级的深意：",
+    "start": "86.559",
+    "end": "91.923",
+    "duration": "5.364"
+  },
+  {
+    "id": "t2_u3_en",
+    "text": "These figures vividly reflect the steady upgrading of Chinese residents' living standards.",
+    "start": "93.723",
+    "end": "99.307",
+    "duration": "5.584"
+  },
+  {
+    "id": "t2_u3_tip",
+    "text": "手术刀：vividly reflect 锁定主题关键词，直接把接力棒交给第二段。",
+    "start": "99.807",
+    "end": "105.973",
+    "duration": "6.166"
+  }
+]

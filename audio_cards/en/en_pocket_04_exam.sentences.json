@@ -1,0 +1,51 @@
+[
+  {
+    "id": "sent_p1_s1",
+    "text": "The thought-provoking cartoon vividly depicts two students talking before a poster, with one remarking that unrelated lectures bring unexpected rewards.",
+    "start": "0.000",
+    "end": "11.374",
+    "duration": "11.374"
+  },
+  {
+    "id": "sent_p1_s2",
+    "text": "In contrast, two pictures can present a sharp contrast between taking early action and delaying tasks until the last minute.",
+    "start": "11.774",
+    "end": "19.763",
+    "duration": "7.989"
+  },
+  {
+    "id": "sent_p2_s1",
+    "text": "As is clearly revealed by the bar chart, the number of city parks surged remarkably from 406 in 2020 to 670 in 2022.",
+    "start": "20.663",
+    "end": "32.866",
+    "duration": "12.203"
+  },
+  {
+    "id": "sent_p2_s2",
+    "text": "Meanwhile, the accompanying picture depicts a citizen smiling in a new fitness area, mirroring an improved urban environment.",
+    "start": "33.266",
+    "end": "42.035",
+    "duration": "8.769"
+  },
+  {
+    "id": "sent_p3_s1",
+    "text": "Similarly, the table clearly illustrates striking changes in household appliance ownership between 2014 and 2023.",
+    "start": "42.935",
+    "end": "52.048",
+    "duration": "9.113"
+  },
+  {
+    "id": "sent_p3_s2",
+    "text": "Specifically, air conditioners witnessed the sharpest surge from 75.2 to 145.9, while washing machines and refrigerators climbed steadily to 98.2 and 103.4 respectively.",
+    "start": "52.448",
+    "end": "69.229",
+    "duration": "16.781"
+  },
+  {
+    "id": "sent_p3_s3",
+    "text": "These figures vividly reflect the steady upgrading of Chinese residents' living standards.",
+    "start": "69.628",
+    "end": "75.262",
+    "duration": "5.634"
+  }
+]

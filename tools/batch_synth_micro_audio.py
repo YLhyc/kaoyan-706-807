@@ -2,25 +2,29 @@
 # -*- coding: utf-8 -*-
 """
 batch_synth_micro_audio.py
-为 706 (42篇) + 807 (40篇) 轨道二「逻辑微缩版」批量合成微软 Edge TTS (zh-CN-YunyangNeural, rate=-4%)
-高保真音频与 1:1 dom_key 句表：
-1. 与轨道一完全同源的高清播音音色（zh-CN-YunyangNeural, rate=-4%），单篇整轨流式合成保持音色与音量高度一致；
-2. 挂载古今文史全量多音词正音词典（纪传/列传/左传/呼兰河传/阿Q正传/乐府/燕歌行/行乐/说难/李劼人/重章叠句等）；
-3. 无损 PCM 声学静音检测 + 句间气口校准（逗号 >=380ms、句末 >=530ms、跨段 >=620ms），彻底消除吞音与连读粘连；
-4. 统一输出 44100 Hz / Mono / 96 kbps 高清 MP3（对齐轨道一音频品质）；
-5. 支持 --limit N / --ids id1,id2 / --workers 3 / --force / --apply-manifests。
+为 706 (42篇) + 807 (40篇) 轨道二「逻辑微缩版」全量合成与轨道一完全同源的
+阿里云 CosyVoice v3 高清音色 (model="cosyvoice-v3-flash", voice="longanlang_v3" 龙安朗)：
+1. 与轨道一完全同源的阿里云龙安朗音色与原生响度基准（不额外叠加人工增益），彻底消除双轨音色割裂；
+2. 挂载 706 + 807 全量文史专有名词与生僻多音字 HotFix 词典（直接使用规范汉字原文，杜绝假借谐音词干扰语调）；
+3. 基于 CosyVoice word_timestamp_enabled 词级时间戳 + 字符流精确序列对齐（SequenceMatcher），
+   彻底免疫 `；` 分句或数字展开（2022->二零二二）造成的跨槽错并；
+4. 无损 PCM 声学静音检测 + 跨槽位气口校准（常规槽界 >=540ms、标题/分点/防混/抽查等结构界 >=720ms）；
+5. 统一输出 44100 Hz / Mono / 96 kbps 高清 MP3，与轨道一音频品质及电平完全对齐；
+6. 支持 --limit N / --ids id1,id2 / --workers 3 / --force / --apply-manifests。
 """
 
 import argparse
-import asyncio
 import concurrent.futures
+import difflib
 import json
 import os
 import re
 import subprocess
 import sys
 import tempfile
+import threading
 import time
+import unicodedata
 import wave
 from pathlib import Path
 
@@ -28,9 +32,9 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
     sys.stderr.reconfigure(encoding="utf-8")
 
-import edge_tts
-
-from tts_prosody import apply_pronunciation_fixes
+import dashscope
+from dashscope.audio.tts_v2 import AudioFormat, ResultCallback, SpeechSynthesizer
+from dashscope.audio.tts_v2.speech_synthesizer import HotFix
 
 ROOT = Path(r"D:\AI_file\706_807专业课背诵手卷")
 SCRIPTS_PATH = ROOT / "data" / "micro_spoken_scripts.json"
@@ -38,9 +42,213 @@ MANIFEST_706 = ROOT / "data" / "kaoyan_706_manifest.json"
 MANIFEST_807 = ROOT / "data" / "kaoyan_807_manifest.json"
 MANIFEST_ALL = ROOT / "data" / "kaoyan_all_manifest.json"
 
-VOICE = "zh-CN-YunyangNeural"
-RATE = "-4%"
+MODEL_NAME = "cosyvoice-v3-flash"
+VOICE_NAME = "longanlang_v3"
 SAMPLE_RATE = 44100
+
+HOT_FIX = HotFix(pronunciation=[
+    # --- 706 古代文学专有名词与多音词 ---
+    {"纪传体": "ji4 zhuan4 ti3"},
+    {"列传": "lie4 zhuan4"},
+    {"经传": "jing1 zhuan4"},
+    {"左传": "zuo3 zhuan4"},
+    {"左氏传": "zuo3 shi4 zhuan4"},
+    {"外传": "wai4 zhuan4"},
+    {"传记": "zhuan4 ji4"},
+    {"别传": "bie2 zhuan4"},
+    {"内传": "nei4 zhuan4"},
+    {"正传": "zheng4 zhuan4"},
+    {"小传": "xiao3 zhuan4"},
+    {"本传": "ben3 zhuan4"},
+    {"他传": "ta1 zhuan4"},
+    {"史传": "shi3 zhuan4"},
+    {"立传": "li4 zhuan4"},
+    {"自叙传": "zi4 xu4 zhuan4"},
+    {"公羊传": "gong1 yang2 zhuan4"},
+    {"谷梁传": "gu3 liang2 zhuan4"},
+    {"世家列传": "shi4 jia1 lie4 zhuan4"},
+    {"呼兰河传": "hu1 lan2 he2 zhuan4"},
+    {"阿Q正传": "a1 Q zheng4 zhuan4"},
+    {"水浒传": "shui3 hu3 zhuan4"},
+    {"莺莺传": "ying1 ying1 zhuan4"},
+    {"长恨歌传": "chang2 hen4 ge1 zhuan4"},
+    {"太史公自序": "tai4 shi3 gong1 zi4 xu4"},
+    {"乐府": "yue4 fu3"},
+    {"汉乐府": "han4 yue4 fu3"},
+    {"新乐府": "xin1 yue4 fu3"},
+    {"古乐府": "gu3 yue4 fu3"},
+    {"乐府诗": "yue4 fu3 shi1"},
+    {"乐府双璧": "yue4 fu3 shuang1 bi4"},
+    {"礼乐": "li3 yue4"},
+    {"雅乐": "ya3 yue4"},
+    {"燕歌行": "yan1 ge1 xing2"},
+    {"便娟": "pian2 juan1"},
+    {"便娟婉约": "pian2 juan1 wan3 yue1"},
+    {"单于": "chan2 yu2"},
+    {"长歌当哭": "chang2 ge1 dang4 ku1"},
+    {"长恨歌": "chang2 hen4 ge1"},
+    {"重章叠句": "chong2 zhang1 die2 ju4"},
+    {"温庭筠": "wen1 ting2 yun2"},
+    {"谢朓": "xie4 tiao3"},
+    {"鲍照": "bao4 zhao4"},
+    {"庾信": "yu3 xin4"},
+    {"行卷": "xing2 juan4"},
+    {"行乐": "xing2 le4"},
+    {"自度曲": "zi4 duo4 qu3"},
+    {"骚体": "sao1 ti3"},
+    {"楚辞": "chu3 ci2"},
+    {"离骚": "li2 sao1"},
+    {"赋比兴": "fu4 bi3 xing4"},
+    {"兴寄": "xing4 ji4"},
+    {"寄兴": "ji4 xing4"},
+    {"兴象": "xing4 xiang4"},
+    {"起兴": "qi3 xing4"},
+    {"拗救": "ao4 jiu4"},
+    {"拗体": "ao4 ti3"},
+    {"押韵": "ya1 yun4"},
+    {"押官韵": "ya1 guan1 yun4"},
+    {"平仄": "ping2 ze4"},
+    {"关陇": "guan1 long3"},
+    {"掉书袋": "diao4 shu1 dai4"},
+    {"数见不鲜": "shuo4 jian4 bu4 xian1"},
+    {"数奇": "shu4 ji1"},
+    {"宁有种乎": "ning4 you3 zhong3 hu1"},
+    {"应制": "ying4 zhi4"},
+    {"辟易": "bi4 yi4"},
+    {"跌宕": "die2 dang4"},
+    {"俶傥": "ti4 tang3"},
+    {"俶尔": "chu4 er3"},
+    {"沉郁顿挫": "chen2 yu4 dun4 cuo4"},
+    {"黍离之悲": "shu3 li2 zhi1 bei1"},
+    {"伛偻": "yu3 lv3"},
+    {"曾几": "zeng1 ji3"},
+    {"尤袤": "you2 mao4"},
+    {"刘知幾": "liu2 zhi1 ji1"},
+    {"邲之战": "bi4 zhi1 zhan4"},
+    {"崤之战": "xiao2 zhi1 zhan4"},
+    {"城濮之战": "cheng2 pu2 zhi1 zhan4"},
+    {"桃杌": "tao2 wu4"},
+    {"坎廪": "kan3 lin3"},
+    {"渔阳鼙鼓": "yu2 yang2 pi2 gu3"},
+    {"霓裳": "ni2 chang2"},
+    {"卮言": "zhi1 yan2"},
+    {"不葺": "bu4 qi4"},
+    {"阮大铖": "ruan3 da4 cheng2"},
+    {"买椟还珠": "mai3 du2 huan2 zhu1"},
+    {"诗薮": "shi1 sou3"},
+    {"沾溉": "zhan1 gai4"},
+    {"说难": "shui4 nan2"},
+    {"游说": "you2 shui4"},
+    {"复沓": "fu4 ta4"},
+    # --- 807 现当代文学专有名词与多音词 ---
+    {"蘩漪": "fan2 yi1"},
+    {"繁漪": "fan2 yi1"},
+    {"周萍": "zhou1 ping2"},
+    {"鲁侍萍": "lu3 shi4 ping2"},
+    {"周朴园": "zhou1 pu3 yuan2"},
+    {"傩送": "nuo2 song4"},
+    {"茶峒": "cha2 dong4"},
+    {"碧溪岨": "bi4 xi1 ju3"},
+    {"天保": "tian1 bao3"},
+    {"老舍": "lao3 she3"},
+    {"郁达夫": "yu4 da2 fu1"},
+    {"穆旦": "mu4 dan4"},
+    {"艾青": "ai4 qing1"},
+    {"汪曾祺": "wang1 zeng1 qi2"},
+    {"仇虎": "chou2 hu3"},
+    {"焦大星": "jiao1 da4 xing1"},
+    {"荷花淀": "he2 hua1 dian4"},
+    {"荷花淀派": "he2 hua1 dian4 pai4"},
+    {"白洋淀": "bai2 yang2 dian4"},
+    {"祁老人": "qi2 lao3 ren2"},
+    {"冠晓荷": "guan1 xiao3 he2"},
+    {"钱玄同": "qian2 xuan2 tong2"},
+    {"茅盾": "mao2 dun4"},
+    {"吴荪甫": "wu2 sun1 fu3"},
+    {"周作人": "zhou1 zuo4 ren2"},
+    {"叶圣陶": "ye4 sheng4 tao2"},
+    {"郑振铎": "zheng4 zhen4 duo2"},
+    {"戴望舒": "dai4 wang4 shu1"},
+    {"卞之琳": "bian4 zhi1 lin2"},
+    {"冯至": "feng2 zhi4"},
+    {"李劼人": "li3 jie2 ren2"},
+    {"贾平凹": "jia3 ping2 wa1"},
+    {"邓幺姑": "deng4 yao1 gu1"},
+    {"谌容": "shen4 rong2"},
+    {"唐湜": "tang2 shi2"},
+    {"阿垅": "a1 long3"},
+    {"杜运燮": "du4 yun4 xie4"},
+    {"从维熙": "cong2 wei2 xi1"},
+    {"胡先骕": "hu2 xiān su4".replace("ā", "a1")},
+    {"吴宓": "wu2 mi4"},
+    {"魏连殳": "wei4 lian2 shu1"},
+    {"吕纬甫": "lv3 wei3 fu3"},
+    {"苏文纨": "su1 wen2 wan2"},
+    {"施蛰存": "shī zhe2 cun2".replace("ī", "i1")},
+    {"钱杏邨": "qian2 xing4 cun1"},
+    {"茹志鹃": "ru2 zhi4 juan1"},
+    {"陈奂生": "chen2 huan4 sheng1"},
+    {"刘家峧": "liu2 jia1 jiao1"},
+    {"大淖记事": "da4 nao4 ji4 shi4"},
+    {"三闾大学": "san1 lv2 da4 xue2"},
+    {"奇肱飞车": "ji1 gong1 fei1 che1"},
+    {"湘累": "xiang1 lei4"},
+    {"发轫": "fa1 ren4"},
+    {"冷隽": "leng3 jun4"},
+    {"嬗变": "shan4 bian4"},
+    {"端参汤": "duan1 shen1 tang1"},
+    {"调级": "tiao2 ji2"},
+    {"几欲": "ji1 yu4"},
+    {"木讷": "mu4 ne4"},
+    {"龃龉": "ju3 yu3"},
+    {"白鹿原": "bai2 lu4 yuan2"},
+    {"陈忠实": "chen2 zhong1 shi2"},
+    {"死水微澜": "si3 shui3 wei1 lan2"},
+])
+
+_HOTFIX_PY_TO_HANZI: dict[str, str] = {}
+for _item in HOT_FIX.pronunciation:
+    for _hz, _py in _item.items():
+        _clean_py = re.sub(r"[1-5\s]", "", _py).lower()
+        if _clean_py:
+            _HOTFIX_PY_TO_HANZI[_clean_py] = _hz
+
+
+def _strip_pinyin_tones(s: str) -> str:
+    nfkd = unicodedata.normalize("NFKD", s.replace("ü", "v").replace("ǖ", "v").replace("ǘ", "v").replace("ǚ", "v").replace("ǜ", "v"))
+    return "".join(ch for ch in nfkd if not unicodedata.combining(ch)).lower()
+
+
+def _decode_cosy_brackets(w_text: str) -> str:
+    """将 CosyVoice HotFix 返回的 `[y][uè][f][ǔ]` 音标括号序列还原为对应汉字词，确保字符流 1:1 精确对齐。"""
+    if "[" not in (w_text or ""):
+        return w_text or ""
+
+    def _sub_run(m):
+        run = m.group(0)
+        syls = re.findall(r"\[([^\]]+)\]", run)
+        py = _strip_pinyin_tones("".join(syls))
+        if py in _HOTFIX_PY_TO_HANZI:
+            return _HOTFIX_PY_TO_HANZI[py]
+        # 贪心切分组合 HotFix 词
+        out_hz = []
+        pos = 0
+        while pos < len(py):
+            matched = None
+            for end in range(len(py), pos, -1):
+                sub = py[pos:end]
+                if sub in _HOTFIX_PY_TO_HANZI:
+                    matched = _HOTFIX_PY_TO_HANZI[sub]
+                    pos = end
+                    break
+            if matched:
+                out_hz.append(matched)
+            else:
+                out_hz.append(py[pos])
+                pos += 1
+        return "".join(out_hz)
+
+    return re.sub(r"(?:\[[^\]]+\])+", _sub_run, w_text)
 
 
 def ffprobe_duration(audio_path: Path) -> float:
@@ -81,101 +289,277 @@ def detect_silences_wav(wav_path: Path, noise_db: int = -34, min_dur: float = 0.
     return silences
 
 
-def _norm_chars(s: str) -> str:
-    return re.sub(r"[^0-9A-Za-z\u4e00-\u9fff]", "", s or "")
+_DIGIT_CN = str.maketrans("0123456789", "零一二三四五六七八九")
 
 
-def synthesize_edge_raw(full_tts_text: str) -> tuple[bytes, list[dict]]:
-    async def _run():
-        comm = edge_tts.Communicate(full_tts_text, VOICE, rate=RATE, boundary="WordBoundary")
-        words = []
-        audio_data = bytearray()
-        async for chunk in comm.stream():
-            if chunk["type"] == "WordBoundary":
-                st = chunk["offset"] / 10_000_000.0
-                en = (chunk["offset"] + chunk["duration"]) / 10_000_000.0
-                words.append({
-                    "start": st,
-                    "end": en,
-                    "text": chunk.get("text", ""),
-                    "norm": _norm_chars(chunk.get("text", "")),
-                })
-            elif chunk["type"] == "audio":
-                audio_data.extend(chunk["data"])
-        return bytes(audio_data), words
-
-    audio_bytes, words = asyncio.run(_run())
-    if len(words) < 5:
-        raise RuntimeError(f"Edge TTS WordBoundary 过少: {len(words)}")
-    if len(audio_bytes) < 5000:
-        raise RuntimeError(f"Edge TTS 音频过小: {len(audio_bytes)} bytes")
-    return audio_bytes, words
+def _align_norm(s: str) -> str:
+    """将汉字/英文/数字规范化为紧凑字符流，用于与 CosyVoice words 精确序列对齐（含四位年份展开兼容）。"""
+    t = (s or "").translate(_DIGIT_CN)
+    return re.sub(r"[^0-9A-Za-z\u4e00-\u9fff]", "", t).upper()
 
 
-def align_words_to_clauses(words: list[dict], clause_metas: list[dict]) -> list[tuple[float, float]]:
-    """通过严格等长字符流将 WordBoundary 精确映射至每个 clause 的原生起止时间，绝不错切句意。"""
-    exp_chunks = [_norm_chars(apply_pronunciation_fixes(c["tts_text"])) for c in clause_metas]
-    exp_full = "".join(exp_chunks)
+class CosyCollector(ResultCallback):
+    def __init__(self):
+        self.audio = bytearray()
+        self.words: list[dict] = []
+        self.err = None
+        self.done = threading.Event()
 
-    # 展开每个 word 的字符时间归属
-    char_word_idx: list[int] = []
+    def on_data(self, data: bytes):
+        self.audio.extend(data)
+
+    def on_complete(self):
+        self.done.set()
+
+    def on_error(self, message):
+        self.err = str(message)
+        self.done.set()
+
+    def on_event(self, message):
+        try:
+            msg = json.loads(message)
+            out = msg.get("payload", {}).get("output", {})
+            if out.get("type") == "sentence-end":
+                sent = out.get("sentence", {})
+                for w in (sent.get("words") or []):
+                    if w.get("begin_time") is not None and w.get("end_time") is not None:
+                        self.words.append(w)
+        except Exception:
+            pass
+
+
+def _merge_bracket_words(words: list[dict]) -> list[dict]:
+    """将 CosyVoice 按字符拆开的 `[`, `y`, `]`, `[`, `u`, `è`, `]` 音标括号序列合拢为整体 HotFix 词元。"""
+    merged: list[dict] = []
+    i = 0
+    n = len(words)
+    while i < n:
+        t = words[i].get("text", "")
+        if t == "[" or (t.startswith("[") and not t.endswith("]")):
+            bt = words[i]["begin_time"]
+            et = words[i]["end_time"]
+            parts = []
+            depth = 0
+            while i < n:
+                wt = words[i].get("text", "")
+                if not parts or depth > 0 or wt.startswith("["):
+                    parts.append(wt)
+                    et = words[i]["end_time"]
+                    depth += wt.count("[") - wt.count("]")
+                    i += 1
+                    if depth <= 0 and (i >= n or not words[i].get("text", "").startswith("[")):
+                        break
+                else:
+                    break
+            merged.append({"text": "".join(parts), "begin_time": bt, "end_time": et})
+        else:
+            merged.append(words[i])
+            i += 1
+    return merged
+
+
+def _align_batch_words_to_clauses(
+    words: list[dict],
+    batch_clauses: list[dict],
+) -> list[tuple[float, float]]:
+    """
+    通过字符级 SequenceMatcher 将一个批次内的全部 CosyVoice words（含毫秒起止坐标）
+    直接精确映射到该批每一个 UI clause，彻底免疫 `;` 分句拆分、HotFix 音标括号与逗号吞音错位。
+    """
+    if not words:
+        raise RuntimeError("CosyVoice 未返回任何 word 时间戳")
+
+    merged_words = _merge_bracket_words(words)
+
+    # 仅保留真实发声字/词 token（排除纯标点）并记录其后紧随标点的末尾时间（防止 CosyVoice 将整句语音时常堆在标点 token 上）
+    spoken_words: list[dict] = []
+    trailing_punc_end: list[float] = []
     wb_chars: list[str] = []
-    for wi, w in enumerate(words):
-        wn = w["norm"]
+    char_word_idx: list[int] = []
+    for w in merged_words:
+        wn = _align_norm(_decode_cosy_brackets(w.get("text", "")))
+        if not wn:
+            if spoken_words:
+                trailing_punc_end[-1] = max(trailing_punc_end[-1], w["end_time"] / 1000.0)
+            continue
+        wi = len(spoken_words)
+        spoken_words.append(w)
+        trailing_punc_end.append(w["end_time"] / 1000.0)
         for ch in wn:
             wb_chars.append(ch)
             char_word_idx.append(wi)
-    wb_full = "".join(wb_chars)
+    wb_stream = "".join(wb_chars)
 
-    if exp_full != wb_full:
-        # 定位首个差异点以便排查
-        diff_pos = next((i for i, (a, b) in enumerate(zip(exp_full, wb_full)) if a != b), min(len(exp_full), len(wb_full)))
-        raise RuntimeError(
-            f"WordBoundary 字符流不匹配 (exp={len(exp_full)}, got={len(wb_full)}, diff@{diff_pos}): "
-            f"exp='{exp_full[max(0,diff_pos-8):diff_pos+14]}' vs got='{wb_full[max(0,diff_pos-8):diff_pos+14]}'"
-        )
+    exp_chunks = [_align_norm(c["tts_text"]) for c in batch_clauses]
+    exp_stream = "".join(exp_chunks)
+    n_exp = len(exp_stream)
+    n_wb = len(wb_stream)
+
+    if n_wb == 0 or n_exp == 0:
+        raise RuntimeError(f"字符流为空: exp={n_exp}, wb={n_wb}")
+
+    # 用 SequenceMatcher 构建 exp_stream[k] -> wb_stream[j] 单调映射
+    sm = difflib.SequenceMatcher(None, exp_stream, wb_stream, autojunk=False)
+    exp_to_wb: list[int | None] = [None] * n_exp
+    for tag, i1, i2, j1, j2 in sm.get_opcodes():
+        if tag == "equal":
+            for k in range(i2 - i1):
+                exp_to_wb[i1 + k] = j1 + k
+        elif tag == "replace":
+            span_e = i2 - i1
+            span_w = j2 - j1
+            for k in range(span_e):
+                rel = int(round((k + 0.5) * span_w / max(1, span_e) - 0.5))
+                exp_to_wb[i1 + k] = min(j2 - 1, max(j1, j1 + rel))
+
+    # 线性插补偶发 None（例如极少数字读法微差 “二零” vs “二十”）
+    last_j = 0
+    for i in range(n_exp):
+        if exp_to_wb[i] is not None:
+            last_j = exp_to_wb[i]
+        else:
+            # 向前找下一个已匹配位置
+            nxt_j = n_wb - 1
+            for p in range(i + 1, n_exp):
+                if exp_to_wb[p] is not None:
+                    nxt_j = exp_to_wb[p]
+                    break
+            exp_to_wb[i] = min(nxt_j, max(last_j, last_j + (1 if last_j < nxt_j else 0)))
+            last_j = exp_to_wb[i]
 
     spans: list[tuple[float, float]] = []
     cursor = 0
     for chunk in exp_chunks:
         clen = len(chunk)
         if clen == 0:
-            prev_end = spans[-1][1] if spans else 0.0
-            spans.append((prev_end, prev_end + 0.08))
+            pe = spans[-1][1] if spans else 0.0
+            spans.append((pe, pe + 0.08))
             continue
-        first_wi = char_word_idx[cursor]
-        last_wi = char_word_idx[cursor + clen - 1]
-        st = words[first_wi]["start"]
-        en = words[last_wi]["end"]
-        # 若与前一句首尾共用同一词 token（极罕见），微调切分避免回跳
+        j_start = exp_to_wb[cursor]
+        j_end = exp_to_wb[cursor + clen - 1]
+        if j_end < j_start:
+            j_end = j_start
+        wi_start = char_word_idx[j_start]
+        wi_end = char_word_idx[j_end]
+        st = spoken_words[wi_start]["begin_time"] / 1000.0
+        en = spoken_words[wi_end]["end_time"] / 1000.0
+        punc_en = trailing_punc_end[wi_end]
+        if punc_en - en > 0.45 and (clen / max(0.01, en - st)) > 9.5:
+            en = max(en, punc_en - 0.14)
+
+        # 若紧邻两分句共享同一多字词 token，按字数居中无重叠切分
         if spans and st < spans[-1][1]:
-            if cursor > 0 and char_word_idx[cursor - 1] == first_wi:
-                mid_t = (words[first_wi]["start"] + words[first_wi]["end"]) * 0.5
-                spans[-1] = (spans[-1][0], max(spans[-1][0] + 0.05, mid_t))
-                st = mid_t
+            if cursor > 0 and char_word_idx[exp_to_wb[cursor - 1]] == wi_start:
+                w_st = spoken_words[wi_start]["begin_time"] / 1000.0
+                w_en = spoken_words[wi_start]["end_time"] / 1000.0
+                mid_t = (w_st + w_en) * 0.5
+                spans[-1] = (spans[-1][0], max(spans[-1][0] + 0.06, mid_t - 0.008))
+                st = max(spans[-1][1] + 0.012, mid_t + 0.004)
+            else:
+                st = spans[-1][1] + 0.012
         if en <= st:
             en = st + 0.08
         spans.append((st, en))
         cursor += clen
+
     return spans
 
 
-def align_and_pad_audio(
-    raw_mp3_bytes: bytes,
-    words: list[dict],
+def _synth_cosy_batch(batch_slots: list[str]) -> tuple[bytes, list[dict]]:
+    cb = CosyCollector()
+    syn = SpeechSynthesizer(
+        model=MODEL_NAME,
+        voice=VOICE_NAME,
+        format=AudioFormat.MP3_48000HZ_MONO_256KBPS,
+        callback=cb,
+        hot_fix=HOT_FIX,
+        additional_params={"word_timestamp_enabled": True},
+    )
+    for st in batch_slots:
+        syn.streaming_call(st)
+    syn.streaming_complete()
+    if not cb.done.wait(timeout=120):
+        raise RuntimeError("CosyVoice 批次合成超时")
+    if cb.err:
+        raise RuntimeError(f"CosyVoice 错误: {cb.err}")
+    if len(cb.audio) < 2000:
+        raise RuntimeError(f"CosyVoice 音频过小: {len(cb.audio)}")
+    if not cb.words:
+        raise RuntimeError("CosyVoice 未返回任何词级时间戳")
+    return bytes(cb.audio), cb.words
+
+
+def synthesize_cosy_track2(
+    slot_metas: list[dict],
+) -> tuple[bytes, list[tuple[float, float]]]:
+    """
+    按安全字符预算分批流式合成 CosyVoice 龙安朗 Track 2，
+    拼接为连续 44.1kHz s16 mono PCM，并直接返回每条 UI clause 的对齐起止秒。
+    """
+    if not os.environ.get("DASHSCOPE_API_KEY"):
+        raise RuntimeError("DASHSCOPE_API_KEY 未设置")
+    dashscope.api_key = os.environ["DASHSCOPE_API_KEY"]
+
+    # 分批（每批 <= 550 字 且 <= 10 槽），确保 WebSocket 零超时与高对齐精度
+    batches: list[list[dict]] = []
+    cur_batch: list[dict] = []
+    cur_chars = 0
+    for sl in slot_metas:
+        st_txt = sl["slot_tts_text"]
+        if cur_batch and (cur_chars + len(st_txt) > 550 or len(cur_batch) >= 10):
+            batches.append(cur_batch)
+            cur_batch = []
+            cur_chars = 0
+        cur_batch.append(sl)
+        cur_chars += len(st_txt)
+    if cur_batch:
+        batches.append(cur_batch)
+
+    all_pcm_parts: list[bytes] = []
+    all_raw_spans: list[tuple[float, float]] = []
+    cum_sec = 0.0
+    frame_bytes = 2  # s16 mono
+
+    with tempfile.TemporaryDirectory(prefix="t2_cosy_b_") as tmpdir:
+        tmp = Path(tmpdir)
+        for bi, b_slots in enumerate(batches):
+            slot_strs = [sl["slot_tts_text"] for sl in b_slots]
+            b_clauses = [c for sl in b_slots for c in sl["clauses"]]
+
+            b_mp3_bytes, b_words = _synth_cosy_batch(slot_strs)
+            b_mp3 = tmp / f"b_{bi}.mp3"
+            b_wav = tmp / f"b_{bi}.wav"
+            b_mp3.write_bytes(b_mp3_bytes)
+            subprocess.run(
+                ["ffmpeg", "-y", "-i", str(b_mp3), "-ac", "1", "-ar", str(SAMPLE_RATE), "-sample_fmt", "s16", str(b_wav)],
+                stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, check=True,
+            )
+            with wave.open(str(b_wav), "rb") as wf:
+                b_pcm = wf.readframes(wf.getnframes())
+            b_dur_sec = (len(b_pcm) // frame_bytes) / float(SAMPLE_RATE)
+
+            b_spans = _align_batch_words_to_clauses(b_words, b_clauses)
+            for st_s, en_s in b_spans:
+                all_raw_spans.append((st_s + cum_sec, en_s + cum_sec))
+
+            all_pcm_parts.append(b_pcm)
+            cum_sec += b_dur_sec
+
+    return b"".join(all_pcm_parts), all_raw_spans
+
+
+def align_and_pad_cosy_track2(
+    raw_pcm_bytes: bytes,
+    raw_spans: list[tuple[float, float]],
     clause_metas: list[dict],
     out_mp3: Path,
 ) -> list[dict]:
     """
-    基于 WordBoundary 保留每条逻辑槽位内部 100% 原生态韵律与逗号气口，
-    仅在跨槽位（title/hook/intro/段落/步骤/防混/抽查）边界处校准静默停顿，
-    最末编码为与轨道一一致的 44.1kHz / Mono / 96kbps MP3 并返回精确句标。
+    保留每个逻辑槽位内部 100% 龙安朗自然呼吸流，仅在跨槽位（title/hook/intro/段落/步骤/防混/抽查）
+    边界校准静默停顿，最终以与轨道一完全一致的 44.1kHz / Mono / 96kbps（原生响度无人工增益）输出 MP3。
     """
     n = len(clause_metas)
-    raw_spans = align_words_to_clauses(words, clause_metas)
-
-    # 将相邻同一 slot 下的 clauses 分组，仅在 slot 与 slot 之间做声学切分与补气口
-    slot_groups: list[tuple[int, int]] = []  # (first_clause_idx, last_clause_idx)
+    slot_groups: list[tuple[int, int]] = []
     cur_s = 0
     for i in range(1, n):
         if clause_metas[i]["slot_key"] != clause_metas[cur_s]["slot_key"]:
@@ -184,34 +568,30 @@ def align_and_pad_audio(
     slot_groups.append((cur_s, n - 1))
     num_slots = len(slot_groups)
 
-    with tempfile.TemporaryDirectory(prefix="micro_tts_") as tmpdir:
+    with tempfile.TemporaryDirectory(prefix="t2_cosy_pad_") as tmpdir:
         tmp = Path(tmpdir)
-        raw_mp3 = tmp / "raw.mp3"
         raw_wav = tmp / "raw.wav"
         pad_wav = tmp / "padded.wav"
         tmp_out = out_mp3.with_suffix(".tmp.mp3")
 
-        raw_mp3.write_bytes(raw_mp3_bytes)
-        subprocess.run(
-            ["ffmpeg", "-y", "-i", str(raw_mp3), "-ac", "1", "-ar", str(SAMPLE_RATE), "-sample_fmt", "s16", str(raw_wav)],
-            stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, check=True,
-        )
+        with wave.open(str(raw_wav), "wb") as wf_raw:
+            wf_raw.setnchannels(1)
+            wf_raw.setsampwidth(2)
+            wf_raw.setframerate(SAMPLE_RATE)
+            wf_raw.writeframes(raw_pcm_bytes)
 
         silences = detect_silences_wav(raw_wav, noise_db=-34, min_dur=0.05)
         if len(silences) < max(1, num_slots // 2):
-            silences = detect_silences_wav(raw_wav, noise_db=-28, min_dur=0.03)
+            silences = detect_silences_wav(raw_wav, noise_db=-26, min_dur=0.03)
 
-        with wave.open(str(raw_wav), "rb") as wf:
-            pcm = wf.readframes(wf.getnframes())
-            sampwidth = wf.getsampwidth()
-            nchannels = wf.getnchannels()
-            fr = wf.getframerate()
-
+        pcm = raw_pcm_bytes
+        sampwidth = 2
+        nchannels = 1
+        fr = SAMPLE_RATE
         frame_bytes = sampwidth * nchannels
         total_frames = len(pcm) // frame_bytes
         total_dur = total_frames / float(fr)
 
-        # 仅计算跨槽位（slot_idx -> slot_idx + 1）的安全静音切点
         cuts = []
         for s_idx in range(num_slots - 1):
             _, end_ci = slot_groups[s_idx]
@@ -220,9 +600,8 @@ def align_and_pad_audio(
             gap_hi = raw_spans[nxt_ci][0]
             cur_gap = max(0.0, gap_hi - gap_lo)
 
-            # 严格锁定在槽末词尾与下槽首词首之间，绝不触碰句内任何逗号
-            win_lo = max(0.0, gap_lo - 0.04)
-            win_hi = min(total_dur, gap_hi + 0.04)
+            win_lo = max(0.0, gap_lo - 0.05)
+            win_hi = min(total_dur, gap_hi + 0.05)
             best_sil = None
             best_dist = 1e9
             target_mid = (gap_lo + gap_hi) * 0.5
@@ -249,17 +628,13 @@ def align_and_pad_audio(
                 target_gap = 0.54
 
             pad_needed = max(0.0, target_gap - real_gap)
-            cuts.append({
-                "cut_t": cut_t,
-                "pad_sec": pad_needed,
-            })
+            cuts.append({"cut_t": cut_t, "pad_sec": pad_needed})
 
         first_sp_start = max(0.0, raw_spans[0][0] - 0.02)
-        lead_pad_frames = max(0, int(round(0.12 * fr)) - int(round(first_sp_start * fr)))
-        lead_silence = b"\x00" * (lead_pad_frames * frame_bytes)
+        lead_pad_frames = max(0, int(round(0.14 * fr)) - int(round(first_sp_start * fr)))
+        pcm_parts = [b"\x00" * (lead_pad_frames * frame_bytes)]
         lead_shift = lead_pad_frames / float(fr)
 
-        pcm_parts = [lead_silence]
         cut_frames = [int(round(c["cut_t"] * fr)) for c in cuts]
         for idx in range(1, len(cut_frames)):
             if cut_frames[idx] < cut_frames[idx - 1]:
@@ -280,8 +655,7 @@ def align_and_pad_audio(
                 prev_frame = cf
 
         pcm_parts.append(pcm[prev_frame * frame_bytes :])
-        tail_silence_f = int(round(0.28 * fr))
-        pcm_parts.append(b"\x00" * (tail_silence_f * frame_bytes))
+        pcm_parts.append(b"\x00" * (int(round(0.28 * fr)) * frame_bytes))
 
         with wave.open(str(pad_wav), "wb") as wf_out:
             wf_out.setnchannels(nchannels)
@@ -289,10 +663,10 @@ def align_and_pad_audio(
             wf_out.setframerate(fr)
             wf_out.writeframes(b"".join(pcm_parts))
 
+        # 保持原生 龙安朗 响度基准（与轨道一 resynth_track1_clean.py 完全对齐）
         subprocess.run(
             [
                 "ffmpeg", "-y", "-i", str(pad_wav),
-                "-af", "volume=4dB,alimiter=limit=0.75:attack=5:release=50",
                 "-vn", "-ac", "1", "-ar", str(SAMPLE_RATE), "-b:a", "96k",
                 "-map_metadata", "-1", str(tmp_out),
             ],
@@ -312,12 +686,13 @@ def align_and_pad_audio(
         shift = slot_shift[clause_to_slot[i]]
         st_sec = max(0.0, raw_spans[i][0] + shift - 0.006)
         en_sec = max(st_sec + 0.08, raw_spans[i][1] + shift + 0.006)
-        if sent_rows and st_sec < sent_rows[-1]["end"]:
-            # 同槽相邻逗号子句微边防重叠：收紧前句尾 padding 留出纯正间隙
+        if sent_rows and st_sec < sent_rows[-1]["end"] + 0.015:
             mid_edge = (sent_rows[-1]["end"] + st_sec) * 0.5
-            sent_rows[-1]["end"] = round(max(sent_rows[-1]["start"] + 0.06, mid_edge - 0.005), 3)
-            sent_rows[-1]["duration"] = round(max(0.0, sent_rows[-1]["end"] - sent_rows[-1]["start"]), 3)
-            st_sec = mid_edge + 0.005
+            if sent_rows[-1]["end"] - sent_rows[-1]["start"] >= 0.08 and en_sec - st_sec >= 0.08:
+                sent_rows[-1]["end"] = round(max(sent_rows[-1]["start"] + 0.06, min(sent_rows[-1]["end"], mid_edge - 0.008)), 3)
+                sent_rows[-1]["duration"] = round(max(0.0, sent_rows[-1]["end"] - sent_rows[-1]["start"]), 3)
+            st_sec = max(st_sec, sent_rows[-1]["end"] + 0.015)
+            en_sec = max(st_sec + 0.08, en_sec)
         if actual_dur > 0 and en_sec > actual_dur:
             en_sec = actual_dur
         sent_rows.append({
@@ -336,16 +711,25 @@ def synthesize_one_item(script_item: dict, target_mp3_rel: str, force: bool = Fa
     out_sent = out_mp3.with_suffix(".sentences.json")
     out_mp3.parent.mkdir(parents=True, exist_ok=True)
 
+    slot_metas = []
     clause_metas = []
-    slot_tts_list = []
     for sl in script_item["slots"]:
-        slot_tts_list.append(apply_pronunciation_fixes(sl.get("slot_tts_text") or "".join(c["tts_text"] for c in sl["clauses"])))
+        sl_clauses = []
         for c in sl["clauses"]:
-            clause_metas.append({
+            cm = {
                 **c,
                 "slot_key": sl["slot_key"],
                 "part": sl.get("part", ""),
-            })
+            }
+            clause_metas.append(cm)
+            sl_clauses.append(cm)
+        slot_txt = (sl.get("slot_tts_text") or "".join(c["tts_text"] for c in sl["clauses"])).strip()
+        slot_metas.append({
+            "slot_key": sl["slot_key"],
+            "part": sl.get("part", ""),
+            "slot_tts_text": slot_txt,
+            "clauses": sl_clauses,
+        })
 
     if not force and out_mp3.exists() and out_sent.exists() and out_mp3.stat().st_size > 20000:
         try:
@@ -355,12 +739,10 @@ def synthesize_one_item(script_item: dict, target_mp3_rel: str, force: bool = Fa
         except Exception:
             pass
 
-    full_tts_text = "\n".join(slot_tts_list)
-
     for attempt in range(1, 5):
         try:
-            raw_bytes, words = synthesize_edge_raw(full_tts_text)
-            sent_rows = align_and_pad_audio(raw_bytes, words, clause_metas, out_mp3)
+            raw_pcm_bytes, raw_spans = synthesize_cosy_track2(slot_metas)
+            sent_rows = align_and_pad_cosy_track2(raw_pcm_bytes, raw_spans, clause_metas, out_mp3)
             out_sent.write_text(json.dumps(sent_rows, ensure_ascii=False, indent=2), encoding="utf-8")
             last_end = sent_rows[-1]["end"] if sent_rows else 0
             actual_dur = ffprobe_duration(out_mp3)
@@ -450,11 +832,11 @@ def main():
     if args.limit > 0:
         tasks = tasks[:args.limit]
 
-    print(f"Starting Track 2 Edge TTS (YunyangNeural {RATE}, 96kbps) synthesis: {len(tasks)} items, workers={args.workers}")
+    print(f"Starting Track 2 Aliyun CosyVoice ({VOICE_NAME}, 44.1kHz 96kbps) synthesis: {len(tasks)} items, workers={args.workers}")
     ok_cnt = 0
     fail_list = []
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as ex:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, args.workers)) as ex:
         fut_map = {ex.submit(synthesize_one_item, sc, rel, args.force): (sc, rel) for sc, rel in tasks}
         for idx, fut in enumerate(concurrent.futures.as_completed(fut_map), 1):
             sc, rel = fut_map[fut]
@@ -463,7 +845,7 @@ def main():
             except Exception as exc:
                 ok, msg = False, str(exc)
             tag = "OK" if ok else "FAIL"
-            print(f"[{idx:02d}/{len(tasks):02d}] {tag} {sc['id'][:30]} -> {msg}", flush=True)
+            print(f"[{idx:02d}/{len(tasks):02d}] {tag} {sc['id'][:34]} -> {msg}", flush=True)
             if ok:
                 ok_cnt += 1
             else:

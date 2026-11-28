@@ -2,57 +2,50 @@
   {
     "id": "sent_p1_s1",
     "text": "Dear Professor Green,",
-    "start": "0.055",
-    "end": "1.550",
-    "duration": "1.495"
+    "start": "0.000",
+    "end": "1.433",
+    "duration": "1.433"
   },
   {
     "id": "sent_p1_s2",
-    "text": "On behalf of the Student Union, I am honored to extend a cordial invitation to you to serve as an expert judge for our upcoming 15th Campus English Speech Contest.",
-    "start": "2.175",
-    "end": "13.200",
-    "duration": "11.025"
+    "text": "On behalf of the Student Union, I am honored to extend a cordial invitation for you to serve as a judge in our upcoming English Speech Contest.",
+    "start": "1.833",
+    "end": "11.266",
+    "duration": "9.433"
   },
   {
     "id": "sent_p2_s1",
-    "text": "The event is scheduled to be held in the Grand Auditorium from 2:00 p.m. to 5:00 p.m. next Friday, November 14th.",
-    "start": "14.735",
-    "end": "22.830",
-    "duration": "8.095"
+    "text": "The event is scheduled to take place in the University Hall from 2:00 p.m. to 5:00 p.m. next Friday, with the theme of Cross-Cultural Communication.",
+    "start": "12.166",
+    "end": "21.775",
+    "duration": "9.609"
   },
   {
     "id": "sent_p2_s2",
-    "text": "The contest will feature fifteen distinguished finalists delivering speeches on the theme of Cultural Interconnection in the Modern Era.",
-    "start": "23.585",
-    "end": "31.760",
-    "duration": "8.175"
+    "text": "Several meaningful sessions have been arranged, including student speeches and live feedback.",
+    "start": "22.175",
+    "end": "28.234",
+    "duration": "6.059"
   },
   {
     "id": "sent_p2_s3",
-    "text": "Considering your outstanding academic prestige and profound linguistic insight, your professional evaluation and commentary would undoubtedly inspire all contestants and elevate the academic caliber of this competition.",
-    "start": "32.390",
-    "end": "46.510",
-    "duration": "14.120"
+    "text": "Knowing your keen interest in language teaching, we believe not only can your insights inspire all contestants, but they will also elevate the quality of the competition.",
+    "start": "28.634",
+    "end": "38.950",
+    "duration": "10.316"
   },
   {
     "id": "sent_p3_s1",
-    "text": "We would be deeply grateful if you could accept our invitation.",
-    "start": "48.035",
-    "end": "51.590",
-    "duration": "3.555"
+    "text": "It would be deeply appreciated if you could accept our invitation and inform us of your availability before Wednesday.",
+    "start": "39.850",
+    "end": "47.263",
+    "duration": "7.413"
   },
   {
     "id": "sent_p3_s2",
-    "text": "Please kindly notify us of your availability before this Wednesday.",
-    "start": "52.255",
-    "end": "56.240",
-    "duration": "3.985"
-  },
-  {
-    "id": "sent_p3_s3",
     "text": "Yours sincerely, Li Ming",
-    "start": "56.905",
-    "end": "59.050",
-    "duration": "2.145"
+    "start": "47.662",
+    "end": "49.780",
+    "duration": "2.118"
   }
 ]
