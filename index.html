@@ -15,7 +15,7 @@
   <!-- 异步/非阻塞字体加载：优先采用 iOS/Android/Win 原生高清字系 (Songti SC / Kaiti SC / 苹方)，离线或无外网时 0 白屏首屏秒开 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="app.css?v=3.5.17">
+  <link rel="stylesheet" href="app.css?v=3.5.18">
   <!-- 官方图标体系 (方案 02：文心双轨 · 典雅线装) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
@@ -27,7 +27,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css" media="print" onload="this.media='all'">
 
   <!-- 离线全量数据包：彻底免疫浏览器 file:/// 下的 CORS 限制，双击秒开 -->
-  <script src="data/kaoyan_data.js?v=3.5.17" defer></script>
+  <script src="data/kaoyan_data.js?v=3.5.18" defer></script>
 </head>
 <body>
 
@@ -406,6 +406,27 @@
               <div style="height: 14px; background: linear-gradient(90deg, rgba(160,140,110,0.15) 25%, rgba(160,140,110,0.3) 50%, rgba(160,140,110,0.15) 75%); border-radius: 6px; width: 60%;"></div>
             </div>
           </div>
+          <nav id="paperBottomPager" class="paper-bottom-pager" aria-label="篇目翻页导航" hidden>
+            <button type="button" id="btnPaperPrev" class="paper-pager-btn is-prev">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+              <span class="paper-pager-meta">
+                <span class="paper-pager-dir">上一篇</span>
+                <span class="paper-pager-title" id="paperPrevTitle">-</span>
+              </span>
+            </button>
+            <span class="paper-pager-index" id="paperPagerIndex">1 / 1</span>
+            <button type="button" id="btnPaperNext" class="paper-pager-btn is-next">
+              <span class="paper-pager-meta">
+                <span class="paper-pager-dir">下一篇</span>
+                <span class="paper-pager-title" id="paperNextTitle">-</span>
+              </span>
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </nav>
         </article>
       </div>
     </section>
@@ -526,14 +547,27 @@
     </div>
   </footer>
 
-  <!-- 单手翻阅后一键回到当前播放句悬浮胶囊 -->
-  <button type="button" id="btnReturnActiveSent" class="return-active-pill" style="display: none;" title="回到当前播放句">
-    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="3"></circle>
-      <path d="M12 2v3m0 14v3M2 12h3m14 0h3"></path>
-    </svg>
-    <span>回到当前句</span>
-  </button>
+  <!-- 单手翻阅后悬浮快捷簇（回到当前句 + 滚离顶部后一键切轨/回顶） -->
+  <div id="floatingQuickStack" class="floating-quick-stack">
+    <button type="button" id="btnReturnActiveSent" class="return-active-pill" style="display: none;" title="回到当前播放句">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M12 2v3m0 14v3M2 12h3m14 0h3"></path>
+      </svg>
+      <span>回到当前句</span>
+    </button>
+    <div id="floatingTrackBar" class="floating-track-bar" hidden role="toolbar" aria-label="快捷切轨与回顶">
+      <div id="floatingTrackSeg" class="floating-track-seg">
+        <button type="button" id="btnFloatTrack1" class="floating-track-btn active" data-float-track="1">轨一</button>
+        <button type="button" id="btnFloatTrack2" class="floating-track-btn" data-float-track="2">轨二</button>
+      </div>
+      <button type="button" id="btnFloatScrollTop" class="floating-top-btn" title="回到考题顶部">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
 
 
   <!-- 移动端原生 App 底部浮动导航栏 (方案 C：与播放控制坞互斥吸附替换) -->
@@ -607,9 +641,9 @@
   </nav>
 
 
-  <script src="listen_tracking.js?v=3.5.17" defer></script>
-  <script src="app.js?v=3.5.17" defer></script>
-  <script src="ai_sync.js?v=3.5.17" defer></script>
+  <script src="listen_tracking.js?v=3.5.18" defer></script>
+  <script src="app.js?v=3.5.18" defer></script>
+  <script src="ai_sync.js?v=3.5.18" defer></script>
   <!-- 答题思维骨架抽屉 (Outline Drawer) -->
   <div id="outlineDrawerBackdrop" class="outline-drawer-backdrop" style="display: none;"></div>
   <aside id="outlineDrawer" class="outline-drawer" aria-hidden="true">
